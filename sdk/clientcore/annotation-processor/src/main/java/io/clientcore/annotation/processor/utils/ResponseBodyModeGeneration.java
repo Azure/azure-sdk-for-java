@@ -137,6 +137,7 @@ public final class ResponseBodyModeGeneration {
             } else {
                 generateResponseBodyMode(body, returnTypeName);
                 handleDeserializeResponse(body, returnTypeName, method, unexpectedResponseExceptionDetails);
+                // add statement Response<?> responseToReturn = createResponseIfNecessary(response, entityType, response.getBody());
                 createResponseIfNecessary(returnTypeName, body);
             }
         } else {
@@ -159,7 +160,21 @@ public final class ResponseBodyModeGeneration {
      * @param body the method builder to append generated code.
      */
     public static void createResponseIfNecessary(String returnTypeName, BlockStmt body) {
-        body.addStatement(new ReturnStmt("(" + returnTypeName + ") response"));
+        // add statement return Response<?> responseToReturn = createResponseIfNecessary(response, entityType, response.getBody());
+        //body.tryAddImportToParentCompilationUnit(TypeUtil.class);
+        //body.tryAddImportToParentCompilationUnit(ReflectiveInvoker.class);
+        //body.addStatement(StaticJavaParser
+        //    .parseStatement("Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass("
+        //        + returnTypeName + ".class);"));
+        //
+        //IfStmt ifStmt = new IfStmt().setCondition(StaticJavaParser.parseExpression("clazz.equals(Response.class)"))
+        //    .setThenStmt(StaticJavaParser.parseBlock("{ return response; }"))
+        //    .setElseStmt(StaticJavaParser.parseBlock(
+        //        "{ ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz); "
+        //            + "return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject); }"));
+        //
+        //body.addStatement(ifStmt);
+        body.addStatement(StaticJavaParser.parseStatement("return response;"));
     }
 
     /**

@@ -13,12 +13,14 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.CastExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.core.implementation.http.ContentType;
@@ -388,7 +390,26 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         List<UnexpectedResponseExceptionDetail> unexpectedResponseExceptionDetails) {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
+        // cast it to return type
+        // Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
         Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
+
+        // Extract the variable declaration
+        if (statement.isExpressionStmt()) {
+            statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
+                variableDeclarationExpr.getVariables().forEach(variable -> {
+                    // Parse the full response type with generics from returnTypeName
+                    ClassOrInterfaceType responseType = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
+
+                    // Set the new type for the variable
+                    variable.setType(responseType);
+
+                    // Add cast to the initializer
+                    CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
+                    variable.setInitializer(castExpression);
+                });
+            });
+        }
         statement.setLineComment("Send the request through the pipeline");
         body.addStatement(statement);
 
