@@ -314,10 +314,10 @@ public class MessageDecoderTests {
     }
 
     @ParameterizedTest
-    @MethodSource("invalidSegmentSizes")
+    @MethodSource("invalidSegmentNumbers")
     public void testIncorrectSegmentSize(int invalidSegmentSize, StructuredMessageFlags flags) throws IOException {
         byte[] data = getRandomData(1024);
-        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), 256, StructuredMessageFlags.NONE);
+        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), 256, flags);
 
         byte[] encodedArray = encodedBuffer.array();
         ByteBuffer modifiableBuffer = ByteBuffer.wrap(encodedArray).order(ByteOrder.LITTLE_ENDIAN);
@@ -335,10 +335,6 @@ public class MessageDecoderTests {
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(ByteBuffer.wrap(encodedArray));
 
         Assertions.assertThrows(IllegalArgumentException.class, decoder::decodeFully);
-    }
-
-    private static Stream<Arguments> invalidSegmentSizes() {
-        return Stream.of(Arguments.of(123), Arguments.of(345));
     }
 
     @Test

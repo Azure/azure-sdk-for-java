@@ -101,7 +101,7 @@ public class StructuredMessageDecoder {
         messageOffset += toRead;
         currentSegmentContentOffset += toRead;
 
-        // ✅ Validate the actual bytes read vs expected segment size
+        // Validate the actual bytes read vs expected segment size
         if (currentSegmentContentOffset > currentSegmentContentLength) {
             throw new IllegalArgumentException("Segment size mismatch detected in segment " + currentSegmentNumber);
         }
