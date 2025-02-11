@@ -18,7 +18,7 @@ import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -26,17 +26,17 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
-import io.clientcore.core.implementation.util.UriBuilder;
+import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.Context;
+import io.clientcore.core.util.UriBuilder;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.ByteArrayBinaryData;
 import io.clientcore.core.util.binarydata.ByteBufferBinaryData;
 import io.clientcore.core.util.binarydata.InputStreamBinaryData;
-import io.clientcore.core.implementation.util.JsonSerializer;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 import io.clientcore.core.util.serializer.SerializationFormat;
 import org.junit.jupiter.api.Assertions;
@@ -1492,8 +1492,8 @@ public abstract class HttpClientTests {
 
         // Order in which policies applied will be the order in which they added to builder
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new HttpInstrumentationPolicy(null,
-                new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
+            .addPolicy(new HttpInstrumentationPolicy(new HttpInstrumentationOptions()
+                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
 
         Response<HttpBinJSON> response

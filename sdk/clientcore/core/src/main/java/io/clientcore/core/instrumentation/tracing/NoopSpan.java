@@ -3,6 +3,7 @@
 
 package io.clientcore.core.instrumentation.tracing;
 
+import io.clientcore.core.implementation.instrumentation.NoopInstrumentationContext;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 
 final class NoopSpan implements Span {

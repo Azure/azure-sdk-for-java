@@ -27,6 +27,8 @@
  * AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;;
  *
  * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; this call will be traced using OpenTelemetry SDK initialized globally
  * client.clientCall&#40;&#41;;
  *
  * </pre>
@@ -40,11 +42,13 @@
  * <!-- src_embed io.clientcore.core.telemetry.useexplicitopentelemetry -->
  * <pre>
  *
- * OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;.getOpenTelemetrySdk&#40;&#41;;
- * InstrumentationOptions&lt;OpenTelemetry&gt; instrumentationOptions = new InstrumentationOptions&lt;OpenTelemetry&gt;&#40;&#41;
- *     .setProvider&#40;openTelemetry&#41;;
+ * OpenTelemetry openTelemetry = AutoConfiguredOpenTelemetrySdk.initialize&#40;&#41;.getOpenTelemetrySdk&#40;&#41;;
+ * HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions&#40;&#41;
+ *     .setTelemetryProvider&#40;openTelemetry&#41;;
  *
  * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; this call will be traced using OpenTelemetry SDK provided explicitly
  * client.clientCall&#40;&#41;;
  *
  * </pre>
@@ -90,6 +94,7 @@
  * Tracer tracer = GlobalOpenTelemetry.getTracer&#40;&quot;sample&quot;&#41;;
  * Span span = tracer.spanBuilder&#40;&quot;my-operation&quot;&#41;
  *     .startSpan&#40;&#41;;
+ *
  * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
  *
  * &#47;&#47; Propagating context implicitly is preferred way in synchronous code.

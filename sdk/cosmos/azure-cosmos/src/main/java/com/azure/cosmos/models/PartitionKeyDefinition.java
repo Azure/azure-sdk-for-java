@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Strings;
@@ -182,21 +181,21 @@ public final class PartitionKeyDefinition {
         if (this.kind != null) {
             this.jsonSerializable.set(
                 Constants.Properties.PARTITION_KIND,
-                kind.toString(),
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                kind.toString()
+            );
         }
         if (this.paths != null) {
             this.jsonSerializable.set(
                 Constants.Properties.PARTITION_KEY_PATHS,
-                paths,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                paths
+            );
         }
 
         if (this.versionOptional != null && versionOptional.isPresent()) {
             this.jsonSerializable.set(
                 Constants.Properties.PARTITION_KEY_DEFINITION_VERSION,
-                versionOptional.get().toString(),
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                versionOptional.get().toString()
+            );
         }
     }
 

@@ -43,7 +43,7 @@ If you want to take dependency on a particular version of the library that is no
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-certificates</artifactId>
-    <version>4.7.0</version>
+    <version>4.7.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -287,4 +287,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [http_clients_wiki]: https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-certificates%2FREADME.png)
+

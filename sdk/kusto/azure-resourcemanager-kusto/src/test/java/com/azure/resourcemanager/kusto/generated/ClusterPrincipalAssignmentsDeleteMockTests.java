@@ -28,7 +28,7 @@ public final class ClusterPrincipalAssignmentsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.clusterPrincipalAssignments()
-            .delete("blembnkbwvqvxkd", "vqihebwtswbzuwf", "duragegizvc", com.azure.core.util.Context.NONE);
+            .delete("vumwmxqh", "dvnoamldsehaohdj", "hflzokxco", com.azure.core.util.Context.NONE);
 
     }
 }

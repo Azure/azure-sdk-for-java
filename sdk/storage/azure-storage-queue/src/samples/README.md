@@ -55,4 +55,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [queue_key_concept]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-queue/README.md#key-concepts
 [samples]: java/samples/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-queue%2Fsrc%2Fsamples%2FREADME.png)
+

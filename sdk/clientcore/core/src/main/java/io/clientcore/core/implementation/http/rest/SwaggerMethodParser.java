@@ -25,9 +25,9 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
-import io.clientcore.core.implementation.util.Base64Uri;
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
-import io.clientcore.core.implementation.util.UriBuilder;
+import io.clientcore.core.util.Base64Uri;
+import io.clientcore.core.util.DateTimeRfc1123;
+import io.clientcore.core.util.UriBuilder;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.util.ExpandableEnum;
 import io.clientcore.core.util.binarydata.BinaryData;
@@ -71,7 +71,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     // to search the raw value on each call.
     private final String rawHost;
     private final String fullyQualifiedMethodName;
-    private final ClientLogger methodLogger;
+    private final ClientLogger logger;
     private final HttpMethod httpMethod;
     private final String relativePath;
     private final Map<String, List<String>> queryParams = new LinkedHashMap<>();
@@ -109,7 +109,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.rawHost = interfaceParser.getHost();
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
         fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
-        methodLogger = new ClientLogger(fullyQualifiedMethodName);
+        logger = new ClientLogger(fullyQualifiedMethodName);
 
         if (!swaggerMethod.isAnnotationPresent(HttpRequestInformation.class)) {
             // Should this also check whether there are multiple HTTP method annotations as well?
@@ -308,7 +308,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
      * @return The {@link ClientLogger} that will be used to log during the request and response.
      */
     public ClientLogger getMethodLogger() {
-        return methodLogger;
+        return logger;
     }
 
     /**

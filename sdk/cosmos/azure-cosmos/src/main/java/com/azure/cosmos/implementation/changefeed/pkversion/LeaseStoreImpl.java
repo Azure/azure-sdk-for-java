@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedHelper;
 import com.azure.cosmos.implementation.changefeed.epkversion.ServiceItemLeaseV1;
@@ -101,8 +100,8 @@ class LeaseStoreImpl implements LeaseStore {
         containerDocument.setId(lockId);
         containerDocument.set(
             Constants.Properties.TTL,
-            Long.valueOf(lockExpirationTime.getSeconds()).intValue(),
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            Long.valueOf(lockExpirationTime.getSeconds()).intValue()
+        );
 
         return this.client.createItem(
             this.leaseCollectionLink,
