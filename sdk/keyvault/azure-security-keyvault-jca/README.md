@@ -87,7 +87,8 @@ JCA library support to configure the following options:
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
 
 ## Examples
-### Server side SSL
+### SSL/TLS
+#### Server side SSL
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
 
 ```java readme-sample-serverSSL
@@ -131,7 +132,7 @@ String response = "HTTP/1.1 200 OK\r\n" +
 
 Note if you want to use Azure Managed Identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
 
-### Client side SSL
+#### Client side SSL
 If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
 
 ```java readme-sample-clientSSL
@@ -166,16 +167,123 @@ ResponseHandler<String> responseHandler = (HttpResponse response) -> {
     int status = response.getStatusLine().getStatusCode();
     String result1 = "Not success";
     if (status == 200) {
-        result1 = "Success";
-        System.out.println(EntityUtils.toString(response.getEntity()));
+        result1 = EntityUtils.toString(response.getEntity());
     }
     return result1;
 };
 result = client.execute(httpGet, responseHandler);
-    System.out.println(result);
 } catch (IOException ioe) {
     ioe.printStackTrace();
 }
+System.out.println(result);
+```
+
+Note if you want to use Azure managed identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
+
+### mTLS
+#### Server side mTLS
+If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
+
+```java readme-sample-serverMTLS
+KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+Security.addProvider(provider);
+
+System.setProperty("azure.keyvault.uri", "<server-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.tenant-id", "<server-azure-keyvault-tenant-id>");
+System.setProperty("azure.keyvault.client-id", "<server-azure-keyvault-client-id>");
+System.setProperty("azure.keyvault.client-secret", "<server-azure-keyvault-client-secret>");
+KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
+
+KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
+kmf.init(keyStore, "".toCharArray());
+
+    System.setProperty("azure.keyvault.uri", "<client-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.tenant-id", "<client-azure-keyvault-tenant-id>");
+System.setProperty("azure.keyvault.client-id", "<client-azure-keyvault-client-id>");
+System.setProperty("azure.keyvault.client-secret", "<client-azure-keyvault-client-secret>");
+KeyStore trustStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
+
+TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+tmf.init(trustStore);
+
+SSLContext context = SSLContext.getInstance("TLS");
+context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
+
+SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
+SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
+serverSocket.setNeedClientAuth(true);
+
+while (true) {
+SSLSocket socket = (SSLSocket) serverSocket.accept();
+    System.out.println("Client connected: " + socket.getInetAddress());
+BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+String body = "Hello, this is server.";
+String response = "HTTP/1.1 200 OK\r\n" +
+    "Content-Type: text/plain\r\n" +
+    "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" +
+    "Connection: close\r\n" +
+    "\r\n" +
+    body;
+
+    out.write(response);
+    out.flush();
+    socket.close();
+}
+```
+
+Note if you want to use Azure Managed Identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
+
+#### Client side mTLS
+If you are looking to integrate the JCA provider for client side socket connections, see the Apache HTTP client example below.
+
+```java readme-sample-clientMTLS
+KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
+Security.addProvider(provider);
+
+System.setProperty("azure.keyvault.uri", "<client-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.tenant-id", "<client-azure-keyvault-tenant-id>");
+System.setProperty("azure.keyvault.client-id", "<client-azure-keyvault-client-id>");
+System.setProperty("azure.keyvault.client-secret", "<client-azure-keyvault-client-secret>");
+KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
+
+System.setProperty("azure.keyvault.uri", "<server-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.tenant-id", "<server-azure-keyvault-tenant-id>");
+System.setProperty("azure.keyvault.client-id", "<server-azure-keyvault-client-id>");
+System.setProperty("azure.keyvault.client-secret", "<server-azure-keyvault-client-secret>");
+KeyStore trustStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
+
+SSLContext sslContext = SSLContexts
+    .custom()
+    .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
+    .loadKeyMaterial(keyStore, "".toCharArray())
+    .build();
+
+SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
+    sslContext, (hostname, session) -> true);
+
+PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
+    RegistryBuilder.<ConnectionSocketFactory>create()
+                   .register("https", sslConnectionSocketFactory)
+                   .build());
+
+String result = null;
+
+try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
+HttpGet httpGet = new HttpGet("https://localhost:8765");
+ResponseHandler<String> responseHandler = (HttpResponse response) -> {
+    int status = response.getStatusLine().getStatusCode();
+    String result1 = "Not success";
+    if (status == 200) {
+        result1 = EntityUtils.toString(response.getEntity());
+    }
+    return result1;
+};
+result = client.execute(httpGet, responseHandler);
+} catch (IOException ioe) {
+    ioe.printStackTrace();
+}
+System.out.println(result);
 ```
 
 Note if you want to use Azure managed identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.

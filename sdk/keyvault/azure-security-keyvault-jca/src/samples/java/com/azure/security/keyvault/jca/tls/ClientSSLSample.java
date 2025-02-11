@@ -1,51 +1,48 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.security.keyvault.jca;
+package com.azure.security.keyvault.jca.tls;
 
+import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
+import com.azure.security.keyvault.jca.KeyVaultKeyStore;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 
 import javax.net.ssl.SSLContext;
+
 import java.io.IOException;
 import java.security.KeyStore;
 import java.security.Security;
 
 /**
- * The ClientMTLS sample.
+ * The ClientSSL sample.
  */
-public class ClientMTLSSample {
+public class ClientSSLSample {
 
     public static void main(String[] args) throws Exception {
-        // BEGIN: readme-sample-clientMTLS
+        // BEGIN: readme-sample-clientSSL
+        System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+        System.setProperty("azure.keyvault.tenant-id", "<your-azure-keyvault-tenant-id>");
+        System.setProperty("azure.keyvault.client-id", "<your-azure-keyvault-client-id>");
+        System.setProperty("azure.keyvault.client-secret", "<your-azure-keyvault-client-secret>");
+
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
 
-        System.setProperty("azure.keyvault.uri", "<client-azure-keyvault-uri>");
-        System.setProperty("azure.keyvault.tenant-id", "<client-azure-keyvault-tenant-id>");
-        System.setProperty("azure.keyvault.client-id", "<client-azure-keyvault-client-id>");
-        System.setProperty("azure.keyvault.client-secret", "<client-azure-keyvault-client-secret>");
         KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
-
-        System.setProperty("azure.keyvault.uri", "<server-azure-keyvault-uri>");
-        System.setProperty("azure.keyvault.tenant-id", "<server-azure-keyvault-tenant-id>");
-        System.setProperty("azure.keyvault.client-id", "<server-azure-keyvault-client-id>");
-        System.setProperty("azure.keyvault.client-secret", "<server-azure-keyvault-client-secret>");
-        KeyStore trustStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 
         SSLContext sslContext = SSLContexts
             .custom()
-            .loadTrustMaterial(trustStore, new TrustSelfSignedStrategy())
-            .loadKeyMaterial(keyStore, "".toCharArray())
+            .loadTrustMaterial(keyStore, new TrustSelfSignedStrategy())
             .build();
 
         SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketFactory(
@@ -73,7 +70,7 @@ public class ClientMTLSSample {
             ioe.printStackTrace();
         }
         System.out.println(result);
-        // END: readme-sample-clientMTLS
+        // END: readme-sample-clientSSL
     }
 
 }
