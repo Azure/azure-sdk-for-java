@@ -23,7 +23,6 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
-import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -44,7 +43,6 @@ import javax.annotation.processing.ProcessingEnvironment;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.ByteBuffer;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -204,13 +202,10 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                         || parameter.getName().equals("apiVersion")));
 
             if (generateInternalOnly) {
-                configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method,
-                    templateInput.getUnexpectedResponseExceptionDetails()); // Generate the internal method
+                configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method); // Generate the internal method
             } else {
-                configurePublicMethod(classBuilder.addMethod(method.getMethodName()), method,
-                    templateInput.getUnexpectedResponseExceptionDetails());
-                configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method,
-                    templateInput.getUnexpectedResponseExceptionDetails());
+                configurePublicMethod(classBuilder.addMethod(method.getMethodName()), method);
+                configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method);
             }
         }
     }
@@ -261,8 +256,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .setBody(new BlockStmt().addStatement(new ReturnStmt("serviceVersion")));
     }
 
-    void configurePublicMethod(MethodDeclaration publicMethod, HttpRequestContext method,
-        List<UnexpectedResponseExceptionDetail> unexpectedResponseExceptionDetails) {
+    void configurePublicMethod(MethodDeclaration publicMethod, HttpRequestContext method) {
         // TODO (alzimmer): For now throw @SuppressWarnings({"unchecked", "cast"}) on generated methods while we
         //  improve / fix the generated code to no longer need it.
         publicMethod.setName(method.getMethodName())
@@ -296,8 +290,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
     }
 
-    private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method,
-        List<UnexpectedResponseExceptionDetail> unexpectedResponseExceptionDetails) {
+    private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method) {
         String returnTypeName = inferTypeNameFromReturnType(method.getMethodReturnType());
         // TODO (alzimmer): For now throw @SuppressWarnings({"unchecked", "cast"}) on generated methods while we
         //  improve / fix the generated code to no longer need it.
@@ -319,7 +312,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         initializeHttpRequest(body, method);
         addHeadersToRequest(body, method);
         addRequestBody(body, method);
-        finalizeHttpRequest(body, returnTypeName, method, unexpectedResponseExceptionDetails);
+        finalizeHttpRequest(body, returnTypeName, method);
 
         internalMethod.setBody(body);
     }
@@ -394,8 +387,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.getStatements().get(index).setLineComment("Set the request body");
     }
 
-    private void finalizeHttpRequest(BlockStmt body, String returnTypeName, HttpRequestContext method,
-        List<UnexpectedResponseExceptionDetail> unexpectedResponseExceptionDetails) {
+    private void finalizeHttpRequest(BlockStmt body, String returnTypeName, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
         Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
@@ -425,7 +417,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             validateResponseStatus(body, method);
         }
 
-        generateResponseHandling(body, returnTypeName, method, unexpectedResponseExceptionDetails);
+        generateResponseHandling(body, returnTypeName, method);
     }
 
     private void validateResponseStatus(BlockStmt body, HttpRequestContext method) {
