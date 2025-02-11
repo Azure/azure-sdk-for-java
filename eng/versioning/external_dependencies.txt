@@ -199,7 +199,7 @@ org.apache.maven.plugins:maven-source-plugin;3.3.1
 org.apache.maven.plugins:maven-surefire-plugin;3.5.1
 org.codehaus.mojo:animal-sniffer-maven-plugin;1.24
 org.codehaus.mojo:build-helper-maven-plugin;3.6.0
-org.codehaus.mojo:exec-maven-plugin;3.4.1
+org.codehaus.mojo:exec-maven-plugin;3.5.0
 org.codehaus.mojo:xml-maven-plugin;1.1.0
 org.eclipse.jetty:jetty-maven-plugin;9.4.33.v20201020
 org.eclipse.m2e:lifecycle-mapping;1.0.0
