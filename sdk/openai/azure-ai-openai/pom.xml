@@ -128,6 +128,11 @@
                 <include>com.openai:openai-java:[0.8.1]</include> <!-- {x-include-update;com.openai:openai-java;external_dependency} -->
               </includes>
             </bannedDependencies>
+            <requireReleaseDeps>
+              <excludes>
+                <exclude>com.openai:openai-java</exclude>
+              </excludes>
+            </requireReleaseDeps>
           </rules>
         </configuration>
       </plugin>
