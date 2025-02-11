@@ -190,7 +190,7 @@ org.apache.maven.plugins:maven-jar-plugin;3.4.2
 org.apache.maven.plugins:maven-javadoc-plugin;3.10.1
 org.apache.maven.plugins:maven-jxr-plugin;3.5.0
 org.apache.maven.plugins:maven-plugin-plugin;3.15.0
-org.apache.maven.plugins:maven-project-info-reports-plugin;3.7.0
+org.apache.maven.plugins:maven-project-info-reports-plugin;3.8.0
 org.apache.maven.plugins:maven-release-plugin;3.1.1
 org.apache.maven.plugins:maven-resources-plugin;3.3.1
 org.apache.maven.plugins:maven-shade-plugin;3.6.0
