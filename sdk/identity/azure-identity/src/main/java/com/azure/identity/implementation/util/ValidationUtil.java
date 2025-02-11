@@ -94,7 +94,7 @@ public final class ValidationUtil {
             for (int i = 0; i < id.length(); i++) {
                 if (!isValidTenantCharacter(id.charAt(i))) {
                     throw logger.logExceptionAsError(new IllegalArgumentException(
-                        "Invalid tenant id provided. You can locate your tenant id by following the instructions"
+                        "Invalid tenant ID provided. You can locate your tenant ID by following the instructions"
                             + " listed here: https://learn.microsoft.com/partner-center/find-ids-and-domain-names"));
                 }
             }
@@ -106,7 +106,7 @@ public final class ValidationUtil {
             for (int i = 0; i < subscription.length(); i++) {
                 if (!isValidSubscriptionCharacter(subscription.charAt(i))) {
                     throw logger.logExceptionAsError(new IllegalArgumentException(
-                        "Invalid subscription id provided. You can locate your subscription id by following the instructions"
+                        "Invalid subscription ID provided. You can locate your subscription ID by following the instructions"
                             + " listed here: https://learn.microsoft.com/azure/azure-portal/get-subscription-tenant-id"));
                 }
             }
