@@ -12,8 +12,6 @@
     <description>This module contains OpenRewrite recipe for migrating to next generation Microsoft Azure client libraries.</description>
 
     <properties>
-      <maven.compiler.source>8</maven.compiler.source>
-      <maven.compiler.target>8</maven.compiler.target>
       <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     </properties>
 
@@ -37,14 +35,25 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- You only need the version that corresponds to your current
-        Java version. It is fine to add all of them, though, as
-        they can coexist on a classpath. -->
-        <dependency>
-            <groupId>org.openrewrite</groupId>
-            <artifactId>rewrite-java-8</artifactId>
-            <scope>test</scope>
-        </dependency>
+      <!-- To test on different JDKs multiple within CI,
+      we need to include multiple rewrite-java test dependencies -->
+      <dependency>
+          <groupId>org.openrewrite</groupId>
+          <artifactId>rewrite-java-8</artifactId>
+          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.openrewrite</groupId>
+        <artifactId>rewrite-java-11</artifactId>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.openrewrite</groupId>
+        <artifactId>rewrite-java-17</artifactId>
+        <scope>test</scope>
+      </dependency>
 
       <dependency>
         <groupId>org.openrewrite</groupId>
