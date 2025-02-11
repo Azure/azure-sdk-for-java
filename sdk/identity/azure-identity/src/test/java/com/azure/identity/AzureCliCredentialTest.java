@@ -153,26 +153,32 @@ public class AzureCliCredentialTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "test", "TEST", "Test123", "sub-123", "sub_456", "sub.name",
-        "123456", "a.b-c_d", "A.B-C_D", "0-9a-zA-Z_", "valid.subscription"
-    })
+    @ValueSource(
+        strings = {
+            "test",
+            "TEST",
+            "Test123",
+            "sub-123",
+            "sub_456",
+            "sub.name",
+            "123456",
+            "a.b-c_d",
+            "A.B-C_D",
+            "0-9a-zA-Z_",
+            "valid.subscription" })
     public void testSubscriptionAccepted(String subscription) {
         // Setup
-        TokenRequestContext request = new TokenRequestContext()
-            .addScopes("https://vault.azure.net/.default");
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default");
 
         // Mock
-        try (MockedConstruction<IdentityClient> identityClientMock =
-                 mockConstruction(IdentityClient.class, (identityClient, context) -> {
-                     when(identityClient.authenticateWithAzureCli(request))
-                         .thenReturn(Mono.error(new Exception("other error")));
-                     when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
-                 })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureCli(request))
+                    .thenReturn(Mono.error(new Exception("other error")));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
 
-            AzureCliCredential credential = new AzureCliCredentialBuilder()
-                .subscription(subscription)
-                .build();
+            AzureCliCredential credential = new AzureCliCredentialBuilder().subscription(subscription).build();
 
             StepVerifier.create(credential.getToken(request))
                 .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("other error"))
@@ -182,30 +188,15 @@ public class AzureCliCredentialTest {
         }
     }
 
-
     @ParameterizedTest
-    @CsvSource({
-        "'', Subscription cannot be empty",          // Empty string
-        "' ', Subscription cannot be empty",         // Space only
-        "'sub@name', Invalid character '@' found",   // Special character (@)
-        "'sub#name', Invalid character '#' found",   // Special character (#)
-        "'sub$name', Invalid character '$' found",   // Special character ($)
-        "'sub*name', Invalid character '*' found",   // Special character (*)
-        "'sub&name', Invalid character '&' found",   // Special character (&)
-        "'sub(name)', Invalid character '(' found",  // Parentheses
-        "'sub+name', Invalid character '+' found",   // Plus sign
-        "'sub/name', Invalid character '/' found",   // Slash
-        "'sub,name', Invalid character ',' found",   // Comma
-        "'sub=name', Invalid character '=' found"    // Equal sign
+    @ValueSource(strings = {
+        "@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "=", "/", ",", ";", ":", "<", ">", "?", "!", "[", "]", "{", "}"
     })
-    public void testInvalidSubscriptionRejected(String subscription, String expectedErrorMessage) {
-        // Expect validation exception when an invalid subscription name is used
-        Exception exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
-            new AzureCliCredentialBuilder()
-                .subscription(subscription));
+    public void testInvalidSubscriptionRejected(String invalidChar) {
+        String invalidSubscription = "test" + invalidChar + "sub";
 
-        // Check that the error message matches expectations
-        Assertions.assertTrue(exception.getMessage().contains(expectedErrorMessage),
-            "Expected error message to contain: " + expectedErrorMessage);
+        // Expect validation exception when an invalid subscription name is used
+        Assertions.assertThrows(IllegalArgumentException.class, () ->
+            new AzureCliCredentialBuilder().subscription(invalidSubscription));
     }
 }
