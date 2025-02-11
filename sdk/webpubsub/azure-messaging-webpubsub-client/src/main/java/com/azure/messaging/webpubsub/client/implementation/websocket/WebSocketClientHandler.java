@@ -7,7 +7,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.CompositeByteBuf;
 import io.netty.channel.Channel;
@@ -92,7 +91,8 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
         }
 
         if (!(message instanceof WebSocketFrame) || !processMessage(context, (WebSocketFrame) message)) {
-            loggerReference.get().atWarning()
+            loggerReference.get()
+                .atWarning()
                 .addKeyValue("messageType", message.getClass())
                 .log("Unknown message type. Skipping.");
 
@@ -142,7 +142,8 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             }
 
             return true;
-        } else if (webSocketFrame instanceof TextWebSocketFrame || webSocketFrame instanceof ContinuationWebSocketFrame) {
+        } else if (webSocketFrame instanceof TextWebSocketFrame
+            || webSocketFrame instanceof ContinuationWebSocketFrame) {
             if (compositeByteBuf == null) {
                 compositeByteBuf = ByteBufAllocator.DEFAULT.compositeBuffer();
             }
