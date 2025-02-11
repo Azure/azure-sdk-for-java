@@ -117,12 +117,8 @@ SSLSocket socket = (SSLSocket) serverSocket.accept();
 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
 String body = "Hello, this is server.";
-String response = "HTTP/1.1 200 OK\r\n" +
-    "Content-Type: text/plain\r\n" +
-    "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" +
-    "Connection: close\r\n" +
-    "\r\n" +
-    body;
+String response =
+    "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
 
     out.write(response);
     out.flush();
@@ -219,12 +215,8 @@ SSLSocket socket = (SSLSocket) serverSocket.accept();
 BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
 String body = "Hello, this is server.";
-String response = "HTTP/1.1 200 OK\r\n" +
-    "Content-Type: text/plain\r\n" +
-    "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" +
-    "Connection: close\r\n" +
-    "\r\n" +
-    body;
+String response =
+    "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
 
     out.write(response);
     out.flush();
