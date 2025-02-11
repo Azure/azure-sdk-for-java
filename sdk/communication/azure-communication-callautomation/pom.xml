@@ -110,7 +110,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-phonenumbers</artifactId>
-      <version>1.1.19</version><!-- {x-version-update;com.azure:azure-communication-phonenumbers;dependency} -->
+      <version>1.2.0</version><!-- {x-version-update;com.azure:azure-communication-phonenumbers;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
