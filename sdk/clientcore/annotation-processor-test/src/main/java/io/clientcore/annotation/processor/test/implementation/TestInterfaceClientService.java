@@ -37,28 +37,28 @@ public interface TestInterfaceClientService {
         }
     }
 
-    //@HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
-    //Response<Void> testMethod(@BodyParam("application/octet-stream") ByteBuffer request,
-    //    @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
-    //
-    //@HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
-    //Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
-    //    @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
-    //
-    //@HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
-    //Response<Void> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
-    //
-    //@HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-    //Void testMethodReturnsVoid();
-    //
-    //@HttpRequestInformation(method = HttpMethod.HEAD, path = "my/uri/path", expectedStatusCodes = { 200 })
-    //void testHeadMethod();
-    //
-    //@HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-    //Response<Void> testMethodReturnsResponseVoid();
-    //
-    //@HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-    //Response<InputStream> testDownload();
+    @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
+    Response<Void> testMethod(@BodyParam("application/octet-stream") ByteBuffer request,
+        @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
+
+    @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
+    Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
+        @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
+
+    @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
+    Response<Void> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+
+    @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
+    Void testMethodReturnsVoid();
+
+    @HttpRequestInformation(method = HttpMethod.HEAD, path = "my/uri/path", expectedStatusCodes = { 200 })
+    void testHeadMethod();
+
+    @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
+    Response<Void> testMethodReturnsResponseVoid();
+
+    @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
+    Response<InputStream> testDownload();
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "/kv/{key}", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)

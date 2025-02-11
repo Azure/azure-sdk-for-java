@@ -11,7 +11,12 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.utils.JsonSerializer;
+<<<<<<< HEAD
 import io.clientcore.core.models.binarydata.BinaryData;
+=======
+import io.clientcore.core.utils.binarydata.BinaryData;
+
+>>>>>>> 05dd492b62b (fix response return type)
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

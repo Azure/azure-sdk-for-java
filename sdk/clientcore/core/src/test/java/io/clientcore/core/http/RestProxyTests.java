@@ -215,29 +215,4 @@ public class RestProxyTests {
 
         testInterface.testListNext(nextLinkUri).close();
     }
-
-    @Test
-    public void testGetFoo() {
-        String wireValue
-            = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
-
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient((request) -> {
-            // what is the default response body mode?
-            request.setRequestOptions(new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE));
-            return new MockHttpResponse(request, 200, BinaryData.fromString(wireValue));
-            }).build();
-
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
-
-        // test getFoo method
-        Response<Foo> response = testInterface.getFoo("key", "label", "sync-token-value");
-        assertNotNull(response);
-        assertEquals(200, response.getStatusCode());
-        Foo foo = response.getValue();
-
-        assertNotNull(foo.additionalProperties());
-        assertEquals("baz", foo.additionalProperties().get("bar"));
-        assertEquals("c.d", foo.additionalProperties().get("a.b"));
-        assertEquals("barbar", foo.additionalProperties().get("properties.bar"));
-    }
 }

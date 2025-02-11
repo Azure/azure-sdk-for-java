@@ -91,7 +91,6 @@ public final class ResponseBodyModeGeneration {
         body.tryAddImportToParentCompilationUnit(HttpResponseDecodeData.class);
         body.tryAddImportToParentCompilationUnit(HttpResponseBodyDecoder.class);
         body.addStatement(StaticJavaParser.parseStatement("String returnTypeName = \"" + returnTypeName + "\";"));
-        // add statment that Object result = decodeByteArray(response.getBody().toBytes(), response, serializer, returnTypeName);
         body.addStatement(StaticJavaParser.parseStatement(
             "Object result = decodeByteArray(response.getBody().toBytes(), response, serializer, returnTypeName);"));
         body.addStatement(StaticJavaParser.parseStatement(

@@ -412,25 +412,25 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         List<UnexpectedResponseExceptionDetail> unexpectedResponseExceptionDetails) {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
-        // cast it to return type
-        // Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
         Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
+        if (!"void".equals(returnTypeName) && !returnTypeName.equals("java.lang.Void")) {
 
-        // Extract the variable declaration
-        if (statement.isExpressionStmt()) {
-            statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
-                variableDeclarationExpr.getVariables().forEach(variable -> {
-                    // Parse the full response type with generics from returnTypeName
-                    ClassOrInterfaceType responseType = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
+            // Extract the variable declaration
+            if (statement.isExpressionStmt()) {
+                statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
+                    variableDeclarationExpr.getVariables().forEach(variable -> {
+                        // Parse the full response type with generics from returnTypeName
+                        ClassOrInterfaceType responseType = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
 
-                    // Set the new type for the variable
-                    variable.setType(responseType);
+                        // Set the new type for the variable
+                        variable.setType(responseType);
 
-                    // Add cast to the initializer
-                    CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
-                    variable.setInitializer(castExpression);
+                        // Add cast to the initializer
+                        CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
+                        variable.setInitializer(castExpression);
+                    });
                 });
-            });
+            }
         }
         statement.setLineComment("Send the request through the pipeline");
         body.addStatement(statement);
