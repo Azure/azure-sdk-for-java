@@ -36,9 +36,9 @@ Use FarmBeats client library for Python to do the following.
 
 In order to interact with the Azure FarmBeats service, your client must present a Microsoft Entra bearer token to the service.
 
-The best way of providing a bearer token is to use `DefaultAzureCredential` with a [managed identity](https://learn.microsoft.com/azure/developer/java/sdk/authentication/azure-hosted-apps#authenticate-a-user-assigned-managed-identity-with-defaultazurecredential). For development scenarios, `DefaultAzureCredential` uses a logged-in developer tool's credentials. For more information about developer credentials, see [Azure authentication in Java development environments](https://learn.microsoft.com/azure/developer/java/sdk/authentication/dev-env). For other authentication flows, see [Azure authentication with Java and Azure Identity](https://learn.microsoft.com/azure/developer/java/sdk/authentication/overview).
+The best way of providing a bearer token in production is to use `ManagedIdentityCredential` with a [managed identity](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview). To enable development scenarios, construct a `ChainedTokenCredential` with your production credential and the appropriate developer credential. The examples show including an `AzureCliCredential`.
 
-To use `DefaultAzureCredential` as shown, or other credential providers provided with the Azure Identity library, include the `azure-identity` package. Use the [Bill of Materials (BOM) for the Azure SDK for Java](https://learn.microsoft.com/azure/developer/java/sdk/get-started-maven#add-azure-sdk-for-java-to-an-existing-project), and include the `azure-identity` dependency:
+To use the credentials provided by the Azure Identity library, include the `azure-identity` package. Use the [Bill of Materials (BOM) for the Azure SDK for Java](https://learn.microsoft.com/azure/developer/java/sdk/get-started-maven#add-azure-sdk-for-java-to-an-existing-project), and include the `azure-identity` dependency:
 
 ```xml
 <dependency>
@@ -61,6 +61,7 @@ PartiesAsyncClient partiesClient = partiesBuilder.buildAsyncClient();
 ```
 
 ##### Example - Create Boundaries Client
+
 ```java readme-sample-createBoundariesClient
 // Create Boundaries Client
 BoundariesClientBuilder boundariesBuilder = new BoundariesClientBuilder()
@@ -70,6 +71,7 @@ BoundariesAsyncClient boundariesClient = boundariesBuilder.buildAsyncClient();
 ```
 
 ##### Example - Create Scenes Client
+
 ```java readme-sample-createScenesClient
 // Create Scenes Client
 ScenesClientBuilder scenesBuilder = new ScenesClientBuilder()
