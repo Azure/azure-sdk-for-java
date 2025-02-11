@@ -100,6 +100,16 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
         }
     }
 
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
+        if (handshakeFuture != null && !handshakeFuture.isDone()) {
+            handshakeFuture.setFailure(cause);
+        }
+        ctx.close();
+        compositeByteBuf.release();
+        compositeByteBuf.clear();
+    }
+
     /**
      * Attempts to process the web socket frame.
      *
@@ -172,14 +182,6 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             compositeByteBuf.release();
             compositeByteBuf.clear();
         }
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        if (handshakeFuture != null && !handshakeFuture.isDone()) {
-            handshakeFuture.setFailure(cause);
-        }
-        ctx.close();
     }
 
     // as side effect, if it is not null, the close (aka CloseWebSocketFrame) is initiated by client
