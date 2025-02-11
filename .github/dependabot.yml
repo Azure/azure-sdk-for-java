@@ -13,7 +13,8 @@ updates:
     schedule:
       interval: "daily"
     reviewers: ["jairmyree"]
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 20
+    target-branch: "rolling-dependency-updates"
     ignore: # any specific dependencies or upgrade tupes that should be excluded from version updates
         - dependency-name: "*"
           update-types: ["version-update:semver-major"]
