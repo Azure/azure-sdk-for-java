@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
@@ -60,7 +61,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @param keyPrefixTrimValues prefixs to trim from key values
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> keyPrefixTrimValues, boolean isRefresh) throws InvalidConfigurationPropertyValueException {
+    public void initProperties(List<String> keyPrefixTrimValues, Context context) throws InvalidConfigurationPropertyValueException {
 
         List<String> labels = Arrays.asList(labelFilters);
         // Reverse labels so they have the right priority order.
@@ -70,7 +71,7 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter + "*").setLabelFilter(label);
 
             // * for wildcard match
-            processConfigurationSettings(replicaClient.listSettings(settingSelector, isRefresh), settingSelector.getKeyFilter(),
+            processConfigurationSettings(replicaClient.listSettings(settingSelector, context), settingSelector.getKeyFilter(),
                 keyPrefixTrimValues);
         }
     }
