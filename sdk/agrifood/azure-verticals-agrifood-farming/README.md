@@ -47,6 +47,16 @@ To use the credentials provided by the Azure Identity library, include the `azur
 </dependency>
 ```
 
+##### Example - Create a Credential Chain
+
+```java readme-sample-createCredential
+// Create credential
+ChainedTokenCredential credential = new ChainedTokenCredentialBuilder()
+.addLast(new ManagedIdentityCredentialBuilder().build())
+.addLast(new AzureCliCredentialBuilder().build())
+.build();
+```
+
 ##### Example - Create Parties Client
 
 ```java readme-sample-createPartiesClient
@@ -55,7 +65,7 @@ String endpoint = "https://<farmbeats-endpoint>.farmbeats.azure.net";
 // Create Parties Client
 PartiesClientBuilder partiesBuilder = new PartiesClientBuilder()
     .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build());
+    .credential(credential);
 PartiesAsyncClient partiesClient = partiesBuilder.buildAsyncClient();
 
 ```
@@ -63,10 +73,11 @@ PartiesAsyncClient partiesClient = partiesBuilder.buildAsyncClient();
 ##### Example - Create Boundaries Client
 
 ```java readme-sample-createBoundariesClient
+
 // Create Boundaries Client
 BoundariesClientBuilder boundariesBuilder = new BoundariesClientBuilder()
     .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build());
+    .credential(credential);
 BoundariesAsyncClient boundariesClient = boundariesBuilder.buildAsyncClient();
 ```
 
@@ -76,7 +87,7 @@ BoundariesAsyncClient boundariesClient = boundariesBuilder.buildAsyncClient();
 // Create Scenes Client
 ScenesClientBuilder scenesBuilder = new ScenesClientBuilder()
     .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build());
+    .credential(credential);
 ScenesAsyncClient scenesClient = scenesBuilder.buildAsyncClient();
 ```
 

@@ -6,7 +6,10 @@ package com.azure.verticals.agrifood.farming;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.ChainedTokenCredential;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.identity.AzureCliCredentialBuilder;
 import net.minidev.json.JSONObject;
 
 /**
@@ -17,21 +20,31 @@ public class ReadmeSamples {
     * Sample for creating low level client.
     */
     public void createClient() {
+
+        // BEGIN: readme-sample-createCredential
+        // Create credential
+        ChainedTokenCredential credential = new ChainedTokenCredentialBuilder()
+        .addLast(new ManagedIdentityCredentialBuilder().build())
+        .addLast(new AzureCliCredentialBuilder().build())
+        .build();
+        // END: readme-sample-createCredential
+
         // BEGIN: readme-sample-createPartiesClient
         String endpoint = "https://<farmbeats-endpoint>.farmbeats.azure.net";
 
         // Create Parties Client
         PartiesClientBuilder partiesBuilder = new PartiesClientBuilder()
             .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build());
+            .credential(credential);
         PartiesAsyncClient partiesClient = partiesBuilder.buildAsyncClient();
 
         // END: readme-sample-createPartiesClient
         // BEGIN: readme-sample-createBoundariesClient
+
         // Create Boundaries Client
         BoundariesClientBuilder boundariesBuilder = new BoundariesClientBuilder()
             .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build());
+            .credential(credential);
         BoundariesAsyncClient boundariesClient = boundariesBuilder.buildAsyncClient();
         // END: readme-sample-createBoundariesClient
 
@@ -39,7 +52,7 @@ public class ReadmeSamples {
         // Create Scenes Client
         ScenesClientBuilder scenesBuilder = new ScenesClientBuilder()
             .endpoint(endpoint)
-            .credential(new DefaultAzureCredentialBuilder().build());
+            .credential(credential);
         ScenesAsyncClient scenesClient = scenesBuilder.buildAsyncClient();
         // END: readme-sample-createScenesClient
 
