@@ -32,26 +32,20 @@ Use FarmBeats client library for Python to do the following.
 
 ### Authenticate the client
 
-#### Using Azure Active Directory
+#### Using Microsoft Entra ID
 
-In order to interact with the Azure FarmBeats service, your client must present an Azure Active Directory bearer token to the service.
+In order to interact with the Azure FarmBeats service, your client must present a Microsoft Entra ID bearer token to the service.
 
-The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+The best way of providing a bearer token is to use the `DefaultAzureCredential` with a [managed identity](https://learn.microsoft.com/azure/developer/java/sdk/authentication/azure-hosted-apps#authenticate-a-user-assigned-managed-identity-with-defaultazurecredential). For development scenarios, `DefaultAzureCredential` uses a logged-in developer tool's credentials. For more information about developer credentials, see [here](https://learn.microsoft.com/azure/developer/java/sdk/authentication/dev-env). For other authentication flows, see [here](https://learn.microsoft.com/azure/developer/java/sdk/authentication/overview).
 
-You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
+To use the `DefaultAzureCredential` as shown, or other credential providers provided with the Azure SDK, include the `azure-identity` package. Use the [Bill of Materials (BOM) for the Azure SDK for Java](https://learn.microsoft.com/en-us/azure/developer/java/sdk/get-started-maven#add-azure-sdk-for-java-to-an-existing-project), and include the `azure-identity` dependency:
 
-To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
-
-[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
 </dependency>
 ```
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example - Create Parties Client
 
