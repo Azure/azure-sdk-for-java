@@ -51,8 +51,14 @@ public class TestInterfaceGenerationTests {
         assertEquals(200, response.getStatusCode());
         assertEquals(wireValue, response.getBody().toString());
 
-        // TODO Needs to be fixed
-        //Foo foo = response.getValue();
-        //assertEquals("key", foo.getKey());
+        Foo foo = response.getValue();
+        assertNotNull(foo);
+        assertEquals("hello.world", foo.bar());
+        assertEquals(4, foo.qux().size());
+        assertNotNull(foo.additionalProperties());
+        assertEquals("baz", foo.additionalProperties().get("bar"));
+        assertEquals("c.d", foo.additionalProperties().get("a.b"));
+        assertEquals("barbar", foo.additionalProperties().get("properties.bar"));
+
     }
 }
