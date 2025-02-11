@@ -20,22 +20,31 @@ public class RequestOptionsTest extends RecipeTestBase {
      */
     @Test
     void testChangeRequestImportWithImport() {
-        @Language("java") String before = "import com.azure.core.http.rest.RequestOptions;";
-        before += "\npublic class Testing {";
-        before += "\n  public Testing(){";
-        before += "\n    RequestOptions r = new RequestOptions();";
-        before += "\n  }";
-        before += "\n}";
+        @Language("java") String before = """
+                import com.azure.core.http.rest.RequestOptions;
 
-        @Language("java") String after = "import io.clientcore.core.http.models.RequestOptions;";
-        after += "\npublic class Testing {";
-        after += "\n  public Testing(){";
-        after += "\n    RequestOptions r = new RequestOptions();";
-        after += "\n  }";
-        after += "\n}";
+                public class Testing {
+                  public Testing(){
+                    RequestOptions r = new RequestOptions();
+                  }
+                }
+                """;
+
+        @Language("java") String after = """
+                import io.clientcore.core.http.models.RequestOptions;
+
+                public class Testing {
+                  public Testing(){
+                    RequestOptions r = new RequestOptions();
+                  }
+                }
+                """;
         rewriteRun(
                 java(before, after)
         );
+
+
+
     }
 
     /**
@@ -43,17 +52,21 @@ public class RequestOptionsTest extends RecipeTestBase {
      */
     @Test
     void testChangeRequestImportWithFullyQualifiedName() {
-        @Language("java") String before = "public class Testing {";
-        before += "\n  public Testing(){";
-        before += "\n    com.azure.core.http.rest.RequestOptions r = new com.azure.core.http.rest.RequestOptions();";
-        before += "\n  }";
-        before += "\n}";
+        @Language("java") String before = """
+                public class Testing {
+                  public Testing(){
+                    com.azure.core.http.rest.RequestOptions r = new com.azure.core.http.rest.RequestOptions();
+                  }
+                }
+                """;
 
-        @Language("java") String after = "public class Testing {";
-        after += "\n  public Testing(){";
-        after += "\n     io.clientcore.core.http.models.RequestOptions r = new io.clientcore.core.http.models.RequestOptions();";
-        after += "\n  }";
-        after += "\n}";
+        @Language("java") String after = """
+                public class Testing {
+                  public Testing(){
+                    io.clientcore.core.http.models.RequestOptions r = new io.clientcore.core.http.models.RequestOptions();
+                  }
+                }
+                """;
         rewriteRun(
                 java(before, after)
         );

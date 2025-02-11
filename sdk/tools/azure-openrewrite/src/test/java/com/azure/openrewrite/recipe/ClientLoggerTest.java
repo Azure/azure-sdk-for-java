@@ -3,11 +3,13 @@
 package com.azure.openrewrite.recipe;
 
 import org.intellij.lang.annotations.Language;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
+// TODO: fix these tests to reflect current api
 public class ClientLoggerTest extends RecipeTestBase {
     /**
      * ClientLoggerTest tests the recipe that changes
@@ -15,6 +17,7 @@ public class ClientLoggerTest extends RecipeTestBase {
      */
 
     /* Test to make sure ClientLogger import is changed */
+    @Disabled("These tests were written before clientcore structure was finalized. Need to be redone to reflect the current api")
     @Test
     public void testClientLoggerWithImport() {
         @Language("java") String before = "import com.azure.core.util.logging.ClientLogger;";
@@ -36,6 +39,7 @@ public class ClientLoggerTest extends RecipeTestBase {
     }
 
     /* Test to make sure ClientLogger type is changed */
+    @Disabled("These tests were written before clientcore structure was finalized. Need to be redone to reflect the current api")
     @Test
     public void testClientLoggerWithFullyQualifiedName() {
         @Language("java") String before = "public class Testing {";

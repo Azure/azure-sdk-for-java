@@ -127,6 +127,10 @@ recipeList:
       oldFullyQualifiedTypeName: com.azure.core.util.Context
       newFullyQualifiedTypeName: io.clientcore.core.util.Context
 
+  - org.openrewrite.java.ChangeType:
+        oldFullyQualifiedTypeName: com.azure.core.http.rest.RequestOptions
+        newFullyQualifiedTypeName: io.clientcore.core.http.models.RequestOptions
+
   - org.openrewrite.java.ChangeStaticFieldToMethod:
       oldClassName: io.clientcore.core.util.Context
       oldFieldName: NONE

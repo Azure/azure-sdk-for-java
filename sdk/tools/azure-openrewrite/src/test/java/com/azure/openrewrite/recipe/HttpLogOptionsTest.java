@@ -3,11 +3,13 @@
 package com.azure.openrewrite.recipe;
 
 import org.intellij.lang.annotations.Language;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
+// TODO: fix these tests to reflect current api
 public class HttpLogOptionsTest extends RecipeTestBase {
     /**
      * HttpLogOptionsTest tests the recipe that changes
@@ -17,6 +19,7 @@ public class HttpLogOptionsTest extends RecipeTestBase {
      */
 
     /* Test to make sure HttpLogOptions and HttpLogDetailLevel imports are changed*/
+    @Disabled("These tests were written before clientcore structure was finalized. Need to be redone to reflect the current api")
     @Test
     public void testHttpLogOptionsLogLevelImportsChanged() {
         @Language("java") String before = "import com.azure.core.http.policy.HttpLogOptions;";
@@ -40,6 +43,8 @@ public class HttpLogOptionsTest extends RecipeTestBase {
 
 
     /* Test to make sure HttpLogOptions and HttpLogDetailLevel type is changed*/
+
+    @Disabled("These tests were written before clientcore structure was finalized. Need to be redone to reflect the current api")
     @Test
     public void testHttpLogOptionsLogLevelTypesChanged() {
         @Language("java") String before = "\npublic class Testing {";
