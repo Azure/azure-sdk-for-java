@@ -20,7 +20,7 @@ public class ListTheDimensionValuesForTheGivenMetricDimensionName {
         // BEGIN:com.azure.developer.loadtesting.generated.listmetricdimensionvalues.listthedimensionvaluesforthegivenmetricdimensionname
         PagedIterable<String> response
             = loadTestRunClient.listMetricDimensionValues("12316678-1234-1234-1234-122451189012", "SamplerName",
-                "ActiveThreads", "LoadTestRunMetrics", "2022-09-24T19:00:40Z/2022-09-25T19:28:40Z", TimeGrain.PT1H);
+                "ActiveThreads", "LoadTestRunMetrics", "2022-09-24T19:00:40Z/2022-09-25T19:28:40Z", TimeGrain.ONE_HOUR);
         // END:com.azure.developer.loadtesting.generated.listmetricdimensionvalues.listthedimensionvaluesforthegivenmetricdimensionname
     }
 }

@@ -24,7 +24,7 @@ public class ListTheMetricValuesForALoadTestRun {
         // BEGIN:com.azure.developer.loadtesting.generated.listmetrics.listthemetricvaluesforaloadtestrun
         PagedIterable<TimeSeriesElement> response = loadTestRunClient.listMetrics(
             "12316678-1234-1234-1234-122451189012", "ActiveThreads", "LoadTestRunMetrics",
-            "2022-09-24T19:00:40Z/2022-09-25T19:28:40Z", "Average", TimeGrain.PT1H,
+            "2022-09-24T19:00:40Z/2022-09-25T19:28:40Z", "Average", TimeGrain.ONE_HOUR,
             new MetricRequestPayload().setFilters(
                 Arrays.asList(new DimensionFilter().setName("SamplerName").setValues(Arrays.asList("HTTP Request")))));
         // END:com.azure.developer.loadtesting.generated.listmetrics.listthemetricvaluesforaloadtestrun

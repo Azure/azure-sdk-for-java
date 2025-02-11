@@ -13,36 +13,6 @@ import java.util.Collection;
 public final class TimeGrain extends ExpandableStringEnum<TimeGrain> {
 
     /**
-     * 5 seconds, available only if test run duration is less than 10 minutes.
-     */
-    @Generated
-    public static final TimeGrain PT5S = fromString("PT5S");
-
-    /**
-     * 10 seconds, available only if test run duration is less than 10 minutes.
-     */
-    @Generated
-    public static final TimeGrain PT10S = fromString("PT10S");
-
-    /**
-     * 1 minute.
-     */
-    @Generated
-    public static final TimeGrain PT1M = fromString("PT1M");
-
-    /**
-     * 5 minutes, available only if test run duration is greater than 1 minute.
-     */
-    @Generated
-    public static final TimeGrain PT5M = fromString("PT5M");
-
-    /**
-     * 1 hour, available only if test run duration is greater than 1 minute.
-     */
-    @Generated
-    public static final TimeGrain PT1H = fromString("PT1H");
-
-    /**
      * Creates a new instance of TimeGrain value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -72,4 +42,34 @@ public final class TimeGrain extends ExpandableStringEnum<TimeGrain> {
     public static Collection<TimeGrain> values() {
         return values(TimeGrain.class);
     }
+
+    /**
+     * 5 seconds, available only if test run duration is less than 10 minutes.
+     */
+    @Generated
+    public static final TimeGrain FIVE_SECONDS = fromString("PT5S");
+
+    /**
+     * 10 seconds, available only if test run duration is less than 10 minutes.
+     */
+    @Generated
+    public static final TimeGrain TEN_SECONDS = fromString("PT10S");
+
+    /**
+     * 1 minute.
+     */
+    @Generated
+    public static final TimeGrain ONE_MINUTE = fromString("PT1M");
+
+    /**
+     * 5 minutes, available only if test run duration is greater than 1 minute.
+     */
+    @Generated
+    public static final TimeGrain FIVE_MINUTES = fromString("PT5M");
+
+    /**
+     * 1 hour, available only if test run duration is greater than 1 minute.
+     */
+    @Generated
+    public static final TimeGrain ONE_HOUR = fromString("PT1H");
 }
