@@ -130,7 +130,7 @@
             </bannedDependencies>
             <requireReleaseDeps>
               <excludes>
-                <exclude>com.openai:openai-java</exclude>
+                <exclude>com.openai:*</exclude>
               </excludes>
             </requireReleaseDeps>
           </rules>
