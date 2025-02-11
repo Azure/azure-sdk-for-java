@@ -832,25 +832,20 @@ public final class CertificateClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             attributes (Optional): {
-     *                 enabled: Boolean (Optional)
-     *                 nbf: Long (Optional)
-     *                 exp: Long (Optional)
-     *                 created: Long (Optional)
-     *                 updated: Long (Optional)
-     *                 recoverableDays: Integer (Optional)
-     *                 recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             x5t: Base64Url (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
      * }
      * }
      * </pre>
@@ -860,13 +855,16 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result along with {@link Response} on successful completion of {@link Mono}.
+     * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCertificatesWithResponseAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> getCertificatesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCertificates(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getCertificates(this.getVaultBaseUrl(),
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -889,25 +887,20 @@ public final class CertificateClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             attributes (Optional): {
-     *                 enabled: Boolean (Optional)
-     *                 nbf: Long (Optional)
-     *                 exp: Long (Optional)
-     *                 created: Long (Optional)
-     *                 updated: Long (Optional)
-     *                 recoverableDays: Integer (Optional)
-     *                 recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             x5t: Base64Url (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
      * }
      * }
      * </pre>
@@ -917,13 +910,123 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result along with {@link Response}.
+     * @return the certificate list result as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> getCertificatesAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> getCertificatesSinglePageAsync(requestOptions),
+            nextLink -> getCertificatesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * List certificates in a specified key vault
+     * 
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * operation requires the certificates/list permission.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
+     * specified the service will return up to 25 results.</td></tr>
+     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
+     * completely provisioned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the certificate list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCertificatesWithResponse(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> getCertificatesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCertificatesSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getCertificatesSync(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+    }
+
+    /**
+     * List certificates in a specified key vault
+     * 
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
+     * operation requires the certificates/list permission.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
+     * specified the service will return up to 25 results.</td></tr>
+     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
+     * completely provisioned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the certificate list result as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> getCertificates(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> getCertificatesSinglePage(requestOptions),
+            nextLink -> getCertificatesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1409,13 +1512,8 @@ public final class CertificateClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             provider: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     provider: String (Optional)
      * }
      * }
      * </pre>
@@ -1425,13 +1523,17 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate issuer list result along with {@link Response} on successful completion of {@link Mono}.
+     * @return the certificate issuer list result along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCertificateIssuersWithResponseAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> getCertificateIssuersSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCertificateIssuers(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getCertificateIssuers(this.getVaultBaseUrl(),
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -1452,13 +1554,8 @@ public final class CertificateClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             provider: String (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     provider: String (Optional)
      * }
      * }
      * </pre>
@@ -1468,13 +1565,95 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate issuer list result along with {@link Response}.
+     * @return the certificate issuer list result as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> getCertificateIssuersAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> getCertificateIssuersSinglePageAsync(requestOptions),
+            nextLink -> getCertificateIssuersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * List certificate issuers for a specified key vault.
+     * 
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
+     * specified the service will return up to 25 results.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     provider: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the certificate issuer list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCertificateIssuersWithResponse(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> getCertificateIssuersSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCertificateIssuersSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getCertificateIssuersSync(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+    }
+
+    /**
+     * List certificate issuers for a specified key vault.
+     * 
+     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
+     * This operation requires the certificates/manageissuers/getissuers permission.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
+     * specified the service will return up to 25 results.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     provider: String (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the certificate issuer list result as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> getCertificateIssuers(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> getCertificateIssuersSinglePage(requestOptions),
+            nextLink -> getCertificateIssuersNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -2649,25 +2828,20 @@ public final class CertificateClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             attributes (Optional): {
-     *                 enabled: Boolean (Optional)
-     *                 nbf: Long (Optional)
-     *                 exp: Long (Optional)
-     *                 created: Long (Optional)
-     *                 updated: Long (Optional)
-     *                 recoverableDays: Integer (Optional)
-     *                 recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             x5t: Base64Url (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
      * }
      * }
      * </pre>
@@ -2678,14 +2852,17 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result along with {@link Response} on successful completion of {@link Mono}.
+     * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCertificateVersionsWithResponseAsync(String certificateName,
+    private Mono<PagedResponse<BinaryData>> getCertificateVersionsSinglePageAsync(String certificateName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getCertificateVersions(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), certificateName, accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getCertificateVersions(this.getVaultBaseUrl(),
+                this.getServiceVersion().getVersion(), certificateName, accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -2706,25 +2883,20 @@ public final class CertificateClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             attributes (Optional): {
-     *                 enabled: Boolean (Optional)
-     *                 nbf: Long (Optional)
-     *                 exp: Long (Optional)
-     *                 created: Long (Optional)
-     *                 updated: Long (Optional)
-     *                 recoverableDays: Integer (Optional)
-     *                 recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             x5t: Base64Url (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
      * }
      * }
      * </pre>
@@ -2735,14 +2907,122 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result along with {@link Response}.
+     * @return the certificate list result as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> getCertificateVersionsAsync(String certificateName, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> getCertificateVersionsSinglePageAsync(certificateName, requestOptions),
+            nextLink -> getCertificateVersionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * List the versions of a certificate.
+     * 
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * operation requires the certificates/list permission.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
+     * specified the service will return up to 25 results.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param certificateName The name of the certificate.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the certificate list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCertificateVersionsWithResponse(String certificateName,
+    private PagedResponse<BinaryData> getCertificateVersionsSinglePage(String certificateName,
         RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getCertificateVersionsSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getCertificateVersionsSync(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), certificateName, accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+    }
+
+    /**
+     * List the versions of a certificate.
+     * 
+     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
+     * operation requires the certificates/list permission.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
+     * specified the service will return up to 25 results.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param certificateName The name of the certificate.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the certificate list result as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> getCertificateVersions(String certificateName, RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> getCertificateVersionsSinglePage(certificateName, requestOptions),
+            nextLink -> getCertificateVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -4655,28 +4935,23 @@ public final class CertificateClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             attributes (Optional): {
-     *                 enabled: Boolean (Optional)
-     *                 nbf: Long (Optional)
-     *                 exp: Long (Optional)
-     *                 created: Long (Optional)
-     *                 updated: Long (Optional)
-     *                 recoverableDays: Integer (Optional)
-     *                 recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             x5t: Base64Url (Optional)
-     *             recoveryId: String (Optional)
-     *             scheduledPurgeDate: Long (Optional)
-     *             deletedDate: Long (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     *     recoveryId: String (Optional)
+     *     scheduledPurgeDate: Long (Optional)
+     *     deletedDate: Long (Optional)
      * }
      * }
      * </pre>
@@ -4686,14 +4961,17 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of certificates that have been deleted in this vault along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getDeletedCertificatesWithResponseAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> getDeletedCertificatesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getDeletedCertificates(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, context));
+        return FluxUtil
+            .withContext(context -> service.getDeletedCertificates(this.getVaultBaseUrl(),
+                this.getServiceVersion().getVersion(), accept, requestOptions, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
     }
 
     /**
@@ -4717,28 +4995,23 @@ public final class CertificateClientImpl {
      * <pre>
      * {@code
      * {
-     *     value (Optional): [
-     *          (Optional){
-     *             id: String (Optional)
-     *             attributes (Optional): {
-     *                 enabled: Boolean (Optional)
-     *                 nbf: Long (Optional)
-     *                 exp: Long (Optional)
-     *                 created: Long (Optional)
-     *                 updated: Long (Optional)
-     *                 recoverableDays: Integer (Optional)
-     *                 recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *             }
-     *             tags (Optional): {
-     *                 String: String (Required)
-     *             }
-     *             x5t: Base64Url (Optional)
-     *             recoveryId: String (Optional)
-     *             scheduledPurgeDate: Long (Optional)
-     *             deletedDate: Long (Optional)
-     *         }
-     *     ]
-     *     nextLink: String (Optional)
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     *     recoveryId: String (Optional)
+     *     scheduledPurgeDate: Long (Optional)
+     *     deletedDate: Long (Optional)
      * }
      * }
      * </pre>
@@ -4748,13 +5021,132 @@ public final class CertificateClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of certificates that have been deleted in this vault along with {@link Response}.
+     * @return a list of certificates that have been deleted in this vault as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BinaryData> getDeletedCertificatesAsync(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedFlux<>(() -> getDeletedCertificatesSinglePageAsync(requestOptions),
+            nextLink -> getDeletedCertificatesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+    }
+
+    /**
+     * Lists the deleted certificates in the specified vault currently available for recovery.
+     * 
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
+     * specified the service will return up to 25 results.</td></tr>
+     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
+     * completely provisioned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     *     recoveryId: String (Optional)
+     *     scheduledPurgeDate: Long (Optional)
+     *     deletedDate: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDeletedCertificatesWithResponse(RequestOptions requestOptions) {
+    private PagedResponse<BinaryData> getDeletedCertificatesSinglePage(RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.getDeletedCertificatesSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            requestOptions, Context.NONE);
+        Response<BinaryData> res = service.getDeletedCertificatesSync(this.getVaultBaseUrl(),
+            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
+    }
+
+    /**
+     * Lists the deleted certificates in the specified vault currently available for recovery.
+     * 
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
+     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
+     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
+     * specified the service will return up to 25 results.</td></tr>
+     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
+     * completely provisioned.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     id: String (Optional)
+     *     attributes (Optional): {
+     *         enabled: Boolean (Optional)
+     *         nbf: Long (Optional)
+     *         exp: Long (Optional)
+     *         created: Long (Optional)
+     *         updated: Long (Optional)
+     *         recoverableDays: Integer (Optional)
+     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
+     *     }
+     *     tags (Optional): {
+     *         String: String (Required)
+     *     }
+     *     x5t: Base64Url (Optional)
+     *     recoveryId: String (Optional)
+     *     scheduledPurgeDate: Long (Optional)
+     *     deletedDate: Long (Optional)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of certificates that have been deleted in this vault as paginated response with
+     * {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BinaryData> getDeletedCertificates(RequestOptions requestOptions) {
+        RequestOptions requestOptionsForNextPage = new RequestOptions();
+        requestOptionsForNextPage.setContext(
+            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
+        return new PagedIterable<>(() -> getDeletedCertificatesSinglePage(requestOptions),
+            nextLink -> getDeletedCertificatesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -5209,835 +5601,6 @@ public final class CertificateClientImpl {
         final String accept = "application/json";
         return service.recoverDeletedCertificateSync(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
             certificateName, accept, requestOptions, Context.NONE);
-    }
-
-    /**
-     * List certificates in a specified key vault
-     * 
-     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
-     * operation requires the certificates/list permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
-     * completely provisioned.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getCertificatesSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getCertificates(this.getVaultBaseUrl(),
-                this.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * List certificates in a specified key vault
-     * 
-     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
-     * operation requires the certificates/list permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
-     * completely provisioned.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getCertificatesAsync(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getCertificatesSinglePageAsync(requestOptions),
-            nextLink -> getCertificatesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * List certificates in a specified key vault
-     * 
-     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
-     * operation requires the certificates/list permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
-     * completely provisioned.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getCertificatesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.getCertificatesSync(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * List certificates in a specified key vault
-     * 
-     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This
-     * operation requires the certificates/list permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
-     * completely provisioned.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getCertificates(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getCertificatesSinglePage(requestOptions),
-            nextLink -> getCertificatesNextSinglePage(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * List certificate issuers for a specified key vault.
-     * 
-     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
-     * This operation requires the certificates/manageissuers/getissuers permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     provider: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate issuer list result along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getCertificateIssuersSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getCertificateIssuers(this.getVaultBaseUrl(),
-                this.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * List certificate issuers for a specified key vault.
-     * 
-     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
-     * This operation requires the certificates/manageissuers/getissuers permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     provider: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate issuer list result as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getCertificateIssuersAsync(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getCertificateIssuersSinglePageAsync(requestOptions),
-            nextLink -> getCertificateIssuersNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * List certificate issuers for a specified key vault.
-     * 
-     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
-     * This operation requires the certificates/manageissuers/getissuers permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     provider: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate issuer list result along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getCertificateIssuersSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.getCertificateIssuersSync(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * List certificate issuers for a specified key vault.
-     * 
-     * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
-     * This operation requires the certificates/manageissuers/getissuers permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     provider: String (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate issuer list result as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getCertificateIssuers(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getCertificateIssuersSinglePage(requestOptions),
-            nextLink -> getCertificateIssuersNextSinglePage(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * List the versions of a certificate.
-     * 
-     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
-     * operation requires the certificates/list permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param certificateName The name of the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getCertificateVersionsSinglePageAsync(String certificateName,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getCertificateVersions(this.getVaultBaseUrl(),
-                this.getServiceVersion().getVersion(), certificateName, accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * List the versions of a certificate.
-     * 
-     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
-     * operation requires the certificates/list permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param certificateName The name of the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getCertificateVersionsAsync(String certificateName, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getCertificateVersionsSinglePageAsync(certificateName, requestOptions),
-            nextLink -> getCertificateVersionsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * List the versions of a certificate.
-     * 
-     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
-     * operation requires the certificates/list permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param certificateName The name of the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getCertificateVersionsSinglePage(String certificateName,
-        RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.getCertificateVersionsSync(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), certificateName, accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * List the versions of a certificate.
-     * 
-     * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault. This
-     * operation requires the certificates/list permission.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param certificateName The name of the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the certificate list result as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getCertificateVersions(String certificateName, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getCertificateVersionsSinglePage(certificateName, requestOptions),
-            nextLink -> getCertificateVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Lists the deleted certificates in the specified vault currently available for recovery.
-     * 
-     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
-     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
-     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
-     * completely provisioned.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     *     recoveryId: String (Optional)
-     *     scheduledPurgeDate: Long (Optional)
-     *     deletedDate: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse} on
-     * successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getDeletedCertificatesSinglePageAsync(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getDeletedCertificates(this.getVaultBaseUrl(),
-                this.getServiceVersion().getVersion(), accept, requestOptions, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null));
-    }
-
-    /**
-     * Lists the deleted certificates in the specified vault currently available for recovery.
-     * 
-     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
-     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
-     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
-     * completely provisioned.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     *     recoveryId: String (Optional)
-     *     scheduledPurgeDate: Long (Optional)
-     *     deletedDate: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of certificates that have been deleted in this vault as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getDeletedCertificatesAsync(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedFlux<>(() -> getDeletedCertificatesSinglePageAsync(requestOptions),
-            nextLink -> getDeletedCertificatesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
-    }
-
-    /**
-     * Lists the deleted certificates in the specified vault currently available for recovery.
-     * 
-     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
-     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
-     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
-     * completely provisioned.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     *     recoveryId: String (Optional)
-     *     scheduledPurgeDate: Long (Optional)
-     *     deletedDate: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of certificates that have been deleted in this vault along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PagedResponse<BinaryData> getDeletedCertificatesSinglePage(RequestOptions requestOptions) {
-        final String accept = "application/json";
-        Response<BinaryData> res = service.getDeletedCertificatesSync(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            getValues(res.getValue(), "value"), getNextLink(res.getValue(), "nextLink"), null);
-    }
-
-    /**
-     * Lists the deleted certificates in the specified vault currently available for recovery.
-     * 
-     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state
-     * and ready for recovery or purging. This operation includes deletion-specific information. This operation requires
-     * the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
-     * <p><strong>Query Parameters</strong></p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>Maximum number of results to return in a page. If not
-     * specified the service will return up to 25 results.</td></tr>
-     * <tr><td>includePending</td><td>Boolean</td><td>No</td><td>Specifies whether to include certificates which are not
-     * completely provisioned.</td></tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
-     * {
-     *     id: String (Optional)
-     *     attributes (Optional): {
-     *         enabled: Boolean (Optional)
-     *         nbf: Long (Optional)
-     *         exp: Long (Optional)
-     *         created: Long (Optional)
-     *         updated: Long (Optional)
-     *         recoverableDays: Integer (Optional)
-     *         recoveryLevel: String(Purgeable/Recoverable+Purgeable/Recoverable/Recoverable+ProtectedSubscription/CustomizedRecoverable+Purgeable/CustomizedRecoverable/CustomizedRecoverable+ProtectedSubscription) (Optional)
-     *     }
-     *     tags (Optional): {
-     *         String: String (Required)
-     *     }
-     *     x5t: Base64Url (Optional)
-     *     recoveryId: String (Optional)
-     *     scheduledPurgeDate: Long (Optional)
-     *     deletedDate: Long (Optional)
-     * }
-     * }
-     * </pre>
-     * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of certificates that have been deleted in this vault as paginated response with
-     * {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getDeletedCertificates(RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(
-            requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext() : Context.NONE);
-        return new PagedIterable<>(() -> getDeletedCertificatesSinglePage(requestOptions),
-            nextLink -> getDeletedCertificatesNextSinglePage(nextLink, requestOptionsForNextPage));
     }
 
     /**

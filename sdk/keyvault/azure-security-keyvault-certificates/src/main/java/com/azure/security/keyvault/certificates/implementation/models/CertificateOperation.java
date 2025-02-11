@@ -290,18 +290,6 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     }
 
     /**
-     * Set the error property: Error encountered, if any, during the certificate operation.
-     *
-     * @param error the error value to set.
-     * @return the CertificateOperation object itself.
-     */
-    @Generated
-    public CertificateOperation setError(CertificateOperationError error) {
-        this.error = error;
-        return this;
-    }
-
-    /**
      * Set the target property: Location which contains the result of the certificate operation.
      *
      * @param target the target value to set.
@@ -322,6 +310,18 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     @Generated
     public CertificateOperation setRequestId(String requestId) {
         this.requestId = requestId;
+        return this;
+    }
+
+    /**
+     * Set the error property: Error encountered, if any, during the certificate operation.
+     *
+     * @param error the error value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setError(CertificateOperationError error) {
+        this.error = error;
         return this;
     }
 }
