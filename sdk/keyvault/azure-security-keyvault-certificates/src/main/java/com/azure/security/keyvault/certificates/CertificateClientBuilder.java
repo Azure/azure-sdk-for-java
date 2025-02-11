@@ -161,7 +161,7 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateClient buildClient() {
-        return new CertificateClient(buildClientImpl(), vaultUrl);
+        return new CertificateClient(buildImplClient(), vaultUrl);
     }
 
     /**
@@ -183,10 +183,10 @@ public final class CertificateClientBuilder implements TokenCredentialTrait<Cert
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CertificateAsyncClient buildAsyncClient() {
-        return new CertificateAsyncClient(buildClientImpl(), vaultUrl);
+        return new CertificateAsyncClient(buildImplClient(), vaultUrl);
     }
 
-    private CertificateClientImpl buildClientImpl() {
+    private CertificateClientImpl buildImplClient() {
         Configuration buildConfiguration
             = (configuration != null) ? configuration : Configuration.getGlobalConfiguration().clone();
 
