@@ -16,7 +16,7 @@ import io.netty.util.CharsetUtil;
 /**
  * Dedicated handler for server-side ping messages.
  */
-public class KeepAliveHandler extends ChannelDuplexHandler {
+public final class KeepAliveHandler extends ChannelDuplexHandler {
     private static final ClientLogger LOGGER = new ClientLogger(KeepAliveHandler.class);
 
     /**

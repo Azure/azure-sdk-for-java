@@ -12,7 +12,7 @@ import io.netty.handler.timeout.IdleStateEvent;
 /**
  * Handler that sends a ping frame to the server when the channel is idle to prevent keep-alive timeouts.
  */
-public class WebSocketPingHandler extends ChannelDuplexHandler {
+public final class WebSocketPingHandler extends ChannelDuplexHandler {
     private static final ClientLogger LOGGER = new ClientLogger(WebSocketPingHandler.class);
 
     /**
