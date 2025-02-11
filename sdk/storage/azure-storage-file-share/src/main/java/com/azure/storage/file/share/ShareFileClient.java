@@ -36,9 +36,11 @@ import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
 import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.FilesCreateHardLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.FilesCreateSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetSymbolicLinkHeaders;
 import com.azure.storage.file.share.implementation.models.FilesListHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
@@ -68,6 +70,7 @@ import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
@@ -77,6 +80,7 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
+import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -3159,5 +3163,39 @@ public class ShareFileClient {
                     requestConditions.getLeaseId(), finalContext);
 
         return ModelHelper.createHardLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
+    }
+
+    public ShareFileInfo createSymbolicLink(String linkText) {
+        return createSymbolicLinkWithResponse(new ShareFileCreateSymbolicLinkOptions(linkText), null, Context.NONE)
+            .getValue();
+    }
+
+    public Response<ShareFileInfo> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options, Duration timeout, Context context) {
+        StorageImplUtils.assertNotNull("options", options);
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new ShareRequestConditions() : options.getRequestConditions();
+
+        Callable<ResponseBase<FilesCreateSymbolicLinkHeaders, Void>> operation
+            = () -> this.azureFileStorageClient.getFiles()
+            .createSymbolicLinkWithResponse(shareName, filePath, options.getLinkText(), null, options.getMetadata(), options.getFileCreationTime().toString(), options.getFileLastWriteTime().toString(),
+                null, requestConditions.getLeaseId(), options.getOwner(), options.getGroup(),finalContext);
+
+        return ModelHelper.createSymbolicLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
+
+    }
+
+    public ShareFileSymbolicLinkInfo getSymbolicLink() {
+        return getSymbolicLinkWithResponse(null, Context.NONE).getValue();
+    }
+
+    public Response<ShareFileSymbolicLinkInfo> getSymbolicLinkWithResponse(Duration timeout, Context context){
+        Context finalContext = context == null ? Context.NONE : context;
+
+        Callable<ResponseBase<FilesGetSymbolicLinkHeaders, Void>> operation
+            = () -> this.azureFileStorageClient.getFiles()
+            .getSymbolicLinkWithResponse(shareName, filePath, null, snapshot, null, finalContext);
+
+        return ModelHelper.getSymbolicLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
 }

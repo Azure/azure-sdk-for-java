@@ -64,6 +64,7 @@ import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
@@ -73,6 +74,7 @@ import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
+import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -3396,5 +3398,47 @@ public class ShareFileAsyncClient {
             .createHardLinkWithResponseAsync(shareName, filePath, targetFile, null, null,
                 requestConditions.getLeaseId(), context)
             .map(ModelHelper::createHardLinkResponse);
+    }
+
+    public Mono<ShareFileInfo> createSymbolicLink(String linkText) {
+        return createSymbolicLinkWithResponse(new ShareFileCreateSymbolicLinkOptions(linkText))
+            .flatMap(FluxUtil::toMono);
+    }
+
+    public Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options) {
+        try {
+            StorageImplUtils.assertNotNull("options", options);
+            return withContext(context -> createSymbolicLinkWithResponse(options.getLinkText(),
+                options.getRequestConditions(), context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    public Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(String linkText, ShareRequestConditions requestConditions, Context context) {
+        context = context == null ? Context.NONE : context;
+        return this.azureFileStorageClient.getFiles()
+            .createSymbolicLinkWithResponseAsync(shareName, filePath, linkText, null, null,null, null, null,
+                requestConditions.getLeaseId(), null, null, context)
+            .map(ModelHelper::createSymbolicLinkResponse);
+    }
+
+    public Mono<ShareFileSymbolicLinkInfo> getSymbolicLink(){
+        return getSymbolicLinkWithResponse().flatMap(FluxUtil::toMono);
+    }
+
+    public Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse(){
+        try{
+            return withContext(context -> getSymbolicLinkWithResponse(context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    public Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse(Context context){
+        context = context == null ? Context.NONE : context;
+        return this.azureFileStorageClient.getFiles()
+            .getSymbolicLinkWithResponseAsync(shareName, filePath, null, null, null, context)
+            .map(ModelHelper::getSymbolicLinkResponse);
     }
 }
