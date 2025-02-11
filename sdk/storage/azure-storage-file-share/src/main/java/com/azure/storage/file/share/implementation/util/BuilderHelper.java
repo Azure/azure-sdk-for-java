@@ -124,7 +124,7 @@ public final class BuilderHelper {
             String scope = audience != null
                 ? ((audience.toString().endsWith("/") ? audience + ".default" : audience + "/.default"))
                 : Constants.STORAGE_SCOPE;
-            credentialPolicy =  new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
+            credentialPolicy = new StorageBearerTokenChallengeAuthorizationPolicy(tokenCredential, scope);
         } else if (azureSasCredential != null) {
             credentialPolicy = new AzureSasCredentialPolicy(azureSasCredential, false);
         } else if (sasToken != null) {
