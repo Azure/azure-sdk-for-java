@@ -95,14 +95,16 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         }
         //request.properties.put(EFFECTIVE_PARTITION_KEY, epk);
         //request.properties.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
-        request.getHeaders().put(EFFECTIVE_PARTITION_KEY, epk);
-        request.getHeaders().put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
+        //request.getHeaders().put(EFFECTIVE_PARTITION_KEY, epk);
+        //request.getHeaders().put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
         // todo - neharao1: no concept of a replica / service endpoint that can be passed
         RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
 
         // todo - neharao1: validate what HTTP headers are needed - for now have put default ThinClient HTTP headers
         // todo - based on fabianm comment - thinClient also takes op type and resource type headers as HTTP headers
         HttpHeaders headers = this.getHttpHeaders();
+        headers.set(EFFECTIVE_PARTITION_KEY, epk);
+        headers.set(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
 

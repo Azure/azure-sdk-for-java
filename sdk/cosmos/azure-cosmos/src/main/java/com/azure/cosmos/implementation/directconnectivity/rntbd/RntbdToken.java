@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.CosmosAsyncClient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -12,6 +13,8 @@ import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -21,6 +24,8 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonPropertyOrder({ "id", "name", "type", "present", "required", "value" })
 final class RntbdToken {
+
+    private static final Logger logger = LoggerFactory.getLogger(RntbdToken.class);
 
     // region Fields
 
@@ -149,7 +154,6 @@ final class RntbdToken {
     }
 
     public void encode(final ByteBuf out) {
-
         checkNotNull(out, "out");
 
         if (!this.isPresent()) {
@@ -160,6 +164,7 @@ final class RntbdToken {
             return;
         }
 
+        logger.error(this.toString());
         out.writeShortLE(this.getId());
         out.writeByte(this.getTokenType().id());
 
