@@ -112,12 +112,12 @@ SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
 SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
 
 while (true) {
-SSLSocket socket = (SSLSocket) serverSocket.accept();
+    SSLSocket socket = (SSLSocket) serverSocket.accept();
     System.out.println("Client connected: " + socket.getInetAddress());
-BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-String body = "Hello, this is server.";
-String response =
+    String body = "Hello, this is server.";
+    String response =
     "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
 
     out.write(response);
@@ -158,16 +158,16 @@ PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionMana
 String result = null;
 
 try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-HttpGet httpGet = new HttpGet("https://localhost:8765");
-ResponseHandler<String> responseHandler = (HttpResponse response) -> {
+    HttpGet httpGet = new HttpGet("https://localhost:8765");
+    ResponseHandler<String> responseHandler = (HttpResponse response) -> {
     int status = response.getStatusLine().getStatusCode();
     String result1 = "Not success";
     if (status == 200) {
         result1 = EntityUtils.toString(response.getEntity());
     }
     return result1;
-};
-result = client.execute(httpGet, responseHandler);
+    };
+    result = client.execute(httpGet, responseHandler);
 } catch (IOException ioe) {
     ioe.printStackTrace();
 }
@@ -193,7 +193,7 @@ KeyStore keyStore = KeyVaultKeyStore.getKeyVaultKeyStoreBySystemProperty();
 KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
 kmf.init(keyStore, "".toCharArray());
 
-    System.setProperty("azure.keyvault.uri", "<client-azure-keyvault-uri>");
+System.setProperty("azure.keyvault.uri", "<client-azure-keyvault-uri>");
 System.setProperty("azure.keyvault.tenant-id", "<client-azure-keyvault-tenant-id>");
 System.setProperty("azure.keyvault.client-id", "<client-azure-keyvault-client-id>");
 System.setProperty("azure.keyvault.client-secret", "<client-azure-keyvault-client-secret>");
@@ -210,12 +210,12 @@ SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocke
 serverSocket.setNeedClientAuth(true);
 
 while (true) {
-SSLSocket socket = (SSLSocket) serverSocket.accept();
+    SSLSocket socket = (SSLSocket) serverSocket.accept();
     System.out.println("Client connected: " + socket.getInetAddress());
-BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+    BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-String body = "Hello, this is server.";
-String response =
+    String body = "Hello, this is server.";
+    String response =
     "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
 
     out.write(response);
@@ -262,16 +262,16 @@ PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionMana
 String result = null;
 
 try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
-HttpGet httpGet = new HttpGet("https://localhost:8765");
-ResponseHandler<String> responseHandler = (HttpResponse response) -> {
+    HttpGet httpGet = new HttpGet("https://localhost:8765");
+    ResponseHandler<String> responseHandler = (HttpResponse response) -> {
     int status = response.getStatusLine().getStatusCode();
     String result1 = "Not success";
     if (status == 200) {
         result1 = EntityUtils.toString(response.getEntity());
     }
     return result1;
-};
-result = client.execute(httpGet, responseHandler);
+    };
+    result = client.execute(httpGet, responseHandler);
 } catch (IOException ioe) {
     ioe.printStackTrace();
 }
