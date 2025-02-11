@@ -139,7 +139,7 @@
     "com.azure.developer.loadtesting.models.AutoStopCriteria": "Microsoft.LoadTestService.AutoStopCriteria",
     "com.azure.developer.loadtesting.models.CertificateMetadata": "Microsoft.LoadTestService.CertificateMetadata",
     "com.azure.developer.loadtesting.models.CertificateType": "Microsoft.LoadTestService.CertificateType",
-    "com.azure.developer.loadtesting.models.CreateByTypes": "Microsoft.LoadTestService.CreateByTypes",
+    "com.azure.developer.loadtesting.models.CreatedByType": "Microsoft.LoadTestService.CreatedByType",
     "com.azure.developer.loadtesting.models.DimensionFilter": "Microsoft.LoadTestService.DimensionFilter",
     "com.azure.developer.loadtesting.models.DimensionValue": "Microsoft.LoadTestService.DimensionValue",
     "com.azure.developer.loadtesting.models.ErrorDetails": "Microsoft.LoadTestService.ErrorDetails",

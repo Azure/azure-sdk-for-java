@@ -209,7 +209,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
      * The type of the entity that created the test run. (E.x. User, ScheduleTrigger, etc).
      */
     @Generated
-    private CreateByTypes createdByType;
+    private CreatedByType createdByType;
 
     /*
      * The creation datetime(RFC 3339 literal format).
@@ -725,22 +725,8 @@ public final class TestRun implements JsonSerializable<TestRun> {
      * @return the createdByType value.
      */
     @Generated
-    public CreateByTypes getCreatedByType() {
+    public CreatedByType getCreatedByType() {
         return this.createdByType;
-    }
-
-    /**
-     * Set the createdByType property: The type of the entity that created the test run. (E.x. User, ScheduleTrigger,
-     * etc).
-     *
-     * @param createdByType the createdByType value to set.
-     * @return the TestRun object itself.
-     */
-    @Generated
-    public TestRun setCreatedByType(CreateByTypes createdByType) {
-        this.createdByType = createdByType;
-        this.updatedProperties.add("createdByType");
-        return this;
     }
 
     /**
@@ -1015,7 +1001,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
                 } else if ("publicIPDisabled".equals(fieldName)) {
                     deserializedTestRun.publicIPDisabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("createdByType".equals(fieldName)) {
-                    deserializedTestRun.createdByType = CreateByTypes.fromString(reader.getString());
+                    deserializedTestRun.createdByType = CreatedByType.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
                     deserializedTestRun.createdDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -1032,5 +1018,19 @@ public final class TestRun implements JsonSerializable<TestRun> {
             }
             return deserializedTestRun;
         });
+    }
+
+    /**
+     * Set the createdByType property: The type of the entity that created the test run. (E.x. User, ScheduleTrigger,
+     * etc).
+     *
+     * @param createdByType the createdByType value to set.
+     * @return the TestRun object itself.
+     */
+    @Generated
+    public TestRun setCreatedByType(CreatedByType createdByType) {
+        this.createdByType = createdByType;
+        this.updatedProperties.add("createdByType");
+        return this;
     }
 }
