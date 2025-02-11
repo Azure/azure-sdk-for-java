@@ -4,30 +4,22 @@
 package io.clientcore.annotation.processor.utils;
 
 import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.Type;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.ResponseBodyMode;
-import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.utils.binarydata.BinaryData;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -142,7 +134,6 @@ public final class ResponseBodyModeGeneration {
             } else {
                 generateResponseBodyMode(body, returnTypeName);
                 handleDeserializeResponse(body, returnTypeName, method, unexpectedResponseExceptionDetails);
-                // add statement Response<?> responseToReturn = createResponseIfNecessary(response, entityType, response.getBody());
                 createResponseIfNecessary(returnTypeName, body);
             }
         } else {
@@ -165,20 +156,6 @@ public final class ResponseBodyModeGeneration {
      * @param body the method builder to append generated code.
      */
     public static void createResponseIfNecessary(String returnTypeName, BlockStmt body) {
-        // add statement return Response<?> responseToReturn = createResponseIfNecessary(response, entityType, response.getBody());
-        //body.tryAddImportToParentCompilationUnit(TypeUtil.class);
-        //body.tryAddImportToParentCompilationUnit(ReflectiveInvoker.class);
-        //body.addStatement(StaticJavaParser
-        //    .parseStatement("Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass("
-        //        + returnTypeName + ".class);"));
-        //
-        //IfStmt ifStmt = new IfStmt().setCondition(StaticJavaParser.parseExpression("clazz.equals(Response.class)"))
-        //    .setThenStmt(StaticJavaParser.parseBlock("{ return response; }"))
-        //    .setElseStmt(StaticJavaParser.parseBlock(
-        //        "{ ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz); "
-        //            + "return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject); }"));
-        //
-        //body.addStatement(ifStmt);
         body.addStatement(StaticJavaParser.parseStatement("return response;"));
     }
 

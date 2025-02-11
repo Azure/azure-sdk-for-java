@@ -9,276 +9,123 @@ import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
 
 import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 
 /**
- * The Foo model.
+ * Class for testing serialization.
  */
-public final class Foo implements JsonSerializable<Foo> {
-    /*
-     * The key of the key-value.
-     */
-    private String key;
+public class Foo implements JsonSerializable<Foo> {
+    private String bar;
+    private List<String> baz;
+    private Map<String, String> qux;
+    private String moreProps;
+    private Integer empty;
+    private Map<String, Object> additionalProperties;
 
-    /*
-     * The label the key-value belongs to.
-     */
-    private String label;
-
-    /*
-     * The content type of the value stored within the key-value.
-     */
-    private String contentType;
-
-    /*
-     * The value of the key-value.
-     */
-    private String value;
-
-    /*
-     * A date representing the last time the key-value was modified.
-     */
-    private OffsetDateTime lastModified;
-
-    /*
-     * The tags of the key-value
-     */
-    private Map<String, String> tags;
-
-    /*
-     * Indicates whether the key-value is locked.
-     */
-    private Boolean locked;
-
-    /*
-     * A value representing the current state of the resource.
-     */
-    private String etag;
-
-    /**
-     * Creates an instance of Foo class.
-     */
-    public Foo() {
+    public String bar() {
+        return bar;
     }
 
-    /**
-     * Get the key property: The key of the key-value.
-     *
-     * @return the key value.
-     */
-    public String getKey() {
-        return this.key;
+    public void bar(String bar) {
+        this.bar = bar;
     }
 
-    /**
-     * Set the key property: The key of the key-value.
-     *
-     * @param key the key value to set.
-     * @return the Foo object itself.
-     */
-    public Foo setKey(String key) {
-        this.key = key;
-        return this;
+    public List<String> baz() {
+        return baz;
     }
 
-    /**
-     * Get the label property: The label the key-value belongs to.
-     *
-     * @return the label value.
-     */
-    public String getLabel() {
-        return this.label;
+    public void baz(List<String> baz) {
+        this.baz = baz;
     }
 
-    /**
-     * Set the label property: The label the key-value belongs to.
-     *
-     * @param label the label value to set.
-     * @return the Foo object itself.
-     */
-    public Foo setLabel(String label) {
-        this.label = label;
-        return this;
+    public Map<String, String> qux() {
+        return qux;
     }
 
-    /**
-     * Get the contentType property: The content type of the value stored within the key-value.
-     *
-     * @return the contentType value.
-     */
-    public String getContentType() {
-        return this.contentType;
+    public void qux(Map<String, String> qux) {
+        this.qux = qux;
     }
 
-    /**
-     * Set the contentType property: The content type of the value stored within the key-value.
-     *
-     * @param contentType the contentType value to set.
-     * @return the Foo object itself.
-     */
-    public Foo setContentType(String contentType) {
-        this.contentType = contentType;
-        return this;
+    public String moreProps() {
+        return moreProps;
     }
 
-    /**
-     * Get the value property: The value of the key-value.
-     *
-     * @return the value value.
-     */
-    public String getValue() {
-        return this.value;
+    public void moreProps(String moreProps) {
+        this.moreProps = moreProps;
     }
 
-    /**
-     * Set the value property: The value of the key-value.
-     *
-     * @param value the value value to set.
-     * @return the Foo object itself.
-     */
-    public Foo setValue(String value) {
-        this.value = value;
-        return this;
+    public Integer empty() {
+        return empty;
     }
 
-    /**
-     * Get the lastModified property: A date representing the last time the key-value was modified.
-     *
-     * @return the lastModified value.
-     */
-    public OffsetDateTime getLastModified() {
-        return this.lastModified;
+    public void empty(Integer empty) {
+        this.empty = empty;
     }
 
-    /**
-     * Set the lastModified property: A date representing the last time the key-value was modified.
-     *
-     * @param lastModified the lastModified value to set.
-     * @return the Foo object itself.
-     */
-    public Foo setLastModified(OffsetDateTime lastModified) {
-        this.lastModified = lastModified;
-        return this;
+    public Map<String, Object> additionalProperties() {
+        return additionalProperties;
     }
 
-    /**
-     * Get the tags property: The tags of the key-value.
-     *
-     * @return the tags value.
-     */
-    public Map<String, String> getTags() {
-        return this.tags;
+    public void additionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 
-    /**
-     * Set the tags property: The tags of the key-value.
-     *
-     * @param tags the tags value to set.
-     * @return the Foo object itself.
-     */
-    public Foo setTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the locked property: Indicates whether the key-value is locked.
-     *
-     * @return the locked value.
-     */
-    public Boolean isLocked() {
-        return this.locked;
-    }
-
-    /**
-     * Set the locked property: Indicates whether the key-value is locked.
-     *
-     * @param locked the locked value to set.
-     * @return the Foo object itself.
-     */
-    public Foo setLocked(Boolean locked) {
-        this.locked = locked;
-        return this;
-    }
-
-    /**
-     * Get the etag property: A value representing the current state of the resource.
-     *
-     * @return the etag value.
-     */
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
-     * Set the etag property: A value representing the current state of the resource.
-     *
-     * @param etag the etag value to set.
-     * @return the Foo object itself.
-     */
-    public Foo setEtag(String etag) {
-        this.etag = etag;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("key", this.key);
-        jsonWriter.writeStringField("label", this.label);
-        jsonWriter.writeStringField("content_type", this.contentType);
-        jsonWriter.writeStringField("value", this.value);
-        jsonWriter.writeStringField("last_modified",
-            this.lastModified == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModified));
-        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("locked", this.locked);
-        jsonWriter.writeStringField("etag", this.etag);
-        return jsonWriter.writeEndObject();
+
+        jsonWriter.writeStringField("bar", bar);
+
+        if (baz != null) {
+            jsonWriter.writeArrayField("baz", baz, JsonWriter::writeString);
+        }
+
+        if (qux != null) {
+            jsonWriter.writeMapField("qux", qux, JsonWriter::writeString);
+        }
+
+        jsonWriter.writeStringField("moreProps", moreProps);
+
+        if (empty != null) {
+            jsonWriter.writeIntField("empty", empty);
+        }
+
+        if (additionalProperties != null) {
+            jsonWriter.writeMapField("additionalProperties", additionalProperties, JsonWriter::writeUntyped);
+        }
+
+        jsonWriter.writeEndObject();
+
+        return jsonWriter;
     }
 
-    /**
-     * Reads an instance of Foo from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Foo if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the Foo.
-     */
     public static Foo fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Foo deserializedKeyValue = new Foo();
+            Foo foo = new Foo();
+
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("key".equals(fieldName)) {
-                    deserializedKeyValue.key = reader.getString();
-                } else if ("label".equals(fieldName)) {
-                    deserializedKeyValue.label = reader.getString();
-                } else if ("content_type".equals(fieldName)) {
-                    deserializedKeyValue.contentType = reader.getString();
-                } else if ("value".equals(fieldName)) {
-                    deserializedKeyValue.value = reader.getString();
-                } else if ("last_modified".equals(fieldName)) {
-                    deserializedKeyValue.lastModified = OffsetDateTime.parse(reader.getString());
-                } else if ("tags".equals(fieldName)) {
-                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                    deserializedKeyValue.tags = tags;
-                } else if ("locked".equals(fieldName)) {
-                    deserializedKeyValue.locked = reader.getNullable(JsonReader::getBoolean);
-                } else if ("etag".equals(fieldName)) {
-                    deserializedKeyValue.etag = reader.getString();
+                if ("bar".equals(fieldName)) {
+                    foo.bar(reader.getString());
+                } else if ("baz".equals(fieldName)) {
+                    foo.baz(reader.readArray(JsonReader::getString));
+                } else if ("qux".equals(fieldName)) {
+                    foo.qux(reader.readMap(JsonReader::getString));
+                } else if ("moreProps".equals(fieldName)) {
+                    foo.moreProps(reader.getString());
+                } else if ("empty".equals(fieldName)) {
+                    foo.empty(reader.getInt());
+                } else if ("additionalProperties".equals(fieldName)) {
+                    foo.additionalProperties(reader.readMap(JsonReader::readUntyped));
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedKeyValue;
+            return foo;
         });
     }
 }
