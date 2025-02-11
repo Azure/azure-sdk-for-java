@@ -390,7 +390,6 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
 
         String subscription = options.getSubscription();
-        ValidationUtil.validateSubscriptionCharacterRange(subscription, LOGGER);
         if (!CoreUtils.isNullOrEmpty(subscription)) {
             azCommand.append(" --subscription ").append(subscription);
         }
