@@ -10,6 +10,7 @@ trigger:
     include:
       - sdk/core/ci.v2.yml
       - sdk/core/azure-core-v2/
+      - sdk/core/azure-core-test-v2/pom.xml
 
 pr:
   branches:
@@ -22,6 +23,7 @@ pr:
     include:
       - sdk/core/ci.v2.yml
       - sdk/core/azure-core-v2/
+      - sdk/core/azure-core-test-v2/pom.xml
 
 parameters:
   - name: release_dependsonlivetests
@@ -30,6 +32,10 @@ parameters:
     default: true
   - name: release_azurecorev2
     displayName: 'azure-core-v2'
+    type: boolean
+    default: true
+  - name: release_azurecoretestv2
+    displayName: 'azure-core-test-v2'
     type: boolean
     default: true
 
@@ -44,3 +50,7 @@ extends:
         groupId: com.azure
         safeName: azurecorev2
         releaseInBatch: ${{ parameters.release_azurecorev2 }}
+      - name: azure-core-test-v2
+        groupId: com.azure
+        safeName: azurecoretestv2
+        releaseInBatch: ${{ parameters.release_azurecoretestv2 }}
