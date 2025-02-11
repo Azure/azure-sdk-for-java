@@ -179,7 +179,7 @@ org.apache.maven:maven-project;2.2.1
 org.apache.maven.plugin-tools:maven-plugin-annotations;3.15.0
 org.apache.maven.plugins:maven-antrun-plugin;3.1.0
 org.apache.maven.plugins:maven-assembly-plugin;3.7.1
-org.apache.maven.plugins:maven-checkstyle-plugin;3.5.0
+org.apache.maven.plugins:maven-checkstyle-plugin;3.6.0
 org.apache.maven.plugins:maven-clean-plugin;3.4.0
 org.apache.maven.plugins:maven-compiler-plugin;3.13.0
 org.apache.maven.plugins:maven-enforcer-plugin;3.5.0
