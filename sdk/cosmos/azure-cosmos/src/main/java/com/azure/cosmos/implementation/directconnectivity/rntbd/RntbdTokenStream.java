@@ -92,17 +92,73 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
 
     final void encode(final ByteBuf out) {
         // TODO: special casing for thin client. need to revisit perf implications.
-        if (this.tokens.containsKey(EFFECTIVE_PARTITION_KEY)) {
-            this.tokens.get(EFFECTIVE_PARTITION_KEY).encode(out);
-            this.tokens.remove(EFFECTIVE_PARTITION_KEY);
-        }
-        if (this.tokens.containsKey(GLOBAL_DATABASE_ACCOUNT_NAME)) {
-            this.tokens.get(GLOBAL_DATABASE_ACCOUNT_NAME).encode(out);
-            this.tokens.remove(GLOBAL_DATABASE_ACCOUNT_NAME);
+        RntbdToken epkHeader = this.tokens.get(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey);
+        if (epkHeader != null) {
+            epkHeader.encode(out);
         }
 
-        for (final RntbdToken token : this.tokens.values()) {
-            token.encode(out);
+        RntbdToken globalDbAccount = this.tokens.get(RntbdConstants.RntbdRequestHeader.GlobalDatabaseAccountName);
+        if (globalDbAccount != null) {
+            globalDbAccount.encode(out);
+        }
+
+        RntbdToken dbName = this.tokens.get(RntbdConstants.RntbdRequestHeader.DatabaseName);
+        if (dbName != null) {
+            dbName.encode(out);
+        }
+
+        RntbdToken containerName = this.tokens.get(RntbdConstants.RntbdRequestHeader.CollectionName);
+        if (containerName != null) {
+            containerName.encode(out);
+        }
+
+        RntbdToken containerRid = this.tokens.get(RntbdConstants.RntbdRequestHeader.CollectionRid);
+        if (containerRid != null) {
+            containerRid.encode(out);
+        }
+
+        RntbdToken resourceId = this.tokens.get(RntbdConstants.RntbdRequestHeader.ResourceId);
+        if (resourceId != null) {
+            resourceId.encode(out);
+        }
+
+        RntbdToken payloadPresent = this.tokens.get(RntbdConstants.RntbdRequestHeader.PayloadPresent);
+        if (payloadPresent != null) {
+            payloadPresent.encode(out);
+        }
+
+        RntbdToken docName = this.tokens.get(RntbdConstants.RntbdRequestHeader.DocumentName);
+        if (docName != null) {
+            docName.encode(out);
+        }
+
+
+        RntbdToken authzToken = this.tokens.get(RntbdConstants.RntbdRequestHeader.AuthorizationToken);
+        if (authzToken != null) {
+            authzToken.encode(out);
+        }
+
+        RntbdToken date = this.tokens.get(RntbdConstants.RntbdRequestHeader.Date);
+        if (date != null) {
+            date.encode(out);
+        }
+
+        for (final Map.Entry<T, RntbdToken> entry : this.tokens.entrySet()) {
+            if (entry.getKey() == RntbdConstants.RntbdRequestHeader.EffectivePartitionKey
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.GlobalDatabaseAccountName
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.DatabaseName
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.CollectionName
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.CollectionRid
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.ResourceId
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.PayloadPresent
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.DocumentName
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.AuthorizationToken
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.Date
+            ) {
+                continue;
+            }
+
+            entry.getValue().encode(out);
         }
     }
 

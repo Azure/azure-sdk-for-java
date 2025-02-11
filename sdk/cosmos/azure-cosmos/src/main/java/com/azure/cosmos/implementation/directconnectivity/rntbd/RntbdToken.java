@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.CosmosAsyncClient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -164,7 +163,7 @@ final class RntbdToken {
             return;
         }
 
-        logger.error(this.toString());
+        logger.error("RNTBD TOKEN {}", this);
         out.writeShortLE(this.getId());
         out.writeByte(this.getTokenType().id());
 
