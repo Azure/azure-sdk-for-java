@@ -9,7 +9,6 @@ import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.Type;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
-import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.ResponseBodyMode;
@@ -22,7 +21,6 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.util.List;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -61,12 +59,10 @@ public final class ResponseBodyModeGeneration {
      * Handles deserialization response mode logic.
      *
      * @param body the method builder to append generated code.
-     * @param returnTypeName
-     * @param httpMethod
-     * @param unexpectedResponseExceptionDetails
+     * @param returnTypeName the return type of the method.
+     * @param httpMethod the HTTP method data.
      */
-    public static void handleDeserializeResponse(BlockStmt body, String returnTypeName, HttpRequestContext httpMethod,
-        List<UnexpectedResponseExceptionDetail> unexpectedResponseExceptionDetails) {
+    public static void handleDeserializeResponse(BlockStmt body, String returnTypeName, HttpRequestContext httpMethod) {
         body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
         body.tryAddImportToParentCompilationUnit(HttpResponse.class);
         body.tryAddImportToParentCompilationUnit(HttpResponseAccessHelper.class);
@@ -82,12 +78,11 @@ public final class ResponseBodyModeGeneration {
         } else if (returnTypeName.equals("BinaryData")) {
             handleBinaryDataResponse(body, returnTypeName, httpMethod);
         } else {
-            handleDeserialize(body, returnTypeName, unexpectedResponseExceptionDetails);
+            handleDeserialize(body, returnTypeName);
         }
     }
 
-    private static void handleDeserialize(BlockStmt body, String returnTypeName,
-        List<UnexpectedResponseExceptionDetail> unexpectedResponseExceptionDetails) {
+    private static void handleDeserialize(BlockStmt body, String returnTypeName) {
         body.tryAddImportToParentCompilationUnit(HttpResponseDecodeData.class);
         body.tryAddImportToParentCompilationUnit(HttpResponseBodyDecoder.class);
         body.addStatement(StaticJavaParser.parseStatement("String returnTypeName = \"" + returnTypeName + "\";"));
@@ -118,10 +113,8 @@ public final class ResponseBodyModeGeneration {
      * @param body the method builder to append generated code.
      * @param returnTypeName the return type of the method.
      * @param method whether request options are used.
-     * @param unexpectedResponseExceptionDetails
      */
-    public static void generateResponseHandling(BlockStmt body, String returnTypeName, HttpRequestContext method,
-        List<UnexpectedResponseExceptionDetail> unexpectedResponseExceptionDetails) {
+    public static void generateResponseHandling(BlockStmt body, String returnTypeName, HttpRequestContext method) {
         if (returnTypeName.equals("void")) {
             closeResponse(body);
             body.addStatement(new ReturnStmt());
@@ -132,11 +125,11 @@ public final class ResponseBodyModeGeneration {
         } else if (returnTypeName.contains("Response")) {
             if (returnTypeName.contains("Void")) {
                 closeResponse(body);
-                createResponseIfNecessary(returnTypeName, body);
+                createResponseIfNecessary(body);
             } else {
                 generateResponseBodyMode(body, returnTypeName);
-                handleDeserializeResponse(body, returnTypeName, method, unexpectedResponseExceptionDetails);
-                createResponseIfNecessary(returnTypeName, body);
+                handleDeserializeResponse(body, returnTypeName, method);
+                createResponseIfNecessary(body);
             }
         } else {
             handleResponseModeToCreateResponse(returnTypeName, body);
@@ -154,10 +147,9 @@ public final class ResponseBodyModeGeneration {
     /**
      * Adds a return statement for response handling when necessary.
      *
-     * @param returnTypeName the return type of the method.
      * @param body the method builder to append generated code.
      */
-    public static void createResponseIfNecessary(String returnTypeName, BlockStmt body) {
+    public static void createResponseIfNecessary(BlockStmt body) {
         body.addStatement(StaticJavaParser.parseStatement("return response;"));
     }
 
