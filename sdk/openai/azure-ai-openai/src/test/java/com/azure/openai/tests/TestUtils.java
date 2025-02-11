@@ -16,7 +16,6 @@ public class TestUtils {
     private static final String GPT_4_0613 = "gpt-4-0613";
     private static final String GPT_4_1106_PREVIEW = "gpt-4-1106-preview";
     private static final String GPT_4_VISION_PREVIEW = "gpt-4-vision-preview";
-    private static final String GPT_35_TURBO_0613 = "gpt-35-turbo-0613";
     private static final String GPT_35_TURBO_1106 = "gpt-35-turbo-1106";
     private static final String GPT_4O = "gpt-4o";
 
@@ -79,7 +78,7 @@ public class TestUtils {
         return Stream.of(new String[][] {
             {AZURE_OPEN_AI, GA, GPT_4_VISION_PREVIEW},
             {AZURE_OPEN_AI, PREVIEW, GPT_4_VISION_PREVIEW},
-            {OPEN_AI, V1, GPT_4_VISION_PREVIEW}
+            {OPEN_AI, V1, GPT_4O}
         });
     }
 
