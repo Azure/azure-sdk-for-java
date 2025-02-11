@@ -188,14 +188,36 @@ public class AzureCliCredentialTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "@", "#", "$", "%", "^", "&", "*", "(", ")", "+", "=", "/", ",", ";", ":", "<", ">", "?", "!", "[", "]", "{", "}"
-    })
+    @ValueSource(
+        strings = {
+            "@",
+            "#",
+            "$",
+            "%",
+            "^",
+            "&",
+            "*",
+            "(",
+            ")",
+            "+",
+            "=",
+            "/",
+            ",",
+            ";",
+            ":",
+            "<",
+            ">",
+            "?",
+            "!",
+            "[",
+            "]",
+            "{",
+            "}" })
     public void testInvalidSubscriptionRejected(String invalidChar) {
         String invalidSubscription = "test" + invalidChar + "sub";
 
         // Expect validation exception when an invalid subscription name is used
-        Assertions.assertThrows(IllegalArgumentException.class, () ->
-            new AzureCliCredentialBuilder().subscription(invalidSubscription));
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new AzureCliCredentialBuilder().subscription(invalidSubscription));
     }
 }
