@@ -4,7 +4,7 @@ package com.azure.v2.core.test;
 
 import com.azure.v2.core.test.implementation.TestingHelpers;
 import com.azure.v2.core.test.junitextensions.TestContextManagerParameterResolver;
-import com.azure.v2.core.test.utils.HttpURLConnectionHttpClient;
+import com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient;
 import com.azure.v2.core.test.utils.TestProxyManager;
 import com.azure.v2.core.test.utils.TestResourceNamer;
 import com.azure.v2.core.util.CoreUtils;
@@ -176,6 +176,8 @@ public abstract class TestBase {
 
     /**
      * Disposes of {@link InterceptorManager} and its inheriting class' resources.
+     *
+     * @throws IOException If an error occurs while shutting down test resources.
      */
     @AfterEach
     public void teardownTest() throws IOException {
@@ -359,7 +361,7 @@ public abstract class TestBase {
 
     private static HttpClient getTestProxyHttpClient() {
         return TEST_PROXY_HTTP_CLIENT.updateAndGet(httpClient -> httpClient == null
-            ? getHttpClients().findFirst().orElse(new HttpURLConnectionHttpClient())
+            ? getHttpClients().findFirst().orElse(new HttpUrlConnectionHttpClient())
             : httpClient);
     }
 

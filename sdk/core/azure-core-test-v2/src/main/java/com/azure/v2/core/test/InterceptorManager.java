@@ -160,6 +160,15 @@ public class InterceptorManager implements AutoCloseable {
     }
 
     /**
+     * Gets the HTTP client that is used for this test.
+     *
+     * @return The {@link HttpClient} implementation used for this test.
+     */
+    public HttpClient getHttpClient() {
+        return httpClient;
+    }
+
+    /**
      * Gets a new HTTP client that plays back test session records managed by {@link InterceptorManager}.
      *
      * @return An HTTP client that plays back network calls from its recorded data.
@@ -182,6 +191,8 @@ public class InterceptorManager implements AutoCloseable {
      * <p>
      * If {@code testMode} is {@link TestMode#RECORD}, all the network calls are persisted to:
      * "<i>session-records/{@code testName}.json</i>"
+     *
+     * @throws IOException If an I/O error occurs.
      */
     @Override
     public void close() throws IOException {
@@ -220,7 +231,8 @@ public class InterceptorManager implements AutoCloseable {
      * Add sanitizer rule for sanitization during record or playback.
      *
      * @param testProxySanitizers the list of replacement regex and rules.
-     * @throws RuntimeException Neither playback or record has started.
+     * @throws RuntimeException Neither playback nor record has started.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void addSanitizers(List<TestProxySanitizer> testProxySanitizers) throws IOException {
         if (CoreUtils.isNullOrEmpty(testProxySanitizers)) {
@@ -238,8 +250,9 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Disable common sanitizer rule for sanitization during record or playback.
      *
-     * @param testProxySanitizersId the list of sanitizer rule Id to disable.
-     * @throws RuntimeException Neither playback or record has started.
+     * @param testProxySanitizersId the list of sanitizer rule ID to disable.
+     * @throws RuntimeException Neither playback nor record has started.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void removeSanitizers(String... testProxySanitizersId) throws IOException {
         if (CoreUtils.isNullOrEmpty(testProxySanitizersId)) {
@@ -258,6 +271,7 @@ public class InterceptorManager implements AutoCloseable {
      * Add sanitizer rule for sanitization during record or playback.
      *
      * @param testProxySanitizers the list of replacement regex and rules.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void addSanitizers(TestProxySanitizer... testProxySanitizers) throws IOException {
         if (testProxySanitizers != null) {
@@ -271,6 +285,7 @@ public class InterceptorManager implements AutoCloseable {
      *
      * @param testProxyMatchers the list of matcher rules when playing back recorded data.
      * @throws RuntimeException Playback has not started.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void addMatchers(List<TestProxyRequestMatcher> testProxyMatchers) throws IOException {
         if (CoreUtils.isNullOrEmpty(testProxyMatchers)) {
@@ -292,6 +307,7 @@ public class InterceptorManager implements AutoCloseable {
      * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
      *
      * @param testProxyRequestMatchers the list of matcher rules when playing back recorded data.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void addMatchers(TestProxyRequestMatcher... testProxyRequestMatchers) throws IOException {
         if (testProxyRequestMatchers != null) {
@@ -332,25 +348,5 @@ public class InterceptorManager implements AutoCloseable {
         } else {
             throw new RuntimeException("Recording must have been started before setting recording options.");
         }
-    }
-
-    /**
-     * Gets the name of the running test.
-     *
-     * @return Name of the running test.
-     */
-    public String getTestName() {
-        return testName;
-    }
-
-    /**
-     * Gets the name of the playback record.
-     * <p>
-     * The playback record name is equivalent to {@code <testClass>.<testMethod>[<testIteration>]}.
-     *
-     * @return Name of the playback record.
-     */
-    public String getPlaybackRecordName() {
-        return playbackRecordName;
     }
 }

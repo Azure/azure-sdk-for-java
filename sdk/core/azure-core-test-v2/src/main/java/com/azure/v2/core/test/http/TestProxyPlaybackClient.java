@@ -6,7 +6,7 @@ package com.azure.v2.core.test.http;
 import com.azure.v2.core.test.models.RecordFilePayload;
 import com.azure.v2.core.test.models.TestProxyRequestMatcher;
 import com.azure.v2.core.test.models.TestProxySanitizer;
-import com.azure.v2.core.test.utils.HttpURLConnectionHttpClient;
+import com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient;
 import com.azure.v2.core.test.utils.TestProxyUtils;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -65,11 +65,13 @@ public class TestProxyPlaybackClient implements HttpClient {
     /**
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
      *
-     * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
-     * @param skipRecordingRequestBody Flag indicating to skip recording request bodies, so to set a custom matcher to skip comparing bodies when run in playback.
+     * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpUrlConnectionHttpClient} is the
+     * default.
+     * @param skipRecordingRequestBody Flag indicating to skip recording request bodies, so to set a custom matcher to
+     * skip comparing bodies when run in playback.
      */
     public TestProxyPlaybackClient(HttpClient httpClient, boolean skipRecordingRequestBody) {
-        this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
+        this.client = (httpClient == null ? new HttpUrlConnectionHttpClient() : httpClient);
         this.proxyUri = TestProxyUtils.getProxyUri();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
         this.skipRecordingRequestBody = skipRecordingRequestBody;
@@ -160,6 +162,8 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     /**
      * Stops playback of a test recording.
+     *
+     * @throws IOException If an error occurs while sending the request.
      */
     public void stopPlayback() throws IOException {
         HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUri + "/playback/stop");
@@ -207,6 +211,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     /**
      * Add a list of {@link TestProxySanitizer} to the current playback session.
      * @param sanitizers The sanitizers to add.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) throws IOException {
         if (isPlayingBack()) {
@@ -222,7 +227,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     /**
      * Removes the list of sanitizers from the current playback session.
      * @param sanitizers The sanitizers to remove.
-     * @throws RuntimeException if an {@link IOException} is thrown.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void removeProxySanitization(List<String> sanitizers) throws IOException {
         if (isPlayingBack()) {
@@ -235,8 +240,6 @@ public class TestProxyPlaybackClient implements HttpClient {
                 jsonWriter.writeMap(data, (writer, value) -> writer.writeArray(value, JsonWriter::writeString)).flush();
                 request = getRemoveSanitizerRequest().setBody(BinaryData.fromBytes(outputStream.toByteArray()));
                 request.getHeaders().set(X_RECORDING_ID, xRecordingId);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
 
             sendRequestWithRetries(request).close();
@@ -246,6 +249,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     /**
      * Add a list of {@link TestProxyRequestMatcher} to the current playback session.
      * @param matchers The matchers to add.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void addMatcherRequests(List<TestProxyRequestMatcher> matchers) throws IOException {
         if (isPlayingBack()) {

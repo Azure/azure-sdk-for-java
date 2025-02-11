@@ -14,6 +14,13 @@ import java.time.OffsetDateTime;
  * with dummy credentials.
  */
 public class MockTokenCredential implements TokenCredential {
+
+    /**
+     * Creates an instance of {@link MockTokenCredential}.
+     */
+    public MockTokenCredential() {
+    }
+
     @Override
     public AccessToken getToken(TokenRequestContext request) {
         return new AccessToken("mockToken", OffsetDateTime.now().plusHours(2));

@@ -12,7 +12,7 @@ import io.clientcore.core.util.binarydata.ByteArrayBinaryData;
 import java.io.IOException;
 
 /**
- * An HTTP response that is created to simulate a HTTP request.
+ * An HTTP response that is created to simulate an HTTP request.
  */
 public class MockHttpResponse implements Response<BinaryData> {
     private final HttpRequest request;
@@ -41,17 +41,6 @@ public class MockHttpResponse implements Response<BinaryData> {
      */
     public MockHttpResponse(HttpRequest request, int statusCode, byte[] bodyBytes) {
         this(request, statusCode, new HttpHeaders(), bodyBytes);
-    }
-
-    /**
-     * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and http headers.
-     *
-     * @param request HttpRequest associated with the response.
-     * @param statusCode Status code of the response.
-     * @param headers Headers of the response.
-     */
-    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
-        this(request, statusCode, headers, new byte[0]);
     }
 
     /**
@@ -94,18 +83,6 @@ public class MockHttpResponse implements Response<BinaryData> {
      */
     public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, Object serializable) {
         this(request, statusCode, headers, serialize(serializable));
-    }
-
-    /**
-     * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and response body
-     * that is JSON serialized from {@code serializable}.
-     *
-     * @param request HttpRequest associated with the response.
-     * @param statusCode Status code of the response.
-     * @param serializable Contents to be serialized into JSON for the response.
-     */
-    public MockHttpResponse(HttpRequest request, int statusCode, Object serializable) {
-        this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
 
     private static BinaryData serialize(Object serializable) {

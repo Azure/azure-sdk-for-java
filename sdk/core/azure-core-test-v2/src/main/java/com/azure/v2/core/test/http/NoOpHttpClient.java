@@ -13,6 +13,12 @@ import java.io.IOException;
  * An HttpClient instance that does not do anything.
  */
 public class NoOpHttpClient implements HttpClient {
+    /**
+     * Creates a new NoOpHttpClient.
+     */
+    public NoOpHttpClient() {
+    }
+
     @Override
     public Response<?> send(HttpRequest request) throws IOException {
         return null;

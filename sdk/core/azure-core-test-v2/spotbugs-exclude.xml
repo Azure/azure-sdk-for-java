@@ -8,7 +8,7 @@
       <Class name="com.azure.v2.core.test.InterceptorManager" />
       <Class name="com.azure.v2.core.test.TestContextManager" />
       <Class name="com.azure.core.test.utils.TestProxyTestServer" />
-      <Class name="com.azure.v2.core.test.utils.HttpURLConnectionHttpClient$HttpURLResponse" />
+      <Class name="com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient$HttpURLResponse" />
       <Class name="com.azure.v2.core.test.utils.TestProxyDownloader$PlatformInfo" />
     </Or>
   </Match>

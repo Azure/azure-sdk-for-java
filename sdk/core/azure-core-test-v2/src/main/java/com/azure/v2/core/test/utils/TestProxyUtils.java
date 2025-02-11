@@ -41,7 +41,7 @@ import static com.azure.v2.core.test.policy.TestProxyRecordPolicy.RECORD_MODE;
 /**
  * Utility functions for interaction with the test proxy.
  */
-public class TestProxyUtils {
+public final class TestProxyUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyUtils.class);
     private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
     private static final String REDACTED_VALUE = "REDACTED";
@@ -59,7 +59,7 @@ public class TestProxyUtils {
         "privateKey", "fencingClientPassword", "acrToken", "scriptUrlSasToken", "azureBlobSource.containerUrl",
         "properties.DOCKER_REGISTRY_SEVER_PASSWORD");
 
-    public static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";
+    private static final String HOST_NAME_REGEX = "(?<=http://|https://)(?<host>[^/?\\\\.]+)";
     private static final List<TestProxySanitizer> HEADER_KEY_REGEX_TO_REDACT = Arrays.asList(
         new TestProxySanitizer("ServiceBusDlqSupplementaryAuthorization",
             "(?:(sv|sig|se|srt|ss|sp)=)(?<secret>[^&\\\"]+)", REDACTED_VALUE, TestProxySanitizerType.HEADER)
@@ -543,5 +543,8 @@ public class TestProxyUtils {
         return HEADER_KEYS_TO_REDACT.stream()
             .map(headerKey -> new TestProxySanitizer(headerKey, null, REDACTED_VALUE, HEADER))
             .collect(Collectors.toList());
+    }
+
+    private TestProxyUtils() {
     }
 }

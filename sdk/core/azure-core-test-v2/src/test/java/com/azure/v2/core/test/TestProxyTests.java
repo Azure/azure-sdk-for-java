@@ -3,13 +3,14 @@
 
 package com.azure.v2.core.test;
 
+import com.azure.v2.core.test.annotation.DoNotRecord;
 import com.azure.v2.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.v2.core.test.utils.TestProxyTestServer;
 import com.azure.v2.core.test.implementation.TestingHelpers;
 import com.azure.v2.core.test.models.CustomMatcher;
 import com.azure.v2.core.test.models.TestProxySanitizer;
 import com.azure.v2.core.test.models.TestProxySanitizerType;
-import com.azure.v2.core.test.utils.HttpURLConnectionHttpClient;
+import com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient;
 import com.azure.v2.core.test.utils.TestProxyUtils;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -87,7 +88,7 @@ public class TestProxyTests extends TestBase {
     @Test
     @Tag("Record")
     public void testBasicRecord() throws IOException {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpUrlConnectionHttpClient client = new HttpUrlConnectionHttpClient();
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).addPolicy(interceptorManager.getRecordPolicy()).build();
 
@@ -110,12 +111,14 @@ public class TestProxyTests extends TestBase {
 
     @Test
     @Tag("Record")
+    @DoNotRecord
     public void testDoNotRecord() {
         testResourceNamer.now();
     }
 
     @Test
     @Tag("Playback")
+    @DoNotRecord
     public void testDoNotPlayback() {
         testResourceNamer.now();
     }
@@ -134,7 +137,7 @@ public class TestProxyTests extends TestBase {
     @Tag("Record")
     @RecordWithoutRequestBody
     public void testRecordWithPath() throws IOException {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpUrlConnectionHttpClient client = new HttpUrlConnectionHttpClient();
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).addPolicy(interceptorManager.getRecordPolicy()).build();
 
@@ -154,7 +157,7 @@ public class TestProxyTests extends TestBase {
     @Test
     @Tag("Record")
     public void testRecordWithHeaders() throws IOException {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpUrlConnectionHttpClient client = new HttpUrlConnectionHttpClient();
         HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).addPolicy(interceptorManager.getRecordPolicy()).build();
 
@@ -326,7 +329,7 @@ public class TestProxyTests extends TestBase {
     @Test
     @Tag("Record")
     public void testResetTestProxyData() throws IOException {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpUrlConnectionHttpClient client = new HttpUrlConnectionHttpClient();
 
         final HttpPipeline pipeline
             = new HttpPipelineBuilder().httpClient(client).addPolicy(interceptorManager.getRecordPolicy()).build();
@@ -345,7 +348,7 @@ public class TestProxyTests extends TestBase {
     @Test
     @Tag("Record")
     public void testRecordWithRedirect() throws IOException {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpUrlConnectionHttpClient client = new HttpUrlConnectionHttpClient();
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client)
             .addPolicy(new HttpRedirectPolicy())

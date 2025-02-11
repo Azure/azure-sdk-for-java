@@ -5,17 +5,32 @@ package com.azure.v2.core.test.utils;
 
 import com.azure.v2.core.util.ProgressReporter;
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.models.*;
+import io.clientcore.core.http.models.HttpHeader;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.binarydata.ByteArrayBinaryData;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 
 /**
  * A {@link HttpClient} that uses the JDK {@link HttpURLConnection}.
  */
-public class HttpURLConnectionHttpClient implements HttpClient {
+public class HttpUrlConnectionHttpClient implements HttpClient {
+    /**
+     * Creates an instance of {@link HttpUrlConnectionHttpClient}.
+     */
+    public HttpUrlConnectionHttpClient() {
+    }
+
     @Override
     public Response<?> send(HttpRequest request) throws IOException {
         HttpURLConnection connection = null;

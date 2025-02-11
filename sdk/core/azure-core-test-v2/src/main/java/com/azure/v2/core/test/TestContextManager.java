@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.v2.core.test;
 
+import com.azure.v2.core.test.annotation.DoNotRecord;
 import com.azure.v2.core.test.annotation.RecordWithoutRequestBody;
 
 import java.lang.reflect.Method;
@@ -57,7 +58,9 @@ public class TestContextManager {
         RecordWithoutRequestBody recordWithoutRequestBody = testMethod.getAnnotation(RecordWithoutRequestBody.class);
         this.skipRecordingRequestBody = recordWithoutRequestBody != null || recordWithoutRequestBodyClassAnnotation;
 
-        this.doNotRecord = false;
+        DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
+        this.doNotRecord = doNotRecordAnnotation != null;
+
         this.testClassPath = testClassPath;
         this.testRan = true;
         this.trackerTestName = trackerTestName;

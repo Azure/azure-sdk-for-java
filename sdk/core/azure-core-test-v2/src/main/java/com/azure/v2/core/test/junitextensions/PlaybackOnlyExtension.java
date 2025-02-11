@@ -19,6 +19,12 @@ import static org.junit.platform.commons.support.AnnotationSupport.findAnnotatio
  * Extension to mark tests that should only be run in PLAYBACK test mode.
  */
 public class PlaybackOnlyExtension implements ExecutionCondition {
+    /**
+     * Creates a new instance of PlaybackOnlyExtension.
+     */
+    public PlaybackOnlyExtension() {
+    }
+
     @Override
     public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
         PlaybackOnly playbackOnly = findAnnotation(context.getElement(), PlaybackOnly.class).orElse(null);

@@ -44,6 +44,12 @@ public class MockHttpClient extends NoOpHttpClient {
             .set(HttpHeaderName.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
             .set(HttpHeaderName.CONTENT_TYPE, "application/json");
 
+    /**
+     * Creates a new instance of MockHttpClient.
+     */
+    public MockHttpClient() {
+    }
+
     @Override
     public Response<?> send(HttpRequest request) throws IOException {
         Response<?> response = null;
@@ -199,8 +205,7 @@ public class MockHttpClient extends NoOpHttpClient {
     }
 
     private static String createHttpBinResponseDataForRequest(HttpRequest request) {
-        String body = bodyToString(request);
-        return (body == null) ? "" : body;
+        return bodyToString(request);
     }
 
     private static String bodyToString(HttpRequest request) {

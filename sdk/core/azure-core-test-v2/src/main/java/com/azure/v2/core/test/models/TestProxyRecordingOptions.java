@@ -19,11 +19,23 @@ public class TestProxyRecordingOptions implements JsonSerializable<TestProxyReco
     private ProxyTransport proxyTransportOptions;
 
     /**
+     * Creates a new instance of TestProxyRecordingOptions.
+     */
+    public TestProxyRecordingOptions() {
+    }
+
+    /**
      * Model for proxy transport options
      */
     public static class ProxyTransport implements JsonSerializable<ProxyTransport> {
         private List<Certificate> certificates;
         private String tLSValidationCert;
+
+        /**
+         * Creates a new instance of ProxyTransport.
+         */
+        public ProxyTransport() {
+        }
 
         /**
          * Get allowed certificates for the recording.
@@ -95,6 +107,12 @@ public class TestProxyRecordingOptions implements JsonSerializable<TestProxyReco
     public static class Certificate implements JsonSerializable<Certificate> {
         private String pemValue;
         private String pemKey;
+
+        /**
+         * Creates a new instance of Certificate.
+         */
+        public Certificate() {
+        }
 
         /**
          * Get the cert pem value

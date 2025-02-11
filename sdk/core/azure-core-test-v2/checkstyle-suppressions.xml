@@ -4,7 +4,7 @@
     "https://checkstyle.org/dtds/suppressions_1_2.dtd">
 
 <suppressions>
-  <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWords" files="com.azure.v2.core.test.utils.HttpURLConnectionHttpClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWords" files="com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient.java" />
 
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.v2.core.test.AzureTestWatcher.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposed" files="com.azure.core.test.SyncAsyncExtension.java" />
@@ -24,5 +24,5 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.http.TestProxyPlaybackClient.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.InterceptorManager.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.policy.TestProxyRecordPolicy.java" />
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.utils.HttpURLConnectionHttpClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient.java" />
 </suppressions>

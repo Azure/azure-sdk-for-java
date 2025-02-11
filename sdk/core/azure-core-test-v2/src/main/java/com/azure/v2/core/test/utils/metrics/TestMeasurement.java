@@ -9,6 +9,8 @@ import java.util.Map;
 
 /**
  * Test implementation of metric measurements allowing to verify what measurements were reported.
+ *
+ * @param <T> Type of the value reported.
  */
 public class TestMeasurement<T> {
     private final T value;

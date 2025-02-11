@@ -16,6 +16,12 @@ import static org.junit.platform.commons.support.AnnotationSupport.findAnnotatio
  * Extension to mark tests that should only be run in LIVE test mode.
  */
 public class LiveOnlyExtension implements ExecutionCondition {
+    /**
+     * Creates a new instance of LiveOnlyExtension.
+     */
+    public LiveOnlyExtension() {
+    }
+
     @Override
     public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
         LiveOnly liveOnly = findAnnotation(context.getElement(), LiveOnly.class).orElse(null);

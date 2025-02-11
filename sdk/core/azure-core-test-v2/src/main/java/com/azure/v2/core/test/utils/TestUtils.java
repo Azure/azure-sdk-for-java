@@ -18,7 +18,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -175,11 +174,7 @@ public final class TestUtils {
      * <p>
      * The {@link HttpClient} returned will use the default successful and failure response percentages. 75% of request
      * will succeed, 24% of requests will fail with a partial body returned, and 1% of requests will never return a
-     * response. It is recommended for tests using HTTP fault injector to set
-     * {@link HttpClientOptions#setResponseTimeout(Duration)} and {@link HttpClientOptions#setReadTimeout(Duration)}, or
-     * the equivalent methods directly in the HTTP client builder being used, as the default timeouts are 60 seconds and
-     * with responses failing randomly reducing the timeout will let the tests run faster while still generally testing
-     * the same.
+     * response.
      *
      * @param clientToWrap The {@link HttpClient} being wrapped that will send the actual request.
      * @param useHttps Whether HTTPS should be used to communicate with HTTP fault injector.
@@ -203,11 +198,7 @@ public final class TestUtils {
      * The {@link HttpClient} returned will use the specified successful and failure response percentages. The
      * combination of {@code successRate}, {@code partialRate}, and {@code failureRate} must equal 100, if not an
      * {@link IllegalArgumentException} will be thrown. An {@link IllegalArgumentException} will also be thrown if any
-     * of the values are negative. It is recommended for tests using HTTP fault injector to set
-     * {@link HttpClientOptions#setResponseTimeout(Duration)} and {@link HttpClientOptions#setReadTimeout(Duration)}, or
-     * the equivalent methods directly in the HTTP client builder being used, as the default timeouts are 60 seconds and
-     * with responses failing randomly reducing the timeout will let the tests run faster while still generally testing
-     * the same.
+     * of the values are negative.
      *
      * @param clientToWrap The {@link HttpClient} being wrapped that will send the actual request.
      * @param useHttps Whether HTTPS should be used to communicate with HTTP fault injector.

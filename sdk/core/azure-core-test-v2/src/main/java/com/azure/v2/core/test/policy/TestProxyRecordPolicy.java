@@ -6,7 +6,7 @@ package com.azure.v2.core.test.policy;
 import com.azure.v2.core.test.models.RecordFilePayload;
 import com.azure.v2.core.test.models.TestProxyRecordingOptions;
 import com.azure.v2.core.test.models.TestProxySanitizer;
-import com.azure.v2.core.test.utils.HttpURLConnectionHttpClient;
+import com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient;
 import com.azure.v2.core.test.utils.TestProxyUtils;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -49,16 +49,20 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private String xRecordingId;
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
+
+    /**
+     * The mode to use when recording.
+     */
     public static final String RECORD_MODE = "record";
 
     /**
      * Create an instance of {@link TestProxyRecordPolicy} with a list of custom sanitizers.
      *
-     * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
+     * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpUrlConnectionHttpClient} is the default.
      * @param skipRecordingRequestBody Flag indicating to skip recording request bodies when tests run in Record mode.
      */
     public TestProxyRecordPolicy(HttpClient httpClient, boolean skipRecordingRequestBody) {
-        this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
+        this.client = (httpClient == null ? new HttpUrlConnectionHttpClient() : httpClient);
         this.skipRecordingRequestBody = skipRecordingRequestBody;
         this.proxyUri = TestProxyUtils.getProxyUri();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
@@ -105,6 +109,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * Stops recording of test traffic.
      * @param variables A list of random variables generated during the test which is saved in the recording.
      * @throws RuntimeException If the test proxy returns an error while stopping recording.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void stopRecording(Queue<String> variables) throws IOException {
         HttpRequest request
@@ -179,6 +184,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     /**
      * Add a list of {@link TestProxySanitizer} to the current recording session.
      * @param sanitizers The sanitizers to add.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void addProxySanitization(List<TestProxySanitizer> sanitizers) throws IOException {
         if (isRecording()) {
@@ -198,7 +204,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     /**
      * Removes the list of sanitizers from the current playback session.
      * @param sanitizers The sanitizers to remove.
-     * @throws RuntimeException if an {@link IOException} is thrown.
+     * @throws IOException If an error occurs while sending the request.
      */
     public void removeProxySanitization(List<String> sanitizers) throws IOException {
         if (isRecording()) {
@@ -211,8 +217,6 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
                 jsonWriter.writeMap(data, (writer, value) -> writer.writeArray(value, JsonWriter::writeString)).flush();
                 request = getRemoveSanitizerRequest().setBody(BinaryData.fromBytes(outputStream.toByteArray()));
                 request.getHeaders().set(X_RECORDING_ID, xRecordingId);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
 
             client.send(request).close();

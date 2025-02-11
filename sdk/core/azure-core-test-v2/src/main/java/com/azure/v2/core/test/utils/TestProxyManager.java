@@ -101,7 +101,7 @@ public final class TestProxyManager {
     }
 
     private static boolean checkAlive(int loops, Duration waitTime, Process proxy) throws InterruptedException {
-        HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
+        HttpUrlConnectionHttpClient client = new HttpUrlConnectionHttpClient();
         HttpRequest request
             = new HttpRequest(HttpMethod.GET, String.format("%s/admin/isalive", TestProxyUtils.getProxyUri()));
         for (int i = 0; i < loops; i++) {
