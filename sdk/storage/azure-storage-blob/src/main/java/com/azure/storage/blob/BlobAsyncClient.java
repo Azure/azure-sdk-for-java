@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
@@ -82,6 +83,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * <a href=https://docs.microsoft.com/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure
  * Docs</a> for more information.
  */
+@ServiceClient(builder = BlobClientBuilder.class, isAsync = true)
 public class BlobAsyncClient extends BlobAsyncClientBase {
     /**
      * The block size to use if none is specified in parallel operations.

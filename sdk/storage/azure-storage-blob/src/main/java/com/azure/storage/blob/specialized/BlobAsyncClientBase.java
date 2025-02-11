@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.annotation.ReturnType;
+import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -22,6 +23,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceAsyncClient;
@@ -125,6 +127,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * This client offers the ability to download blobs. Note that uploading data is specific to each type of blob. Please
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
+@ServiceClient(builder = BlobClientBuilder.class, isAsync = true)
 public class BlobAsyncClientBase {
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClientBase.class);
 

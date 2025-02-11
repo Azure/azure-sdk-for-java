@@ -9,20 +9,23 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
-      <module>azure-storage-common</module>
-      <module>azure-storage-blob</module>
-      <module>azure-storage-blob-batch</module>
-      <module>azure-storage-blob-changefeed</module>
-      <module>azure-storage-blob-cryptography</module>
-      <module>azure-storage-blob-nio</module>
-      <module>azure-storage-file-share</module>
-      <module>azure-storage-file-datalake</module>
-      <module>azure-storage-internal-avro</module>
-      <module>azure-storage-queue</module>
-        <module>azure-storage-perf</module>
+    <module>azure-storage-common</module>
+    <module>azure-storage-blob</module>
+    <module>azure-storage-blob-batch</module>
+    <module>azure-storage-blob-changefeed</module>
+    <module>azure-storage-blob-cryptography</module>
+    <module>azure-storage-blob-nio</module>
+    <module>azure-storage-file-share</module>
+    <module>azure-storage-file-datalake</module>
+    <module>azure-storage-internal-avro</module>
+    <module>azure-storage-queue</module>
+    <module>azure-storage-perf</module>
     <module>azure-storage-blob-stress</module>
     <module>azure-storage-stress</module>
     <module>azure-storage-file-datalake-stress</module>
     <module>azure-storage-file-share-stress</module>
+
+    <!-- V2 libraries -->
+    <module>azure-storage-blob-v2</module>
   </modules>
 </project>
