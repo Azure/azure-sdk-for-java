@@ -188,7 +188,7 @@ public class MessageDecoderTests {
             long segmentCrc = -1;
             if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
                 segmentCrc = StorageCrc64Calculator.compute(segmentData, 0);
-                if (i == invalidSegment) {  // ❌ Introduce CRC Mismatch Here
+                if (i == invalidSegment) {  // Introduce CRC Mismatch Here
                     segmentCrc += 5;  // Corrupt the CRC value for this segment
                 }
             }
@@ -220,7 +220,7 @@ public class MessageDecoderTests {
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decodeFully());
+        Assertions.assertThrows(IllegalArgumentException.class, decoder::decodeFully);
     }
 
     @Test
@@ -238,13 +238,13 @@ public class MessageDecoderTests {
 
         while (readCount < dataSize) {
             int readSize = Math.min(random.nextInt(50) + 1, dataSize - readCount);
-            byte[] chunk = decoder.decode(readSize); // ✅ Capture the returned data
+            byte[] chunk = decoder.decode(readSize);
 
-            result.write(chunk); // ✅ Store the data in the output stream
-            readCount += chunk.length; // ✅ Use chunk.length to track progress
+            result.write(chunk);
+            readCount += chunk.length;
         }
 
-        Assertions.assertArrayEquals(data, result.toByteArray()); // ✅ Now the comparison should pass
+        Assertions.assertArrayEquals(data, result.toByteArray());
     }
 
     @Test
@@ -268,7 +268,7 @@ public class MessageDecoderTests {
         encodedBuffer.putLong(1, invalidMessageLength);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decodeFully());
+        Assertions.assertThrows(IllegalArgumentException.class, decoder::decodeFully);
     }
 
     private static Stream<Arguments> invalidMessageLengths() {
@@ -285,7 +285,7 @@ public class MessageDecoderTests {
         encodedBuffer.putShort(11, (short) invalidSegmentCount);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decodeFully());
+        Assertions.assertThrows(IllegalArgumentException.class, decoder::decodeFully);
     }
 
     private static Stream<Arguments> invalidSegmentCounts() {
@@ -303,25 +303,26 @@ public class MessageDecoderTests {
         encodedBuffer.putShort(position, (short) invalidSegmentNumber);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decodeFully());
+        Assertions.assertThrows(IllegalArgumentException.class, decoder::decodeFully);
     }
 
     private static Stream<Arguments> invalidSegmentNumbers() {
-        return Stream.of(Arguments.of(1), Arguments.of(123)); // Incorrect segment numbers
+        return Stream.of(
+            Arguments.of(123, StructuredMessageFlags.NONE),
+            Arguments.of(345, StructuredMessageFlags.STORAGE_CRC64)
+        );
     }
 
     @ParameterizedTest
     @MethodSource("invalidSegmentSizes")
-    public void testIncorrectSegmentSize(int invalidSegmentSize) throws IOException {
+    public void testIncorrectSegmentSize(int invalidSegmentSize, StructuredMessageFlags flags) throws IOException {
         byte[] data = getRandomData(1024);
         ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), 256, StructuredMessageFlags.NONE);
 
-        // ✅ Ensure we modify a writable buffer
         byte[] encodedArray = encodedBuffer.array();
         ByteBuffer modifiableBuffer = ByteBuffer.wrap(encodedArray).order(ByteOrder.LITTLE_ENDIAN);
 
-        // ✅ Dynamically calculate correct position (including CRC)
-        boolean hasCrc64 = StructuredMessageFlags.NONE == StructuredMessageFlags.STORAGE_CRC64;
+        boolean hasCrc64 = flags == StructuredMessageFlags.STORAGE_CRC64;
         int crcLength = hasCrc64 ? CRC64_LENGTH : 0;
 
         int position = V1_HEADER_LENGTH + V1_SEGMENT_HEADER_LENGTH  // First segment header
@@ -329,18 +330,15 @@ public class MessageDecoderTests {
             + crcLength  // First segment CRC if present
             + 2;  // The actual position where segment size is stored
 
-        // ✅ Modify segment size
         modifiableBuffer.putShort(position, (short) invalidSegmentSize);
 
-        // ✅ Ensure we create a decoder with the modified buffer
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(ByteBuffer.wrap(encodedArray));
 
-        // ✅ Expect an exception since the segment size is invalid
-        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decodeFully());
+        Assertions.assertThrows(IllegalArgumentException.class, decoder::decodeFully);
     }
 
     private static Stream<Arguments> invalidSegmentSizes() {
-        return Stream.of(Arguments.of(123), Arguments.of(345)); // Incorrect segment sizes
+        return Stream.of(Arguments.of(123), Arguments.of(345));
     }
 
     @Test
@@ -352,7 +350,7 @@ public class MessageDecoderTests {
         encodedBuffer.putShort(15, (short) 123);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decodeFully());
+        Assertions.assertThrows(IllegalArgumentException.class, decoder::decodeFully);
     }
 
     @ParameterizedTest
