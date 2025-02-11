@@ -141,10 +141,10 @@
   ],
   "reactor_2024":
   [
-    { "io.projectreactor.netty:reactor-netty": "1.2.0-RC1" },
-    { "io.projectreactor.netty:reactor-netty-http": "1.2.0-RC1" },
-    { "io.projectreactor:reactor-core": "3.7.0-RC1" },
-    { "io.projectreactor:reactor-test": "3.7.0-RC1" }
+    { "io.projectreactor.netty:reactor-netty": "1.2.0" },
+    { "io.projectreactor.netty:reactor-netty-http": "1.2.0" },
+    { "io.projectreactor:reactor-core": "3.7.0" },
+    { "io.projectreactor:reactor-test": "3.7.0" }
   ],
   "reactor_2023":
   [
