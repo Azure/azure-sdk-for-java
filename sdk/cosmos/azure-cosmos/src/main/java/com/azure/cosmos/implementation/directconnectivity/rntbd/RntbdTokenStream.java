@@ -115,6 +115,8 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         RntbdToken containerRid = this.tokens.get(RntbdConstants.RntbdRequestHeader.CollectionRid);
         if (containerRid != null) {
             containerRid.encode(out);
+        } else {
+
         }
 
         RntbdToken resourceId = this.tokens.get(RntbdConstants.RntbdRequestHeader.ResourceId);

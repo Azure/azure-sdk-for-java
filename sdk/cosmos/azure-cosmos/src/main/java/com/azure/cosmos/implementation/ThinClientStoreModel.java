@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -95,8 +97,9 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         }
         //request.properties.put(EFFECTIVE_PARTITION_KEY, epk);
         //request.properties.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
-        //request.getHeaders().put(EFFECTIVE_PARTITION_KEY, epk);
-        //request.getHeaders().put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
+        request.getHeaders().put(EFFECTIVE_PARTITION_KEY, epk);
+        request.getHeaders().put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
+        request.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, "xFNeANpWheM=");
         // todo - neharao1: no concept of a replica / service endpoint that can be passed
         RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
 
@@ -105,9 +108,9 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         HttpHeaders headers = this.getHttpHeaders();
         headers.set(EFFECTIVE_PARTITION_KEY, epk);
         headers.set(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
+        headers.set(WFConstants.BackendHeaders.COLLECTION_RID, "xFNeANpWheM=");
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
-
         // todo: neharao1 - validate whether Java heap buffer is okay v/s Direct buffer
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
