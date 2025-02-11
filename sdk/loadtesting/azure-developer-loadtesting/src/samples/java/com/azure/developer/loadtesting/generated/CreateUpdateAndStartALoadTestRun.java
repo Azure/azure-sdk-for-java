@@ -9,9 +9,9 @@ import com.azure.developer.loadtesting.LoadTestRunClient;
 import com.azure.developer.loadtesting.LoadTestRunClientBuilder;
 import com.azure.developer.loadtesting.models.AutoStopCriteria;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
-import com.azure.developer.loadtesting.models.PFAction;
-import com.azure.developer.loadtesting.models.PFAgFunc;
 import com.azure.developer.loadtesting.models.PFMetrics;
+import com.azure.developer.loadtesting.models.PassFailAction;
+import com.azure.developer.loadtesting.models.PassFailAggregationFunction;
 import com.azure.developer.loadtesting.models.PassFailCriteria;
 import com.azure.developer.loadtesting.models.PassFailMetric;
 import com.azure.developer.loadtesting.models.PassFailServerMetric;
@@ -34,10 +34,10 @@ public class CreateUpdateAndStartALoadTestRun {
             .setPassFailCriteria(new PassFailCriteria()
                 .setPassFailMetrics(mapOf("fefd759d-7fe8-4f83-8b6d-aeebe0f491fe",
                     new PassFailMetric().setClientMetric(PFMetrics.RESPONSE_TIME_MS)
-                        .setAggregate(PFAgFunc.PERCENTAGE)
+                        .setAggregate(PassFailAggregationFunction.PERCENTAGE)
                         .setCondition(">")
                         .setValue(20.0D)
-                        .setAction(PFAction.CONTINUE)))
+                        .setAction(PassFailAction.CONTINUE)))
                 .setPassFailServerMetrics(mapOf("fefd759d-7fe8-4f83-8b6d-aeebe0f491fe",
                     new PassFailServerMetric().setResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/MyResourceGroup/providers/Microsoft.Compute/virtualMachines/MyVM")
@@ -46,7 +46,7 @@ public class CreateUpdateAndStartALoadTestRun {
                         .setAggregation("Average")
                         .setCondition(">")
                         .setValue(20.0)
-                        .setAction(PFAction.CONTINUE))))
+                        .setAction(PassFailAction.CONTINUE))))
             .setAutoStopCriteria(new AutoStopCriteria().setAutoStopDisabled(true)
                 .setErrorRate(70.0D)
                 .setErrorRateTimeWindowInSeconds(60))

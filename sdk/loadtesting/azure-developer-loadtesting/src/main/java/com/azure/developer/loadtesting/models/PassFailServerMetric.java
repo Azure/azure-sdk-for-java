@@ -60,7 +60,7 @@ public final class PassFailServerMetric implements JsonSerializable<PassFailServ
      * Action taken after the threshold is met. Default is ‘continue’.
      */
     @Generated
-    private PFAction action;
+    private PassFailAction action;
 
     /*
      * The actual value of the server metric
@@ -262,21 +262,8 @@ public final class PassFailServerMetric implements JsonSerializable<PassFailServ
      * @return the action value.
      */
     @Generated
-    public PFAction getAction() {
+    public PassFailAction getAction() {
         return this.action;
-    }
-
-    /**
-     * Set the action property: Action taken after the threshold is met. Default is ‘continue’.
-     *
-     * @param action the action value to set.
-     * @return the PassFailServerMetric object itself.
-     */
-    @Generated
-    public PassFailServerMetric setAction(PFAction action) {
-        this.action = action;
-        this.updatedProperties.add("action");
-        return this;
     }
 
     /**
@@ -399,7 +386,7 @@ public final class PassFailServerMetric implements JsonSerializable<PassFailServ
                 } else if ("value".equals(fieldName)) {
                     deserializedPassFailServerMetric.value = reader.getDouble();
                 } else if ("action".equals(fieldName)) {
-                    deserializedPassFailServerMetric.action = PFAction.fromString(reader.getString());
+                    deserializedPassFailServerMetric.action = PassFailAction.fromString(reader.getString());
                 } else if ("actualValue".equals(fieldName)) {
                     deserializedPassFailServerMetric.actualValue = reader.getNullable(JsonReader::getDouble);
                 } else if ("result".equals(fieldName)) {
@@ -410,5 +397,18 @@ public final class PassFailServerMetric implements JsonSerializable<PassFailServ
             }
             return deserializedPassFailServerMetric;
         });
+    }
+
+    /**
+     * Set the action property: Action taken after the threshold is met. Default is ‘continue’.
+     *
+     * @param action the action value to set.
+     * @return the PassFailServerMetric object itself.
+     */
+    @Generated
+    public PassFailServerMetric setAction(PassFailAction action) {
+        this.action = action;
+        this.updatedProperties.add("action");
+        return this;
     }
 }

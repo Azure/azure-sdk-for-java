@@ -33,7 +33,7 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
      * ‘count’ - for requests
      */
     @Generated
-    private PFAgFunc aggregate;
+    private PassFailAggregationFunction aggregate;
 
     /*
      * The comparison operator. Supported types ‘>’, ‘<’
@@ -58,7 +58,7 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
      * Action taken after the threshold is met. Default is ‘continue’.
      */
     @Generated
-    private PFAction action;
+    private PassFailAction action;
 
     /*
      * The actual value of the client metric for the test run.
@@ -141,24 +141,8 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
      * @return the aggregate value.
      */
     @Generated
-    public PFAgFunc getAggregate() {
+    public PassFailAggregationFunction getAggregate() {
         return this.aggregate;
-    }
-
-    /**
-     * Set the aggregate property: The aggregation function to be applied on the client metric. Allowed functions
-     * - ‘percentage’ - for error metric , ‘avg’, percentiles like ‘p50’, ‘p90’, &amp; so on, ‘min’,
-     * ‘max’ - for response_time_ms and latency metric, ‘avg’ - for requests_per_sec,
-     * ‘count’ - for requests.
-     *
-     * @param aggregate the aggregate value to set.
-     * @return the PassFailMetric object itself.
-     */
-    @Generated
-    public PassFailMetric setAggregate(PFAgFunc aggregate) {
-        this.aggregate = aggregate;
-        this.updatedProperties.add("aggregate");
-        return this;
     }
 
     /**
@@ -238,21 +222,8 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
      * @return the action value.
      */
     @Generated
-    public PFAction getAction() {
+    public PassFailAction getAction() {
         return this.action;
-    }
-
-    /**
-     * Set the action property: Action taken after the threshold is met. Default is ‘continue’.
-     *
-     * @param action the action value to set.
-     * @return the PassFailMetric object itself.
-     */
-    @Generated
-    public PassFailMetric setAction(PFAction action) {
-        this.action = action;
-        this.updatedProperties.add("action");
-        return this;
     }
 
     /**
@@ -362,7 +333,7 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
                 if ("clientMetric".equals(fieldName)) {
                     deserializedPassFailMetric.clientMetric = PFMetrics.fromString(reader.getString());
                 } else if ("aggregate".equals(fieldName)) {
-                    deserializedPassFailMetric.aggregate = PFAgFunc.fromString(reader.getString());
+                    deserializedPassFailMetric.aggregate = PassFailAggregationFunction.fromString(reader.getString());
                 } else if ("condition".equals(fieldName)) {
                     deserializedPassFailMetric.condition = reader.getString();
                 } else if ("requestName".equals(fieldName)) {
@@ -370,7 +341,7 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
                 } else if ("value".equals(fieldName)) {
                     deserializedPassFailMetric.value = reader.getNullable(JsonReader::getDouble);
                 } else if ("action".equals(fieldName)) {
-                    deserializedPassFailMetric.action = PFAction.fromString(reader.getString());
+                    deserializedPassFailMetric.action = PassFailAction.fromString(reader.getString());
                 } else if ("actualValue".equals(fieldName)) {
                     deserializedPassFailMetric.actualValue = reader.getNullable(JsonReader::getDouble);
                 } else if ("result".equals(fieldName)) {
@@ -381,5 +352,34 @@ public final class PassFailMetric implements JsonSerializable<PassFailMetric> {
             }
             return deserializedPassFailMetric;
         });
+    }
+
+    /**
+     * Set the aggregate property: The aggregation function to be applied on the client metric. Allowed functions
+     * - ‘percentage’ - for error metric , ‘avg’, percentiles like ‘p50’, ‘p90’, &amp; so on, ‘min’,
+     * ‘max’ - for response_time_ms and latency metric, ‘avg’ - for requests_per_sec,
+     * ‘count’ - for requests.
+     *
+     * @param aggregate the aggregate value to set.
+     * @return the PassFailMetric object itself.
+     */
+    @Generated
+    public PassFailMetric setAggregate(PassFailAggregationFunction aggregate) {
+        this.aggregate = aggregate;
+        this.updatedProperties.add("aggregate");
+        return this;
+    }
+
+    /**
+     * Set the action property: Action taken after the threshold is met. Default is ‘continue’.
+     *
+     * @param action the action value to set.
+     * @return the PassFailMetric object itself.
+     */
+    @Generated
+    public PassFailMetric setAction(PassFailAction action) {
+        this.action = action;
+        this.updatedProperties.add("action");
+        return this;
     }
 }
