@@ -975,7 +975,7 @@
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-reporter-json</artifactId>
-              <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+              <version>0.5.0</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>com.fasterxml.jackson.core</groupId>
