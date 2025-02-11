@@ -31,7 +31,7 @@ public final class FunctionFlexConsumptionResourceConfiguration
      * HTTP Concurrency for the function app.
      */
     @Generated
-    private long httpConcurrency;
+    private Long httpConcurrency;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -102,22 +102,8 @@ public final class FunctionFlexConsumptionResourceConfiguration
      * @return the httpConcurrency value.
      */
     @Generated
-    public long getHttpConcurrency() {
+    public Long getHttpConcurrency() {
         return this.httpConcurrency;
-    }
-
-    /**
-     * Set the httpConcurrency property: HTTP Concurrency for the function app.
-     * <p>Required when create the resource.</p>
-     *
-     * @param httpConcurrency the httpConcurrency value to set.
-     * @return the FunctionFlexConsumptionResourceConfiguration object itself.
-     */
-    @Generated
-    public FunctionFlexConsumptionResourceConfiguration setHttpConcurrency(long httpConcurrency) {
-        this.httpConcurrency = httpConcurrency;
-        this.updatedProperties.add("httpConcurrency");
-        return this;
     }
 
     /**
@@ -131,7 +117,7 @@ public final class FunctionFlexConsumptionResourceConfiguration
         } else {
             jsonWriter.writeStartObject();
             jsonWriter.writeLongField("instanceMemoryMB", this.instanceMemoryMB);
-            jsonWriter.writeLongField("httpConcurrency", this.httpConcurrency);
+            jsonWriter.writeNumberField("httpConcurrency", this.httpConcurrency);
             return jsonWriter.writeEndObject();
         }
     }
@@ -143,7 +129,11 @@ public final class FunctionFlexConsumptionResourceConfiguration
             jsonWriter.writeLongField("instanceMemoryMB", this.instanceMemoryMB);
         }
         if (updatedProperties.contains("httpConcurrency")) {
-            jsonWriter.writeLongField("httpConcurrency", this.httpConcurrency);
+            if (this.httpConcurrency == null) {
+                jsonWriter.writeNullField("httpConcurrency");
+            } else {
+                jsonWriter.writeNumberField("httpConcurrency", this.httpConcurrency);
+            }
         }
         return jsonWriter.writeEndObject();
     }
@@ -167,12 +157,26 @@ public final class FunctionFlexConsumptionResourceConfiguration
                 if ("instanceMemoryMB".equals(fieldName)) {
                     deserializedFunctionFlexConsumptionResourceConfiguration.instanceMemoryMB = reader.getLong();
                 } else if ("httpConcurrency".equals(fieldName)) {
-                    deserializedFunctionFlexConsumptionResourceConfiguration.httpConcurrency = reader.getLong();
+                    deserializedFunctionFlexConsumptionResourceConfiguration.httpConcurrency
+                        = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedFunctionFlexConsumptionResourceConfiguration;
         });
+    }
+
+    /**
+     * Set the httpConcurrency property: HTTP Concurrency for the function app.
+     *
+     * @param httpConcurrency the httpConcurrency value to set.
+     * @return the FunctionFlexConsumptionResourceConfiguration object itself.
+     */
+    @Generated
+    public FunctionFlexConsumptionResourceConfiguration setHttpConcurrency(Long httpConcurrency) {
+        this.httpConcurrency = httpConcurrency;
+        this.updatedProperties.add("httpConcurrency");
+        return this;
     }
 }
