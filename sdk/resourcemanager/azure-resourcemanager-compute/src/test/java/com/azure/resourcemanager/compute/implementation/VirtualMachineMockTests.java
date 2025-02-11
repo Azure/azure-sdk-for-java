@@ -64,8 +64,8 @@ public class VirtualMachineMockTests {
 
     private ComputeManager mockComputeManager() {
         HttpClient httpClient = mockHttpClient();
-        AzureProfile mockProfile
-            = new AzureProfile(UUID.randomUUID().toString(), UUID.randomUUID().toString(), AzureCloud.AZURE_PUBLIC_CLOUD);
+        AzureProfile mockProfile = new AzureProfile(UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+            AzureCloud.AZURE_PUBLIC_CLOUD);
         ComputeManager computeManager
             = ComputeManager.authenticate(new HttpPipelineBuilder().httpClient(httpClient).build(), mockProfile);
         stateHolder.nextLinkUrl = String.format("%s%s?filter=%s", HOST, NEXT_LINK_PATH, QUERY);

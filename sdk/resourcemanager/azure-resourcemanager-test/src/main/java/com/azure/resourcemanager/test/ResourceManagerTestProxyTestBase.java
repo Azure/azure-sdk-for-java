@@ -402,9 +402,9 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
                 = Objects.requireNonNull(configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID),
                     "'AZURE_SUBSCRIPTION_ID' environment variable cannot be null.");
             testProfile = new AzureProfile(tenantId, subscriptionId, AzureCloud.AZURE_PUBLIC_CLOUD);
-            credential
-                = new DefaultAzureCredentialBuilder().authorityHost(testProfile.getEnvironment().getActiveDirectoryEndpoint())
-                    .build();
+            credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(testProfile.getEnvironment().getActiveDirectoryEndpoint())
+                .build();
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             if (interceptorManager.isRecordMode() && !testContextManager.doNotRecordTest()) {
