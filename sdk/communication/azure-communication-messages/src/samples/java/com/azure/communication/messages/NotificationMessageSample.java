@@ -56,7 +56,8 @@ public class NotificationMessageSample {
 
     public static void main(String[] args) {
         TO_LIST.add(RECIPIENT_IDENTIFIER);
-        sendOtpTemplateMessage();
+        sendInteractiveMessageWithListAction();
+        //sendOtpTemplateMessage();
         //sendTemplateMessageWithDocument();
         //sendStickerMessage();
         //sendReactionMessage();
