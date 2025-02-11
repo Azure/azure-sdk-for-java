@@ -8,6 +8,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.client.implementation.MessageDecoder;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.CompositeByteBuf;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -23,29 +25,20 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
 
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     private final WebSocketClientHandshaker handshaker;
-    private ChannelPromise handshakeFuture;
-
     private final AtomicReference<ClientLogger> loggerReference;
     private final MessageDecoder messageDecoder;
     private final Consumer<WebPubSubMessage> messageHandler;
 
-    private volatile OpenTextFrame wip;
-
-    private static final AtomicReferenceFieldUpdater<WebSocketClientHandler, OpenTextFrame> UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(WebSocketClientHandler.class, OpenTextFrame.class, "wip");
+    private ChannelPromise handshakeFuture;
+    private CompositeByteBuf compositeByteBuf;
 
     WebSocketClientHandler(WebSocketClientHandshaker handshaker, AtomicReference<ClientLogger> loggerReference,
         MessageDecoder messageDecoder, Consumer<WebPubSubMessage> messageHandler) {
@@ -60,22 +53,37 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     @Override
-    public void handlerAdded(ChannelHandlerContext ctx) {
-        handshakeFuture = ctx.newPromise();
+    public void handlerAdded(ChannelHandlerContext context) {
+        handshakeFuture = context.newPromise();
+        compositeByteBuf = context.alloc().compositeBuffer();
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) {
-        handshaker.handshake(ctx.channel());
+    public void handlerRemoved(ChannelHandlerContext ctx) {
+        try {
+            final BinaryData data = BinaryData.fromListByteBuffer(Arrays.asList(compositeByteBuf.nioBuffers()));
+            final String collected = data.toString();
+            final WebPubSubMessage deserialized = messageDecoder.decode(collected);
+
+            messageHandler.accept(deserialized);
+        } finally {
+            compositeByteBuf.release();
+            compositeByteBuf.clear();
+        }
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
+    public void channelActive(ChannelHandlerContext context) {
+        handshaker.handshake(context.channel());
+    }
+
+    @Override
+    protected void channelRead0(ChannelHandlerContext context, Object message) {
         if (handshakeFuture != null && !handshaker.isHandshakeComplete()) {
-            Channel ch = ctx.channel();
+            Channel channel = context.channel();
 
             try {
-                handshaker.finishHandshake(ch, (FullHttpResponse) msg);
+                handshaker.finishHandshake(channel, (FullHttpResponse) message);
                 handshakeFuture.setSuccess();
             } catch (WebSocketHandshakeException e) {
                 handshakeFuture.setFailure(e);
@@ -83,94 +91,85 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             return;
         }
 
-        if (msg instanceof WebSocketFrame) {
-            channelRead0(ctx, (WebSocketFrame) msg);
-        } else {
-            loggerReference.get().atWarning().addKeyValue("messageType", msg).log("Unknown message type. Skipping.");
+        if (!(message instanceof WebSocketFrame) || !processMessage(context, (WebSocketFrame) message)) {
+            loggerReference.get().atWarning()
+                .addKeyValue("messageType", message.getClass())
+                .log("Unknown message type. Skipping.");
+
+            context.fireChannelRead(message);
         }
     }
 
-    private void channelRead0(ChannelHandlerContext ctx, WebSocketFrame msg) {
-        Channel ch = ctx.channel();
+    /**
+     * Attempts to process the web socket frame.
+     *
+     * @param context Channel for message.
+     * @param webSocketFrame Frame to process.
+     * @return true if the frame was processed, false otherwise.
+     */
+    private boolean processMessage(ChannelHandlerContext context, WebSocketFrame webSocketFrame) {
+        Channel channel = context.channel();
 
-        if (msg instanceof PingWebSocketFrame) {
+        if (webSocketFrame instanceof PingWebSocketFrame) {
             // Ping, reply Pong
             loggerReference.get().atVerbose().log("Received PingWebSocketFrame");
             loggerReference.get().atVerbose().log("Send PongWebSocketFrame");
-            ch.writeAndFlush(new PongWebSocketFrame());
-        } else if (msg instanceof PongWebSocketFrame) {
+            channel.writeAndFlush(new PongWebSocketFrame());
+            return true;
+        } else if (webSocketFrame instanceof PongWebSocketFrame) {
             // Pong
             loggerReference.get().atVerbose().log("Received PongWebSocketFrame");
-        } else if (msg instanceof CloseWebSocketFrame) {
+            return true;
+        } else if (webSocketFrame instanceof CloseWebSocketFrame) {
             // Close
-            CloseWebSocketFrame closeFrame = (CloseWebSocketFrame) msg;
+            final CloseWebSocketFrame closeFrame = (CloseWebSocketFrame) webSocketFrame;
+
             loggerReference.get()
                 .atVerbose()
                 .addKeyValue("statusCode", closeFrame.statusCode())
                 .addKeyValue("reasonText", closeFrame.reasonText())
                 .log("Received CloseWebSocketFrame");
-
-            this.serverCloseWebSocketFrame = closeFrame.retain();   // retain for SessionNettyImpl
+            serverCloseWebSocketFrame = closeFrame.retain();   // retain for SessionNettyImpl
 
             if (closeCallbackFuture == null) {
                 // close initiated from server, reply CloseWebSocketFrame, then close connection
                 loggerReference.get().atVerbose().log("Send CloseWebSocketFrame");
                 closeFrame.retain();    // retain before write it back
-                ch.writeAndFlush(closeFrame).addListener(future -> ch.close());
+                channel.writeAndFlush(closeFrame).addListener(future -> channel.close());
             } else {
                 // close initiated from client, client already sent CloseWebSocketFrame
-                ch.close();
+                channel.close();
             }
-        } else if (msg instanceof TextWebSocketFrame || msg instanceof ContinuationWebSocketFrame) {
-            processFrame(msg);
+
+            return true;
+        } else if (webSocketFrame instanceof TextWebSocketFrame || webSocketFrame instanceof ContinuationWebSocketFrame) {
+            if (compositeByteBuf == null) {
+                compositeByteBuf = ByteBufAllocator.DEFAULT.compositeBuffer();
+            }
+
+            compositeByteBuf.addComponent(true, webSocketFrame.content().retain());
+
+            if (!webSocketFrame.isFinalFragment()) {
+                return true;
+            }
+
+            publishBuffer();
+            return true;
         } else {
-            loggerReference.get().atWarning().addKeyValue("frameType", msg).log("Unknown WebSocketFrame type.");
+            return false;
         }
     }
 
-    private void processFrame(WebSocketFrame frame) {
-        updateOpenTextFrame(frame.content());
+    private void publishBuffer() {
+        try {
+            final BinaryData data = BinaryData.fromListByteBuffer(Arrays.asList(compositeByteBuf.nioBuffers()));
+            final String collected = data.toString();
+            final WebPubSubMessage deserialized = messageDecoder.decode(collected);
 
-        if (!frame.isFinalFragment()) {
-            return;
-        }
-
-        final OpenTextFrame existing = UPDATER.getAndSet(this, null);
-
-        if (existing == null) {
-            final WebPubSubMessage message = messageDecoder.decode(frame.content().toString());
-            messageHandler.accept(message);
-
-            return;
-        }
-
-        existing.close();
-
-        final BinaryData collectedFrame = existing.getCollectedData();
-
-        if (collectedFrame != null) {
-            final String collected = collectedFrame.toString();
-
-            try {
-                final WebPubSubMessage deserialized = messageDecoder.decode(collected);
-                messageHandler.accept(deserialized);
-            } finally {
-                existing.dispose();
-            }
-        }
-    }
-
-    private void updateOpenTextFrame(ByteBuf content) {
-        content.retain();
-
-        final OpenTextFrame frame = new OpenTextFrame();
-        frame.add(content);
-
-        if (!UPDATER.compareAndSet(this, null, frame)) {
-            UPDATER.getAndUpdate(this, existing -> {
-                existing.add(content);
-                return existing;
-            });
+            messageHandler.accept(deserialized);
+        } finally {
+            compositeByteBuf.release();
+            compositeByteBuf.clear();
         }
     }
 
@@ -197,54 +196,5 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     CloseWebSocketFrame getServerCloseWebSocketFrame() {
         return this.serverCloseWebSocketFrame;
-    }
-
-    private static final class OpenTextFrame {
-        private final ArrayList<ByteBuf> collected = new ArrayList<>();
-        private final AtomicBoolean isClosed = new AtomicBoolean(false);
-
-        private volatile BinaryData collectedData;
-
-        private void add(ByteBuf buffer) {
-            if (isClosed.get()) {
-                throw new IllegalStateException("Cannot add more buffers when closed.");
-            }
-
-            buffer.retain();
-            collected.add(buffer);
-        }
-
-        private void close() {
-            if (isClosed.getAndSet(true)) {
-                getCollectedData();
-            }
-        }
-
-        private void dispose() {
-            if (isClosed.get()) {
-                collected.forEach(b -> b.release());
-                collected.clear();
-            }
-        }
-
-        private BinaryData getCollectedData() {
-            if (!isClosed.get()) {
-                throw new IllegalStateException("Cannot get data when frame not closed.");
-            }
-
-            final BinaryData e = collectedData;
-
-            if (e != null) {
-                return collectedData;
-            }
-
-            final List<ByteBuffer> list = collected.stream()
-                .map(b -> b.nioBuffer())
-                .collect(Collectors.toList());
-
-            collectedData = BinaryData.fromListByteBuffer(list);
-
-            return collectedData;
-        }
     }
 }
