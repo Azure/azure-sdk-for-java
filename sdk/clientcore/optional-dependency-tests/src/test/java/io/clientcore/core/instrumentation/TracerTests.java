@@ -10,6 +10,7 @@ import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
@@ -24,6 +25,8 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
@@ -38,6 +41,7 @@ public class TracerTests {
     private SdkTracerProvider tracerProvider;
     private InstrumentationOptions otelOptions;
     private OpenTelemetry openTelemetry;
+    private Instrumentation instrumentation;
     private Tracer tracer;
 
     @BeforeEach
@@ -47,7 +51,8 @@ public class TracerTests {
 
         openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
         otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
-        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).createTracer();
+        instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
+        tracer = instrumentation.createTracer();
     }
 
     @AfterEach
@@ -102,6 +107,32 @@ public class TracerTests {
         assertEquals(true, spanData.getAttributes().get(AttributeKey.booleanKey("span-boolean-attribute")));
 
         assertEquals(io.opentelemetry.api.trace.StatusCode.UNSET, spanData.getStatus().getStatusCode());
+    }
+
+    @Test
+    public void testSetAllAttributes() {
+        Map<String, Object> start = new HashMap<>();
+        start.put("string", "value");
+        start.put("int", 42);
+        start.put("double", 0.42);
+        start.put("float", 4.2f);
+        start.put("boolean", true);
+        start.put("long", 420L);
+        InstrumentationAttributes startAttributes = instrumentation.createAttributes(start);
+
+        Span span = tracer.spanBuilder("test-span", INTERNAL, null).setAllAttributes(startAttributes).startSpan();
+        span.end();
+
+        assertEquals(1, exporter.getFinishedSpanItems().size());
+        SpanData spanData = exporter.getFinishedSpanItems().get(0);
+        Attributes attrs = spanData.getAttributes();
+        assertEquals(6, attrs.size());
+        assertEquals("value", attrs.get(AttributeKey.stringKey("string")));
+        assertEquals(42L, attrs.get(AttributeKey.longKey("int")));
+        assertEquals(420L, attrs.get(AttributeKey.longKey("long")));
+        assertEquals(0.42, attrs.get(AttributeKey.doubleKey("double")));
+        assertEquals(4.2f, attrs.get(AttributeKey.doubleKey("float")), 0.1);
+        assertEquals(true, attrs.get(AttributeKey.booleanKey("boolean")));
     }
 
     @Test

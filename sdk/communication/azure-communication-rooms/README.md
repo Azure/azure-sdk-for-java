@@ -225,5 +225,5 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_docs]: https://learn.microsoft.com/azure/communication-services/
 [api_documentation]: https://aka.ms/java-docs
 [next_steps]: https://learn.microsoft.com/azure/communication-services/concepts/rooms/room-concept
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fappconfiguration%2Fazure-data-appconfiguration%2FREADME.png)
+
 

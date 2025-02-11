@@ -379,4 +379,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli
 [storage_account_create_portal]: https://learn.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftables%2Fazure-data-tables%2FREADME.png)
+

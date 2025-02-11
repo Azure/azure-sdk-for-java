@@ -113,11 +113,13 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
         # the directory path needs to be added to the sparse checkout, otherwise it's one
         # directory up.
         proj_path = os.path.normpath(root_path + p.directory_path )
-        proj_path_with_yml = os.path.normpath(proj_path + "/ci.yml")
-        if os.path.exists(proj_path_with_yml):
-            sparse_checkout_directory = p.directory_path
-        else:
-            sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
+#         proj_path_with_yml = os.path.normpath(proj_path + "/ci.yml")
+#         if os.path.exists(proj_path_with_yml):
+#             sparse_checkout_directory = p.directory_path
+#         else:
+        # Temporarily commenting out if / else above to resolve sparse checkout issue when running Communication
+        # library From Source live tests (plus possibly more). Will be reverted once all library checkouts are resolved.
+        sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
 
         sparse_checkout_directories.add(sparse_checkout_directory)
 

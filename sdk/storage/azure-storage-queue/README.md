@@ -499,4 +499,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-queue/src/samples
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-queue%2FREADME.png)
+
