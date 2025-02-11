@@ -72,7 +72,7 @@ public final class PassFailServerMetric implements JsonSerializable<PassFailServ
      * Outcome of the test run.
      */
     @Generated
-    private PFResult result;
+    private PassFailResult result;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -282,7 +282,7 @@ public final class PassFailServerMetric implements JsonSerializable<PassFailServ
      * @return the result value.
      */
     @Generated
-    public PFResult getResult() {
+    public PassFailResult getResult() {
         return this.result;
     }
 
@@ -390,7 +390,7 @@ public final class PassFailServerMetric implements JsonSerializable<PassFailServ
                 } else if ("actualValue".equals(fieldName)) {
                     deserializedPassFailServerMetric.actualValue = reader.getNullable(JsonReader::getDouble);
                 } else if ("result".equals(fieldName)) {
-                    deserializedPassFailServerMetric.result = PFResult.fromString(reader.getString());
+                    deserializedPassFailServerMetric.result = PassFailResult.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

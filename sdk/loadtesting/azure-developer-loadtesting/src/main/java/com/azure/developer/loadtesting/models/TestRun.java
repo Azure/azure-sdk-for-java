@@ -107,7 +107,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
      * Test result for pass/Fail criteria used during the test run.
      */
     @Generated
-    private PFTestResult testResult;
+    private PassFailTestResult testResult;
 
     /*
      * Number of virtual users, for which test has been run.
@@ -487,7 +487,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
      * @return the testResult value.
      */
     @Generated
-    public PFTestResult getTestResult() {
+    public PassFailTestResult getTestResult() {
         return this.testResult;
     }
 
@@ -964,7 +964,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
                 } else if ("testArtifacts".equals(fieldName)) {
                     deserializedTestRun.testArtifacts = TestRunArtifacts.fromJson(reader);
                 } else if ("testResult".equals(fieldName)) {
-                    deserializedTestRun.testResult = PFTestResult.fromString(reader.getString());
+                    deserializedTestRun.testResult = PassFailTestResult.fromString(reader.getString());
                 } else if ("virtualUsers".equals(fieldName)) {
                     deserializedTestRun.virtualUsers = reader.getNullable(JsonReader::getInt);
                 } else if ("displayName".equals(fieldName)) {
