@@ -51,7 +51,8 @@ public class APIGenerationTest {
         templateInput.setHttpRequestContexts(Collections.singletonList(getUserMethodContext));
 
         MethodDeclaration getUserMethodGenerationSpec = new MethodDeclaration();
-        processor.configurePublicMethod(getUserMethodGenerationSpec, getUserMethodContext);
+        processor.configurePublicMethod(getUserMethodGenerationSpec, getUserMethodContext,
+            templateInput.getUnexpectedResponseExceptionDetails());
         assertEquals("getUser", getUserMethodGenerationSpec.getNameAsString());
         assertEquals("User", getUserMethodGenerationSpec.getTypeAsString());
         // assert code block contains the expected method body

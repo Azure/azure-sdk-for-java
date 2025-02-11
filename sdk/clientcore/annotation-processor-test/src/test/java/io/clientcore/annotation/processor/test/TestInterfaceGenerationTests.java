@@ -11,6 +11,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.util.binarydata.BinaryData;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 
@@ -37,7 +38,8 @@ public class TestInterfaceGenerationTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient((request) -> {
             // what is the default response body mode?
             request.setRequestOptions(new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE));
-            return new MockHttpResponse(request, 200, wireValue.getBytes(StandardCharsets.UTF_8));
+            return new MockHttpResponse(request, 200,
+                BinaryData.fromString(wireValue));
         }).build();
 
         TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
@@ -50,5 +52,4 @@ public class TestInterfaceGenerationTests {
         Foo foo = response.getValue();
         assertEquals("key", foo.getKey());
     }
-
 }
