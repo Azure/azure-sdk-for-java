@@ -46,7 +46,7 @@ steps:
 
       # Build the project and publish to the local Maven repository
       Write-Host "Building the project and publishing to the local Maven repository"
-      ./gradlew clean build -x test publishToMavenLocal
+      ./gradlew clean build -x test -Dmaven.repo.local=$env:PIPELINE_WORKSPACE/.m2/repository publishToMavenLocal
         
       Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java"
       ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java
