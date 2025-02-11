@@ -796,9 +796,9 @@ final class WebPubSubAsyncClient implements Closeable {
             // send DisconnectedEvent, but connection close will be handled in handleSessionClose
             handleConnectionClose(new DisconnectedEvent(this.getConnectionId(), disconnectedMessage.getReason()));
         } else {
-            final ClientLogger log = loggerReference.get();
-            if (log != null) {
-                log.atWarning()
+            final ClientLogger logger = loggerReference.get();
+            if (logger != null) {
+                logger.atWarning()
                     .addKeyValue("type", webPubSubMessage.getClass())
                     .addKeyValue("message", webPubSubMessage)
                     .log("Unknown message type. Skipping decode.");

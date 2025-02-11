@@ -130,9 +130,8 @@ public class WebSocketClientHandlerTests {
     public void textSocketFrameReceive() {
         // Arrange
         final String groupMessage = "Group content";
-        final GroupDataMessage groupDataMessage
-            = new GroupDataMessage("group", WebPubSubDataFormat.TEXT, BinaryData.fromString(groupMessage),
-            "userId", 10L);
+        final GroupDataMessage groupDataMessage = new GroupDataMessage("group", WebPubSubDataFormat.TEXT,
+            BinaryData.fromString(groupMessage), "userId", 10L);
         final String encoded = encoder.encode(groupDataMessage);
 
         final List<WebPubSubMessage> messagesList = new ArrayList<>();
@@ -171,9 +170,8 @@ public class WebSocketClientHandlerTests {
     public void textSocketFrameMultipleFrames() {
         // Arrange
         final String groupMessage = "Multiple frame message";
-        final GroupDataMessage groupDataMessage
-            = new GroupDataMessage("test-group", WebPubSubDataFormat.TEXT, BinaryData.fromString(groupMessage),
-            "test-user-id", 10L);
+        final GroupDataMessage groupDataMessage = new GroupDataMessage("test-group", WebPubSubDataFormat.TEXT,
+            BinaryData.fromString(groupMessage), "test-user-id", 10L);
         final String encoded = encoder.encode(groupDataMessage);
         final int split = Math.floorDiv(encoded.length(), 3);
         final int secondLength = 2 * split;
