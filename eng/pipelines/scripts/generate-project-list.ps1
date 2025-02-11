@@ -40,20 +40,19 @@ if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
       [array]$packageInfoFiles = Get-ChildItem -Path $ENV:PACKAGEINFODIR "$($artifactPackageName).json"
       if ($packageInfoFiles) {
         if ($packageInfoFiles.Length -gt 1) {
-          LogWarning "Multiple PackageInfo files found for $artifactPackageName"
-        } else {
-          $packageInfoFile = $packageInfoFiles[0]
-          $packageInfoJson = Get-Content $packageInfoFile -Raw
-          $packageInfo = ConvertFrom-Json $packageInfoJson
-          $fullArtifactName = "$($packageInfo.Group):$($packageInfo.ArtifactName)"
-          $projectList += $fullArtifactName
-          $artifactsList += $fullArtifactName
-          # The AdditionalValidationPackages are stored as <group>:<artifact>
-          foreach($additionalModule in $packageInfo.AdditionalValidationPackages)
-          {
-            $projectList += $additionalModule
-            $additionalModulesList += $additionalModule
-          }
+          LogWarning "Multiple PackageInfo files found for $artifactPackageName, using the first one."
+        }
+        $packageInfoFile = $packageInfoFiles[0]
+        $packageInfoJson = Get-Content $packageInfoFile -Raw
+        $packageInfo = ConvertFrom-Json $packageInfoJson
+        $fullArtifactName = "$($packageInfo.Group):$($packageInfo.ArtifactName)"
+        $projectList += $fullArtifactName
+        $artifactsList += $fullArtifactName
+        # The AdditionalValidationPackages are stored as <group>:<artifact>
+        foreach($additionalModule in $packageInfo.AdditionalValidationPackages)
+        {
+          $projectList += $additionalModule
+          $additionalModulesList += $additionalModule
         }
       } else {
         LogError "No PackageInfo file found for $artifactPackageName"
