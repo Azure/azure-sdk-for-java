@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.credential;
 
-import io.clientcore.core.credential.KeyCredential;
+import io.clientcore.core.credentials.KeyCredential;
 
 /**
  * <p>

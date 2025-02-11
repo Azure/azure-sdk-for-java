@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.util.ExpandableEnum;
+import io.clientcore.core.utils.ExpandableEnum;
 
 /**
  * Enum representing where in an {@link HttpPipeline} a given {@link HttpPipelinePolicy} is positioned when added to an

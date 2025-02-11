@@ -6,9 +6,9 @@ package io.clientcore.core.http;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.implementation.util.JsonSerializer;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.utils.serializer.ObjectSerializer;
 
 public class MockHttpResponse extends HttpResponse<BinaryData> {
     private static final ObjectSerializer SERIALIZER = new JsonSerializer();

@@ -3,9 +3,9 @@
 
 package io.clientcore.core.implementation.instrumentation;
 
-import io.clientcore.core.implementation.util.EnvironmentConfiguration;
+import io.clientcore.core.implementation.utils.EnvironmentConfiguration;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.PrintStream;
 import java.io.PrintWriter;

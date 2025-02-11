@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.credential;
 
-import io.clientcore.core.util.Base64Util;
+import io.clientcore.core.utils.Base64Util;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 

@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.implementation.util.ImplUtils;
+import io.clientcore.core.implementation.utils.ImplUtils;
 
 import java.net.URI;
 import java.util.Locale;

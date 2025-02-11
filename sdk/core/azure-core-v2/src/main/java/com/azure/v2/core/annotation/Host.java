@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.annotation;
 
-import io.clientcore.core.http.annotation.HostParam;
+import io.clientcore.core.http.annotations.HostParam;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;

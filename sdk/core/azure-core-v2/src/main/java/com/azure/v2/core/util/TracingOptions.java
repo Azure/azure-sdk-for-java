@@ -6,9 +6,9 @@ package com.azure.v2.core.util;
 import com.azure.v2.core.util.tracing.Tracer;
 import com.azure.v2.core.util.tracing.TracerProvider;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.configuration.Configuration;
-import io.clientcore.core.util.configuration.ConfigurationProperty;
-import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
+import io.clientcore.core.utils.configuration.Configuration;
+import io.clientcore.core.utils.configuration.ConfigurationProperty;
+import io.clientcore.core.utils.configuration.ConfigurationPropertyBuilder;
 
 import java.util.Objects;
 import java.util.Set;

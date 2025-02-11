@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.util.metrics;
 
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 import com.azure.v2.core.util.TelemetryAttributes;
 
 /**

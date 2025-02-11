@@ -3,17 +3,17 @@
 
 package io.clientcore.core.shared;
 
-import io.clientcore.core.annotation.ServiceInterface;
+import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.RestProxy;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.HeaderParam;
-import io.clientcore.core.http.annotation.HostParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
-import io.clientcore.core.http.annotation.PathParam;
-import io.clientcore.core.http.annotation.QueryParam;
-import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.HeaderParam;
+import io.clientcore.core.http.annotations.HostParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.annotations.PathParam;
+import io.clientcore.core.http.annotations.QueryParam;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.exception.HttpResponseException;
+import io.clientcore.core.http.exceptions.HttpResponseException;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -29,16 +29,16 @@ import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.util.JsonSerializer;
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.Context;
-import io.clientcore.core.util.UriBuilder;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.binarydata.ByteArrayBinaryData;
-import io.clientcore.core.util.binarydata.ByteBufferBinaryData;
-import io.clientcore.core.util.binarydata.InputStreamBinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
-import io.clientcore.core.util.serializer.SerializationFormat;
+import io.clientcore.core.utils.Context;
+import io.clientcore.core.utils.UriBuilder;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.ByteArrayBinaryData;
+import io.clientcore.core.utils.binarydata.ByteBufferBinaryData;
+import io.clientcore.core.utils.binarydata.InputStreamBinaryData;
+import io.clientcore.core.utils.serializer.ObjectSerializer;
+import io.clientcore.core.utils.serializer.SerializationFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -79,7 +79,7 @@ import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.implementation.util.ImplUtils.bomAwareToString;
+import static io.clientcore.core.implementation.utils.ImplUtils.bomAwareToString;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -325,20 +325,20 @@ public abstract class HttpClientTests {
             getProtocol(ECHO_RESPONSE),
             new Headers(),
             requestBody);
-    
+
         AtomicLong progress = new AtomicLong();
         Context context = Contexts.empty()
             .setHttpRequestProgressReporter(
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
-    
+
         Response<?> response = createHttpClient()
             .send(request);
-    
+
         byte[] responseBytes = response
             .getBodyAsByteArray()
             .block();
-    
+
         assertArrayEquals(expectedResponseBody, responseBytes);
         assertEquals(expectedResponseBody.length, progress.intValue());
     }*/
@@ -1362,20 +1362,20 @@ public abstract class HttpClientTests {
             .putBodyAndHeaders(getRequestUri(), "body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
-        
+
         assertEquals(Headers.class, response.getHeaders().getClass());
-        
+
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);
         assertMatchWithHttpOrHttps("localhost/put", body.uri());
         assertEquals("body string", body.data());
-        
+
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
         assertNotNull(headers.date());
         assertNotEquals(0, (Object) headers.xProcessedTime());
-        
+
          */
     }
 
@@ -1560,13 +1560,13 @@ public abstract class HttpClientTests {
         HttpBinFormDataJSON postForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam("custemail") String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
-    
+
         @Post("post")
         HttpBinFormDataJSON postEncodedForm(@HostParam("uri") String uri, @FormParam("custname") String name,
             @FormParam("custtel") String telephone, @FormParam(value = "custemail", encoded = true) String email,
             @FormParam("size") HttpBinFormDataJSON.PizzaSize size, @FormParam("toppings") List<String> toppings);
     }
-    
+
     @Test
     public void postUriForm() {
         Service26 service = createService(Service26.class);
@@ -1578,12 +1578,12 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo%40bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-    
+
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));
     }
-    
+
     @Test
     public void postUriFormEncoded() {
         Service26 service = createService(Service26.class);
@@ -1595,7 +1595,7 @@ public abstract class HttpClientTests {
         assertEquals("123", response.form().customerTelephone());
         assertEquals("foo@bar.com", response.form().customerEmail());
         assertEquals(HttpBinFormDataJSON.PizzaSize.LARGE, response.form().pizzaSize());
-    
+
         assertEquals(2, response.form().toppings().size());
         assertEquals("Bacon", response.form().toppings().get(0));
         assertEquals("Onion", response.form().toppings().get(1));

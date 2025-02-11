@@ -3,11 +3,11 @@
 
 package io.clientcore.core.http;
 
-import io.clientcore.core.annotation.ServiceInterface;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.HeaderParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
-import io.clientcore.core.http.annotation.PathParam;
+import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.HeaderParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -16,8 +16,8 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.implementation.util.JsonSerializer;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -88,9 +88,9 @@ public class RestProxyTests {
             .build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
-    
+
         streamResponse.close();
-    
+
         // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/

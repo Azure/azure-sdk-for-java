@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.util.tracing;
 
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import static com.azure.v2.core.util.tracing.Tracer.ENTITY_PATH_KEY;

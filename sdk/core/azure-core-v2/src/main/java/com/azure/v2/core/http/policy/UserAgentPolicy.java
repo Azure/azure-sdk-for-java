@@ -4,7 +4,7 @@
 package com.azure.v2.core.http.policy;
 
 import io.clientcore.core.http.pipeline.HttpPipelineOrder;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 import com.azure.v2.core.util.CoreUtils;
 import com.azure.v2.core.util.ServiceVersion;
 import com.azure.v2.core.util.UserAgentUtil;
@@ -14,7 +14,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 
 /**
  * The {@code UserAgentPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is

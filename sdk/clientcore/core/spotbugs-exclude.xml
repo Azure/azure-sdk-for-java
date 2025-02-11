@@ -28,22 +28,22 @@
       <Class name="io.clientcore.core.implementation.http.rest.ResponseExceptionConstructorCache" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
       <Class name="io.clientcore.core.implementation.http.serializer.CompositeSerializer" />
-      <Class name="io.clientcore.core.util.DateTimeRfc1123" />
-      <Class name="io.clientcore.core.implementation.util.InternalContext" />
-      <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
-      <Class name="io.clientcore.core.implementation.util.Providers" />
-      <Class name="io.clientcore.core.implementation.util.SliceInputStream" />
-      <Class name="io.clientcore.core.implementation.util.StreamUtil" />
-      <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
+      <Class name="io.clientcore.core.utils.DateTimeRfc1123" />
+      <Class name="io.clientcore.core.implementation.utils.InternalContext" />
+      <Class name="io.clientcore.core.implementation.utils.JsonSerializer" />
+      <Class name="io.clientcore.core.implementation.utils.Providers" />
+      <Class name="io.clientcore.core.implementation.utils.SliceInputStream" />
+      <Class name="io.clientcore.core.implementation.utils.StreamUtil" />
+      <Class name="io.clientcore.core.implementation.utils.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.implementation.GenericParameterizedType" />
-      <Class name="io.clientcore.core.util.SharedExecutorService" />
-      <Class name="io.clientcore.core.util.Union" />
-      <Class name="io.clientcore.core.util.binarydata.FileBinaryData" />
-      <Class name="io.clientcore.core.util.binarydata.InputStreamBinaryData" />
-      <Class name="io.clientcore.core.util.binarydata.ListByteBufferBinaryData" />
-      <Class name="io.clientcore.core.util.configuration.Configuration" />
+      <Class name="io.clientcore.core.utils.SharedExecutorService" />
+      <Class name="io.clientcore.core.utils.Union" />
+      <Class name="io.clientcore.core.utils.binarydata.FileBinaryData" />
+      <Class name="io.clientcore.core.utils.binarydata.InputStreamBinaryData" />
+      <Class name="io.clientcore.core.utils.binarydata.ListByteBufferBinaryData" />
+      <Class name="io.clientcore.core.utils.configuration.Configuration" />
     </Or>
   </Match>
   <Match>
@@ -68,7 +68,7 @@
   <Match>
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
     <Or>
-      <Class name="io.clientcore.core.credential.KeyCredential" />
+      <Class name="io.clientcore.core.credentials.KeyCredential" />
       <Class name="io.clientcore.core.http.client.DefaultHttpClient" />
       <Class name="io.clientcore.core.http.client.DefaultHttpClientBuilder" />
       <Class name="io.clientcore.core.http.models.HttpRequest" />
@@ -101,11 +101,11 @@
   <Match>
     <Bug pattern="DM_CONVERT_CASE" />
     <Or>
-      <Class name="io.clientcore.core.http.exception.HttpExceptionType" />
+      <Class name="io.clientcore.core.http.exceptions.HttpExceptionType" />
       <Class name="io.clientcore.core.http.models.HttpHeaderName" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
-      <Class name="io.clientcore.core.util.ServerSentEventUtils" />
-      <Class name="io.clientcore.core.util.auth.AuthUtils" />
+      <Class name="io.clientcore.core.utils.ServerSentEventUtils" />
+      <Class name="io.clientcore.core.utils.auth.AuthUtils" />
     </Or>
   </Match>
   <Match>
@@ -138,7 +138,7 @@
     <Or>
       <Class name="io.clientcore.core.implementation.http.HttpRequestAccessHelper" />
       <Class name="io.clientcore.core.implementation.http.HttpResponseAccessHelper" />
-      <Class name="io.clientcore.core.implementation.util.ServerSentEventHelper" />
+      <Class name="io.clientcore.core.implementation.utils.ServerSentEventHelper" />
     </Or>
   </Match>
   <Match>
@@ -194,10 +194,10 @@
   <Match>
     <Bug pattern="MS_EXPOSE_REP" />
     <Or>
-      <Class name="io.clientcore.core.implementation.util.EnvironmentConfiguration" />
+      <Class name="io.clientcore.core.implementation.utils.EnvironmentConfiguration" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.CharTypes" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.io.ContentReference" />
-      <Class name="io.clientcore.core.util.SharedExecutorService" />
+      <Class name="io.clientcore.core.utils.SharedExecutorService" />
     </Or>
   </Match>
   <Match>
@@ -273,9 +273,9 @@
   <Match>
     <Bug pattern="PZLA_PREFER_ZERO_LENGTH_ARRAYS" />
     <Or>
-      <Class name="io.clientcore.core.util.Base64Uri" />
-      <Class name="io.clientcore.core.implementation.util.JsonSerializer" />
-      <Class name="io.clientcore.core.implementation.util.XmlSerializer" />
+      <Class name="io.clientcore.core.utils.Base64Uri" />
+      <Class name="io.clientcore.core.implementation.utils.JsonSerializer" />
+      <Class name="io.clientcore.core.implementation.utils.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.json.implementation.DefaultJsonReader" />
       <Class name="io.clientcore.core.util.TestUtils" />
       <Class name="io.clientcore.core.util.serializer.MockSerializer" />
@@ -312,7 +312,7 @@
   <Match>
     <Bug pattern="SE_BAD_FIELD" />
     <Or>
-      <Class name="io.clientcore.core.http.exception.HttpResponseException" />
+      <Class name="io.clientcore.core.http.exceptions.HttpResponseException" />
       <Class name="io.clientcore.core.serialization.json.implementation.jackson.core.util.RequestPayload" />
     </Or>
   </Match>
@@ -389,12 +389,12 @@
   <Match>
     <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY" />
     <Or>
-      <Class name="io.clientcore.core.util.binarydata.ByteBufferBinaryData" />
-      <Class name="io.clientcore.core.util.binarydata.FileBinaryData" />
-      <Class name="io.clientcore.core.util.binarydata.InputStreamBinaryData" />
-      <Class name="io.clientcore.core.util.binarydata.ListByteBufferBinaryData" />
-      <Class name="io.clientcore.core.util.binarydata.SerializableBinaryData" />
-      <Class name="io.clientcore.core.util.binarydata.StringBinaryData" />
+      <Class name="io.clientcore.core.utils.binarydata.ByteBufferBinaryData" />
+      <Class name="io.clientcore.core.utils.binarydata.FileBinaryData" />
+      <Class name="io.clientcore.core.utils.binarydata.InputStreamBinaryData" />
+      <Class name="io.clientcore.core.utils.binarydata.ListByteBufferBinaryData" />
+      <Class name="io.clientcore.core.utils.binarydata.SerializableBinaryData" />
+      <Class name="io.clientcore.core.utils.binarydata.StringBinaryData" />
     </Or>
   </Match>
   <Match>

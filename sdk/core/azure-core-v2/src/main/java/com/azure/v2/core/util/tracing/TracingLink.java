@@ -4,7 +4,7 @@
 package com.azure.v2.core.util.tracing;
 
 import com.azure.v2.core.annotation.Immutable;
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 
 import java.util.Map;
 

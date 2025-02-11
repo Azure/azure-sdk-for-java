@@ -4,7 +4,7 @@
 package com.azure.v2.core.implementation.http;
 
 import com.azure.v2.core.util.CoreUtils;
-import io.clientcore.core.util.UriBuilder;
+import io.clientcore.core.utils.UriBuilder;
 
 import java.net.URI;
 import java.util.Collection;

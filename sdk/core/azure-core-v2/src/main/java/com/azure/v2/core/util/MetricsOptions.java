@@ -5,9 +5,9 @@ package com.azure.v2.core.util;
 
 import com.azure.v2.core.util.metrics.Meter;
 import com.azure.v2.core.util.metrics.MeterProvider;
-import io.clientcore.core.util.configuration.Configuration;
-import io.clientcore.core.util.configuration.ConfigurationProperty;
-import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
+import io.clientcore.core.utils.configuration.Configuration;
+import io.clientcore.core.utils.configuration.ConfigurationProperty;
+import io.clientcore.core.utils.configuration.ConfigurationPropertyBuilder;
 
 import static com.azure.v2.core.util.TracingOptions.getClassByName;
 

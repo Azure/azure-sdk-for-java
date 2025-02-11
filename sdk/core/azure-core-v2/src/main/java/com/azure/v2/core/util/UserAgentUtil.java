@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.util;
 
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 
 /**
  * Utility for building user agent string for Azure client libraries as specified in the

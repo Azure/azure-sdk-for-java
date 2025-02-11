@@ -4,15 +4,15 @@
 package io.clientcore.core.implementation.http.rest;
 
 import io.clientcore.core.http.RestProxy;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.FormParam;
-import io.clientcore.core.http.annotation.HeaderParam;
-import io.clientcore.core.http.annotation.HostParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
-import io.clientcore.core.http.annotation.PathParam;
-import io.clientcore.core.http.annotation.QueryParam;
-import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.exception.HttpExceptionType;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.FormParam;
+import io.clientcore.core.http.annotations.HeaderParam;
+import io.clientcore.core.http.annotations.HostParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.annotations.PathParam;
+import io.clientcore.core.http.annotations.QueryParam;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.http.exceptions.HttpExceptionType;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -25,13 +25,13 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
-import io.clientcore.core.util.Base64Uri;
-import io.clientcore.core.util.DateTimeRfc1123;
-import io.clientcore.core.util.UriBuilder;
+import io.clientcore.core.utils.Base64Uri;
+import io.clientcore.core.utils.DateTimeRfc1123;
+import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.ExpandableEnum;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.SerializationFormat;
+import io.clientcore.core.utils.ExpandableEnum;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.utils.serializer.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +57,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static io.clientcore.core.implementation.TypeUtil.typeImplementsInterface;
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
 
 /**
  * This class contains the metadata of a {@link Method} contained in a Swagger interface used to make REST API calls in

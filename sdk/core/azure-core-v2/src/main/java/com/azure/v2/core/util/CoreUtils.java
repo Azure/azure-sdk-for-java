@@ -4,7 +4,7 @@
 package com.azure.v2.core.util;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
