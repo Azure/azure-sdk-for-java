@@ -5,6 +5,7 @@ package com.azure.storage.common.implementation.structuredmessage;
 
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,6 +17,10 @@ import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MessageEncoderTests {
 
@@ -31,18 +36,24 @@ public class MessageEncoderTests {
 
     private static void writeSegment(int number, byte[] data, long dataCrc, ByteArrayOutputStream stream)
         throws IOException {
-        ByteBuffer segHeader = ByteBuffer.allocate(10).order(ByteOrder.LITTLE_ENDIAN); //2 + 8
+        writeSegment(number, data, stream); // Call the method without CRC
+        ByteBuffer segFooter = ByteBuffer.allocate(CRC64_LENGTH).order(ByteOrder.LITTLE_ENDIAN);
+        segFooter.putLong(dataCrc);
+        stream.write(segFooter.array()); // Write segment footer
+    }
+
+    private static void writeSegment(int number, byte[] data, ByteArrayOutputStream stream) throws IOException {
+        ByteBuffer segHeader = ByteBuffer.allocate(10).order(ByteOrder.LITTLE_ENDIAN); // 2 + 8
         segHeader.putShort((short) number);
         segHeader.putLong(data.length);
 
         stream.write(segHeader.array()); // Write segment header
         stream.write(data); // Write segment content
-        if (dataCrc != -1) {
-            ByteBuffer segFooter = ByteBuffer.allocate(CRC64_LENGTH).order(ByteOrder.LITTLE_ENDIAN);
-            segFooter.putLong(dataCrc);
-            stream.write(segFooter.array()); // Write segment footer
-        }
     }
+
+    // TODO isbr: Add tests with static inputs and expected outputs for the encoder.
+    // Avoid reimplementing the encoder in tests to prevent potential errors in both implementation and tests.
+    // Consider reusing outputs from existing scripts. This approach can also benefit future decoder tests.
 
     private static ByteBuffer buildStructuredMessage(ByteBuffer data, int segmentSize,
         StructuredMessageFlags structuredMessageFlags) throws IOException {
@@ -65,8 +76,11 @@ public class MessageEncoderTests {
         message.write(buffer.array());
 
         if (data.capacity() == 0) {
-            int crc = structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64 ? 0 : -1;
-            writeSegment(1, data.array(), crc, message);
+            if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
+                writeSegment(1, data.array(), 0, message);
+            } else {
+                writeSegment(1, data.array(), message);
+            }
         } else {
             // Segments
             int[] segmentSizes = new int[segmentCount];
@@ -78,16 +92,13 @@ public class MessageEncoderTests {
                 byte[] segmentData = customCopyOfRange(data, offset, size);
                 offset += size;
 
-                long segmentCrc = -1;
                 if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
-                    segmentCrc = StorageCrc64Calculator.compute(segmentData, 0);
-                    if (i == -1) {
-                        segmentCrc += 5;
-                    }
+                    long segmentCrc = StorageCrc64Calculator.compute(segmentData, 0);
+                    writeSegment(i, segmentData, segmentCrc, message);
+                    messageCRC = StorageCrc64Calculator.compute(segmentData, messageCRC);
+                } else {
+                    writeSegment(i, segmentData, message);
                 }
-                writeSegment(i, segmentData, segmentCrc, message);
-
-                messageCRC = StorageCrc64Calculator.compute(segmentData, messageCRC);
             }
         }
 
@@ -186,5 +197,55 @@ public class MessageEncoderTests {
         allActualData.write(structuredMessageEncoder.encode(wrappedData3).array());
 
         Assertions.assertArrayEquals(expected, allActualData.toByteArray());
+    }
+
+    @Test
+    public void emptyBuffer() throws IOException {
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(10, 5, StructuredMessageFlags.NONE);
+        ByteBuffer emptyBuffer = ByteBuffer.allocate(0);
+        ByteBuffer result = encoder.encode(emptyBuffer);
+        assertEquals(0, result.remaining());
+    }
+
+    @Test
+    public void contentAlreadyEncoded() throws IOException {
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
+        encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3, 4 }));
+        IllegalStateException exception
+            = assertThrows(IllegalStateException.class, () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })));
+        assertEquals("Content has already been encoded.", exception.getMessage());
+    }
+
+    @Test
+    public void bufferLengthExceedsContentLength() throws IOException {
+        StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
+        encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3 }));
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })));
+        assertEquals("Buffer length exceeds content length.", exception.getMessage());
+    }
+
+    @Test
+    public void segmentSizeLessThanOne() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new StructuredMessageEncoder(10, 0, StructuredMessageFlags.NONE);
+        });
+        assertEquals("Segment size must be at least 1.", exception.getMessage());
+    }
+
+    @Test
+    public void contentLengthLessThanOne() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new StructuredMessageEncoder(0, 10, StructuredMessageFlags.NONE);
+        });
+        assertEquals("Content length must be at least 1.", exception.getMessage());
+    }
+
+    @Test
+    public void testNumSegmentsExceedsMaxValue() {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new StructuredMessageEncoder(Integer.MAX_VALUE, 1, StructuredMessageFlags.NONE);
+        });
+        assertEquals("Number of segments must be less than or equal to " + Short.MAX_VALUE, exception.getMessage());
     }
 }

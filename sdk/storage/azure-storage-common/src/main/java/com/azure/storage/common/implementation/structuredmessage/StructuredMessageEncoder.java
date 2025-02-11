@@ -74,6 +74,10 @@ public class StructuredMessageEncoder {
         this.messageCRC64 = 0;
         this.segmentCRC64s = new HashMap<>();
         this.currentMessageLength = 0;
+
+        if (numSegments > Short.MAX_VALUE) {
+            throw new IllegalArgumentException("Number of segments must be less than or equal to " + Short.MAX_VALUE);
+        }
     }
 
     private int getMessageHeaderLength() {
@@ -131,8 +135,16 @@ public class StructuredMessageEncoder {
     public ByteBuffer encode(ByteBuffer unencodedBuffer) throws IOException {
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
-        if (unencodedBuffer.capacity() < 1) {
+        if (!unencodedBuffer.hasRemaining()) {
             return ByteBuffer.allocate(0);
+        }
+
+        if (currentContentOffset == contentLength) {
+            throw new IllegalStateException("Content has already been encoded.");
+        }
+
+        if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
+            throw new IllegalArgumentException("Buffer length exceeds content length.");
         }
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
