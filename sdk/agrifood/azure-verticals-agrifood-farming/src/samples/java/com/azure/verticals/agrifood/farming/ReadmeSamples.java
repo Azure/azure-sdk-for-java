@@ -24,9 +24,9 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-createCredential
         // Create credential
         ChainedTokenCredential credential = new ChainedTokenCredentialBuilder()
-        .addLast(new ManagedIdentityCredentialBuilder().build())
-        .addLast(new AzureCliCredentialBuilder().build())
-        .build();
+            .addLast(new ManagedIdentityCredentialBuilder().build())
+            .addLast(new AzureCliCredentialBuilder().build())
+            .build();
         // END: readme-sample-createCredential
 
         // BEGIN: readme-sample-createPartiesClient
