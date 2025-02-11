@@ -52,25 +52,6 @@
     </javaModulesSurefireArgLine>
   </properties>
 
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
-        <configuration>
-          <rules>
-            <bannedDependencies>
-              <includes>
-                <include>com.openai:openai-java:[0.8.1]</include> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
-              </includes>
-            </bannedDependencies>
-          </rules>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <dependencies>
     <!-- compile scope -->
     <dependency>
@@ -81,12 +62,30 @@
 
     <!-- provided scope -->
 
-<!--    <dependency>-->
-<!--      <groupId>com.azure</groupId>-->
-<!--      <artifactId>azure-identity</artifactId>-->
-<!--      <version>1.14.2</version> &lt;!&ndash; {x-version-update;com.azure:azure-identity;dependency} &ndash;&gt;-->
-<!--      <scope>test</scope>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.15.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-annotations</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-core</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jsr310</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>test</scope>
+    </dependency>
 
     <dependency>
       <groupId>com.google.code.findbugs</groupId>

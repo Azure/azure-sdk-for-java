@@ -3,6 +3,9 @@
 
 package com.azure.openai.tests;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.AuthenticationUtil;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.azure.AzureOpenAIServiceVersion;
 import com.openai.core.JsonValue;
 import com.openai.errors.BadRequestException;
@@ -30,6 +33,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -53,10 +57,10 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     // This method will be removed when Azure Identity library supports Azure TokenCredential as a Supplier of String
-//    static Supplier<String> getBearerTokenCredentialProvider(TokenCredential azureTokenCredential) {
-//        return AuthenticationUtil.getBearerTokenSupplier(
-//            new DefaultAzureCredentialBuilder().build(), "https://cognitiveservices.azure.com/.default");
-//    }
+    static Supplier<String> getBearerTokenCredentialProvider(TokenCredential azureTokenCredential) {
+        return AuthenticationUtil.getBearerTokenSupplier(
+            new DefaultAzureCredentialBuilder().build(), "https://cognitiveservices.azure.com/.default");
+    }
 
     // Request: Helper methods to prepare request params
     ChatCompletionMessageParam createSystemMessageParam() {

@@ -3,6 +3,7 @@
 
 package com.azure.openai.tests;
 
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.openai.azure.credential.AzureApiKeyCredential;
@@ -89,27 +90,27 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-//    @ParameterizedTest
-//    @MethodSource("com.azure.openai.tests.TestUtils#azureAdTokenOnly")
-//    public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel) {
-//        OpenAIOkHttpClientAsync.Builder clientBuilder = OpenAIOkHttpClientAsync.builder();
-//        if (AZURE_OPEN_AI.equals(apiType)) {
-//            setAzureServiceApiVersion(clientBuilder, apiVersion)
-//                .baseUrl(getEndpoint())
-//                // This requires `azure-identity` dependency.
-//                .credential(BearerTokenCredential.create(getBearerTokenCredentialProvider(new DefaultAzureCredentialBuilder().build())));
-//        } else {
-//            throw new IllegalArgumentException("Invalid API type");
-//        }
-//
-//        client = clientBuilder.build();
-//
-//        ChatCompletionCreateParams params = createParamsBuilder(testModel).build();
-//
-//        ChatCompletion chatCompletion =
-//                client.chat().completions().create(params).join();
-//        assertChatCompletion(chatCompletion, 1);
-//    }
+    @ParameterizedTest
+    @MethodSource("com.azure.openai.tests.TestUtils#azureAdTokenOnly")
+    public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel) {
+        OpenAIOkHttpClientAsync.Builder clientBuilder = OpenAIOkHttpClientAsync.builder();
+        if (AZURE_OPEN_AI.equals(apiType)) {
+            setAzureServiceApiVersion(clientBuilder, apiVersion)
+                .baseUrl(getEndpoint())
+                // This requires `azure-identity` dependency.
+                .credential(BearerTokenCredential.create(getBearerTokenCredentialProvider(new DefaultAzureCredentialBuilder().build())));
+        } else {
+            throw new IllegalArgumentException("Invalid API type");
+        }
+
+        client = clientBuilder.build();
+
+        ChatCompletionCreateParams params = createParamsBuilder(testModel).build();
+
+        ChatCompletion chatCompletion =
+                client.chat().completions().create(params).join();
+        assertChatCompletion(chatCompletion, 1);
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
