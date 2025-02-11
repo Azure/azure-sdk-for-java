@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The RequestHeaderOptions model. */
+/**
+ * The RequestHeaderOptions model.
+ */
 @Fluent
-public class RequestHeaderOptions {
+public class RequestHeaderOptions implements JsonSerializable<RequestHeaderOptions> {
     /*
      * The optInHeaders property.
      */
-    @JsonProperty(value = "optInHeaders")
     private OptInHeaderType optInHeaders;
 
-    /** Creates an instance of RequestHeaderOptions class. */
+    /**
+     * Creates an instance of RequestHeaderOptions class.
+     */
     public RequestHeaderOptions() {
     }
 
     /**
      * Get the optInHeaders property: The optInHeaders property.
-     *
+     * 
      * @return the optInHeaders value.
      */
     public OptInHeaderType optInHeaders() {
@@ -31,7 +38,7 @@ public class RequestHeaderOptions {
 
     /**
      * Set the optInHeaders property: The optInHeaders property.
-     *
+     * 
      * @param optInHeaders the optInHeaders value to set.
      * @return the RequestHeaderOptions object itself.
      */
@@ -42,9 +49,45 @@ public class RequestHeaderOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("optInHeaders", this.optInHeaders == null ? null : this.optInHeaders.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RequestHeaderOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RequestHeaderOptions if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RequestHeaderOptions.
+     */
+    public static RequestHeaderOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RequestHeaderOptions deserializedRequestHeaderOptions = new RequestHeaderOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("optInHeaders".equals(fieldName)) {
+                    deserializedRequestHeaderOptions.optInHeaders = OptInHeaderType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRequestHeaderOptions;
+        });
     }
 }

@@ -6,82 +6,51 @@ package com.azure.resourcemanager.mariadb.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mariadb.MariaDBManager;
 import com.azure.resourcemanager.mariadb.models.PerformanceTierProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ServerBasedPerformanceTiersListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"id\":\"tujbazpju\",\"maxBackupRetentionDays\":657916731,\"minBackupRetentionDays\":1097085357,\"maxStorageMB\":853013745,\"minLargeStorageMB\":1572022243,\"maxLargeStorageMB\":785261284,\"minStorageMB\":1272205160,\"serviceLevelObjectives\":[{\"id\":\"wpklvxw\",\"edition\":\"gdxpg\",\"vCore\":1490007773,\"hardwareGeneration\":\"isze\",\"maxBackupRetentionDays\":511466566,\"minBackupRetentionDays\":1448184483,\"maxStorageMB\":1746749164,\"minStorageMB\":1933702310},{\"id\":\"bbdaxco\",\"edition\":\"ozauorsukokwb\",\"vCore\":816433674,\"hardwareGeneration\":\"lvnuuepzlrph\",\"maxBackupRetentionDays\":1091324962,\"minBackupRetentionDays\":47208488,\"maxStorageMB\":699852198,\"minStorageMB\":1290354736},{\"id\":\"qdunvmnnrwrbior\",\"edition\":\"alywjhhgdn\",\"vCore\":728204459,\"hardwareGeneration\":\"ivfomiloxgg\",\"maxBackupRetentionDays\":524951220,\"minBackupRetentionDays\":75081100,\"maxStorageMB\":133601107,\"minStorageMB\":1357028156}]}]}";
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"uu\",\"maxBackupRetentionDays\":1575839239,\"minBackupRetentionDays\":1077343695,\"maxStorageMB\":335571328,\"minLargeStorageMB\":950264717,\"maxLargeStorageMB\":1399716201,\"minStorageMB\":676587800,\"serviceLevelObjectives\":[{\"id\":\"tgseinqfiufxqkn\",\"edition\":\"rgnepttwqmsniffc\",\"vCore\":2032190732,\"hardwareGeneration\":\"r\",\"maxBackupRetentionDays\":678890206,\"minBackupRetentionDays\":285792006,\"maxStorageMB\":735498603,\"minStorageMB\":2062903356}]}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MariaDBManager manager = MariaDBManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<PerformanceTierProperties> response
+            = manager.serverBasedPerformanceTiers().list("lqubkwdlen", "d", com.azure.core.util.Context.NONE);
 
-        MariaDBManager manager =
-            MariaDBManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<PerformanceTierProperties> response =
-            manager.serverBasedPerformanceTiers().list("fdntwjchrdgoih", "umwctondz", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("uu", response.iterator().next().id());
-        Assertions.assertEquals(1575839239, response.iterator().next().maxBackupRetentionDays());
-        Assertions.assertEquals(1077343695, response.iterator().next().minBackupRetentionDays());
-        Assertions.assertEquals(335571328, response.iterator().next().maxStorageMB());
-        Assertions.assertEquals(950264717, response.iterator().next().minLargeStorageMB());
-        Assertions.assertEquals(1399716201, response.iterator().next().maxLargeStorageMB());
-        Assertions.assertEquals(676587800, response.iterator().next().minStorageMB());
-        Assertions.assertEquals("tgseinqfiufxqkn", response.iterator().next().serviceLevelObjectives().get(0).id());
-        Assertions
-            .assertEquals("rgnepttwqmsniffc", response.iterator().next().serviceLevelObjectives().get(0).edition());
-        Assertions.assertEquals(2032190732, response.iterator().next().serviceLevelObjectives().get(0).vCore());
-        Assertions.assertEquals("r", response.iterator().next().serviceLevelObjectives().get(0).hardwareGeneration());
-        Assertions
-            .assertEquals(
-                678890206, response.iterator().next().serviceLevelObjectives().get(0).maxBackupRetentionDays());
-        Assertions
-            .assertEquals(
-                285792006, response.iterator().next().serviceLevelObjectives().get(0).minBackupRetentionDays());
-        Assertions.assertEquals(735498603, response.iterator().next().serviceLevelObjectives().get(0).maxStorageMB());
-        Assertions.assertEquals(2062903356, response.iterator().next().serviceLevelObjectives().get(0).minStorageMB());
+        Assertions.assertEquals("tujbazpju", response.iterator().next().id());
+        Assertions.assertEquals(657916731, response.iterator().next().maxBackupRetentionDays());
+        Assertions.assertEquals(1097085357, response.iterator().next().minBackupRetentionDays());
+        Assertions.assertEquals(853013745, response.iterator().next().maxStorageMB());
+        Assertions.assertEquals(1572022243, response.iterator().next().minLargeStorageMB());
+        Assertions.assertEquals(785261284, response.iterator().next().maxLargeStorageMB());
+        Assertions.assertEquals(1272205160, response.iterator().next().minStorageMB());
+        Assertions.assertEquals("wpklvxw", response.iterator().next().serviceLevelObjectives().get(0).id());
+        Assertions.assertEquals("gdxpg", response.iterator().next().serviceLevelObjectives().get(0).edition());
+        Assertions.assertEquals(1490007773, response.iterator().next().serviceLevelObjectives().get(0).vCore());
+        Assertions.assertEquals("isze",
+            response.iterator().next().serviceLevelObjectives().get(0).hardwareGeneration());
+        Assertions.assertEquals(511466566,
+            response.iterator().next().serviceLevelObjectives().get(0).maxBackupRetentionDays());
+        Assertions.assertEquals(1448184483,
+            response.iterator().next().serviceLevelObjectives().get(0).minBackupRetentionDays());
+        Assertions.assertEquals(1746749164, response.iterator().next().serviceLevelObjectives().get(0).maxStorageMB());
+        Assertions.assertEquals(1933702310, response.iterator().next().serviceLevelObjectives().get(0).minStorageMB());
     }
 }

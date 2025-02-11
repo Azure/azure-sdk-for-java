@@ -12,25 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class UeLocationInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UeLocationInfo model = BinaryData
-            .fromString(
-                "{\"locationType\":\"sgcrpfbcunezzce\",\"tac\":\"elfwy\",\"plmn\":{\"mcc\":\"wl\",\"mnc\":\"xjwet\"}}")
+        UeLocationInfo model = BinaryData.fromString(
+            "{\"locationType\":\"injipnwjf\",\"tac\":\"jqlafcbahhpzp\",\"plmn\":{\"mcc\":\"foiyjwpfilk\",\"mnc\":\"kkholvdndvia\"}}")
             .toObject(UeLocationInfo.class);
-        Assertions.assertEquals("sgcrpfbcunezzce", model.locationType());
-        Assertions.assertEquals("elfwy", model.tac());
-        Assertions.assertEquals("wl", model.plmn().mcc());
-        Assertions.assertEquals("xjwet", model.plmn().mnc());
+        Assertions.assertEquals("injipnwjf", model.locationType());
+        Assertions.assertEquals("jqlafcbahhpzp", model.tac());
+        Assertions.assertEquals("foiyjwpfilk", model.plmn().mcc());
+        Assertions.assertEquals("kkholvdndvia", model.plmn().mnc());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UeLocationInfo model = new UeLocationInfo().withLocationType("sgcrpfbcunezzce")
-            .withTac("elfwy")
-            .withPlmn(new PlmnId().withMcc("wl").withMnc("xjwet"));
+        UeLocationInfo model = new UeLocationInfo().withLocationType("injipnwjf")
+            .withTac("jqlafcbahhpzp")
+            .withPlmn(new PlmnId().withMcc("foiyjwpfilk").withMnc("kkholvdndvia"));
         model = BinaryData.fromObject(model).toObject(UeLocationInfo.class);
-        Assertions.assertEquals("sgcrpfbcunezzce", model.locationType());
-        Assertions.assertEquals("elfwy", model.tac());
-        Assertions.assertEquals("wl", model.plmn().mcc());
-        Assertions.assertEquals("xjwet", model.plmn().mnc());
+        Assertions.assertEquals("injipnwjf", model.locationType());
+        Assertions.assertEquals("jqlafcbahhpzp", model.tac());
+        Assertions.assertEquals("foiyjwpfilk", model.plmn().mcc());
+        Assertions.assertEquals("kkholvdndvia", model.plmn().mnc());
     }
 }

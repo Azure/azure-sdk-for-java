@@ -24,7 +24,8 @@ public class QuickBooksLinkedService extends LinkedService {
     private String type = "QuickBooks";
 
     /*
-     * Properties used to connect to QuickBooks. It is mutually exclusive with any other properties in the linked service. Type: object.
+     * Properties used to connect to QuickBooks. It is mutually exclusive with any other properties in the linked
+     * service. Type: object.
      */
     private Object connectionProperties;
 
@@ -64,7 +65,8 @@ public class QuickBooksLinkedService extends LinkedService {
     private Object useEncryptedEndpoints;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

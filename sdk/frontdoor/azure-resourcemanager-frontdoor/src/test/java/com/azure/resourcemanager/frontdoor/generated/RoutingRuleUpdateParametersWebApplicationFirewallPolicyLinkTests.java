@@ -12,17 +12,17 @@ public final class RoutingRuleUpdateParametersWebApplicationFirewallPolicyLinkTe
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink model
-            = BinaryData.fromString("{\"id\":\"lhvygdyftu\"}")
+            = BinaryData.fromString("{\"id\":\"vfcibyfmowux\"}")
                 .toObject(RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink.class);
-        Assertions.assertEquals("lhvygdyftu", model.id());
+        Assertions.assertEquals("vfcibyfmowux", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink model
-            = new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("lhvygdyftu");
+            = new RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink().withId("vfcibyfmowux");
         model
             = BinaryData.fromObject(model).toObject(RoutingRuleUpdateParametersWebApplicationFirewallPolicyLink.class);
-        Assertions.assertEquals("lhvygdyftu", model.id());
+        Assertions.assertEquals("vfcibyfmowux", model.id());
     }
 }

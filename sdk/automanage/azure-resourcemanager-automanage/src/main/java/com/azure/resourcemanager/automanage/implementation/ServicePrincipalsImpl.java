@@ -21,39 +21,36 @@ public final class ServicePrincipalsImpl implements ServicePrincipals {
 
     private final com.azure.resourcemanager.automanage.AutomanageManager serviceManager;
 
-    public ServicePrincipalsImpl(
-        ServicePrincipalsClient innerClient, com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
+    public ServicePrincipalsImpl(ServicePrincipalsClient innerClient,
+        com.azure.resourcemanager.automanage.AutomanageManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ServicePrincipal> list() {
         PagedIterable<ServicePrincipalInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ServicePrincipalImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServicePrincipalImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ServicePrincipal> list(Context context) {
         PagedIterable<ServicePrincipalInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ServicePrincipalImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServicePrincipalImpl(inner1, this.manager()));
+    }
+
+    public Response<ServicePrincipal> getWithResponse(Context context) {
+        Response<ServicePrincipalInner> inner = this.serviceClient().getWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ServicePrincipalImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ServicePrincipal get() {
         ServicePrincipalInner inner = this.serviceClient().get();
         if (inner != null) {
             return new ServicePrincipalImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ServicePrincipal> getWithResponse(Context context) {
-        Response<ServicePrincipalInner> inner = this.serviceClient().getWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ServicePrincipalImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

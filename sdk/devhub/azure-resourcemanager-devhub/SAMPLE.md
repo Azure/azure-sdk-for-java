@@ -23,14 +23,18 @@
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Operation_List.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Operation_List.
+     * json
      */
     /**
      * Sample code: List available operations for the container service resource provider.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void listAvailableOperationsForTheContainerServiceResourceProvider(
@@ -49,23 +53,24 @@ import com.azure.resourcemanager.devhub.models.GenerationLanguage;
 import com.azure.resourcemanager.devhub.models.GenerationManifestType;
 import com.azure.resourcemanager.devhub.models.ManifestGenerationMode;
 
-/** Samples for ResourceProvider GeneratePreviewArtifacts. */
+/**
+ * Samples for ResourceProvider GeneratePreviewArtifacts.
+ */
 public final class ResourceProviderGeneratePreviewArtifactsSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GeneratePreviewArtifacts.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/
+     * GeneratePreviewArtifacts.json
      */
     /**
      * Sample code: Artifact Generation Properties.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void artifactGenerationProperties(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        manager
-            .resourceProviders()
-            .generatePreviewArtifactsWithResponse(
-                "location1",
-                new ArtifactGenerationProperties()
-                    .withGenerationLanguage(GenerationLanguage.JAVASCRIPT)
+        manager.resourceProviders()
+            .generatePreviewArtifactsWithResponse("location1",
+                new ArtifactGenerationProperties().withGenerationLanguage(GenerationLanguage.JAVASCRIPT)
                     .withLanguageVersion("14")
                     .withPort("80")
                     .withAppName("my-app")
@@ -87,21 +92,22 @@ public final class ResourceProviderGeneratePreviewArtifactsSamples {
 ```java
 import com.azure.resourcemanager.devhub.models.GitHubOAuthCallRequest;
 
-/** Samples for ResourceProvider GitHubOAuth. */
+/**
+ * Samples for ResourceProvider GitHubOAuth.
+ */
 public final class ResourceProviderGitHubOAuthSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GitHubOAuth.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GitHubOAuth.json
      */
     /**
      * Sample code: GitHub OAuth.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void gitHubOAuth(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        manager
-            .resourceProviders()
-            .gitHubOAuthWithResponse(
-                "eastus2euap",
+        manager.resourceProviders()
+            .gitHubOAuthWithResponse("eastus2euap",
                 new GitHubOAuthCallRequest().withRedirectUrl("https://ms.portal.azure.com/aks"),
                 com.azure.core.util.Context.NONE);
     }
@@ -111,24 +117,24 @@ public final class ResourceProviderGitHubOAuthSamples {
 ### ResourceProvider_GitHubOAuthCallback
 
 ```java
-/** Samples for ResourceProvider GitHubOAuthCallback. */
+/**
+ * Samples for ResourceProvider GitHubOAuthCallback.
+ */
 public final class ResourceProviderGitHubOAuthCallbackSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GitHubOAuthCallback.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/
+     * GitHubOAuthCallback.json
      */
     /**
      * Sample code: GitHub OAuth Callback.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void gitHubOAuthCallback(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        manager
-            .resourceProviders()
-            .gitHubOAuthCallbackWithResponse(
-                "eastus2euap",
-                "3584d83530557fdd1f46af8289938c8ef79f9dc5",
-                "12345678-3456-7890-5678-012345678901",
-                com.azure.core.util.Context.NONE);
+        manager.resourceProviders()
+            .gitHubOAuthCallbackWithResponse("eastus2euap", "3584d83530557fdd1f46af8289938c8ef79f9dc5",
+                "12345678-3456-7890-5678-012345678901", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -136,14 +142,18 @@ public final class ResourceProviderGitHubOAuthCallbackSamples {
 ### ResourceProvider_ListGitHubOAuth
 
 ```java
-/** Samples for ResourceProvider ListGitHubOAuth. */
+/**
+ * Samples for ResourceProvider ListGitHubOAuth.
+ */
 public final class ResourceProviderListGitHubOAuthSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GitHubOAuth_List.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GitHubOAuth_List
+     * .json
      */
     /**
      * Sample code: List GitHub OAuth.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void listGitHubOAuth(com.azure.resourcemanager.devhub.DevHubManager manager) {
@@ -167,19 +177,22 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workflow CreateOrUpdate. */
+/**
+ * Samples for Workflow CreateOrUpdate.
+ */
 public final class WorkflowCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/
+     * Workflow_CreateOrUpdate.json
      */
     /**
      * Sample code: Create Workflow.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void createWorkflow(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        manager
-            .workflows()
+        manager.workflows()
             .define("workflow1")
             .withRegion("location1")
             .withExistingResourceGroup("resourceGroup1")
@@ -189,21 +202,16 @@ public final class WorkflowCreateOrUpdateSamples {
             .withBranchName("branch1")
             .withDockerfile("repo1/images/Dockerfile")
             .withDockerBuildContext("repo1/src/")
-            .withDeploymentProperties(
-                new DeploymentProperties()
-                    .withManifestType(ManifestType.KUBE)
-                    .withKubeManifestLocations(Arrays.asList("/src/manifests/"))
-                    .withOverrides(mapOf("key1", "value1")))
+            .withDeploymentProperties(new DeploymentProperties().withManifestType(ManifestType.KUBE)
+                .withKubeManifestLocations(Arrays.asList("/src/manifests/"))
+                .withOverrides(mapOf("key1", "fakeTokenPlaceholder")))
             .withNamespace("namespace1")
-            .withAcr(
-                new Acr()
-                    .withAcrSubscriptionId("subscriptionId1")
-                    .withAcrResourceGroup("resourceGroup1")
-                    .withAcrRegistryName("registry1")
-                    .withAcrRepositoryName("repo1"))
+            .withAcr(new Acr().withAcrSubscriptionId("subscriptionId1")
+                .withAcrResourceGroup("resourceGroup1")
+                .withAcrRegistryName("registry1")
+                .withAcrRepositoryName("repo1"))
             .withOidcCredentials(
-                new GitHubWorkflowProfileOidcCredentials()
-                    .withAzureClientId("12345678-3456-7890-5678-012345678901")
+                new GitHubWorkflowProfileOidcCredentials().withAzureClientId("12345678-3456-7890-5678-012345678901")
                     .withAzureTenantId("66666666-3456-7890-5678-012345678901"))
             .withAksResourceId(
                 "/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1")
@@ -211,16 +219,17 @@ public final class WorkflowCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_CreateOrUpdate_WithArtifactGen.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/
+     * Workflow_CreateOrUpdate_WithArtifactGen.json
      */
     /**
      * Sample code: Create Workflow With Artifact Generation.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void createWorkflowWithArtifactGeneration(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        manager
-            .workflows()
+        manager.workflows()
             .define("workflow1")
             .withRegion("location1")
             .withExistingResourceGroup("resourceGroup1")
@@ -230,20 +239,15 @@ public final class WorkflowCreateOrUpdateSamples {
             .withBranchName("branch1")
             .withDockerfile("repo1/images/Dockerfile")
             .withDockerBuildContext("repo1/src/")
-            .withDeploymentProperties(
-                new DeploymentProperties()
-                    .withManifestType(ManifestType.KUBE)
-                    .withKubeManifestLocations(Arrays.asList("/src/manifests/"))
-                    .withOverrides(mapOf("key1", "value1")))
-            .withAcr(
-                new Acr()
-                    .withAcrSubscriptionId("subscriptionId1")
-                    .withAcrResourceGroup("resourceGroup1")
-                    .withAcrRegistryName("registry1")
-                    .withAcrRepositoryName("repo1"))
+            .withDeploymentProperties(new DeploymentProperties().withManifestType(ManifestType.KUBE)
+                .withKubeManifestLocations(Arrays.asList("/src/manifests/"))
+                .withOverrides(mapOf("key1", "fakeTokenPlaceholder")))
+            .withAcr(new Acr().withAcrSubscriptionId("subscriptionId1")
+                .withAcrResourceGroup("resourceGroup1")
+                .withAcrRegistryName("registry1")
+                .withAcrRepositoryName("repo1"))
             .withOidcCredentials(
-                new GitHubWorkflowProfileOidcCredentials()
-                    .withAzureClientId("12345678-3456-7890-5678-012345678901")
+                new GitHubWorkflowProfileOidcCredentials().withAzureClientId("12345678-3456-7890-5678-012345678901")
                     .withAzureTenantId("66666666-3456-7890-5678-012345678901"))
             .withAksResourceId(
                 "/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1")
@@ -262,6 +266,7 @@ public final class WorkflowCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -278,19 +283,22 @@ public final class WorkflowCreateOrUpdateSamples {
 ### Workflow_Delete
 
 ```java
-/** Samples for Workflow Delete. */
+/**
+ * Samples for Workflow Delete.
+ */
 public final class WorkflowDeleteSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_Delete.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_Delete.
+     * json
      */
     /**
      * Sample code: Delete Workflow.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void deleteWorkflow(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        manager
-            .workflows()
+        manager.workflows()
             .deleteByResourceGroupWithResponse("resourceGroup1", "workflow1", com.azure.core.util.Context.NONE);
     }
 }
@@ -299,19 +307,22 @@ public final class WorkflowDeleteSamples {
 ### Workflow_GetByResourceGroup
 
 ```java
-/** Samples for Workflow GetByResourceGroup. */
+/**
+ * Samples for Workflow GetByResourceGroup.
+ */
 public final class WorkflowGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_Get.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_Get.
+     * json
      */
     /**
      * Sample code: Get Workflow.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void getWorkflow(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        manager
-            .workflows()
+        manager.workflows()
             .getByResourceGroupWithResponse("resourceGroup1", "workflow1", com.azure.core.util.Context.NONE);
     }
 }
@@ -320,14 +331,18 @@ public final class WorkflowGetByResourceGroupSamples {
 ### Workflow_List
 
 ```java
-/** Samples for Workflow List. */
+/**
+ * Samples for Workflow List.
+ */
 public final class WorkflowListSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_List.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_List.
+     * json
      */
     /**
      * Sample code: List Workflows.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void listWorkflows(com.azure.resourcemanager.devhub.DevHubManager manager) {
@@ -339,21 +354,23 @@ public final class WorkflowListSamples {
 ### Workflow_ListByResourceGroup
 
 ```java
-/** Samples for Workflow ListByResourceGroup. */
+/**
+ * Samples for Workflow ListByResourceGroup.
+ */
 public final class WorkflowListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_ListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/
+     * Workflow_ListByResourceGroup.json
      */
     /**
      * Sample code: List Workflows.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void listWorkflows(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        manager
-            .workflows()
-            .listByResourceGroup(
-                "resourceGroup1",
+        manager.workflows()
+            .listByResourceGroup("resourceGroup1",
                 "/subscriptions/subscriptionId1/resourcegroups/resourceGroup1/providers/Microsoft.ContainerService/managedClusters/cluster1",
                 com.azure.core.util.Context.NONE);
     }
@@ -367,25 +384,28 @@ import com.azure.resourcemanager.devhub.models.Workflow;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workflow UpdateTags. */
+/**
+ * Samples for Workflow UpdateTags.
+ */
 public final class WorkflowUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/Workflow_UpdateTags.json
+     * x-ms-original-file:
+     * specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/
+     * Workflow_UpdateTags.json
      */
     /**
      * Sample code: Update Managed Cluster Tags.
-     *
+     * 
      * @param manager Entry point to DevHubManager.
      */
     public static void updateManagedClusterTags(com.azure.resourcemanager.devhub.DevHubManager manager) {
-        Workflow resource =
-            manager
-                .workflows()
-                .getByResourceGroupWithResponse("resourceGroup1", "workflow1", com.azure.core.util.Context.NONE)
-                .getValue();
+        Workflow resource = manager.workflows()
+            .getByResourceGroupWithResponse("resourceGroup1", "workflow1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("promote", "false", "resourceEnv", "testing")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

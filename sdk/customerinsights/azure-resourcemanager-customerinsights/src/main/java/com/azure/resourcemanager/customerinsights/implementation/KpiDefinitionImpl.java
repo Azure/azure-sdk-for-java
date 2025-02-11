@@ -24,8 +24,7 @@ public final class KpiDefinitionImpl implements KpiDefinition {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    KpiDefinitionImpl(
-        KpiDefinitionInner innerObject,
+    KpiDefinitionImpl(KpiDefinitionInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

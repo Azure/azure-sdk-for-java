@@ -5,49 +5,48 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * Properties of the storage task.
  */
 @Fluent
-public final class StorageTaskProperties {
+public final class StorageTaskProperties implements JsonSerializable<StorageTaskProperties> {
     /*
      * Storage task version.
      */
-    @JsonProperty(value = "taskVersion", access = JsonProperty.Access.WRITE_ONLY)
     private Long taskVersion;
 
     /*
      * Storage Task is enabled when set to true and disabled when set to false
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * Text that describes the purpose of the storage task
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
     /*
      * The storage task action that is executed
      */
-    @JsonProperty(value = "action", required = true)
     private StorageTaskAction action;
 
     /*
      * Represents the provisioning state of the storage task.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The creation date and time of the storage task in UTC.
      */
-    @JsonProperty(value = "creationTimeInUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTimeInUtc;
 
     /**
@@ -150,16 +149,68 @@ public final class StorageTaskProperties {
      */
     public void validate() {
         if (description() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property description in model StorageTaskProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model StorageTaskProperties"));
         }
         if (action() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property action in model StorageTaskProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property action in model StorageTaskProperties"));
         } else {
             action().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StorageTaskProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("action", this.action);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageTaskProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageTaskProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageTaskProperties.
+     */
+    public static StorageTaskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageTaskProperties deserializedStorageTaskProperties = new StorageTaskProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedStorageTaskProperties.enabled = reader.getBoolean();
+                } else if ("description".equals(fieldName)) {
+                    deserializedStorageTaskProperties.description = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedStorageTaskProperties.action = StorageTaskAction.fromJson(reader);
+                } else if ("taskVersion".equals(fieldName)) {
+                    deserializedStorageTaskProperties.taskVersion = reader.getNullable(JsonReader::getLong);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStorageTaskProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("creationTimeInUtc".equals(fieldName)) {
+                    deserializedStorageTaskProperties.creationTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageTaskProperties;
+        });
+    }
 }

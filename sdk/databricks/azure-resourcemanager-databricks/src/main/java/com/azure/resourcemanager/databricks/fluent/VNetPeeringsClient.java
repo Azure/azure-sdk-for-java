@@ -13,34 +13,36 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databricks.fluent.models.VirtualNetworkPeeringInner;
 
-/** An instance of this class provides access to all the operations defined in VNetPeeringsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VNetPeeringsClient.
+ */
 public interface VNetPeeringsClient {
     /**
      * Gets the workspace vNet Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workspace vNet Peering along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkPeeringInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String peeringName, Context context);
+    Response<VirtualNetworkPeeringInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String peeringName, Context context);
 
     /**
      * Gets the workspace vNet Peering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the workspace vNet Peering.
      */
@@ -49,13 +51,13 @@ public interface VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
@@ -64,30 +66,30 @@ public interface VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String peeringName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String peeringName,
+        Context context);
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -95,14 +97,14 @@ public interface VNetPeeringsClient {
 
     /**
      * Deletes the workspace vNetPeering.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -110,27 +112,25 @@ public interface VNetPeeringsClient {
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of peerings in a VirtualNetwork resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
+        String resourceGroupName, String workspaceName, String peeringName,
         VirtualNetworkPeeringInner virtualNetworkPeeringParameters);
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -138,41 +138,35 @@ public interface VNetPeeringsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of peerings in a VirtualNetwork resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        Context context);
+        String resourceGroupName, String workspaceName, String peeringName,
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters, Context context);
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create workspace vNet Peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a VirtualNetwork resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
+    VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String workspaceName, String peeringName,
         VirtualNetworkPeeringInner virtualNetworkPeeringParameters);
 
     /**
      * Creates vNet Peering for workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param peeringName The name of the workspace vNet peering.
@@ -180,26 +174,22 @@ public interface VNetPeeringsClient {
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return peerings in a VirtualNetwork resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String peeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        Context context);
+    VirtualNetworkPeeringInner createOrUpdate(String resourceGroupName, String workspaceName, String peeringName,
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters, Context context);
 
     /**
      * Lists the workspace vNet Peerings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gets all virtual network peerings under a workspace as paginated response with {@link PagedIterable}.
      */
@@ -208,17 +198,17 @@ public interface VNetPeeringsClient {
 
     /**
      * Lists the workspace vNet Peerings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.databricks.models.ErrorInfoException thrown if the request is rejected by
-     *     server.
+     * server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gets all virtual network peerings under a workspace as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualNetworkPeeringInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<VirtualNetworkPeeringInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

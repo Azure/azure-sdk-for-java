@@ -46,41 +46,33 @@ public final class MonitoredSubscriptionPropertiesInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredSubscriptionPropertiesInner model
-            = new MonitoredSubscriptionPropertiesInner()
-                .withProperties(
-                    new SubscriptionList()
-                        .withPatchOperation(
-                            PatchOperation.ADD_COMPLETE)
-                        .withMonitoredSubscriptionList(
-                            Arrays
-                                .asList(
-                                    new MonitoredSubscriptionInner().withSubscriptionId("ywpmueefjzwfqkq")
-                                        .withStatus(
-                                            Status.IN_PROGRESS)
-                                        .withError("suyonobglaocq")
-                                        .withTagRules(new MonitoringTagRulesPropertiesInner()
-                                            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
-                                                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
-                                                .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
-                                                .withFilteringTags(
-                                                    Arrays.asList(new FilteringTag(), new FilteringTag())))
-                                            .withMetricRules(new MetricRulesInner()
-                                                .withSendMetrics(SendMetricsStatus.DISABLED)
-                                                .withFilteringTags(Arrays.asList(new FilteringTag()))
-                                                .withUserEmail("wfudwpzntxhdzhl"))),
-                                    new MonitoredSubscriptionInner().withSubscriptionId("jbhckfrlhr")
-                                        .withStatus(Status.ACTIVE).withError("yvpycanuzbpzk")
-                                        .withTagRules(new MonitoringTagRulesPropertiesInner()
-                                            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
-                                                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
-                                                .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
-                                                .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(),
-                                                    new FilteringTag(), new FilteringTag())))
-                                            .withMetricRules(new MetricRulesInner()
-                                                .withSendMetrics(SendMetricsStatus.ENABLED).withFilteringTags(Arrays
-                                                    .asList(new FilteringTag(), new FilteringTag(), new FilteringTag()))
-                                                .withUserEmail("jusrtslhspk"))))));
+        MonitoredSubscriptionPropertiesInner model = new MonitoredSubscriptionPropertiesInner()
+            .withProperties(new SubscriptionList().withPatchOperation(PatchOperation.ADD_COMPLETE)
+                .withMonitoredSubscriptionList(Arrays.asList(
+                    new MonitoredSubscriptionInner().withSubscriptionId("ywpmueefjzwfqkq")
+                        .withStatus(Status.IN_PROGRESS)
+                        .withError("suyonobglaocq")
+                        .withTagRules(new MonitoringTagRulesPropertiesInner()
+                            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.DISABLED)
+                                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+                                .withSendActivityLogs(SendActivityLogsStatus.DISABLED)
+                                .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag())))
+                            .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.DISABLED)
+                                .withFilteringTags(Arrays.asList(new FilteringTag()))
+                                .withUserEmail("wfudwpzntxhdzhl"))),
+                    new MonitoredSubscriptionInner().withSubscriptionId("jbhckfrlhr")
+                        .withStatus(Status.ACTIVE)
+                        .withError("yvpycanuzbpzk")
+                        .withTagRules(new MonitoringTagRulesPropertiesInner()
+                            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
+                                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+                                .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
+                                .withFilteringTags(Arrays.asList(new FilteringTag(), new FilteringTag(),
+                                    new FilteringTag(), new FilteringTag())))
+                            .withMetricRules(new MetricRulesInner().withSendMetrics(SendMetricsStatus.ENABLED)
+                                .withFilteringTags(
+                                    Arrays.asList(new FilteringTag(), new FilteringTag(), new FilteringTag()))
+                                .withUserEmail("jusrtslhspk"))))));
         model = BinaryData.fromObject(model).toObject(MonitoredSubscriptionPropertiesInner.class);
         Assertions.assertEquals(PatchOperation.ADD_COMPLETE, model.properties().patchOperation());
         Assertions.assertEquals("ywpmueefjzwfqkq",

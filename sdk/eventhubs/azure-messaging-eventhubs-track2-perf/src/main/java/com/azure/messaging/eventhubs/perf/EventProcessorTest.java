@@ -29,8 +29,8 @@ import java.util.function.Consumer;
  * Tests EventProcessorClient.
  */
 public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
-    private static final String HEADERS = String.join("\t", "Id", "Index", "Count",
-        "Elapsed Time (ns)", "Elapsed Time (s)", "Rate (ops/sec)");
+    private static final String HEADERS
+        = String.join("\t", "Id", "Index", "Count", "Elapsed Time (ns)", "Elapsed Time (s)", "Rate (ops/sec)");
     private static final String FORMAT_STRING = "%s\t%d\t%d\t%s\t%s\t%.2f";
 
     // Minimum duration is 2 minutes so we can give it time to claim all the partitions.
@@ -68,8 +68,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
 
         final String containerName = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd-HHmmss"));
 
-        containerClient = new BlobContainerClientBuilder()
-            .connectionString(options.getStorageConnectionString())
+        containerClient = new BlobContainerClientBuilder().connectionString(options.getStorageConnectionString())
             .containerName(containerName)
             .buildAsyncClient();
 
@@ -81,29 +80,23 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
             }
         });
 
-        return Mono.using(
-            () -> createEventHubClientBuilder().buildAsyncProducerClient(),
-            asyncClient -> {
-                final Mono<Void> sendMessagesMono = asyncClient.getEventHubProperties()
-                    .flatMapMany(properties -> {
-                        for (String partitionId : properties.getPartitionIds()) {
-                            partitionProcessorMap.put(partitionId, new SamplePartitionProcessor());
-                        }
+        return Mono.using(() -> createEventHubClientBuilder().buildAsyncProducerClient(), asyncClient -> {
+            final Mono<Void> sendMessagesMono = asyncClient.getEventHubProperties().flatMapMany(properties -> {
+                for (String partitionId : properties.getPartitionIds()) {
+                    partitionProcessorMap.put(partitionId, new SamplePartitionProcessor());
+                }
 
-                        return Flux.fromIterable(properties.getPartitionIds());
-                    })
-                    .flatMap(partitionId -> {
-                        if (options.publishMessages()) {
-                            return sendMessages(asyncClient, partitionId, options.getEventsToSend());
-                        } else {
-                            return Mono.empty();
-                        }
-                    })
-                    .then();
+                return Flux.fromIterable(properties.getPartitionIds());
+            }).flatMap(partitionId -> {
+                if (options.publishMessages()) {
+                    return sendMessages(asyncClient, partitionId, options.getEventsToSend());
+                } else {
+                    return Mono.empty();
+                }
+            }).then();
 
-                return Mono.when(createContainerMono, sendMessagesMono);
-            },
-            EventHubProducerAsyncClient::close);
+            return Mono.when(createContainerMono, sendMessagesMono);
+        }, EventHubProducerAsyncClient::close);
     }
 
     @Override
@@ -117,89 +110,86 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
             return Mono.error(new RuntimeException("ContainerClient should have been initialized."));
         }
 
-        return Mono.usingWhen(
-            Mono.fromCallable(() -> {
-                System.out.println("Starting run.");
+        return Mono.usingWhen(Mono.fromCallable(() -> {
+            System.out.println("Starting run.");
 
-                final BlobCheckpointStore checkpointStore = new BlobCheckpointStore(containerClient);
-                final EventProcessorClientBuilder builder = new EventProcessorClientBuilder()
-                    .connectionString(options.getConnectionString(), options.getEventHubName())
-                    .consumerGroup(options.getConsumerGroup())
-                    .loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
-                    .checkpointStore(checkpointStore)
-                    .processError(context -> {
-                        final String partitionId = context.getPartitionContext().getPartitionId();
-                        final SamplePartitionProcessor processor = partitionProcessorMap.get(partitionId);
-                        if (processor == null) {
-                            System.err.printf("partitionId: %s. No matching processor. onError: %s%n",
-                                partitionId, context.getThrowable());
-                        } else {
-                            processor.onError(context.getPartitionContext(), context.getThrowable());
-                        }
-                    })
-                    .processPartitionInitialization(context -> {
-                        final String partitionId = context.getPartitionContext().getPartitionId();
-                        final SamplePartitionProcessor processor = partitionProcessorMap.get(partitionId);
-                        if (processor == null) {
-                            System.err.printf("partitionId: %s. No matching processor. onOpen%n", partitionId);
-                        } else {
-                            processor.onOpen(context.getPartitionContext());
-                        }
-                    })
-                    .processPartitionClose(context -> {
-                        final String partitionId = context.getPartitionContext().getPartitionId();
-                        final SamplePartitionProcessor processor = partitionProcessorMap.get(partitionId);
-                        if (processor == null) {
-                            System.err.printf("partitionId: %s. No matching processor. onClose%n", partitionId);
-                        } else {
-                            processor.onClose(context.getPartitionContext(), context.getCloseReason());
-                        }
-                    });
-
-                if (options.isBatched()) {
-                    if (options.getBatchSize() < 1) {
-                        throw new RuntimeException("Batch size is invalid. " + options.getBatchSize());
+            final BlobCheckpointStore checkpointStore = new BlobCheckpointStore(containerClient);
+            final EventProcessorClientBuilder builder = new EventProcessorClientBuilder()
+                .connectionString(options.getConnectionString(), options.getEventHubName())
+                .consumerGroup(options.getConsumerGroup())
+                .loadBalancingStrategy(LoadBalancingStrategy.GREEDY)
+                .checkpointStore(checkpointStore)
+                .processError(context -> {
+                    final String partitionId = context.getPartitionContext().getPartitionId();
+                    final SamplePartitionProcessor processor = partitionProcessorMap.get(partitionId);
+                    if (processor == null) {
+                        System.err.printf("partitionId: %s. No matching processor. onError: %s%n", partitionId,
+                            context.getThrowable());
+                    } else {
+                        processor.onError(context.getPartitionContext(), context.getThrowable());
                     }
+                })
+                .processPartitionInitialization(context -> {
+                    final String partitionId = context.getPartitionContext().getPartitionId();
+                    final SamplePartitionProcessor processor = partitionProcessorMap.get(partitionId);
+                    if (processor == null) {
+                        System.err.printf("partitionId: %s. No matching processor. onOpen%n", partitionId);
+                    } else {
+                        processor.onOpen(context.getPartitionContext());
+                    }
+                })
+                .processPartitionClose(context -> {
+                    final String partitionId = context.getPartitionContext().getPartitionId();
+                    final SamplePartitionProcessor processor = partitionProcessorMap.get(partitionId);
+                    if (processor == null) {
+                        System.err.printf("partitionId: %s. No matching processor. onClose%n", partitionId);
+                    } else {
+                        processor.onClose(context.getPartitionContext(), context.getCloseReason());
+                    }
+                });
 
-                    builder.processEventBatch(context -> {
-                        final String partitionId = context.getPartitionContext().getPartitionId();
-                        final SamplePartitionProcessor processor = partitionProcessorMap.get(partitionId);
-                        if (processor == null) {
-                            System.err.printf("partitionId: %s. No matching processor. onEvent%n", partitionId);
-                        } else {
-                            processor.onEvents(context.getPartitionContext(), context.getEvents());
-                        }
-                    }, options.getBatchSize());
-                } else {
-                    builder.processEvent(context -> {
-                        final String partitionId = context.getPartitionContext().getPartitionId();
-                        final SamplePartitionProcessor processor = partitionProcessorMap.get(partitionId);
-                        if (processor == null) {
-                            System.err.printf("partitionId: %s. No matching processor. onEvent%n", partitionId);
-                        } else {
-                            processor.onEvents(context.getPartitionContext(), context.getEventData());
-                        }
-                    });
+            if (options.isBatched()) {
+                if (options.getBatchSize() < 1) {
+                    throw new RuntimeException("Batch size is invalid. " + options.getBatchSize());
                 }
 
-                if (options.getTransportType() != null) {
-                    builder.transportType(options.getTransportType());
-                }
+                builder.processEventBatch(context -> {
+                    final String partitionId = context.getPartitionContext().getPartitionId();
+                    final SamplePartitionProcessor processor = partitionProcessorMap.get(partitionId);
+                    if (processor == null) {
+                        System.err.printf("partitionId: %s. No matching processor. onEvent%n", partitionId);
+                    } else {
+                        processor.onEvents(context.getPartitionContext(), context.getEvents());
+                    }
+                }, options.getBatchSize());
+            } else {
+                builder.processEvent(context -> {
+                    final String partitionId = context.getPartitionContext().getPartitionId();
+                    final SamplePartitionProcessor processor = partitionProcessorMap.get(partitionId);
+                    if (processor == null) {
+                        System.err.printf("partitionId: %s. No matching processor. onEvent%n", partitionId);
+                    } else {
+                        processor.onEvents(context.getPartitionContext(), context.getEventData());
+                    }
+                });
+            }
 
-                return builder.buildEventProcessorClient();
-            }),
-            processor -> {
-                startTime = System.nanoTime();
-                processor.start();
-                return Mono.delay(testDuration).then();
-            },
-            processor -> {
-                endTime = System.nanoTime();
+            if (options.getTransportType() != null) {
+                builder.transportType(options.getTransportType());
+            }
 
-                System.out.println("Completed run.");
-                return Mono.delay(Duration.ofMillis(500), Schedulers.boundedElastic())
-                    .then(Mono.fromRunnable(() -> processor.stop()));
-            });
+            return builder.buildEventProcessorClient();
+        }), processor -> {
+            startTime = System.nanoTime();
+            processor.start();
+            return Mono.delay(testDuration).then();
+        }, processor -> {
+            endTime = System.nanoTime();
+
+            System.out.println("Completed run.");
+            return Mono.delay(Duration.ofMillis(500), Schedulers.boundedElastic())
+                .then(Mono.fromRunnable(() -> processor.stop()));
+        });
     }
 
     @Override
@@ -255,7 +245,7 @@ public class EventProcessorTest extends ServiceTest<EventProcessorOptions> {
         final double seconds = eventsCounter.elapsedTime() * 0.000000001;
         final double operationsSecond = eventsCounter.totalEvents() / seconds;
 
-        return String.format(FORMAT_STRING, eventsCounter.getPartitionId(), index,
-            eventsCounter.totalEvents(), eventsCounter.elapsedTime(), seconds, operationsSecond);
+        return String.format(FORMAT_STRING, eventsCounter.getPartitionId(), index, eventsCounter.totalEvents(),
+            eventsCounter.elapsedTime(), seconds, operationsSecond);
     }
 }

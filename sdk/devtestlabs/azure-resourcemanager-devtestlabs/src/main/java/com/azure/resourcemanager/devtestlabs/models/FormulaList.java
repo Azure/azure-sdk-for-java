@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.fluent.models.FormulaInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response of a list operation. */
+/**
+ * The response of a list operation.
+ */
 @Fluent
-public final class FormulaList {
+public final class FormulaList implements JsonSerializable<FormulaList> {
     /*
      * Results of the list operation.
      */
-    @JsonProperty(value = "value")
     private List<FormulaInner> value;
 
     /*
      * Link for next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FormulaList class. */
+    /**
+     * Creates an instance of FormulaList class.
+     */
     public FormulaList() {
     }
 
     /**
      * Get the value property: Results of the list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<FormulaInner> value() {
@@ -39,7 +45,7 @@ public final class FormulaList {
 
     /**
      * Set the value property: Results of the list operation.
-     *
+     * 
      * @param value the value value to set.
      * @return the FormulaList object itself.
      */
@@ -50,7 +56,7 @@ public final class FormulaList {
 
     /**
      * Get the nextLink property: Link for next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class FormulaList {
 
     /**
      * Set the nextLink property: Link for next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FormulaList object itself.
      */
@@ -70,12 +76,52 @@ public final class FormulaList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FormulaList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FormulaList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FormulaList.
+     */
+    public static FormulaList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FormulaList deserializedFormulaList = new FormulaList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<FormulaInner> value = reader.readArray(reader1 -> FormulaInner.fromJson(reader1));
+                    deserializedFormulaList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedFormulaList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFormulaList;
+        });
     }
 }

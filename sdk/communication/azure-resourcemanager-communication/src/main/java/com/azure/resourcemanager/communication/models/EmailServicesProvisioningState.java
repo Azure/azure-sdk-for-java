@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -72,7 +71,6 @@ public final class EmailServicesProvisioningState extends ExpandableStringEnum<E
      * @param name a name to look for.
      * @return the corresponding EmailServicesProvisioningState.
      */
-    @JsonCreator
     public static EmailServicesProvisioningState fromString(String name) {
         return fromString(name, EmailServicesProvisioningState.class);
     }

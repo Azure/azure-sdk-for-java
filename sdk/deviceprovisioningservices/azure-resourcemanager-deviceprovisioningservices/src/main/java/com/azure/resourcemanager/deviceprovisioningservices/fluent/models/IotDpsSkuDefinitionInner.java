@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.deviceprovisioningservices.models.IotDpsSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Available SKUs of tier and units. */
+/**
+ * Available SKUs of tier and units.
+ */
 @Fluent
-public final class IotDpsSkuDefinitionInner {
+public final class IotDpsSkuDefinitionInner implements JsonSerializable<IotDpsSkuDefinitionInner> {
     /*
      * Sku name.
      */
-    @JsonProperty(value = "name")
     private IotDpsSku name;
 
     /**
+     * Creates an instance of IotDpsSkuDefinitionInner class.
+     */
+    public IotDpsSkuDefinitionInner() {
+    }
+
+    /**
      * Get the name property: Sku name.
-     *
+     * 
      * @return the name value.
      */
     public IotDpsSku name() {
@@ -28,7 +39,7 @@ public final class IotDpsSkuDefinitionInner {
 
     /**
      * Set the name property: Sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the IotDpsSkuDefinitionInner object itself.
      */
@@ -39,9 +50,45 @@ public final class IotDpsSkuDefinitionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotDpsSkuDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotDpsSkuDefinitionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotDpsSkuDefinitionInner.
+     */
+    public static IotDpsSkuDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotDpsSkuDefinitionInner deserializedIotDpsSkuDefinitionInner = new IotDpsSkuDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedIotDpsSkuDefinitionInner.name = IotDpsSku.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotDpsSkuDefinitionInner;
+        });
     }
 }

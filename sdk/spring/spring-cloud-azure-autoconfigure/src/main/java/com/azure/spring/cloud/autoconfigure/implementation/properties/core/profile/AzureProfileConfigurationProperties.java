@@ -13,7 +13,7 @@ import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdapter {
 
     /**
-     * Tenant ID for Azure resources.
+     * Tenant ID for Azure resources. The values allowed for 'tenant-id' are: 'common', 'organizations', 'consumers', or the tenant ID.
      */
     private String tenantId;
     /**
@@ -21,7 +21,7 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
      */
     private String subscriptionId;
     /**
-     * Name of the Azure cloud to connect to. Supported types are: AZURE, AZURE_CHINA, AZURE_US_GOVERNMENT, OTHER. The default value is `AZURE`.
+     * Name of the Azure cloud to connect to. Supported types are: 'AZURE', 'AZURE_CHINA', 'AZURE_US_GOVERNMENT', 'OTHER'. The default value is 'AZURE'.
      */
     private AzureProfileOptionsProvider.CloudType cloudType;
 
@@ -92,11 +92,11 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
          */
         private String galleryEndpoint;
         /**
-         * The Azure Active Directory endpoint to connect to.
+         * The Microsoft Entra endpoint to connect to.
          */
         private String activeDirectoryEndpoint;
         /**
-         * The Azure Active Directory resource ID.
+         * The Microsoft Entra resource ID.
          */
         private String activeDirectoryResourceId;
         /**

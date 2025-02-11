@@ -84,8 +84,8 @@ public final class ServiceUnitResourceImpl
 
     private String serviceUnitName;
 
-    public ServiceUnitResourceImpl withExistingService(
-        String resourceGroupName, String serviceTopologyName, String serviceName) {
+    public ServiceUnitResourceImpl withExistingService(String resourceGroupName, String serviceTopologyName,
+        String serviceName) {
         this.resourceGroupName = resourceGroupName;
         this.serviceTopologyName = serviceTopologyName;
         this.serviceName = serviceName;
@@ -93,27 +93,18 @@ public final class ServiceUnitResourceImpl
     }
 
     public ServiceUnitResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceUnits()
-                .createOrUpdate(
-                    resourceGroupName,
-                    serviceTopologyName,
-                    serviceName,
-                    serviceUnitName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceUnits()
+            .createOrUpdate(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ServiceUnitResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceUnits()
-                .createOrUpdate(
-                    resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceUnits()
+            .createOrUpdate(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.innerModel(),
+                context);
         return this;
     }
 
@@ -128,32 +119,22 @@ public final class ServiceUnitResourceImpl
     }
 
     public ServiceUnitResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceUnits()
-                .createOrUpdate(
-                    resourceGroupName,
-                    serviceTopologyName,
-                    serviceName,
-                    serviceUnitName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceUnits()
+            .createOrUpdate(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ServiceUnitResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceUnits()
-                .createOrUpdate(
-                    resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceUnits()
+            .createOrUpdate(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.innerModel(),
+                context);
         return this;
     }
 
-    ServiceUnitResourceImpl(
-        ServiceUnitResourceInner innerObject,
+    ServiceUnitResourceImpl(ServiceUnitResourceInner innerObject,
         com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -164,22 +145,18 @@ public final class ServiceUnitResourceImpl
     }
 
     public ServiceUnitResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceUnits()
-                .getWithResponse(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceUnits()
+            .getWithResponse(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceUnitResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServiceUnits()
-                .getWithResponse(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServiceUnits()
+            .getWithResponse(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, context)
+            .getValue();
         return this;
     }
 

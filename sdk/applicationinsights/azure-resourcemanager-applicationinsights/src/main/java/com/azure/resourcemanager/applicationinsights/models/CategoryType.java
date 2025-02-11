@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CategoryType. */
+/**
+ * Defines values for CategoryType.
+ */
 public final class CategoryType extends ExpandableStringEnum<CategoryType> {
-    /** Static value workbook for CategoryType. */
+    /**
+     * Static value workbook for CategoryType.
+     */
     public static final CategoryType WORKBOOK = fromString("workbook");
 
-    /** Static value TSG for CategoryType. */
+    /**
+     * Static value TSG for CategoryType.
+     */
     public static final CategoryType TSG = fromString("TSG");
 
-    /** Static value performance for CategoryType. */
+    /**
+     * Static value performance for CategoryType.
+     */
     public static final CategoryType PERFORMANCE = fromString("performance");
 
-    /** Static value retention for CategoryType. */
+    /**
+     * Static value retention for CategoryType.
+     */
     public static final CategoryType RETENTION = fromString("retention");
 
     /**
      * Creates a new instance of CategoryType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class CategoryType extends ExpandableStringEnum<CategoryType> {
 
     /**
      * Creates or finds a CategoryType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CategoryType.
      */
-    @JsonCreator
     public static CategoryType fromString(String name) {
         return fromString(name, CategoryType.class);
     }
 
     /**
      * Gets known CategoryType values.
-     *
+     * 
      * @return known CategoryType values.
      */
     public static Collection<CategoryType> values() {

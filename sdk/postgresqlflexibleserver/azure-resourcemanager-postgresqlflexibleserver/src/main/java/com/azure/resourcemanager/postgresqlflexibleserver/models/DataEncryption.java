@@ -5,53 +5,50 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Data encryption properties of a server.
  */
 @Fluent
-public final class DataEncryption {
+public final class DataEncryption implements JsonSerializable<DataEncryption> {
     /*
      * URI for the key in keyvault for data encryption of the primary server.
      */
-    @JsonProperty(value = "primaryKeyURI")
     private String primaryKeyUri;
 
     /*
      * Resource Id for the User assigned identity to be used for data encryption of the primary server.
      */
-    @JsonProperty(value = "primaryUserAssignedIdentityId")
     private String primaryUserAssignedIdentityId;
 
     /*
      * URI for the key in keyvault for data encryption for geo-backup of server.
      */
-    @JsonProperty(value = "geoBackupKeyURI")
     private String geoBackupKeyUri;
 
     /*
      * Resource Id for the User assigned identity to be used for data encryption for geo-backup of server.
      */
-    @JsonProperty(value = "geoBackupUserAssignedIdentityId")
     private String geoBackupUserAssignedIdentityId;
 
     /*
      * Data encryption type to depict if it is System Managed vs Azure Key vault.
      */
-    @JsonProperty(value = "type")
     private ArmServerKeyType type;
 
     /*
      * Primary encryption key status for Data encryption enabled server.
      */
-    @JsonProperty(value = "primaryEncryptionKeyStatus")
     private KeyStatusEnum primaryEncryptionKeyStatus;
 
     /*
      * Geo-backup encryption key status for Data encryption enabled server.
      */
-    @JsonProperty(value = "geoBackupEncryptionKeyStatus")
     private KeyStatusEnum geoBackupEncryptionKeyStatus;
 
     /**
@@ -212,5 +209,63 @@ public final class DataEncryption {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryKeyURI", this.primaryKeyUri);
+        jsonWriter.writeStringField("primaryUserAssignedIdentityId", this.primaryUserAssignedIdentityId);
+        jsonWriter.writeStringField("geoBackupKeyURI", this.geoBackupKeyUri);
+        jsonWriter.writeStringField("geoBackupUserAssignedIdentityId", this.geoBackupUserAssignedIdentityId);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("primaryEncryptionKeyStatus",
+            this.primaryEncryptionKeyStatus == null ? null : this.primaryEncryptionKeyStatus.toString());
+        jsonWriter.writeStringField("geoBackupEncryptionKeyStatus",
+            this.geoBackupEncryptionKeyStatus == null ? null : this.geoBackupEncryptionKeyStatus.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataEncryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataEncryption if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataEncryption.
+     */
+    public static DataEncryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataEncryption deserializedDataEncryption = new DataEncryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryKeyURI".equals(fieldName)) {
+                    deserializedDataEncryption.primaryKeyUri = reader.getString();
+                } else if ("primaryUserAssignedIdentityId".equals(fieldName)) {
+                    deserializedDataEncryption.primaryUserAssignedIdentityId = reader.getString();
+                } else if ("geoBackupKeyURI".equals(fieldName)) {
+                    deserializedDataEncryption.geoBackupKeyUri = reader.getString();
+                } else if ("geoBackupUserAssignedIdentityId".equals(fieldName)) {
+                    deserializedDataEncryption.geoBackupUserAssignedIdentityId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataEncryption.type = ArmServerKeyType.fromString(reader.getString());
+                } else if ("primaryEncryptionKeyStatus".equals(fieldName)) {
+                    deserializedDataEncryption.primaryEncryptionKeyStatus
+                        = KeyStatusEnum.fromString(reader.getString());
+                } else if ("geoBackupEncryptionKeyStatus".equals(fieldName)) {
+                    deserializedDataEncryption.geoBackupEncryptionKeyStatus
+                        = KeyStatusEnum.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataEncryption;
+        });
     }
 }

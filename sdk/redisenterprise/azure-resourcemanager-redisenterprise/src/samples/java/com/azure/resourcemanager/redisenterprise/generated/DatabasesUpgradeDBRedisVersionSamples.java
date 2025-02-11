@@ -9,7 +9,9 @@ package com.azure.resourcemanager.redisenterprise.generated;
  */
 public final class DatabasesUpgradeDBRedisVersionSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-03-01-preview/examples/RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
+     * x-ms-original-file:
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
+     * RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
      */
     /**
      * Sample code: How to upgrade your database Redis version.

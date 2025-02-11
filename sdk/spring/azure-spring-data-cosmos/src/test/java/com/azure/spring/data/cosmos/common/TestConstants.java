@@ -5,6 +5,8 @@ package com.azure.spring.data.cosmos.common;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.spring.data.cosmos.domain.Address;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -124,6 +126,12 @@ public final class TestConstants {
 
     public static final String PROPERTY_MESSAGE = "message";
     public static final String PROPERTY_DATE = "date";
+
+    public static final String PROPERTY_BIG_INTEGER = "bigInteger";
+    public static final String PROPERTY_BIG_DECIMAL = "bigDecimal";
+
+    public static final BigInteger BIG_INTEGER = new BigInteger("10000000000000000");
+    public static final BigDecimal BIG_DECIMAL = new BigDecimal("12345678.12345678");
 
     public static final String PROPERTY_ETAG_DEFAULT = "_etag";
     public static final String PROPERTY_ETAG_RENAMED = "etag";

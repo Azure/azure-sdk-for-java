@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.astro.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class SingleSignOnStates extends ExpandableStringEnum<SingleSignOnS
      * @param name a name to look for.
      * @return the corresponding SingleSignOnStates.
      */
-    @JsonCreator
     public static SingleSignOnStates fromString(String name) {
         return fromString(name, SingleSignOnStates.class);
     }

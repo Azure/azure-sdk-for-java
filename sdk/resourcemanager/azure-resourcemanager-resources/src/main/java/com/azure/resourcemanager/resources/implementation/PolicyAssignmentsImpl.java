@@ -18,9 +18,8 @@ import reactor.core.publisher.Mono;
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
  */
-public final class PolicyAssignmentsImpl
-        extends CreatableWrappersImpl<PolicyAssignment, PolicyAssignmentImpl, PolicyAssignmentInner>
-        implements PolicyAssignments {
+public final class PolicyAssignmentsImpl extends
+    CreatableWrappersImpl<PolicyAssignment, PolicyAssignmentImpl, PolicyAssignmentInner> implements PolicyAssignments {
     private final PolicyAssignmentsClient client;
 
     /**
@@ -49,9 +48,7 @@ public final class PolicyAssignmentsImpl
 
     @Override
     protected PolicyAssignmentImpl wrapModel(String name) {
-        return new PolicyAssignmentImpl(name,
-                new PolicyAssignmentInner().withDisplayName(name),
-                client);
+        return new PolicyAssignmentImpl(name, new PolicyAssignmentInner().withDisplayName(name), client);
     }
 
     @Override
@@ -64,13 +61,10 @@ public final class PolicyAssignmentsImpl
 
     @Override
     public PagedIterable<PolicyAssignment> listByResource(String resourceId) {
-        return wrapList(client.listForResource(
-                ResourceUtils.groupFromResourceId(resourceId),
-                ResourceUtils.resourceProviderFromResourceId(resourceId),
-                ResourceUtils.relativePathFromResourceId(ResourceUtils.parentResourceIdFromResourceId(resourceId)),
-                ResourceUtils.resourceTypeFromResourceId(resourceId),
-                ResourceUtils.nameFromResourceId(resourceId)
-        ));
+        return wrapList(client.listForResource(ResourceUtils.groupFromResourceId(resourceId),
+            ResourceUtils.resourceProviderFromResourceId(resourceId),
+            ResourceUtils.relativePathFromResourceId(ResourceUtils.parentResourceIdFromResourceId(resourceId)),
+            ResourceUtils.resourceTypeFromResourceId(resourceId), ResourceUtils.nameFromResourceId(resourceId)));
     }
 
     @Override
@@ -80,8 +74,7 @@ public final class PolicyAssignmentsImpl
 
     @Override
     public Mono<PolicyAssignment> getByIdAsync(String id) {
-        return client.getByIdAsync(ResourceUtils.encodeResourceId(id))
-                .map(this::wrapModel);
+        return client.getByIdAsync(ResourceUtils.encodeResourceId(id)).map(this::wrapModel);
     }
 
     @Override
@@ -97,8 +90,8 @@ public final class PolicyAssignmentsImpl
     @Override
     public PagedFlux<PolicyAssignment> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(this.client.listByResourceGroupAsync(resourceGroupName));
     }

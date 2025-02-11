@@ -24,8 +24,7 @@ public final class ResourceProviderManifestImpl implements ResourceProviderManif
 
     private final com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager;
 
-    ResourceProviderManifestImpl(
-        ResourceProviderManifestInner innerObject,
+    ResourceProviderManifestImpl(ResourceProviderManifestInner innerObject,
         com.azure.resourcemanager.providerhub.ProviderHubManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -84,6 +84,8 @@ public final class BlobContainerListDetails {
     }
 
     /**
+     * Gets the listing flags.
+     *
      * @return the listing flags
      * @deprecated {@link BlobContainerListDetails} now contains multiple options.
      * This will only convert result of {{@link #setRetrieveMetadata(boolean)}} for backwards compatibility.

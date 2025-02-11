@@ -10,11 +10,9 @@ import com.azure.resourcemanager.mariadb.models.PrivateEndpointConnectionListRes
 public final class PrivateEndpointConnectionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointConnectionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"ets\"},\"id\":\"hszhedplvwiwu\",\"name\":\"mwmbes\",\"type\":\"dnkwwtppjflcxog\"},{\"properties\":{\"provisioningState\":\"z\"},\"id\":\"nsikvmkqzeqqkdl\",\"name\":\"fzxmhhvhgureodkw\",\"type\":\"bdagxt\"},{\"properties\":{\"provisioningState\":\"bxwakbog\"},\"id\":\"xndlkzgxhu\",\"name\":\"iplbpodxunkbebxm\",\"type\":\"byyntwlrbqt\"},{\"properties\":{\"provisioningState\":\"seotgqrllt\"},\"id\":\"u\",\"name\":\"lauwzizxbmpgcjef\",\"type\":\"zmuvpbttdumorppx\"}],\"nextLink\":\"mnzb\"}")
-                .toObject(PrivateEndpointConnectionListResult.class);
+        PrivateEndpointConnectionListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"zmuvpbttdumorppx\"},\"privateLinkServiceConnectionState\":{\"status\":\"mnzb\",\"description\":\"bhjpglkfgohdne\",\"actionsRequired\":\"lfphsdyhtozfikd\"},\"provisioningState\":\"wq\"},\"id\":\"uvxzxclvi\",\"name\":\"hhqzonosgg\",\"type\":\"hcohfwdsjnk\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"tiiswacffg\"},\"privateLinkServiceConnectionState\":{\"status\":\"zzewkfvhqcrai\",\"description\":\"vpnpp\",\"actionsRequired\":\"flrwd\"},\"provisioningState\":\"dlxyjrxs\"},\"id\":\"gafcnihgwqapnedg\",\"name\":\"bcvkcvqvpkeq\",\"type\":\"cvdrhvoodsot\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"dopcjwvnh\"},\"privateLinkServiceConnectionState\":{\"status\":\"d\",\"description\":\"mgxcxrslpm\",\"actionsRequired\":\"wuoegrpk\"},\"provisioningState\":\"wniyqsluicpd\"},\"id\":\"gk\",\"name\":\"zl\",\"type\":\"mbmpaxmodfvuefy\"},{\"properties\":{\"privateEndpoint\":{\"id\":\"fvmwy\"},\"privateLinkServiceConnectionState\":{\"status\":\"fouyf\",\"description\":\"aakc\",\"actionsRequired\":\"iyzvqtmnub\"},\"provisioningState\":\"kpzksmondjmq\"},\"id\":\"xvy\",\"name\":\"omgkopkwho\",\"type\":\"v\"}],\"nextLink\":\"jqg\"}")
+            .toObject(PrivateEndpointConnectionListResult.class);
     }
 
     @org.junit.jupiter.api.Test

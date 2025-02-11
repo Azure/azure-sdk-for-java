@@ -6,76 +6,57 @@ package com.azure.resourcemanager.changeanalysis.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.changeanalysis.AzureChangeAnalysisManager;
 import com.azure.resourcemanager.changeanalysis.models.Change;
+import com.azure.resourcemanager.changeanalysis.models.ChangeCategory;
 import com.azure.resourcemanager.changeanalysis.models.ChangeType;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.changeanalysis.models.Level;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ResourceChangesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"resourceId\":\"xscpaierhhbc\",\"timeStamp\":\"2021-09-10T20:40:36Z\",\"initiatedByList\":[\"majtjaod\",\"obnbdxkqpxokaj\",\"onpimexgstxg\"],\"changeType\":\"Update\",\"propertyChanges\":[{\"changeType\":\"Add\",\"changeCategory\":\"System\",\"jsonPath\":\"mvdjwzrlovmc\",\"displayName\":\"hijco\",\"level\":\"Important\",\"description\":\"bzaqsqsycbkbfk\",\"oldValue\":\"kdkexxp\",\"newValue\":\"fmxa\",\"isDataMasked\":true},{\"changeType\":\"Add\",\"changeCategory\":\"System\",\"jsonPath\":\"toc\",\"displayName\":\"xhvpmoue\",\"level\":\"Normal\",\"description\":\"xibqeojnx\",\"oldValue\":\"zvddntwndeicbtwn\",\"newValue\":\"aoqvuh\",\"isDataMasked\":true}]},\"id\":\"f\",\"name\":\"cyddglmjthjqk\",\"type\":\"pyeicxm\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceId\":\"nddhsgcbacph\",\"timeStamp\":\"2021-06-02T10:50:15Z\",\"initiatedByList\":[\"ynqgoulzndlikwyq\",\"gfgibm\"],\"changeType\":\"Add\",\"propertyChanges\":[]},\"id\":\"eqsrxybzqqedqyt\",\"name\":\"ciqfou\",\"type\":\"lmmnkzsmodmglo\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        AzureChangeAnalysisManager manager = AzureChangeAnalysisManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Change> response = manager.resourceChanges()
+            .list("qajzyulpkudjkr", OffsetDateTime.parse("2021-01-07T15:53:39Z"),
+                OffsetDateTime.parse("2021-10-21T07:00:30Z"), "bzhfepgzgqexz", com.azure.core.util.Context.NONE);
 
-        AzureChangeAnalysisManager manager =
-            AzureChangeAnalysisManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Change> response =
-            manager
-                .resourceChanges()
-                .list(
-                    "wcukjfkgiawxk",
-                    OffsetDateTime.parse("2021-07-19T16:49:27Z"),
-                    OffsetDateTime.parse("2021-05-21T20:11:19Z"),
-                    "plwckbas",
-                    com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("nddhsgcbacph", response.iterator().next().properties().resourceId());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-06-02T10:50:15Z"), response.iterator().next().properties().timestamp());
-        Assertions.assertEquals("ynqgoulzndlikwyq", response.iterator().next().properties().initiatedByList().get(0));
-        Assertions.assertEquals(ChangeType.ADD, response.iterator().next().properties().changeType());
+        Assertions.assertEquals("xscpaierhhbc", response.iterator().next().properties().resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-10T20:40:36Z"),
+            response.iterator().next().properties().timestamp());
+        Assertions.assertEquals("majtjaod", response.iterator().next().properties().initiatedByList().get(0));
+        Assertions.assertEquals(ChangeType.UPDATE, response.iterator().next().properties().changeType());
+        Assertions.assertEquals(ChangeType.ADD,
+            response.iterator().next().properties().propertyChanges().get(0).changeType());
+        Assertions.assertEquals(ChangeCategory.SYSTEM,
+            response.iterator().next().properties().propertyChanges().get(0).changeCategory());
+        Assertions.assertEquals("mvdjwzrlovmc",
+            response.iterator().next().properties().propertyChanges().get(0).jsonPath());
+        Assertions.assertEquals("hijco",
+            response.iterator().next().properties().propertyChanges().get(0).displayName());
+        Assertions.assertEquals(Level.IMPORTANT,
+            response.iterator().next().properties().propertyChanges().get(0).level());
+        Assertions.assertEquals("bzaqsqsycbkbfk",
+            response.iterator().next().properties().propertyChanges().get(0).description());
+        Assertions.assertEquals("kdkexxp", response.iterator().next().properties().propertyChanges().get(0).oldValue());
+        Assertions.assertEquals("fmxa", response.iterator().next().properties().propertyChanges().get(0).newValue());
+        Assertions.assertEquals(true, response.iterator().next().properties().propertyChanges().get(0).isDataMasked());
     }
 }

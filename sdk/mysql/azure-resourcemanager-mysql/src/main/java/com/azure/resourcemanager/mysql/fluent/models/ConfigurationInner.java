@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Represents a Configuration. */
 @Fluent
 public final class ConfigurationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ConfigurationInner.class);
 
     /*
      * The properties of a configuration.

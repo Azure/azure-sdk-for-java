@@ -22,7 +22,7 @@ public final class IotConnectorsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Warned\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"obfirclnpk\",\"consumerGroup\":\"ayzri\",\"fullyQualifiedEventHubNamespace\":\"hya\"},\"deviceMapping\":{\"content\":\"datajlb\"}},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"36c5dc0e-d88b-47cb-a955-ccf6e913dbd8\",\"tenantId\":\"cc26c0fe-617f-483c-a822-0391f835f38e\",\"userAssignedIdentities\":{\"omdynhdwdigum\":{\"principalId\":\"6297a391-3b9d-4176-b3f8-5fff43963d8b\",\"clientId\":\"2dec164a-b9da-4c64-bb6a-fb09e3e5d4a7\"}}},\"tags\":{\"hezwwvaiq\":\"aauzzptjazysd\",\"hqyikvy\":\"uvvfonkp\"},\"location\":\"uyav\",\"etag\":\"wmn\",\"id\":\"sttijfybvp\",\"name\":\"ekrsgs\",\"type\":\"b\"}";
+            = "{\"properties\":{\"provisioningState\":\"Warned\",\"ingestionEndpointConfiguration\":{\"eventHubName\":\"obfirclnpk\",\"consumerGroup\":\"ayzri\",\"fullyQualifiedEventHubNamespace\":\"hya\"},\"deviceMapping\":{\"content\":\"datajlb\"}},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"14940eeb-7ca3-4a84-a737-8eaab3ad7a7a\",\"tenantId\":\"8d9beda4-cd2d-402b-aaa3-375d8b6a04ee\",\"userAssignedIdentities\":{\"omdynhdwdigum\":{\"principalId\":\"6a6a96b3-3a25-457d-a5f8-bec31a5ea9c6\",\"clientId\":\"35fe9946-6e02-4d0b-8a34-2a3bd7223c40\"}}},\"tags\":{\"hezwwvaiq\":\"aauzzptjazysd\",\"hqyikvy\":\"uvvfonkp\"},\"location\":\"uyav\",\"etag\":\"wmn\",\"id\":\"sttijfybvp\",\"name\":\"ekrsgs\",\"type\":\"b\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));

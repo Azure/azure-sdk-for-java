@@ -6,11 +6,9 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.models.Column;
 import com.azure.resourcemanager.loganalytics.models.ColumnDataTypeHintEnum;
@@ -20,115 +18,76 @@ import com.azure.resourcemanager.loganalytics.models.Schema;
 import com.azure.resourcemanager.loganalytics.models.SearchResults;
 import com.azure.resourcemanager.loganalytics.models.Table;
 import com.azure.resourcemanager.loganalytics.models.TablePlanEnum;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TablesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"retentionInDays\":480341295,\"totalRetentionInDays\":27190578,\"archiveRetentionInDays\":1086111273,\"searchResults\":{\"query\":\"lidftujwjj\",\"description\":\"wbeqrkuor\",\"limit\":1870712650,\"startSearchTime\":\"2021-06-02T06:21:30Z\",\"endSearchTime\":\"2021-02-07T15:13:54Z\",\"sourceTable\":\"mdvhazcvjy\",\"azureAsyncOperationId\":\"qswbqerzwx\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-02-23T19:01:43Z\",\"endRestoreTime\":\"2021-05-09T17:49:27Z\",\"sourceTable\":\"ukvlb\",\"azureAsyncOperationId\":\"tgdstyouambe\"},\"resultStatistics\":{\"progress\":89.09465,\"ingestedRecords\":1285281809,\"scannedGb\":14.380062},\"plan\":\"Analytics\",\"lastPlanModifiedDate\":\"mut\",\"schema\":{\"name\":\"eyguq\",\"displayName\":\"ijiitns\",\"description\":\"lz\",\"columns\":[{\"name\":\"grijwaiufanrayb\",\"type\":\"real\",\"dataTypeHint\":\"armPath\",\"displayName\":\"oj\",\"description\":\"dgrhydkygywezs\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"ygzmxieqvdsmak\",\"type\":\"string\",\"dataTypeHint\":\"guid\",\"displayName\":\"hyhxa\",\"description\":\"bx\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"tblxpkkwjdjodqhy\",\"type\":\"int\",\"dataTypeHint\":\"uri\",\"displayName\":\"emehllizh\",\"description\":\"umoqodkad\",\"isDefaultDisplay\":true,\"isHidden\":true}],\"categories\":[\"qladywrxwhydtlu\",\"vadswzs\",\"uyem\",\"owuowh\"],\"labels\":[\"nwyrmouv\"],\"source\":\"customer\",\"tableType\":\"CustomLog\",\"tableSubType\":\"Classic\",\"solutions\":[\"trfowtdvr\",\"mvlihcvjdrqcrjid\",\"ftukvhd\"]},\"provisioningState\":\"Succeeded\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":false},\"systemData\":{\"createdBy\":\"zd\",\"createdByType\":\"Application\",\"createdAt\":\"2021-03-22T04:05:19Z\",\"lastModifiedBy\":\"xhafratqx\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2021-11-30T03:06:43Z\"},\"id\":\"umzznvalqjrhuz\",\"name\":\"fxonjtpusllywp\",\"type\":\"tiotzb\"}";
 
-        String responseStr =
-            "{\"properties\":{\"retentionInDays\":2021326514,\"totalRetentionInDays\":687821178,\"archiveRetentionInDays\":1888346372,\"searchResults\":{\"query\":\"jdrqcrjidhftu\",\"description\":\"hdxlw\",\"limit\":1689412377,\"startSearchTime\":\"2021-01-18T12:02:21Z\",\"endSearchTime\":\"2020-12-27T03:18:28Z\",\"sourceTable\":\"kfnjyixhafrat\",\"azureAsyncOperationId\":\"mbjrou\"},\"restoredLogs\":{\"startRestoreTime\":\"2021-04-03T06:34:57Z\",\"endRestoreTime\":\"2021-06-08T22:52:49Z\",\"sourceTable\":\"qjrhuzgfxonj\",\"azureAsyncOperationId\":\"usllywpvtiotz\"},\"resultStatistics\":{\"progress\":88.4287,\"ingestedRecords\":1402835309,\"scannedGb\":62.674488},\"plan\":\"Analytics\",\"lastPlanModifiedDate\":\"qiuasigrows\",\"schema\":{\"name\":\"equygdjboqgrmtq\",\"displayName\":\"qevadrmmw\",\"description\":\"awvcmjzkxiid\",\"columns\":[{\"name\":\"s\",\"type\":\"string\",\"dataTypeHint\":\"armPath\",\"displayName\":\"iqazugamxzkr\",\"description\":\"oiisbamnppcce\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"bezaxyfukzxuiz\",\"type\":\"boolean\",\"dataTypeHint\":\"guid\",\"displayName\":\"kpetiarxq\",\"description\":\"bxdukecpxdazvd\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"os\",\"type\":\"boolean\",\"dataTypeHint\":\"guid\",\"displayName\":\"s\",\"description\":\"rpcaqkiofkbtf\",\"isDefaultDisplay\":false,\"isHidden\":true},{\"name\":\"l\",\"type\":\"int\",\"dataTypeHint\":\"uri\",\"displayName\":\"hez\",\"description\":\"u\",\"isDefaultDisplay\":false,\"isHidden\":false}],\"standardColumns\":[{\"name\":\"pbrruyu\",\"type\":\"dynamic\",\"dataTypeHint\":\"ip\",\"displayName\":\"bjwcolbmx\",\"description\":\"nwtpcpahprz\",\"isDefaultDisplay\":true,\"isHidden\":false}],\"categories\":[\"hocn\",\"zcmjhngxnoqrxt\",\"isn\"],\"labels\":[\"hdlmydidwhe\"],\"source\":\"customer\",\"tableType\":\"RestoredLogs\",\"tableSubType\":\"Classic\",\"solutions\":[\"esxxhmwcdbckyoi\"]},\"provisioningState\":\"Succeeded\",\"retentionInDaysAsDefault\":false,\"totalRetentionInDaysAsDefault\":false},\"systemData\":{\"createdBy\":\"njzrbhtmeplvu\",\"createdByType\":\"User\",\"createdAt\":\"2021-07-04T16:43:03Z\",\"lastModifiedBy\":\"bpgsnbagnc\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2020-12-23T11:14:04Z\"},\"id\":\"muowakywalhjy\",\"name\":\"xcgqtagdrclsso\",\"type\":\"jomevtfycnlb\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Table response = manager.tables()
+            .define("oytzpose")
+            .withExistingWorkspace("xa", "n")
+            .withRetentionInDays(1606592668)
+            .withTotalRetentionInDays(1200171262)
+            .withSearchResults(new SearchResults().withQuery("aupxvpi")
+                .withDescription("f")
+                .withLimit(479705193)
+                .withStartSearchTime(OffsetDateTime.parse("2021-06-27T21:10:54Z"))
+                .withEndSearchTime(OffsetDateTime.parse("2021-06-24T09:11:48Z")))
+            .withRestoredLogs(new RestoredLogs().withStartRestoreTime(OffsetDateTime.parse("2021-07-31T20:24:08Z"))
+                .withEndRestoreTime(OffsetDateTime.parse("2021-02-02T20:49:05Z"))
+                .withSourceTable("xwetwkdrcyrucpc"))
+            .withPlan(TablePlanEnum.BASIC)
+            .withSchema(new Schema().withName("dnelqkaad")
+                .withDisplayName("nwf")
+                .withDescription("nniyopetxi")
+                .withColumns(Arrays.asList(
+                    new Column().withName("lyxnucaephb")
+                        .withType(ColumnTypeEnum.GUID)
+                        .withDataTypeHint(ColumnDataTypeHintEnum.URI)
+                        .withDisplayName("tv")
+                        .withDescription("sdtcjbctvivuzqym"),
+                    new Column().withName("tgitsqhzvbrzc")
+                        .withType(ColumnTypeEnum.DYNAMIC)
+                        .withDataTypeHint(ColumnDataTypeHintEnum.IP)
+                        .withDisplayName("ndscxmxeatk")
+                        .withDescription("mwnrdj"))))
+            .create();
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Table response =
-            manager
-                .tables()
-                .define("mvqdbpbhfckdvez")
-                .withExistingWorkspace("ltbxoeeonqlnfw", "y")
-                .withRetentionInDays(1831192721)
-                .withTotalRetentionInDays(1245592437)
-                .withSearchResults(
-                    new SearchResults()
-                        .withQuery("ub")
-                        .withDescription("qfblhkalehpa")
-                        .withLimit(1886897844)
-                        .withStartSearchTime(OffsetDateTime.parse("2021-10-02T07:23:26Z"))
-                        .withEndSearchTime(OffsetDateTime.parse("2021-07-31T19:35:54Z")))
-                .withRestoredLogs(
-                    new RestoredLogs()
-                        .withStartRestoreTime(OffsetDateTime.parse("2021-10-21T05:00:19Z"))
-                        .withEndRestoreTime(OffsetDateTime.parse("2021-01-10T08:24:54Z"))
-                        .withSourceTable("pczykmktpvwxqc"))
-                .withPlan(TablePlanEnum.BASIC)
-                .withSchema(
-                    new Schema()
-                        .withName("wphpzfngqj")
-                        .withDisplayName("idftujwjjufwbe")
-                        .withDescription("k")
-                        .withColumns(
-                            Arrays
-                                .asList(
-                                    new Column()
-                                        .withName("tssruqnmdvhazc")
-                                        .withType(ColumnTypeEnum.INT)
-                                        .withDataTypeHint(ColumnDataTypeHintEnum.GUID)
-                                        .withDisplayName("swbqerzwxi")
-                                        .withDescription("x"),
-                                    new Column()
-                                        .withName("lbpktg")
-                                        .withType(ColumnTypeEnum.DYNAMIC)
-                                        .withDataTypeHint(ColumnDataTypeHintEnum.ARM_PATH)
-                                        .withDisplayName("ambewreswmowe")
-                                        .withDescription("mut"))))
-                .create();
-
-        Assertions.assertEquals(2021326514, response.retentionInDays());
-        Assertions.assertEquals(687821178, response.totalRetentionInDays());
-        Assertions.assertEquals("jdrqcrjidhftu", response.searchResults().query());
-        Assertions.assertEquals("hdxlw", response.searchResults().description());
-        Assertions.assertEquals(1689412377, response.searchResults().limit());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-01-18T12:02:21Z"), response.searchResults().startSearchTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-27T03:18:28Z"), response.searchResults().endSearchTime());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-04-03T06:34:57Z"), response.restoredLogs().startRestoreTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T22:52:49Z"), response.restoredLogs().endRestoreTime());
-        Assertions.assertEquals("qjrhuzgfxonj", response.restoredLogs().sourceTable());
+        Assertions.assertEquals(480341295, response.retentionInDays());
+        Assertions.assertEquals(27190578, response.totalRetentionInDays());
+        Assertions.assertEquals("lidftujwjj", response.searchResults().query());
+        Assertions.assertEquals("wbeqrkuor", response.searchResults().description());
+        Assertions.assertEquals(1870712650, response.searchResults().limit());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-02T06:21:30Z"),
+            response.searchResults().startSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T15:13:54Z"), response.searchResults().endSearchTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T19:01:43Z"),
+            response.restoredLogs().startRestoreTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-09T17:49:27Z"), response.restoredLogs().endRestoreTime());
+        Assertions.assertEquals("ukvlb", response.restoredLogs().sourceTable());
         Assertions.assertEquals(TablePlanEnum.ANALYTICS, response.plan());
-        Assertions.assertEquals("equygdjboqgrmtq", response.schema().name());
-        Assertions.assertEquals("qevadrmmw", response.schema().displayName());
-        Assertions.assertEquals("awvcmjzkxiid", response.schema().description());
-        Assertions.assertEquals("s", response.schema().columns().get(0).name());
-        Assertions.assertEquals(ColumnTypeEnum.STRING, response.schema().columns().get(0).type());
+        Assertions.assertEquals("eyguq", response.schema().name());
+        Assertions.assertEquals("ijiitns", response.schema().displayName());
+        Assertions.assertEquals("lz", response.schema().description());
+        Assertions.assertEquals("grijwaiufanrayb", response.schema().columns().get(0).name());
+        Assertions.assertEquals(ColumnTypeEnum.REAL, response.schema().columns().get(0).type());
         Assertions.assertEquals(ColumnDataTypeHintEnum.ARM_PATH, response.schema().columns().get(0).dataTypeHint());
-        Assertions.assertEquals("iqazugamxzkr", response.schema().columns().get(0).displayName());
-        Assertions.assertEquals("oiisbamnppcce", response.schema().columns().get(0).description());
+        Assertions.assertEquals("oj", response.schema().columns().get(0).displayName());
+        Assertions.assertEquals("dgrhydkygywezs", response.schema().columns().get(0).description());
     }
 }

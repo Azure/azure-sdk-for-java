@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of WaitStatistics. */
+/**
+ * Resource collection API of WaitStatistics.
+ */
 public interface WaitStatistics {
     /**
      * Retrieve wait statistics for specified identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param waitStatisticsId The Wait Statistic identifier.
@@ -22,12 +24,12 @@ public interface WaitStatistics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a Wait Statistic along with {@link Response}.
      */
-    Response<WaitStatistic> getWithResponse(
-        String resourceGroupName, String serverName, String waitStatisticsId, Context context);
+    Response<WaitStatistic> getWithResponse(String resourceGroupName, String serverName, String waitStatisticsId,
+        Context context);
 
     /**
      * Retrieve wait statistics for specified identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param waitStatisticsId The Wait Statistic identifier.
@@ -40,7 +42,7 @@ public interface WaitStatistics {
 
     /**
      * Retrieve wait statistics for specified aggregation window.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for retrieving wait statistics.
@@ -49,12 +51,12 @@ public interface WaitStatistics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of wait statistics as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WaitStatistic> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters);
+    PagedIterable<WaitStatistic> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters);
 
     /**
      * Retrieve wait statistics for specified aggregation window.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param parameters The required parameters for retrieving wait statistics.
@@ -64,6 +66,6 @@ public interface WaitStatistics {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of wait statistics as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<WaitStatistic> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters, Context context);
+    PagedIterable<WaitStatistic> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters, Context context);
 }

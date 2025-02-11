@@ -5,106 +5,103 @@
 package com.azure.resourcemanager.billingbenefits.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.billingbenefits.models.BillingPlan;
 import com.azure.resourcemanager.billingbenefits.models.BillingPlanInformation;
 import com.azure.resourcemanager.billingbenefits.models.ExtendedStatusInfo;
 import com.azure.resourcemanager.billingbenefits.models.ProvisioningState;
 import com.azure.resourcemanager.billingbenefits.models.Term;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Savings plan order properties. */
+/**
+ * Savings plan order properties.
+ */
 @Fluent
-public final class SavingsPlanOrderModelProperties {
+public final class SavingsPlanOrderModelProperties implements JsonSerializable<SavingsPlanOrderModelProperties> {
     /*
      * Display name
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Provisioning state
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Subscription that will be charged for purchasing the benefit
      */
-    @JsonProperty(value = "billingScopeId")
     private String billingScopeId;
 
     /*
      * Fully-qualified identifier of the billing profile where the savings plan is applied. Present only for Field-led
      * or Customer-led customers.
      */
-    @JsonProperty(value = "billingProfileId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingProfileId;
 
     /*
      * Fully-qualified identifier of the customer where the savings plan is applied. Present only for Partner-led
      * customers.
      */
-    @JsonProperty(value = "customerId", access = JsonProperty.Access.WRITE_ONLY)
     private String customerId;
 
     /*
      * Fully-qualified identifier of the billing account where the savings plan is applied. Present only for Enterprise
      * Agreement customers.
      */
-    @JsonProperty(value = "billingAccountId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingAccountId;
 
     /*
      * Represent benefit term in ISO 8601 format.
      */
-    @JsonProperty(value = "term")
     private Term term;
 
     /*
      * Represents the billing plan in ISO 8601 format. Required only for monthly billing plans.
      */
-    @JsonProperty(value = "billingPlan")
     private BillingPlan billingPlan;
 
     /*
      * Expiry date time
      */
-    @JsonProperty(value = "expiryDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expiryDateTime;
 
     /*
      * This is the DateTime when the savings plan benefit started.
      */
-    @JsonProperty(value = "benefitStartTime")
     private OffsetDateTime benefitStartTime;
 
     /*
      * Information describing the type of billing plan for this savings plan.
      */
-    @JsonProperty(value = "planInformation")
     private BillingPlanInformation planInformation;
 
     /*
      * The savingsPlans property.
      */
-    @JsonProperty(value = "savingsPlans")
     private List<String> savingsPlans;
 
     /*
      * The extendedStatusInfo property.
      */
-    @JsonProperty(value = "extendedStatusInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ExtendedStatusInfo extendedStatusInfo;
 
-    /** Creates an instance of SavingsPlanOrderModelProperties class. */
+    /**
+     * Creates an instance of SavingsPlanOrderModelProperties class.
+     */
     public SavingsPlanOrderModelProperties() {
     }
 
     /**
      * Get the displayName property: Display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -113,7 +110,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Set the displayName property: Display name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SavingsPlanOrderModelProperties object itself.
      */
@@ -124,7 +121,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -133,7 +130,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Get the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @return the billingScopeId value.
      */
     public String billingScopeId() {
@@ -142,7 +139,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Set the billingScopeId property: Subscription that will be charged for purchasing the benefit.
-     *
+     * 
      * @param billingScopeId the billingScopeId value to set.
      * @return the SavingsPlanOrderModelProperties object itself.
      */
@@ -154,7 +151,7 @@ public final class SavingsPlanOrderModelProperties {
     /**
      * Get the billingProfileId property: Fully-qualified identifier of the billing profile where the savings plan is
      * applied. Present only for Field-led or Customer-led customers.
-     *
+     * 
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
@@ -164,7 +161,7 @@ public final class SavingsPlanOrderModelProperties {
     /**
      * Get the customerId property: Fully-qualified identifier of the customer where the savings plan is applied.
      * Present only for Partner-led customers.
-     *
+     * 
      * @return the customerId value.
      */
     public String customerId() {
@@ -174,7 +171,7 @@ public final class SavingsPlanOrderModelProperties {
     /**
      * Get the billingAccountId property: Fully-qualified identifier of the billing account where the savings plan is
      * applied. Present only for Enterprise Agreement customers.
-     *
+     * 
      * @return the billingAccountId value.
      */
     public String billingAccountId() {
@@ -183,7 +180,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Get the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @return the term value.
      */
     public Term term() {
@@ -192,7 +189,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Set the term property: Represent benefit term in ISO 8601 format.
-     *
+     * 
      * @param term the term value to set.
      * @return the SavingsPlanOrderModelProperties object itself.
      */
@@ -204,7 +201,7 @@ public final class SavingsPlanOrderModelProperties {
     /**
      * Get the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public BillingPlan billingPlan() {
@@ -214,7 +211,7 @@ public final class SavingsPlanOrderModelProperties {
     /**
      * Set the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the SavingsPlanOrderModelProperties object itself.
      */
@@ -225,7 +222,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Get the expiryDateTime property: Expiry date time.
-     *
+     * 
      * @return the expiryDateTime value.
      */
     public OffsetDateTime expiryDateTime() {
@@ -234,7 +231,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Get the benefitStartTime property: This is the DateTime when the savings plan benefit started.
-     *
+     * 
      * @return the benefitStartTime value.
      */
     public OffsetDateTime benefitStartTime() {
@@ -243,7 +240,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Set the benefitStartTime property: This is the DateTime when the savings plan benefit started.
-     *
+     * 
      * @param benefitStartTime the benefitStartTime value to set.
      * @return the SavingsPlanOrderModelProperties object itself.
      */
@@ -254,7 +251,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Get the planInformation property: Information describing the type of billing plan for this savings plan.
-     *
+     * 
      * @return the planInformation value.
      */
     public BillingPlanInformation planInformation() {
@@ -263,7 +260,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Set the planInformation property: Information describing the type of billing plan for this savings plan.
-     *
+     * 
      * @param planInformation the planInformation value to set.
      * @return the SavingsPlanOrderModelProperties object itself.
      */
@@ -274,7 +271,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Get the savingsPlans property: The savingsPlans property.
-     *
+     * 
      * @return the savingsPlans value.
      */
     public List<String> savingsPlans() {
@@ -283,7 +280,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Set the savingsPlans property: The savingsPlans property.
-     *
+     * 
      * @param savingsPlans the savingsPlans value to set.
      * @return the SavingsPlanOrderModelProperties object itself.
      */
@@ -294,7 +291,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Get the extendedStatusInfo property: The extendedStatusInfo property.
-     *
+     * 
      * @return the extendedStatusInfo value.
      */
     public ExtendedStatusInfo extendedStatusInfo() {
@@ -303,7 +300,7 @@ public final class SavingsPlanOrderModelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -313,5 +310,82 @@ public final class SavingsPlanOrderModelProperties {
         if (extendedStatusInfo() != null) {
             extendedStatusInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("billingScopeId", this.billingScopeId);
+        jsonWriter.writeStringField("term", this.term == null ? null : this.term.toString());
+        jsonWriter.writeStringField("billingPlan", this.billingPlan == null ? null : this.billingPlan.toString());
+        jsonWriter.writeStringField("benefitStartTime",
+            this.benefitStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.benefitStartTime));
+        jsonWriter.writeJsonField("planInformation", this.planInformation);
+        jsonWriter.writeArrayField("savingsPlans", this.savingsPlans, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanOrderModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanOrderModelProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SavingsPlanOrderModelProperties.
+     */
+    public static SavingsPlanOrderModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanOrderModelProperties deserializedSavingsPlanOrderModelProperties
+                = new SavingsPlanOrderModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.displayName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("billingScopeId".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.billingScopeId = reader.getString();
+                } else if ("billingProfileId".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.billingProfileId = reader.getString();
+                } else if ("customerId".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.customerId = reader.getString();
+                } else if ("billingAccountId".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.billingAccountId = reader.getString();
+                } else if ("term".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.term = Term.fromString(reader.getString());
+                } else if ("billingPlan".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.billingPlan
+                        = BillingPlan.fromString(reader.getString());
+                } else if ("expiryDateTime".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.expiryDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("benefitStartTime".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.benefitStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("planInformation".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.planInformation
+                        = BillingPlanInformation.fromJson(reader);
+                } else if ("savingsPlans".equals(fieldName)) {
+                    List<String> savingsPlans = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSavingsPlanOrderModelProperties.savingsPlans = savingsPlans;
+                } else if ("extendedStatusInfo".equals(fieldName)) {
+                    deserializedSavingsPlanOrderModelProperties.extendedStatusInfo
+                        = ExtendedStatusInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanOrderModelProperties;
+        });
     }
 }

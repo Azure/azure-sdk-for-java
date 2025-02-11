@@ -12,15 +12,15 @@ public final class PreconfiguredEndpointListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PreconfiguredEndpointList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"description\":\"zudhcxg\",\"endpoint\":\"oyxcdyuib\",\"endpointType\":\"AFD\",\"backend\":\"nbzydvfvfcj\"},\"location\":\"aeoisrvh\",\"tags\":{\"fukiscvwmzhw\":\"r\",\"nzeyqxtjj\":\"lefaxvxilcbtgn\",\"vodggxdbee\":\"zqlqhyc\"},\"id\":\"mieknlraria\",\"name\":\"wiuagydwqf\",\"type\":\"ylyrfgiagtco\"}],\"nextLink\":\"cqwogfnzjvusfzl\"}")
+            "{\"value\":[{\"properties\":{\"description\":\"zhzbezkgimsi\",\"endpoint\":\"asi\",\"endpointType\":\"ATM\",\"backend\":\"vvjskgfmocwahp\"},\"location\":\"gat\",\"tags\":{\"zybbj\":\"ahhvjhhna\"},\"id\":\"idjks\",\"name\":\"xkyxvxevblbj\",\"type\":\"dnlj\"},{\"properties\":{\"description\":\"euaulxu\",\"endpoint\":\"mjbnk\",\"endpointType\":\"AzureRegion\",\"backend\":\"nenlsvxeizzg\"},\"location\":\"klnsrmffey\",\"tags\":{\"ymerteeammxq\":\"ktp\"},\"id\":\"ekkkzd\",\"name\":\"rtkgdojbmxvavref\",\"type\":\"eesvecu\"},{\"properties\":{\"description\":\"xtxsuwprtujw\",\"endpoint\":\"wddji\",\"endpointType\":\"AFD\",\"backend\":\"vit\"},\"location\":\"tvtzeexavoxtfg\",\"tags\":{\"pypqtgsfj\":\"dmdqb\"},\"id\":\"cbslhhx\",\"name\":\"db\",\"type\":\"vodhtn\"}],\"nextLink\":\"rudhzmmesckdl\"}")
             .toObject(PreconfiguredEndpointList.class);
-        Assertions.assertEquals("cqwogfnzjvusfzl", model.nextLink());
+        Assertions.assertEquals("rudhzmmesckdl", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PreconfiguredEndpointList model = new PreconfiguredEndpointList().withNextLink("cqwogfnzjvusfzl");
+        PreconfiguredEndpointList model = new PreconfiguredEndpointList().withNextLink("rudhzmmesckdl");
         model = BinaryData.fromObject(model).toObject(PreconfiguredEndpointList.class);
-        Assertions.assertEquals("cqwogfnzjvusfzl", model.nextLink());
+        Assertions.assertEquals("rudhzmmesckdl", model.nextLink());
     }
 }

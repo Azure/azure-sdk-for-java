@@ -24,7 +24,7 @@ public final class UeInformationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"ratType\":\"5G\",\"ueState\":\"Deregistered\",\"ueIpAddresses\":[{\"dnn\":\"skkfmk\",\"ueIpAddress\":{\"ipV4Addr\":\"jxyxgb\"}},{\"dnn\":\"qvjcteoe\",\"ueIpAddress\":{\"ipV4Addr\":\"slskkz\"}},{\"dnn\":\"vjnzdpvocojhpcna\",\"ueIpAddress\":{\"ipV4Addr\":\"fsnggytexvzilm\"}},{\"dnn\":\"vzkwwwncknr\",\"ueIpAddress\":{\"ipV4Addr\":\"jlskzptjxulweu\"}}],\"lastReadAt\":\"2021-05-21T04:33:34Z\"},\"id\":\"hxqlehmcgcjeinue\",\"name\":\"oka\",\"type\":\"vfejvqnttmbqda\"}]}";
+            = "{\"value\":[{\"properties\":{\"ratType\":\"4G\",\"ueState\":\"Unknown\",\"ueIpAddresses\":[{\"dnn\":\"hvfdqqj\",\"ueIpAddress\":{\"ipV4Addr\":\"hwzdanojisgglmv\"}},{\"dnn\":\"atuztjct\",\"ueIpAddress\":{\"ipV4Addr\":\"vbkaehxs\"}},{\"dnn\":\"ygdfwakwseiv\",\"ueIpAddress\":{\"ipV4Addr\":\"xhysowljux\"}}],\"lastReadAt\":\"2021-08-29T21:10:24Z\"},\"id\":\"ctvtf\",\"name\":\"mskdch\",\"type\":\"aiubavlzwpvgmfa\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,14 +34,14 @@ public final class UeInformationsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<UeInfo> response
-            = manager.ueInformations().list("hz", "dubtlmj", com.azure.core.util.Context.NONE);
+            = manager.ueInformations().list("xsl", "vlzladl", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(RatType.FIVEG, response.iterator().next().properties().ratType());
-        Assertions.assertEquals(UeState.DEREGISTERED, response.iterator().next().properties().ueState());
-        Assertions.assertEquals("skkfmk", response.iterator().next().properties().ueIpAddresses().get(0).dnn());
-        Assertions.assertEquals("jxyxgb",
+        Assertions.assertEquals(RatType.FOURG, response.iterator().next().properties().ratType());
+        Assertions.assertEquals(UeState.UNKNOWN, response.iterator().next().properties().ueState());
+        Assertions.assertEquals("hvfdqqj", response.iterator().next().properties().ueIpAddresses().get(0).dnn());
+        Assertions.assertEquals("hwzdanojisgglmv",
             response.iterator().next().properties().ueIpAddresses().get(0).ueIpAddress().ipV4Addr());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-21T04:33:34Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-29T21:10:24Z"),
             response.iterator().next().properties().lastReadAt());
     }
 }

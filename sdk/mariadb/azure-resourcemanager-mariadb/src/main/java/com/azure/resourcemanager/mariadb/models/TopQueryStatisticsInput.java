@@ -6,26 +6,33 @@ package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mariadb.fluent.models.TopQueryStatisticsInputProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Input to get top query statistics. */
+/**
+ * Input to get top query statistics.
+ */
 @Fluent
-public final class TopQueryStatisticsInput {
+public final class TopQueryStatisticsInput implements JsonSerializable<TopQueryStatisticsInput> {
     /*
      * The properties of a wait statistics input.
      */
-    @JsonProperty(value = "properties", required = true)
     private TopQueryStatisticsInputProperties innerProperties = new TopQueryStatisticsInputProperties();
 
-    /** Creates an instance of TopQueryStatisticsInput class. */
+    /**
+     * Creates an instance of TopQueryStatisticsInput class.
+     */
     public TopQueryStatisticsInput() {
     }
 
     /**
      * Get the innerProperties property: The properties of a wait statistics input.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TopQueryStatisticsInputProperties innerProperties() {
@@ -34,7 +41,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Get the numberOfTopQueries property: Max number of top queries to return.
-     *
+     * 
      * @return the numberOfTopQueries value.
      */
     public int numberOfTopQueries() {
@@ -43,7 +50,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Set the numberOfTopQueries property: Max number of top queries to return.
-     *
+     * 
      * @param numberOfTopQueries the numberOfTopQueries value to set.
      * @return the TopQueryStatisticsInput object itself.
      */
@@ -57,7 +64,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Get the aggregationFunction property: Aggregation function name.
-     *
+     * 
      * @return the aggregationFunction value.
      */
     public String aggregationFunction() {
@@ -66,7 +73,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Set the aggregationFunction property: Aggregation function name.
-     *
+     * 
      * @param aggregationFunction the aggregationFunction value to set.
      * @return the TopQueryStatisticsInput object itself.
      */
@@ -80,7 +87,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Get the observedMetric property: Observed metric name.
-     *
+     * 
      * @return the observedMetric value.
      */
     public String observedMetric() {
@@ -89,7 +96,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Set the observedMetric property: Observed metric name.
-     *
+     * 
      * @param observedMetric the observedMetric value to set.
      * @return the TopQueryStatisticsInput object itself.
      */
@@ -103,7 +110,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Get the observationStartTime property: Observation start time.
-     *
+     * 
      * @return the observationStartTime value.
      */
     public OffsetDateTime observationStartTime() {
@@ -112,7 +119,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Set the observationStartTime property: Observation start time.
-     *
+     * 
      * @param observationStartTime the observationStartTime value to set.
      * @return the TopQueryStatisticsInput object itself.
      */
@@ -126,7 +133,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Get the observationEndTime property: Observation end time.
-     *
+     * 
      * @return the observationEndTime value.
      */
     public OffsetDateTime observationEndTime() {
@@ -135,7 +142,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Set the observationEndTime property: Observation end time.
-     *
+     * 
      * @param observationEndTime the observationEndTime value to set.
      * @return the TopQueryStatisticsInput object itself.
      */
@@ -149,7 +156,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Get the aggregationWindow property: Aggregation interval type in ISO 8601 format.
-     *
+     * 
      * @return the aggregationWindow value.
      */
     public String aggregationWindow() {
@@ -158,7 +165,7 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Set the aggregationWindow property: Aggregation interval type in ISO 8601 format.
-     *
+     * 
      * @param aggregationWindow the aggregationWindow value to set.
      * @return the TopQueryStatisticsInput object itself.
      */
@@ -172,19 +179,56 @@ public final class TopQueryStatisticsInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model TopQueryStatisticsInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model TopQueryStatisticsInput"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TopQueryStatisticsInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopQueryStatisticsInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopQueryStatisticsInput if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TopQueryStatisticsInput.
+     */
+    public static TopQueryStatisticsInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopQueryStatisticsInput deserializedTopQueryStatisticsInput = new TopQueryStatisticsInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedTopQueryStatisticsInput.innerProperties
+                        = TopQueryStatisticsInputProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopQueryStatisticsInput;
+        });
+    }
 }

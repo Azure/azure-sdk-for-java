@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.education.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Grant status. */
+/**
+ * Grant status.
+ */
 public final class GrantStatus extends ExpandableStringEnum<GrantStatus> {
-    /** Static value Active for GrantStatus. */
+    /**
+     * Static value Active for GrantStatus.
+     */
     public static final GrantStatus ACTIVE = fromString("Active");
 
-    /** Static value Inactive for GrantStatus. */
+    /**
+     * Static value Inactive for GrantStatus.
+     */
     public static final GrantStatus INACTIVE = fromString("Inactive");
 
     /**
+     * Creates a new instance of GrantStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GrantStatus() {
+    }
+
+    /**
      * Creates or finds a GrantStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GrantStatus.
      */
-    @JsonCreator
     public static GrantStatus fromString(String name) {
         return fromString(name, GrantStatus.class);
     }
 
     /**
      * Gets known GrantStatus values.
-     *
+     * 
      * @return known GrantStatus values.
      */
     public static Collection<GrantStatus> values() {

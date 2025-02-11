@@ -117,23 +117,18 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     }
 
     public Job create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .createWithResponse(
-                    resourceGroupName, accountName, transformName, jobName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .createWithResponse(resourceGroupName, accountName, transformName, jobName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Job create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .createWithResponse(resourceGroupName, accountName, transformName, jobName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .createWithResponse(resourceGroupName, accountName, transformName, jobName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -148,58 +143,48 @@ public final class JobImpl implements Job, Job.Definition, Job.Update {
     }
 
     public Job apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .updateWithResponse(
-                    resourceGroupName, accountName, transformName, jobName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .updateWithResponse(resourceGroupName, accountName, transformName, jobName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Job apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .updateWithResponse(resourceGroupName, accountName, transformName, jobName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .updateWithResponse(resourceGroupName, accountName, transformName, jobName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
     JobImpl(JobInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "mediaServices");
-        this.transformName = Utils.getValueFromIdByName(innerObject.id(), "transforms");
-        this.jobName = Utils.getValueFromIdByName(innerObject.id(), "jobs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mediaServices");
+        this.transformName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "transforms");
+        this.jobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "jobs");
     }
 
     public Job refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .getWithResponse(resourceGroupName, accountName, transformName, jobName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .getWithResponse(resourceGroupName, accountName, transformName, jobName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Job refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getJobs()
-                .getWithResponse(resourceGroupName, accountName, transformName, jobName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getJobs()
+            .getWithResponse(resourceGroupName, accountName, transformName, jobName, context)
+            .getValue();
         return this;
     }
 
     public Response<Void> cancelJobWithResponse(Context context) {
-        return serviceManager
-            .jobs()
+        return serviceManager.jobs()
             .cancelJobWithResponse(resourceGroupName, accountName, transformName, jobName, context);
     }
 

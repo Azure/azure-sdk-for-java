@@ -8,6 +8,7 @@ trigger:
       - release/*
   paths:
     include:
+      - .vscode/eclipse-format-azure-sdk-for-java.xml
       - eng/code-quality-reports/
       - eng/pipelines/code-quality-reports.yml
 
@@ -20,6 +21,7 @@ pr:
       - release/*
   paths:
     include:
+      - .vscode/eclipse-format-azure-sdk-for-java.xml
       - eng/code-quality-reports/
       - eng/pipelines/code-quality-reports.yml
 

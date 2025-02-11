@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Username / Password Credentials to connect to guest. */
+/**
+ * Username / Password Credentials to connect to guest.
+ */
 @Fluent
-public final class GuestCredential {
+public final class GuestCredential implements JsonSerializable<GuestCredential> {
     /*
      * Gets or sets username to connect with the guest.
      */
-    @JsonProperty(value = "username")
     private String username;
 
     /*
      * Gets or sets the password to connect with the guest.
      */
-    @JsonProperty(value = "password")
     private String password;
 
-    /** Creates an instance of GuestCredential class. */
+    /**
+     * Creates an instance of GuestCredential class.
+     */
     public GuestCredential() {
     }
 
     /**
      * Get the username property: Gets or sets username to connect with the guest.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -37,7 +43,7 @@ public final class GuestCredential {
 
     /**
      * Set the username property: Gets or sets username to connect with the guest.
-     *
+     * 
      * @param username the username value to set.
      * @return the GuestCredential object itself.
      */
@@ -48,7 +54,7 @@ public final class GuestCredential {
 
     /**
      * Get the password property: Gets or sets the password to connect with the guest.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -57,7 +63,7 @@ public final class GuestCredential {
 
     /**
      * Set the password property: Gets or sets the password to connect with the guest.
-     *
+     * 
      * @param password the password value to set.
      * @return the GuestCredential object itself.
      */
@@ -68,9 +74,48 @@ public final class GuestCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GuestCredential from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GuestCredential if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GuestCredential.
+     */
+    public static GuestCredential fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GuestCredential deserializedGuestCredential = new GuestCredential();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedGuestCredential.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedGuestCredential.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGuestCredential;
+        });
     }
 }

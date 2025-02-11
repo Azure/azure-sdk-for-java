@@ -15,7 +15,8 @@ import java.util.Map;
 /** Parameters allowed to update for a server. */
 @Fluent
 public final class ServerUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUpdateParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerUpdateParameters.class);
 
     /*
      * The Azure Active Directory identity of the server.

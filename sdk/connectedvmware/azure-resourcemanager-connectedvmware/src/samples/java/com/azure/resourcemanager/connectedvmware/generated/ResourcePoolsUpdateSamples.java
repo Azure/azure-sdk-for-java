@@ -8,22 +8,24 @@ import com.azure.resourcemanager.connectedvmware.models.ResourcePool;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ResourcePools Update. */
+/**
+ * Samples for ResourcePools Update.
+ */
 public final class ResourcePoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateResourcePool.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateResourcePool.json
      */
     /**
      * Sample code: UpdateResourcePool.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateResourcePool(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        ResourcePool resource =
-            manager
-                .resourcePools()
-                .getByResourceGroupWithResponse("testrg", "HRPool", com.azure.core.util.Context.NONE)
-                .getValue();
+        ResourcePool resource = manager.resourcePools()
+            .getByResourceGroupWithResponse("testrg", "HRPool", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

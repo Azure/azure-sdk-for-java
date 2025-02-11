@@ -126,6 +126,9 @@ public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

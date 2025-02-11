@@ -21,7 +21,7 @@ public final class PacketCapturesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Failed\",\"status\":\"Stopped\",\"reason\":\"mhwrb\",\"captureStartTime\":\"2021-03-14T13:08:25Z\",\"networkInterfaces\":[\"lubhvjg\"],\"bytesToCapturePerPacket\":2957202472038837356,\"totalBytesPerSession\":4743157131369519093,\"timeLimitInSeconds\":392377022,\"outputFiles\":[\"memhooclutnpq\"]},\"id\":\"mczjkm\",\"name\":\"ykyujxsg\",\"type\":\"hsrrryejylmbkz\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"status\":\"Error\",\"reason\":\"splzga\",\"captureStartTime\":\"2021-02-13T02:42:05Z\",\"networkInterfaces\":[\"hvn\",\"wgnxkympqanxrj\",\"ixt\",\"bta\"],\"bytesToCapturePerPacket\":6619905523291650511,\"totalBytesPerSession\":7368472418543037436,\"timeLimitInSeconds\":258038156,\"outputFiles\":[\"ylhk\"]},\"id\":\"nsghp\",\"name\":\"ycphdrwjjkhvyo\",\"type\":\"ac\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,12 +31,12 @@ public final class PacketCapturesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PacketCapture response = manager.packetCaptures()
-            .getWithResponse("rtws", "hv", "uic", com.azure.core.util.Context.NONE)
+            .getWithResponse("cgyee", "xeiqbpsmg", "mguaml", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lubhvjg", response.networkInterfaces().get(0));
-        Assertions.assertEquals(2957202472038837356L, response.bytesToCapturePerPacket());
-        Assertions.assertEquals(4743157131369519093L, response.totalBytesPerSession());
-        Assertions.assertEquals(392377022, response.timeLimitInSeconds());
+        Assertions.assertEquals("hvn", response.networkInterfaces().get(0));
+        Assertions.assertEquals(6619905523291650511L, response.bytesToCapturePerPacket());
+        Assertions.assertEquals(7368472418543037436L, response.totalBytesPerSession());
+        Assertions.assertEquals(258038156, response.timeLimitInSeconds());
     }
 }

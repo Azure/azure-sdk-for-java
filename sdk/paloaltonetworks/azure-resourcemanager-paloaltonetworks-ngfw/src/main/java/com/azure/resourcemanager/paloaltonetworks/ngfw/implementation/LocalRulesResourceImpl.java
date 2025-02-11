@@ -165,14 +165,16 @@ public final class LocalRulesResourceImpl
     }
 
     public LocalRulesResource create() {
-        this.innerObject = serviceManager.serviceClient().getLocalRules().createOrUpdate(resourceGroupName,
-            localRulestackName, priority, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLocalRules()
+            .createOrUpdate(resourceGroupName, localRulestackName, priority, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LocalRulesResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getLocalRules().createOrUpdate(resourceGroupName,
-            localRulestackName, priority, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLocalRules()
+            .createOrUpdate(resourceGroupName, localRulestackName, priority, this.innerModel(), context);
         return this;
     }
 
@@ -188,14 +190,16 @@ public final class LocalRulesResourceImpl
     }
 
     public LocalRulesResource apply() {
-        this.innerObject = serviceManager.serviceClient().getLocalRules().createOrUpdate(resourceGroupName,
-            localRulestackName, priority, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLocalRules()
+            .createOrUpdate(resourceGroupName, localRulestackName, priority, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LocalRulesResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getLocalRules().createOrUpdate(resourceGroupName,
-            localRulestackName, priority, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLocalRules()
+            .createOrUpdate(resourceGroupName, localRulestackName, priority, this.innerModel(), context);
         return this;
     }
 
@@ -203,26 +207,30 @@ public final class LocalRulesResourceImpl
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.localRulestackName = Utils.getValueFromIdByName(innerObject.id(), "localRulestacks");
-        this.priority = Utils.getValueFromIdByName(innerObject.id(), "localRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.localRulestackName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRulestacks");
+        this.priority = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "localRules");
     }
 
     public LocalRulesResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getLocalRules()
-            .getWithResponse(resourceGroupName, localRulestackName, priority, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLocalRules()
+            .getWithResponse(resourceGroupName, localRulestackName, priority, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LocalRulesResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getLocalRules()
-            .getWithResponse(resourceGroupName, localRulestackName, priority, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLocalRules()
+            .getWithResponse(resourceGroupName, localRulestackName, priority, context)
+            .getValue();
         return this;
     }
 
     public Response<RuleCounter> getCountersWithResponse(String firewallName, Context context) {
-        return serviceManager.localRules().getCountersWithResponse(resourceGroupName, localRulestackName, priority,
-            firewallName, context);
+        return serviceManager.localRules()
+            .getCountersWithResponse(resourceGroupName, localRulestackName, priority, firewallName, context);
     }
 
     public RuleCounter getCounters() {
@@ -230,8 +238,8 @@ public final class LocalRulesResourceImpl
     }
 
     public Response<Void> refreshCountersWithResponse(String firewallName, Context context) {
-        return serviceManager.localRules().refreshCountersWithResponse(resourceGroupName, localRulestackName, priority,
-            firewallName, context);
+        return serviceManager.localRules()
+            .refreshCountersWithResponse(resourceGroupName, localRulestackName, priority, firewallName, context);
     }
 
     public void refreshCounters() {
@@ -239,8 +247,8 @@ public final class LocalRulesResourceImpl
     }
 
     public Response<RuleCounterReset> resetCountersWithResponse(String firewallName, Context context) {
-        return serviceManager.localRules().resetCountersWithResponse(resourceGroupName, localRulestackName, priority,
-            firewallName, context);
+        return serviceManager.localRules()
+            .resetCountersWithResponse(resourceGroupName, localRulestackName, priority, firewallName, context);
     }
 
     public RuleCounterReset resetCounters() {

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of InternetGatewayRules. */
+/**
+ * Resource collection API of InternetGatewayRules.
+ */
 public interface InternetGatewayRules {
     /**
      * Gets an Internet Gateway Rule.
-     *
-     * <p>Gets an Internet Gateway Rule resource.
-     *
+     * 
+     * Gets an Internet Gateway Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface InternetGatewayRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Internet Gateway Rule resource along with {@link Response}.
      */
-    Response<InternetGatewayRule> getByResourceGroupWithResponse(
-        String resourceGroupName, String internetGatewayRuleName, Context context);
+    Response<InternetGatewayRule> getByResourceGroupWithResponse(String resourceGroupName,
+        String internetGatewayRuleName, Context context);
 
     /**
      * Gets an Internet Gateway Rule.
-     *
-     * <p>Gets an Internet Gateway Rule resource.
-     *
+     * 
+     * Gets an Internet Gateway Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface InternetGatewayRules {
 
     /**
      * Deletes an Internet Gateway Rule.
-     *
-     * <p>Implements Internet Gateway Rules DELETE method.
-     *
+     * 
+     * Implements Internet Gateway Rules DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface InternetGatewayRules {
 
     /**
      * Deletes an Internet Gateway Rule.
-     *
-     * <p>Implements Internet Gateway Rules DELETE method.
-     *
+     * 
+     * Implements Internet Gateway Rules DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param internetGatewayRuleName Name of the Internet Gateway rule.
      * @param context The context to associate with this operation.
@@ -69,9 +71,9 @@ public interface InternetGatewayRules {
 
     /**
      * List Internet Gateway Rules by resource group.
-     *
-     * <p>Implements Internet Gateway Rules list by resource group GET method.
-     *
+     * 
+     * Implements Internet Gateway Rules list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,9 +84,9 @@ public interface InternetGatewayRules {
 
     /**
      * List Internet Gateway Rules by resource group.
-     *
-     * <p>Implements Internet Gateway Rules list by resource group GET method.
-     *
+     * 
+     * Implements Internet Gateway Rules list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,9 +98,9 @@ public interface InternetGatewayRules {
 
     /**
      * List Internet Gateway Rules by subscription.
-     *
-     * <p>List all Internet Gateway rules in the given subscription.
-     *
+     * 
+     * List all Internet Gateway rules in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Internet Gateway Rules as paginated response with {@link PagedIterable}.
@@ -107,9 +109,9 @@ public interface InternetGatewayRules {
 
     /**
      * List Internet Gateway Rules by subscription.
-     *
-     * <p>List all Internet Gateway rules in the given subscription.
-     *
+     * 
+     * List all Internet Gateway rules in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +122,9 @@ public interface InternetGatewayRules {
 
     /**
      * Gets an Internet Gateway Rule.
-     *
-     * <p>Gets an Internet Gateway Rule resource.
-     *
+     * 
+     * Gets an Internet Gateway Rule resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface InternetGatewayRules {
 
     /**
      * Gets an Internet Gateway Rule.
-     *
-     * <p>Gets an Internet Gateway Rule resource.
-     *
+     * 
+     * Gets an Internet Gateway Rule resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,9 +149,9 @@ public interface InternetGatewayRules {
 
     /**
      * Deletes an Internet Gateway Rule.
-     *
-     * <p>Implements Internet Gateway Rules DELETE method.
-     *
+     * 
+     * Implements Internet Gateway Rules DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface InternetGatewayRules {
 
     /**
      * Deletes an Internet Gateway Rule.
-     *
-     * <p>Implements Internet Gateway Rules DELETE method.
-     *
+     * 
+     * Implements Internet Gateway Rules DELETE method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +174,7 @@ public interface InternetGatewayRules {
 
     /**
      * Begins definition for a new InternetGatewayRule resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new InternetGatewayRule definition.
      */

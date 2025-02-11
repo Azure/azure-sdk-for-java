@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkSecurityGroupResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkSecurityGroupResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Microsoft.Network/networkSecurityGroups\",\"tags\":{\"ucww\":\"ugicjooxdjebw\",\"bvmeuecivy\":\"vo\",\"ueiotwmcdyt\":\"zceuojgjrw\"},\"securityRules\":[{\"name\":\"txnrjaw\",\"access\":\"wgxhn\",\"description\":\"kxfbkpycgklwndn\",\"destinationAddressPrefix\":\"dauwhvylwzbtd\",\"destinationPortRange\":\"ujznb\",\"direction\":\"ow\",\"priority\":2070148801,\"protocol\":\"zqlveualupjmkhf\",\"sourceAddressPrefix\":\"bbcswsrtjri\",\"sourcePortRange\":\"rbpbewtghfgblcg\"}],\"targetResourceName\":\"zvlvqhjkbegib\",\"targetResourceGroupName\":\"mxiebw\"}")
-                .toObject(NetworkSecurityGroupResourceSettings.class);
+        NetworkSecurityGroupResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"Microsoft.Network/networkSecurityGroups\",\"tags\":{\"ucww\":\"ugicjooxdjebw\",\"bvmeuecivy\":\"vo\",\"ueiotwmcdyt\":\"zceuojgjrw\"},\"securityRules\":[{\"name\":\"txnrjaw\",\"access\":\"wgxhn\",\"description\":\"kxfbkpycgklwndn\",\"destinationAddressPrefix\":\"dauwhvylwzbtd\",\"destinationPortRange\":\"ujznb\",\"direction\":\"ow\",\"priority\":2070148801,\"protocol\":\"zqlveualupjmkhf\",\"sourceAddressPrefix\":\"bbcswsrtjri\",\"sourcePortRange\":\"rbpbewtghfgblcg\"}],\"targetResourceName\":\"zvlvqhjkbegib\",\"targetResourceGroupName\":\"mxiebw\"}")
+            .toObject(NetworkSecurityGroupResourceSettings.class);
         Assertions.assertEquals("zvlvqhjkbegib", model.targetResourceName());
         Assertions.assertEquals("mxiebw", model.targetResourceGroupName());
         Assertions.assertEquals("ugicjooxdjebw", model.tags().get("ucww"));
@@ -37,25 +35,20 @@ public final class NetworkSecurityGroupResourceSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkSecurityGroupResourceSettings model =
-            new NetworkSecurityGroupResourceSettings()
-                .withTargetResourceName("zvlvqhjkbegib")
+        NetworkSecurityGroupResourceSettings model
+            = new NetworkSecurityGroupResourceSettings().withTargetResourceName("zvlvqhjkbegib")
                 .withTargetResourceGroupName("mxiebw")
                 .withTags(mapOf("ucww", "ugicjooxdjebw", "bvmeuecivy", "vo", "ueiotwmcdyt", "zceuojgjrw"))
-                .withSecurityRules(
-                    Arrays
-                        .asList(
-                            new NsgSecurityRule()
-                                .withName("txnrjaw")
-                                .withAccess("wgxhn")
-                                .withDescription("kxfbkpycgklwndn")
-                                .withDestinationAddressPrefix("dauwhvylwzbtd")
-                                .withDestinationPortRange("ujznb")
-                                .withDirection("ow")
-                                .withPriority(2070148801)
-                                .withProtocol("zqlveualupjmkhf")
-                                .withSourceAddressPrefix("bbcswsrtjri")
-                                .withSourcePortRange("rbpbewtghfgblcg")));
+                .withSecurityRules(Arrays.asList(new NsgSecurityRule().withName("txnrjaw")
+                    .withAccess("wgxhn")
+                    .withDescription("kxfbkpycgklwndn")
+                    .withDestinationAddressPrefix("dauwhvylwzbtd")
+                    .withDestinationPortRange("ujznb")
+                    .withDirection("ow")
+                    .withPriority(2070148801)
+                    .withProtocol("zqlveualupjmkhf")
+                    .withSourceAddressPrefix("bbcswsrtjri")
+                    .withSourcePortRange("rbpbewtghfgblcg")));
         model = BinaryData.fromObject(model).toObject(NetworkSecurityGroupResourceSettings.class);
         Assertions.assertEquals("zvlvqhjkbegib", model.targetResourceName());
         Assertions.assertEquals("mxiebw", model.targetResourceGroupName());

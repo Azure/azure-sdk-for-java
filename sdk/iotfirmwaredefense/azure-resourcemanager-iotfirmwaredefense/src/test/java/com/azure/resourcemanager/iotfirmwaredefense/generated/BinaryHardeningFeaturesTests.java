@@ -23,8 +23,11 @@ public final class BinaryHardeningFeaturesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BinaryHardeningFeatures model = new BinaryHardeningFeatures().withNx(false).withPie(true).withRelro(false)
-            .withCanary(true).withStripped(false);
+        BinaryHardeningFeatures model = new BinaryHardeningFeatures().withNx(false)
+            .withPie(true)
+            .withRelro(false)
+            .withCanary(true)
+            .withStripped(false);
         model = BinaryData.fromObject(model).toObject(BinaryHardeningFeatures.class);
         Assertions.assertEquals(false, model.nx());
         Assertions.assertEquals(true, model.pie());

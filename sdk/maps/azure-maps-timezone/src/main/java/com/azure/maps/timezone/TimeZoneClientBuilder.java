@@ -10,7 +10,9 @@ import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -28,6 +30,7 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.http.policy.AzureSasCredentialPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -43,25 +46,11 @@ import java.util.Objects;
 
 /**
  * Builder class used to instantiate both synchronous and asynchronous {@link TimeZoneClient} clients.
- * <p><b>Example usage</b></p>
- * Creating a sync client using a {@link AzureKeyCredential}:
- * <!-- src_embed com.azure.maps.timezone.sync.builder.key.instantiation -->
- * <pre>
- * &#47;&#47; Authenticates using subscription key
- * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
- *
- * &#47;&#47; Creates a client
- * TimeZoneClient client = new TimeZoneClientBuilder&#40;&#41; 
- *     .credential&#40;keyCredential&#41;
- *     .timezoneClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;
- *     .buildClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.maps.timezone.sync.builder.ad.instantiation -->
  */
-@ServiceClientBuilder(serviceClients = {TimeZoneClient.class, TimeZoneAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { TimeZoneClient.class, TimeZoneAsyncClient.class })
 public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<TimeZoneClientBuilder>,
-    TokenCredentialTrait<TimeZoneClientBuilder>, HttpTrait<TimeZoneClientBuilder>,
-    ConfigurationTrait<TimeZoneClientBuilder>, EndpointTrait<TimeZoneClientBuilder> {
+    AzureSasCredentialTrait<TimeZoneClientBuilder>, TokenCredentialTrait<TimeZoneClientBuilder>,
+    HttpTrait<TimeZoneClientBuilder>, ConfigurationTrait<TimeZoneClientBuilder>, EndpointTrait<TimeZoneClientBuilder> {
 
     // constants
     private static final ClientLogger LOGGER = new ClientLogger(TimeZoneClientBuilder.class);
@@ -73,7 +62,7 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
     // subscription-key
     static final String MAPS_SUBSCRIPTION_KEY = "subscription-key";
     // auth scope
-    static final String[] DEFAULT_SCOPES = new String[] {"https://atlas.microsoft.com/.default"};
+    static final String[] DEFAULT_SCOPES = new String[] { "https://atlas.microsoft.com/.default" };
 
     // instance fields
     private String endpoint;
@@ -105,6 +94,7 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
     // credentials
     private AzureKeyCredential keyCredential;
     private TokenCredential tokenCredential;
+    private AzureSasCredential sasCredential;
 
     /** Default constructor for the builder class; Create an instance of the TimeZoneClientBuilder. */
     public TimeZoneClientBuilder() {
@@ -264,8 +254,21 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
      * @throws NullPointerException If {@code keyCredential} is null.
      */
     @Override
-    public TimeZoneClientBuilder credential(AzureKeyCredential keyCredential)  {
+    public TimeZoneClientBuilder credential(AzureKeyCredential keyCredential) {
         this.keyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link AzureSasCredential} used to authenticate HTTP requests.
+     *
+     * @param sasCredential The {@link AzureSasCredential} used to authenticate HTTP requests.
+     * @return The updated {@link TimeZoneClientBuilder} object.
+     * @throws NullPointerException If {@code sasCredential} is null.
+     */
+    @Override
+    public TimeZoneClientBuilder credential(AzureSasCredential sasCredential) {
+        this.sasCredential = Objects.requireNonNull(sasCredential, "'sasCredential' cannot be null.");
         return this;
     }
 
@@ -308,8 +311,8 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
     }
 
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         if (httpLogOptions == null) {
             httpLogOptions = new HttpLogOptions();
         }
@@ -333,8 +336,8 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
         // Authentications
         if (tokenCredential != null) {
             if (this.timezoneClientId == null) {
-                throw LOGGER.logExceptionAsError(
-                    new IllegalArgumentException("Missing 'timezoneClientId' parameter required for Azure AD Authentication"));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                    "Missing 'timezoneClientId' parameter required for Azure AD Authentication"));
             }
             // we need the x-ms-client header
             HttpHeaders clientHeader = new HttpHeaders();
@@ -345,6 +348,8 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         } else if (keyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy(MAPS_SUBSCRIPTION_KEY, keyCredential));
+        } else if (sasCredential != null) {
+            policies.add(new AzureSasCredentialPolicy(sasCredential));
         } else {
             // Throw exception that credential and tokenCredential cannot be null
             throw LOGGER.logExceptionAsError(
@@ -360,8 +365,7 @@ public final class TimeZoneClientBuilder implements AzureKeyCredentialTrait<Time
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
         // build the http pipeline
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }

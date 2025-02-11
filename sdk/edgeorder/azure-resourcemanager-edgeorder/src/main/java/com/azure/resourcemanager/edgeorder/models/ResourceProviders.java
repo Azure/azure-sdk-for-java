@@ -8,213 +8,232 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourceProviders. */
+/**
+ * Resource collection API of ResourceProviders.
+ */
 public interface ResourceProviders {
     /**
      * This method gets all the operations that are exposed for customer.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Operation> listOperations();
 
     /**
      * This method gets all the operations that are exposed for customer.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Operation> listOperations(Context context);
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AddressResource> list();
 
     /**
      * Lists all the addresses available under the subscription.
-     *
+     * 
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     addresses.
+     * addresses.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AddressResource> list(String filter, String skipToken, Context context);
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProductFamily> listProductFamilies(ProductFamiliesRequest productFamiliesRequest);
 
     /**
      * This method provides the list of product families for the given subscription.
-     *
+     * 
      * @param productFamiliesRequest Filters for showing the product families.
      * @param expand $expand is supported on configurations parameter for product, which provides details on the
-     *     configurations for the product.
+     * configurations for the product.
      * @param skipToken $skipToken is supported on list of product families, which provides the next page in the list of
-     *     product families.
+     * product families.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of product families.
+     * @return the list of product families as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProductFamily> listProductFamilies(
-        ProductFamiliesRequest productFamiliesRequest, String expand, String skipToken, Context context);
+    PagedIterable<ProductFamily> listProductFamilies(ProductFamiliesRequest productFamiliesRequest, String expand,
+        String skipToken, Context context);
 
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Configuration> listConfigurations(ConfigurationsRequest configurationsRequest);
 
     /**
      * This method provides the list of configurations for the given product family, product line and product under
      * subscription.
-     *
+     * 
      * @param configurationsRequest Filters for showing the configurations.
      * @param skipToken $skipToken is supported on list of configurations, which provides the next page in the list of
-     *     configurations.
+     * configurations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of configurations.
+     * @return the list of configurations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Configuration> listConfigurations(
-        ConfigurationsRequest configurationsRequest, String skipToken, Context context);
+    PagedIterable<Configuration> listConfigurations(ConfigurationsRequest configurationsRequest, String skipToken,
+        Context context);
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProductFamiliesMetadataDetails> listProductFamiliesMetadata();
 
     /**
      * This method provides the list of product families metadata for the given subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on list of product families metadata, which provides the next page in
-     *     the list of product families metadata.
+     * the list of product families metadata.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return holds details about product family metadata.
+     * @return holds details about product family metadata as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProductFamiliesMetadataDetails> listProductFamiliesMetadata(String skipToken, Context context);
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OrderResource> listOrderAtSubscriptionLevel();
 
     /**
      * Lists order at subscription level.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OrderResource> listOrderAtSubscriptionLevel(String skipToken, Context context);
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OrderItemResource> listOrderItemsAtSubscriptionLevel();
 
     /**
      * Lists order item at subscription level.
-     *
+     * 
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OrderItemResource> listOrderItemsAtSubscriptionLevel(
-        String filter, String expand, String skipToken, Context context);
+    PagedIterable<OrderItemResource> listOrderItemsAtSubscriptionLevel(String filter, String expand, String skipToken,
+        Context context);
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AddressResource> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all the addresses available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on shipping address properties. Filter supports only equals
-     *     operation.
+     * operation.
      * @param skipToken $skipToken is supported on Get list of addresses, which provides the next page in the list of
-     *     address.
+     * address.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return address Resource Collection.
+     * @return address Resource Collection as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AddressResource> listByResourceGroup(
-        String resourceGroupName, String filter, String skipToken, Context context);
+    PagedIterable<AddressResource> listByResourceGroup(String resourceGroupName, String filter, String skipToken,
+        Context context);
 
     /**
      * Gets information about the specified address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified address along with {@link Response}.
+     */
+    Response<AddressResource> getByResourceGroupWithResponse(String resourceGroupName, String addressName,
+        Context context);
+
+    /**
+     * Gets information about the specified address.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param addressName The name of the address Resource within the specified resource group. address names must be
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -223,26 +242,11 @@ public interface ResourceProviders {
     AddressResource getByResourceGroup(String resourceGroupName, String addressName);
 
     /**
-     * Gets information about the specified address.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified address.
-     */
-    Response<AddressResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String addressName, Context context);
-
-    /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -251,10 +255,10 @@ public interface ResourceProviders {
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param addressName The name of the address Resource within the specified resource group. address names must be
-     *     between 3 and 24 characters in length and use any alphanumeric and underscore only.
+     * between 3 and 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -264,32 +268,47 @@ public interface ResourceProviders {
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OrderResource> listOrderAtResourceGroupLevel(String resourceGroupName);
 
     /**
      * Lists order at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skipToken $skipToken is supported on Get list of order, which provides the next page in the list of order.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orders.
+     * @return list of orders as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OrderResource> listOrderAtResourceGroupLevel(
-        String resourceGroupName, String skipToken, Context context);
+    PagedIterable<OrderResource> listOrderAtResourceGroupLevel(String resourceGroupName, String skipToken,
+        Context context);
 
     /**
      * Gets an order.
-     *
+     * 
+     * @param orderName The name of the order.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of Azure region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an order along with {@link Response}.
+     */
+    Response<OrderResource> getOrderByNameWithResponse(String orderName, String resourceGroupName, String location,
+        Context context);
+
+    /**
+     * Gets an order.
+     * 
      * @param orderName The name of the order.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The name of Azure region.
@@ -301,54 +320,57 @@ public interface ResourceProviders {
     OrderResource getOrderByName(String orderName, String resourceGroupName, String location);
 
     /**
-     * Gets an order.
-     *
-     * @param orderName The name of the order.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param location The name of Azure region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order.
-     */
-    Response<OrderResource> getOrderByNameWithResponse(
-        String orderName, String resourceGroupName, String location, Context context);
-
-    /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
     PagedIterable<OrderItemResource> listOrderItemsAtResourceGroupLevel(String resourceGroupName);
 
     /**
      * Lists order item at resource group level.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param filter $filter is supported to filter based on order id. Filter supports only equals operation.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param skipToken $skipToken is supported on Get list of order items, which provides the next page in the list of
-     *     order items.
+     * order items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of orderItems.
+     * @return list of orderItems as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<OrderItemResource> listOrderItemsAtResourceGroupLevel(
-        String resourceGroupName, String filter, String expand, String skipToken, Context context);
+    PagedIterable<OrderItemResource> listOrderItemsAtResourceGroupLevel(String resourceGroupName, String filter,
+        String expand, String skipToken, Context context);
 
     /**
      * Gets an order item.
-     *
+     * 
+     * @param orderItemName The name of the order item.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an order item along with {@link Response}.
+     */
+    Response<OrderItemResource> getOrderItemByNameWithResponse(String orderItemName, String resourceGroupName,
+        String expand, Context context);
+
+    /**
+     * Gets an order item.
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,26 +381,8 @@ public interface ResourceProviders {
     OrderItemResource getOrderItemByName(String orderItemName, String resourceGroupName);
 
     /**
-     * Gets an order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order item.
-     */
-    Response<OrderItemResource> getOrderItemByNameWithResponse(
-        String orderItemName, String resourceGroupName, String expand, Context context);
-
-    /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -389,7 +393,7 @@ public interface ResourceProviders {
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -401,7 +405,22 @@ public interface ResourceProviders {
 
     /**
      * Cancel order item.
-     *
+     * 
+     * @param orderItemName The name of the order item.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param cancellationReason Reason for cancellation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> cancelOrderItemWithResponse(String orderItemName, String resourceGroupName,
+        CancellationReason cancellationReason, Context context);
+
+    /**
+     * Cancel order item.
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cancellationReason Reason for cancellation.
@@ -412,23 +431,8 @@ public interface ResourceProviders {
     void cancelOrderItem(String orderItemName, String resourceGroupName, CancellationReason cancellationReason);
 
     /**
-     * Cancel order item.
-     *
-     * @param orderItemName The name of the order item.
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param cancellationReason Reason for cancellation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> cancelOrderItemWithResponse(
-        String orderItemName, String resourceGroupName, CancellationReason cancellationReason, Context context);
-
-    /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -440,7 +444,7 @@ public interface ResourceProviders {
 
     /**
      * Return order item.
-     *
+     * 
      * @param orderItemName The name of the order item.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param returnOrderItemDetails Return order item CurrentStatus.
@@ -449,62 +453,62 @@ public interface ResourceProviders {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void returnOrderItem(
-        String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails, Context context);
+    void returnOrderItem(String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails,
+        Context context);
 
     /**
      * Gets information about the specified address.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified address.
+     * @return information about the specified address along with {@link Response}.
      */
     AddressResource getById(String id);
 
     /**
      * Gets information about the specified address.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified address.
+     * @return information about the specified address along with {@link Response}.
      */
     Response<AddressResource> getByIdWithResponse(String id, Context context);
 
     /**
      * Gets an order item.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order item.
+     * @return an order item along with {@link Response}.
      */
     OrderItemResource getOrderItemById(String id);
 
     /**
      * Gets an order item.
-     *
+     * 
      * @param id the resource ID.
      * @param expand $expand is supported on device details, forward shipping details and reverse shipping details
-     *     parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
-     *     details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse
-     *     shipping details respectively.
+     * parameters. Each of these can be provided as a comma separated list. Device Details for order item provides
+     * details on the devices of the product, Forward and Reverse Shipping details provide forward and reverse shipping
+     * details respectively.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an order item.
+     * @return an order item along with {@link Response}.
      */
     Response<OrderItemResource> getOrderItemByIdWithResponse(String id, String expand, Context context);
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -514,7 +518,7 @@ public interface ResourceProviders {
 
     /**
      * Deletes an address.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,7 +529,7 @@ public interface ResourceProviders {
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -535,7 +539,7 @@ public interface ResourceProviders {
 
     /**
      * Deletes an order item.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -546,7 +550,7 @@ public interface ResourceProviders {
 
     /**
      * Begins definition for a new AddressResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AddressResource definition.
      */
@@ -554,7 +558,7 @@ public interface ResourceProviders {
 
     /**
      * Begins definition for a new OrderItemResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new OrderItemResource definition.
      */

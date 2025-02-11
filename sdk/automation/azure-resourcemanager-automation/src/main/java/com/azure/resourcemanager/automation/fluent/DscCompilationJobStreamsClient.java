@@ -11,25 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.JobStreamListResultInner;
 import java.util.UUID;
 
-/** An instance of this class provides access to all the operations defined in DscCompilationJobStreamsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DscCompilationJobStreamsClient.
+ */
 public interface DscCompilationJobStreamsClient {
     /**
      * Retrieve all the job streams for the compilation Job.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param jobId The job id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list job stream operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JobStreamListResultInner listByJob(String resourceGroupName, String automationAccountName, UUID jobId);
-
-    /**
-     * Retrieve all the job streams for the compilation Job.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param jobId The job id.
@@ -40,6 +28,20 @@ public interface DscCompilationJobStreamsClient {
      * @return the response model for the list job stream operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JobStreamListResultInner> listByJobWithResponse(
-        String resourceGroupName, String automationAccountName, UUID jobId, Context context);
+    Response<JobStreamListResultInner> listByJobWithResponse(String resourceGroupName, String automationAccountName,
+        UUID jobId, Context context);
+
+    /**
+     * Retrieve all the job streams for the compilation Job.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param jobId The job id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response model for the list job stream operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JobStreamListResultInner listByJob(String resourceGroupName, String automationAccountName, UUID jobId);
 }

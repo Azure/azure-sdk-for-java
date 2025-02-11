@@ -5,28 +5,35 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure virtual network function application definition.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "artifactType",
-    defaultImpl = AzureCoreNetworkFunctionApplication.class)
-@JsonTypeName("AzureCoreNetworkFunctionApplication")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "VhdImageFile", value = AzureCoreNetworkFunctionVhdApplication.class),
-    @JsonSubTypes.Type(name = "ArmTemplate", value = AzureCoreNetworkFunctionArmTemplateApplication.class) })
 @Fluent
 public class AzureCoreNetworkFunctionApplication extends NetworkFunctionApplication {
+    /*
+     * The artifact type.
+     */
+    private AzureCoreArtifactType artifactType
+        = AzureCoreArtifactType.fromString("AzureCoreNetworkFunctionApplication");
+
     /**
      * Creates an instance of AzureCoreNetworkFunctionApplication class.
      */
     public AzureCoreNetworkFunctionApplication() {
+    }
+
+    /**
+     * Get the artifactType property: The artifact type.
+     * 
+     * @return the artifactType value.
+     */
+    public AzureCoreArtifactType artifactType() {
+        return this.artifactType;
     }
 
     /**
@@ -54,6 +61,80 @@ public class AzureCoreNetworkFunctionApplication extends NetworkFunctionApplicat
      */
     @Override
     public void validate() {
-        super.validate();
+        if (dependsOnProfile() != null) {
+            dependsOnProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeJsonField("dependsOnProfile", dependsOnProfile());
+        jsonWriter.writeStringField("artifactType", this.artifactType == null ? null : this.artifactType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureCoreNetworkFunctionApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureCoreNetworkFunctionApplication if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureCoreNetworkFunctionApplication.
+     */
+    public static AzureCoreNetworkFunctionApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("artifactType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("VhdImageFile".equals(discriminatorValue)) {
+                    return AzureCoreNetworkFunctionVhdApplication.fromJson(readerToUse.reset());
+                } else if ("ArmTemplate".equals(discriminatorValue)) {
+                    return AzureCoreNetworkFunctionArmTemplateApplication.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AzureCoreNetworkFunctionApplication fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureCoreNetworkFunctionApplication deserializedAzureCoreNetworkFunctionApplication
+                = new AzureCoreNetworkFunctionApplication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAzureCoreNetworkFunctionApplication.withName(reader.getString());
+                } else if ("dependsOnProfile".equals(fieldName)) {
+                    deserializedAzureCoreNetworkFunctionApplication
+                        .withDependsOnProfile(DependsOnProfile.fromJson(reader));
+                } else if ("artifactType".equals(fieldName)) {
+                    deserializedAzureCoreNetworkFunctionApplication.artifactType
+                        = AzureCoreArtifactType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureCoreNetworkFunctionApplication;
+        });
     }
 }

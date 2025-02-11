@@ -6,22 +6,18 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
+import com.azure.resourcemanager.synapse.fluent.models.LibraryInfo;
 import com.azure.resourcemanager.synapse.models.AutoPauseProperties;
 import com.azure.resourcemanager.synapse.models.AutoScaleProperties;
 import com.azure.resourcemanager.synapse.models.BigDataPoolResourceInfo;
-import com.azure.resourcemanager.synapse.models.ConfigurationType;
 import com.azure.resourcemanager.synapse.models.DynamicExecutorAllocation;
 import com.azure.resourcemanager.synapse.models.LibraryRequirements;
 import com.azure.resourcemanager.synapse.models.NodeSize;
 import com.azure.resourcemanager.synapse.models.NodeSizeFamily;
-import com.azure.resourcemanager.synapse.models.SparkConfigProperties;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -29,112 +25,81 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BigDataPoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"autoScale\":{\"minNodeCount\":300403607,\"enabled\":true,\"maxNodeCount\":1674325825},\"creationDate\":\"2021-08-09T12:56:11Z\",\"autoPause\":{\"delayInMinutes\":594386251,\"enabled\":false},\"isComputeIsolationEnabled\":false,\"sessionLevelPackagesEnabled\":true,\"cacheSize\":920780247,\"dynamicExecutorAllocation\":{\"enabled\":false},\"sparkEventsFolder\":\"rmmkyupiju\",\"nodeCount\":1801914580,\"libraryRequirements\":{\"time\":\"2021-04-30T04:51:05Z\",\"content\":\"kfq\",\"filename\":\"kemyil\"},\"customLibraries\":[{\"name\":\"jascowvfdjkpd\",\"path\":\"hlkks\",\"containerName\":\"gzv\",\"uploadedTimestamp\":\"2021-01-08T19:20:23Z\",\"type\":\"dkz\",\"provisioningStatus\":\"nwsithuqolyahluq\",\"creatorId\":\"ulsutrjbhxy\"},{\"name\":\"hyqezvqq\",\"path\":\"drftbcvexreuquo\",\"containerName\":\"ljvfwhreagk\",\"uploadedTimestamp\":\"2021-04-12T13:34:22Z\",\"type\":\"rqtvbczsulmdgglm\",\"provisioningStatus\":\"jpfseykg\",\"creatorId\":\"ngpszngafpg\"},{\"name\":\"kvec\",\"path\":\"jcngoadyed\",\"containerName\":\"rgjfoknubnoi\",\"uploadedTimestamp\":\"2021-02-07T18:56:19Z\",\"type\":\"ztrgdgxvcoq\",\"provisioningStatus\":\"sw\",\"creatorId\":\"yxp\"}],\"sparkConfigProperties\":{\"time\":\"2021-07-29T16:41:47Z\",\"content\":\"ialwv\",\"filename\":\"buhzacaq\"},\"sparkVersion\":\"ltcoqc\",\"defaultSparkLogFolder\":\"pdsxzakuejkm\",\"nodeSize\":\"XLarge\",\"nodeSizeFamily\":\"None\",\"lastSucceededTimestamp\":\"2021-05-06T02:04:05Z\"},\"location\":\"fqcvovj\",\"tags\":{\"e\":\"csjml\",\"iuxegth\":\"yeji\",\"erppt\":\"rtudawlpjfel\"},\"id\":\"bgqnz\",\"name\":\"nhii\",\"type\":\"ialwc\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"autoScale\":{\"minNodeCount\":985648973,\"enabled\":true,\"maxNodeCount\":1004177849},\"creationDate\":\"2021-05-07T09:49:36Z\",\"autoPause\":{\"delayInMinutes\":26783847,\"enabled\":false},\"isComputeIsolationEnabled\":false,\"isAutotuneEnabled\":false,\"sessionLevelPackagesEnabled\":false,\"cacheSize\":880047238,\"dynamicExecutorAllocation\":{\"enabled\":true,\"minExecutors\":876002990,\"maxExecutors\":21089033},\"sparkEventsFolder\":\"tkutnjil\",\"nodeCount\":1110899441,\"libraryRequirements\":{\"time\":\"2021-06-03T08:07:55Z\",\"content\":\"yhtmjoduif\",\"filename\":\"lxfary\"},\"customLibraries\":[],\"sparkConfigProperties\":{\"time\":\"2021-05-20T15:40Z\",\"content\":\"zvj\",\"filename\":\"ahoyiyaxqvj\",\"configurationType\":\"File\"},\"sparkVersion\":\"tcz\",\"defaultSparkLogFolder\":\"dn\",\"nodeSize\":\"XXXLarge\",\"nodeSizeFamily\":\"None\",\"lastSucceededTimestamp\":\"2021-02-26T05:46:20Z\"},\"location\":\"bmdqrxyglae\",\"tags\":{\"riefoo\":\"flwtjdt\",\"dudgcozzomeh\":\"ycuxdtzcqip\",\"juxkqll\":\"lantolamlb\"},\"id\":\"z\",\"name\":\"pvwdtgckzdqiq\",\"type\":\"lrat\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        BigDataPoolResourceInfo response = manager.bigDataPools()
+            .define("bkjbz")
+            .withRegion("zdfwrsofpltdbm")
+            .withExistingWorkspace("vnwqjwgo", "nlejjjkxybwf")
+            .withTags(
+                mapOf("ujwouhdawsi", "rhvhfnracwnpqigt", "bxsjybvitvqkj", "rb", "umtggmuwdchozfn", "az", "xn", "fexl"))
+            .withProvisioningState("svkzykj")
+            .withAutoScale(
+                new AutoScaleProperties().withMinNodeCount(1399130585).withEnabled(false).withMaxNodeCount(1717861767))
+            .withCreationDate(OffsetDateTime.parse("2021-08-03T03:30:16Z"))
+            .withAutoPause(new AutoPauseProperties().withDelayInMinutes(877780052).withEnabled(true))
+            .withIsComputeIsolationEnabled(false)
+            .withSessionLevelPackagesEnabled(true)
+            .withCacheSize(1578351643)
+            .withDynamicExecutorAllocation(new DynamicExecutorAllocation().withEnabled(false))
+            .withSparkEventsFolder("pkuwxeoioj")
+            .withNodeCount(934383285)
+            .withLibraryRequirements(new LibraryRequirements().withContent("jzwfb").withFilename("aykmmf"))
+            .withCustomLibraries(Arrays.asList(new LibraryInfo().withName("wxrzxmdewsrsxkrp")
+                .withPath("jazejwwviyoyp")
+                .withContainerName("hbrnnhjx")
+                .withType("hqkb")))
+            .withSparkConfigProperties(new LibraryRequirements().withContent("ziu").withFilename("bzkkd"))
+            .withSparkVersion("hqsycljselp")
+            .withDefaultSparkLogFolder("bafvafhlbylcc")
+            .withNodeSize(NodeSize.LARGE)
+            .withNodeSizeFamily(NodeSizeFamily.MEMORY_OPTIMIZED)
+            .withForce(false)
+            .create();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        BigDataPoolResourceInfo response =
-            manager
-                .bigDataPools()
-                .define("afofu")
-                .withRegion("wfldsiuorinik")
-                .withExistingWorkspace("hnzrsbkkzovlzdm", "fmfws")
-                .withTags(mapOf("iwm", "pks"))
-                .withProvisioningState("immovzwd")
-                .withAutoScale(
-                    new AutoScaleProperties()
-                        .withMinNodeCount(1674817788)
-                        .withEnabled(false)
-                        .withMaxNodeCount(1123352219))
-                .withAutoPause(new AutoPauseProperties().withDelayInMinutes(960263436).withEnabled(true))
-                .withIsComputeIsolationEnabled(false)
-                .withIsAutotuneEnabled(false)
-                .withSessionLevelPackagesEnabled(false)
-                .withDynamicExecutorAllocation(
-                    new DynamicExecutorAllocation()
-                        .withEnabled(true)
-                        .withMinExecutors(420672272)
-                        .withMaxExecutors(1302381284))
-                .withSparkEventsFolder("aq")
-                .withNodeCount(806621998)
-                .withLibraryRequirements(new LibraryRequirements().withContent("qoq").withFilename("movsfbpbvz"))
-                .withCustomLibraries(Arrays.asList())
-                .withSparkConfigProperties(
-                    new SparkConfigProperties()
-                        .withContent("vsmcwo")
-                        .withFilename("axdtnqif")
-                        .withConfigurationType(ConfigurationType.FILE))
-                .withSparkVersion("roiauesugmo")
-                .withDefaultSparkLogFolder("cjycb")
-                .withNodeSize(NodeSize.XLARGE)
-                .withNodeSizeFamily(NodeSizeFamily.HARDWARE_ACCELERATED_FPGA)
-                .withForce(false)
-                .create();
-
-        Assertions.assertEquals("bmdqrxyglae", response.location());
-        Assertions.assertEquals("flwtjdt", response.tags().get("riefoo"));
+        Assertions.assertEquals("fqcvovj", response.location());
+        Assertions.assertEquals("csjml", response.tags().get("e"));
         Assertions.assertEquals("Succeeded", response.provisioningState());
-        Assertions.assertEquals(985648973, response.autoScale().minNodeCount());
+        Assertions.assertEquals(300403607, response.autoScale().minNodeCount());
         Assertions.assertEquals(true, response.autoScale().enabled());
-        Assertions.assertEquals(1004177849, response.autoScale().maxNodeCount());
-        Assertions.assertEquals(26783847, response.autoPause().delayInMinutes());
+        Assertions.assertEquals(1674325825, response.autoScale().maxNodeCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-09T12:56:11Z"), response.creationDate());
+        Assertions.assertEquals(594386251, response.autoPause().delayInMinutes());
         Assertions.assertEquals(false, response.autoPause().enabled());
         Assertions.assertEquals(false, response.isComputeIsolationEnabled());
-        Assertions.assertEquals(false, response.isAutotuneEnabled());
-        Assertions.assertEquals(false, response.sessionLevelPackagesEnabled());
-        Assertions.assertEquals(true, response.dynamicExecutorAllocation().enabled());
-        Assertions.assertEquals(876002990, response.dynamicExecutorAllocation().minExecutors());
-        Assertions.assertEquals(21089033, response.dynamicExecutorAllocation().maxExecutors());
-        Assertions.assertEquals("tkutnjil", response.sparkEventsFolder());
-        Assertions.assertEquals(1110899441, response.nodeCount());
-        Assertions.assertEquals("yhtmjoduif", response.libraryRequirements().content());
-        Assertions.assertEquals("lxfary", response.libraryRequirements().filename());
-        Assertions.assertEquals("zvj", response.sparkConfigProperties().content());
-        Assertions.assertEquals("ahoyiyaxqvj", response.sparkConfigProperties().filename());
-        Assertions.assertEquals(ConfigurationType.FILE, response.sparkConfigProperties().configurationType());
-        Assertions.assertEquals("tcz", response.sparkVersion());
-        Assertions.assertEquals("dn", response.defaultSparkLogFolder());
-        Assertions.assertEquals(NodeSize.XXXLARGE, response.nodeSize());
+        Assertions.assertEquals(true, response.sessionLevelPackagesEnabled());
+        Assertions.assertEquals(920780247, response.cacheSize());
+        Assertions.assertEquals(false, response.dynamicExecutorAllocation().enabled());
+        Assertions.assertEquals("rmmkyupiju", response.sparkEventsFolder());
+        Assertions.assertEquals(1801914580, response.nodeCount());
+        Assertions.assertEquals("kfq", response.libraryRequirements().content());
+        Assertions.assertEquals("kemyil", response.libraryRequirements().filename());
+        Assertions.assertEquals("jascowvfdjkpd", response.customLibraries().get(0).name());
+        Assertions.assertEquals("hlkks", response.customLibraries().get(0).path());
+        Assertions.assertEquals("gzv", response.customLibraries().get(0).containerName());
+        Assertions.assertEquals("dkz", response.customLibraries().get(0).type());
+        Assertions.assertEquals("ialwv", response.sparkConfigProperties().content());
+        Assertions.assertEquals("buhzacaq", response.sparkConfigProperties().filename());
+        Assertions.assertEquals("ltcoqc", response.sparkVersion());
+        Assertions.assertEquals("pdsxzakuejkm", response.defaultSparkLogFolder());
+        Assertions.assertEquals(NodeSize.XLARGE, response.nodeSize());
         Assertions.assertEquals(NodeSizeFamily.NONE, response.nodeSizeFamily());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

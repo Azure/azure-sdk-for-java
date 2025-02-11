@@ -11,11 +11,12 @@ import com.azure.storage.blob.models.BlobLeaseRequestConditions;
  */
 @Fluent
 public class BlobAcquireLeaseOptions {
-
     private final int duration;
     private BlobLeaseRequestConditions requestConditions;
 
     /**
+     * Creates a new instance of {@link BlobAcquireLeaseOptions}.
+     *
      * @param durationInSeconds The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      */
     public BlobAcquireLeaseOptions(int durationInSeconds) {
@@ -23,6 +24,8 @@ public class BlobAcquireLeaseOptions {
     }
 
     /**
+     * Gets the duration of the lease.
+     *
      * @return The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
      */
     public int getDuration() {
@@ -30,6 +33,8 @@ public class BlobAcquireLeaseOptions {
     }
 
     /**
+     * Gets the {@link BlobLeaseRequestConditions}.
+     *
      * @return {@link BlobLeaseRequestConditions}
      */
     public BlobLeaseRequestConditions getRequestConditions() {
@@ -37,6 +42,8 @@ public class BlobAcquireLeaseOptions {
     }
 
     /**
+     * Sets the {@link BlobLeaseRequestConditions}.
+     *
      * @param requestConditions {@link BlobLeaseRequestConditions}
      * @return The updated options.
      */

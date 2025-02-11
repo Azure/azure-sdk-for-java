@@ -5,32 +5,33 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.ClusterStatusEntity;
 import com.azure.resourcemanager.confluent.models.SCClusterSpecEntity;
 import com.azure.resourcemanager.confluent.models.SCMetadataEntity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Cluster Properties.
  */
 @Fluent
-public final class ClusterProperties {
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
      * Metadata of the record
      */
-    @JsonProperty(value = "metadata")
     private SCMetadataEntity metadata;
 
     /*
      * Specification of the cluster
      */
-    @JsonProperty(value = "spec")
     private SCClusterSpecEntity spec;
 
     /*
      * Specification of the cluster status
      */
-    @JsonProperty(value = "status")
     private ClusterStatusEntity status;
 
     /**
@@ -114,5 +115,47 @@ public final class ClusterProperties {
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeJsonField("spec", this.spec);
+        jsonWriter.writeJsonField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metadata".equals(fieldName)) {
+                    deserializedClusterProperties.metadata = SCMetadataEntity.fromJson(reader);
+                } else if ("spec".equals(fieldName)) {
+                    deserializedClusterProperties.spec = SCClusterSpecEntity.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedClusterProperties.status = ClusterStatusEntity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
     }
 }

@@ -6,47 +6,66 @@ package com.azure.resourcemanager.advisor.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.advisor.fluent.models.ConfigDataInner;
+import com.azure.resourcemanager.advisor.models.Category;
 import com.azure.resourcemanager.advisor.models.ConfigurationListResult;
 import com.azure.resourcemanager.advisor.models.CpuThreshold;
+import com.azure.resourcemanager.advisor.models.DigestConfig;
+import com.azure.resourcemanager.advisor.models.DigestConfigState;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ConfigurationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"exclude\":false,\"lowCpuThreshold\":\"5\",\"digests\":[]},\"id\":\"urkdtmlx\",\"name\":\"ekuksjtx\",\"type\":\"kc\"},{\"properties\":{\"exclude\":true,\"lowCpuThreshold\":\"10\",\"digests\":[]},\"id\":\"y\",\"name\":\"anzwuxzdxta\",\"type\":\"rlhm\"},{\"properties\":{\"exclude\":false,\"lowCpuThreshold\":\"10\",\"digests\":[]},\"id\":\"obmtukk\",\"name\":\"ryrtihfxtijbpzv\",\"type\":\"nwzsymg\"}],\"nextLink\":\"uf\"}")
-                .toObject(ConfigurationListResult.class);
-        Assertions.assertEquals(false, model.value().get(0).exclude());
-        Assertions.assertEquals(CpuThreshold.FIVE, model.value().get(0).lowCpuThreshold());
-        Assertions.assertEquals("uf", model.nextLink());
+        ConfigurationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"exclude\":true,\"lowCpuThreshold\":\"20\",\"digests\":[{\"name\":\"pikxwczbyscnpqxu\",\"actionGroupResourceId\":\"vyq\",\"frequency\":649847293,\"categories\":[\"Performance\"],\"language\":\"k\",\"state\":\"Disabled\"},{\"name\":\"mjgr\",\"actionGroupResourceId\":\"wvukx\",\"frequency\":271346012,\"categories\":[\"Performance\",\"OperationalExcellence\"],\"language\":\"h\",\"state\":\"Disabled\"},{\"name\":\"yejhk\",\"actionGroupResourceId\":\"htnapczwlokjyem\",\"frequency\":1665801665,\"categories\":[\"HighAvailability\",\"Security\",\"OperationalExcellence\",\"HighAvailability\"],\"language\":\"jnchgej\",\"state\":\"Disabled\"}]},\"id\":\"dmailzydehojw\",\"name\":\"ahuxinpm\",\"type\":\"njaqwixjspro\"}],\"nextLink\":\"cputegjvwmfdats\"}")
+            .toObject(ConfigurationListResult.class);
+        Assertions.assertEquals(true, model.value().get(0).exclude());
+        Assertions.assertEquals(CpuThreshold.TWO_ZERO, model.value().get(0).lowCpuThreshold());
+        Assertions.assertEquals("pikxwczbyscnpqxu", model.value().get(0).digests().get(0).name());
+        Assertions.assertEquals("vyq", model.value().get(0).digests().get(0).actionGroupResourceId());
+        Assertions.assertEquals(649847293, model.value().get(0).digests().get(0).frequency());
+        Assertions.assertEquals(Category.PERFORMANCE, model.value().get(0).digests().get(0).categories().get(0));
+        Assertions.assertEquals("k", model.value().get(0).digests().get(0).language());
+        Assertions.assertEquals(DigestConfigState.DISABLED, model.value().get(0).digests().get(0).state());
+        Assertions.assertEquals("cputegjvwmfdats", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationListResult model =
-            new ConfigurationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ConfigDataInner()
-                                .withExclude(false)
-                                .withLowCpuThreshold(CpuThreshold.FIVE)
-                                .withDigests(Arrays.asList()),
-                            new ConfigDataInner()
-                                .withExclude(true)
-                                .withLowCpuThreshold(CpuThreshold.ONE_ZERO)
-                                .withDigests(Arrays.asList()),
-                            new ConfigDataInner()
-                                .withExclude(false)
-                                .withLowCpuThreshold(CpuThreshold.ONE_ZERO)
-                                .withDigests(Arrays.asList())))
-                .withNextLink("uf");
+        ConfigurationListResult model
+            = new ConfigurationListResult().withValue(Arrays.asList(new ConfigDataInner().withExclude(true)
+                .withLowCpuThreshold(CpuThreshold.TWO_ZERO)
+                .withDigests(Arrays.asList(
+                    new DigestConfig().withName("pikxwczbyscnpqxu")
+                        .withActionGroupResourceId("vyq")
+                        .withFrequency(649847293)
+                        .withCategories(Arrays.asList(Category.PERFORMANCE))
+                        .withLanguage("k")
+                        .withState(DigestConfigState.DISABLED),
+                    new DigestConfig().withName("mjgr")
+                        .withActionGroupResourceId("wvukx")
+                        .withFrequency(271346012)
+                        .withCategories(Arrays.asList(Category.PERFORMANCE, Category.OPERATIONAL_EXCELLENCE))
+                        .withLanguage("h")
+                        .withState(DigestConfigState.DISABLED),
+                    new DigestConfig().withName("yejhk")
+                        .withActionGroupResourceId("htnapczwlokjyem")
+                        .withFrequency(1665801665)
+                        .withCategories(Arrays.asList(Category.HIGH_AVAILABILITY, Category.SECURITY,
+                            Category.OPERATIONAL_EXCELLENCE, Category.HIGH_AVAILABILITY))
+                        .withLanguage("jnchgej")
+                        .withState(DigestConfigState.DISABLED)))))
+                .withNextLink("cputegjvwmfdats");
         model = BinaryData.fromObject(model).toObject(ConfigurationListResult.class);
-        Assertions.assertEquals(false, model.value().get(0).exclude());
-        Assertions.assertEquals(CpuThreshold.FIVE, model.value().get(0).lowCpuThreshold());
-        Assertions.assertEquals("uf", model.nextLink());
+        Assertions.assertEquals(true, model.value().get(0).exclude());
+        Assertions.assertEquals(CpuThreshold.TWO_ZERO, model.value().get(0).lowCpuThreshold());
+        Assertions.assertEquals("pikxwczbyscnpqxu", model.value().get(0).digests().get(0).name());
+        Assertions.assertEquals("vyq", model.value().get(0).digests().get(0).actionGroupResourceId());
+        Assertions.assertEquals(649847293, model.value().get(0).digests().get(0).frequency());
+        Assertions.assertEquals(Category.PERFORMANCE, model.value().get(0).digests().get(0).categories().get(0));
+        Assertions.assertEquals("k", model.value().get(0).digests().get(0).language());
+        Assertions.assertEquals(DigestConfigState.DISABLED, model.value().get(0).digests().get(0).state());
+        Assertions.assertEquals("cputegjvwmfdats", model.nextLink());
     }
 }

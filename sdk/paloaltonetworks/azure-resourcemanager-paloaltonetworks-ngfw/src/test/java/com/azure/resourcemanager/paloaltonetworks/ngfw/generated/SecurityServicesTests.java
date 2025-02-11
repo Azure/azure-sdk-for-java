@@ -27,9 +27,13 @@ public final class SecurityServicesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SecurityServices model = new SecurityServices().withVulnerabilityProfile("sfqpteehz")
-            .withAntiSpywareProfile("ypyqrimzinp").withAntiVirusProfile("wjdk").withUrlFilteringProfile("soodqxhcrmnoh")
-            .withFileBlockingProfile("ckwhds").withDnsSubscription("fiyipjxsqwpgrj")
-            .withOutboundUnTrustCertificate("norcjxvsnbyxqab").withOutboundTrustCertificate("ocpcy");
+            .withAntiSpywareProfile("ypyqrimzinp")
+            .withAntiVirusProfile("wjdk")
+            .withUrlFilteringProfile("soodqxhcrmnoh")
+            .withFileBlockingProfile("ckwhds")
+            .withDnsSubscription("fiyipjxsqwpgrj")
+            .withOutboundUnTrustCertificate("norcjxvsnbyxqab")
+            .withOutboundTrustCertificate("ocpcy");
         model = BinaryData.fromObject(model).toObject(SecurityServices.class);
         Assertions.assertEquals("sfqpteehz", model.vulnerabilityProfile());
         Assertions.assertEquals("ypyqrimzinp", model.antiSpywareProfile());

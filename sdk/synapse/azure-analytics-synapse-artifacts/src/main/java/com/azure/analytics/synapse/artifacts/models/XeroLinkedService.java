@@ -24,7 +24,8 @@ public class XeroLinkedService extends LinkedService {
     private String type = "Xero";
 
     /*
-     * Properties used to connect to Xero. It is mutually exclusive with any other properties in the linked service. Type: object.
+     * Properties used to connect to Xero. It is mutually exclusive with any other properties in the linked service.
+     * Type: object.
      */
     private Object connectionProperties;
 
@@ -39,7 +40,8 @@ public class XeroLinkedService extends LinkedService {
     private SecretBase consumerKey;
 
     /*
-     * The private key from the .pem file that was generated for your Xero private application. You must include all the text from the .pem file, including the Unix line endings(
+     * The private key from the .pem file that was generated for your Xero private application. You must include all the
+     * text from the .pem file, including the Unix line endings(
      * ).
      */
     private SecretBase privateKey;
@@ -50,7 +52,8 @@ public class XeroLinkedService extends LinkedService {
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate to match the host name of the server when connecting over SSL. The default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     private Object useHostVerification;
 
@@ -60,7 +63,8 @@ public class XeroLinkedService extends LinkedService {
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

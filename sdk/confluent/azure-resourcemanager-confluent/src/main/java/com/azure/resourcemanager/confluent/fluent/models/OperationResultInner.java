@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.OperationDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * An Confluent REST API operation.
  */
 @Fluent
-public final class OperationResultInner {
+public final class OperationResultInner implements JsonSerializable<OperationResultInner> {
     /*
      * Operation name: {provider}/{resource}/{operation}
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The object that represents the operation.
      */
-    @JsonProperty(value = "display")
     private OperationDisplay display;
 
     /*
      * Indicates whether the operation is a data action
      */
-    @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
     /**
@@ -106,5 +107,47 @@ public final class OperationResultInner {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultInner.
+     */
+    public static OperationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultInner deserializedOperationResultInner = new OperationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperationResultInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationResultInner.display = OperationDisplay.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperationResultInner.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultInner;
+        });
     }
 }

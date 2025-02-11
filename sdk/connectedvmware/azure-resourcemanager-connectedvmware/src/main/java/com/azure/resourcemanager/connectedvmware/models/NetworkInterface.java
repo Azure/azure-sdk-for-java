@@ -5,86 +5,83 @@
 package com.azure.resourcemanager.connectedvmware.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Network Interface model. */
+/**
+ * Network Interface model.
+ */
 @Fluent
-public final class NetworkInterface {
+public final class NetworkInterface implements JsonSerializable<NetworkInterface> {
     /*
      * Gets or sets the name of the network interface.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the label of the virtual network in vCenter that the nic is connected to.
      */
-    @JsonProperty(value = "label", access = JsonProperty.Access.WRITE_ONLY)
     private String label;
 
     /*
      * Gets or sets the nic ip addresses.
      */
-    @JsonProperty(value = "ipAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> ipAddresses;
 
     /*
      * Gets or sets the NIC MAC address.
      */
-    @JsonProperty(value = "macAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String macAddress;
 
     /*
      * Gets or sets the ARM Id of the network resource to connect the virtual machine.
      */
-    @JsonProperty(value = "networkId")
     private String networkId;
 
     /*
      * NIC type
      */
-    @JsonProperty(value = "nicType")
     private NicType nicType;
 
     /*
      * Gets or sets the power on boot.
      */
-    @JsonProperty(value = "powerOnBoot")
     private PowerOnBootOption powerOnBoot;
 
     /*
      * Gets or sets the vCenter MoRef (Managed Object Reference) ID of the virtual network
      * that the nic is connected to.
      */
-    @JsonProperty(value = "networkMoRefId", access = JsonProperty.Access.WRITE_ONLY)
     private String networkMoRefId;
 
     /*
      * Gets or sets the name of the virtual network in vCenter that the nic is connected to.
      */
-    @JsonProperty(value = "networkMoName", access = JsonProperty.Access.WRITE_ONLY)
     private String networkMoName;
 
     /*
      * Gets or sets the device key value.
      */
-    @JsonProperty(value = "deviceKey")
     private Integer deviceKey;
 
     /*
      * Gets or sets the ipsettings.
      */
-    @JsonProperty(value = "ipSettings")
     private NicIpSettings ipSettings;
 
-    /** Creates an instance of NetworkInterface class. */
+    /**
+     * Creates an instance of NetworkInterface class.
+     */
     public NetworkInterface() {
     }
 
     /**
      * Get the name property: Gets or sets the name of the network interface.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -93,7 +90,7 @@ public final class NetworkInterface {
 
     /**
      * Set the name property: Gets or sets the name of the network interface.
-     *
+     * 
      * @param name the name value to set.
      * @return the NetworkInterface object itself.
      */
@@ -104,7 +101,7 @@ public final class NetworkInterface {
 
     /**
      * Get the label property: Gets or sets the label of the virtual network in vCenter that the nic is connected to.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -113,7 +110,7 @@ public final class NetworkInterface {
 
     /**
      * Get the ipAddresses property: Gets or sets the nic ip addresses.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -122,7 +119,7 @@ public final class NetworkInterface {
 
     /**
      * Get the macAddress property: Gets or sets the NIC MAC address.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -131,7 +128,7 @@ public final class NetworkInterface {
 
     /**
      * Get the networkId property: Gets or sets the ARM Id of the network resource to connect the virtual machine.
-     *
+     * 
      * @return the networkId value.
      */
     public String networkId() {
@@ -140,7 +137,7 @@ public final class NetworkInterface {
 
     /**
      * Set the networkId property: Gets or sets the ARM Id of the network resource to connect the virtual machine.
-     *
+     * 
      * @param networkId the networkId value to set.
      * @return the NetworkInterface object itself.
      */
@@ -151,7 +148,7 @@ public final class NetworkInterface {
 
     /**
      * Get the nicType property: NIC type.
-     *
+     * 
      * @return the nicType value.
      */
     public NicType nicType() {
@@ -160,7 +157,7 @@ public final class NetworkInterface {
 
     /**
      * Set the nicType property: NIC type.
-     *
+     * 
      * @param nicType the nicType value to set.
      * @return the NetworkInterface object itself.
      */
@@ -171,7 +168,7 @@ public final class NetworkInterface {
 
     /**
      * Get the powerOnBoot property: Gets or sets the power on boot.
-     *
+     * 
      * @return the powerOnBoot value.
      */
     public PowerOnBootOption powerOnBoot() {
@@ -180,7 +177,7 @@ public final class NetworkInterface {
 
     /**
      * Set the powerOnBoot property: Gets or sets the power on boot.
-     *
+     * 
      * @param powerOnBoot the powerOnBoot value to set.
      * @return the NetworkInterface object itself.
      */
@@ -191,8 +188,9 @@ public final class NetworkInterface {
 
     /**
      * Get the networkMoRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID of the virtual
-     * network that the nic is connected to.
-     *
+     * network
+     * that the nic is connected to.
+     * 
      * @return the networkMoRefId value.
      */
     public String networkMoRefId() {
@@ -202,7 +200,7 @@ public final class NetworkInterface {
     /**
      * Get the networkMoName property: Gets or sets the name of the virtual network in vCenter that the nic is connected
      * to.
-     *
+     * 
      * @return the networkMoName value.
      */
     public String networkMoName() {
@@ -211,7 +209,7 @@ public final class NetworkInterface {
 
     /**
      * Get the deviceKey property: Gets or sets the device key value.
-     *
+     * 
      * @return the deviceKey value.
      */
     public Integer deviceKey() {
@@ -220,7 +218,7 @@ public final class NetworkInterface {
 
     /**
      * Set the deviceKey property: Gets or sets the device key value.
-     *
+     * 
      * @param deviceKey the deviceKey value to set.
      * @return the NetworkInterface object itself.
      */
@@ -231,7 +229,7 @@ public final class NetworkInterface {
 
     /**
      * Get the ipSettings property: Gets or sets the ipsettings.
-     *
+     * 
      * @return the ipSettings value.
      */
     public NicIpSettings ipSettings() {
@@ -240,7 +238,7 @@ public final class NetworkInterface {
 
     /**
      * Set the ipSettings property: Gets or sets the ipsettings.
-     *
+     * 
      * @param ipSettings the ipSettings value to set.
      * @return the NetworkInterface object itself.
      */
@@ -251,12 +249,74 @@ public final class NetworkInterface {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipSettings() != null) {
             ipSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("networkId", this.networkId);
+        jsonWriter.writeStringField("nicType", this.nicType == null ? null : this.nicType.toString());
+        jsonWriter.writeStringField("powerOnBoot", this.powerOnBoot == null ? null : this.powerOnBoot.toString());
+        jsonWriter.writeNumberField("deviceKey", this.deviceKey);
+        jsonWriter.writeJsonField("ipSettings", this.ipSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterface from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterface if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterface.
+     */
+    public static NetworkInterface fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterface deserializedNetworkInterface = new NetworkInterface();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNetworkInterface.name = reader.getString();
+                } else if ("label".equals(fieldName)) {
+                    deserializedNetworkInterface.label = reader.getString();
+                } else if ("ipAddresses".equals(fieldName)) {
+                    List<String> ipAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkInterface.ipAddresses = ipAddresses;
+                } else if ("macAddress".equals(fieldName)) {
+                    deserializedNetworkInterface.macAddress = reader.getString();
+                } else if ("networkId".equals(fieldName)) {
+                    deserializedNetworkInterface.networkId = reader.getString();
+                } else if ("nicType".equals(fieldName)) {
+                    deserializedNetworkInterface.nicType = NicType.fromString(reader.getString());
+                } else if ("powerOnBoot".equals(fieldName)) {
+                    deserializedNetworkInterface.powerOnBoot = PowerOnBootOption.fromString(reader.getString());
+                } else if ("networkMoRefId".equals(fieldName)) {
+                    deserializedNetworkInterface.networkMoRefId = reader.getString();
+                } else if ("networkMoName".equals(fieldName)) {
+                    deserializedNetworkInterface.networkMoName = reader.getString();
+                } else if ("deviceKey".equals(fieldName)) {
+                    deserializedNetworkInterface.deviceKey = reader.getNullable(JsonReader::getInt);
+                } else if ("ipSettings".equals(fieldName)) {
+                    deserializedNetworkInterface.ipSettings = NicIpSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterface;
+        });
     }
 }

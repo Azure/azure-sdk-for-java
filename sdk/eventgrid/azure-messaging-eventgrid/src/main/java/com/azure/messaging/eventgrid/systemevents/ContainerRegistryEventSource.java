@@ -76,6 +76,9 @@ public final class ContainerRegistryEventSource implements JsonSerializable<Cont
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

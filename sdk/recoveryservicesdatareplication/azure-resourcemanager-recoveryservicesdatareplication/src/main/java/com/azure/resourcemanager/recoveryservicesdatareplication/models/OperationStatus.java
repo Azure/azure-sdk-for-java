@@ -6,18 +6,20 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 
-/** An immutable client-side representation of OperationStatus. */
+/**
+ * An immutable client-side representation of OperationStatus.
+ */
 public interface OperationStatus {
     /**
      * Gets the id property: Gets or sets the Id.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Gets or sets the operation name.
-     *
+     * 
      * @return the name value.
      */
     String name();
@@ -25,21 +27,21 @@ public interface OperationStatus {
     /**
      * Gets the status property: Gets or sets the status of the operation. ARM expects the terminal status to be one of
      * Succeeded/ Failed/ Canceled. All other values imply that the operation is still running.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the startTime property: Gets or sets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     String startTime();
 
     /**
      * Gets the endTime property: Gets or sets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     String endTime();
@@ -47,7 +49,7 @@ public interface OperationStatus {
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     OperationStatusInner innerModel();

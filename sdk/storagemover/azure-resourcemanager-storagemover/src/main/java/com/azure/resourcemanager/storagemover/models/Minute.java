@@ -4,50 +4,80 @@
 
 package com.azure.resourcemanager.storagemover.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+import com.azure.core.util.ExpandableEnum;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * The minute element of the time. Allowed values are 0 and 30. If not specified, its value defaults to 0.
  */
-public final class Minute extends ExpandableStringEnum<Minute> {
+public final class Minute implements ExpandableEnum<Integer> {
+    private static final Map<Integer, Minute> VALUES = new ConcurrentHashMap<>();
+
+    private static final Function<Integer, Minute> NEW_INSTANCE = Minute::new;
+
     /**
      * Static value 0 for Minute.
      */
-    public static final Minute ZERO = fromInt(0);
+    public static final Minute ZERO = fromValue(0);
 
     /**
      * Static value 30 for Minute.
      */
-    public static final Minute THREE_ZERO = fromInt(30);
+    public static final Minute THREE_ZERO = fromValue(30);
 
-    /**
-     * Creates a new instance of Minute value.
-     * 
-     * @deprecated Use the {@link #fromInt(int)} factory method.
-     */
-    @Deprecated
-    public Minute() {
+    private final Integer value;
+
+    private Minute(Integer value) {
+        this.value = value;
     }
 
     /**
-     * Creates or finds a Minute from its string representation.
+     * Creates or finds a Minute.
      * 
-     * @param name a name to look for.
+     * @param value a value to look for.
      * @return the corresponding Minute.
      */
-    @JsonCreator
-    public static Minute fromInt(int name) {
-        return fromString(String.valueOf(name), Minute.class);
+    public static Minute fromValue(Integer value) {
+        Objects.requireNonNull(value, "'value' cannot be null.");
+        return VALUES.computeIfAbsent(value, NEW_INSTANCE);
     }
 
     /**
      * Gets known Minute values.
      * 
-     * @return known Minute values.
+     * @return Known Minute values.
      */
     public static Collection<Minute> values() {
-        return values(Minute.class);
+        return new ArrayList<>(VALUES.values());
+    }
+
+    /**
+     * Gets the value of the Minute instance.
+     * 
+     * @return the value of the Minute instance.
+     */
+    @Override
+    public Integer getValue() {
+        return this.value;
+    }
+
+    @Override
+    public String toString() {
+        return Objects.toString(this.value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this == obj;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.value);
     }
 }

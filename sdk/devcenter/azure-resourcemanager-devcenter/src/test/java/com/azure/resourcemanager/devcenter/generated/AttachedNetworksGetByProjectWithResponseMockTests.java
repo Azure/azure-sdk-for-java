@@ -21,7 +21,7 @@ public final class AttachedNetworksGetByProjectWithResponseMockTests {
     @Test
     public void testGetByProjectWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"networkConnectionId\":\"snmfpphojeevy\",\"networkConnectionLocation\":\"hsgz\",\"healthCheckStatus\":\"Running\",\"domainJoinType\":\"AzureADJoin\"},\"id\":\"mfg\",\"name\":\"eglqgleohibetn\",\"type\":\"uankrrfxeeeb\"}";
+            = "{\"properties\":{\"provisioningState\":\"Updated\",\"networkConnectionId\":\"a\",\"networkConnectionLocation\":\"ulcdisdosf\",\"healthCheckStatus\":\"Passed\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"jrwhryvy\",\"name\":\"ytdc\",\"type\":\"xgccknfnw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class AttachedNetworksGetByProjectWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         AttachedNetworkConnection response = manager.attachedNetworks()
-            .getByProjectWithResponse("vruzslzojhpctfnm", "xotngfdguge", "zihgrkyu", com.azure.core.util.Context.NONE)
+            .getByProjectWithResponse("zvulj", "aaeranokqgukk", "qnvb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("snmfpphojeevy", response.networkConnectionId());
+        Assertions.assertEquals("a", response.networkConnectionId());
     }
 }

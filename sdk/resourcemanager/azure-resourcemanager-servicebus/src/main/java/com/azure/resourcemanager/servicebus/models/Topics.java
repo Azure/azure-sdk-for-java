@@ -15,10 +15,6 @@ import com.azure.resourcemanager.servicebus.ServiceBusManager;
  * Entry point to Service Bus topic management API in Azure.
  */
 @Fluent
-public interface Topics extends
-    SupportsCreating<Topic.DefinitionStages.Blank>,
-    SupportsListing<Topic>,
-    SupportsGettingByName<Topic>,
-    SupportsDeletingByName,
-    HasManager<ServiceBusManager> {
+public interface Topics extends SupportsCreating<Topic.DefinitionStages.Blank>, SupportsListing<Topic>,
+    SupportsGettingByName<Topic>, SupportsDeletingByName, HasManager<ServiceBusManager> {
 }

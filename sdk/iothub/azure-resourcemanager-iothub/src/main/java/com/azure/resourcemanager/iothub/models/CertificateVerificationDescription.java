@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The JSON-serialized leaf certificate. */
+/**
+ * The JSON-serialized leaf certificate.
+ */
 @Fluent
-public final class CertificateVerificationDescription {
+public final class CertificateVerificationDescription implements JsonSerializable<CertificateVerificationDescription> {
     /*
      * base-64 representation of X509 certificate .cer file or just .pem file content.
      */
-    @JsonProperty(value = "certificate")
     private String certificate;
 
-    /** Creates an instance of CertificateVerificationDescription class. */
+    /**
+     * Creates an instance of CertificateVerificationDescription class.
+     */
     public CertificateVerificationDescription() {
     }
 
     /**
      * Get the certificate property: base-64 representation of X509 certificate .cer file or just .pem file content.
-     *
+     * 
      * @return the certificate value.
      */
     public String certificate() {
@@ -31,7 +38,7 @@ public final class CertificateVerificationDescription {
 
     /**
      * Set the certificate property: base-64 representation of X509 certificate .cer file or just .pem file content.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the CertificateVerificationDescription object itself.
      */
@@ -42,9 +49,46 @@ public final class CertificateVerificationDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("certificate", this.certificate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateVerificationDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateVerificationDescription if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateVerificationDescription.
+     */
+    public static CertificateVerificationDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateVerificationDescription deserializedCertificateVerificationDescription
+                = new CertificateVerificationDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("certificate".equals(fieldName)) {
+                    deserializedCertificateVerificationDescription.certificate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateVerificationDescription;
+        });
     }
 }

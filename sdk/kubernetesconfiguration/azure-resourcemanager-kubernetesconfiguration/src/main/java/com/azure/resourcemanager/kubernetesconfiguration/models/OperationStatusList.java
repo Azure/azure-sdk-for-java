@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.OperationStatusResultInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The async operations in progress, in the cluster. */
+/**
+ * The async operations in progress, in the cluster.
+ */
 @Immutable
-public final class OperationStatusList {
+public final class OperationStatusList implements JsonSerializable<OperationStatusList> {
     /*
      * List of async operations in progress, in the cluster.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationStatusResultInner> value;
 
     /*
      * URL to get the next set of Operation Result objects, if any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of OperationStatusList class. */
+    /**
+     * Creates an instance of OperationStatusList class.
+     */
     public OperationStatusList() {
     }
 
     /**
      * Get the value property: List of async operations in progress, in the cluster.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationStatusResultInner> value() {
@@ -39,7 +45,7 @@ public final class OperationStatusList {
 
     /**
      * Get the nextLink property: URL to get the next set of Operation Result objects, if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class OperationStatusList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationStatusList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationStatusList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationStatusList.
+     */
+    public static OperationStatusList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationStatusList deserializedOperationStatusList = new OperationStatusList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<OperationStatusResultInner> value
+                        = reader.readArray(reader1 -> OperationStatusResultInner.fromJson(reader1));
+                    deserializedOperationStatusList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOperationStatusList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationStatusList;
+        });
     }
 }

@@ -90,8 +90,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
      *          keystore could not be loaded.
      */
     @Override
-    public void checkClientTrusted(X509Certificate[] chain, String authType)
-        throws CertificateException {
+    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 
         boolean pass = true;
 
@@ -129,8 +128,7 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
      *          keystore could not be loaded.
      */
     @Override
-    public void checkServerTrusted(X509Certificate[] chain, String authType)
-        throws CertificateException {
+    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 
         boolean pass = true;
 
@@ -179,7 +177,8 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
      *          keystore could not be loaded.
      */
     @Override
-    public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket) throws CertificateException {
+    public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket)
+        throws CertificateException {
         checkClientTrusted(chain, authType);
     }
 
@@ -193,7 +192,8 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
      *          keystore could not be loaded.
      */
     @Override
-    public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket) throws CertificateException {
+    public void checkServerTrusted(X509Certificate[] chain, String authType, Socket socket)
+        throws CertificateException {
         checkServerTrusted(chain, authType);
     }
 
@@ -207,7 +207,8 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
      *          keystore could not be loaded.
      */
     @Override
-    public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine) throws CertificateException {
+    public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
+        throws CertificateException {
         checkClientTrusted(chain, authType);
     }
 
@@ -221,7 +222,8 @@ public final class KeyVaultTrustManager extends X509ExtendedTrustManager {
      *          keystore could not be loaded.
      */
     @Override
-    public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine) throws CertificateException {
+    public void checkServerTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
+        throws CertificateException {
         checkServerTrusted(chain, authType);
     }
 }

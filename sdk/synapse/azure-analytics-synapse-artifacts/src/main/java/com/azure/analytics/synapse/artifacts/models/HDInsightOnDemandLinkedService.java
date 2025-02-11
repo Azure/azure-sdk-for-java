@@ -24,12 +24,15 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private String type = "HDInsightOnDemand";
 
     /*
-     * Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType string).
+     * Number of worker/data nodes in the cluster. Suggestion value: 4. Type: string (or Expression with resultType
+     * string).
      */
     private Object clusterSize;
 
     /*
-     * The allowed idle time for the on-demand HDInsight cluster. Specifies how long the on-demand HDInsight cluster stays alive after completion of an activity run if there are no other active jobs in the cluster. The minimum value is 5 mins. Type: string (or Expression with resultType string).
+     * The allowed idle time for the on-demand HDInsight cluster. Specifies how long the on-demand HDInsight cluster
+     * stays alive after completion of an activity run if there are no other active jobs in the cluster. The minimum
+     * value is 5 mins. Type: string (or Expression with resultType string).
      */
     private Object timeToLive;
 
@@ -69,7 +72,8 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private Object clusterResourceGroup;
 
     /*
-     * The prefix of cluster name, postfix will be distinct with timestamp. Type: string (or Expression with resultType string).
+     * The prefix of cluster name, postfix will be distinct with timestamp. Type: string (or Expression with resultType
+     * string).
      */
     private Object clusterNamePrefix;
 
@@ -84,7 +88,8 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private SecretBase clusterPassword;
 
     /*
-     * The username to SSH remotely connect to cluster’s node (for Linux). Type: string (or Expression with resultType string).
+     * The username to SSH remotely connect to cluster’s node (for Linux). Type: string (or Expression with resultType
+     * string).
      */
     private Object clusterSshUserName;
 
@@ -94,12 +99,14 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private SecretBase clusterSshPassword;
 
     /*
-     * Specifies additional storage accounts for the HDInsight linked service so that the Data Factory service can register them on your behalf.
+     * Specifies additional storage accounts for the HDInsight linked service so that the Data Factory service can
+     * register them on your behalf.
      */
     private List<LinkedServiceReference> additionalLinkedServiceNames;
 
     /*
-     * The name of Azure SQL linked service that point to the HCatalog database. The on-demand HDInsight cluster is created by using the Azure SQL database as the metastore.
+     * The name of Azure SQL linked service that point to the HCatalog database. The on-demand HDInsight cluster is
+     * created by using the Azure SQL database as the metastore.
      */
     private LinkedServiceReference hcatalogLinkedServiceName;
 
@@ -154,7 +161,8 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private Object yarnConfiguration;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 
@@ -174,17 +182,21 @@ public class HDInsightOnDemandLinkedService extends LinkedService {
     private Object zookeeperNodeSize;
 
     /*
-     * Custom script actions to run on HDI ondemand cluster once it's up. Please refer to https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%2Fhdinsight%2Fr-server%2FTOC.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
+     * Custom script actions to run on HDI ondemand cluster once it's up. Please refer to
+     * https://docs.microsoft.com/en-us/azure/hdinsight/hdinsight-hadoop-customize-cluster-linux?toc=%2Fen-us%2Fazure%
+     * 2Fhdinsight%2Fr-server%2FTOC.json&bc=%2Fen-us%2Fazure%2Fbread%2Ftoc.json#understanding-script-actions.
      */
     private List<ScriptAction> scriptActions;
 
     /*
-     * The ARM resource ID for the vNet to which the cluster should be joined after creation. Type: string (or Expression with resultType string).
+     * The ARM resource ID for the vNet to which the cluster should be joined after creation. Type: string (or
+     * Expression with resultType string).
      */
     private Object virtualNetworkId;
 
     /*
-     * The ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified, then this property is required. Type: string (or Expression with resultType string).
+     * The ARM resource ID for the subnet in the vNet. If virtualNetworkId was specified, then this property is
+     * required. Type: string (or Expression with resultType string).
      */
     private Object subnetName;
 

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.fluent.models.ApiOperationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of managed API operations. */
+/**
+ * The list of managed API operations.
+ */
 @Fluent
-public final class ApiOperationListResult {
+public final class ApiOperationListResult implements JsonSerializable<ApiOperationListResult> {
     /*
      * The api operation definitions for an API.
      */
-    @JsonProperty(value = "value")
     private List<ApiOperationInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ApiOperationListResult class. */
+    /**
+     * Creates an instance of ApiOperationListResult class.
+     */
     public ApiOperationListResult() {
     }
 
     /**
      * Get the value property: The api operation definitions for an API.
-     *
+     * 
      * @return the value value.
      */
     public List<ApiOperationInner> value() {
@@ -39,7 +45,7 @@ public final class ApiOperationListResult {
 
     /**
      * Set the value property: The api operation definitions for an API.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApiOperationListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class ApiOperationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class ApiOperationListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ApiOperationListResult object itself.
      */
@@ -70,12 +76,52 @@ public final class ApiOperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiOperationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiOperationListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiOperationListResult.
+     */
+    public static ApiOperationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiOperationListResult deserializedApiOperationListResult = new ApiOperationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ApiOperationInner> value = reader.readArray(reader1 -> ApiOperationInner.fromJson(reader1));
+                    deserializedApiOperationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedApiOperationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiOperationListResult;
+        });
     }
 }

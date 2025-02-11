@@ -5,33 +5,32 @@
 package com.azure.resourcemanager.loadtesting.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loadtesting.fluent.models.QuotaBucketRequestProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Request object of new quota for a quota bucket. */
+/**
+ * Request object of new quota for a quota bucket.
+ */
 @Fluent
-public final class QuotaBucketRequest extends ProxyResource {
+public final class QuotaBucketRequest implements JsonSerializable<QuotaBucketRequest> {
     /*
-     * New quota request request properties.
+     * Request object of new quota for a quota bucket.
      */
-    @JsonProperty(value = "properties")
     private QuotaBucketRequestProperties innerProperties;
 
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+    /**
+     * Creates an instance of QuotaBucketRequest class.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /** Creates an instance of QuotaBucketRequest class. */
     public QuotaBucketRequest() {
     }
 
     /**
-     * Get the innerProperties property: New quota request request properties.
-     *
+     * Get the innerProperties property: Request object of new quota for a quota bucket.
+     * 
      * @return the innerProperties value.
      */
     private QuotaBucketRequestProperties innerProperties() {
@@ -39,17 +38,8 @@ public final class QuotaBucketRequest extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the currentUsage property: Current quota usage of the quota bucket.
-     *
+     * 
      * @return the currentUsage value.
      */
     public Integer currentUsage() {
@@ -58,7 +48,7 @@ public final class QuotaBucketRequest extends ProxyResource {
 
     /**
      * Set the currentUsage property: Current quota usage of the quota bucket.
-     *
+     * 
      * @param currentUsage the currentUsage value to set.
      * @return the QuotaBucketRequest object itself.
      */
@@ -72,7 +62,7 @@ public final class QuotaBucketRequest extends ProxyResource {
 
     /**
      * Get the currentQuota property: Current quota limit of the quota bucket.
-     *
+     * 
      * @return the currentQuota value.
      */
     public Integer currentQuota() {
@@ -81,7 +71,7 @@ public final class QuotaBucketRequest extends ProxyResource {
 
     /**
      * Set the currentQuota property: Current quota limit of the quota bucket.
-     *
+     * 
      * @param currentQuota the currentQuota value to set.
      * @return the QuotaBucketRequest object itself.
      */
@@ -95,7 +85,7 @@ public final class QuotaBucketRequest extends ProxyResource {
 
     /**
      * Get the newQuota property: New quota limit of the quota bucket.
-     *
+     * 
      * @return the newQuota value.
      */
     public Integer newQuota() {
@@ -104,7 +94,7 @@ public final class QuotaBucketRequest extends ProxyResource {
 
     /**
      * Set the newQuota property: New quota limit of the quota bucket.
-     *
+     * 
      * @param newQuota the newQuota value to set.
      * @return the QuotaBucketRequest object itself.
      */
@@ -118,7 +108,7 @@ public final class QuotaBucketRequest extends ProxyResource {
 
     /**
      * Get the dimensions property: Dimensions for new quota request.
-     *
+     * 
      * @return the dimensions value.
      */
     public QuotaBucketRequestPropertiesDimensions dimensions() {
@@ -127,7 +117,7 @@ public final class QuotaBucketRequest extends ProxyResource {
 
     /**
      * Set the dimensions property: Dimensions for new quota request.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the QuotaBucketRequest object itself.
      */
@@ -141,12 +131,48 @@ public final class QuotaBucketRequest extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaBucketRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaBucketRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaBucketRequest.
+     */
+    public static QuotaBucketRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaBucketRequest deserializedQuotaBucketRequest = new QuotaBucketRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedQuotaBucketRequest.innerProperties = QuotaBucketRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaBucketRequest;
+        });
     }
 }

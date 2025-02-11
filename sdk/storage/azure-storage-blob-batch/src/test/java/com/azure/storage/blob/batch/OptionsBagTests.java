@@ -18,8 +18,8 @@ public class OptionsBagTests {
         String blob = "blob";
 
         BlobBatchSetBlobAccessTierOptions options1 = new BlobBatchSetBlobAccessTierOptions(url, AccessTier.ARCHIVE);
-        BlobBatchSetBlobAccessTierOptions options2 = new BlobBatchSetBlobAccessTierOptions(container, blob,
-            AccessTier.ARCHIVE);
+        BlobBatchSetBlobAccessTierOptions options2
+            = new BlobBatchSetBlobAccessTierOptions(container, blob, AccessTier.ARCHIVE);
 
         assertEquals(url, options1.getBlobUrl());
         assertEquals(url, options2.getBlobUrl());
@@ -39,8 +39,8 @@ public class OptionsBagTests {
         String snapshot = "snapshot";
 
         BlobBatchSetBlobAccessTierOptions options1 = new BlobBatchSetBlobAccessTierOptions(url, AccessTier.ARCHIVE);
-        BlobBatchSetBlobAccessTierOptions options2 = new BlobBatchSetBlobAccessTierOptions(container, blob,
-            AccessTier.ARCHIVE).setSnapshot(snapshot);
+        BlobBatchSetBlobAccessTierOptions options2
+            = new BlobBatchSetBlobAccessTierOptions(container, blob, AccessTier.ARCHIVE).setSnapshot(snapshot);
 
         assertEquals(url, options1.getBlobUrl());
         assertEquals(url, options2.getBlobUrl());
@@ -62,8 +62,8 @@ public class OptionsBagTests {
         String version = "version";
 
         BlobBatchSetBlobAccessTierOptions options1 = new BlobBatchSetBlobAccessTierOptions(url, AccessTier.ARCHIVE);
-        BlobBatchSetBlobAccessTierOptions options2 = new BlobBatchSetBlobAccessTierOptions(container, blob,
-            AccessTier.ARCHIVE).setVersionId(version);
+        BlobBatchSetBlobAccessTierOptions options2
+            = new BlobBatchSetBlobAccessTierOptions(container, blob, AccessTier.ARCHIVE).setVersionId(version);
 
         assertEquals(url, options1.getBlobUrl());
         assertEquals(url, options2.getBlobUrl());
@@ -82,10 +82,9 @@ public class OptionsBagTests {
         BlobBatchSetBlobAccessTierOptions options1 = new BlobBatchSetBlobAccessTierOptions(
             "https://account.blob.core.windows.net/container/blob?versionid=version&snapshot=snapshot",
             AccessTier.ARCHIVE);
-        BlobBatchSetBlobAccessTierOptions options2 = new BlobBatchSetBlobAccessTierOptions("container", "blob",
-            AccessTier.ARCHIVE)
-            .setVersionId("version")
-            .setSnapshot("snapshot");
+        BlobBatchSetBlobAccessTierOptions options2
+            = new BlobBatchSetBlobAccessTierOptions("container", "blob", AccessTier.ARCHIVE).setVersionId("version")
+                .setSnapshot("snapshot");
 
         assertThrows(IllegalArgumentException.class, options1::getBlobIdentifier);
         assertThrows(IllegalArgumentException.class, options2::getBlobIdentifier);

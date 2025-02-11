@@ -12,15 +12,16 @@ import java.util.function.BiFunction;
 public class LivenessSessionWithVerifyCommandsProvider
     extends CommandProvider<FaceSessionClient, FaceSessionAsyncClient, ILivenessWithVerifySessionSyncCommands> {
 
-    public LivenessSessionWithVerifyCommandsProvider(
-        String tag, BiFunction<FaceSessionClient, FaceSessionAsyncClient, ILivenessWithVerifySessionSyncCommands> creator) {
+    public LivenessSessionWithVerifyCommandsProvider(String tag,
+        BiFunction<FaceSessionClient, FaceSessionAsyncClient, ILivenessWithVerifySessionSyncCommands> creator) {
         super(tag, creator);
     }
 
     public static LivenessSessionWithVerifyCommandsProvider[] getFunctionProviders() {
         return new LivenessSessionWithVerifyCommandsProvider[] {
-            new LivenessSessionWithVerifyCommandsProvider("Sync", (faceClient, faceAsyncClient) -> new LivenessWithVerifySessionSyncCommands(faceClient)),
-            new LivenessSessionWithVerifyCommandsProvider("Async", (faceClient, faceAsyncClient) -> new LivenessWithVerifySessionAsyncCommands(faceAsyncClient)),
-        };
+            new LivenessSessionWithVerifyCommandsProvider("Sync",
+                (faceClient, faceAsyncClient) -> new LivenessWithVerifySessionSyncCommands(faceClient)),
+            new LivenessSessionWithVerifyCommandsProvider("Async",
+                (faceClient, faceAsyncClient) -> new LivenessWithVerifySessionAsyncCommands(faceAsyncClient)), };
     }
 }

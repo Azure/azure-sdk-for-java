@@ -5,24 +5,45 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Alexa channel definition. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "channelName")
-@JsonTypeName("AlexaChannel")
+/**
+ * Alexa channel definition.
+ */
 @Fluent
 public final class AlexaChannel extends Channel {
     /*
+     * The channel name
+     */
+    private String channelName = "AlexaChannel";
+
+    /*
      * The set of properties specific to Alexa channel resource
      */
-    @JsonProperty(value = "properties")
     private AlexaChannelProperties properties;
 
     /**
+     * Creates an instance of AlexaChannel class.
+     */
+    public AlexaChannel() {
+    }
+
+    /**
+     * Get the channelName property: The channel name.
+     * 
+     * @return the channelName value.
+     */
+    @Override
+    public String channelName() {
+        return this.channelName;
+    }
+
+    /**
      * Get the properties property: The set of properties specific to Alexa channel resource.
-     *
+     * 
      * @return the properties value.
      */
     public AlexaChannelProperties properties() {
@@ -31,7 +52,7 @@ public final class AlexaChannel extends Channel {
 
     /**
      * Set the properties property: The set of properties specific to Alexa channel resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AlexaChannel object itself.
      */
@@ -40,14 +61,18 @@ public final class AlexaChannel extends Channel {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AlexaChannel withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AlexaChannel withLocation(String location) {
         super.withLocation(location);
@@ -56,14 +81,60 @@ public final class AlexaChannel extends Channel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeStringField("channelName", this.channelName);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlexaChannel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlexaChannel if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlexaChannel.
+     */
+    public static AlexaChannel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlexaChannel deserializedAlexaChannel = new AlexaChannel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("etag".equals(fieldName)) {
+                    deserializedAlexaChannel.withEtag(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedAlexaChannel.withProvisioningState(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedAlexaChannel.withLocation(reader.getString());
+                } else if ("channelName".equals(fieldName)) {
+                    deserializedAlexaChannel.channelName = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAlexaChannel.properties = AlexaChannelProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlexaChannel;
+        });
     }
 }

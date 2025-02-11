@@ -52,7 +52,6 @@ public final class SharedGalleryOSDiskImage extends SharedGalleryDiskImage {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

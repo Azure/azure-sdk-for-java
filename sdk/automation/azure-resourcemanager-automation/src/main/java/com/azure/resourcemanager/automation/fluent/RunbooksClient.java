@@ -17,11 +17,13 @@ import com.azure.resourcemanager.automation.models.RunbookUpdateParameters;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 
-/** An instance of this class provides access to all the operations defined in RunbooksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RunbooksClient.
+ */
 public interface RunbooksClient {
     /**
      * Publish runbook draft.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The parameters supplied to the publish runbook operation.
@@ -31,12 +33,12 @@ public interface RunbooksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPublish(
-        String resourceGroupName, String automationAccountName, String runbookName);
+    SyncPoller<PollResult<Void>, Void> beginPublish(String resourceGroupName, String automationAccountName,
+        String runbookName);
 
     /**
      * Publish runbook draft.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The parameters supplied to the publish runbook operation.
@@ -47,12 +49,12 @@ public interface RunbooksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPublish(
-        String resourceGroupName, String automationAccountName, String runbookName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginPublish(String resourceGroupName, String automationAccountName,
+        String runbookName, Context context);
 
     /**
      * Publish runbook draft.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The parameters supplied to the publish runbook operation.
@@ -65,7 +67,7 @@ public interface RunbooksClient {
 
     /**
      * Publish runbook draft.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The parameters supplied to the publish runbook operation.
@@ -79,7 +81,23 @@ public interface RunbooksClient {
 
     /**
      * Retrieve the content of runbook identified by runbook name.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param runbookName The runbook name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Flux<ByteBuffer>> getContentWithResponse(String resourceGroupName, String automationAccountName,
+        String runbookName, Context context);
+
+    /**
+     * Retrieve the content of runbook identified by runbook name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -92,8 +110,8 @@ public interface RunbooksClient {
     Flux<ByteBuffer> getContent(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
-     * Retrieve the content of runbook identified by runbook name.
-     *
+     * Retrieve the runbook identified by runbook name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -101,15 +119,15 @@ public interface RunbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link Response}.
+     * @return definition of the runbook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Flux<ByteBuffer>> getContentWithResponse(
-        String resourceGroupName, String automationAccountName, String runbookName, Context context);
+    Response<RunbookInner> getWithResponse(String resourceGroupName, String automationAccountName, String runbookName,
+        Context context);
 
     /**
      * Retrieve the runbook identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -122,11 +140,13 @@ public interface RunbooksClient {
     RunbookInner get(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
-     * Retrieve the runbook identified by runbook name.
-     *
+     * Create the runbook identified by runbook name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
+     * @param parameters The create or update parameters for runbook. Provide either content link for a published
+     * runbook or draft, not both.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,37 +154,33 @@ public interface RunbooksClient {
      * @return definition of the runbook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RunbookInner> getWithResponse(
-        String resourceGroupName, String automationAccountName, String runbookName, Context context);
+    Response<RunbookInner> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String runbookName, RunbookCreateOrUpdateParametersInner parameters, Context context);
 
     /**
      * Create the runbook identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
      * @param parameters The create or update parameters for runbook. Provide either content link for a published
-     *     runbook or draft, not both.
+     * runbook or draft, not both.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the runbook type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunbookInner createOrUpdate(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
+    RunbookInner createOrUpdate(String resourceGroupName, String automationAccountName, String runbookName,
         RunbookCreateOrUpdateParametersInner parameters);
 
     /**
-     * Create the runbook identified by runbook name.
-     *
+     * Update the runbook identified by runbook name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @param parameters The create or update parameters for runbook. Provide either content link for a published
-     *     runbook or draft, not both.
+     * @param parameters The update parameters for runbook.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -172,16 +188,12 @@ public interface RunbooksClient {
      * @return definition of the runbook type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RunbookInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        RunbookCreateOrUpdateParametersInner parameters,
-        Context context);
+    Response<RunbookInner> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String runbookName, RunbookUpdateParameters parameters, Context context);
 
     /**
      * Update the runbook identified by runbook name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -192,33 +204,28 @@ public interface RunbooksClient {
      * @return definition of the runbook type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunbookInner update(
-        String resourceGroupName, String automationAccountName, String runbookName, RunbookUpdateParameters parameters);
+    RunbookInner update(String resourceGroupName, String automationAccountName, String runbookName,
+        RunbookUpdateParameters parameters);
 
     /**
-     * Update the runbook identified by runbook name.
-     *
+     * Delete the runbook by name.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
-     * @param parameters The update parameters for runbook.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the runbook type along with {@link Response}.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RunbookInner> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String runbookName,
-        RunbookUpdateParameters parameters,
+    Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String runbookName,
         Context context);
 
     /**
      * Delete the runbook by name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param runbookName The runbook name.
@@ -230,24 +237,8 @@ public interface RunbooksClient {
     void delete(String resourceGroupName, String automationAccountName, String runbookName);
 
     /**
-     * Delete the runbook by name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param runbookName The runbook name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String runbookName, Context context);
-
-    /**
      * Retrieve a list of runbooks.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -260,7 +251,7 @@ public interface RunbooksClient {
 
     /**
      * Retrieve a list of runbooks.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param context The context to associate with this operation.
@@ -270,6 +261,6 @@ public interface RunbooksClient {
      * @return the response model for the list runbook operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RunbookInner> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, Context context);
+    PagedIterable<RunbookInner> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        Context context);
 }

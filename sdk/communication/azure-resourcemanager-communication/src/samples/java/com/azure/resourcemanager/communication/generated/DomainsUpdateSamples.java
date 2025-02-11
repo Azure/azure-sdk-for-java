@@ -22,8 +22,10 @@ public final class DomainsUpdateSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void updateDomainsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        DomainResource resource = manager.domains().getWithResponse("MyResourceGroup", "MyEmailServiceResource",
-            "mydomain.com", com.azure.core.util.Context.NONE).getValue();
+        DomainResource resource = manager.domains()
+            .getWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withUserEngagementTracking(UserEngagementTracking.ENABLED).apply();
     }
 }

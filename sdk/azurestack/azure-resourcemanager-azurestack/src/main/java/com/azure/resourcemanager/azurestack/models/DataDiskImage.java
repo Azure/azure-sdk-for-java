@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Data disk image. */
+/**
+ * Data disk image.
+ */
 @Immutable
-public final class DataDiskImage {
+public final class DataDiskImage implements JsonSerializable<DataDiskImage> {
     /*
      * The LUN.
      */
-    @JsonProperty(value = "lun", access = JsonProperty.Access.WRITE_ONLY)
     private Integer lun;
 
     /*
      * SAS key for source blob.
      */
-    @JsonProperty(value = "sourceBlobSasUri", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceBlobSasUri;
 
-    /** Creates an instance of DataDiskImage class. */
+    /**
+     * Creates an instance of DataDiskImage class.
+     */
     public DataDiskImage() {
     }
 
     /**
      * Get the lun property: The LUN.
-     *
+     * 
      * @return the lun value.
      */
     public Integer lun() {
@@ -37,7 +43,7 @@ public final class DataDiskImage {
 
     /**
      * Get the sourceBlobSasUri property: SAS key for source blob.
-     *
+     * 
      * @return the sourceBlobSasUri value.
      */
     public String sourceBlobSasUri() {
@@ -46,9 +52,46 @@ public final class DataDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataDiskImage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataDiskImage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataDiskImage.
+     */
+    public static DataDiskImage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataDiskImage deserializedDataDiskImage = new DataDiskImage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lun".equals(fieldName)) {
+                    deserializedDataDiskImage.lun = reader.getNullable(JsonReader::getInt);
+                } else if ("sourceBlobSasUri".equals(fieldName)) {
+                    deserializedDataDiskImage.sourceBlobSasUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataDiskImage;
+        });
     }
 }

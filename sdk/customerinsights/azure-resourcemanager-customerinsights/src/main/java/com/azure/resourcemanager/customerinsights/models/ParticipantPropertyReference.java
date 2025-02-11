@@ -6,30 +6,36 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The participant property reference. */
+/**
+ * The participant property reference.
+ */
 @Fluent
-public final class ParticipantPropertyReference {
+public final class ParticipantPropertyReference implements JsonSerializable<ParticipantPropertyReference> {
     /*
      * The source property that maps to the target property.
      */
-    @JsonProperty(value = "sourcePropertyName", required = true)
     private String sourcePropertyName;
 
     /*
      * The target property that maps to the source property.
      */
-    @JsonProperty(value = "targetPropertyName", required = true)
     private String targetPropertyName;
 
-    /** Creates an instance of ParticipantPropertyReference class. */
+    /**
+     * Creates an instance of ParticipantPropertyReference class.
+     */
     public ParticipantPropertyReference() {
     }
 
     /**
      * Get the sourcePropertyName property: The source property that maps to the target property.
-     *
+     * 
      * @return the sourcePropertyName value.
      */
     public String sourcePropertyName() {
@@ -38,7 +44,7 @@ public final class ParticipantPropertyReference {
 
     /**
      * Set the sourcePropertyName property: The source property that maps to the target property.
-     *
+     * 
      * @param sourcePropertyName the sourcePropertyName value to set.
      * @return the ParticipantPropertyReference object itself.
      */
@@ -49,7 +55,7 @@ public final class ParticipantPropertyReference {
 
     /**
      * Get the targetPropertyName property: The target property that maps to the source property.
-     *
+     * 
      * @return the targetPropertyName value.
      */
     public String targetPropertyName() {
@@ -58,7 +64,7 @@ public final class ParticipantPropertyReference {
 
     /**
      * Set the targetPropertyName property: The target property that maps to the source property.
-     *
+     * 
      * @param targetPropertyName the targetPropertyName value to set.
      * @return the ParticipantPropertyReference object itself.
      */
@@ -69,23 +75,61 @@ public final class ParticipantPropertyReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourcePropertyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourcePropertyName in model ParticipantPropertyReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourcePropertyName in model ParticipantPropertyReference"));
         }
         if (targetPropertyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetPropertyName in model ParticipantPropertyReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetPropertyName in model ParticipantPropertyReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ParticipantPropertyReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sourcePropertyName", this.sourcePropertyName);
+        jsonWriter.writeStringField("targetPropertyName", this.targetPropertyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParticipantPropertyReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParticipantPropertyReference if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ParticipantPropertyReference.
+     */
+    public static ParticipantPropertyReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParticipantPropertyReference deserializedParticipantPropertyReference = new ParticipantPropertyReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourcePropertyName".equals(fieldName)) {
+                    deserializedParticipantPropertyReference.sourcePropertyName = reader.getString();
+                } else if ("targetPropertyName".equals(fieldName)) {
+                    deserializedParticipantPropertyReference.targetPropertyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParticipantPropertyReference;
+        });
+    }
 }

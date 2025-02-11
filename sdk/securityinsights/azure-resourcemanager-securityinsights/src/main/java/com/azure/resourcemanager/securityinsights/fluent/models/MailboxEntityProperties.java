@@ -5,41 +5,60 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
-/** Mailbox entity property bag. */
+/**
+ * Mailbox entity property bag.
+ */
 @Immutable
 public final class MailboxEntityProperties extends EntityCommonProperties {
     /*
      * The mailbox's primary address
      */
-    @JsonProperty(value = "mailboxPrimaryAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String mailboxPrimaryAddress;
 
     /*
      * The mailbox's display name
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * The mailbox's UPN
      */
-    @JsonProperty(value = "upn", access = JsonProperty.Access.WRITE_ONLY)
     private String upn;
 
     /*
      * The AzureAD identifier of mailbox. Similar to AadUserId in account entity but this property is specific to
      * mailbox object on office side
      */
-    @JsonProperty(value = "externalDirectoryObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID externalDirectoryObjectId;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of MailboxEntityProperties class.
+     */
+    public MailboxEntityProperties() {
+    }
 
     /**
      * Get the mailboxPrimaryAddress property: The mailbox's primary address.
-     *
+     * 
      * @return the mailboxPrimaryAddress value.
      */
     public String mailboxPrimaryAddress() {
@@ -48,7 +67,7 @@ public final class MailboxEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the displayName property: The mailbox's display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -57,7 +76,7 @@ public final class MailboxEntityProperties extends EntityCommonProperties {
 
     /**
      * Get the upn property: The mailbox's UPN.
-     *
+     * 
      * @return the upn value.
      */
     public String upn() {
@@ -67,7 +86,7 @@ public final class MailboxEntityProperties extends EntityCommonProperties {
     /**
      * Get the externalDirectoryObjectId property: The AzureAD identifier of mailbox. Similar to AadUserId in account
      * entity but this property is specific to mailbox object on office side.
-     *
+     * 
      * @return the externalDirectoryObjectId value.
      */
     public UUID externalDirectoryObjectId() {
@@ -75,12 +94,80 @@ public final class MailboxEntityProperties extends EntityCommonProperties {
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MailboxEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MailboxEntityProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MailboxEntityProperties.
+     */
+    public static MailboxEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MailboxEntityProperties deserializedMailboxEntityProperties = new MailboxEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedMailboxEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedMailboxEntityProperties.friendlyName = reader.getString();
+                } else if ("mailboxPrimaryAddress".equals(fieldName)) {
+                    deserializedMailboxEntityProperties.mailboxPrimaryAddress = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedMailboxEntityProperties.displayName = reader.getString();
+                } else if ("upn".equals(fieldName)) {
+                    deserializedMailboxEntityProperties.upn = reader.getString();
+                } else if ("externalDirectoryObjectId".equals(fieldName)) {
+                    deserializedMailboxEntityProperties.externalDirectoryObjectId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMailboxEntityProperties;
+        });
     }
 }

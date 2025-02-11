@@ -26,21 +26,18 @@ public final class ProfilesImpl implements Profiles {
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    public ProfilesImpl(
-        ProfilesClient innerClient, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
+    public ProfilesImpl(ProfilesClient innerClient,
+        com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ProfileResourceFormat> getWithResponse(
-        String resourceGroupName, String hubName, String profileName, String localeCode, Context context) {
-        Response<ProfileResourceFormatInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, hubName, profileName, localeCode, context);
+    public Response<ProfileResourceFormat> getWithResponse(String resourceGroupName, String hubName, String profileName,
+        String localeCode, Context context) {
+        Response<ProfileResourceFormatInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, hubName, profileName, localeCode, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ProfileResourceFormatImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -60,34 +57,30 @@ public final class ProfilesImpl implements Profiles {
         this.serviceClient().delete(resourceGroupName, hubName, profileName);
     }
 
-    public void delete(
-        String resourceGroupName, String hubName, String profileName, String localeCode, Context context) {
+    public void delete(String resourceGroupName, String hubName, String profileName, String localeCode,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, hubName, profileName, localeCode, context);
     }
 
     public PagedIterable<ProfileResourceFormat> listByHub(String resourceGroupName, String hubName) {
         PagedIterable<ProfileResourceFormatInner> inner = this.serviceClient().listByHub(resourceGroupName, hubName);
-        return Utils.mapPage(inner, inner1 -> new ProfileResourceFormatImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProfileResourceFormatImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ProfileResourceFormat> listByHub(
-        String resourceGroupName, String hubName, String localeCode, Context context) {
-        PagedIterable<ProfileResourceFormatInner> inner =
-            this.serviceClient().listByHub(resourceGroupName, hubName, localeCode, context);
-        return Utils.mapPage(inner, inner1 -> new ProfileResourceFormatImpl(inner1, this.manager()));
+    public PagedIterable<ProfileResourceFormat> listByHub(String resourceGroupName, String hubName, String localeCode,
+        Context context) {
+        PagedIterable<ProfileResourceFormatInner> inner
+            = this.serviceClient().listByHub(resourceGroupName, hubName, localeCode, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProfileResourceFormatImpl(inner1, this.manager()));
     }
 
-    public Response<List<KpiDefinition>> getEnrichingKpisWithResponse(
-        String resourceGroupName, String hubName, String profileName, Context context) {
-        Response<List<KpiDefinitionInner>> inner =
-            this.serviceClient().getEnrichingKpisWithResponse(resourceGroupName, hubName, profileName, context);
+    public Response<List<KpiDefinition>> getEnrichingKpisWithResponse(String resourceGroupName, String hubName,
+        String profileName, Context context) {
+        Response<List<KpiDefinitionInner>> inner
+            = this.serviceClient().getEnrichingKpisWithResponse(resourceGroupName, hubName, profileName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new KpiDefinitionImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -99,119 +92,88 @@ public final class ProfilesImpl implements Profiles {
     public List<KpiDefinition> getEnrichingKpis(String resourceGroupName, String hubName, String profileName) {
         List<KpiDefinitionInner> inner = this.serviceClient().getEnrichingKpis(resourceGroupName, hubName, profileName);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new KpiDefinitionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new KpiDefinitionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
     }
 
     public ProfileResourceFormat getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String profileName = Utils.getValueFromIdByName(id, "profiles");
+        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "profiles");
         if (profileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
         }
         String localLocaleCode = null;
         return this.getWithResponse(resourceGroupName, hubName, profileName, localLocaleCode, Context.NONE).getValue();
     }
 
     public Response<ProfileResourceFormat> getByIdWithResponse(String id, String localeCode, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String profileName = Utils.getValueFromIdByName(id, "profiles");
+        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "profiles");
         if (profileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
         }
         return this.getWithResponse(resourceGroupName, hubName, profileName, localeCode, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String profileName = Utils.getValueFromIdByName(id, "profiles");
+        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "profiles");
         if (profileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
         }
         String localLocaleCode = null;
         this.delete(resourceGroupName, hubName, profileName, localLocaleCode, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, String localeCode, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hubName = Utils.getValueFromIdByName(id, "hubs");
+        String hubName = ResourceManagerUtils.getValueFromIdByName(id, "hubs");
         if (hubName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hubs'.", id)));
         }
-        String profileName = Utils.getValueFromIdByName(id, "profiles");
+        String profileName = ResourceManagerUtils.getValueFromIdByName(id, "profiles");
         if (profileName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'profiles'.", id)));
         }
         this.delete(resourceGroupName, hubName, profileName, localeCode, context);
     }

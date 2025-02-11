@@ -20,78 +20,70 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlServerInstanceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlServerInstanceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"version\":\"SQL Server"
-                        + " 2016\",\"edition\":\"Express\",\"containerResourceId\":\"walm\",\"createTime\":\"yoxa\",\"vCore\":\"dkzjancuxrh\",\"status\":\"Disconnected\",\"patchLevel\":\"avxbniwdjswztsdb\",\"collation\":\"nxytxh\",\"currentVersion\":\"xbzpfzab\",\"instanceName\":\"cuh\",\"tcpDynamicPorts\":\"tcty\",\"tcpStaticPorts\":\"klbb\",\"productId\":\"plwzbhvgyugu\",\"licenseType\":\"HADR\",\"azureDefenderStatusLastUpdated\":\"2021-10-31T02:07:56Z\",\"azureDefenderStatus\":\"Unprotected\",\"provisioningState\":\"xquk\"},\"location\":\"plgmgsxnk\",\"tags\":{\"lopwiyig\":\"deslp\"},\"id\":\"xpkd\",\"name\":\"zb\",\"type\":\"iuebbaumny\"}")
-                .toObject(SqlServerInstanceInner.class);
-        Assertions.assertEquals("plgmgsxnk", model.location());
-        Assertions.assertEquals("deslp", model.tags().get("lopwiyig"));
+        SqlServerInstanceInner model = BinaryData.fromString(
+            "{\"properties\":{\"version\":\"SQL Server 2016\",\"edition\":\"Web\",\"containerResourceId\":\"phywpnvj\",\"createTime\":\"qnermclfplphoxu\",\"vCore\":\"rpabg\",\"status\":\"Connected\",\"patchLevel\":\"sbj\",\"collation\":\"zq\",\"currentVersion\":\"xywpmueefjzwfqkq\",\"instanceName\":\"ids\",\"tcpDynamicPorts\":\"onobglaocqx\",\"tcpStaticPorts\":\"cmgyud\",\"productId\":\"tlmoyrx\",\"licenseType\":\"Free\",\"azureDefenderStatusLastUpdated\":\"2021-07-05T08:36:14Z\",\"azureDefenderStatus\":\"Unprotected\",\"provisioningState\":\"ntxhdzhlrqjbhck\"},\"location\":\"lhrxsbkyvpyc\",\"tags\":{\"p\":\"z\",\"hhseyv\":\"kafkuwbcrnwbm\",\"tslhspkdeem\":\"us\"},\"id\":\"ofmxagkvtmelmqkr\",\"name\":\"ahvljuaha\",\"type\":\"uhcdhm\"}")
+            .toObject(SqlServerInstanceInner.class);
+        Assertions.assertEquals("lhrxsbkyvpyc", model.location());
+        Assertions.assertEquals("z", model.tags().get("p"));
         Assertions.assertEquals(SqlVersion.SQL_SERVER_2016, model.properties().version());
-        Assertions.assertEquals(EditionType.EXPRESS, model.properties().edition());
-        Assertions.assertEquals("walm", model.properties().containerResourceId());
-        Assertions.assertEquals("dkzjancuxrh", model.properties().vCore());
-        Assertions.assertEquals(ConnectionStatus.DISCONNECTED, model.properties().status());
-        Assertions.assertEquals("avxbniwdjswztsdb", model.properties().patchLevel());
-        Assertions.assertEquals("nxytxh", model.properties().collation());
-        Assertions.assertEquals("xbzpfzab", model.properties().currentVersion());
-        Assertions.assertEquals("cuh", model.properties().instanceName());
-        Assertions.assertEquals("tcty", model.properties().tcpDynamicPorts());
-        Assertions.assertEquals("klbb", model.properties().tcpStaticPorts());
-        Assertions.assertEquals("plwzbhvgyugu", model.properties().productId());
-        Assertions.assertEquals(ArcSqlServerLicenseType.HADR, model.properties().licenseType());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-10-31T02:07:56Z"), model.properties().azureDefenderStatusLastUpdated());
+        Assertions.assertEquals(EditionType.WEB, model.properties().edition());
+        Assertions.assertEquals("phywpnvj", model.properties().containerResourceId());
+        Assertions.assertEquals("rpabg", model.properties().vCore());
+        Assertions.assertEquals(ConnectionStatus.CONNECTED, model.properties().status());
+        Assertions.assertEquals("sbj", model.properties().patchLevel());
+        Assertions.assertEquals("zq", model.properties().collation());
+        Assertions.assertEquals("xywpmueefjzwfqkq", model.properties().currentVersion());
+        Assertions.assertEquals("ids", model.properties().instanceName());
+        Assertions.assertEquals("onobglaocqx", model.properties().tcpDynamicPorts());
+        Assertions.assertEquals("cmgyud", model.properties().tcpStaticPorts());
+        Assertions.assertEquals("tlmoyrx", model.properties().productId());
+        Assertions.assertEquals(ArcSqlServerLicenseType.FREE, model.properties().licenseType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-05T08:36:14Z"),
+            model.properties().azureDefenderStatusLastUpdated());
         Assertions.assertEquals(DefenderStatus.UNPROTECTED, model.properties().azureDefenderStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerInstanceInner model =
-            new SqlServerInstanceInner()
-                .withLocation("plgmgsxnk")
-                .withTags(mapOf("lopwiyig", "deslp"))
-                .withProperties(
-                    new SqlServerInstanceProperties()
-                        .withVersion(SqlVersion.SQL_SERVER_2016)
-                        .withEdition(EditionType.EXPRESS)
-                        .withContainerResourceId("walm")
-                        .withVCore("dkzjancuxrh")
-                        .withStatus(ConnectionStatus.DISCONNECTED)
-                        .withPatchLevel("avxbniwdjswztsdb")
-                        .withCollation("nxytxh")
-                        .withCurrentVersion("xbzpfzab")
-                        .withInstanceName("cuh")
-                        .withTcpDynamicPorts("tcty")
-                        .withTcpStaticPorts("klbb")
-                        .withProductId("plwzbhvgyugu")
-                        .withLicenseType(ArcSqlServerLicenseType.HADR)
-                        .withAzureDefenderStatusLastUpdated(OffsetDateTime.parse("2021-10-31T02:07:56Z"))
-                        .withAzureDefenderStatus(DefenderStatus.UNPROTECTED));
+        SqlServerInstanceInner model = new SqlServerInstanceInner().withLocation("lhrxsbkyvpyc")
+            .withTags(mapOf("p", "z", "hhseyv", "kafkuwbcrnwbm", "tslhspkdeem", "us"))
+            .withProperties(new SqlServerInstanceProperties().withVersion(SqlVersion.SQL_SERVER_2016)
+                .withEdition(EditionType.WEB)
+                .withContainerResourceId("phywpnvj")
+                .withVCore("rpabg")
+                .withStatus(ConnectionStatus.CONNECTED)
+                .withPatchLevel("sbj")
+                .withCollation("zq")
+                .withCurrentVersion("xywpmueefjzwfqkq")
+                .withInstanceName("ids")
+                .withTcpDynamicPorts("onobglaocqx")
+                .withTcpStaticPorts("cmgyud")
+                .withProductId("tlmoyrx")
+                .withLicenseType(ArcSqlServerLicenseType.FREE)
+                .withAzureDefenderStatusLastUpdated(OffsetDateTime.parse("2021-07-05T08:36:14Z"))
+                .withAzureDefenderStatus(DefenderStatus.UNPROTECTED));
         model = BinaryData.fromObject(model).toObject(SqlServerInstanceInner.class);
-        Assertions.assertEquals("plgmgsxnk", model.location());
-        Assertions.assertEquals("deslp", model.tags().get("lopwiyig"));
+        Assertions.assertEquals("lhrxsbkyvpyc", model.location());
+        Assertions.assertEquals("z", model.tags().get("p"));
         Assertions.assertEquals(SqlVersion.SQL_SERVER_2016, model.properties().version());
-        Assertions.assertEquals(EditionType.EXPRESS, model.properties().edition());
-        Assertions.assertEquals("walm", model.properties().containerResourceId());
-        Assertions.assertEquals("dkzjancuxrh", model.properties().vCore());
-        Assertions.assertEquals(ConnectionStatus.DISCONNECTED, model.properties().status());
-        Assertions.assertEquals("avxbniwdjswztsdb", model.properties().patchLevel());
-        Assertions.assertEquals("nxytxh", model.properties().collation());
-        Assertions.assertEquals("xbzpfzab", model.properties().currentVersion());
-        Assertions.assertEquals("cuh", model.properties().instanceName());
-        Assertions.assertEquals("tcty", model.properties().tcpDynamicPorts());
-        Assertions.assertEquals("klbb", model.properties().tcpStaticPorts());
-        Assertions.assertEquals("plwzbhvgyugu", model.properties().productId());
-        Assertions.assertEquals(ArcSqlServerLicenseType.HADR, model.properties().licenseType());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-10-31T02:07:56Z"), model.properties().azureDefenderStatusLastUpdated());
+        Assertions.assertEquals(EditionType.WEB, model.properties().edition());
+        Assertions.assertEquals("phywpnvj", model.properties().containerResourceId());
+        Assertions.assertEquals("rpabg", model.properties().vCore());
+        Assertions.assertEquals(ConnectionStatus.CONNECTED, model.properties().status());
+        Assertions.assertEquals("sbj", model.properties().patchLevel());
+        Assertions.assertEquals("zq", model.properties().collation());
+        Assertions.assertEquals("xywpmueefjzwfqkq", model.properties().currentVersion());
+        Assertions.assertEquals("ids", model.properties().instanceName());
+        Assertions.assertEquals("onobglaocqx", model.properties().tcpDynamicPorts());
+        Assertions.assertEquals("cmgyud", model.properties().tcpStaticPorts());
+        Assertions.assertEquals("tlmoyrx", model.properties().productId());
+        Assertions.assertEquals(ArcSqlServerLicenseType.FREE, model.properties().licenseType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-05T08:36:14Z"),
+            model.properties().azureDefenderStatusLastUpdated());
         Assertions.assertEquals(DefenderStatus.UNPROTECTED, model.properties().azureDefenderStatus());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

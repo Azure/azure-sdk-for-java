@@ -7,18 +7,20 @@ package com.azure.resourcemanager.devspaces.models;
 import com.azure.resourcemanager.devspaces.fluent.models.ControllerConnectionDetailsListInner;
 import java.util.List;
 
-/** An immutable client-side representation of ControllerConnectionDetailsList. */
+/**
+ * An immutable client-side representation of ControllerConnectionDetailsList.
+ */
 public interface ControllerConnectionDetailsList {
     /**
      * Gets the connectionDetailsList property: List of Azure Dev Spaces Controller connection details.
-     *
+     * 
      * @return the connectionDetailsList value.
      */
     List<ControllerConnectionDetails> connectionDetailsList();
 
     /**
      * Gets the inner com.azure.resourcemanager.devspaces.fluent.models.ControllerConnectionDetailsListInner object.
-     *
+     * 
      * @return the inner object.
      */
     ControllerConnectionDetailsListInner innerModel();

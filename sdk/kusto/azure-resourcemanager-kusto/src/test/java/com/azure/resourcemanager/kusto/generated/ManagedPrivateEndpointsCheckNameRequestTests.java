@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedPrivateEndpointsCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedPrivateEndpointsCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"ruoujmk\"}").toObject(ManagedPrivateEndpointsCheckNameRequest.class);
-        Assertions.assertEquals("ruoujmk", model.name());
+        ManagedPrivateEndpointsCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"fvmwy\"}").toObject(ManagedPrivateEndpointsCheckNameRequest.class);
+        Assertions.assertEquals("fvmwy", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedPrivateEndpointsCheckNameRequest model =
-            new ManagedPrivateEndpointsCheckNameRequest().withName("ruoujmk");
+        ManagedPrivateEndpointsCheckNameRequest model = new ManagedPrivateEndpointsCheckNameRequest().withName("fvmwy");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointsCheckNameRequest.class);
-        Assertions.assertEquals("ruoujmk", model.name());
+        Assertions.assertEquals("fvmwy", model.name());
     }
 }

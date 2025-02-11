@@ -4,23 +4,26 @@
 
 package com.azure.resourcemanager.alertsmanagement.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.alertsmanagement.models.AlertState;
+import com.azure.resourcemanager.alertsmanagement.models.Comments;
 
-/** Samples for Alerts ChangeState. */
+/**
+ * Samples for Alerts ChangeState.
+ */
 public final class AlertsChangeStateSamples {
     /*
-     * x-ms-original-file: specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/Alerts_ChangeState.json
+     * x-ms-original-file:
+     * specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/examples/
+     * Alerts_ChangeState.json
      */
     /**
      * Sample code: Resolve.
-     *
+     * 
      * @param manager Entry point to AlertsManagementManager.
      */
     public static void resolve(com.azure.resourcemanager.alertsmanagement.AlertsManagementManager manager) {
-        manager
-            .alerts()
-            .changeStateWithResponse(
-                "66114d64-d9d9-478b-95c9-b789d6502100", AlertState.ACKNOWLEDGED, null, Context.NONE);
+        manager.alerts()
+            .changeStateWithResponse("66114d64-d9d9-478b-95c9-b789d6502100", AlertState.ACKNOWLEDGED, new Comments(),
+                com.azure.core.util.Context.NONE);
     }
 }

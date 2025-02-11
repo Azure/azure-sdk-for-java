@@ -16,60 +16,52 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigDataPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigDataProperties model =
-            BinaryData
-                .fromString(
-                    "{\"exclude\":true,\"lowCpuThreshold\":\"20\",\"digests\":[{\"name\":\"pczwlo\",\"actionGroupResourceId\":\"yemkkvnip\",\"frequency\":348606393,\"categories\":[\"Performance\",\"HighAvailability\"],\"language\":\"gejspodmailzyde\",\"state\":\"Disabled\"},{\"name\":\"yahux\",\"actionGroupResourceId\":\"pmqnja\",\"frequency\":1876507017,\"categories\":[\"Performance\",\"Performance\",\"Performance\"],\"language\":\"zvcputegjvwmfda\",\"state\":\"Active\"},{\"name\":\"dvpjhulsuuvmk\",\"actionGroupResourceId\":\"zkrwfn\",\"frequency\":287620729,\"categories\":[\"Performance\",\"Cost\"],\"language\":\"w\",\"state\":\"Disabled\"}]}")
-                .toObject(ConfigDataProperties.class);
-        Assertions.assertEquals(true, model.exclude());
+        ConfigDataProperties model = BinaryData.fromString(
+            "{\"exclude\":false,\"lowCpuThreshold\":\"20\",\"digests\":[{\"name\":\"lthqtrgqjbp\",\"actionGroupResourceId\":\"fsinzgvfcjrwzoxx\",\"frequency\":1440397986,\"categories\":[\"Performance\",\"OperationalExcellence\",\"HighAvailability\",\"Performance\"],\"language\":\"it\",\"state\":\"Disabled\"},{\"name\":\"qfpjk\",\"actionGroupResourceId\":\"xofpdvhpfxxypi\",\"frequency\":7569944,\"categories\":[\"Cost\",\"Security\"],\"language\":\"ybb\",\"state\":\"Disabled\"},{\"name\":\"epoo\",\"actionGroupResourceId\":\"nuvamiheogna\",\"frequency\":1893731030,\"categories\":[\"HighAvailability\",\"HighAvailability\",\"Security\"],\"language\":\"usivye\",\"state\":\"Disabled\"}]}")
+            .toObject(ConfigDataProperties.class);
+        Assertions.assertEquals(false, model.exclude());
         Assertions.assertEquals(CpuThreshold.TWO_ZERO, model.lowCpuThreshold());
-        Assertions.assertEquals("pczwlo", model.digests().get(0).name());
-        Assertions.assertEquals("yemkkvnip", model.digests().get(0).actionGroupResourceId());
-        Assertions.assertEquals(348606393, model.digests().get(0).frequency());
+        Assertions.assertEquals("lthqtrgqjbp", model.digests().get(0).name());
+        Assertions.assertEquals("fsinzgvfcjrwzoxx", model.digests().get(0).actionGroupResourceId());
+        Assertions.assertEquals(1440397986, model.digests().get(0).frequency());
         Assertions.assertEquals(Category.PERFORMANCE, model.digests().get(0).categories().get(0));
-        Assertions.assertEquals("gejspodmailzyde", model.digests().get(0).language());
+        Assertions.assertEquals("it", model.digests().get(0).language());
         Assertions.assertEquals(DigestConfigState.DISABLED, model.digests().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigDataProperties model =
-            new ConfigDataProperties()
-                .withExclude(true)
-                .withLowCpuThreshold(CpuThreshold.TWO_ZERO)
-                .withDigests(
-                    Arrays
-                        .asList(
-                            new DigestConfig()
-                                .withName("pczwlo")
-                                .withActionGroupResourceId("yemkkvnip")
-                                .withFrequency(348606393)
-                                .withCategories(Arrays.asList(Category.PERFORMANCE, Category.HIGH_AVAILABILITY))
-                                .withLanguage("gejspodmailzyde")
-                                .withState(DigestConfigState.DISABLED),
-                            new DigestConfig()
-                                .withName("yahux")
-                                .withActionGroupResourceId("pmqnja")
-                                .withFrequency(1876507017)
-                                .withCategories(
-                                    Arrays.asList(Category.PERFORMANCE, Category.PERFORMANCE, Category.PERFORMANCE))
-                                .withLanguage("zvcputegjvwmfda")
-                                .withState(DigestConfigState.ACTIVE),
-                            new DigestConfig()
-                                .withName("dvpjhulsuuvmk")
-                                .withActionGroupResourceId("zkrwfn")
-                                .withFrequency(287620729)
-                                .withCategories(Arrays.asList(Category.PERFORMANCE, Category.COST))
-                                .withLanguage("w")
-                                .withState(DigestConfigState.DISABLED)));
+        ConfigDataProperties model = new ConfigDataProperties().withExclude(false)
+            .withLowCpuThreshold(CpuThreshold.TWO_ZERO)
+            .withDigests(Arrays.asList(
+                new DigestConfig().withName("lthqtrgqjbp")
+                    .withActionGroupResourceId("fsinzgvfcjrwzoxx")
+                    .withFrequency(1440397986)
+                    .withCategories(Arrays.asList(Category.PERFORMANCE, Category.OPERATIONAL_EXCELLENCE,
+                        Category.HIGH_AVAILABILITY, Category.PERFORMANCE))
+                    .withLanguage("it")
+                    .withState(DigestConfigState.DISABLED),
+                new DigestConfig().withName("qfpjk")
+                    .withActionGroupResourceId("xofpdvhpfxxypi")
+                    .withFrequency(7569944)
+                    .withCategories(Arrays.asList(Category.COST, Category.SECURITY))
+                    .withLanguage("ybb")
+                    .withState(DigestConfigState.DISABLED),
+                new DigestConfig().withName("epoo")
+                    .withActionGroupResourceId("nuvamiheogna")
+                    .withFrequency(1893731030)
+                    .withCategories(
+                        Arrays.asList(Category.HIGH_AVAILABILITY, Category.HIGH_AVAILABILITY, Category.SECURITY))
+                    .withLanguage("usivye")
+                    .withState(DigestConfigState.DISABLED)));
         model = BinaryData.fromObject(model).toObject(ConfigDataProperties.class);
-        Assertions.assertEquals(true, model.exclude());
+        Assertions.assertEquals(false, model.exclude());
         Assertions.assertEquals(CpuThreshold.TWO_ZERO, model.lowCpuThreshold());
-        Assertions.assertEquals("pczwlo", model.digests().get(0).name());
-        Assertions.assertEquals("yemkkvnip", model.digests().get(0).actionGroupResourceId());
-        Assertions.assertEquals(348606393, model.digests().get(0).frequency());
+        Assertions.assertEquals("lthqtrgqjbp", model.digests().get(0).name());
+        Assertions.assertEquals("fsinzgvfcjrwzoxx", model.digests().get(0).actionGroupResourceId());
+        Assertions.assertEquals(1440397986, model.digests().get(0).frequency());
         Assertions.assertEquals(Category.PERFORMANCE, model.digests().get(0).categories().get(0));
-        Assertions.assertEquals("gejspodmailzyde", model.digests().get(0).language());
+        Assertions.assertEquals("it", model.digests().get(0).language());
         Assertions.assertEquals(DigestConfigState.DISABLED, model.digests().get(0).state());
     }
 }

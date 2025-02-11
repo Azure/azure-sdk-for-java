@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for terminating a Batch Task.
  */
 public class TerminateBatchTaskOptions extends BatchTerminateOptions {
-
+    /**
+     * Creates an instance of {@link TerminateBatchTaskOptions}.
+     */
+    public TerminateBatchTaskOptions() {
+    }
 }

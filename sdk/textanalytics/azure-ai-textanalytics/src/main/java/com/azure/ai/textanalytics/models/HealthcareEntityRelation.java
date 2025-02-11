@@ -31,8 +31,8 @@ public final class HealthcareEntityRelation {
     private double confidenceScore;
 
     static {
-        HealthcareEntityRelationPropertiesHelper.setAccessor(
-            new HealthcareEntityRelationPropertiesHelper.HealthcareEntityRelationAccessor() {
+        HealthcareEntityRelationPropertiesHelper
+            .setAccessor(new HealthcareEntityRelationPropertiesHelper.HealthcareEntityRelationAccessor() {
                 @Override
                 public void setRelationType(HealthcareEntityRelation healthcareEntityRelation,
                     HealthcareEntityRelationType relationType) {

@@ -7,32 +7,51 @@ package com.azure.resourcemanager.costmanagement.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Resource model definition. */
+/**
+ * The Resource model definition.
+ */
 @Fluent
 public class ScheduledActionProxyResource extends ProxyResource {
     /*
      * Resource Etag. For update calls, eTag is optional and can be specified to achieve optimistic concurrency. Fetch
-     * the resource's eTag by doing a 'GET' call first and then including the latest eTag as part of the request body
-     * or 'If-Match' header while performing the update. For create calls, eTag is not required.
+     * the resource's eTag by doing a 'GET' call first and then including the latest eTag as part of the request body or
+     * 'If-Match' header while performing the update. For create calls, eTag is not required.
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Kind of the scheduled action.
      */
-    @JsonProperty(value = "kind")
     private ScheduledActionKind kind;
 
     /*
      * Kind of the scheduled action.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ScheduledActionProxyResource class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ScheduledActionProxyResource class.
+     */
     public ScheduledActionProxyResource() {
     }
 
@@ -41,7 +60,7 @@ public class ScheduledActionProxyResource extends ProxyResource {
      * optimistic concurrency. Fetch the resource's eTag by doing a 'GET' call first and then including the latest eTag
      * as part of the request body or 'If-Match' header while performing the update. For create calls, eTag is not
      * required.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -49,8 +68,22 @@ public class ScheduledActionProxyResource extends ProxyResource {
     }
 
     /**
+     * Set the etag property: Resource Etag. For update calls, eTag is optional and can be specified to achieve
+     * optimistic concurrency. Fetch the resource's eTag by doing a 'GET' call first and then including the latest eTag
+     * as part of the request body or 'If-Match' header while performing the update. For create calls, eTag is not
+     * required.
+     * 
+     * @param etag the etag value to set.
+     * @return the ScheduledActionProxyResource object itself.
+     */
+    ScheduledActionProxyResource withEtag(String etag) {
+        this.etag = etag;
+        return this;
+    }
+
+    /**
      * Get the kind property: Kind of the scheduled action.
-     *
+     * 
      * @return the kind value.
      */
     public ScheduledActionKind kind() {
@@ -59,7 +92,7 @@ public class ScheduledActionProxyResource extends ProxyResource {
 
     /**
      * Set the kind property: Kind of the scheduled action.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the ScheduledActionProxyResource object itself.
      */
@@ -70,7 +103,7 @@ public class ScheduledActionProxyResource extends ProxyResource {
 
     /**
      * Get the systemData property: Kind of the scheduled action.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -78,10 +111,98 @@ public class ScheduledActionProxyResource extends ProxyResource {
     }
 
     /**
+     * Set the systemData property: Kind of the scheduled action.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the ScheduledActionProxyResource object itself.
+     */
+    ScheduledActionProxyResource withSystemData(SystemData systemData) {
+        this.systemData = systemData;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduledActionProxyResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduledActionProxyResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ScheduledActionProxyResource.
+     */
+    public static ScheduledActionProxyResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduledActionProxyResource deserializedScheduledActionProxyResource = new ScheduledActionProxyResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedScheduledActionProxyResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedScheduledActionProxyResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedScheduledActionProxyResource.type = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedScheduledActionProxyResource.etag = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedScheduledActionProxyResource.kind = ScheduledActionKind.fromString(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedScheduledActionProxyResource.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduledActionProxyResource;
+        });
     }
 }

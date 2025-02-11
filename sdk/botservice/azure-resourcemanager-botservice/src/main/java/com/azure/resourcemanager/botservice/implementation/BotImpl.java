@@ -100,22 +100,18 @@ public final class BotImpl implements Bot, Bot.Definition, Bot.Update {
     }
 
     public Bot create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBots()
-                .createWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBots()
+            .createWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Bot create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBots()
-                .createWithResponse(resourceGroupName, resourceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBots()
+            .createWithResponse(resourceGroupName, resourceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -130,49 +126,41 @@ public final class BotImpl implements Bot, Bot.Definition, Bot.Update {
     }
 
     public Bot apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBots()
-                .updateWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBots()
+            .updateWithResponse(resourceGroupName, resourceName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Bot apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBots()
-                .updateWithResponse(resourceGroupName, resourceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBots()
+            .updateWithResponse(resourceGroupName, resourceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
     BotImpl(BotInner innerObject, com.azure.resourcemanager.botservice.BotServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "botServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "botServices");
     }
 
     public Bot refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBots()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBots()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Bot refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBots()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBots()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 

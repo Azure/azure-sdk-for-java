@@ -20,7 +20,7 @@ public final class ReplicationFabricsGetSamples {
      */
     public static void getsTheDetailsOfAnASRFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationFabrics().getWithResponse("vault1", "resourceGroupPS1", "cloud1", null,
-            com.azure.core.util.Context.NONE);
+        manager.replicationFabrics()
+            .getWithResponse("vault1", "resourceGroupPS1", "cloud1", null, com.azure.core.util.Context.NONE);
     }
 }

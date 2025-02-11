@@ -46,10 +46,8 @@ public interface LoadBalancerPublicFrontend extends LoadBalancerFrontend, HasPub
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT>,
-            DefinitionStages.WithPublicIPAddress<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithPublicIPAddress<ParentT> {
     }
 
     /** Grouping of public frontend update stages. */
@@ -99,9 +97,7 @@ public interface LoadBalancerPublicFrontend extends LoadBalancerFrontend, HasPub
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT>,
-            UpdateDefinitionStages.WithPublicIPAddress<ParentT> {
+    interface UpdateDefinition<ParentT> extends UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT>, UpdateDefinitionStages.WithPublicIPAddress<ParentT> {
     }
 }

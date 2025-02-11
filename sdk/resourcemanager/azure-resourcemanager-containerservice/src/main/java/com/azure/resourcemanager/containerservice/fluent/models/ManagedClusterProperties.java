@@ -22,6 +22,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMoni
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterMetricsProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterNodeResourceGroupProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
@@ -144,6 +145,11 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private String nodeResourceGroup;
 
     /*
+     * Profile of the node resource group configuration.
+     */
+    private ManagedClusterNodeResourceGroupProfile nodeResourceGroupProfile;
+
+    /*
      * Whether to enable Kubernetes Role-Based Access Control.
      */
     private Boolean enableRbac;
@@ -198,7 +204,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     private String diskEncryptionSetId;
 
     /*
-     * Identities associated with the cluster.
+     * The user identity associated with the managed cluster. This identity will be used by the kubelet. Only one user
+     * assigned identity is allowed. The only accepted key is "kubeletidentity", with value of "resourceId":
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}".
      */
     private Map<String, UserAssignedIdentity> identityProfile;
 
@@ -580,6 +588,27 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
+     * Get the nodeResourceGroupProfile property: Profile of the node resource group configuration.
+     * 
+     * @return the nodeResourceGroupProfile value.
+     */
+    public ManagedClusterNodeResourceGroupProfile nodeResourceGroupProfile() {
+        return this.nodeResourceGroupProfile;
+    }
+
+    /**
+     * Set the nodeResourceGroupProfile property: Profile of the node resource group configuration.
+     * 
+     * @param nodeResourceGroupProfile the nodeResourceGroupProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties
+        withNodeResourceGroupProfile(ManagedClusterNodeResourceGroupProfile nodeResourceGroupProfile) {
+        this.nodeResourceGroupProfile = nodeResourceGroupProfile;
+        return this;
+    }
+
+    /**
      * Get the enableRbac property: Whether to enable Kubernetes Role-Based Access Control.
      * 
      * @return the enableRbac value.
@@ -789,7 +818,10 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Get the identityProfile property: Identities associated with the cluster.
+     * Get the identityProfile property: The user identity associated with the managed cluster. This identity will be
+     * used by the kubelet. Only one user assigned identity is allowed. The only accepted key is "kubeletidentity", with
+     * value of "resourceId":
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}".
      * 
      * @return the identityProfile value.
      */
@@ -798,7 +830,10 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
     }
 
     /**
-     * Set the identityProfile property: Identities associated with the cluster.
+     * Set the identityProfile property: The user identity associated with the managed cluster. This identity will be
+     * used by the kubelet. Only one user assigned identity is allowed. The only accepted key is "kubeletidentity", with
+     * value of "resourceId":
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}".
      * 
      * @param identityProfile the identityProfile value to set.
      * @return the ManagedClusterProperties object itself.
@@ -1077,6 +1112,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         if (oidcIssuerProfile() != null) {
             oidcIssuerProfile().validate();
         }
+        if (nodeResourceGroupProfile() != null) {
+            nodeResourceGroupProfile().validate();
+        }
         if (networkProfile() != null) {
             networkProfile().validate();
         }
@@ -1149,6 +1187,7 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
         jsonWriter.writeJsonField("podIdentityProfile", this.podIdentityProfile);
         jsonWriter.writeJsonField("oidcIssuerProfile", this.oidcIssuerProfile);
         jsonWriter.writeStringField("nodeResourceGroup", this.nodeResourceGroup);
+        jsonWriter.writeJsonField("nodeResourceGroupProfile", this.nodeResourceGroupProfile);
         jsonWriter.writeBooleanField("enableRBAC", this.enableRbac);
         jsonWriter.writeStringField("supportPlan", this.supportPlan == null ? null : this.supportPlan.toString());
         jsonWriter.writeBooleanField("enablePodSecurityPolicy", this.enablePodSecurityPolicy);
@@ -1235,6 +1274,9 @@ public final class ManagedClusterProperties implements JsonSerializable<ManagedC
                         = ManagedClusterOidcIssuerProfile.fromJson(reader);
                 } else if ("nodeResourceGroup".equals(fieldName)) {
                     deserializedManagedClusterProperties.nodeResourceGroup = reader.getString();
+                } else if ("nodeResourceGroupProfile".equals(fieldName)) {
+                    deserializedManagedClusterProperties.nodeResourceGroupProfile
+                        = ManagedClusterNodeResourceGroupProfile.fromJson(reader);
                 } else if ("enableRBAC".equals(fieldName)) {
                     deserializedManagedClusterProperties.enableRbac = reader.getNullable(JsonReader::getBoolean);
                 } else if ("supportPlan".equals(fieldName)) {

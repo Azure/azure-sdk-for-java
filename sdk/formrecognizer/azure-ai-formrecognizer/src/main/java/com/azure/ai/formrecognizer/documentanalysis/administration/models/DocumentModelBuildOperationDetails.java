@@ -41,10 +41,10 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
     }
 
     static {
-        DocumentModelBuildOperationDetailsHelper.setAccessor(
-            new DocumentModelBuildOperationDetailsHelper.DocumentModelBuildOperationDetailsAccessor() {
+        DocumentModelBuildOperationDetailsHelper
+            .setAccessor(new DocumentModelBuildOperationDetailsHelper.DocumentModelBuildOperationDetailsAccessor() {
                 public void setResult(DocumentModelBuildOperationDetails operationDetails,
-                                      DocumentModelDetails result) {
+                    DocumentModelDetails result) {
                     operationDetails.setResult(result);
                 }
             });

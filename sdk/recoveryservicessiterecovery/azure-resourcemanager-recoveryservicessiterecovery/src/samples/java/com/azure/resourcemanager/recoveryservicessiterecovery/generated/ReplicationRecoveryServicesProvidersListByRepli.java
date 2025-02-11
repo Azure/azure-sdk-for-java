@@ -20,7 +20,7 @@ public final class ReplicationRecoveryServicesProvidersListByRepli {
      */
     public static void getsTheListOfRegisteredRecoveryServicesProvidersForTheFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryServicesProviders().listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1",
-            com.azure.core.util.Context.NONE);
+        manager.replicationRecoveryServicesProviders()
+            .listByReplicationFabrics("vault1", "resourceGroupPS1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

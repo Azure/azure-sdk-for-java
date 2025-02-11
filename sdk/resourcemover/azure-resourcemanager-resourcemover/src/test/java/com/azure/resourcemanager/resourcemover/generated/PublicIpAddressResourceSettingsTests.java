@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PublicIpAddressResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PublicIpAddressResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Microsoft.Network/publicIPAddresses\",\"tags\":{\"srfbjfdtwss\":\"fsubcgjbirxbpy\",\"tpvjzbexilzznfqq\":\"t\",\"taruoujmkcj\":\"vwpm\"},\"domainNameLabel\":\"qytjrybnwjewgd\",\"fqdn\":\"ervnaenqpehi\",\"publicIpAllocationMethod\":\"oygmift\",\"sku\":\"zdnds\",\"zones\":\"nayqi\",\"targetResourceName\":\"nduhavhqlkthum\",\"targetResourceGroupName\":\"olbgycduiertgccy\"}")
-                .toObject(PublicIpAddressResourceSettings.class);
+        PublicIpAddressResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"Microsoft.Network/publicIPAddresses\",\"tags\":{\"srfbjfdtwss\":\"fsubcgjbirxbpy\",\"tpvjzbexilzznfqq\":\"t\",\"taruoujmkcj\":\"vwpm\"},\"domainNameLabel\":\"qytjrybnwjewgd\",\"fqdn\":\"ervnaenqpehi\",\"publicIpAllocationMethod\":\"oygmift\",\"sku\":\"zdnds\",\"zones\":\"nayqi\",\"targetResourceName\":\"nduhavhqlkthum\",\"targetResourceGroupName\":\"olbgycduiertgccy\"}")
+            .toObject(PublicIpAddressResourceSettings.class);
         Assertions.assertEquals("nduhavhqlkthum", model.targetResourceName());
         Assertions.assertEquals("olbgycduiertgccy", model.targetResourceGroupName());
         Assertions.assertEquals("fsubcgjbirxbpy", model.tags().get("srfbjfdtwss"));
@@ -30,9 +28,8 @@ public final class PublicIpAddressResourceSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PublicIpAddressResourceSettings model =
-            new PublicIpAddressResourceSettings()
-                .withTargetResourceName("nduhavhqlkthum")
+        PublicIpAddressResourceSettings model
+            = new PublicIpAddressResourceSettings().withTargetResourceName("nduhavhqlkthum")
                 .withTargetResourceGroupName("olbgycduiertgccy")
                 .withTags(mapOf("srfbjfdtwss", "fsubcgjbirxbpy", "tpvjzbexilzznfqq", "t", "taruoujmkcj", "vwpm"))
                 .withDomainNameLabel("qytjrybnwjewgd")

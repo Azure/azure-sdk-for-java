@@ -15,9 +15,9 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 class ApplicationGatewayIpConfigurationImpl
     extends ChildResourceImpl<ApplicationGatewayIpConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
     implements ApplicationGatewayIpConfiguration,
-        ApplicationGatewayIpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewayIpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayIpConfiguration.Update {
+    ApplicationGatewayIpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+    ApplicationGatewayIpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
+    ApplicationGatewayIpConfiguration.Update {
 
     ApplicationGatewayIpConfigurationImpl(ApplicationGatewayIpConfigurationInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);

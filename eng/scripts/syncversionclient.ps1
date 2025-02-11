@@ -35,11 +35,11 @@ class EngSysVersionInfo{
     [String] $DependencyVersion
     [String] $CurrentVersion
 
-    EngSysVersionInfo($Name, $DependencyVersion, $CurrentVersion) {
+    EngSysVersionInfo($Name, $DependencyVersion, $CurrentVersion, $GroupId = 'com.azure') {
         $this.Name = $Name
         $this.DependencyVersion = $DependencyVersion
         $this.CurrentVersion = $CurrentVersion
-        $this.GroupId = 'com.azure'
+        $this.GroupId = $GroupId
     }
 }
 
@@ -54,7 +54,7 @@ function ParseVersionClientFile($GroudpId) {
             $dependencyVersion = $Matches.2
             $currentVersion = $Matches.3
 
-            $engSysVersionInfo = [EngSysVersionInfo]::new($artifactId, $dependencyVersion, $currentVersion)
+            $engSysVersionInfo = [EngSysVersionInfo]::new($artifactId, $dependencyVersion, $currentVersion, $GroudpId)
             $versionClientInfo[$artifactId] = $engSysVersionInfo
         }
     }
@@ -70,7 +70,7 @@ function SyncVersionClientFile([String]$GroupId) {
     foreach($artifactId in $artifactIds) {
         $artifactInfo = GetVersionInfoForAnArtifactId -ArtifactId $artifactId
         $latestPatchOrGaVersion = $ArtifactInfo.LatestGAOrPatchVersion
-        
+
         if([String]::IsNullOrWhiteSpace($latestPatchOrGaVersion)) {
             # This library does not have a released version so we are likely good here.
             continue
@@ -93,7 +93,7 @@ function SyncVersionClientFile([String]$GroupId) {
 
 # Don't call functions when the script is being dot sourced
 if ($MyInvocation.InvocationName -ne ".") {
-    SyncVersionClientFile -GroupId "com.azure"
+    SyncVersionClientFile -GroupId $GroupId
 }
 
 

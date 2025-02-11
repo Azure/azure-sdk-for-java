@@ -80,22 +80,23 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         String registryEndpoint = getConfigurationValue("CONTAINERREGISTRY_ENDPOINT");
 
         HttpClientOptions httpOptions = new HttpClientOptions()
-            .setHttpClientProvider(options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP ? OkHttpAsyncClientProvider.class : NettyAsyncHttpClientProvider.class);
+            .setHttpClientProvider(options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP
+                ? OkHttpAsyncClientProvider.class
+                : NettyAsyncHttpClientProvider.class);
 
         tokenCredential = new DefaultAzureCredentialBuilder().build();
-        ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder()
-            .endpoint(registryEndpoint)
+        ContainerRegistryClientBuilder builder = new ContainerRegistryClientBuilder().endpoint(registryEndpoint)
             .clientOptions(httpOptions)
             .credential(tokenCredential);
 
         this.containerRegistryClient = builder.buildClient();
-        this.containerRegistryAsyncClient  = builder.buildAsyncClient();
+        this.containerRegistryAsyncClient = builder.buildAsyncClient();
 
-        ContainerRegistryContentClientBuilder blobClientBuilder = new ContainerRegistryContentClientBuilder()
-            .credential(tokenCredential)
-            .clientOptions(httpOptions)
-            .endpoint(registryEndpoint)
-            .repositoryName("oci-artifact");
+        ContainerRegistryContentClientBuilder blobClientBuilder
+            = new ContainerRegistryContentClientBuilder().credential(tokenCredential)
+                .clientOptions(httpOptions)
+                .endpoint(registryEndpoint)
+                .repositoryName("oci-artifact");
 
         this.blobClient = blobClientBuilder.buildClient();
         this.blobAsyncClient = blobClientBuilder.buildAsyncClient();
@@ -104,8 +105,9 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
     private String getConfigurationValue(String configurationName) {
         String configurationValue = Configuration.getGlobalConfiguration().get(configurationName);
         if (CoreUtils.isNullOrEmpty(configurationValue)) {
-            throw new RuntimeException(String.format("Configuration %s must be set in either environment variables "
-                + "or system properties.%n", configurationName));
+            throw new RuntimeException(String.format(
+                "Configuration %s must be set in either environment variables " + "or system properties.%n",
+                configurationName));
         }
 
         return configurationValue;
@@ -127,16 +129,15 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
         tags = tags.stream().map(tag -> String.format("%1$s:%2$s", repositoryName, tag)).collect(Collectors.toList());
 
-        ContainerRegistryManager manager = ContainerRegistryManager.authenticate(tokenCredential, new AzureProfile(AzureEnvironment.AZURE));
+        ContainerRegistryManager manager
+            = ContainerRegistryManager.authenticate(tokenCredential, new AzureProfile(AzureEnvironment.AZURE));
 
-        return manager.serviceClient().getRegistries().importImageAsync(
-            rgName,
-            registryName,
-            new ImportImageParameters()
-                .withMode(ImportMode.FORCE)
-                .withSource(new ImportSource().withSourceImage(repositoryName)
-                    .withRegistryUri(REGISTRY_URI))
-                .withTargetTags(tags));
+        return manager.serviceClient()
+            .getRegistries()
+            .importImageAsync(rgName, registryName,
+                new ImportImageParameters().withMode(ImportMode.FORCE)
+                    .withSource(new ImportSource().withSourceImage(repositoryName).withRegistryUri(REGISTRY_URI))
+                    .withTargetTags(tags));
     }
 
     protected static Flux<ByteBuffer> generateAsyncStream(long size) {
@@ -144,7 +145,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         byte[] chunk = new byte[CHUNK_SIZE];
         return Flux.create(sink -> {
             int read;
-            while((read = input.read(chunk, 0, CHUNK_SIZE)) >= 0) {
+            while ((read = input.read(chunk, 0, CHUNK_SIZE)) >= 0) {
                 ByteBuffer buffer = ByteBuffer.wrap(chunk);
                 buffer.limit(read);
                 sink.next(buffer);

@@ -5,17 +5,21 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Response for the pre-backup request.
  */
 @Fluent
-public final class LtrPreBackupResponseProperties {
+public final class LtrPreBackupResponseProperties implements JsonSerializable<LtrPreBackupResponseProperties> {
     /*
-     * Number of storage containers the plugin will use during backup. More than one containers may be used for size limitations, parallelism, or redundancy etc.
+     * Number of storage containers the plugin will use during backup. More than one containers may be used for size
+     * limitations, parallelism, or redundancy etc.
      */
-    @JsonProperty(value = "numberOfContainers", required = true)
     private int numberOfContainers;
 
     /**
@@ -52,5 +56,43 @@ public final class LtrPreBackupResponseProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("numberOfContainers", this.numberOfContainers);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LtrPreBackupResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LtrPreBackupResponseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LtrPreBackupResponseProperties.
+     */
+    public static LtrPreBackupResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LtrPreBackupResponseProperties deserializedLtrPreBackupResponseProperties
+                = new LtrPreBackupResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("numberOfContainers".equals(fieldName)) {
+                    deserializedLtrPreBackupResponseProperties.numberOfContainers = reader.getInt();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLtrPreBackupResponseProperties;
+        });
     }
 }

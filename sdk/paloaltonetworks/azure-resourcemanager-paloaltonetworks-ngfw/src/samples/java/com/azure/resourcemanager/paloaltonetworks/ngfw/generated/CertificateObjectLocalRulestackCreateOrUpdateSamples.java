@@ -22,8 +22,11 @@ public final class CertificateObjectLocalRulestackCreateOrUpdateSamples {
      */
     public static void certificateObjectLocalRulestackCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.certificateObjectLocalRulestacks().define("armid1").withExistingLocalRulestack("rgopenapi", "lrs1")
-            .withCertificateSelfSigned(BooleanEnum.TRUE).create();
+        manager.certificateObjectLocalRulestacks()
+            .define("armid1")
+            .withExistingLocalRulestack("rgopenapi", "lrs1")
+            .withCertificateSelfSigned(BooleanEnum.TRUE)
+            .create();
     }
 
     /*
@@ -38,8 +41,14 @@ public final class CertificateObjectLocalRulestackCreateOrUpdateSamples {
      */
     public static void certificateObjectLocalRulestackCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.certificateObjectLocalRulestacks().define("armid1").withExistingLocalRulestack("rgopenapi", "lrs1")
-            .withCertificateSelfSigned(BooleanEnum.TRUE).withCertificateSignerResourceId("").withAuditComment("comment")
-            .withDescription("description").withEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c27").create();
+        manager.certificateObjectLocalRulestacks()
+            .define("armid1")
+            .withExistingLocalRulestack("rgopenapi", "lrs1")
+            .withCertificateSelfSigned(BooleanEnum.TRUE)
+            .withCertificateSignerResourceId("")
+            .withAuditComment("comment")
+            .withDescription("description")
+            .withEtag("2bf4a339-294d-4c25-b0b2-ef649e9f5c27")
+            .create();
     }
 }

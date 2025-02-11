@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of the baseboard management controller key set. */
+/**
+ * The provisioning state of the baseboard management controller key set.
+ */
 public final class BmcKeySetProvisioningState extends ExpandableStringEnum<BmcKeySetProvisioningState> {
-    /** Static value Succeeded for BmcKeySetProvisioningState. */
+    /**
+     * Static value Succeeded for BmcKeySetProvisioningState.
+     */
     public static final BmcKeySetProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for BmcKeySetProvisioningState. */
+    /**
+     * Static value Failed for BmcKeySetProvisioningState.
+     */
     public static final BmcKeySetProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for BmcKeySetProvisioningState. */
+    /**
+     * Static value Canceled for BmcKeySetProvisioningState.
+     */
     public static final BmcKeySetProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Accepted for BmcKeySetProvisioningState. */
+    /**
+     * Static value Accepted for BmcKeySetProvisioningState.
+     */
     public static final BmcKeySetProvisioningState ACCEPTED = fromString("Accepted");
 
-    /** Static value Provisioning for BmcKeySetProvisioningState. */
+    /**
+     * Static value Provisioning for BmcKeySetProvisioningState.
+     */
     public static final BmcKeySetProvisioningState PROVISIONING = fromString("Provisioning");
 
     /**
      * Creates a new instance of BmcKeySetProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class BmcKeySetProvisioningState extends ExpandableStringEnum<BmcKe
 
     /**
      * Creates or finds a BmcKeySetProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BmcKeySetProvisioningState.
      */
-    @JsonCreator
     public static BmcKeySetProvisioningState fromString(String name) {
         return fromString(name, BmcKeySetProvisioningState.class);
     }
 
     /**
      * Gets known BmcKeySetProvisioningState values.
-     *
+     * 
      * @return known BmcKeySetProvisioningState values.
      */
     public static Collection<BmcKeySetProvisioningState> values() {

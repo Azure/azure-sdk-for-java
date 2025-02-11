@@ -13,40 +13,42 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.loganalytics.fluent.models.TableInner;
 
-/** An instance of this class provides access to all the operations defined in TablesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TablesClient.
+ */
 public interface TablesClient {
     /**
      * Gets all the tables for the specified Log Analytics workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the tables for the specified Log Analytics workspace as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the tables for the specified Log Analytics workspace as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TableInner> listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
      * Gets all the tables for the specified Log Analytics workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the tables for the specified Log Analytics workspace as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the tables for the specified Log Analytics workspace as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TableInner> listByWorkspace(String resourceGroupName, String workspaceName, Context context);
 
     /**
      * Update or Create a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -57,12 +59,12 @@ public interface TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters);
+    SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters);
 
     /**
      * Update or Create a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -74,12 +76,12 @@ public interface TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context);
+    SyncPoller<PollResult<TableInner>, TableInner> beginCreateOrUpdate(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters, Context context);
 
     /**
      * Update or Create a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -94,7 +96,7 @@ public interface TablesClient {
 
     /**
      * Update or Create a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -106,12 +108,12 @@ public interface TablesClient {
      * @return workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TableInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context);
+    TableInner createOrUpdate(String resourceGroupName, String workspaceName, String tableName, TableInner parameters,
+        Context context);
 
     /**
      * Update a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -122,12 +124,12 @@ public interface TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters);
+    SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters);
 
     /**
      * Update a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -139,12 +141,12 @@ public interface TablesClient {
      * @return the {@link SyncPoller} for polling of workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context);
+    SyncPoller<PollResult<TableInner>, TableInner> beginUpdate(String resourceGroupName, String workspaceName,
+        String tableName, TableInner parameters, Context context);
 
     /**
      * Update a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -159,7 +161,7 @@ public interface TablesClient {
 
     /**
      * Update a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -171,12 +173,12 @@ public interface TablesClient {
      * @return workspace data table definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TableInner update(
-        String resourceGroupName, String workspaceName, String tableName, TableInner parameters, Context context);
+    TableInner update(String resourceGroupName, String workspaceName, String tableName, TableInner parameters,
+        Context context);
 
     /**
      * Gets a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -187,12 +189,12 @@ public interface TablesClient {
      * @return a Log Analytics workspace table along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TableInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    Response<TableInner> getWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Gets a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -206,7 +208,7 @@ public interface TablesClient {
 
     /**
      * Delete a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -220,7 +222,7 @@ public interface TablesClient {
 
     /**
      * Delete a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -231,12 +233,12 @@ public interface TablesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Delete a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -249,7 +251,7 @@ public interface TablesClient {
 
     /**
      * Delete a Log Analytics workspace table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -264,7 +266,7 @@ public interface TablesClient {
     /**
      * Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
      * Data Collection Rule-based Custom Logs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -275,13 +277,13 @@ public interface TablesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> migrateWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    Response<Void> migrateWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Migrate a Log Analytics table from support of the Data Collector API and Custom Fields features to support of
      * Data Collection Rule-based Custom Logs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -294,7 +296,7 @@ public interface TablesClient {
 
     /**
      * Cancel a log analytics workspace search results table query run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.
@@ -305,12 +307,12 @@ public interface TablesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> cancelSearchWithResponse(
-        String resourceGroupName, String workspaceName, String tableName, Context context);
+    Response<Void> cancelSearchWithResponse(String resourceGroupName, String workspaceName, String tableName,
+        Context context);
 
     /**
      * Cancel a log analytics workspace search results table query run.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param tableName The name of the table.

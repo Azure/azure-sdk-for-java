@@ -69,8 +69,8 @@ public final class InputsClientImpl implements InputsClient {
     }
 
     /**
-     * The interface defining all the services for StreamAnalyticsManagementClientInputs to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for StreamAnalyticsManagementClientInputs to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "StreamAnalyticsManag")
@@ -187,11 +187,11 @@ public final class InputsClientImpl implements InputsClient {
         } else {
             input.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, input, accept, context))
+            .withContext(context -> service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, jobName, inputName,
+                input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -240,10 +240,9 @@ public final class InputsClientImpl implements InputsClient {
         } else {
             input.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, apiVersion,
+        return service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, input, accept, context);
     }
 
@@ -361,10 +360,9 @@ public final class InputsClientImpl implements InputsClient {
         } else {
             input.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), ifMatch, apiVersion,
+            .withContext(context -> service.update(this.client.getEndpoint(), ifMatch, this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -415,11 +413,10 @@ public final class InputsClientImpl implements InputsClient {
         } else {
             input.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), ifMatch, apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, jobName, inputName, input, accept, context);
+        return service.update(this.client.getEndpoint(), ifMatch, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, input, accept, context);
     }
 
     /**
@@ -524,10 +521,9 @@ public final class InputsClientImpl implements InputsClient {
         if (inputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter inputName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -565,11 +561,10 @@ public final class InputsClientImpl implements InputsClient {
         if (inputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter inputName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            jobName, inputName, accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, inputName, accept, context);
     }
 
     /**
@@ -652,11 +647,10 @@ public final class InputsClientImpl implements InputsClient {
         if (inputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter inputName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, jobName, inputName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -693,11 +687,10 @@ public final class InputsClientImpl implements InputsClient {
         if (inputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter inputName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            jobName, inputName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, inputName, accept, context);
     }
 
     /**
@@ -783,11 +776,11 @@ public final class InputsClientImpl implements InputsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByStreamingJob(this.client.getEndpoint(), select, apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context))
+            .withContext(
+                context -> service.listByStreamingJob(this.client.getEndpoint(), select, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context))
             .<PagedResponse<InputInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -826,12 +819,11 @@ public final class InputsClientImpl implements InputsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByStreamingJob(this.client.getEndpoint(), select, apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, jobName, accept, context)
+            .listByStreamingJob(this.client.getEndpoint(), select, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, jobName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -971,11 +963,10 @@ public final class InputsClientImpl implements InputsClient {
         if (input != null) {
             input.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.test(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, jobName, inputName, input, accept, context))
+            .withContext(context -> service.test(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, jobName, inputName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1020,11 +1011,10 @@ public final class InputsClientImpl implements InputsClient {
         if (input != null) {
             input.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.test(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            jobName, inputName, input, accept, context);
+        return service.test(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, inputName, input, accept, context);
     }
 
     /**
@@ -1251,9 +1241,7 @@ public final class InputsClientImpl implements InputsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1281,9 +1269,7 @@ public final class InputsClientImpl implements InputsClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

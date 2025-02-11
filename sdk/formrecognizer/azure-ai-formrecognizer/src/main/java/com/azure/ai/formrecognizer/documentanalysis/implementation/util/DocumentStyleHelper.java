@@ -28,10 +28,15 @@ public final class DocumentStyleHelper {
         void setIsHandwritten(DocumentStyle documentStyle, Boolean isHandwritten);
 
         void setConfidence(DocumentStyle documentStyle, Float confidence);
+
         void setColor(DocumentStyle documentStyle, String color);
+
         void setFontWeight(DocumentStyle documentStyle, FontWeight fontWeight);
+
         void setSimilarFontFamily(DocumentStyle documentStyle, String similarFontFamily);
+
         void setBackgroundColor(DocumentStyle documentStyle, String backgroundColor);
+
         void setFontStyle(DocumentStyle documentStyle, FontStyle fontStyle);
     }
 

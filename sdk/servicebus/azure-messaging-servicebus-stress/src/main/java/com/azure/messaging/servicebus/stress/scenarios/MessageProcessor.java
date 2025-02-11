@@ -58,13 +58,13 @@ public class MessageProcessor extends ServiceBusScenario {
     public void run() throws InterruptedException {
         expectedPayload = createMessagePayload(options.getMessageSize()).toBytes();
 
-        ServiceBusProcessorClient processor = toClose(getProcessorBuilder(options)
-            .maxAutoLockRenewDuration(renewLock ? Duration.ofMinutes(5) : Duration.ZERO)
-            .maxConcurrentCalls(maxConcurrentCalls)
-            .prefetchCount(prefetchCount)
-            .processMessage(this::process)
-            .processError(err -> telemetryHelper.recordError(err.getException(), "processError"))
-            .buildProcessorClient());
+        ServiceBusProcessorClient processor = toClose(
+            getProcessorBuilder(options).maxAutoLockRenewDuration(renewLock ? Duration.ofMinutes(5) : Duration.ZERO)
+                .maxConcurrentCalls(maxConcurrentCalls)
+                .prefetchCount(prefetchCount)
+                .processMessage(this::process)
+                .processError(err -> telemetryHelper.recordError(err.getException(), "processError"))
+                .buildProcessorClient());
         processor.start();
 
         blockingWait(options.getTestDuration());
@@ -106,8 +106,8 @@ public class MessageProcessor extends ServiceBusScenario {
     }
 
     private boolean checkMessage(ServiceBusReceivedMessage message) {
-         if (message.getLockedUntil().isBefore(OffsetDateTime.now())) {
-            telemetryHelper.recordError("message lock expired",  "checkMessage");
+        if (message.getLockedUntil().isBefore(OffsetDateTime.now())) {
+            telemetryHelper.recordError("message lock expired", "checkMessage");
         }
 
         byte[] payload = message.getBody().toBytes();

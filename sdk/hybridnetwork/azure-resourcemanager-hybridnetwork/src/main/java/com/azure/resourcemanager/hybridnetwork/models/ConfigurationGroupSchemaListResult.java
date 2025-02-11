@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.ConfigurationGroupSchemaInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A list of configuration group schema resources.
  */
 @Fluent
-public final class ConfigurationGroupSchemaListResult {
+public final class ConfigurationGroupSchemaListResult implements JsonSerializable<ConfigurationGroupSchemaListResult> {
     /*
      * A list of configuration group schema.
      */
-    @JsonProperty(value = "value")
     private List<ConfigurationGroupSchemaInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
@@ -70,5 +72,46 @@ public final class ConfigurationGroupSchemaListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationGroupSchemaListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationGroupSchemaListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationGroupSchemaListResult.
+     */
+    public static ConfigurationGroupSchemaListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationGroupSchemaListResult deserializedConfigurationGroupSchemaListResult
+                = new ConfigurationGroupSchemaListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ConfigurationGroupSchemaInner> value
+                        = reader.readArray(reader1 -> ConfigurationGroupSchemaInner.fromJson(reader1));
+                    deserializedConfigurationGroupSchemaListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedConfigurationGroupSchemaListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationGroupSchemaListResult;
+        });
     }
 }

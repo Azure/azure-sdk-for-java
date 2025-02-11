@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Test;
 public final class AzureDevOpsProjectMetadataTests {
     @Test
     public void testDeserialize() {
-        AzureDevOpsProjectMetadata model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"jgrtfwvukxga\",\"autoDiscovery\":\"Disabled\",\"repos\":[\"nhsjcnyej\",\"kryhtnapczwlokj\",\"emkkvnipjox\",\"jnchgej\"]}")
-                .toObject(AzureDevOpsProjectMetadata.class);
+        AzureDevOpsProjectMetadata model = BinaryData.fromString(
+            "{\"name\":\"jgrtfwvukxga\",\"autoDiscovery\":\"Disabled\",\"repos\":[\"nhsjcnyej\",\"kryhtnapczwlokj\",\"emkkvnipjox\",\"jnchgej\"]}")
+            .toObject(AzureDevOpsProjectMetadata.class);
         Assertions.assertEquals("jgrtfwvukxga", model.name());
         Assertions.assertEquals(AutoDiscovery.DISABLED, model.autoDiscovery());
         Assertions.assertEquals("nhsjcnyej", model.repos().get(0));
@@ -26,11 +24,9 @@ public final class AzureDevOpsProjectMetadataTests {
 
     @Test
     public void testSerialize() {
-        AzureDevOpsProjectMetadata model =
-            new AzureDevOpsProjectMetadata()
-                .withName("jgrtfwvukxga")
-                .withAutoDiscovery(AutoDiscovery.DISABLED)
-                .withRepos(Arrays.asList("nhsjcnyej", "kryhtnapczwlokj", "emkkvnipjox", "jnchgej"));
+        AzureDevOpsProjectMetadata model = new AzureDevOpsProjectMetadata().withName("jgrtfwvukxga")
+            .withAutoDiscovery(AutoDiscovery.DISABLED)
+            .withRepos(Arrays.asList("nhsjcnyej", "kryhtnapczwlokj", "emkkvnipjox", "jnchgej"));
         model = BinaryData.fromObject(model).toObject(AzureDevOpsProjectMetadata.class);
         Assertions.assertEquals("jgrtfwvukxga", model.name());
         Assertions.assertEquals(AutoDiscovery.DISABLED, model.autoDiscovery());

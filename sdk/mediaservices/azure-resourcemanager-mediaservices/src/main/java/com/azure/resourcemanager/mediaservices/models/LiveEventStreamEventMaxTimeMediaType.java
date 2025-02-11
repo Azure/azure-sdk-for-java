@@ -5,21 +5,26 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The media type of the larger timestamp of two fragments compared. */
+/**
+ * The media type of the larger timestamp of two fragments compared.
+ */
 public final class LiveEventStreamEventMaxTimeMediaType
     extends ExpandableStringEnum<LiveEventStreamEventMaxTimeMediaType> {
-    /** Static value Audio for LiveEventStreamEventMaxTimeMediaType. */
+    /**
+     * Static value Audio for LiveEventStreamEventMaxTimeMediaType.
+     */
     public static final LiveEventStreamEventMaxTimeMediaType AUDIO = fromString("Audio");
 
-    /** Static value Video for LiveEventStreamEventMaxTimeMediaType. */
+    /**
+     * Static value Video for LiveEventStreamEventMaxTimeMediaType.
+     */
     public static final LiveEventStreamEventMaxTimeMediaType VIDEO = fromString("Video");
 
     /**
      * Creates a new instance of LiveEventStreamEventMaxTimeMediaType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,18 +33,17 @@ public final class LiveEventStreamEventMaxTimeMediaType
 
     /**
      * Creates or finds a LiveEventStreamEventMaxTimeMediaType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LiveEventStreamEventMaxTimeMediaType.
      */
-    @JsonCreator
     public static LiveEventStreamEventMaxTimeMediaType fromString(String name) {
         return fromString(name, LiveEventStreamEventMaxTimeMediaType.class);
     }
 
     /**
      * Gets known LiveEventStreamEventMaxTimeMediaType values.
-     *
+     * 
      * @return known LiveEventStreamEventMaxTimeMediaType values.
      */
     public static Collection<LiveEventStreamEventMaxTimeMediaType> values() {

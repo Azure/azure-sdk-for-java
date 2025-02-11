@@ -29,20 +29,25 @@ public final class VirtualNetworksCreateOrUpdateSamples {
      */
     public static void
         putVirtualNetwork(com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.virtualNetworks().define("test-vnet-static").withRegion("westus")
+        manager.virtualNetworks()
+            .define("test-vnet-static")
+            .withRegion("westus")
             .withExistingResourceGroup("test-arcappliance-resgrp")
             .withProperties(new VirtualNetworkProperties()
                 .withInfraVnetProfile(new VirtualNetworkPropertiesInfraVnetProfile()
                     .withHci(new VirtualNetworkPropertiesInfraVnetProfileHci().withMocGroup("target-group")
-                        .withMocLocation("MocLocation").withMocVnetName("vnet1")))
+                        .withMocLocation("MocLocation")
+                        .withMocVnetName("vnet1")))
                 .withVipPool(Arrays.asList(
                     new VirtualNetworkPropertiesVipPoolItem().withEndIp("192.168.0.50").withStartIp("192.168.0.10")))
                 .withVmipPool(Arrays.asList(
                     new VirtualNetworkPropertiesVmipPoolItem().withEndIp("192.168.0.130").withStartIp("192.168.0.110")))
-                .withDnsServers(Arrays.asList("192.168.0.1")).withGateway("192.168.0.1")
-                .withIpAddressPrefix("192.168.0.0/16").withVlanId(10))
-            .withExtendedLocation(
-                new VirtualNetworkExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName(
+                .withDnsServers(Arrays.asList("192.168.0.1"))
+                .withGateway("192.168.0.1")
+                .withIpAddressPrefix("192.168.0.0/16")
+                .withVlanId(10))
+            .withExtendedLocation(new VirtualNetworkExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION)
+                .withName(
                     "/subscriptions/a3e42606-29b1-4d7d-b1d9-9ff6b9d3c71b/resourcegroups/test-arcappliance-resgrp/providers/microsoft.extendedlocation/customlocations/testcustomlocation"))
             .create();
     }

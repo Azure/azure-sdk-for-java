@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Level of the message. */
+/**
+ * Level of the message.
+ */
 public final class MessageLevelType extends ExpandableStringEnum<MessageLevelType> {
-    /** Static value Error for MessageLevelType. */
+    /**
+     * Static value Error for MessageLevelType.
+     */
     public static final MessageLevelType ERROR = fromString("Error");
 
-    /** Static value Warning for MessageLevelType. */
+    /**
+     * Static value Warning for MessageLevelType.
+     */
     public static final MessageLevelType WARNING = fromString("Warning");
 
-    /** Static value Information for MessageLevelType. */
+    /**
+     * Static value Information for MessageLevelType.
+     */
     public static final MessageLevelType INFORMATION = fromString("Information");
 
     /**
      * Creates a new instance of MessageLevelType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class MessageLevelType extends ExpandableStringEnum<MessageLevelTyp
 
     /**
      * Creates or finds a MessageLevelType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MessageLevelType.
      */
-    @JsonCreator
     public static MessageLevelType fromString(String name) {
         return fromString(name, MessageLevelType.class);
     }
 
     /**
      * Gets known MessageLevelType values.
-     *
+     * 
      * @return known MessageLevelType values.
      */
     public static Collection<MessageLevelType> values() {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -58,7 +57,6 @@ public final class ServicePlacementPolicyType extends ExpandableStringEnum<Servi
      * @param name a name to look for.
      * @return the corresponding ServicePlacementPolicyType.
      */
-    @JsonCreator
     public static ServicePlacementPolicyType fromString(String name) {
         return fromString(name, ServicePlacementPolicyType.class);
     }

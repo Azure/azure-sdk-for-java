@@ -5,46 +5,54 @@
 package com.azure.resourcemanager.relay.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.relay.models.ProvisioningStateEnum;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of the namespace. */
+/**
+ * Properties of the namespace.
+ */
 @Immutable
-public final class RelayNamespaceProperties {
+public final class RelayNamespaceProperties implements JsonSerializable<RelayNamespaceProperties> {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningStateEnum provisioningState;
 
     /*
      * The time the namespace was created.
      */
-    @JsonProperty(value = "createdAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
      * The time the namespace was updated.
      */
-    @JsonProperty(value = "updatedAt", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedAt;
 
     /*
      * Endpoint you can use to perform Service Bus operations.
      */
-    @JsonProperty(value = "serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceBusEndpoint;
 
     /*
      * Identifier for Azure Insights metrics.
      */
-    @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricId;
 
     /**
+     * Creates an instance of RelayNamespaceProperties class.
+     */
+    public RelayNamespaceProperties() {
+    }
+
+    /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStateEnum provisioningState() {
@@ -53,7 +61,7 @@ public final class RelayNamespaceProperties {
 
     /**
      * Get the createdAt property: The time the namespace was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -62,7 +70,7 @@ public final class RelayNamespaceProperties {
 
     /**
      * Get the updatedAt property: The time the namespace was updated.
-     *
+     * 
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
@@ -71,7 +79,7 @@ public final class RelayNamespaceProperties {
 
     /**
      * Get the serviceBusEndpoint property: Endpoint you can use to perform Service Bus operations.
-     *
+     * 
      * @return the serviceBusEndpoint value.
      */
     public String serviceBusEndpoint() {
@@ -80,7 +88,7 @@ public final class RelayNamespaceProperties {
 
     /**
      * Get the metricId property: Identifier for Azure Insights metrics.
-     *
+     * 
      * @return the metricId value.
      */
     public String metricId() {
@@ -89,9 +97,55 @@ public final class RelayNamespaceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelayNamespaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelayNamespaceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RelayNamespaceProperties.
+     */
+    public static RelayNamespaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelayNamespaceProperties deserializedRelayNamespaceProperties = new RelayNamespaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedRelayNamespaceProperties.provisioningState
+                        = ProvisioningStateEnum.fromString(reader.getString());
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedRelayNamespaceProperties.createdAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedAt".equals(fieldName)) {
+                    deserializedRelayNamespaceProperties.updatedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("serviceBusEndpoint".equals(fieldName)) {
+                    deserializedRelayNamespaceProperties.serviceBusEndpoint = reader.getString();
+                } else if ("metricId".equals(fieldName)) {
+                    deserializedRelayNamespaceProperties.metricId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelayNamespaceProperties;
+        });
     }
 }

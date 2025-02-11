@@ -15,19 +15,21 @@ public final class ProfileUpdateModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProfileUpdateModel model = BinaryData.fromString(
-            "{\"properties\":{\"enabledState\":\"Enabled\"},\"tags\":{\"rafwgckhocxvdf\":\"m\",\"pavehhr\":\"fwafqrouda\"}}")
+            "{\"properties\":{\"enabledState\":\"Enabled\"},\"tags\":{\"pqfrtqlkz\":\"dnqqskawaoqvmmb\",\"kxlzyqdrfeg\":\"egnitg\",\"lwigdivbkbx\":\"ealzxwhcansymoyq\",\"wasqvdaeyyg\":\"omfaj\"}}")
             .toObject(ProfileUpdateModel.class);
-        Assertions.assertEquals("m", model.tags().get("rafwgckhocxvdf"));
+        Assertions.assertEquals("dnqqskawaoqvmmb", model.tags().get("pqfrtqlkz"));
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProfileUpdateModel model
-            = new ProfileUpdateModel().withTags(mapOf("rafwgckhocxvdf", "m", "pavehhr", "fwafqrouda"))
+            = new ProfileUpdateModel()
+                .withTags(mapOf("pqfrtqlkz", "dnqqskawaoqvmmb", "kxlzyqdrfeg", "egnitg", "lwigdivbkbx",
+                    "ealzxwhcansymoyq", "wasqvdaeyyg", "omfaj"))
                 .withEnabledState(State.ENABLED);
         model = BinaryData.fromObject(model).toObject(ProfileUpdateModel.class);
-        Assertions.assertEquals("m", model.tags().get("rafwgckhocxvdf"));
+        Assertions.assertEquals("dnqqskawaoqvmmb", model.tags().get("pqfrtqlkz"));
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }
 

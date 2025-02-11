@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.resourceconnector.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The Upgrade Graph Properties for appliance. */
+/**
+ * The Upgrade Graph Properties for appliance.
+ */
 @Immutable
-public final class UpgradeGraphProperties {
+public final class UpgradeGraphProperties implements JsonSerializable<UpgradeGraphProperties> {
     /*
      * The current appliance version
      */
-    @JsonProperty(value = "applianceVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String applianceVersion;
 
     /*
      * This contains the current version and supported upgrade versions.
      */
-    @JsonProperty(value = "supportedVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<SupportedVersion> supportedVersions;
 
-    /** Creates an instance of UpgradeGraphProperties class. */
+    /**
+     * Creates an instance of UpgradeGraphProperties class.
+     */
     public UpgradeGraphProperties() {
     }
 
     /**
      * Get the applianceVersion property: The current appliance version.
-     *
+     * 
      * @return the applianceVersion value.
      */
     public String applianceVersion() {
@@ -38,7 +44,7 @@ public final class UpgradeGraphProperties {
 
     /**
      * Get the supportedVersions property: This contains the current version and supported upgrade versions.
-     *
+     * 
      * @return the supportedVersions value.
      */
     public List<SupportedVersion> supportedVersions() {
@@ -47,12 +53,51 @@ public final class UpgradeGraphProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (supportedVersions() != null) {
             supportedVersions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpgradeGraphProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpgradeGraphProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpgradeGraphProperties.
+     */
+    public static UpgradeGraphProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpgradeGraphProperties deserializedUpgradeGraphProperties = new UpgradeGraphProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applianceVersion".equals(fieldName)) {
+                    deserializedUpgradeGraphProperties.applianceVersion = reader.getString();
+                } else if ("supportedVersions".equals(fieldName)) {
+                    List<SupportedVersion> supportedVersions
+                        = reader.readArray(reader1 -> SupportedVersion.fromJson(reader1));
+                    deserializedUpgradeGraphProperties.supportedVersions = supportedVersions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpgradeGraphProperties;
+        });
     }
 }

@@ -51,7 +51,8 @@ public final class FirewallsUpdateSamples {
     public static void firewallsUpdateMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         FirewallResource resource = manager.firewalls()
-            .getByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 
@@ -68,8 +69,10 @@ public final class FirewallsUpdateSamples {
     public static void firewallsUpdateMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
         FirewallResource resource = manager.firewalls()
-            .getByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("tagName", "value"))
+            .getByResourceGroupWithResponse("firewall-rg", "firewall1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("tagName", "value"))
             .withIdentity(new AzureResourceManagerManagedIdentityProperties().withType(ManagedIdentityType.NONE)
                 .withUserAssignedIdentities(mapOf("key16",
                     new AzureResourceManagerUserAssignedIdentity().withClientId("aaaa")
@@ -114,7 +117,8 @@ public final class FirewallsUpdateSamples {
                 .withIsPanoramaManaged(BooleanEnum.TRUE)
                 .withPanoramaConfig(new PanoramaConfig().withConfigString("bas64EncodedString"))
                 .withAssociatedRulestack(new RulestackDetails().withResourceId("aaaaaaaaaa")
-                    .withRulestackId("aaaaaaaaaaaaaaaa").withLocation("eastus"))
+                    .withRulestackId("aaaaaaaaaaaaaaaa")
+                    .withLocation("eastus"))
                 .withDnsSettings(new DnsSettings().withEnableDnsProxy(DnsProxy.DISABLED)
                     .withEnabledDnsType(EnabledDnsType.CUSTOM)
                     .withDnsServers(Arrays.asList(new IpAddress().withResourceId(
@@ -130,11 +134,12 @@ public final class FirewallsUpdateSamples {
                         .withAddress(new IpAddress().withResourceId(
                             "/subscriptions/01c7d41f-afaf-464e-8a8b-5c6f9f98cee8/resourceGroups/mj-liftr-integration/providers/Microsoft.Network/publicIPAddresses/mj-liftr-integration-frontendSettingIp2")
                             .withAddress("20.22.32.136")))))
-                .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.WEEKLY)
+                .withPlanData(new PlanData().withUsageType(UsageType.PAYG)
+                    .withBillingCycle(BillingCycle.WEEKLY)
                     .withPlanId("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"))
-                .withMarketplaceDetails(
-                    new MarketplaceDetails().withOfferId("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa").withPublisherId("aaaa")
-                        .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)))
+                .withMarketplaceDetails(new MarketplaceDetails().withOfferId("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+                    .withPublisherId("aaaa")
+                    .withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus.PENDING_FULFILLMENT_START)))
             .apply();
     }
 

@@ -5,38 +5,28 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * By default, Event Grid expects events to be in the Event Grid event schema. Specifying an input schema mapping
  * enables publishing to Event Grid using a custom input schema. Currently, the only supported type of
  * InputSchemaMapping is 'JsonInputSchemaMapping'.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "inputSchemaMappingType",
-    defaultImpl = InputSchemaMapping.class,
-    visible = true)
-@JsonTypeName("InputSchemaMapping")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "Json", value = JsonInputSchemaMapping.class) })
 @Immutable
-public class InputSchemaMapping {
+public class InputSchemaMapping implements JsonSerializable<InputSchemaMapping> {
     /*
      * Type of the custom mapping
      */
-    @JsonTypeId
-    @JsonProperty(value = "inputSchemaMappingType", required = true)
-    private InputSchemaMappingType inputSchemaMappingType;
+    private InputSchemaMappingType inputSchemaMappingType = InputSchemaMappingType.fromString("InputSchemaMapping");
 
     /**
      * Creates an instance of InputSchemaMapping class.
      */
     public InputSchemaMapping() {
-        this.inputSchemaMappingType = InputSchemaMappingType.fromString("InputSchemaMapping");
     }
 
     /**
@@ -54,5 +44,68 @@ public class InputSchemaMapping {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("inputSchemaMappingType",
+            this.inputSchemaMappingType == null ? null : this.inputSchemaMappingType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InputSchemaMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InputSchemaMapping if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InputSchemaMapping.
+     */
+    public static InputSchemaMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("inputSchemaMappingType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Json".equals(discriminatorValue)) {
+                    return JsonInputSchemaMapping.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static InputSchemaMapping fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InputSchemaMapping deserializedInputSchemaMapping = new InputSchemaMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inputSchemaMappingType".equals(fieldName)) {
+                    deserializedInputSchemaMapping.inputSchemaMappingType
+                        = InputSchemaMappingType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInputSchemaMapping;
+        });
     }
 }

@@ -38,12 +38,21 @@ public final class SkuDescriptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuDescription model = new SkuDescription().withId("mcbxvwvxysl").withName("hsfxoblytkb").withVersion("pe")
-            .withDescription("wfbkrvrns").withRestrictedAccessUri("hqjohxcrsbfova").withAutoAdd(false)
+        SkuDescription model = new SkuDescription().withId("mcbxvwvxysl")
+            .withName("hsfxoblytkb")
+            .withVersion("pe")
+            .withDescription("wfbkrvrns")
+            .withRestrictedAccessUri("hqjohxcrsbfova")
+            .withAutoAdd(false)
             .withTargets(Arrays.asList("wbhsqfsub"))
-            .withQuotaDimensions(Arrays.asList(new QuotaDimension().withId("irx").withScope("ybsrfbjfdtwss")
-                .withPeriod("ftpvjzbexil").withQuota(45.3637F).withName("qqnvwpmq").withDescription("ruoujmk")
-                .withUnit("hwqytj").withUnitPlural("bnw")))
+            .withQuotaDimensions(Arrays.asList(new QuotaDimension().withId("irx")
+                .withScope("ybsrfbjfdtwss")
+                .withPeriod("ftpvjzbexil")
+                .withQuota(45.3637F)
+                .withName("qqnvwpmq")
+                .withDescription("ruoujmk")
+                .withUnit("hwqytj")
+                .withUnitPlural("bnw")))
             .withPricingDetails(Arrays.asList(new PricingDetail().withId("drjervnaenqpehin").withValue("ygmi"),
                 new PricingDetail().withId("hnzdndslgnayqi").withValue("nduhavhqlkthum"),
                 new PricingDetail().withId("olbgycduiertgccy").withValue("aolps"),

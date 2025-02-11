@@ -6,7 +6,6 @@ package com.azure.ai.inference.usage;
 
 import com.azure.ai.inference.ChatCompletionsClient;
 import com.azure.ai.inference.ChatCompletionsClientBuilder;
-import com.azure.ai.inference.models.ChatChoice;
 import com.azure.ai.inference.models.ChatCompletions;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
@@ -27,8 +26,6 @@ public final class BasicChatSample {
 
         ChatCompletions completions = client.complete(prompt);
 
-        for (ChatChoice choice : completions.getChoices()) {
-            System.out.printf("%s.%n", choice.getMessage().getContent());
-        }
+        System.out.printf("%s.%n", completions.getChoice().getMessage().getContent());
     }
 }

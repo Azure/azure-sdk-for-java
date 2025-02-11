@@ -19,6 +19,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -86,6 +87,29 @@ public abstract class JsonArrayContractTests {
     }
 
     @Test
+    public void arrayOfBasicTypesFromJsonWithConvenienceMethods() throws IOException {
+        String json = "[\"string\",null,10,10.0,true]";
+        try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
+            JsonArray jsonArray = JsonArray.fromJson(reader);
+
+            JsonElement stringElement = jsonArray.getElement(0);
+            assertEquals("\"string\"", stringElement.asString().toJsonString());
+
+            JsonElement nullElement = jsonArray.getElement(1);
+            assertDoesNotThrow(nullElement::asNull);
+
+            JsonElement intElement = jsonArray.getElement(2);
+            assertEquals("10", intElement.asNumber().toJsonString());
+
+            JsonElement doubleElement = jsonArray.getElement(3);
+            assertEquals("10.0", doubleElement.asNumber().toJsonString());
+
+            JsonElement booleanElement = jsonArray.getElement(4);
+            assertEquals("true", booleanElement.asBoolean().toJsonString());
+        }
+    }
+
+    @Test
     public void emptyArrayToJson() throws IOException {
         JsonArray jsonArray = new JsonArray();
         assertEquals(0, jsonArray.size());
@@ -106,6 +130,25 @@ public abstract class JsonArrayContractTests {
             .addElement(new JsonNumber(10))
             .addElement(new JsonNumber(10.0D))
             .addElement(JsonBoolean.getInstance(true));
+
+        assertEquals(5, jsonArray.size());
+
+        try (StringBuilderWriter writer = new StringBuilderWriter();
+            JsonWriter jsonWriter = getJsonProvider().createWriter(writer, new JsonOptions())) {
+            jsonArray.toJson(jsonWriter);
+            jsonWriter.flush();
+
+            assertEquals("[\"string\",null,10,10.0,true]", writer.toString());
+        }
+    }
+
+    @Test
+    public void arrayOfBasicTypesToJsonWithConvenienceMethods() throws IOException {
+        JsonArray jsonArray = new JsonArray().addElement("string")
+            .addElement((String) null)
+            .addElement(10)
+            .addElement(10.0D)
+            .addElement(true);
 
         assertEquals(5, jsonArray.size());
 

@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TriggersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TriggersClient.
+ */
 public final class TriggersClientImpl implements TriggersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TriggersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxEdgeManagementClientImpl client;
 
     /**
      * Initializes an instance of TriggersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TriggersClientImpl(DataBoxEdgeManagementClientImpl client) {
@@ -63,85 +69,57 @@ public final class TriggersClientImpl implements TriggersClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxEdgeManagemen")
     public interface TriggersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/triggers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TriggerList>> listByDataBoxEdgeDevice(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<TriggerList>> listByDataBoxEdgeDevice(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/triggers/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<TriggerInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
+        Mono<Response<TriggerInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/triggers/{name}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") TriggerInner trigger,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TriggerInner trigger, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/triggers/{name}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/triggers/{name}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TriggerList>> listByDataBoxEdgeDeviceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param filter Specify $filter='CustomContextTag eq &lt;tag&gt;' to filter on custom context tag property.
@@ -149,59 +127,37 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all trigger on the data box edge device along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TriggerInner>> listByDataBoxEdgeDeviceSinglePageAsync(
-        String deviceName, String resourceGroupName, String filter) {
+    private Mono<PagedResponse<TriggerInner>> listByDataBoxEdgeDeviceSinglePageAsync(String deviceName,
+        String resourceGroupName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDataBoxEdgeDevice(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<TriggerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listByDataBoxEdgeDevice(this.client.getEndpoint(), deviceName,
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<TriggerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param filter Specify $filter='CustomContextTag eq &lt;tag&gt;' to filter on custom context tag property.
@@ -210,25 +166,21 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all trigger on the data box edge device along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TriggerInner>> listByDataBoxEdgeDeviceSinglePageAsync(
-        String deviceName, String resourceGroupName, String filter, Context context) {
+    private Mono<PagedResponse<TriggerInner>> listByDataBoxEdgeDeviceSinglePageAsync(String deviceName,
+        String resourceGroupName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -237,29 +189,15 @@ public final class TriggersClientImpl implements TriggersClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDataBoxEdgeDevice(
-                this.client.getEndpoint(),
-                deviceName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDataBoxEdgeDevice(this.client.getEndpoint(), deviceName, this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param filter Specify $filter='CustomContextTag eq &lt;tag&gt;' to filter on custom context tag property.
@@ -269,16 +207,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return collection of all trigger on the data box edge device as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TriggerInner> listByDataBoxEdgeDeviceAsync(
-        String deviceName, String resourceGroupName, String filter) {
-        return new PagedFlux<>(
-            () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, filter),
+    private PagedFlux<TriggerInner> listByDataBoxEdgeDeviceAsync(String deviceName, String resourceGroupName,
+        String filter) {
+        return new PagedFlux<>(() -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, filter),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,14 +226,13 @@ public final class TriggersClientImpl implements TriggersClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TriggerInner> listByDataBoxEdgeDeviceAsync(String deviceName, String resourceGroupName) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, filter),
+        return new PagedFlux<>(() -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, filter),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param filter Specify $filter='CustomContextTag eq &lt;tag&gt;' to filter on custom context tag property.
@@ -307,8 +243,8 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return collection of all trigger on the data box edge device as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<TriggerInner> listByDataBoxEdgeDeviceAsync(
-        String deviceName, String resourceGroupName, String filter, Context context) {
+    private PagedFlux<TriggerInner> listByDataBoxEdgeDeviceAsync(String deviceName, String resourceGroupName,
+        String filter, Context context) {
         return new PagedFlux<>(
             () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, filter, context),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink, context));
@@ -316,7 +252,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -332,7 +268,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param filter Specify $filter='CustomContextTag eq &lt;tag&gt;' to filter on custom context tag property.
@@ -343,14 +279,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return collection of all trigger on the data box edge device as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<TriggerInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, String filter, Context context) {
+    public PagedIterable<TriggerInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName,
+        String filter, Context context) {
         return new PagedIterable<>(listByDataBoxEdgeDeviceAsync(deviceName, resourceGroupName, filter, context));
     }
 
     /**
      * Get a specific trigger by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -360,13 +296,11 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return a specific trigger by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TriggerInner>> getWithResponseAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private Mono<Response<TriggerInner>> getWithResponseAsync(String deviceName, String name,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -375,10 +309,8 @@ public final class TriggersClientImpl implements TriggersClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -386,24 +318,14 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a specific trigger by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -414,13 +336,11 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return a specific trigger by name along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<TriggerInner>> getWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private Mono<Response<TriggerInner>> getWithResponseAsync(String deviceName, String name, String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -429,10 +349,8 @@ public final class TriggersClientImpl implements TriggersClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -440,21 +358,13 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a specific trigger by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -471,7 +381,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Get a specific trigger by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -482,14 +392,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return a specific trigger by name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TriggerInner> getWithResponse(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    public Response<TriggerInner> getWithResponse(String deviceName, String name, String resourceGroupName,
+        Context context) {
         return getWithResponseAsync(deviceName, name, resourceGroupName, context).block();
     }
 
     /**
      * Get a specific trigger by name.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -505,7 +415,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -516,13 +426,11 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return trigger details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, TriggerInner trigger) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -531,10 +439,8 @@ public final class TriggersClientImpl implements TriggersClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -546,26 +452,14 @@ public final class TriggersClientImpl implements TriggersClient {
             trigger.validate();
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            trigger,
-                            accept,
-                            context))
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), deviceName, name,
+            this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), trigger, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -577,13 +471,11 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return trigger details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, TriggerInner trigger, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -592,10 +484,8 @@ public final class TriggersClientImpl implements TriggersClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -608,22 +498,13 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                trigger,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), trigger, accept, context);
     }
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -634,19 +515,17 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link PollerFlux} for polling of trigger details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdateAsync(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, trigger);
-        return this
-            .client
-            .<TriggerInner, TriggerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TriggerInner.class, TriggerInner.class, this.client.getContext());
+    private PollerFlux<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdateAsync(String deviceName, String name,
+        String resourceGroupName, TriggerInner trigger) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, trigger);
+        return this.client.<TriggerInner, TriggerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TriggerInner.class, TriggerInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -658,20 +537,18 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link PollerFlux} for polling of trigger details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdateAsync(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger, Context context) {
+    private PollerFlux<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdateAsync(String deviceName, String name,
+        String resourceGroupName, TriggerInner trigger, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, trigger, context);
-        return this
-            .client
-            .<TriggerInner, TriggerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), TriggerInner.class, TriggerInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, trigger, context);
+        return this.client.<TriggerInner, TriggerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            TriggerInner.class, TriggerInner.class, context);
     }
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -682,14 +559,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link SyncPoller} for polling of trigger details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger) {
+    public SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(String deviceName, String name,
+        String resourceGroupName, TriggerInner trigger) {
         return this.beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, trigger).getSyncPoller();
     }
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -701,14 +578,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link SyncPoller} for polling of trigger details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger, Context context) {
+    public SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(String deviceName, String name,
+        String resourceGroupName, TriggerInner trigger, Context context) {
         return this.beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, trigger, context).getSyncPoller();
     }
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -719,16 +596,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return trigger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TriggerInner> createOrUpdateAsync(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, trigger)
-            .last()
+    private Mono<TriggerInner> createOrUpdateAsync(String deviceName, String name, String resourceGroupName,
+        TriggerInner trigger) {
+        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, trigger).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -740,16 +616,15 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return trigger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TriggerInner> createOrUpdateAsync(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger, Context context) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, trigger, context)
-            .last()
+    private Mono<TriggerInner> createOrUpdateAsync(String deviceName, String name, String resourceGroupName,
+        TriggerInner trigger, Context context) {
+        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, trigger, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -766,7 +641,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -778,14 +653,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return trigger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerInner createOrUpdate(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger, Context context) {
+    public TriggerInner createOrUpdate(String deviceName, String name, String resourceGroupName, TriggerInner trigger,
+        Context context) {
         return createOrUpdateAsync(deviceName, name, resourceGroupName, trigger, context).block();
     }
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -795,13 +670,11 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String deviceName, String name,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -810,10 +683,8 @@ public final class TriggersClientImpl implements TriggersClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -821,24 +692,14 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -849,13 +710,11 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -864,10 +723,8 @@ public final class TriggersClientImpl implements TriggersClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -875,21 +732,13 @@ public final class TriggersClientImpl implements TriggersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -899,18 +748,16 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String deviceName, String name,
+        String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, name, resourceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -921,18 +768,17 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, name, resourceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -948,7 +794,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -959,14 +805,14 @@ public final class TriggersClientImpl implements TriggersClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName,
+        Context context) {
         return this.beginDeleteAsync(deviceName, name, resourceGroupName, context).getSyncPoller();
     }
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -977,14 +823,13 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName)
-            .last()
+        return beginDeleteAsync(deviceName, name, resourceGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -996,14 +841,13 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName, Context context) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName, context)
-            .last()
+        return beginDeleteAsync(deviceName, name, resourceGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -1018,7 +862,7 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -1034,14 +878,13 @@ public final class TriggersClientImpl implements TriggersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all trigger on the data box edge device along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TriggerInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(String nextLink) {
@@ -1049,63 +892,43 @@ public final class TriggersClientImpl implements TriggersClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<TriggerInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<TriggerInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of all trigger on the data box edge device along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<TriggerInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<TriggerInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

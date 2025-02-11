@@ -29,31 +29,31 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
     }
 
     @Override
-    public VirtualMachineImage getImage(
-        Region region, String publisherName, String offerName, String skuName, String version) {
+    public VirtualMachineImage getImage(Region region, String publisherName, String offerName, String skuName,
+        String version) {
         if ("latest".equalsIgnoreCase(version)) {
-            List<VirtualMachineImageResourceInner> innerImages =
-                this.client.listWithResponse(region.name(), publisherName, offerName, skuName,
-                    null, 1, "name desc", Context.NONE).getValue();
+            List<VirtualMachineImageResourceInner> innerImages = this.client
+                .listWithResponse(region.name(), publisherName, offerName, skuName, null, 1, "name desc", Context.NONE)
+                .getValue();
             if (innerImages != null && !innerImages.isEmpty()) {
                 VirtualMachineImageResourceInner innerImageResource = innerImages.get(0);
                 version = innerImageResource.name();
             }
         }
-        VirtualMachineImageInner innerImage =
-            this.client.get(region.name(), publisherName, offerName, skuName, version);
+        VirtualMachineImageInner innerImage
+            = this.client.get(region.name(), publisherName, offerName, skuName, version);
         return (innerImage != null)
             ? new VirtualMachineImageImpl(region, publisherName, offerName, skuName, version, innerImage)
             : null;
     }
 
     @Override
-    public VirtualMachineImage getImage(
-        String region, String publisherName, String offerName, String skuName, String version) {
+    public VirtualMachineImage getImage(String region, String publisherName, String offerName, String skuName,
+        String version) {
         if ("latest".equalsIgnoreCase(version)) {
-            List<VirtualMachineImageResourceInner> innerImages =
-                this.client.listWithResponse(region, publisherName, offerName, skuName,
-                    null, 1, "name desc", Context.NONE).getValue();
+            List<VirtualMachineImageResourceInner> innerImages = this.client
+                .listWithResponse(region, publisherName, offerName, skuName, null, 1, "name desc", Context.NONE)
+                .getValue();
             if (innerImages != null && !innerImages.isEmpty()) {
                 VirtualMachineImageResourceInner innerImageResource = innerImages.get(0);
                 version = innerImageResource.name();
@@ -61,8 +61,8 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
         }
         VirtualMachineImageInner innerImage = this.client.get(region, publisherName, offerName, skuName, version);
         return (innerImage != null)
-            ? new VirtualMachineImageImpl(
-                Region.fromName(region), publisherName, offerName, skuName, version, innerImage)
+            ? new VirtualMachineImageImpl(Region.fromName(region), publisherName, offerName, skuName, version,
+                innerImage)
             : null;
     }
 
@@ -83,18 +83,13 @@ public class VirtualMachineImagesImpl implements VirtualMachineImages {
 
     @Override
     public PagedFlux<VirtualMachineImage> listByRegionAsync(String regionName) {
-        return PagedConverter
-            .flatMapPage(
-                publishers().listByRegionAsync(regionName),
-                virtualMachinePublisher ->
-                    virtualMachinePublisher
-                        .offers()
-                        .listAsync()
-                        .onErrorResume(
-                            ManagementException.class,
-                            e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
-                        .flatMap(virtualMachineOffer -> virtualMachineOffer.skus().listAsync())
-                        .flatMap(virtualMachineSku -> virtualMachineSku.images().listAsync()));
+        return PagedConverter.flatMapPage(publishers().listByRegionAsync(regionName),
+            virtualMachinePublisher -> virtualMachinePublisher.offers()
+                .listAsync()
+                .onErrorResume(ManagementException.class,
+                    e -> e.getResponse().getStatusCode() == 404 ? Flux.empty() : Flux.error(e))
+                .flatMap(virtualMachineOffer -> virtualMachineOffer.skus().listAsync())
+                .flatMap(virtualMachineSku -> virtualMachineSku.images().listAsync()));
     }
 
     @Override

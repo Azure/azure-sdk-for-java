@@ -8,26 +8,28 @@ import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDevice;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Devices Update. */
+/**
+ * Samples for Devices Update.
+ */
 public final class DevicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/DataBoxEdgeDevicePatch.json
+     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/
+     * DataBoxEdgeDevicePatch.json
      */
     /**
      * Sample code: DataBoxEdgeDevicePatch.
-     *
+     * 
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void dataBoxEdgeDevicePatch(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {
-        DataBoxEdgeDevice resource =
-            manager
-                .devices()
-                .getByResourceGroupWithResponse(
-                    "GroupForEdgeAutomation", "testedgedevice", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("Key1", "value1", "Key2", "value2")).apply();
+        DataBoxEdgeDevice resource = manager.devices()
+            .getByResourceGroupWithResponse("GroupForEdgeAutomation", "testedgedevice",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("Key1", "fakeTokenPlaceholder", "Key2", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

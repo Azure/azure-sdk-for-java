@@ -37,6 +37,9 @@ public final class MetricDataList implements JsonSerializable<MetricDataList> {
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

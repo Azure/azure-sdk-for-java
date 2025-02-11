@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProductEntityBaseParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductEntityBaseParameters model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"njrohmbpy\",\"terms\":\"xameblydyvkfkm\",\"subscriptionRequired\":false,\"approvalRequired\":false,\"subscriptionsLimit\":1263578872,\"state\":\"notPublished\"}")
-                .toObject(ProductEntityBaseParameters.class);
+        ProductEntityBaseParameters model = BinaryData.fromString(
+            "{\"description\":\"njrohmbpy\",\"terms\":\"xameblydyvkfkm\",\"subscriptionRequired\":false,\"approvalRequired\":false,\"subscriptionsLimit\":1263578872,\"state\":\"notPublished\"}")
+            .toObject(ProductEntityBaseParameters.class);
         Assertions.assertEquals("njrohmbpy", model.description());
         Assertions.assertEquals("xameblydyvkfkm", model.terms());
         Assertions.assertEquals(false, model.subscriptionRequired());
@@ -27,14 +25,12 @@ public final class ProductEntityBaseParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductEntityBaseParameters model =
-            new ProductEntityBaseParameters()
-                .withDescription("njrohmbpy")
-                .withTerms("xameblydyvkfkm")
-                .withSubscriptionRequired(false)
-                .withApprovalRequired(false)
-                .withSubscriptionsLimit(1263578872)
-                .withState(ProductState.NOT_PUBLISHED);
+        ProductEntityBaseParameters model = new ProductEntityBaseParameters().withDescription("njrohmbpy")
+            .withTerms("xameblydyvkfkm")
+            .withSubscriptionRequired(false)
+            .withApprovalRequired(false)
+            .withSubscriptionsLimit(1263578872)
+            .withState(ProductState.NOT_PUBLISHED);
         model = BinaryData.fromObject(model).toObject(ProductEntityBaseParameters.class);
         Assertions.assertEquals("njrohmbpy", model.description());
         Assertions.assertEquals("xameblydyvkfkm", model.terms());

@@ -6,12 +6,14 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.NameAvailabilityInformationInner;
 
-/** An immutable client-side representation of NameAvailabilityInformation. */
+/**
+ * An immutable client-side representation of NameAvailabilityInformation.
+ */
 public interface NameAvailabilityInformation {
     /**
      * Gets the nameAvailable property: The Boolean value of true or false to indicate whether the Data Lake Analytics
      * account name is available or not.
-     *
+     * 
      * @return the nameAvailable value.
      */
     Boolean nameAvailable();
@@ -19,7 +21,7 @@ public interface NameAvailabilityInformation {
     /**
      * Gets the reason property: The reason why the Data Lake Analytics account name is not available, if nameAvailable
      * is false.
-     *
+     * 
      * @return the reason value.
      */
     String reason();
@@ -27,14 +29,14 @@ public interface NameAvailabilityInformation {
     /**
      * Gets the message property: The message describing why the Data Lake Analytics account name is not available, if
      * nameAvailable is false.
-     *
+     * 
      * @return the message value.
      */
     String message();
 
     /**
      * Gets the inner com.azure.resourcemanager.datalakeanalytics.fluent.models.NameAvailabilityInformationInner object.
-     *
+     * 
      * @return the inner object.
      */
     NameAvailabilityInformationInner innerModel();

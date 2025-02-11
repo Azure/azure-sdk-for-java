@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PatchableApplianceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PatchableAppliance model =
-            BinaryData.fromString("{\"tags\":{\"vd\":\"ybrk\"}}").toObject(PatchableAppliance.class);
+        PatchableAppliance model
+            = BinaryData.fromString("{\"tags\":{\"vd\":\"ybrk\"}}").toObject(PatchableAppliance.class);
         Assertions.assertEquals("ybrk", model.tags().get("vd"));
     }
 

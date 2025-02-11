@@ -37,27 +37,50 @@ public final class AccessListServiceAccountsSuccessResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessListServiceAccountsSuccessResponseInner model = new AccessListServiceAccountsSuccessResponseInner()
-            .withKind("cbonqvpk")
-            .withMetadata(new ConfluentListMetadata().withFirst("xnj").withLast("seiphe").withPrev("lokeyy")
-                .withNext("nj").withTotalSize(147839675))
-            .withData(Arrays.asList(
-                new ServiceAccountRecord().withKind("rhpdjpjumas").withId("zj")
-                    .withMetadata(new MetadataEntity().withSelf("e").withResourceName("alhbx").withCreatedAt("e")
-                        .withUpdatedAt("zzvdudgwds").withDeletedAt("hotwmcynpwlbjnp"))
-                    .withDisplayName("cftadeh").withDescription("ltyfsop"),
-                new ServiceAccountRecord().withKind("suesnzw").withId("jbavorxzdm")
-                    .withMetadata(new MetadataEntity().withSelf("tbqvudw").withResourceName("ndnvo")
-                        .withCreatedAt("ujjugwdkcglh").withUpdatedAt("azjdyggd").withDeletedAt("ixhbkuofqweykhm"))
-                    .withDisplayName("evfyexfwhybcib").withDescription("vdcsitynn"),
-                new ServiceAccountRecord().withKind("mdectehfiqscjey").withId("hezrkgq")
-                    .withMetadata(new MetadataEntity().withSelf("refovgmkqsleyyvx").withResourceName("jpkcattpng")
-                        .withCreatedAt("rcczsqpjhvmd").withUpdatedAt("v").withDeletedAt("sounqecanoaeu"))
-                    .withDisplayName("hy").withDescription("trpmo"),
-                new ServiceAccountRecord().withKind("mcmatuokthfuiu").withId("dsfcpkvxodpuoz")
-                    .withMetadata(new MetadataEntity().withSelf("ydagfuaxbe").withResourceName("iu")
-                        .withCreatedAt("ktwh").withUpdatedAt("xw").withDeletedAt("wqsmbsur"))
-                    .withDisplayName("imoryocfsfksym").withDescription("ys")));
+        AccessListServiceAccountsSuccessResponseInner model
+            = new AccessListServiceAccountsSuccessResponseInner().withKind("cbonqvpk")
+                .withMetadata(new ConfluentListMetadata().withFirst("xnj")
+                    .withLast("seiphe")
+                    .withPrev("lokeyy")
+                    .withNext("nj")
+                    .withTotalSize(147839675))
+                .withData(Arrays.asList(
+                    new ServiceAccountRecord().withKind("rhpdjpjumas")
+                        .withId("zj")
+                        .withMetadata(new MetadataEntity().withSelf("e")
+                            .withResourceName("alhbx")
+                            .withCreatedAt("e")
+                            .withUpdatedAt("zzvdudgwds")
+                            .withDeletedAt("hotwmcynpwlbjnp"))
+                        .withDisplayName("cftadeh")
+                        .withDescription("ltyfsop"),
+                    new ServiceAccountRecord().withKind("suesnzw")
+                        .withId("jbavorxzdm")
+                        .withMetadata(new MetadataEntity().withSelf("tbqvudw")
+                            .withResourceName("ndnvo")
+                            .withCreatedAt("ujjugwdkcglh")
+                            .withUpdatedAt("azjdyggd")
+                            .withDeletedAt("ixhbkuofqweykhm"))
+                        .withDisplayName("evfyexfwhybcib")
+                        .withDescription("vdcsitynn"),
+                    new ServiceAccountRecord().withKind("mdectehfiqscjey")
+                        .withId("hezrkgq")
+                        .withMetadata(new MetadataEntity().withSelf("refovgmkqsleyyvx")
+                            .withResourceName("jpkcattpng")
+                            .withCreatedAt("rcczsqpjhvmd")
+                            .withUpdatedAt("v")
+                            .withDeletedAt("sounqecanoaeu"))
+                        .withDisplayName("hy")
+                        .withDescription("trpmo"),
+                    new ServiceAccountRecord().withKind("mcmatuokthfuiu")
+                        .withId("dsfcpkvxodpuoz")
+                        .withMetadata(new MetadataEntity().withSelf("ydagfuaxbe")
+                            .withResourceName("iu")
+                            .withCreatedAt("ktwh")
+                            .withUpdatedAt("xw")
+                            .withDeletedAt("wqsmbsur"))
+                        .withDisplayName("imoryocfsfksym")
+                        .withDescription("ys")));
         model = BinaryData.fromObject(model).toObject(AccessListServiceAccountsSuccessResponseInner.class);
         Assertions.assertEquals("cbonqvpk", model.kind());
         Assertions.assertEquals("xnj", model.metadata().first());

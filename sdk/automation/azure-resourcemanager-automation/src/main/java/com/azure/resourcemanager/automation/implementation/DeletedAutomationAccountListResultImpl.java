@@ -15,8 +15,7 @@ public final class DeletedAutomationAccountListResultImpl implements DeletedAuto
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    DeletedAutomationAccountListResultImpl(
-        DeletedAutomationAccountListResultInner innerObject,
+    DeletedAutomationAccountListResultImpl(DeletedAutomationAccountListResultInner innerObject,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

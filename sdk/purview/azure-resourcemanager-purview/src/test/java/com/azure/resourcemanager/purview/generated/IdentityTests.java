@@ -15,33 +15,21 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Identity model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"e\",\"tenantId\":\"locx\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"obnbdxkqpxokaj\":{\"clientId\":\"rhhbcs\",\"principalId\":\"ummajtjaod\"},\"odgmaajrmvdjwz\":{\"clientId\":\"npime\",\"principalId\":\"stxgc\"},\"ukdkexxppofmxa\":{\"clientId\":\"ovmclwhijcoejct\",\"principalId\":\"aqsqsycbkbfk\"},\"bqe\":{\"clientId\":\"fjpgddtocjjxhvp\",\"principalId\":\"uexhdzx\"}}}")
-                .toObject(Identity.class);
+        Identity model = BinaryData.fromString(
+            "{\"principalId\":\"yudxorrqnbp\",\"tenantId\":\"zvyifqrvkdvj\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"iqzbq\":{\"clientId\":\"vdfwatkpn\",\"principalId\":\"lexxbczwtru\"}}}")
+            .toObject(Identity.class);
         Assertions.assertEquals(Type.SYSTEM_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Identity model =
-            new Identity()
-                .withType(Type.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "obnbdxkqpxokaj",
-                        new UserAssignedIdentity(),
-                        "odgmaajrmvdjwz",
-                        new UserAssignedIdentity(),
-                        "ukdkexxppofmxa",
-                        new UserAssignedIdentity(),
-                        "bqe",
-                        new UserAssignedIdentity()));
+        Identity model = new Identity().withType(Type.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("iqzbq", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(Identity.class);
         Assertions.assertEquals(Type.SYSTEM_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

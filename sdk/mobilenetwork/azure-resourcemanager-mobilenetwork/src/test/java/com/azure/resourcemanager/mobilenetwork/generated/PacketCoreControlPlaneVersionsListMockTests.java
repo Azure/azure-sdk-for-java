@@ -26,7 +26,7 @@ public final class PacketCoreControlPlaneVersionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"Validating\",\"minimumPlatformSoftwareVersion\":\"bwi\",\"maximumPlatformSoftwareVersion\":\"jogjonmc\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"Obsolete\",\"haUpgradesAvailable\":[\"amwineofvfkakp\",\"ldtve\"]},{\"platformType\":\"AKS-HCI\",\"versionState\":\"Unknown\",\"minimumPlatformSoftwareVersion\":\"hzjkn\",\"maximumPlatformSoftwareVersion\":\"xgvttxp\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\",\"haUpgradesAvailable\":[\"mrdixtreki\",\"swyskbruffg\",\"lukkutvlxhrpqhvm\",\"lcouqehbhbcdszir\"]},{\"platformType\":\"AKS-HCI\",\"versionState\":\"ValidationFailed\",\"minimumPlatformSoftwareVersion\":\"ypmbltoormkfq\",\"maximumPlatformSoftwareVersion\":\"xldykalsygaolnjp\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\",\"haUpgradesAvailable\":[\"ibjgsjjxxahm\",\"nadzyq\"]}]},\"id\":\"xyivpinbm\",\"name\":\"wbjijkgq\",\"type\":\"nhmbkez\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"platforms\":[{\"platformType\":\"AKS-HCI\",\"versionState\":\"Preview\",\"minimumPlatformSoftwareVersion\":\"wrso\",\"maximumPlatformSoftwareVersion\":\"ltdb\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"NotObsolete\",\"haUpgradesAvailable\":[\"hfnrac\"]},{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Validating\",\"minimumPlatformSoftwareVersion\":\"tuujwouh\",\"maximumPlatformSoftwareVersion\":\"wsigrbjbxsj\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"NotObsolete\",\"haUpgradesAvailable\":[\"kjyaznumtg\"]}]},\"id\":\"uwdchozf\",\"name\":\"kfexlv\",\"type\":\"noakiz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -39,15 +39,13 @@ public final class PacketCoreControlPlaneVersionsListMockTests {
             = manager.packetCoreControlPlaneVersions().list(com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(PlatformType.AKS_HCI, response.iterator().next().platforms().get(0).platformType());
-        Assertions.assertEquals(VersionState.VALIDATING, response.iterator().next().platforms().get(0).versionState());
-        Assertions.assertEquals("bwi", response.iterator().next().platforms().get(0).minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("jogjonmc",
-            response.iterator().next().platforms().get(0).maximumPlatformSoftwareVersion());
-        Assertions.assertEquals(RecommendedVersion.NOT_RECOMMENDED,
+        Assertions.assertEquals(VersionState.PREVIEW, response.iterator().next().platforms().get(0).versionState());
+        Assertions.assertEquals("wrso", response.iterator().next().platforms().get(0).minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("ltdb", response.iterator().next().platforms().get(0).maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(RecommendedVersion.RECOMMENDED,
             response.iterator().next().platforms().get(0).recommendedVersion());
-        Assertions.assertEquals(ObsoleteVersion.OBSOLETE,
+        Assertions.assertEquals(ObsoleteVersion.NOT_OBSOLETE,
             response.iterator().next().platforms().get(0).obsoleteVersion());
-        Assertions.assertEquals("amwineofvfkakp",
-            response.iterator().next().platforms().get(0).haUpgradesAvailable().get(0));
+        Assertions.assertEquals("hfnrac", response.iterator().next().platforms().get(0).haUpgradesAvailable().get(0));
     }
 }

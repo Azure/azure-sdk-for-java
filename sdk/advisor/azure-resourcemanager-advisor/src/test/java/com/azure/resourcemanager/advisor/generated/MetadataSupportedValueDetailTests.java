@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MetadataSupportedValueDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetadataSupportedValueDetail model =
-            BinaryData
-                .fromString("{\"id\":\"ipa\",\"displayName\":\"ajpsquc\"}")
-                .toObject(MetadataSupportedValueDetail.class);
+        MetadataSupportedValueDetail model = BinaryData.fromString("{\"id\":\"ipa\",\"displayName\":\"ajpsquc\"}")
+            .toObject(MetadataSupportedValueDetail.class);
         Assertions.assertEquals("ipa", model.id());
         Assertions.assertEquals("ajpsquc", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetadataSupportedValueDetail model =
-            new MetadataSupportedValueDetail().withId("ipa").withDisplayName("ajpsquc");
+        MetadataSupportedValueDetail model
+            = new MetadataSupportedValueDetail().withId("ipa").withDisplayName("ajpsquc");
         model = BinaryData.fromObject(model).toObject(MetadataSupportedValueDetail.class);
         Assertions.assertEquals("ipa", model.id());
         Assertions.assertEquals("ajpsquc", model.displayName());

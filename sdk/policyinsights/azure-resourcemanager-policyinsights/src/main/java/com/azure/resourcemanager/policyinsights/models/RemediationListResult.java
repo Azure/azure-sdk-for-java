@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.policyinsights.fluent.models.RemediationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of remediations. */
+/**
+ * List of remediations.
+ */
 @Immutable
-public final class RemediationListResult {
+public final class RemediationListResult implements JsonSerializable<RemediationListResult> {
     /*
      * Array of remediation definitions.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RemediationInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of RemediationListResult class. */
+    /**
+     * Creates an instance of RemediationListResult class.
+     */
     public RemediationListResult() {
     }
 
     /**
      * Get the value property: Array of remediation definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<RemediationInner> value() {
@@ -39,7 +45,7 @@ public final class RemediationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,50 @@ public final class RemediationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemediationListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemediationListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemediationListResult.
+     */
+    public static RemediationListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemediationListResult deserializedRemediationListResult = new RemediationListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RemediationInner> value = reader.readArray(reader1 -> RemediationInner.fromJson(reader1));
+                    deserializedRemediationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRemediationListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemediationListResult;
+        });
     }
 }

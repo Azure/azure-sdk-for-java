@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyFragmentContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyFragmentContractProperties model =
-            BinaryData
-                .fromString("{\"value\":\"udyhbrj\",\"description\":\"a\",\"format\":\"xml\"}")
+        PolicyFragmentContractProperties model
+            = BinaryData.fromString("{\"value\":\"udyhbrj\",\"description\":\"a\",\"format\":\"xml\"}")
                 .toObject(PolicyFragmentContractProperties.class);
         Assertions.assertEquals("udyhbrj", model.value());
         Assertions.assertEquals("a", model.description());
@@ -23,11 +22,9 @@ public final class PolicyFragmentContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyFragmentContractProperties model =
-            new PolicyFragmentContractProperties()
-                .withValue("udyhbrj")
-                .withDescription("a")
-                .withFormat(PolicyFragmentContentFormat.XML);
+        PolicyFragmentContractProperties model = new PolicyFragmentContractProperties().withValue("udyhbrj")
+            .withDescription("a")
+            .withFormat(PolicyFragmentContentFormat.XML);
         model = BinaryData.fromObject(model).toObject(PolicyFragmentContractProperties.class);
         Assertions.assertEquals("udyhbrj", model.value());
         Assertions.assertEquals("a", model.description());

@@ -38,16 +38,27 @@ public final class AccessListEnvironmentsSuccessResponseInnerTests {
     public void testSerialize() throws Exception {
         AccessListEnvironmentsSuccessResponseInner model
             = new AccessListEnvironmentsSuccessResponseInner().withKind("hheunmmqhgyx")
-                .withMetadata(new ConfluentListMetadata().withFirst("noc").withLast("oklyaxuconuq").withPrev("fkbey")
-                    .withNext("wrmjmwvvjektc").withTotalSize(1803945661))
+                .withMetadata(new ConfluentListMetadata().withFirst("noc")
+                    .withLast("oklyaxuconuq")
+                    .withPrev("fkbey")
+                    .withNext("wrmjmwvvjektc")
+                    .withTotalSize(1803945661))
                 .withData(Arrays.asList(
-                    new EnvironmentRecord().withKind("lrsf").withId("zpwv")
-                        .withMetadata(new MetadataEntity().withSelf("q").withResourceName("iqylihkaetck")
-                            .withCreatedAt("fcivfsnkym").withUpdatedAt("tqhjfbebrjcx").withDeletedAt("fuwutttxf"))
+                    new EnvironmentRecord().withKind("lrsf")
+                        .withId("zpwv")
+                        .withMetadata(new MetadataEntity().withSelf("q")
+                            .withResourceName("iqylihkaetck")
+                            .withCreatedAt("fcivfsnkym")
+                            .withUpdatedAt("tqhjfbebrjcx")
+                            .withDeletedAt("fuwutttxf"))
                         .withDisplayName("rbirphxe"),
-                    new EnvironmentRecord().withKind("yva").withId("nljky")
-                        .withMetadata(new MetadataEntity().withSelf("vuujq").withResourceName("dokgjl")
-                            .withCreatedAt("oxgvclt").withUpdatedAt("sncghkjeszz").withDeletedAt("ijhtxf"))
+                    new EnvironmentRecord().withKind("yva")
+                        .withId("nljky")
+                        .withMetadata(new MetadataEntity().withSelf("vuujq")
+                            .withResourceName("dokgjl")
+                            .withCreatedAt("oxgvclt")
+                            .withUpdatedAt("sncghkjeszz")
+                            .withDeletedAt("ijhtxf"))
                         .withDisplayName("xbf")));
         model = BinaryData.fromObject(model).toObject(AccessListEnvironmentsSuccessResponseInner.class);
         Assertions.assertEquals("hheunmmqhgyx", model.kind());

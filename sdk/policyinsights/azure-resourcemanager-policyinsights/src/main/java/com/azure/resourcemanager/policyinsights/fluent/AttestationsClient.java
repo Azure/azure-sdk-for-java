@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.policyinsights.fluent.models.AttestationInner;
 
-/** An instance of this class provides access to all the operations defined in AttestationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AttestationsClient.
+ */
 public interface AttestationsClient {
     /**
      * Gets all attestations for the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all attestations for the subscription as paginated response with {@link PagedIterable}.
@@ -27,7 +29,7 @@ public interface AttestationsClient {
 
     /**
      * Gets all attestations for the subscription.
-     *
+     * 
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
      * @param context The context to associate with this operation.
@@ -41,7 +43,7 @@ public interface AttestationsClient {
 
     /**
      * Creates or updates an attestation at subscription scope.
-     *
+     * 
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,12 +52,12 @@ public interface AttestationsClient {
      * @return the {@link SyncPoller} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscription(
-        String attestationName, AttestationInner parameters);
+    SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscription(String attestationName,
+        AttestationInner parameters);
 
     /**
      * Creates or updates an attestation at subscription scope.
-     *
+     * 
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
      * @param context The context to associate with this operation.
@@ -65,12 +67,12 @@ public interface AttestationsClient {
      * @return the {@link SyncPoller} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscription(
-        String attestationName, AttestationInner parameters, Context context);
+    SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtSubscription(String attestationName,
+        AttestationInner parameters, Context context);
 
     /**
      * Creates or updates an attestation at subscription scope.
-     *
+     * 
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,7 +85,7 @@ public interface AttestationsClient {
 
     /**
      * Creates or updates an attestation at subscription scope.
-     *
+     * 
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
      * @param context The context to associate with this operation.
@@ -97,7 +99,7 @@ public interface AttestationsClient {
 
     /**
      * Gets an existing attestation at subscription scope.
-     *
+     * 
      * @param attestationName The name of the attestation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +112,7 @@ public interface AttestationsClient {
 
     /**
      * Gets an existing attestation at subscription scope.
-     *
+     * 
      * @param attestationName The name of the attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,7 +124,7 @@ public interface AttestationsClient {
 
     /**
      * Deletes an existing attestation at subscription scope.
-     *
+     * 
      * @param attestationName The name of the attestation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +137,7 @@ public interface AttestationsClient {
 
     /**
      * Deletes an existing attestation at subscription scope.
-     *
+     * 
      * @param attestationName The name of the attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -146,7 +148,7 @@ public interface AttestationsClient {
 
     /**
      * Gets all attestations for the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,7 +160,7 @@ public interface AttestationsClient {
 
     /**
      * Gets all attestations for the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
@@ -169,12 +171,12 @@ public interface AttestationsClient {
      * @return all attestations for the resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AttestationInner> listByResourceGroup(
-        String resourceGroupName, Integer top, String filter, Context context);
+    PagedIterable<AttestationInner> listByResourceGroup(String resourceGroupName, Integer top, String filter,
+        Context context);
 
     /**
      * Creates or updates an attestation at resource group scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
@@ -189,7 +191,7 @@ public interface AttestationsClient {
 
     /**
      * Creates or updates an attestation at resource group scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
@@ -205,7 +207,7 @@ public interface AttestationsClient {
 
     /**
      * Creates or updates an attestation at resource group scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
@@ -215,12 +217,12 @@ public interface AttestationsClient {
      * @return an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttestationInner createOrUpdateAtResourceGroup(
-        String resourceGroupName, String attestationName, AttestationInner parameters);
+    AttestationInner createOrUpdateAtResourceGroup(String resourceGroupName, String attestationName,
+        AttestationInner parameters);
 
     /**
      * Creates or updates an attestation at resource group scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
@@ -231,12 +233,12 @@ public interface AttestationsClient {
      * @return an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttestationInner createOrUpdateAtResourceGroup(
-        String resourceGroupName, String attestationName, AttestationInner parameters, Context context);
+    AttestationInner createOrUpdateAtResourceGroup(String resourceGroupName, String attestationName,
+        AttestationInner parameters, Context context);
 
     /**
      * Gets an existing attestation at resource group scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param attestationName The name of the attestation.
      * @param context The context to associate with this operation.
@@ -246,12 +248,12 @@ public interface AttestationsClient {
      * @return an existing attestation at resource group scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AttestationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String attestationName, Context context);
+    Response<AttestationInner> getByResourceGroupWithResponse(String resourceGroupName, String attestationName,
+        Context context);
 
     /**
      * Gets an existing attestation at resource group scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param attestationName The name of the attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +266,7 @@ public interface AttestationsClient {
 
     /**
      * Deletes an existing attestation at resource group scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param attestationName The name of the attestation.
      * @param context The context to associate with this operation.
@@ -278,7 +280,7 @@ public interface AttestationsClient {
 
     /**
      * Deletes an existing attestation at resource group scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param attestationName The name of the attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,7 +292,7 @@ public interface AttestationsClient {
 
     /**
      * Gets all attestations for a resource.
-     *
+     * 
      * @param resourceId Resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -302,7 +304,7 @@ public interface AttestationsClient {
 
     /**
      * Gets all attestations for a resource.
-     *
+     * 
      * @param resourceId Resource ID.
      * @param top Maximum number of records to return.
      * @param filter OData filter expression.
@@ -317,7 +319,7 @@ public interface AttestationsClient {
 
     /**
      * Creates or updates an attestation at resource scope.
-     *
+     * 
      * @param resourceId Resource ID.
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
@@ -327,12 +329,12 @@ public interface AttestationsClient {
      * @return the {@link SyncPoller} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResource(
-        String resourceId, String attestationName, AttestationInner parameters);
+    SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResource(String resourceId,
+        String attestationName, AttestationInner parameters);
 
     /**
      * Creates or updates an attestation at resource scope.
-     *
+     * 
      * @param resourceId Resource ID.
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
@@ -343,12 +345,12 @@ public interface AttestationsClient {
      * @return the {@link SyncPoller} for polling of an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResource(
-        String resourceId, String attestationName, AttestationInner parameters, Context context);
+    SyncPoller<PollResult<AttestationInner>, AttestationInner> beginCreateOrUpdateAtResource(String resourceId,
+        String attestationName, AttestationInner parameters, Context context);
 
     /**
      * Creates or updates an attestation at resource scope.
-     *
+     * 
      * @param resourceId Resource ID.
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
@@ -362,7 +364,7 @@ public interface AttestationsClient {
 
     /**
      * Creates or updates an attestation at resource scope.
-     *
+     * 
      * @param resourceId Resource ID.
      * @param attestationName The name of the attestation.
      * @param parameters The attestation parameters.
@@ -373,12 +375,12 @@ public interface AttestationsClient {
      * @return an attestation resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AttestationInner createOrUpdateAtResource(
-        String resourceId, String attestationName, AttestationInner parameters, Context context);
+    AttestationInner createOrUpdateAtResource(String resourceId, String attestationName, AttestationInner parameters,
+        Context context);
 
     /**
      * Gets an existing attestation at resource scope.
-     *
+     * 
      * @param resourceId Resource ID.
      * @param attestationName The name of the attestation.
      * @param context The context to associate with this operation.
@@ -392,7 +394,7 @@ public interface AttestationsClient {
 
     /**
      * Gets an existing attestation at resource scope.
-     *
+     * 
      * @param resourceId Resource ID.
      * @param attestationName The name of the attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -405,7 +407,7 @@ public interface AttestationsClient {
 
     /**
      * Deletes an existing attestation at individual resource scope.
-     *
+     * 
      * @param resourceId Resource ID.
      * @param attestationName The name of the attestation.
      * @param context The context to associate with this operation.
@@ -419,7 +421,7 @@ public interface AttestationsClient {
 
     /**
      * Deletes an existing attestation at individual resource scope.
-     *
+     * 
      * @param resourceId Resource ID.
      * @param attestationName The name of the attestation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of the alert modification item. */
+/**
+ * Properties of the alert modification item.
+ */
 @Fluent
-public final class AlertModificationProperties {
+public final class AlertModificationProperties implements JsonSerializable<AlertModificationProperties> {
     /*
      * Unique Id of the alert for which the history is being retrieved
      */
-    @JsonProperty(value = "alertId", access = JsonProperty.Access.WRITE_ONLY)
     private String alertId;
 
     /*
      * Modification details
      */
-    @JsonProperty(value = "modifications")
     private List<AlertModificationItem> modifications;
 
     /**
+     * Creates an instance of AlertModificationProperties class.
+     */
+    public AlertModificationProperties() {
+    }
+
+    /**
      * Get the alertId property: Unique Id of the alert for which the history is being retrieved.
-     *
+     * 
      * @return the alertId value.
      */
     public String alertId() {
@@ -34,7 +44,7 @@ public final class AlertModificationProperties {
 
     /**
      * Get the modifications property: Modification details.
-     *
+     * 
      * @return the modifications value.
      */
     public List<AlertModificationItem> modifications() {
@@ -43,7 +53,7 @@ public final class AlertModificationProperties {
 
     /**
      * Set the modifications property: Modification details.
-     *
+     * 
      * @param modifications the modifications value to set.
      * @return the AlertModificationProperties object itself.
      */
@@ -54,12 +64,52 @@ public final class AlertModificationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (modifications() != null) {
             modifications().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("modifications", this.modifications, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertModificationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertModificationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertModificationProperties.
+     */
+    public static AlertModificationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertModificationProperties deserializedAlertModificationProperties = new AlertModificationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("alertId".equals(fieldName)) {
+                    deserializedAlertModificationProperties.alertId = reader.getString();
+                } else if ("modifications".equals(fieldName)) {
+                    List<AlertModificationItem> modifications
+                        = reader.readArray(reader1 -> AlertModificationItem.fromJson(reader1));
+                    deserializedAlertModificationProperties.modifications = modifications;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertModificationProperties;
+        });
     }
 }

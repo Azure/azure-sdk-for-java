@@ -5,16 +5,20 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** Channel affinity for a participant. */
 @Fluent
-public final class ChannelAffinityInternal {
+public final class ChannelAffinityInternal implements JsonSerializable<ChannelAffinityInternal> {
     /*
      * Channel number to which bitstream from a particular participant will be
      * written.
      */
-    @JsonProperty(value = "channel")
     private Integer channel;
 
     /*
@@ -22,7 +26,6 @@ public final class ChannelAffinityInternal {
      * the channel
      * represented by the channel number.
      */
-    @JsonProperty(value = "participant")
     private CommunicationIdentifierModel participant;
 
     /**
@@ -65,5 +68,42 @@ public final class ChannelAffinityInternal {
     public ChannelAffinityInternal setParticipant(CommunicationIdentifierModel participant) {
         this.participant = participant;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeNumberField("channel", channel)
+            .writeJsonField("participant", participant)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads an instance of {@link ChannelAffinityInternal} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link ChannelAffinityInternal}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static ChannelAffinityInternal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChannelAffinityInternal channelAffinity = new ChannelAffinityInternal();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("channel".equals(fieldName)) {
+                    channelAffinity.channel = reader.getNullable(JsonReader::getInt);
+                } else if ("participant".equals(fieldName)) {
+                    channelAffinity.participant = CommunicationIdentifierModel.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return channelAffinity;
+        });
     }
 }

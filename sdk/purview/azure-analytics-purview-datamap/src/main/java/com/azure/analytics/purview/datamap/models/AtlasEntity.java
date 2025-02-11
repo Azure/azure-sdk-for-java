@@ -6,6 +6,7 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -23,7 +24,7 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
      * The attributes of the struct.
      */
     @Generated
-    private Map<String, Object> attributes;
+    private Map<String, BinaryData> attributes;
 
     /*
      * The name of the type.
@@ -41,7 +42,7 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
      * Business attributes
      */
     @Generated
-    private Map<String, Object> businessAttributes;
+    private Map<String, BinaryData> businessAttributes;
 
     /*
      * An array of classifications.
@@ -119,7 +120,7 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
      * The attributes of relationship.
      */
     @Generated
-    private Map<String, Object> relationshipAttributes;
+    private Map<String, BinaryData> relationshipAttributes;
 
     /*
      * Status of the entity - can be active or deleted. Deleted entities are not
@@ -165,7 +166,7 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
      * @return the attributes value.
      */
     @Generated
-    public Map<String, Object> getAttributes() {
+    public Map<String, BinaryData> getAttributes() {
         return this.attributes;
     }
 
@@ -176,7 +177,7 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
      * @return the AtlasEntity object itself.
      */
     @Generated
-    public AtlasEntity setAttributes(Map<String, Object> attributes) {
+    public AtlasEntity setAttributes(Map<String, BinaryData> attributes) {
         this.attributes = attributes;
         return this;
     }
@@ -231,7 +232,7 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
      * @return the businessAttributes value.
      */
     @Generated
-    public Map<String, Object> getBusinessAttributes() {
+    public Map<String, BinaryData> getBusinessAttributes() {
         return this.businessAttributes;
     }
 
@@ -242,7 +243,7 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
      * @return the AtlasEntity object itself.
      */
     @Generated
-    public AtlasEntity setBusinessAttributes(Map<String, Object> businessAttributes) {
+    public AtlasEntity setBusinessAttributes(Map<String, BinaryData> businessAttributes) {
         this.businessAttributes = businessAttributes;
         return this;
     }
@@ -505,7 +506,7 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
      * @return the relationshipAttributes value.
      */
     @Generated
-    public Map<String, Object> getRelationshipAttributes() {
+    public Map<String, BinaryData> getRelationshipAttributes() {
         return this.relationshipAttributes;
     }
 
@@ -516,7 +517,7 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
      * @return the AtlasEntity object itself.
      */
     @Generated
-    public AtlasEntity setRelationshipAttributes(Map<String, Object> relationshipAttributes) {
+    public AtlasEntity setRelationshipAttributes(Map<String, BinaryData> relationshipAttributes) {
         this.relationshipAttributes = relationshipAttributes;
         return this;
     }
@@ -640,11 +641,12 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeMapField("attributes", this.attributes, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("attributes", this.attributes,
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("typeName", this.typeName);
         jsonWriter.writeStringField("lastModifiedTS", this.lastModifiedTS);
         jsonWriter.writeMapField("businessAttributes", this.businessAttributes,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeArrayField("classifications", this.classifications,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("createTime", this.createTime);
@@ -659,7 +661,7 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
         jsonWriter.writeNumberField("provenanceType", this.provenanceType);
         jsonWriter.writeBooleanField("proxy", this.proxy);
         jsonWriter.writeMapField("relationshipAttributes", this.relationshipAttributes,
-            (writer, element) -> writer.writeUntyped(element));
+            (writer, element) -> writer.writeUntyped(element == null ? null : element.toObject(Object.class)));
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeNumberField("updateTime", this.updateTime);
         jsonWriter.writeStringField("updatedBy", this.updatedBy);
@@ -686,14 +688,16 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
                 reader.nextToken();
 
                 if ("attributes".equals(fieldName)) {
-                    Map<String, Object> attributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> attributes = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAtlasEntity.attributes = attributes;
                 } else if ("typeName".equals(fieldName)) {
                     deserializedAtlasEntity.typeName = reader.getString();
                 } else if ("lastModifiedTS".equals(fieldName)) {
                     deserializedAtlasEntity.lastModifiedTS = reader.getString();
                 } else if ("businessAttributes".equals(fieldName)) {
-                    Map<String, Object> businessAttributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> businessAttributes = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAtlasEntity.businessAttributes = businessAttributes;
                 } else if ("classifications".equals(fieldName)) {
                     List<AtlasClassification> classifications
@@ -726,7 +730,8 @@ public final class AtlasEntity implements JsonSerializable<AtlasEntity> {
                 } else if ("proxy".equals(fieldName)) {
                     deserializedAtlasEntity.proxy = reader.getNullable(JsonReader::getBoolean);
                 } else if ("relationshipAttributes".equals(fieldName)) {
-                    Map<String, Object> relationshipAttributes = reader.readMap(reader1 -> reader1.readUntyped());
+                    Map<String, BinaryData> relationshipAttributes = reader.readMap(reader1 -> reader1
+                        .getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())));
                     deserializedAtlasEntity.relationshipAttributes = relationshipAttributes;
                 } else if ("status".equals(fieldName)) {
                     deserializedAtlasEntity.status = EntityStatus.fromString(reader.getString());

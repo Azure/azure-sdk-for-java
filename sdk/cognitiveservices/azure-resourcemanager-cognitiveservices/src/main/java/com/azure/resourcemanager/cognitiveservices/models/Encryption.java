@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties to configure Encryption. */
+/**
+ * Properties to configure Encryption.
+ */
 @Fluent
-public final class Encryption {
+public class Encryption implements JsonSerializable<Encryption> {
     /*
      * Properties of KeyVault
      */
-    @JsonProperty(value = "keyVaultProperties")
     private KeyVaultProperties keyVaultProperties;
 
     /*
      * Enumerates the possible value of keySource for Encryption
      */
-    @JsonProperty(value = "keySource")
     private KeySource keySource;
 
-    /** Creates an instance of Encryption class. */
+    /**
+     * Creates an instance of Encryption class.
+     */
     public Encryption() {
     }
 
     /**
      * Get the keyVaultProperties property: Properties of KeyVault.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
@@ -37,7 +43,7 @@ public final class Encryption {
 
     /**
      * Set the keyVaultProperties property: Properties of KeyVault.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the Encryption object itself.
      */
@@ -48,7 +54,7 @@ public final class Encryption {
 
     /**
      * Get the keySource property: Enumerates the possible value of keySource for Encryption.
-     *
+     * 
      * @return the keySource value.
      */
     public KeySource keySource() {
@@ -57,7 +63,7 @@ public final class Encryption {
 
     /**
      * Set the keySource property: Enumerates the possible value of keySource for Encryption.
-     *
+     * 
      * @param keySource the keySource value to set.
      * @return the Encryption object itself.
      */
@@ -68,12 +74,51 @@ public final class Encryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVaultProperties() != null) {
             keyVaultProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("keyVaultProperties", this.keyVaultProperties);
+        jsonWriter.writeStringField("keySource", this.keySource == null ? null : this.keySource.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Encryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Encryption if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Encryption.
+     */
+    public static Encryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Encryption deserializedEncryption = new Encryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultProperties".equals(fieldName)) {
+                    deserializedEncryption.keyVaultProperties = KeyVaultProperties.fromJson(reader);
+                } else if ("keySource".equals(fieldName)) {
+                    deserializedEncryption.keySource = KeySource.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryption;
+        });
     }
 }

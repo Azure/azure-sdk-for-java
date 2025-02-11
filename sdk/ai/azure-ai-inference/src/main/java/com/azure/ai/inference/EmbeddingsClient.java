@@ -58,8 +58,9 @@ public final class EmbeddingsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     input (Required): [
      *         String (Required)
@@ -69,14 +70,16 @@ public final class EmbeddingsClient {
      *     input_type: String(text/query/document) (Optional)
      *     model: String (Optional)
      *      (Optional): {
-     *         String: Object (Required)
+     *         String: BinaryData (Required)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     data (Required): [
      *          (Required){
@@ -90,7 +93,8 @@ public final class EmbeddingsClient {
      *     }
      *     model: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param embedRequest The embedRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -112,14 +116,16 @@ public final class EmbeddingsClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
+     * 
+     * <pre>
+     * {@code
      * {
      *     model_name: String (Required)
      *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
      *     model_provider_name: String (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -284,9 +290,8 @@ public final class EmbeddingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents some basic information about the AI model.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ModelInfo getModelInfo() {
+    public ModelInfo getModelInfo() {
         // Generated convenience method for getModelInfoWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getModelInfoWithResponse(requestOptions).getValue().toObject(ModelInfo.class);

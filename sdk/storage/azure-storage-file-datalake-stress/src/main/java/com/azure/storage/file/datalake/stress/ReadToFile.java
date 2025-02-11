@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake.stress;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.file.datalake.DataLakeFileClient;
 import com.azure.storage.file.datalake.stress.utils.OriginalContent;
@@ -25,6 +26,7 @@ public class ReadToFile extends DataLakeScenarioBase<StorageStressOptions> {
     private final DataLakeFileClient syncClient;
     private final DataLakeFileAsyncClient asyncClient;
     private final DataLakeFileAsyncClient asyncNoFaultClient;
+    private final ParallelTransferOptions parallelTransferOptions;
 
     public ReadToFile(StorageStressOptions options) {
         super(options);
@@ -33,13 +35,15 @@ public class ReadToFile extends DataLakeScenarioBase<StorageStressOptions> {
         this.syncClient = getSyncFileSystemClient().getFileClient(fileName);
         this.asyncClient = getAsyncFileSystemClient().getFileAsyncClient(fileName);
         this.asyncNoFaultClient = getAsyncFileSystemClientNoFault().getFileAsyncClient(fileName);
+        this.parallelTransferOptions = new ParallelTransferOptions().setMaxConcurrency(options.getMaxConcurrency());
     }
 
     @Override
     protected void runInternal(Context span) {
         Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
         try {
-            syncClient.readToFileWithResponse(downloadPath.toString(), null, null, null, null, false, null, null, span);
+            syncClient.readToFileWithResponse(downloadPath.toString(), null, parallelTransferOptions, null, null, false,
+                null, null, span);
             originalContent.checkMatch(BinaryData.fromFile(downloadPath), span).block();
         } finally {
             deleteFile(downloadPath);
@@ -51,7 +55,7 @@ public class ReadToFile extends DataLakeScenarioBase<StorageStressOptions> {
     protected Mono<Void> runInternalAsync(Context span) {
         return Mono.using(
             () -> directoryPath.resolve(UUID.randomUUID() + ".txt"),
-            path -> asyncClient.readToFile(path.toString())
+            path -> asyncClient.readToFileWithResponse(path.toString(), null, parallelTransferOptions, null, null, false, null)
                 .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(path), span)),
             ReadToFile::deleteFile);
     }

@@ -19,23 +19,23 @@ public final class TagResourcesImpl implements TagResources {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public TagResourcesImpl(
-        TagResourcesClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public TagResourcesImpl(TagResourcesClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<TagResourceContract> listByService(String resourceGroupName, String serviceName) {
-        PagedIterable<TagResourceContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new TagResourceContractImpl(inner1, this.manager()));
+        PagedIterable<TagResourceContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagResourceContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<TagResourceContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
-        PagedIterable<TagResourceContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new TagResourceContractImpl(inner1, this.manager()));
+    public PagedIterable<TagResourceContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context) {
+        PagedIterable<TagResourceContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new TagResourceContractImpl(inner1, this.manager()));
     }
 
     private TagResourcesClient serviceClient() {

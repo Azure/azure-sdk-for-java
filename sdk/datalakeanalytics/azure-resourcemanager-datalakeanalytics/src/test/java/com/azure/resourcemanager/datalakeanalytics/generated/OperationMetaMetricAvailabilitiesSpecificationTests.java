@@ -11,22 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetaMetricAvailabilitiesSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetaMetricAvailabilitiesSpecification model =
-            BinaryData
-                .fromString("{\"timeGrain\":\"wgdrjervnaenqp\",\"blobDuration\":\"indoygmifthnzd\"}")
+        OperationMetaMetricAvailabilitiesSpecification model
+            = BinaryData.fromString("{\"timeGrain\":\"vetvt\",\"blobDuration\":\"aqtdoqmcbx\"}")
                 .toObject(OperationMetaMetricAvailabilitiesSpecification.class);
-        Assertions.assertEquals("wgdrjervnaenqp", model.timeGrain());
-        Assertions.assertEquals("indoygmifthnzd", model.blobDuration());
+        Assertions.assertEquals("vetvt", model.timeGrain());
+        Assertions.assertEquals("aqtdoqmcbx", model.blobDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetaMetricAvailabilitiesSpecification model =
-            new OperationMetaMetricAvailabilitiesSpecification()
-                .withTimeGrain("wgdrjervnaenqp")
-                .withBlobDuration("indoygmifthnzd");
+        OperationMetaMetricAvailabilitiesSpecification model
+            = new OperationMetaMetricAvailabilitiesSpecification().withTimeGrain("vetvt")
+                .withBlobDuration("aqtdoqmcbx");
         model = BinaryData.fromObject(model).toObject(OperationMetaMetricAvailabilitiesSpecification.class);
-        Assertions.assertEquals("wgdrjervnaenqp", model.timeGrain());
-        Assertions.assertEquals("indoygmifthnzd", model.blobDuration());
+        Assertions.assertEquals("vetvt", model.timeGrain());
+        Assertions.assertEquals("aqtdoqmcbx", model.blobDuration());
     }
 }

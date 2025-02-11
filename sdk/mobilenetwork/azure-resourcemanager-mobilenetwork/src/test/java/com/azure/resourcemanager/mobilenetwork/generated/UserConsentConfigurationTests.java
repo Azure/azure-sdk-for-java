@@ -12,14 +12,14 @@ public final class UserConsentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserConsentConfiguration model
-            = BinaryData.fromString("{\"allowSupportTelemetryAccess\":false}").toObject(UserConsentConfiguration.class);
-        Assertions.assertEquals(false, model.allowSupportTelemetryAccess());
+            = BinaryData.fromString("{\"allowSupportTelemetryAccess\":true}").toObject(UserConsentConfiguration.class);
+        Assertions.assertEquals(true, model.allowSupportTelemetryAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserConsentConfiguration model = new UserConsentConfiguration().withAllowSupportTelemetryAccess(false);
+        UserConsentConfiguration model = new UserConsentConfiguration().withAllowSupportTelemetryAccess(true);
         model = BinaryData.fromObject(model).toObject(UserConsentConfiguration.class);
-        Assertions.assertEquals(false, model.allowSupportTelemetryAccess());
+        Assertions.assertEquals(true, model.allowSupportTelemetryAccess());
     }
 }

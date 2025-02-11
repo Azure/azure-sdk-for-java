@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The input to the check name availability request. */
+/**
+ * The input to the check name availability request.
+ */
 @Fluent
-public final class CheckNameAvailabilityInput {
+public final class CheckNameAvailabilityInput implements JsonSerializable<CheckNameAvailabilityInput> {
     /*
      * The account name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The account type. For a Media Services account, this should be 'MediaServices'.
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of CheckNameAvailabilityInput class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityInput class.
+     */
     public CheckNameAvailabilityInput() {
     }
 
     /**
      * Get the name property: The account name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Set the name property: The account name.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameAvailabilityInput object itself.
      */
@@ -48,7 +54,7 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Get the type property: The account type. For a Media Services account, this should be 'MediaServices'.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -57,7 +63,7 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Set the type property: The account type. For a Media Services account, this should be 'MediaServices'.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckNameAvailabilityInput object itself.
      */
@@ -68,9 +74,48 @@ public final class CheckNameAvailabilityInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckNameAvailabilityInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckNameAvailabilityInput if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckNameAvailabilityInput.
+     */
+    public static CheckNameAvailabilityInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckNameAvailabilityInput deserializedCheckNameAvailabilityInput = new CheckNameAvailabilityInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityInput.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCheckNameAvailabilityInput.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckNameAvailabilityInput;
+        });
     }
 }

@@ -74,10 +74,8 @@ public class StorageEndpoint {
      * @return A {@link StorageEndpoint} if the required settings exist, null otherwise.
      */
     public static StorageEndpoint fromStorageSettings(final ConnectionSettings settings, final String service,
-                                                      final String serviceEndpointName,
-                                                      final String serviceSecondaryEndpointName,
-                                                      final Boolean matchesAutomaticEndpointsSpec,
-                                                      final ClientLogger logger) {
+        final String serviceEndpointName, final String serviceSecondaryEndpointName,
+        final Boolean matchesAutomaticEndpointsSpec, final ClientLogger logger) {
         String serviceEndpoint = settings.getSettingValue(serviceEndpointName);
         String serviceSecondaryEndpoint = settings.getSettingValue(serviceSecondaryEndpointName);
 
@@ -99,24 +97,23 @@ public class StorageEndpoint {
 
         if (matchesAutomaticEndpointsSpec) {
             // Derive URI from relevant settings
-            final String protocol =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.DEFAULT_ENDPOINTS_PROTOCOL_NAME);
+            final String protocol
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.DEFAULT_ENDPOINTS_PROTOCOL_NAME);
 
             if (isNullOrEmpty(protocol)) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("'DefaultEndpointsProtocol' is required, specify whether to use http"
-                        + " or https."));
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "'DefaultEndpointsProtocol' is required, specify whether to use http" + " or https."));
             }
 
-            final String accountName =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.ACCOUNT_NAME);
+            final String accountName
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.ACCOUNT_NAME);
 
             if (isNullOrEmpty(accountName)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'AccountName' is required."));
             }
 
-            String endpointSuffix =
-                settings.getSettingValue(StorageConstants.ConnectionStringConstants.ENDPOINT_SUFFIX_NAME);
+            String endpointSuffix
+                = settings.getSettingValue(StorageConstants.ConnectionStringConstants.ENDPOINT_SUFFIX_NAME);
 
             if (endpointSuffix == null) {
                 // default: core.windows.net
@@ -133,8 +130,8 @@ public class StorageEndpoint {
             }
 
             try {
-                secondaryUri = new URI(String.format("%s://%s-secondary.%s.%s", protocol, accountName, service,
-                    endpointSuffix));
+                secondaryUri
+                    = new URI(String.format("%s://%s-secondary.%s.%s", protocol, accountName, service, endpointSuffix));
             } catch (URISyntaxException use) {
                 throw logger.logExceptionAsError(new RuntimeException(use));
             }

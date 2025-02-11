@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.networkcloud.generated;
 
-/** Samples for Volumes GetByResourceGroup. */
+/**
+ * Samples for Volumes GetByResourceGroup.
+ */
 public final class VolumesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2023-07-01/examples/Volumes_Get.json
+     * x-ms-original-file:
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * Volumes_Get.json
      */
     /**
      * Sample code: Get volume.
-     *
+     * 
      * @param manager Entry point to NetworkCloudManager.
      */
     public static void getVolume(com.azure.resourcemanager.networkcloud.NetworkCloudManager manager) {
-        manager
-            .volumes()
+        manager.volumes()
             .getByResourceGroupWithResponse("resourceGroupName", "volumeName", com.azure.core.util.Context.NONE);
     }
 }

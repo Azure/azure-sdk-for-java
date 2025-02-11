@@ -5,16 +5,17 @@ package com.azure.core.experimental.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.models.ResponseError;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
-/** Provides status details for long running operations. */
+import java.io.IOException;
+
+/** Provides status details for long-running operations. */
 @Immutable
-public final class PollResult {
-    @JsonProperty(value = "id", required = true)
+public final class PollResult implements JsonSerializable<PollResult> {
     private final String operationId;
-
-    @JsonProperty(value = "error")
     private ResponseError error;
 
     /**
@@ -22,8 +23,7 @@ public final class PollResult {
      *
      * @param operationId the unique ID of the operation.
      */
-    @JsonCreator
-    private PollResult(@JsonProperty(value = "id", required = true) String operationId) {
+    private PollResult(String operationId) {
         this.operationId = operationId;
     }
 
@@ -43,5 +43,46 @@ public final class PollResult {
      */
     public ResponseError getError() {
         return this.error;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("id", operationId)
+            .writeJsonField("error", error)
+            .writeEndObject();
+    }
+
+    /**
+     * Deserializes an instance of {@link PollResult} from the {@link JsonReader}.
+     *
+     * @param jsonReader The {@link JsonReader} to read.
+     * @return An instance of {@link PollResult}, or null if the {@link JsonReader} was pointing to
+     * {@link JsonToken#NULL}.
+     * @throws IOException If an error occurs while reading the {@link JsonReader}.
+     */
+    public static PollResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String operationId = null;
+            ResponseError error = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    operationId = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    error = ResponseError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            PollResult pollResult = new PollResult(operationId);
+            pollResult.error = error;
+
+            return pollResult;
+        });
     }
 }

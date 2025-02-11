@@ -9,28 +9,25 @@ import com.azure.resourcemanager.kusto.models.LanguageExtensionName;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import java.util.Arrays;
 
-/** Samples for Clusters RemoveLanguageExtensions. */
+/**
+ * Samples for Clusters RemoveLanguageExtensions.
+ */
 public final class ClustersRemoveLanguageExtensionsSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoClusterRemoveLanguageExtensions.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
+     * KustoClusterRemoveLanguageExtensions.json
      */
     /**
      * Sample code: KustoClusterRemoveLanguageExtensions.
-     *
+     * 
      * @param manager Entry point to KustoManager.
      */
     public static void kustoClusterRemoveLanguageExtensions(com.azure.resourcemanager.kusto.KustoManager manager) {
-        manager
-            .clusters()
-            .removeLanguageExtensions(
-                "kustorptest",
-                "kustoCluster",
-                new LanguageExtensionsList()
-                    .withValue(
-                        Arrays
-                            .asList(
-                                new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
-                                new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
+        manager.clusters()
+            .removeLanguageExtensions("kustorptest", "kustoCluster",
+                new LanguageExtensionsList().withValue(
+                    Arrays.asList(new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
+                        new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
                 com.azure.core.util.Context.NONE);
     }
 }

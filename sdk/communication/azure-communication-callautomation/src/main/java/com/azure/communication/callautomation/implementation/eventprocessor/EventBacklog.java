@@ -63,6 +63,8 @@ public final class EventBacklog {
     }
 
     public EventWithBacklogId removeEvent(String backlogEventId) {
-        return backlogEventId != null ? new EventWithBacklogId(backlogEventId, eventBacklog.remove(backlogEventId)) : null;
+        return backlogEventId != null
+            ? new EventWithBacklogId(backlogEventId, eventBacklog.remove(backlogEventId))
+            : null;
     }
 }

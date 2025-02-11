@@ -20,7 +20,7 @@ public final class ReplicationvCentersGetSamples {
      */
     public static void
         getsTheDetailsOfAVCenter(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationvCenters().getWithResponse("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78",
-            com.azure.core.util.Context.NONE);
+        manager.replicationvCenters()
+            .getWithResponse("MadhaviVault", "MadhaviVRG", "MadhaviFabric", "esx-78", com.azure.core.util.Context.NONE);
     }
 }

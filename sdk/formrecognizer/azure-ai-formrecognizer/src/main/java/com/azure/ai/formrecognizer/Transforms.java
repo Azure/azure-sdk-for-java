@@ -82,7 +82,7 @@ final class Transforms {
      * @return The List of {@code RecognizedForm}.
      */
     static List<RecognizedForm> toRecognizedForm(AnalyzeResult analyzeResult, boolean includeFieldElements,
-                                                 String modelId) {
+        String modelId) {
         List<ReadResult> readResults = analyzeResult.getReadResults();
         List<DocumentResult> documentResults = analyzeResult.getDocumentResults();
         List<PageResult> pageResults = analyzeResult.getPageResults();
@@ -102,11 +102,9 @@ final class Transforms {
                 }
 
                 Map<String, FormField> extractedFieldMap = getLabeledFieldMap(documentResultItem, readResults);
-                final RecognizedForm recognizedForm = new RecognizedForm(
-                    extractedFieldMap,
-                    documentResultItem.getDocType(),
-                    formPageRange,
-                    formPages.subList(formPageRange.getFirstPageNumber() - 1, formPageRange.getLastPageNumber()));
+                final RecognizedForm recognizedForm
+                    = new RecognizedForm(extractedFieldMap, documentResultItem.getDocType(), formPageRange,
+                        formPages.subList(formPageRange.getFirstPageNumber() - 1, formPageRange.getLastPageNumber()));
 
                 RecognizedFormHelper.setFormTypeConfidence(recognizedForm, documentResultItem.getDocTypeConfidence());
                 if (documentResultItem.getModelId() != null) {
@@ -124,14 +122,11 @@ final class Transforms {
                     if (clusterId != null) {
                         formType.append(clusterId);
                     }
-                    Map<String, FormField> extractedFieldMap = getUnlabeledFieldMap(includeFieldElements, readResults,
-                        pageResultItem, pageNumber);
+                    Map<String, FormField> extractedFieldMap
+                        = getUnlabeledFieldMap(includeFieldElements, readResults, pageResultItem, pageNumber);
 
-                    final RecognizedForm recognizedForm = new RecognizedForm(
-                        extractedFieldMap,
-                        formType.toString(),
-                        new FormPageRange(pageNumber, pageNumber),
-                        Collections.singletonList(formPages.get(index)));
+                    final RecognizedForm recognizedForm = new RecognizedForm(extractedFieldMap, formType.toString(),
+                        new FormPageRange(pageNumber, pageNumber), Collections.singletonList(formPages.get(index)));
 
                     RecognizedFormHelper.setModelId(recognizedForm, modelId);
                     extractedFormList.add(recognizedForm);
@@ -175,12 +170,12 @@ final class Transforms {
             List<FormSelectionMark> perPageFormSelectionMarkList = new ArrayList<>();
             if (includeFieldElements && !CoreUtils.isNullOrEmpty(readResultItem.getSelectionMarks())) {
                 PageResult pageResultItem = pageResults.get(index);
-                perPageFormSelectionMarkList = getReadResultFormSelectionMarks(readResultItem,
-                    pageResultItem.getPage());
+                perPageFormSelectionMarkList
+                    = getReadResultFormSelectionMarks(readResultItem, pageResultItem.getPage());
             }
 
-            formPages.add(getFormPage(readResultItem, perPageTableList, perPageFormLineList,
-                perPageFormSelectionMarkList));
+            formPages
+                .add(getFormPage(readResultItem, perPageTableList, perPageFormLineList, perPageFormSelectionMarkList));
         }));
 
         return formPages;
@@ -194,26 +189,24 @@ final class Transforms {
      * @return A list of {@code FormSelectionMark}.
      */
     static List<FormSelectionMark> getReadResultFormSelectionMarks(ReadResult readResultItem, int pageNumber) {
-        return readResultItem.getSelectionMarks().stream()
-            .map(selectionMark -> {
-                final FormSelectionMark formSelectionMark = new FormSelectionMark(
-                    null, toBoundingBox(selectionMark.getBoundingBox()), pageNumber);
-                final com.azure.ai.formrecognizer.implementation.models.SelectionMarkState selectionMarkStateImpl
-                    = selectionMark.getState();
-                com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState;
-                if (SelectionMarkState.SELECTED.toString().equals(selectionMarkStateImpl.toString())) {
-                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
-                } else if (SelectionMarkState.UNSELECTED.toString().equals(selectionMarkStateImpl.toString())) {
-                    selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
-                } else {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(
-                        selectionMarkStateImpl + ", unsupported selection mark state."));
-                }
-                FormSelectionMarkHelper.setConfidence(formSelectionMark, selectionMark.getConfidence());
-                FormSelectionMarkHelper.setState(formSelectionMark, selectionMarkState);
-                return formSelectionMark;
-            })
-            .collect(Collectors.toList());
+        return readResultItem.getSelectionMarks().stream().map(selectionMark -> {
+            final FormSelectionMark formSelectionMark
+                = new FormSelectionMark(null, toBoundingBox(selectionMark.getBoundingBox()), pageNumber);
+            final com.azure.ai.formrecognizer.implementation.models.SelectionMarkState selectionMarkStateImpl
+                = selectionMark.getState();
+            com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState;
+            if (SelectionMarkState.SELECTED.toString().equals(selectionMarkStateImpl.toString())) {
+                selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.SELECTED;
+            } else if (SelectionMarkState.UNSELECTED.toString().equals(selectionMarkStateImpl.toString())) {
+                selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
+            } else {
+                throw LOGGER.logThrowableAsError(
+                    new RuntimeException(selectionMarkStateImpl + ", unsupported selection mark state."));
+            }
+            FormSelectionMarkHelper.setConfidence(formSelectionMark, selectionMark.getConfidence());
+            FormSelectionMarkHelper.setState(formSelectionMark, selectionMarkState);
+            return formSelectionMark;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -228,27 +221,21 @@ final class Transforms {
         if (pageResultItem.getTables() == null) {
             return new ArrayList<>();
         } else {
-            return pageResultItem.getTables().stream()
-                .map(dataTable -> {
-                    FormTable formTable = new FormTable(dataTable.getRows(), dataTable.getColumns(),
-                        dataTable.getCells()
-                            .stream()
-                            .map(dataTableCell -> new FormTableCell(
-                                dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
-                                dataTableCell.getRowSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getRowSpan(),
-                                dataTableCell.getColumnSpan() == null
-                                    ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
-                                dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
-                                dataTableCell.getConfidence(),
-                                dataTableCell.isHeader() != null && dataTableCell.isHeader(),
-                                dataTableCell.isFooter() != null && dataTableCell.isFooter(),
-                                pageNumber, setReferenceElements(dataTableCell.getElements(), readResults)))
-                            .collect(Collectors.toList()), pageNumber);
+            return pageResultItem.getTables().stream().map(dataTable -> {
+                FormTable formTable = new FormTable(dataTable.getRows(), dataTable.getColumns(), dataTable.getCells()
+                    .stream()
+                    .map(dataTableCell -> new FormTableCell(dataTableCell.getRowIndex(), dataTableCell.getColumnIndex(),
+                        dataTableCell.getRowSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getRowSpan(),
+                        dataTableCell.getColumnSpan() == null ? DEFAULT_TABLE_SPAN : dataTableCell.getColumnSpan(),
+                        dataTableCell.getText(), toBoundingBox(dataTableCell.getBoundingBox()),
+                        dataTableCell.getConfidence(), dataTableCell.isHeader() != null && dataTableCell.isHeader(),
+                        dataTableCell.isFooter() != null && dataTableCell.isFooter(), pageNumber,
+                        setReferenceElements(dataTableCell.getElements(), readResults)))
+                    .collect(Collectors.toList()), pageNumber);
 
-                    FormTableHelper.setBoundingBox(formTable, toBoundingBox(dataTable.getBoundingBox()));
-                    return formTable;
-                })
-                .collect(Collectors.toList());
+                FormTableHelper.setBoundingBox(formTable, toBoundingBox(dataTable.getBoundingBox()));
+                return formTable;
+            }).collect(Collectors.toList());
         }
     }
 
@@ -259,18 +246,13 @@ final class Transforms {
      * @return The list of {@code FormLine}.
      */
     static List<FormLine> getReadResultFormLines(ReadResult readResultItem) {
-        return readResultItem.getLines().stream()
-            .map(textLine -> {
-                FormLine formLine = new FormLine(
-                    textLine.getText(),
-                    toBoundingBox(textLine.getBoundingBox()),
-                    readResultItem.getPage(),
-                    toWords(textLine.getWords(), readResultItem.getPage()));
+        return readResultItem.getLines().stream().map(textLine -> {
+            FormLine formLine = new FormLine(textLine.getText(), toBoundingBox(textLine.getBoundingBox()),
+                readResultItem.getPage(), toWords(textLine.getWords(), readResultItem.getPage()));
 
-                FormLineHelper.setAppearance(formLine, getTextAppearance(textLine));
-                return formLine;
-            })
-            .collect(Collectors.toList());
+            FormLineHelper.setAppearance(formLine, getTextAppearance(textLine));
+            return formLine;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -302,7 +284,7 @@ final class Transforms {
      * @return The {@link RecognizedForm#getFields}.
      */
     private static Map<String, FormField> getLabeledFieldMap(DocumentResult documentResultItem,
-                                                             List<ReadResult> readResults) {
+        List<ReadResult> readResults) {
         Map<String, FormField> recognizedFieldMap = new LinkedHashMap<>();
         // add receipt fields
         if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
@@ -323,8 +305,7 @@ final class Transforms {
                     }
                     recognizedFieldMap.put(key, setFormField(key, valueData, fieldValue, readResults));
                 } else {
-                    recognizedFieldMap.put(key, new FormField(key, null, null, null,
-                        DEFAULT_CONFIDENCE_VALUE));
+                    recognizedFieldMap.put(key, new FormField(key, null, null, null, DEFAULT_CONFIDENCE_VALUE));
                 }
             });
         }
@@ -342,30 +323,34 @@ final class Transforms {
      * @return The strongly typed {@link FormField} for the field input.
      */
     private static FormField setFormField(String name, FieldData valueData, FieldValue fieldValue,
-                                          List<ReadResult> readResults) {
+        List<ReadResult> readResults) {
         com.azure.ai.formrecognizer.models.FieldValue value;
         switch (fieldValue.getType()) {
             case PHONE_NUMBER:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValuePhoneNumber(),
                     FieldValueType.PHONE_NUMBER);
                 break;
+
             case STRING:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueString(),
                     FieldValueType.STRING);
                 break;
+
             case TIME:
                 if (fieldValue.getValueTime() != null) {
-                    LocalTime fieldTime = LocalTime.parse(fieldValue.getValueTime(),
-                        DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    LocalTime fieldTime
+                        = LocalTime.parse(fieldValue.getValueTime(), DateTimeFormatter.ofPattern("HH:mm:ss"));
                     value = new com.azure.ai.formrecognizer.models.FieldValue(fieldTime, FieldValueType.TIME);
                 } else {
                     value = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.TIME);
                 }
                 break;
+
             case DATE:
-                value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(),
-                    FieldValueType.DATE);
+                value
+                    = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueDate(), FieldValueType.DATE);
                 break;
+
             case INTEGER:
                 if (fieldValue.getValueInteger() != null) {
                     value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueInteger().longValue(),
@@ -374,10 +359,12 @@ final class Transforms {
                     value = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.LONG);
                 }
                 break;
+
             case NUMBER:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueNumber(),
                     FieldValueType.FLOAT);
                 break;
+
             case ARRAY:
                 if (fieldValue.getValueArray() != null) {
                     value = new com.azure.ai.formrecognizer.models.FieldValue(
@@ -386,6 +373,7 @@ final class Transforms {
                     value = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.LIST);
                 }
                 break;
+
             case OBJECT:
                 if (fieldValue.getValueObject() != null) {
                     value = new com.azure.ai.formrecognizer.models.FieldValue(
@@ -395,6 +383,7 @@ final class Transforms {
                 }
 
                 break;
+
             case SELECTION_MARK:
                 if (fieldValue.getValueSelectionMark() != null) {
                     com.azure.ai.formrecognizer.models.SelectionMarkState selectionMarkState;
@@ -404,26 +393,27 @@ final class Transforms {
                     } else if (FieldValueSelectionMark.UNSELECTED.equals(fieldValueSelectionMarkState)) {
                         selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.UNSELECTED;
                     } else {
-                        selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState.fromString(
-                            fieldValue.getValueSelectionMark().toString());
+                        selectionMarkState = com.azure.ai.formrecognizer.models.SelectionMarkState
+                            .fromString(fieldValue.getValueSelectionMark().toString());
                     }
                     value = new com.azure.ai.formrecognizer.models.FieldValue(selectionMarkState,
                         FieldValueType.SELECTION_MARK_STATE);
                 } else {
-                    value =
-                        new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.SELECTION_MARK_STATE);
+                    value
+                        = new com.azure.ai.formrecognizer.models.FieldValue(null, FieldValueType.SELECTION_MARK_STATE);
                 }
                 break;
+
             case COUNTRY_REGION:
                 value = new com.azure.ai.formrecognizer.models.FieldValue(fieldValue.getValueCountryRegion(),
                     FieldValueType.COUNTRY_REGION);
                 break;
+
             default:
                 throw LOGGER.logExceptionAsError(new RuntimeException("FieldValue Type not supported"));
         }
 
-        return new FormField(name, null, valueData, value,
-            setDefaultConfidenceValue(fieldValue.getConfidence()));
+        return new FormField(name, null, valueData, value, setDefaultConfidenceValue(fieldValue.getConfidence()));
     }
 
     /**
@@ -445,7 +435,7 @@ final class Transforms {
      * @return The Map of {@link FormField}.
      */
     private static Map<String, FormField> toFieldValueObject(Map<String, FieldValue> valueObject,
-                                                             List<ReadResult> readResults) {
+        List<ReadResult> readResults) {
         Map<String, FormField> fieldValueObjectMap = new TreeMap<>();
         valueObject.forEach((key, fieldValue) -> {
 
@@ -453,8 +443,7 @@ final class Transforms {
             // has ho value data when bounding box and page info is null.
             if (fieldValue.getPage() != null && fieldValue.getBoundingBox() != null) {
                 valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
-                    fieldValue.getPage(),
-                    setReferenceElements(fieldValue.getElements(), readResults));
+                    fieldValue.getPage(), setReferenceElements(fieldValue.getElements(), readResults));
             }
             fieldValueObjectMap.put(key, setFormField(key, valueData, fieldValue, readResults));
         });
@@ -472,19 +461,16 @@ final class Transforms {
      * @return The List of {@link FormField}.
      */
     private static List<FormField> toFieldValueArray(List<FieldValue> valueArray, List<ReadResult> readResults) {
-        return valueArray.stream()
-            .map(fieldValue -> {
-                FieldData valueData = null;
-                // ARRAY has ho value data, such as bounding box.
-                if (ARRAY != fieldValue.getType()
-                    && (fieldValue.getPage() != null && fieldValue.getBoundingBox() != null)) {
-                    valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
-                        fieldValue.getPage(),
-                        setReferenceElements(fieldValue.getElements(), readResults));
-                }
-                return setFormField(null, valueData, fieldValue, readResults);
-            })
-            .collect(Collectors.toList());
+        return valueArray.stream().map(fieldValue -> {
+            FieldData valueData = null;
+            // ARRAY has ho value data, such as bounding box.
+            if (ARRAY != fieldValue.getType()
+                && (fieldValue.getPage() != null && fieldValue.getBoundingBox() != null)) {
+                valueData = new FieldData(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
+                    fieldValue.getPage(), setReferenceElements(fieldValue.getElements(), readResults));
+            }
+            return setFormField(null, valueData, fieldValue, readResults);
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -498,14 +484,9 @@ final class Transforms {
      */
     private static FormPage getFormPage(ReadResult readResultItem, List<FormTable> perPageTableList,
         List<FormLine> perPageLineList, List<FormSelectionMark> perPageSelectionMarkList) {
-        FormPage formPage = new FormPage(
-            readResultItem.getHeight(),
-            readResultItem.getAngle(),
-            LengthUnit.fromString(readResultItem.getUnit().toString()),
-            readResultItem.getWidth(),
-            perPageLineList,
-            perPageTableList,
-            readResultItem.getPage());
+        FormPage formPage = new FormPage(readResultItem.getHeight(), readResultItem.getAngle(),
+            LengthUnit.fromString(readResultItem.getUnit().toString()), readResultItem.getWidth(), perPageLineList,
+            perPageTableList, readResultItem.getPage());
         FormPageHelper.setSelectionMarks(formPage, perPageSelectionMarkList);
         return formPage;
     }
@@ -529,8 +510,7 @@ final class Transforms {
             List<FormElement> formValueContentList = new ArrayList<>();
             if (includeFieldElements) {
                 formKeyContentList = setReferenceElements(keyValuePair.getKey().getElements(), readResults);
-                formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults
-                );
+                formValueContentList = setReferenceElements(keyValuePair.getValue().getElements(), readResults);
             }
             FieldData labelData = new FieldData(keyValuePair.getKey().getText(),
                 toBoundingBox(keyValuePair.getKey().getBoundingBox()), pageNumber, formKeyContentList);
@@ -541,8 +521,7 @@ final class Transforms {
             FormField formField = new FormField(fieldName, labelData, valueData,
                 new com.azure.ai.formrecognizer.models.FieldValue(keyValuePair.getValue().getText(),
                     FieldValueType.STRING),
-                setDefaultConfidenceValue(keyValuePair.getConfidence())
-            );
+                setDefaultConfidenceValue(keyValuePair.getConfidence()));
             formFieldMap.put(fieldName, formField);
         }));
         return formFieldMap;
@@ -554,8 +533,7 @@ final class Transforms {
      *
      * @return The list if referenced elements.
      */
-    private static List<FormElement> setReferenceElements(List<String> elements,
-        List<ReadResult> readResults) {
+    private static List<FormElement> setReferenceElements(List<String> elements, List<ReadResult> readResults) {
         if (CoreUtils.isNullOrEmpty(elements)) {
             return new ArrayList<>();
         }
@@ -566,8 +544,7 @@ final class Transforms {
                 int pageIndex = Integer.parseInt(wordMatcher.group(1));
                 int lineIndex = Integer.parseInt(wordMatcher.group(2));
                 int wordIndex = Integer.parseInt(wordMatcher.group(3));
-                TextWord textWord =
-                    readResults.get(pageIndex).getLines().get(lineIndex).getWords().get(wordIndex);
+                TextWord textWord = readResults.get(pageIndex).getLines().get(lineIndex).getWords().get(wordIndex);
                 FormWord wordElement = new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()),
                     pageIndex + 1, setDefaultConfidenceValue(textWord.getConfidence()));
                 formElementList.add(wordElement);
@@ -589,9 +566,8 @@ final class Transforms {
                 int pageIndex = Integer.parseInt(selectionMarkMatcher.group(1));
                 int selectionMarkIndex = Integer.parseInt(selectionMarkMatcher.group(2));
                 SelectionMark selectionMark = readResults.get(pageIndex).getSelectionMarks().get(selectionMarkIndex);
-                FormSelectionMark selectionMarkElement =
-                    new FormSelectionMark(null, toBoundingBox(selectionMark.getBoundingBox()),
-                        pageIndex + 1);
+                FormSelectionMark selectionMarkElement
+                    = new FormSelectionMark(null, toBoundingBox(selectionMark.getBoundingBox()), pageIndex + 1);
                 FormSelectionMarkHelper.setState(selectionMarkElement,
                     SelectionMarkState.fromString(selectionMark.getState().toString()));
                 formElementList.add(selectionMarkElement);
@@ -612,12 +588,9 @@ final class Transforms {
      */
     private static List<FormWord> toWords(List<TextWord> words, int pageNumber) {
         return words.stream()
-            .map(textWord -> new FormWord(
-                textWord.getText(),
-                toBoundingBox(textWord.getBoundingBox()),
-                pageNumber,
-                setDefaultConfidenceValue(textWord.getConfidence()))
-            ).collect(Collectors.toList());
+            .map(textWord -> new FormWord(textWord.getText(), toBoundingBox(textWord.getBoundingBox()), pageNumber,
+                setDefaultConfidenceValue(textWord.getConfidence())))
+            .collect(Collectors.toList());
     }
 
     /**

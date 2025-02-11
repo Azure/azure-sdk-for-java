@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.SchemaComparisonValidation
 public final class SchemaComparisonValidationResultTypeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SchemaComparisonValidationResultType model =
-            BinaryData
-                .fromString(
-                    "{\"objectName\":\"rpgogtqxep\",\"objectType\":\"StoredProcedures\",\"updateAction\":\"ChangedOnTarget\"}")
-                .toObject(SchemaComparisonValidationResultType.class);
+        SchemaComparisonValidationResultType model = BinaryData.fromString(
+            "{\"objectName\":\"rttikteusqc\",\"objectType\":\"StoredProcedures\",\"updateAction\":\"AddedOnTarget\"}")
+            .toObject(SchemaComparisonValidationResultType.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -7,13 +7,15 @@ package com.azure.resourcemanager.operationsmanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ManagementConfigurations. */
+/**
+ * Resource collection API of ManagementConfigurations.
+ */
 public interface ManagementConfigurations {
     /**
      * Retrieves the ManagementConfigurations list for the subscription
-     *
-     * <p>Retrieves the ManagementConfigurations list.
-     *
+     * 
+     * Retrieves the ManagementConfigurations list.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -24,9 +26,9 @@ public interface ManagementConfigurations {
 
     /**
      * Retrieves the ManagementConfigurations list for the subscription
-     *
-     * <p>Retrieves the ManagementConfigurations list.
-     *
+     * 
+     * Retrieves the ManagementConfigurations list.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementConfiguration response.
@@ -35,9 +37,9 @@ public interface ManagementConfigurations {
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param context The context to associate with this operation.
@@ -46,14 +48,14 @@ public interface ManagementConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String managementConfigurationName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String managementConfigurationName,
+        Context context);
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,9 +66,9 @@ public interface ManagementConfigurations {
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param context The context to associate with this operation.
@@ -75,14 +77,14 @@ public interface ManagementConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the container for solution along with {@link Response}.
      */
-    Response<ManagementConfiguration> getByResourceGroupWithResponse(
-        String resourceGroupName, String managementConfigurationName, Context context);
+    Response<ManagementConfiguration> getByResourceGroupWithResponse(String resourceGroupName,
+        String managementConfigurationName, Context context);
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -94,9 +96,9 @@ public interface ManagementConfigurations {
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,9 +109,9 @@ public interface ManagementConfigurations {
 
     /**
      * Retrieve ManagementConfiguration.
-     *
-     * <p>Retrieves the user ManagementConfiguration.
-     *
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,9 +123,9 @@ public interface ManagementConfigurations {
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface ManagementConfigurations {
 
     /**
      * Deletes the ManagementConfiguration
-     *
-     * <p>Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +149,7 @@ public interface ManagementConfigurations {
 
     /**
      * Begins definition for a new ManagementConfiguration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ManagementConfiguration definition.
      */

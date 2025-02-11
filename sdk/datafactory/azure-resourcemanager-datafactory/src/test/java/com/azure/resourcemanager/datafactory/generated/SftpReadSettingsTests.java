@@ -11,24 +11,24 @@ public final class SftpReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SftpReadSettings model = BinaryData.fromString(
-            "{\"type\":\"SftpReadSettings\",\"recursive\":\"dataekbpqghxdpg\",\"wildcardFolderPath\":\"datafimlyx\",\"wildcardFileName\":\"dataixjudbiac\",\"enablePartitionDiscovery\":\"dataoucmfuvuslvbujwp\",\"partitionRootPath\":\"dataijpyyvecruhqymwd\",\"fileListPath\":\"datahkt\",\"deleteFilesAfterCompletion\":\"dataljkh\",\"modifiedDatetimeStart\":\"datagtpgxkk\",\"modifiedDatetimeEnd\":\"datapxwlvth\",\"disableChunking\":\"dataa\",\"maxConcurrentConnections\":\"dataaxoswqw\",\"disableMetricsCollection\":\"datalrzlgk\",\"\":{\"erxfe\":\"datadk\"}}")
+            "{\"type\":\"SftpReadSettings\",\"recursive\":\"datab\",\"wildcardFolderPath\":\"datavkm\",\"wildcardFileName\":\"datajz\",\"enablePartitionDiscovery\":\"datakyvybljqgirpi\",\"partitionRootPath\":\"dataqrmxcu\",\"fileListPath\":\"datarkgg\",\"deleteFilesAfterCompletion\":\"dataqanrkhcdjfsvfbj\",\"modifiedDatetimeStart\":\"dataadwrbrntvhppykrl\",\"modifiedDatetimeEnd\":\"dataalsvxpola\",\"disableChunking\":\"datarjmsabnmu\",\"maxConcurrentConnections\":\"datathyxryv\",\"disableMetricsCollection\":\"datazhsigddgbcnqv\",\"\":{\"lemzrw\":\"databffcvtij\",\"kmkwddgyqeni\":\"datagvgogczgcm\",\"rtcbvifcrnxst\":\"datarznam\"}}")
             .toObject(SftpReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SftpReadSettings model = new SftpReadSettings().withMaxConcurrentConnections("dataaxoswqw")
-            .withDisableMetricsCollection("datalrzlgk")
-            .withRecursive("dataekbpqghxdpg")
-            .withWildcardFolderPath("datafimlyx")
-            .withWildcardFileName("dataixjudbiac")
-            .withEnablePartitionDiscovery("dataoucmfuvuslvbujwp")
-            .withPartitionRootPath("dataijpyyvecruhqymwd")
-            .withFileListPath("datahkt")
-            .withDeleteFilesAfterCompletion("dataljkh")
-            .withModifiedDatetimeStart("datagtpgxkk")
-            .withModifiedDatetimeEnd("datapxwlvth")
-            .withDisableChunking("dataa");
+        SftpReadSettings model = new SftpReadSettings().withMaxConcurrentConnections("datathyxryv")
+            .withDisableMetricsCollection("datazhsigddgbcnqv")
+            .withRecursive("datab")
+            .withWildcardFolderPath("datavkm")
+            .withWildcardFileName("datajz")
+            .withEnablePartitionDiscovery("datakyvybljqgirpi")
+            .withPartitionRootPath("dataqrmxcu")
+            .withFileListPath("datarkgg")
+            .withDeleteFilesAfterCompletion("dataqanrkhcdjfsvfbj")
+            .withModifiedDatetimeStart("dataadwrbrntvhppykrl")
+            .withModifiedDatetimeEnd("dataalsvxpola")
+            .withDisableChunking("datarjmsabnmu");
         model = BinaryData.fromObject(model).toObject(SftpReadSettings.class);
     }
 }

@@ -17,13 +17,15 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.ValidateConf
 import com.azure.resourcemanager.managednetworkfabric.models.NetworkTapRulePatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-/** An instance of this class provides access to all the operations defined in NetworkTapRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkTapRulesClient.
+ */
 public interface NetworkTapRulesClient {
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -33,14 +35,14 @@ public interface NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreate(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body);
+    SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreate(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRuleInner body);
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -51,14 +53,14 @@ public interface NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreate(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body, Context context);
+    SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginCreate(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRuleInner body, Context context);
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -72,9 +74,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Create Network Tap Rule.
-     *
-     * <p>Create Network Tap Rule resource.
-     *
+     * 
+     * Create Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -85,14 +87,14 @@ public interface NetworkTapRulesClient {
      * @return the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkTapRuleInner create(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body, Context context);
+    NetworkTapRuleInner create(String resourceGroupName, String networkTapRuleName, NetworkTapRuleInner body,
+        Context context);
 
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -102,14 +104,14 @@ public interface NetworkTapRulesClient {
      * @return network Tap Rule resource details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkTapRuleInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkTapRuleName, Context context);
+    Response<NetworkTapRuleInner> getByResourceGroupWithResponse(String resourceGroupName, String networkTapRuleName,
+        Context context);
 
     /**
      * Gets a Network Tap Rule.
-     *
-     * <p>Get Network Tap Rule resource details.
-     *
+     * 
+     * Get Network Tap Rule resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,9 +124,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -134,14 +136,14 @@ public interface NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdate(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body);
+    SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdate(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRulePatch body);
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -152,14 +154,14 @@ public interface NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdate(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body, Context context);
+    SyncPoller<PollResult<NetworkTapRuleInner>, NetworkTapRuleInner> beginUpdate(String resourceGroupName,
+        String networkTapRuleName, NetworkTapRulePatch body, Context context);
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -173,9 +175,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Updates a Network Tap Rule.
-     *
-     * <p>Update certain properties of the Network Tap Rule resource.
-     *
+     * 
+     * Update certain properties of the Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Network Tap Rule properties to update.
@@ -186,14 +188,14 @@ public interface NetworkTapRulesClient {
      * @return the NetworkTapRule resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkTapRuleInner update(
-        String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body, Context context);
+    NetworkTapRuleInner update(String resourceGroupName, String networkTapRuleName, NetworkTapRulePatch body,
+        Context context);
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,9 +208,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -218,14 +220,14 @@ public interface NetworkTapRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String networkTapRuleName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkTapRuleName,
+        Context context);
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,9 +239,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Deletes a Network Tap Rule.
-     *
-     * <p>Delete Network Tap Rule resource.
-     *
+     * 
+     * Delete Network Tap Rule resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -252,9 +254,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * List Network Tap Rules by resource group.
-     *
-     * <p>List all the Network Tap Rule resources in the given resource group.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -266,9 +268,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * List Network Tap Rules by resource group.
-     *
-     * <p>List all the Network Tap Rule resources in the given resource group.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,9 +283,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * List NetworkTapRules by subscription.
-     *
-     * <p>List all the Network Tap Rule resources in the given subscription.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkTapRules as paginated response with {@link PagedIterable}.
@@ -293,9 +295,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * List NetworkTapRules by subscription.
-     *
-     * <p>List all the Network Tap Rule resources in the given subscription.
-     *
+     * 
+     * List all the Network Tap Rule resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -307,9 +309,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -320,14 +322,14 @@ public interface NetworkTapRulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body);
+        beginUpdateAdministrativeState(String resourceGroupName, String networkTapRuleName,
+            UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -339,14 +341,14 @@ public interface NetworkTapRulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForStateUpdateInner>, CommonPostActionResponseForStateUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body, Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String networkTapRuleName,
+            UpdateAdministrativeState body, Context context);
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -356,14 +358,14 @@ public interface NetworkTapRulesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body);
 
     /**
      * Updates administrative state of Network Tap Rules.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param body Request payload.
@@ -374,14 +376,14 @@ public interface NetworkTapRulesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(
-        String resourceGroupName, String networkTapRuleName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForStateUpdateInner updateAdministrativeState(String resourceGroupName,
+        String networkTapRuleName, UpdateAdministrativeState body, Context context);
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,9 +397,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -412,9 +414,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -427,9 +429,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Resync the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -439,14 +441,14 @@ public interface NetworkTapRulesClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner resync(
-        String resourceGroupName, String networkTapRuleName, Context context);
+    CommonPostActionResponseForStateUpdateInner resync(String resourceGroupName, String networkTapRuleName,
+        Context context);
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,9 +462,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -477,9 +479,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,9 +494,9 @@ public interface NetworkTapRulesClient {
 
     /**
      * Validates the configuration of the Network Tap Rule.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapRuleName Name of the Network Tap Rule.
      * @param context The context to associate with this operation.
@@ -504,6 +506,6 @@ public interface NetworkTapRulesClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String networkTapRuleName, Context context);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String networkTapRuleName,
+        Context context);
 }

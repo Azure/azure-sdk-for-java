@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An API Version Set contains the common configuration for a set of API Versions relating. */
+/**
+ * An API Version Set contains the common configuration for a set of API Versions relating.
+ */
 @Fluent
-public final class ApiVersionSetContractDetails {
+public final class ApiVersionSetContractDetails implements JsonSerializable<ApiVersionSetContractDetails> {
     /*
      * Identifier for existing API Version Set. Omit this value to create a new Version Set.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The display Name of the API Version Set.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Description of API Version Set.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * An value that determines where the API Version identifier will be located in a HTTP request.
      */
-    @JsonProperty(value = "versioningScheme")
     private VersioningScheme versioningScheme;
 
     /*
      * Name of query parameter that indicates the API Version if versioningScheme is set to `query`.
      */
-    @JsonProperty(value = "versionQueryName")
     private String versionQueryName;
 
     /*
      * Name of HTTP header parameter that indicates the API Version if versioningScheme is set to `header`.
      */
-    @JsonProperty(value = "versionHeaderName")
     private String versionHeaderName;
 
-    /** Creates an instance of ApiVersionSetContractDetails class. */
+    /**
+     * Creates an instance of ApiVersionSetContractDetails class.
+     */
     public ApiVersionSetContractDetails() {
     }
 
     /**
      * Get the id property: Identifier for existing API Version Set. Omit this value to create a new Version Set.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -61,7 +63,7 @@ public final class ApiVersionSetContractDetails {
 
     /**
      * Set the id property: Identifier for existing API Version Set. Omit this value to create a new Version Set.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApiVersionSetContractDetails object itself.
      */
@@ -72,7 +74,7 @@ public final class ApiVersionSetContractDetails {
 
     /**
      * Get the name property: The display Name of the API Version Set.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -81,7 +83,7 @@ public final class ApiVersionSetContractDetails {
 
     /**
      * Set the name property: The display Name of the API Version Set.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApiVersionSetContractDetails object itself.
      */
@@ -92,7 +94,7 @@ public final class ApiVersionSetContractDetails {
 
     /**
      * Get the description property: Description of API Version Set.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -101,7 +103,7 @@ public final class ApiVersionSetContractDetails {
 
     /**
      * Set the description property: Description of API Version Set.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApiVersionSetContractDetails object itself.
      */
@@ -113,7 +115,7 @@ public final class ApiVersionSetContractDetails {
     /**
      * Get the versioningScheme property: An value that determines where the API Version identifier will be located in a
      * HTTP request.
-     *
+     * 
      * @return the versioningScheme value.
      */
     public VersioningScheme versioningScheme() {
@@ -123,7 +125,7 @@ public final class ApiVersionSetContractDetails {
     /**
      * Set the versioningScheme property: An value that determines where the API Version identifier will be located in a
      * HTTP request.
-     *
+     * 
      * @param versioningScheme the versioningScheme value to set.
      * @return the ApiVersionSetContractDetails object itself.
      */
@@ -135,7 +137,7 @@ public final class ApiVersionSetContractDetails {
     /**
      * Get the versionQueryName property: Name of query parameter that indicates the API Version if versioningScheme is
      * set to `query`.
-     *
+     * 
      * @return the versionQueryName value.
      */
     public String versionQueryName() {
@@ -145,7 +147,7 @@ public final class ApiVersionSetContractDetails {
     /**
      * Set the versionQueryName property: Name of query parameter that indicates the API Version if versioningScheme is
      * set to `query`.
-     *
+     * 
      * @param versionQueryName the versionQueryName value to set.
      * @return the ApiVersionSetContractDetails object itself.
      */
@@ -157,7 +159,7 @@ public final class ApiVersionSetContractDetails {
     /**
      * Get the versionHeaderName property: Name of HTTP header parameter that indicates the API Version if
      * versioningScheme is set to `header`.
-     *
+     * 
      * @return the versionHeaderName value.
      */
     public String versionHeaderName() {
@@ -167,7 +169,7 @@ public final class ApiVersionSetContractDetails {
     /**
      * Set the versionHeaderName property: Name of HTTP header parameter that indicates the API Version if
      * versioningScheme is set to `header`.
-     *
+     * 
      * @param versionHeaderName the versionHeaderName value to set.
      * @return the ApiVersionSetContractDetails object itself.
      */
@@ -178,9 +180,62 @@ public final class ApiVersionSetContractDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("versioningScheme",
+            this.versioningScheme == null ? null : this.versioningScheme.toString());
+        jsonWriter.writeStringField("versionQueryName", this.versionQueryName);
+        jsonWriter.writeStringField("versionHeaderName", this.versionHeaderName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiVersionSetContractDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiVersionSetContractDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiVersionSetContractDetails.
+     */
+    public static ApiVersionSetContractDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiVersionSetContractDetails deserializedApiVersionSetContractDetails = new ApiVersionSetContractDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApiVersionSetContractDetails.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApiVersionSetContractDetails.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedApiVersionSetContractDetails.description = reader.getString();
+                } else if ("versioningScheme".equals(fieldName)) {
+                    deserializedApiVersionSetContractDetails.versioningScheme
+                        = VersioningScheme.fromString(reader.getString());
+                } else if ("versionQueryName".equals(fieldName)) {
+                    deserializedApiVersionSetContractDetails.versionQueryName = reader.getString();
+                } else if ("versionHeaderName".equals(fieldName)) {
+                    deserializedApiVersionSetContractDetails.versionHeaderName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiVersionSetContractDetails;
+        });
     }
 }

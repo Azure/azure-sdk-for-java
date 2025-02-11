@@ -39,6 +39,7 @@ import time
 import traceback
 from utils import BuildType
 from utils import CodeModule
+from utils import load_version_map_from_file
 from utils import external_dependency_version_regex
 from utils import external_dependency_include_regex
 from utils import run_check_call
@@ -184,29 +185,6 @@ def update_changelog(pom_file, is_increment, library_array):
             run_check_call(commands, '.')
     else:
         print('There is no CHANGELOG.md file in {}, skipping update'.format(dirname))
-
-def load_version_map_from_file(the_file, version_map):
-    with open(the_file) as f:
-        for raw_line in f:
-            stripped_line = raw_line.strip()
-            if not stripped_line or stripped_line.startswith('#'):
-                continue
-            module = CodeModule(stripped_line)
-            # verify no duplicate entries
-            if (module.name in version_map):
-                raise ValueError('Version file: {0} contains a duplicate entry: {1}'.format(the_file, module.name))
-            # verify that if the module is beta_ or unreleased_ that there's a matching non-beta_ or non-unreleased_ entry
-            if (module.name.startswith('beta_') or module.name.startswith('unreleased_')):
-                tempName = module.name
-                if tempName.startswith('beta_'):
-                    tempName = module.name[len('beta_'):]
-                else:
-                    tempName = module.name[len('unreleased_'):]
-                # if there isn't a non beta or unreleased entry then raise an issue
-                if tempName not in version_map:
-                    raise ValueError('Version file: {0} does not contain a non-beta or non-unreleased entry for beta_/unreleased_ library: {1}'.format(the_file, module.name))
-
-            version_map[module.name] = module
 
 def load_version_overrides(the_file, version_map, overrides_name):
     with open(the_file) as f:

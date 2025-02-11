@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of an hourly schedule. */
+/**
+ * Properties of an hourly schedule.
+ */
 @Fluent
-public final class HourDetails {
+public final class HourDetails implements JsonSerializable<HourDetails> {
     /*
      * Minutes of the hour the schedule will run.
      */
-    @JsonProperty(value = "minute")
     private Integer minute;
 
-    /** Creates an instance of HourDetails class. */
+    /**
+     * Creates an instance of HourDetails class.
+     */
     public HourDetails() {
     }
 
     /**
      * Get the minute property: Minutes of the hour the schedule will run.
-     *
+     * 
      * @return the minute value.
      */
     public Integer minute() {
@@ -31,7 +38,7 @@ public final class HourDetails {
 
     /**
      * Set the minute property: Minutes of the hour the schedule will run.
-     *
+     * 
      * @param minute the minute value to set.
      * @return the HourDetails object itself.
      */
@@ -42,9 +49,45 @@ public final class HourDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("minute", this.minute);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HourDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HourDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HourDetails.
+     */
+    public static HourDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HourDetails deserializedHourDetails = new HourDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minute".equals(fieldName)) {
+                    deserializedHourDetails.minute = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHourDetails;
+        });
     }
 }

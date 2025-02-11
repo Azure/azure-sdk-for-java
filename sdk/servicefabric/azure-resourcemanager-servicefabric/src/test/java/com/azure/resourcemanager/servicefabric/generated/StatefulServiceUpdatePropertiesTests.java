@@ -41,16 +41,25 @@ public final class StatefulServiceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StatefulServiceUpdateProperties model = new StatefulServiceUpdateProperties().withPlacementConstraints("wyt")
-            .withCorrelationScheme(Arrays.asList(new ServiceCorrelationDescription()
-                .withScheme(ServiceCorrelationScheme.INVALID).withServiceName("ircgpikpz")))
+            .withCorrelationScheme(
+                Arrays.asList(new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
+                    .withServiceName("ircgpikpz")))
             .withServiceLoadMetrics(Arrays.asList(
-                new ServiceLoadMetricDescription().withName("j").withWeight(ServiceLoadMetricWeight.MEDIUM)
-                    .withPrimaryDefaultLoad(108512766).withSecondaryDefaultLoad(453149058).withDefaultLoad(386879497),
-                new ServiceLoadMetricDescription().withName("vrmbzono").withWeight(ServiceLoadMetricWeight.HIGH)
-                    .withPrimaryDefaultLoad(485732763).withSecondaryDefaultLoad(1432241544).withDefaultLoad(749799353)))
+                new ServiceLoadMetricDescription().withName("j")
+                    .withWeight(ServiceLoadMetricWeight.MEDIUM)
+                    .withPrimaryDefaultLoad(108512766)
+                    .withSecondaryDefaultLoad(453149058)
+                    .withDefaultLoad(386879497),
+                new ServiceLoadMetricDescription().withName("vrmbzono")
+                    .withWeight(ServiceLoadMetricWeight.HIGH)
+                    .withPrimaryDefaultLoad(485732763)
+                    .withSecondaryDefaultLoad(1432241544)
+                    .withDefaultLoad(749799353)))
             .withServicePlacementPolicies(
                 Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
-            .withDefaultMoveCost(MoveCost.ZERO).withTargetReplicaSetSize(481709550).withMinReplicaSetSize(1948740846)
+            .withDefaultMoveCost(MoveCost.ZERO)
+            .withTargetReplicaSetSize(481709550)
+            .withMinReplicaSetSize(1948740846)
             .withReplicaRestartWaitDuration(OffsetDateTime.parse("2021-09-27T12:02:20Z"))
             .withQuorumLossWaitDuration(OffsetDateTime.parse("2021-10-12T10:01:16Z"))
             .withStandByReplicaKeepDuration(OffsetDateTime.parse("2020-12-23T03:39:10Z"));

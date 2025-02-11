@@ -4,33 +4,27 @@
 
 package com.azure.analytics.purview.sharing.models;
 
-import java.util.List;
-
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /**
  * An Adls Gen2 storage account artifact.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "storeKind")
-@JsonTypeName("AdlsGen2Account")
-@JsonFlatten
 @Fluent
-public class AdlsGen2Artifact extends Artifact {
+public final class AdlsGen2Artifact extends Artifact {
     /*
-     * Location of the storage account.
+     * The types of asset.
      */
-    @JsonProperty(value = "properties.location", access = JsonProperty.Access.WRITE_ONLY)
-    private String location;
+    private StoreKind storeKind = StoreKind.ADLS_GEN2STORAGE_ACCOUNT_STORE_KIND;
 
     /*
-     * A list of Adls Gen2 storage account paths.
+     * Properties for Adls Gen2 storage account.
      */
-    @JsonProperty(value = "properties.paths", required = true)
-    private List<StorageAccountPath> paths;
+    private AdlsGen2ArtifactProperties properties;
 
     /**
      * Creates an instance of AdlsGen2Artifact class.
@@ -39,31 +33,32 @@ public class AdlsGen2Artifact extends Artifact {
     }
 
     /**
-     * Get the location property: Location of the storage account.
-     * 
-     * @return the location value.
+     * Get the storeKind property: The types of asset.
+     *
+     * @return the storeKind value.
      */
-    public String getLocation() {
-        return this.location;
+    @Override
+    public StoreKind getStoreKind() {
+        return this.storeKind;
     }
 
     /**
-     * Get the paths property: A list of Adls Gen2 storage account paths.
-     * 
-     * @return the paths value.
+     * Get the properties property: Properties for Adls Gen2 storage account.
+     *
+     * @return the properties value.
      */
-    public List<StorageAccountPath> getPaths() {
-        return this.paths;
+    public AdlsGen2ArtifactProperties getProperties() {
+        return this.properties;
     }
 
     /**
-     * Set the paths property: A list of Adls Gen2 storage account paths.
-     * 
-     * @param paths the paths value to set.
+     * Set the properties property: Properties for Adls Gen2 storage account.
+     *
+     * @param properties the properties value to set.
      * @return the AdlsGen2Artifact object itself.
      */
-    public AdlsGen2Artifact setPaths(List<StorageAccountPath> paths) {
-        this.paths = paths;
+    public AdlsGen2Artifact setProperties(AdlsGen2ArtifactProperties properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -74,5 +69,48 @@ public class AdlsGen2Artifact extends Artifact {
     public AdlsGen2Artifact setStoreReference(StoreReference storeReference) {
         super.setStoreReference(storeReference);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storeReference", getStoreReference());
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("storeKind", this.storeKind == null ? null : this.storeKind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdlsGen2Artifact from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdlsGen2Artifact if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdlsGen2Artifact.
+     */
+    public static AdlsGen2Artifact fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdlsGen2Artifact deserializedAdlsGen2Artifact = new AdlsGen2Artifact();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storeReference".equals(fieldName)) {
+                    deserializedAdlsGen2Artifact.setStoreReference(StoreReference.fromJson(reader));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAdlsGen2Artifact.properties = AdlsGen2ArtifactProperties.fromJson(reader);
+                } else if ("storeKind".equals(fieldName)) {
+                    deserializedAdlsGen2Artifact.storeKind = StoreKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdlsGen2Artifact;
+        });
     }
 }

@@ -18,7 +18,7 @@ public final class CommunicationServiceResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommunicationServiceResourceUpdate model = BinaryData.fromString(
-            "{\"properties\":{\"linkedDomains\":[\"jvtbvpyss\",\"dnrujqguhmuouqfp\"]},\"identity\":{\"principalId\":\"6211b490-391f-4b88-a622-b29fa0524dee\",\"tenantId\":\"49124dfc-70a5-407e-941f-67e66e775255\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tnwu\":{\"principalId\":\"d34810c6-782e-42c1-9285-10f9e3568d49\",\"clientId\":\"5d70e04d-9075-4b18-8d87-b46281661276\"}}},\"tags\":{\"x\":\"a\",\"hr\":\"fizuckyf\"}}")
+            "{\"properties\":{\"linkedDomains\":[\"jvtbvpyss\",\"dnrujqguhmuouqfp\"]},\"identity\":{\"principalId\":\"76132980-1063-43ff-bc0c-9260b007c498\",\"tenantId\":\"7e6159fe-57d6-4910-bb8e-dd94f62aee64\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tnwu\":{\"principalId\":\"9bfeb7b2-a122-42dd-b678-bd51d8543049\",\"clientId\":\"2d7f9a1c-417b-4e60-9d90-8b3f3dd55193\"}}},\"tags\":{\"x\":\"a\",\"hr\":\"fizuckyf\"}}")
             .toObject(CommunicationServiceResourceUpdate.class);
         Assertions.assertEquals("a", model.tags().get("x"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());

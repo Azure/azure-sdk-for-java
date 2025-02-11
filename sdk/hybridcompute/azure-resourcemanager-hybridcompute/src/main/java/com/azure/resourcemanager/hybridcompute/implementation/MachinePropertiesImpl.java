@@ -11,6 +11,8 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkProfileInner
 import com.azure.resourcemanager.hybridcompute.models.AgentConfiguration;
 import com.azure.resourcemanager.hybridcompute.models.AgentUpgrade;
 import com.azure.resourcemanager.hybridcompute.models.CloudMetadata;
+import com.azure.resourcemanager.hybridcompute.models.FirmwareProfile;
+import com.azure.resourcemanager.hybridcompute.models.HardwareProfile;
 import com.azure.resourcemanager.hybridcompute.models.LicenseProfileMachineInstanceView;
 import com.azure.resourcemanager.hybridcompute.models.LocationData;
 import com.azure.resourcemanager.hybridcompute.models.MachineExtensionInstanceView;
@@ -19,6 +21,7 @@ import com.azure.resourcemanager.hybridcompute.models.NetworkProfile;
 import com.azure.resourcemanager.hybridcompute.models.OSProfile;
 import com.azure.resourcemanager.hybridcompute.models.ServiceStatuses;
 import com.azure.resourcemanager.hybridcompute.models.StatusTypes;
+import com.azure.resourcemanager.hybridcompute.models.StorageProfile;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +49,18 @@ public final class MachinePropertiesImpl implements MachineProperties {
 
     public ServiceStatuses serviceStatuses() {
         return this.innerModel().serviceStatuses();
+    }
+
+    public HardwareProfile hardwareProfile() {
+        return this.innerModel().hardwareProfile();
+    }
+
+    public StorageProfile storageProfile() {
+        return this.innerModel().storageProfile();
+    }
+
+    public FirmwareProfile firmwareProfile() {
+        return this.innerModel().firmwareProfile();
     }
 
     public CloudMetadata cloudMetadata() {

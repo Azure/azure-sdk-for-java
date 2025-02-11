@@ -6,20 +6,17 @@ package com.azure.resourcemanager.agrifood.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.agrifood.fluent.models.ExtensionInner;
-import org.junit.jupiter.api.Test;
 
 public final class ExtensionInnerTests {
-    @Test
-    public void testDeserialize() {
-        ExtensionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"extensionId\":\"hq\",\"extensionCategory\":\"gjxpybczmehmt\",\"installedExtensionVersion\":\"pbsphrupidgs\",\"extensionAuthLink\":\"bejhphoycmsxa\",\"extensionApiDocsLink\":\"hdxbmtqio\"},\"eTag\":\"zehtbmu\",\"id\":\"p\",\"name\":\"wnoi\",\"type\":\"hwlrx\"}")
-                .toObject(ExtensionInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ExtensionInner model = BinaryData.fromString(
+            "{\"properties\":{\"extensionId\":\"hdxbmtqio\",\"extensionCategory\":\"zehtbmu\",\"installedExtensionVersion\":\"ownoizhw\",\"extensionAuthLink\":\"xybqsoqij\",\"extensionApiDocsLink\":\"dmbpazlobcufpdz\",\"additionalApiProperties\":{\"qqjnqgl\":{\"apiFreshnessTimeInMinutes\":895933338},\"nufo\":{\"apiFreshnessTimeInMinutes\":2127527772}}},\"eTag\":\"jywif\",\"id\":\"esaagdfm\",\"name\":\"lzl\",\"type\":\"j\"}")
+            .toObject(ExtensionInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ExtensionInner model = new ExtensionInner();
         model = BinaryData.fromObject(model).toObject(ExtensionInner.class);
     }

@@ -22,86 +22,85 @@ public final class RulesEngineRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RulesEngineRule model = BinaryData.fromString(
-            "{\"name\":\"dmsmlm\",\"priority\":1354395459,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"trmaequiahxicslf\",\"value\":\"qzpiyyl\"},{\"headerActionType\":\"Delete\",\"headerName\":\"lnswhcc\",\"value\":\"hka\"},{\"headerActionType\":\"Delete\",\"headerName\":\"witqscywuggwoluh\",\"value\":\"bwemhairs\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"dwmsweypqwd\",\"value\":\"gicccnxqhuex\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"tlstvlzywem\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestUri\",\"selector\":\"sdtclusiypbs\",\"rulesEngineOperator\":\"Any\",\"negateCondition\":false,\"rulesEngineMatchValue\":[\"uslfead\"],\"transforms\":[\"Trim\"]},{\"rulesEngineMatchVariable\":\"RequestPath\",\"selector\":\"yhejhzisxgfp\",\"rulesEngineOperator\":\"LessThan\",\"negateCondition\":true,\"rulesEngineMatchValue\":[\"pv\"],\"transforms\":[\"RemoveNulls\"]},{\"rulesEngineMatchVariable\":\"RemoteAddr\",\"selector\":\"ujzra\",\"rulesEngineOperator\":\"Any\",\"negateCondition\":false,\"rulesEngineMatchValue\":[\"wrft\"],\"transforms\":[\"Trim\"]}],\"matchProcessingBehavior\":\"Stop\"}")
+            "{\"name\":\"rwxkvtkkgl\",\"priority\":2106281603,\"action\":{\"requestHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"gvjayvblmh\",\"value\":\"zuhbxvvyhgsopb\"},{\"headerActionType\":\"Delete\",\"headerName\":\"qufegxuvwzfbn\",\"value\":\"mctlpdngitv\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"mhrixkwmyijejve\",\"value\":\"hbpnaixexccbd\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Overwrite\",\"headerName\":\"hcexdrrvqa\",\"value\":\"kghtpwijnh\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}},\"matchConditions\":[{\"rulesEngineMatchVariable\":\"RequestHeader\",\"selector\":\"cxzbfvoowvr\",\"rulesEngineOperator\":\"Equal\",\"negateCondition\":false,\"rulesEngineMatchValue\":[\"qp\",\"y\",\"s\",\"ronzmyhgfip\"],\"transforms\":[\"RemoveNulls\",\"Lowercase\",\"Trim\",\"Trim\"]},{\"rulesEngineMatchVariable\":\"IsMobile\",\"selector\":\"krrjrea\",\"rulesEngineOperator\":\"Any\",\"negateCondition\":true,\"rulesEngineMatchValue\":[\"umh\",\"glikkxwslolb\",\"pvuzlmv\",\"elfk\"],\"transforms\":[\"UrlDecode\",\"Uppercase\",\"UrlEncode\",\"RemoveNulls\"]}],\"matchProcessingBehavior\":\"Stop\"}")
             .toObject(RulesEngineRule.class);
-        Assertions.assertEquals("dmsmlm", model.name());
-        Assertions.assertEquals(1354395459, model.priority());
-        Assertions.assertEquals(HeaderActionType.APPEND,
-            model.action().requestHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("trmaequiahxicslf", model.action().requestHeaderActions().get(0).headerName());
-        Assertions.assertEquals("qzpiyyl", model.action().requestHeaderActions().get(0).value());
+        Assertions.assertEquals("rwxkvtkkgl", model.name());
+        Assertions.assertEquals(2106281603, model.priority());
         Assertions.assertEquals(HeaderActionType.DELETE,
+            model.action().requestHeaderActions().get(0).headerActionType());
+        Assertions.assertEquals("gvjayvblmh", model.action().requestHeaderActions().get(0).headerName());
+        Assertions.assertEquals("zuhbxvvyhgsopb", model.action().requestHeaderActions().get(0).value());
+        Assertions.assertEquals(HeaderActionType.OVERWRITE,
             model.action().responseHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("dwmsweypqwd", model.action().responseHeaderActions().get(0).headerName());
-        Assertions.assertEquals("gicccnxqhuex", model.action().responseHeaderActions().get(0).value());
-        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_URI,
+        Assertions.assertEquals("hcexdrrvqa", model.action().responseHeaderActions().get(0).headerName());
+        Assertions.assertEquals("kghtpwijnh", model.action().responseHeaderActions().get(0).value());
+        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_HEADER,
             model.matchConditions().get(0).rulesEngineMatchVariable());
-        Assertions.assertEquals("sdtclusiypbs", model.matchConditions().get(0).selector());
-        Assertions.assertEquals(RulesEngineOperator.ANY, model.matchConditions().get(0).rulesEngineOperator());
+        Assertions.assertEquals("cxzbfvoowvr", model.matchConditions().get(0).selector());
+        Assertions.assertEquals(RulesEngineOperator.EQUAL, model.matchConditions().get(0).rulesEngineOperator());
         Assertions.assertEquals(false, model.matchConditions().get(0).negateCondition());
-        Assertions.assertEquals("uslfead", model.matchConditions().get(0).rulesEngineMatchValue().get(0));
-        Assertions.assertEquals(Transform.TRIM, model.matchConditions().get(0).transforms().get(0));
+        Assertions.assertEquals("qp", model.matchConditions().get(0).rulesEngineMatchValue().get(0));
+        Assertions.assertEquals(Transform.REMOVE_NULLS, model.matchConditions().get(0).transforms().get(0));
         Assertions.assertEquals(MatchProcessingBehavior.STOP, model.matchProcessingBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RulesEngineRule model = new RulesEngineRule().withName("dmsmlm")
-            .withPriority(1354395459)
+        RulesEngineRule model = new RulesEngineRule().withName("rwxkvtkkgl")
+            .withPriority(2106281603)
             .withAction(new RulesEngineAction()
                 .withRequestHeaderActions(Arrays.asList(
-                    new HeaderAction().withHeaderActionType(HeaderActionType.APPEND)
-                        .withHeaderName("trmaequiahxicslf")
-                        .withValue("qzpiyyl"),
                     new HeaderAction().withHeaderActionType(HeaderActionType.DELETE)
-                        .withHeaderName("lnswhcc")
-                        .withValue("hka"),
+                        .withHeaderName("gvjayvblmh")
+                        .withValue("zuhbxvvyhgsopb"),
                     new HeaderAction().withHeaderActionType(HeaderActionType.DELETE)
-                        .withHeaderName("witqscywuggwoluh")
-                        .withValue("bwemhairs")))
+                        .withHeaderName("qufegxuvwzfbn")
+                        .withValue("mctlpdngitv"),
+                    new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE)
+                        .withHeaderName("mhrixkwmyijejve")
+                        .withValue("hbpnaixexccbd")))
                 .withResponseHeaderActions(
-                    Arrays.asList(new HeaderAction().withHeaderActionType(HeaderActionType.DELETE)
-                        .withHeaderName("dwmsweypqwd")
-                        .withValue("gicccnxqhuex")))
+                    Arrays.asList(new HeaderAction().withHeaderActionType(HeaderActionType.OVERWRITE)
+                        .withHeaderName("hcexdrrvqa")
+                        .withValue("kghtpwijnh")))
                 .withRouteConfigurationOverride(new RouteConfiguration()))
-            .withMatchConditions(Arrays.asList(
-                new RulesEngineMatchCondition().withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_URI)
-                    .withSelector("sdtclusiypbs")
-                    .withRulesEngineOperator(RulesEngineOperator.ANY)
-                    .withNegateCondition(false)
-                    .withRulesEngineMatchValue(Arrays.asList("uslfead"))
-                    .withTransforms(Arrays.asList(Transform.TRIM)),
-                new RulesEngineMatchCondition().withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_PATH)
-                    .withSelector("yhejhzisxgfp")
-                    .withRulesEngineOperator(RulesEngineOperator.LESS_THAN)
-                    .withNegateCondition(true)
-                    .withRulesEngineMatchValue(Arrays.asList("pv"))
-                    .withTransforms(Arrays.asList(Transform.REMOVE_NULLS)),
-                new RulesEngineMatchCondition().withRulesEngineMatchVariable(RulesEngineMatchVariable.REMOTE_ADDR)
-                    .withSelector("ujzra")
-                    .withRulesEngineOperator(RulesEngineOperator.ANY)
-                    .withNegateCondition(false)
-                    .withRulesEngineMatchValue(Arrays.asList("wrft"))
-                    .withTransforms(Arrays.asList(Transform.TRIM))))
+            .withMatchConditions(
+                Arrays
+                    .asList(
+                        new RulesEngineMatchCondition()
+                            .withRulesEngineMatchVariable(RulesEngineMatchVariable.REQUEST_HEADER)
+                            .withSelector("cxzbfvoowvr")
+                            .withRulesEngineOperator(RulesEngineOperator.EQUAL)
+                            .withNegateCondition(false)
+                            .withRulesEngineMatchValue(Arrays.asList("qp", "y", "s", "ronzmyhgfip"))
+                            .withTransforms(Arrays.asList(Transform.REMOVE_NULLS, Transform.LOWERCASE, Transform.TRIM,
+                                Transform.TRIM)),
+                        new RulesEngineMatchCondition().withRulesEngineMatchVariable(RulesEngineMatchVariable.IS_MOBILE)
+                            .withSelector("krrjrea")
+                            .withRulesEngineOperator(RulesEngineOperator.ANY)
+                            .withNegateCondition(true)
+                            .withRulesEngineMatchValue(Arrays.asList("umh", "glikkxwslolb", "pvuzlmv", "elfk"))
+                            .withTransforms(Arrays.asList(Transform.URL_DECODE, Transform.UPPERCASE,
+                                Transform.URL_ENCODE, Transform.REMOVE_NULLS))))
             .withMatchProcessingBehavior(MatchProcessingBehavior.STOP);
         model = BinaryData.fromObject(model).toObject(RulesEngineRule.class);
-        Assertions.assertEquals("dmsmlm", model.name());
-        Assertions.assertEquals(1354395459, model.priority());
-        Assertions.assertEquals(HeaderActionType.APPEND,
-            model.action().requestHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("trmaequiahxicslf", model.action().requestHeaderActions().get(0).headerName());
-        Assertions.assertEquals("qzpiyyl", model.action().requestHeaderActions().get(0).value());
+        Assertions.assertEquals("rwxkvtkkgl", model.name());
+        Assertions.assertEquals(2106281603, model.priority());
         Assertions.assertEquals(HeaderActionType.DELETE,
+            model.action().requestHeaderActions().get(0).headerActionType());
+        Assertions.assertEquals("gvjayvblmh", model.action().requestHeaderActions().get(0).headerName());
+        Assertions.assertEquals("zuhbxvvyhgsopb", model.action().requestHeaderActions().get(0).value());
+        Assertions.assertEquals(HeaderActionType.OVERWRITE,
             model.action().responseHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("dwmsweypqwd", model.action().responseHeaderActions().get(0).headerName());
-        Assertions.assertEquals("gicccnxqhuex", model.action().responseHeaderActions().get(0).value());
-        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_URI,
+        Assertions.assertEquals("hcexdrrvqa", model.action().responseHeaderActions().get(0).headerName());
+        Assertions.assertEquals("kghtpwijnh", model.action().responseHeaderActions().get(0).value());
+        Assertions.assertEquals(RulesEngineMatchVariable.REQUEST_HEADER,
             model.matchConditions().get(0).rulesEngineMatchVariable());
-        Assertions.assertEquals("sdtclusiypbs", model.matchConditions().get(0).selector());
-        Assertions.assertEquals(RulesEngineOperator.ANY, model.matchConditions().get(0).rulesEngineOperator());
+        Assertions.assertEquals("cxzbfvoowvr", model.matchConditions().get(0).selector());
+        Assertions.assertEquals(RulesEngineOperator.EQUAL, model.matchConditions().get(0).rulesEngineOperator());
         Assertions.assertEquals(false, model.matchConditions().get(0).negateCondition());
-        Assertions.assertEquals("uslfead", model.matchConditions().get(0).rulesEngineMatchValue().get(0));
-        Assertions.assertEquals(Transform.TRIM, model.matchConditions().get(0).transforms().get(0));
+        Assertions.assertEquals("qp", model.matchConditions().get(0).rulesEngineMatchValue().get(0));
+        Assertions.assertEquals(Transform.REMOVE_NULLS, model.matchConditions().get(0).transforms().get(0));
         Assertions.assertEquals(MatchProcessingBehavior.STOP, model.matchProcessingBehavior());
     }
 }

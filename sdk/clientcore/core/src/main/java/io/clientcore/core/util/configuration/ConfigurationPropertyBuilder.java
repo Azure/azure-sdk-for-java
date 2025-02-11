@@ -53,8 +53,8 @@ public final class ConfigurationPropertyBuilder<T> {
      *     .systemPropertyName&#40;&quot;http.proxyHost&quot;&#41;
      *     .build&#40;&#41;;
      *
-     * &#47;&#47; attempts to get local `azure.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
-     * &#47;&#47; shared azure.sdk.http.proxy.port
+     * &#47;&#47; attempts to get local `my.sdk.&lt;client-name&gt;.http.proxy.host` property and falls back to
+     * &#47;&#47; shared my.sdk.http.proxy.port
      * System.out.println&#40;configuration.get&#40;property&#41;&#41;;
      * </pre>
      * <!-- end io.clientcore.core.util.Configuration.get#ConfigurationProperty -->

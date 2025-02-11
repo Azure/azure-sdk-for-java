@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class DeadlockTests {
     @Test
     public void attemptToDeadlock() {
-        HttpClient httpClient = new VertxAsyncHttpClientProvider().createInstance();
+        HttpClient httpClient = new VertxHttpClientProvider().createInstance();
 
         String endpoint = VertxHttpClientLocalTestServer.getServer().getHttpUri() + GET_ENDPOINT;
 

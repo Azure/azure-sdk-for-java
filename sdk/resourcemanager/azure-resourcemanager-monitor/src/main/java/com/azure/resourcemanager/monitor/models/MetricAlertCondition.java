@@ -107,8 +107,8 @@ public interface MetricAlertCondition extends HasInnerModel<MetricCriteria>, Has
              * @param threshold the criteria threshold value that activates the alert.
              * @return the next stage of metric alert condition definition.
              */
-            WithConditionAttach<ParentT> withCondition(
-                MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold);
+            WithConditionAttach<ParentT> withCondition(MetricAlertRuleTimeAggregation timeAggregation,
+                MetricAlertRuleCondition condition, double threshold);
         }
 
         /**
@@ -181,8 +181,8 @@ public interface MetricAlertCondition extends HasInnerModel<MetricCriteria>, Has
              * @param threshold the criteria threshold value that activates the alert.
              * @return the next stage of metric alert condition definition.
              */
-            WithConditionAttach<ParentT> withCondition(
-                MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold);
+            WithConditionAttach<ParentT> withCondition(MetricAlertRuleTimeAggregation timeAggregation,
+                MetricAlertRuleCondition condition, double threshold);
         }
 
         /**
@@ -221,8 +221,8 @@ public interface MetricAlertCondition extends HasInnerModel<MetricCriteria>, Has
          * @param threshold the criteria threshold value that activates the alert.
          * @return the next stage of the metric alert condition update.
          */
-        UpdateStages withCondition(
-            MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold);
+        UpdateStages withCondition(MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition,
+            double threshold);
 
         /**
          * Adds a metric dimension filter.

@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.HubBillingInfoFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of hub. */
+/**
+ * Properties of hub.
+ */
 @Fluent
-public final class HubPropertiesFormat {
+public final class HubPropertiesFormat implements JsonSerializable<HubPropertiesFormat> {
     /*
      * API endpoint URL of the hub.
      */
-    @JsonProperty(value = "apiEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String apiEndpoint;
 
     /*
      * Web endpoint URL of the hub.
      */
-    @JsonProperty(value = "webEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String webEndpoint;
 
     /*
      * Provisioning state of the hub.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The bit flags for enabled hub features. Bit 0 is set to 1 indicates graph is enabled, or disabled if set to 0.
      * Bit 1 is set to 1 indicates the hub is disabled, or enabled if set to 0.
      */
-    @JsonProperty(value = "tenantFeatures")
     private Integer tenantFeatures;
 
     /*
      * Billing settings of the hub.
      */
-    @JsonProperty(value = "hubBillingInfo")
     private HubBillingInfoFormat hubBillingInfo;
 
-    /** Creates an instance of HubPropertiesFormat class. */
+    /**
+     * Creates an instance of HubPropertiesFormat class.
+     */
     public HubPropertiesFormat() {
     }
 
     /**
      * Get the apiEndpoint property: API endpoint URL of the hub.
-     *
+     * 
      * @return the apiEndpoint value.
      */
     public String apiEndpoint() {
@@ -57,7 +60,7 @@ public final class HubPropertiesFormat {
 
     /**
      * Get the webEndpoint property: Web endpoint URL of the hub.
-     *
+     * 
      * @return the webEndpoint value.
      */
     public String webEndpoint() {
@@ -66,7 +69,7 @@ public final class HubPropertiesFormat {
 
     /**
      * Get the provisioningState property: Provisioning state of the hub.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -76,7 +79,7 @@ public final class HubPropertiesFormat {
     /**
      * Get the tenantFeatures property: The bit flags for enabled hub features. Bit 0 is set to 1 indicates graph is
      * enabled, or disabled if set to 0. Bit 1 is set to 1 indicates the hub is disabled, or enabled if set to 0.
-     *
+     * 
      * @return the tenantFeatures value.
      */
     public Integer tenantFeatures() {
@@ -86,7 +89,7 @@ public final class HubPropertiesFormat {
     /**
      * Set the tenantFeatures property: The bit flags for enabled hub features. Bit 0 is set to 1 indicates graph is
      * enabled, or disabled if set to 0. Bit 1 is set to 1 indicates the hub is disabled, or enabled if set to 0.
-     *
+     * 
      * @param tenantFeatures the tenantFeatures value to set.
      * @return the HubPropertiesFormat object itself.
      */
@@ -97,7 +100,7 @@ public final class HubPropertiesFormat {
 
     /**
      * Get the hubBillingInfo property: Billing settings of the hub.
-     *
+     * 
      * @return the hubBillingInfo value.
      */
     public HubBillingInfoFormat hubBillingInfo() {
@@ -106,7 +109,7 @@ public final class HubPropertiesFormat {
 
     /**
      * Set the hubBillingInfo property: Billing settings of the hub.
-     *
+     * 
      * @param hubBillingInfo the hubBillingInfo value to set.
      * @return the HubPropertiesFormat object itself.
      */
@@ -117,12 +120,57 @@ public final class HubPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hubBillingInfo() != null) {
             hubBillingInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("tenantFeatures", this.tenantFeatures);
+        jsonWriter.writeJsonField("hubBillingInfo", this.hubBillingInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HubPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HubPropertiesFormat if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HubPropertiesFormat.
+     */
+    public static HubPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HubPropertiesFormat deserializedHubPropertiesFormat = new HubPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiEndpoint".equals(fieldName)) {
+                    deserializedHubPropertiesFormat.apiEndpoint = reader.getString();
+                } else if ("webEndpoint".equals(fieldName)) {
+                    deserializedHubPropertiesFormat.webEndpoint = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedHubPropertiesFormat.provisioningState = reader.getString();
+                } else if ("tenantFeatures".equals(fieldName)) {
+                    deserializedHubPropertiesFormat.tenantFeatures = reader.getNullable(JsonReader::getInt);
+                } else if ("hubBillingInfo".equals(fieldName)) {
+                    deserializedHubPropertiesFormat.hubBillingInfo = HubBillingInfoFormat.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHubPropertiesFormat;
+        });
     }
 }

@@ -8,39 +8,32 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequest;
 import com.azure.resourcemanager.loadtesting.models.QuotaBucketRequestPropertiesDimensions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class QuotaBucketRequestTests {
-    @Test
+    @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaBucketRequest model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"currentUsage\":367055683,\"currentQuota\":1978797807,\"newQuota\":1332341838,\"dimensions\":{\"subscriptionId\":\"yemkkvnip\",\"location\":\"xzjnchgejs\"}},\"id\":\"dmailzydehojw\",\"name\":\"ahuxinpm\",\"type\":\"njaqwixjspro\"}")
-                .toObject(QuotaBucketRequest.class);
-        Assertions.assertEquals(367055683, model.currentUsage());
-        Assertions.assertEquals(1978797807, model.currentQuota());
-        Assertions.assertEquals(1332341838, model.newQuota());
-        Assertions.assertEquals("yemkkvnip", model.dimensions().subscriptionId());
-        Assertions.assertEquals("xzjnchgejs", model.dimensions().location());
+        QuotaBucketRequest model = BinaryData.fromString(
+            "{\"properties\":{\"currentUsage\":105854038,\"currentQuota\":406268406,\"newQuota\":823404328,\"dimensions\":{\"subscriptionId\":\"clxxwrljdo\",\"location\":\"kcqvkocrc\"}}}")
+            .toObject(QuotaBucketRequest.class);
+        Assertions.assertEquals(105854038, model.currentUsage());
+        Assertions.assertEquals(406268406, model.currentQuota());
+        Assertions.assertEquals(823404328, model.newQuota());
+        Assertions.assertEquals("clxxwrljdo", model.dimensions().subscriptionId());
+        Assertions.assertEquals("kcqvkocrc", model.dimensions().location());
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaBucketRequest model =
-            new QuotaBucketRequest()
-                .withCurrentUsage(367055683)
-                .withCurrentQuota(1978797807)
-                .withNewQuota(1332341838)
-                .withDimensions(
-                    new QuotaBucketRequestPropertiesDimensions()
-                        .withSubscriptionId("yemkkvnip")
-                        .withLocation("xzjnchgejs"));
+        QuotaBucketRequest model = new QuotaBucketRequest().withCurrentUsage(105854038)
+            .withCurrentQuota(406268406)
+            .withNewQuota(823404328)
+            .withDimensions(new QuotaBucketRequestPropertiesDimensions().withSubscriptionId("clxxwrljdo")
+                .withLocation("kcqvkocrc"));
         model = BinaryData.fromObject(model).toObject(QuotaBucketRequest.class);
-        Assertions.assertEquals(367055683, model.currentUsage());
-        Assertions.assertEquals(1978797807, model.currentQuota());
-        Assertions.assertEquals(1332341838, model.newQuota());
-        Assertions.assertEquals("yemkkvnip", model.dimensions().subscriptionId());
-        Assertions.assertEquals("xzjnchgejs", model.dimensions().location());
+        Assertions.assertEquals(105854038, model.currentUsage());
+        Assertions.assertEquals(406268406, model.currentQuota());
+        Assertions.assertEquals(823404328, model.newQuota());
+        Assertions.assertEquals("clxxwrljdo", model.dimensions().subscriptionId());
+        Assertions.assertEquals("kcqvkocrc", model.dimensions().location());
     }
 }

@@ -42,6 +42,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
     private final ChangeFeedState changeFeedState;
     private final Supplier<RxDocumentServiceRequest> createRequestFunc;
     private final Supplier<DocumentClientRetryPolicy> feedRangeContinuationRetryPolicySupplier;
+    private final boolean completeAfterAllCurrentChangesRetrieved;
+    private final Long endLSN;
 
     public ChangeFeedFetcher(
         RxDocumentClientImpl client,
@@ -52,6 +54,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         int top,
         int maxItemCount,
         boolean isSplitHandlingDisabled,
+        boolean completeAfterAllCurrentChangesRetrieved,
+        Long endLSN,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
@@ -76,6 +80,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                 collectionLink,
                 isSplitHandlingDisabled);
         this.createRequestFunc = createRequestFunc;
+        this.completeAfterAllCurrentChangesRetrieved = completeAfterAllCurrentChangesRetrieved;
+        this.endLSN = endLSN;
     }
 
     @Override
@@ -112,13 +118,33 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                        FeedRangeContinuation continuationSnapshot =
                            this.changeFeedState.getContinuation();
 
-                       if (continuationSnapshot != null &&
-                           continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
+                       if (this.completeAfterAllCurrentChangesRetrieved || this.endLSN != null) {
+                           if (continuationSnapshot != null) {
 
-                           // not all continuations have been drained yet
-                           // repeat with the next continuation
-                           this.reEnableShouldFetchMoreForRetry();
-                           return Mono.empty();
+                               //track the end-LSN for each sub-feedRange and then find the next sub-feedRange to fetch more changes
+                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChanges(r, endLSN);
+                               if (shouldComplete) {
+                                   this.disableShouldFetchMore();
+                                   return Mono.just(r);
+                               }
+
+                               if (ModelBridgeInternal.<T>noChanges(r)) {
+                                   // if we have reached here, it means we have got 304 for the current feedRange,
+                                   // but we need to continue drain the changes from other sub-feedRange
+                                   this.reEnableShouldFetchMoreForRetry();
+                                   return Mono.empty();
+                               }
+                           }
+                       } else {
+                           // complete query based on 304s
+                           if (continuationSnapshot != null &&
+                               continuationSnapshot.handleChangeFeedNotModified(r) == ShouldRetryResult.RETRY_NOW) {
+
+                               // not all continuations have been drained yet
+                               // repeat with the next continuation
+                               this.reEnableShouldFetchMoreForRetry();
+                               return Mono.empty();
+                           }
                        }
 
                        return Mono.just(r);
@@ -133,7 +159,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         FeedResponse<T> response) {
 
         boolean isNoChanges = feedResponseAccessor.getNoChanges(response);
-        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges;
+        boolean shouldMoveToNextTokenOnETagReplace = !isNoChanges && !this.completeAfterAllCurrentChangesRetrieved && this.endLSN == null;
         return this.changeFeedState.applyServerResponseContinuation(
             serverContinuationToken, request, shouldMoveToNextTokenOnETagReplace);
     }

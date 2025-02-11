@@ -13,34 +13,6 @@ import com.azure.core.util.Context;
  */
 public interface Backups {
     /**
-     * Create backup for a given server with specified backup name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName The name of the backup.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server backup properties along with {@link Response}.
-     */
-    Response<ServerBackup> putWithResponse(String resourceGroupName, String serverName, String backupName,
-        Context context);
-
-    /**
-     * Create backup for a given server with specified backup name.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return server backup properties.
-     */
-    ServerBackup put(String resourceGroupName, String serverName, String backupName);
-
-    /**
      * List all the backups for a given server.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

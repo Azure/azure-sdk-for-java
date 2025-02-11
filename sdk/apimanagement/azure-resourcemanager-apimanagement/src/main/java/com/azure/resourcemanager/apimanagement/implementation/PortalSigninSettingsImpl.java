@@ -12,8 +12,7 @@ public final class PortalSigninSettingsImpl implements PortalSigninSettings {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    PortalSigninSettingsImpl(
-        PortalSigninSettingsInner innerObject,
+    PortalSigninSettingsImpl(PortalSigninSettingsInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

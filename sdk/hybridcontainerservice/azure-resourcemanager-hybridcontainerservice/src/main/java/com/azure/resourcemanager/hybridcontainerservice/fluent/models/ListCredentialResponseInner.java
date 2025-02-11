@@ -5,50 +5,48 @@
 package com.azure.resourcemanager.hybridcontainerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridcontainerservice.models.ListCredentialResponseError;
 import com.azure.resourcemanager.hybridcontainerservice.models.ListCredentialResponseProperties;
 import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The list kubeconfig result response.
  */
 @Fluent
-public final class ListCredentialResponseInner {
+public final class ListCredentialResponseInner implements JsonSerializable<ListCredentialResponseInner> {
     /*
      * Operation Id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Operation Name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * ARM Resource Id of the provisioned cluster instance
      */
-    @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
 
     /*
      * Provisioning state of the resource
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState status;
 
     /*
      * The error property.
      */
-    @JsonProperty(value = "error")
     private ListCredentialResponseError error;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private ListCredentialResponseProperties properties;
 
     /**
@@ -145,5 +143,54 @@ public final class ListCredentialResponseInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListCredentialResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListCredentialResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListCredentialResponseInner.
+     */
+    public static ListCredentialResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListCredentialResponseInner deserializedListCredentialResponseInner = new ListCredentialResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedListCredentialResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedListCredentialResponseInner.name = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedListCredentialResponseInner.resourceId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedListCredentialResponseInner.status
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("error".equals(fieldName)) {
+                    deserializedListCredentialResponseInner.error = ListCredentialResponseError.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedListCredentialResponseInner.properties
+                        = ListCredentialResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListCredentialResponseInner;
+        });
     }
 }

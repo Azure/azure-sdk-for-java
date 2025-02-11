@@ -17,78 +17,63 @@ import org.junit.jupiter.api.Assertions;
 public final class SpatialAnchorsAccountInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SpatialAnchorsAccountInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"storageAccountName\":\"burvjxxjnspy\",\"accountId\":\"tko\",\"accountDomain\":\"kouknvudwtiu\"},\"identity\":{\"principalId\":\"dng\",\"tenantId\":\"ocipazyxoeg\",\"type\":\"SystemAssigned\"},\"plan\":{\"principalId\":\"piu\",\"tenantId\":\"ygevqzntypmrbpiz\",\"type\":\"SystemAssigned\"},\"sku\":{\"name\":\"j\",\"tier\":\"Free\",\"size\":\"dnfyhxdeoejzicwi\",\"family\":\"jttgzf\",\"capacity\":2101457273},\"kind\":{\"name\":\"cbkhajdeyeamdph\",\"tier\":\"Premium\",\"size\":\"pbuxwgipwhon\",\"family\":\"kgshwa\",\"capacity\":2111638773},\"location\":\"zbinjeputtm\",\"tags\":{\"ftiyqzrnkcq\":\"nuzo\",\"whzlsicohoq\":\"yx\",\"hgyxzkonoc\":\"nwvlryavwhheunmm\",\"uconuqszfkbey\":\"koklya\"},\"id\":\"ewrmjmwvvjektc\",\"name\":\"senhwlrs\",\"type\":\"frzpwvlqdqgb\"}")
-                .toObject(SpatialAnchorsAccountInner.class);
-        Assertions.assertEquals("zbinjeputtm", model.location());
-        Assertions.assertEquals("nuzo", model.tags().get("ftiyqzrnkcq"));
+        SpatialAnchorsAccountInner model = BinaryData.fromString(
+            "{\"properties\":{\"storageAccountName\":\"llnwsubi\",\"accountId\":\"jampmngnzscxaqw\",\"accountDomain\":\"chcbonqvpkvlrxnj\"},\"identity\":{\"principalId\":\"eipheoflokeyy\",\"tenantId\":\"nj\",\"type\":\"SystemAssigned\"},\"plan\":{\"principalId\":\"grhpdjpju\",\"tenantId\":\"sxazjpq\",\"type\":\"SystemAssigned\"},\"sku\":{\"name\":\"alhbx\",\"tier\":\"Free\",\"size\":\"jzzvdud\",\"family\":\"dslfhotwmcy\",\"capacity\":1581858778},\"kind\":{\"name\":\"bjnpg\",\"tier\":\"Premium\",\"size\":\"adehxnltyfsopp\",\"family\":\"uesnzwdejbavo\",\"capacity\":669466066},\"location\":\"mohctb\",\"tags\":{\"w\":\"dwxdndnv\",\"lazjdyggdtjixhbk\":\"ujjugwdkcglh\",\"fwhybcibvy\":\"ofqweykhmenevfye\",\"ynnaam\":\"dcsi\"},\"id\":\"ectehf\",\"name\":\"qsc\",\"type\":\"eypvhezrkg\"}")
+            .toObject(SpatialAnchorsAccountInner.class);
+        Assertions.assertEquals("mohctb", model.location());
+        Assertions.assertEquals("dwxdndnv", model.tags().get("w"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.plan().type());
-        Assertions.assertEquals("j", model.sku().name());
+        Assertions.assertEquals("alhbx", model.sku().name());
         Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
-        Assertions.assertEquals("dnfyhxdeoejzicwi", model.sku().size());
-        Assertions.assertEquals("jttgzf", model.sku().family());
-        Assertions.assertEquals(2101457273, model.sku().capacity());
-        Assertions.assertEquals("cbkhajdeyeamdph", model.kind().name());
+        Assertions.assertEquals("jzzvdud", model.sku().size());
+        Assertions.assertEquals("dslfhotwmcy", model.sku().family());
+        Assertions.assertEquals(1581858778, model.sku().capacity());
+        Assertions.assertEquals("bjnpg", model.kind().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.kind().tier());
-        Assertions.assertEquals("pbuxwgipwhon", model.kind().size());
-        Assertions.assertEquals("kgshwa", model.kind().family());
-        Assertions.assertEquals(2111638773, model.kind().capacity());
-        Assertions.assertEquals("burvjxxjnspy", model.storageAccountName());
+        Assertions.assertEquals("adehxnltyfsopp", model.kind().size());
+        Assertions.assertEquals("uesnzwdejbavo", model.kind().family());
+        Assertions.assertEquals(669466066, model.kind().capacity());
+        Assertions.assertEquals("llnwsubi", model.storageAccountName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SpatialAnchorsAccountInner model =
-            new SpatialAnchorsAccountInner()
-                .withLocation("zbinjeputtm")
-                .withTags(
-                    mapOf(
-                        "ftiyqzrnkcq",
-                        "nuzo",
-                        "whzlsicohoq",
-                        "yx",
-                        "hgyxzkonoc",
-                        "nwvlryavwhheunmm",
-                        "uconuqszfkbey",
-                        "koklya"))
-                .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-                .withPlan(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
-                .withSku(
-                    new Sku()
-                        .withName("j")
-                        .withTier(SkuTier.FREE)
-                        .withSize("dnfyhxdeoejzicwi")
-                        .withFamily("jttgzf")
-                        .withCapacity(2101457273))
-                .withKind(
-                    new Sku()
-                        .withName("cbkhajdeyeamdph")
-                        .withTier(SkuTier.PREMIUM)
-                        .withSize("pbuxwgipwhon")
-                        .withFamily("kgshwa")
-                        .withCapacity(2111638773))
-                .withStorageAccountName("burvjxxjnspy");
+        SpatialAnchorsAccountInner model = new SpatialAnchorsAccountInner().withLocation("mohctb")
+            .withTags(mapOf("w", "dwxdndnv", "lazjdyggdtjixhbk", "ujjugwdkcglh", "fwhybcibvy", "ofqweykhmenevfye",
+                "ynnaam", "dcsi"))
+            .withIdentity(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withPlan(new Identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .withSku(new Sku().withName("alhbx")
+                .withTier(SkuTier.FREE)
+                .withSize("jzzvdud")
+                .withFamily("dslfhotwmcy")
+                .withCapacity(1581858778))
+            .withKind(new Sku().withName("bjnpg")
+                .withTier(SkuTier.PREMIUM)
+                .withSize("adehxnltyfsopp")
+                .withFamily("uesnzwdejbavo")
+                .withCapacity(669466066))
+            .withStorageAccountName("llnwsubi");
         model = BinaryData.fromObject(model).toObject(SpatialAnchorsAccountInner.class);
-        Assertions.assertEquals("zbinjeputtm", model.location());
-        Assertions.assertEquals("nuzo", model.tags().get("ftiyqzrnkcq"));
+        Assertions.assertEquals("mohctb", model.location());
+        Assertions.assertEquals("dwxdndnv", model.tags().get("w"));
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.plan().type());
-        Assertions.assertEquals("j", model.sku().name());
+        Assertions.assertEquals("alhbx", model.sku().name());
         Assertions.assertEquals(SkuTier.FREE, model.sku().tier());
-        Assertions.assertEquals("dnfyhxdeoejzicwi", model.sku().size());
-        Assertions.assertEquals("jttgzf", model.sku().family());
-        Assertions.assertEquals(2101457273, model.sku().capacity());
-        Assertions.assertEquals("cbkhajdeyeamdph", model.kind().name());
+        Assertions.assertEquals("jzzvdud", model.sku().size());
+        Assertions.assertEquals("dslfhotwmcy", model.sku().family());
+        Assertions.assertEquals(1581858778, model.sku().capacity());
+        Assertions.assertEquals("bjnpg", model.kind().name());
         Assertions.assertEquals(SkuTier.PREMIUM, model.kind().tier());
-        Assertions.assertEquals("pbuxwgipwhon", model.kind().size());
-        Assertions.assertEquals("kgshwa", model.kind().family());
-        Assertions.assertEquals(2111638773, model.kind().capacity());
-        Assertions.assertEquals("burvjxxjnspy", model.storageAccountName());
+        Assertions.assertEquals("adehxnltyfsopp", model.kind().size());
+        Assertions.assertEquals("uesnzwdejbavo", model.kind().family());
+        Assertions.assertEquals(669466066, model.kind().capacity());
+        Assertions.assertEquals("llnwsubi", model.storageAccountName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

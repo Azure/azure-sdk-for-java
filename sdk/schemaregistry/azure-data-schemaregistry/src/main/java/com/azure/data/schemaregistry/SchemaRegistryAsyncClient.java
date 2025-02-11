@@ -213,8 +213,7 @@ public final class SchemaRegistryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaProperties> registerSchema(String groupName, String name, String schemaDefinition,
         SchemaFormat format) {
-        return registerSchemaWithResponse(groupName, name, schemaDefinition, format)
-            .map(Response::getValue);
+        return registerSchemaWithResponse(groupName, name, schemaDefinition, format).map(Response::getValue);
     }
 
     /**
@@ -246,8 +245,8 @@ public final class SchemaRegistryAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name,
         String schemaDefinition, SchemaFormat format) {
-        return FluxUtil.withContext(context -> registerSchemaWithResponse(groupName, name, schemaDefinition,
-            format, context));
+        return FluxUtil
+            .withContext(context -> registerSchemaWithResponse(groupName, name, schemaDefinition, format, context));
     }
 
     Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name, String schemaDefinition,
@@ -269,11 +268,12 @@ public final class SchemaRegistryAsyncClient {
         final com.azure.data.schemaregistry.implementation.models.SchemaFormat contentType
             = SchemaRegistryHelper.getContentType(format);
 
-        return restService.getSchemas().registerWithResponseAsync(groupName, name, contentType.toString(), binaryData,
-                binaryData.getLength(), context)
+        return restService.getSchemas()
+            .registerWithResponseAsync(groupName, name, contentType.toString(), binaryData, binaryData.getLength(),
+                context)
             .map(response -> {
-                final SchemaProperties registered = SchemaRegistryHelper.getSchemaProperties(
-                    response.getDeserializedHeaders(), response.getHeaders(), format);
+                final SchemaProperties registered = SchemaRegistryHelper
+                    .getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
                 return new SimpleResponse<>(response, registered);
             });
     }
@@ -359,11 +359,12 @@ public final class SchemaRegistryAsyncClient {
             return monoError(logger, new NullPointerException("'schemaId' should not be null."));
         }
 
-        return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
+        return this.restService.getSchemas()
+            .getByIdWithResponseAsync(schemaId, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .flatMap(response -> {
-                SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(
-                    response.getDeserializedHeaders(), response.getHeaders());
+                SchemaProperties schemaObject = SchemaRegistryHelper
+                    .getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
                 return convertToString(response.getValue(), response.getHeaders())
                     .map(schema -> new SimpleResponse<>(response, new SchemaRegistrySchema(schemaObject, schema)));
             });
@@ -376,22 +377,21 @@ public final class SchemaRegistryAsyncClient {
             return monoError(logger, new NullPointerException("'groupName' should not be null."));
         }
 
-        return this.restService.getSchemas().getSchemaVersionWithResponseAsync(groupName, schemaName, schemaVersion,
-                context)
+        return this.restService.getSchemas()
+            .getSchemaVersionWithResponseAsync(groupName, schemaName, schemaVersion, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .flatMap(response -> {
                 final Flux<ByteBuffer> schemaFlux = response.getValue();
-                SchemaProperties schemaObject = SchemaRegistryHelper.getSchemaProperties(
-                    response.getDeserializedHeaders(), response.getHeaders());
+                SchemaProperties schemaObject = SchemaRegistryHelper
+                    .getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders());
 
                 if (schemaFlux == null) {
                     return Mono.error(new IllegalArgumentException(String.format(
-                        "Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d",
-                        groupName, schemaName, schemaVersion)));
+                        "Schema definition should not be null. Group Name: %s. Schema Name: %s. Version: %d", groupName,
+                        schemaName, schemaVersion)));
                 }
                 return convertToString(schemaFlux, response.getHeaders())
-                    .map(schema -> new SimpleResponse<>(
-                        response.getRequest(), response.getStatusCode(),
+                    .map(schema -> new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
                         response.getHeaders(), new SchemaRegistrySchema(schemaObject, schema)));
             });
     }
@@ -439,8 +439,8 @@ public final class SchemaRegistryAsyncClient {
     public Mono<Response<SchemaProperties>> getSchemaPropertiesWithResponse(String groupName, String name,
         String schemaDefinition, SchemaFormat format) {
 
-        return FluxUtil.withContext(context ->
-            getSchemaPropertiesWithResponse(groupName, name, schemaDefinition, format, context));
+        return FluxUtil.withContext(
+            context -> getSchemaPropertiesWithResponse(groupName, name, schemaDefinition, format, context));
     }
 
     /**
@@ -485,8 +485,8 @@ public final class SchemaRegistryAsyncClient {
                 context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
-                final SchemaProperties properties = SchemaRegistryHelper.getSchemaProperties(
-                    response.getDeserializedHeaders(), response.getHeaders(), format);
+                final SchemaProperties properties = SchemaRegistryHelper
+                    .getSchemaProperties(response.getDeserializedHeaders(), response.getHeaders(), format);
 
                 return new SimpleResponse<>(response, properties);
             });

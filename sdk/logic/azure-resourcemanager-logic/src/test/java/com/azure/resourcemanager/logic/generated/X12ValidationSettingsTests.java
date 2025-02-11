@@ -12,47 +12,43 @@ import org.junit.jupiter.api.Assertions;
 public final class X12ValidationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        X12ValidationSettings model =
-            BinaryData
-                .fromString(
-                    "{\"validateCharacterSet\":true,\"checkDuplicateInterchangeControlNumber\":true,\"interchangeControlNumberValidityDays\":2106515877,\"checkDuplicateGroupControlNumber\":true,\"checkDuplicateTransactionSetControlNumber\":false,\"validateEDITypes\":true,\"validateXSDTypes\":true,\"allowLeadingAndTrailingSpacesAndZeroes\":false,\"trimLeadingAndTrailingSpacesAndZeroes\":true,\"trailingSeparatorPolicy\":\"NotSpecified\"}")
-                .toObject(X12ValidationSettings.class);
+        X12ValidationSettings model = BinaryData.fromString(
+            "{\"validateCharacterSet\":true,\"checkDuplicateInterchangeControlNumber\":false,\"interchangeControlNumberValidityDays\":2061917602,\"checkDuplicateGroupControlNumber\":true,\"checkDuplicateTransactionSetControlNumber\":false,\"validateEDITypes\":false,\"validateXSDTypes\":true,\"allowLeadingAndTrailingSpacesAndZeroes\":true,\"trimLeadingAndTrailingSpacesAndZeroes\":true,\"trailingSeparatorPolicy\":\"Mandatory\"}")
+            .toObject(X12ValidationSettings.class);
         Assertions.assertEquals(true, model.validateCharacterSet());
-        Assertions.assertEquals(true, model.checkDuplicateInterchangeControlNumber());
-        Assertions.assertEquals(2106515877, model.interchangeControlNumberValidityDays());
+        Assertions.assertEquals(false, model.checkDuplicateInterchangeControlNumber());
+        Assertions.assertEquals(2061917602, model.interchangeControlNumberValidityDays());
         Assertions.assertEquals(true, model.checkDuplicateGroupControlNumber());
         Assertions.assertEquals(false, model.checkDuplicateTransactionSetControlNumber());
-        Assertions.assertEquals(true, model.validateEdiTypes());
+        Assertions.assertEquals(false, model.validateEdiTypes());
         Assertions.assertEquals(true, model.validateXsdTypes());
-        Assertions.assertEquals(false, model.allowLeadingAndTrailingSpacesAndZeroes());
+        Assertions.assertEquals(true, model.allowLeadingAndTrailingSpacesAndZeroes());
         Assertions.assertEquals(true, model.trimLeadingAndTrailingSpacesAndZeroes());
-        Assertions.assertEquals(TrailingSeparatorPolicy.NOT_SPECIFIED, model.trailingSeparatorPolicy());
+        Assertions.assertEquals(TrailingSeparatorPolicy.MANDATORY, model.trailingSeparatorPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        X12ValidationSettings model =
-            new X12ValidationSettings()
-                .withValidateCharacterSet(true)
-                .withCheckDuplicateInterchangeControlNumber(true)
-                .withInterchangeControlNumberValidityDays(2106515877)
-                .withCheckDuplicateGroupControlNumber(true)
-                .withCheckDuplicateTransactionSetControlNumber(false)
-                .withValidateEdiTypes(true)
-                .withValidateXsdTypes(true)
-                .withAllowLeadingAndTrailingSpacesAndZeroes(false)
-                .withTrimLeadingAndTrailingSpacesAndZeroes(true)
-                .withTrailingSeparatorPolicy(TrailingSeparatorPolicy.NOT_SPECIFIED);
+        X12ValidationSettings model = new X12ValidationSettings().withValidateCharacterSet(true)
+            .withCheckDuplicateInterchangeControlNumber(false)
+            .withInterchangeControlNumberValidityDays(2061917602)
+            .withCheckDuplicateGroupControlNumber(true)
+            .withCheckDuplicateTransactionSetControlNumber(false)
+            .withValidateEdiTypes(false)
+            .withValidateXsdTypes(true)
+            .withAllowLeadingAndTrailingSpacesAndZeroes(true)
+            .withTrimLeadingAndTrailingSpacesAndZeroes(true)
+            .withTrailingSeparatorPolicy(TrailingSeparatorPolicy.MANDATORY);
         model = BinaryData.fromObject(model).toObject(X12ValidationSettings.class);
         Assertions.assertEquals(true, model.validateCharacterSet());
-        Assertions.assertEquals(true, model.checkDuplicateInterchangeControlNumber());
-        Assertions.assertEquals(2106515877, model.interchangeControlNumberValidityDays());
+        Assertions.assertEquals(false, model.checkDuplicateInterchangeControlNumber());
+        Assertions.assertEquals(2061917602, model.interchangeControlNumberValidityDays());
         Assertions.assertEquals(true, model.checkDuplicateGroupControlNumber());
         Assertions.assertEquals(false, model.checkDuplicateTransactionSetControlNumber());
-        Assertions.assertEquals(true, model.validateEdiTypes());
+        Assertions.assertEquals(false, model.validateEdiTypes());
         Assertions.assertEquals(true, model.validateXsdTypes());
-        Assertions.assertEquals(false, model.allowLeadingAndTrailingSpacesAndZeroes());
+        Assertions.assertEquals(true, model.allowLeadingAndTrailingSpacesAndZeroes());
         Assertions.assertEquals(true, model.trimLeadingAndTrailingSpacesAndZeroes());
-        Assertions.assertEquals(TrailingSeparatorPolicy.NOT_SPECIFIED, model.trailingSeparatorPolicy());
+        Assertions.assertEquals(TrailingSeparatorPolicy.MANDATORY, model.trailingSeparatorPolicy());
     }
 }

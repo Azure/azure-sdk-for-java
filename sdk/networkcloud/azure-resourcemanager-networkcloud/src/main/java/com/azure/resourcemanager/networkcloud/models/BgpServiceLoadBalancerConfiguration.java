@@ -5,45 +5,50 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** BgpServiceLoadBalancerConfiguration represents the configuration of a BGP service load balancer. */
+/**
+ * BgpServiceLoadBalancerConfiguration represents the configuration of a BGP service load balancer.
+ */
 @Fluent
-public final class BgpServiceLoadBalancerConfiguration {
+public final class BgpServiceLoadBalancerConfiguration
+    implements JsonSerializable<BgpServiceLoadBalancerConfiguration> {
     /*
      * The association of IP address pools to the communities and peers, allowing for announcement of IPs.
      */
-    @JsonProperty(value = "bgpAdvertisements")
     private List<BgpAdvertisement> bgpAdvertisements;
 
     /*
      * The list of additional BgpPeer entities that the Kubernetes cluster will peer with. All peering must be
      * explicitly defined.
      */
-    @JsonProperty(value = "bgpPeers")
     private List<ServiceLoadBalancerBgpPeer> bgpPeers;
 
     /*
      * The indicator to specify if the load balancer peers with the network fabric.
      */
-    @JsonProperty(value = "fabricPeeringEnabled")
     private FabricPeeringEnabled fabricPeeringEnabled;
 
     /*
-     * The list of pools of IP addresses that can be allocated to Load Balancer services.
+     * The list of pools of IP addresses that can be allocated to load balancer services.
      */
-    @JsonProperty(value = "ipAddressPools")
     private List<IpAddressPool> ipAddressPools;
 
-    /** Creates an instance of BgpServiceLoadBalancerConfiguration class. */
+    /**
+     * Creates an instance of BgpServiceLoadBalancerConfiguration class.
+     */
     public BgpServiceLoadBalancerConfiguration() {
     }
 
     /**
      * Get the bgpAdvertisements property: The association of IP address pools to the communities and peers, allowing
      * for announcement of IPs.
-     *
+     * 
      * @return the bgpAdvertisements value.
      */
     public List<BgpAdvertisement> bgpAdvertisements() {
@@ -53,7 +58,7 @@ public final class BgpServiceLoadBalancerConfiguration {
     /**
      * Set the bgpAdvertisements property: The association of IP address pools to the communities and peers, allowing
      * for announcement of IPs.
-     *
+     * 
      * @param bgpAdvertisements the bgpAdvertisements value to set.
      * @return the BgpServiceLoadBalancerConfiguration object itself.
      */
@@ -65,7 +70,7 @@ public final class BgpServiceLoadBalancerConfiguration {
     /**
      * Get the bgpPeers property: The list of additional BgpPeer entities that the Kubernetes cluster will peer with.
      * All peering must be explicitly defined.
-     *
+     * 
      * @return the bgpPeers value.
      */
     public List<ServiceLoadBalancerBgpPeer> bgpPeers() {
@@ -75,7 +80,7 @@ public final class BgpServiceLoadBalancerConfiguration {
     /**
      * Set the bgpPeers property: The list of additional BgpPeer entities that the Kubernetes cluster will peer with.
      * All peering must be explicitly defined.
-     *
+     * 
      * @param bgpPeers the bgpPeers value to set.
      * @return the BgpServiceLoadBalancerConfiguration object itself.
      */
@@ -87,7 +92,7 @@ public final class BgpServiceLoadBalancerConfiguration {
     /**
      * Get the fabricPeeringEnabled property: The indicator to specify if the load balancer peers with the network
      * fabric.
-     *
+     * 
      * @return the fabricPeeringEnabled value.
      */
     public FabricPeeringEnabled fabricPeeringEnabled() {
@@ -97,7 +102,7 @@ public final class BgpServiceLoadBalancerConfiguration {
     /**
      * Set the fabricPeeringEnabled property: The indicator to specify if the load balancer peers with the network
      * fabric.
-     *
+     * 
      * @param fabricPeeringEnabled the fabricPeeringEnabled value to set.
      * @return the BgpServiceLoadBalancerConfiguration object itself.
      */
@@ -107,9 +112,9 @@ public final class BgpServiceLoadBalancerConfiguration {
     }
 
     /**
-     * Get the ipAddressPools property: The list of pools of IP addresses that can be allocated to Load Balancer
+     * Get the ipAddressPools property: The list of pools of IP addresses that can be allocated to load balancer
      * services.
-     *
+     * 
      * @return the ipAddressPools value.
      */
     public List<IpAddressPool> ipAddressPools() {
@@ -117,9 +122,9 @@ public final class BgpServiceLoadBalancerConfiguration {
     }
 
     /**
-     * Set the ipAddressPools property: The list of pools of IP addresses that can be allocated to Load Balancer
+     * Set the ipAddressPools property: The list of pools of IP addresses that can be allocated to load balancer
      * services.
-     *
+     * 
      * @param ipAddressPools the ipAddressPools value to set.
      * @return the BgpServiceLoadBalancerConfiguration object itself.
      */
@@ -130,7 +135,7 @@ public final class BgpServiceLoadBalancerConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -143,5 +148,60 @@ public final class BgpServiceLoadBalancerConfiguration {
         if (ipAddressPools() != null) {
             ipAddressPools().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("bgpAdvertisements", this.bgpAdvertisements,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("bgpPeers", this.bgpPeers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("fabricPeeringEnabled",
+            this.fabricPeeringEnabled == null ? null : this.fabricPeeringEnabled.toString());
+        jsonWriter.writeArrayField("ipAddressPools", this.ipAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BgpServiceLoadBalancerConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BgpServiceLoadBalancerConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BgpServiceLoadBalancerConfiguration.
+     */
+    public static BgpServiceLoadBalancerConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BgpServiceLoadBalancerConfiguration deserializedBgpServiceLoadBalancerConfiguration
+                = new BgpServiceLoadBalancerConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bgpAdvertisements".equals(fieldName)) {
+                    List<BgpAdvertisement> bgpAdvertisements
+                        = reader.readArray(reader1 -> BgpAdvertisement.fromJson(reader1));
+                    deserializedBgpServiceLoadBalancerConfiguration.bgpAdvertisements = bgpAdvertisements;
+                } else if ("bgpPeers".equals(fieldName)) {
+                    List<ServiceLoadBalancerBgpPeer> bgpPeers
+                        = reader.readArray(reader1 -> ServiceLoadBalancerBgpPeer.fromJson(reader1));
+                    deserializedBgpServiceLoadBalancerConfiguration.bgpPeers = bgpPeers;
+                } else if ("fabricPeeringEnabled".equals(fieldName)) {
+                    deserializedBgpServiceLoadBalancerConfiguration.fabricPeeringEnabled
+                        = FabricPeeringEnabled.fromString(reader.getString());
+                } else if ("ipAddressPools".equals(fieldName)) {
+                    List<IpAddressPool> ipAddressPools = reader.readArray(reader1 -> IpAddressPool.fromJson(reader1));
+                    deserializedBgpServiceLoadBalancerConfiguration.ipAddressPools = ipAddressPools;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBgpServiceLoadBalancerConfiguration;
+        });
     }
 }

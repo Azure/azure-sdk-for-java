@@ -10,60 +10,62 @@ import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPac
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** An immutable client-side representation of LogAnalyticsQueryPack. */
+/**
+ * An immutable client-side representation of LogAnalyticsQueryPack.
+ */
 public interface LogAnalyticsQueryPack {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the queryPackId property: The unique ID of your application. This field cannot be changed.
-     *
+     * 
      * @return the queryPackId value.
      */
     String queryPackId();
 
     /**
      * Gets the timeCreated property: Creation Date for the Log Analytics QueryPack, in ISO 8601 format.
-     *
+     * 
      * @return the timeCreated value.
      */
     OffsetDateTime timeCreated();
 
     /**
      * Gets the timeModified property: Last modified date of the Log Analytics QueryPack, in ISO 8601 format.
-     *
+     * 
      * @return the timeModified value.
      */
     OffsetDateTime timeModified();
@@ -72,58 +74,63 @@ public interface LogAnalyticsQueryPack {
      * Gets the provisioningState property: Current state of this QueryPack: whether or not is has been provisioned
      * within the resource group it is defined. Users cannot change this value but are able to read from it. Values will
      * include Succeeded, Deploying, Canceled, and Failed.
-     *
+     * 
      * @return the provisioningState value.
      */
     String provisioningState();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPackInner object.
-     *
+     * 
      * @return the inner object.
      */
     LogAnalyticsQueryPackInner innerModel();
 
-    /** The entirety of the LogAnalyticsQueryPack definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the LogAnalyticsQueryPack definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
-    /** The LogAnalyticsQueryPack definition stages. */
+    /**
+     * The LogAnalyticsQueryPack definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the LogAnalyticsQueryPack definition. */
+        /**
+         * The first stage of the LogAnalyticsQueryPack definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the LogAnalyticsQueryPack definition allowing to specify location. */
+        /**
+         * The stage of the LogAnalyticsQueryPack definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -131,18 +138,20 @@ public interface LogAnalyticsQueryPack {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithResourceGroup withRegion(String location);
         }
 
-        /** The stage of the LogAnalyticsQueryPack definition allowing to specify parent resource. */
+        /**
+         * The stage of the LogAnalyticsQueryPack definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
@@ -156,25 +165,27 @@ public interface LogAnalyticsQueryPack {
         interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             LogAnalyticsQueryPack create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             LogAnalyticsQueryPack create(Context context);
         }
 
-        /** The stage of the LogAnalyticsQueryPack definition allowing to specify tags. */
+        /**
+         * The stage of the LogAnalyticsQueryPack definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -184,36 +195,42 @@ public interface LogAnalyticsQueryPack {
 
     /**
      * Begins update for the LogAnalyticsQueryPack resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     LogAnalyticsQueryPack.Update update();
 
-    /** The template for LogAnalyticsQueryPack update. */
+    /**
+     * The template for LogAnalyticsQueryPack update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         LogAnalyticsQueryPack apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         LogAnalyticsQueryPack apply(Context context);
     }
 
-    /** The LogAnalyticsQueryPack update stages. */
+    /**
+     * The LogAnalyticsQueryPack update stages.
+     */
     interface UpdateStages {
-        /** The stage of the LogAnalyticsQueryPack update allowing to specify tags. */
+        /**
+         * The stage of the LogAnalyticsQueryPack update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags.
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
@@ -223,14 +240,14 @@ public interface LogAnalyticsQueryPack {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     LogAnalyticsQueryPack refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

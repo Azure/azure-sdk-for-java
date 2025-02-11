@@ -15,73 +15,68 @@ import org.junit.jupiter.api.Assertions;
 public final class LiveEventTrackEventInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LiveEventTrackEventInner model =
-            BinaryData
-                .fromString(
-                    "{\"eventType\":\"TrackEvent/IngestHeartbeat\",\"eventTime\":\"2021-02-03T02:01:52Z\",\"data\":{\"trackName\":\"wzxltjc\",\"trackType\":\"audio\",\"bitrate\":598622795111508954,\"incomingBitrate\":3612428382061476540,\"lastTimestamp\":\"navvwx\",\"timescale\":\"byqunyow\",\"overlapCount\":8184174444781433747,\"discontinuityCount\":6859561979091901911,\"nonincreasingCount\":4661329361836653803,\"unexpectedBitrate\":true,\"state\":\"fvpdbo\",\"healthy\":true,\"lastFragmentArrivalTime\":\"2021-11-02T17:27:56Z\",\"ingestDriftValue\":\"j\",\"transcriptionState\":\"hkr\",\"transcriptionLanguage\":\"bdeibqipqk\"}}")
-                .toObject(LiveEventTrackEventInner.class);
+        LiveEventTrackEventInner model = BinaryData.fromString(
+            "{\"eventType\":\"TrackEvent/IngestHeartbeat\",\"eventTime\":\"2021-06-03T06:53:08Z\",\"data\":{\"trackName\":\"zepn\",\"trackType\":\"video\",\"bitrate\":7502230535508252511,\"incomingBitrate\":5128991019621681224,\"lastTimestamp\":\"daxconfozauorsuk\",\"timescale\":\"wbqpl\",\"overlapCount\":8915725309922353995,\"discontinuityCount\":5310678963156682213,\"nonincreasingCount\":8249216187823055571,\"unexpectedBitrate\":true,\"state\":\"wzsoldweyuqdunv\",\"healthy\":true,\"lastFragmentArrivalTime\":\"2021-07-30T06:00:49Z\",\"ingestDriftValue\":\"biorktal\",\"transcriptionState\":\"jhhgdnhxmsi\",\"transcriptionLanguage\":\"omi\"}}")
+            .toObject(LiveEventTrackEventInner.class);
         Assertions.assertEquals(LiveEventTrackEventType.TRACK_EVENT_INGEST_HEARTBEAT, model.eventType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T02:01:52Z"), model.eventTime());
-        Assertions.assertEquals("wzxltjc", model.data().trackName());
-        Assertions.assertEquals(LiveEventTrackType.AUDIO, model.data().trackType());
-        Assertions.assertEquals(598622795111508954L, model.data().bitrate());
-        Assertions.assertEquals(3612428382061476540L, model.data().incomingBitrate());
-        Assertions.assertEquals("navvwx", model.data().lastTimestamp());
-        Assertions.assertEquals("byqunyow", model.data().timescale());
-        Assertions.assertEquals(8184174444781433747L, model.data().overlapCount());
-        Assertions.assertEquals(6859561979091901911L, model.data().discontinuityCount());
-        Assertions.assertEquals(4661329361836653803L, model.data().nonincreasingCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T06:53:08Z"), model.eventTime());
+        Assertions.assertEquals("zepn", model.data().trackName());
+        Assertions.assertEquals(LiveEventTrackType.VIDEO, model.data().trackType());
+        Assertions.assertEquals(7502230535508252511L, model.data().bitrate());
+        Assertions.assertEquals(5128991019621681224L, model.data().incomingBitrate());
+        Assertions.assertEquals("daxconfozauorsuk", model.data().lastTimestamp());
+        Assertions.assertEquals("wbqpl", model.data().timescale());
+        Assertions.assertEquals(8915725309922353995L, model.data().overlapCount());
+        Assertions.assertEquals(5310678963156682213L, model.data().discontinuityCount());
+        Assertions.assertEquals(8249216187823055571L, model.data().nonincreasingCount());
         Assertions.assertEquals(true, model.data().unexpectedBitrate());
-        Assertions.assertEquals("fvpdbo", model.data().state());
+        Assertions.assertEquals("wzsoldweyuqdunv", model.data().state());
         Assertions.assertEquals(true, model.data().healthy());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-02T17:27:56Z"), model.data().lastFragmentArrivalTime());
-        Assertions.assertEquals("j", model.data().ingestDriftValue());
-        Assertions.assertEquals("hkr", model.data().transcriptionState());
-        Assertions.assertEquals("bdeibqipqk", model.data().transcriptionLanguage());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-30T06:00:49Z"), model.data().lastFragmentArrivalTime());
+        Assertions.assertEquals("biorktal", model.data().ingestDriftValue());
+        Assertions.assertEquals("jhhgdnhxmsi", model.data().transcriptionState());
+        Assertions.assertEquals("omi", model.data().transcriptionLanguage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventTrackEventInner model =
-            new LiveEventTrackEventInner()
-                .withEventType(LiveEventTrackEventType.TRACK_EVENT_INGEST_HEARTBEAT)
-                .withEventTime(OffsetDateTime.parse("2021-02-03T02:01:52Z"))
-                .withData(
-                    new LiveEventTrackEventData()
-                        .withTrackName("wzxltjc")
-                        .withTrackType(LiveEventTrackType.AUDIO)
-                        .withBitrate(598622795111508954L)
-                        .withIncomingBitrate(3612428382061476540L)
-                        .withLastTimestamp("navvwx")
-                        .withTimescale("byqunyow")
-                        .withOverlapCount(8184174444781433747L)
-                        .withDiscontinuityCount(6859561979091901911L)
-                        .withNonincreasingCount(4661329361836653803L)
-                        .withUnexpectedBitrate(true)
-                        .withState("fvpdbo")
-                        .withHealthy(true)
-                        .withLastFragmentArrivalTime(OffsetDateTime.parse("2021-11-02T17:27:56Z"))
-                        .withIngestDriftValue("j")
-                        .withTranscriptionState("hkr")
-                        .withTranscriptionLanguage("bdeibqipqk"));
+        LiveEventTrackEventInner model
+            = new LiveEventTrackEventInner().withEventType(LiveEventTrackEventType.TRACK_EVENT_INGEST_HEARTBEAT)
+                .withEventTime(OffsetDateTime.parse("2021-06-03T06:53:08Z"))
+                .withData(new LiveEventTrackEventData().withTrackName("zepn")
+                    .withTrackType(LiveEventTrackType.VIDEO)
+                    .withBitrate(7502230535508252511L)
+                    .withIncomingBitrate(5128991019621681224L)
+                    .withLastTimestamp("daxconfozauorsuk")
+                    .withTimescale("wbqpl")
+                    .withOverlapCount(8915725309922353995L)
+                    .withDiscontinuityCount(5310678963156682213L)
+                    .withNonincreasingCount(8249216187823055571L)
+                    .withUnexpectedBitrate(true)
+                    .withState("wzsoldweyuqdunv")
+                    .withHealthy(true)
+                    .withLastFragmentArrivalTime(OffsetDateTime.parse("2021-07-30T06:00:49Z"))
+                    .withIngestDriftValue("biorktal")
+                    .withTranscriptionState("jhhgdnhxmsi")
+                    .withTranscriptionLanguage("omi"));
         model = BinaryData.fromObject(model).toObject(LiveEventTrackEventInner.class);
         Assertions.assertEquals(LiveEventTrackEventType.TRACK_EVENT_INGEST_HEARTBEAT, model.eventType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T02:01:52Z"), model.eventTime());
-        Assertions.assertEquals("wzxltjc", model.data().trackName());
-        Assertions.assertEquals(LiveEventTrackType.AUDIO, model.data().trackType());
-        Assertions.assertEquals(598622795111508954L, model.data().bitrate());
-        Assertions.assertEquals(3612428382061476540L, model.data().incomingBitrate());
-        Assertions.assertEquals("navvwx", model.data().lastTimestamp());
-        Assertions.assertEquals("byqunyow", model.data().timescale());
-        Assertions.assertEquals(8184174444781433747L, model.data().overlapCount());
-        Assertions.assertEquals(6859561979091901911L, model.data().discontinuityCount());
-        Assertions.assertEquals(4661329361836653803L, model.data().nonincreasingCount());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-03T06:53:08Z"), model.eventTime());
+        Assertions.assertEquals("zepn", model.data().trackName());
+        Assertions.assertEquals(LiveEventTrackType.VIDEO, model.data().trackType());
+        Assertions.assertEquals(7502230535508252511L, model.data().bitrate());
+        Assertions.assertEquals(5128991019621681224L, model.data().incomingBitrate());
+        Assertions.assertEquals("daxconfozauorsuk", model.data().lastTimestamp());
+        Assertions.assertEquals("wbqpl", model.data().timescale());
+        Assertions.assertEquals(8915725309922353995L, model.data().overlapCount());
+        Assertions.assertEquals(5310678963156682213L, model.data().discontinuityCount());
+        Assertions.assertEquals(8249216187823055571L, model.data().nonincreasingCount());
         Assertions.assertEquals(true, model.data().unexpectedBitrate());
-        Assertions.assertEquals("fvpdbo", model.data().state());
+        Assertions.assertEquals("wzsoldweyuqdunv", model.data().state());
         Assertions.assertEquals(true, model.data().healthy());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-02T17:27:56Z"), model.data().lastFragmentArrivalTime());
-        Assertions.assertEquals("j", model.data().ingestDriftValue());
-        Assertions.assertEquals("hkr", model.data().transcriptionState());
-        Assertions.assertEquals("bdeibqipqk", model.data().transcriptionLanguage());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-30T06:00:49Z"), model.data().lastFragmentArrivalTime());
+        Assertions.assertEquals("biorktal", model.data().ingestDriftValue());
+        Assertions.assertEquals("jhhgdnhxmsi", model.data().transcriptionState());
+        Assertions.assertEquals("omi", model.data().transcriptionLanguage());
     }
 }

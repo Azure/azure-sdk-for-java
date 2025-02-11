@@ -8,38 +8,40 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Deployments. */
+/**
+ * Resource collection API of Deployments.
+ */
 public interface Deployments {
     /**
      * Gets the deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account as paginated response with {@link
-     *     PagedIterable}.
+     * @return the deployments associated with the Cognitive Services account as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Deployment> list(String resourceGroupName, String accountName);
 
     /**
      * Gets the deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the deployments associated with the Cognitive Services account as paginated response with {@link
-     *     PagedIterable}.
+     * @return the deployments associated with the Cognitive Services account as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Deployment> list(String resourceGroupName, String accountName, Context context);
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -49,12 +51,12 @@ public interface Deployments {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified deployments associated with the Cognitive Services account along with {@link Response}.
      */
-    Response<Deployment> getWithResponse(
-        String resourceGroupName, String accountName, String deploymentName, Context context);
+    Response<Deployment> getWithResponse(String resourceGroupName, String accountName, String deploymentName,
+        Context context);
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -67,7 +69,7 @@ public interface Deployments {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -79,7 +81,7 @@ public interface Deployments {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
@@ -91,8 +93,38 @@ public interface Deployments {
     void delete(String resourceGroupName, String accountName, String deploymentName, Context context);
 
     /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<SkuResource> listSkus(String resourceGroupName, String accountName, String deploymentName);
+
+    /**
+     * Lists the specified deployments skus associated with the Cognitive Services account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of Cognitive Services account.
+     * @param deploymentName The name of the deployment associated with the Cognitive Services Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
+     */
+    PagedIterable<SkuResource> listSkus(String resourceGroupName, String accountName, String deploymentName,
+        Context context);
+
+    /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +135,7 @@ public interface Deployments {
 
     /**
      * Gets the specified deployments associated with the Cognitive Services account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +147,7 @@ public interface Deployments {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +157,7 @@ public interface Deployments {
 
     /**
      * Deletes the specified deployment associated with the Cognitive Services account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,7 +168,7 @@ public interface Deployments {
 
     /**
      * Begins definition for a new Deployment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Deployment definition.
      */

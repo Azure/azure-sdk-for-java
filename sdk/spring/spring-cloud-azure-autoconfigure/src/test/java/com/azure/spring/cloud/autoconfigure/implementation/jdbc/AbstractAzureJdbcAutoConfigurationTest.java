@@ -3,19 +3,28 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.jdbc;
 
+import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
 import com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.SpringTokenCredentialProviderApplicationRunListener;
+import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.ApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 
 abstract class AbstractAzureJdbcAutoConfigurationTest {
 
@@ -54,20 +63,33 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
 
     @Test
     void testHasSingleBean() {
-        this.contextRunner
-            .run((context) -> {
-                assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-                assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
-            });
+        try (MockedStatic<SpringTokenCredentialProvider> mockedStatic = Mockito.mockStatic(SpringTokenCredentialProvider.class)) {
+            mockedStatic.when(() -> SpringTokenCredentialProvider.setGlobalApplicationContext(any(ApplicationContext.class)))
+                        .thenAnswer(invocation -> null);
+            this.contextRunner
+                .withBean("test", DefaultAzureCredential.class)
+                .withInitializer((context) -> new SpringTokenCredentialProviderApplicationRunListener().contextPrepared(context))
+                .run((context) -> {
+                    assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
+                    mockedStatic.verify(() -> SpringTokenCredentialProvider.setGlobalApplicationContext(any()));
+                });
+        }
     }
 
     @Test
     void testNoAzureAuthenticationTemplate() {
         this.contextRunner
+            .withBean("test", DefaultAzureCredential.class)
             .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
+            .withInitializer((context) -> new SpringTokenCredentialProviderApplicationRunListener().contextPrepared(context))
             .run((context) -> {
                 assertThat(context).doesNotHaveBean(JdbcPropertiesBeanPostProcessor.class);
-                assertThat(context).doesNotHaveBean(SpringTokenCredentialProviderContextProvider.class);
+
+                TokenCredentialProviderOptions options = new TokenCredentialProviderOptions();
+                options.setTokenCredentialBeanName("test");
+                options.setTokenCredentialProviderClassName(SpringTokenCredentialProvider.class.getName());
+                SpringTokenCredentialProvider springTokenCredentialProvider = new SpringTokenCredentialProvider(options);
+                assertThrows(NullPointerException.class, springTokenCredentialProvider::get);
             });
     }
 
@@ -77,7 +99,6 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
             .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
             .run((context) -> {
                 assertThat(context).doesNotHaveBean(JdbcPropertiesBeanPostProcessor.class);
-                assertThat(context).doesNotHaveBean(SpringTokenCredentialProviderContextProvider.class);
             });
     }
 

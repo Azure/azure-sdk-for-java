@@ -5,43 +5,25 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The Endpoint resource, which contains information about file sources and targets.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = EndpointBaseUpdateProperties.class,
-    visible = true)
-@JsonTypeName("EndpointBaseUpdateProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "AzureStorageBlobContainer",
-        value = AzureStorageBlobContainerEndpointUpdateProperties.class),
-    @JsonSubTypes.Type(name = "NfsMount", value = NfsMountEndpointUpdateProperties.class),
-    @JsonSubTypes.Type(
-        name = "AzureStorageSmbFileShare",
-        value = AzureStorageSmbFileShareEndpointUpdateProperties.class),
-    @JsonSubTypes.Type(name = "SmbMount", value = SmbMountEndpointUpdateProperties.class) })
 @Fluent
-public class EndpointBaseUpdateProperties {
+public class EndpointBaseUpdateProperties implements JsonSerializable<EndpointBaseUpdateProperties> {
     /*
      * The Endpoint resource type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
     private EndpointType endpointType = EndpointType.fromString("EndpointBaseUpdateProperties");
 
     /*
      * A description for the Endpoint.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -85,5 +67,75 @@ public class EndpointBaseUpdateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EndpointBaseUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EndpointBaseUpdateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EndpointBaseUpdateProperties.
+     */
+    public static EndpointBaseUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("endpointType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureStorageBlobContainer".equals(discriminatorValue)) {
+                    return AzureStorageBlobContainerEndpointUpdateProperties.fromJson(readerToUse.reset());
+                } else if ("NfsMount".equals(discriminatorValue)) {
+                    return NfsMountEndpointUpdateProperties.fromJson(readerToUse.reset());
+                } else if ("AzureStorageSmbFileShare".equals(discriminatorValue)) {
+                    return AzureStorageSmbFileShareEndpointUpdateProperties.fromJson(readerToUse.reset());
+                } else if ("SmbMount".equals(discriminatorValue)) {
+                    return SmbMountEndpointUpdateProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static EndpointBaseUpdateProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EndpointBaseUpdateProperties deserializedEndpointBaseUpdateProperties = new EndpointBaseUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedEndpointBaseUpdateProperties.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedEndpointBaseUpdateProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEndpointBaseUpdateProperties;
+        });
     }
 }

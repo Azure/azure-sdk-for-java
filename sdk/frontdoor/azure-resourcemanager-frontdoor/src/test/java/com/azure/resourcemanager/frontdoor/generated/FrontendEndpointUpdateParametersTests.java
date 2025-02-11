@@ -14,25 +14,25 @@ public final class FrontendEndpointUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FrontendEndpointUpdateParameters model = BinaryData.fromString(
-            "{\"hostName\":\"ybvpay\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":240734224,\"webApplicationFirewallPolicyLink\":{\"id\":\"xgwjplmagstcyoh\"}}")
+            "{\"hostName\":\"kozzwculkb\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":809021863,\"webApplicationFirewallPolicyLink\":{\"id\":\"jwltlwtjjgu\"}}")
             .toObject(FrontendEndpointUpdateParameters.class);
-        Assertions.assertEquals("ybvpay", model.hostname());
+        Assertions.assertEquals("kozzwculkb", model.hostname());
         Assertions.assertEquals(SessionAffinityEnabledState.DISABLED, model.sessionAffinityEnabledState());
-        Assertions.assertEquals(240734224, model.sessionAffinityTtlSeconds());
-        Assertions.assertEquals("xgwjplmagstcyoh", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals(809021863, model.sessionAffinityTtlSeconds());
+        Assertions.assertEquals("jwltlwtjjgu", model.webApplicationFirewallPolicyLink().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FrontendEndpointUpdateParameters model = new FrontendEndpointUpdateParameters().withHostname("ybvpay")
+        FrontendEndpointUpdateParameters model = new FrontendEndpointUpdateParameters().withHostname("kozzwculkb")
             .withSessionAffinityEnabledState(SessionAffinityEnabledState.DISABLED)
-            .withSessionAffinityTtlSeconds(240734224)
+            .withSessionAffinityTtlSeconds(809021863)
             .withWebApplicationFirewallPolicyLink(
-                new FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink().withId("xgwjplmagstcyoh"));
+                new FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink().withId("jwltlwtjjgu"));
         model = BinaryData.fromObject(model).toObject(FrontendEndpointUpdateParameters.class);
-        Assertions.assertEquals("ybvpay", model.hostname());
+        Assertions.assertEquals("kozzwculkb", model.hostname());
         Assertions.assertEquals(SessionAffinityEnabledState.DISABLED, model.sessionAffinityEnabledState());
-        Assertions.assertEquals(240734224, model.sessionAffinityTtlSeconds());
-        Assertions.assertEquals("xgwjplmagstcyoh", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals(809021863, model.sessionAffinityTtlSeconds());
+        Assertions.assertEquals("jwltlwtjjgu", model.webApplicationFirewallPolicyLink().id());
     }
 }

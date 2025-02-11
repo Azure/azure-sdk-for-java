@@ -7,53 +7,55 @@ package com.azure.resourcemanager.vmwarecloudsimple.models;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.OperationResourceInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of OperationResource. */
+/**
+ * An immutable client-side representation of OperationResource.
+ */
 public interface OperationResource {
     /**
      * Gets the endTime property: End time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     OffsetDateTime endTime();
 
     /**
      * Gets the error property: Error Message if operation failed.
-     *
+     * 
      * @return the error value.
      */
     OperationError error();
 
     /**
      * Gets the id property: Operation Id.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Operation ID.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the startTime property: Start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     OffsetDateTime startTime();
 
     /**
      * Gets the status property: Operation status.
-     *
+     * 
      * @return the status value.
      */
     String status();
 
     /**
      * Gets the inner com.azure.resourcemanager.vmwarecloudsimple.fluent.models.OperationResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationResourceInner innerModel();

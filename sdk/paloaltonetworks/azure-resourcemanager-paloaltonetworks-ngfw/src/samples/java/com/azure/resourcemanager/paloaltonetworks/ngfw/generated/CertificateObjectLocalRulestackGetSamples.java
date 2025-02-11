@@ -20,8 +20,8 @@ public final class CertificateObjectLocalRulestackGetSamples {
      */
     public static void certificateObjectLocalRulestackGetMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.certificateObjectLocalRulestacks().getWithResponse("rgopenapi", "lrs1", "armid1",
-            com.azure.core.util.Context.NONE);
+        manager.certificateObjectLocalRulestacks()
+            .getWithResponse("rgopenapi", "lrs1", "armid1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class CertificateObjectLocalRulestackGetSamples {
      */
     public static void certificateObjectLocalRulestackGetMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.certificateObjectLocalRulestacks().getWithResponse("rgopenapi", "lrs1", "armid1",
-            com.azure.core.util.Context.NONE);
+        manager.certificateObjectLocalRulestacks()
+            .getWithResponse("rgopenapi", "lrs1", "armid1", com.azure.core.util.Context.NONE);
     }
 }

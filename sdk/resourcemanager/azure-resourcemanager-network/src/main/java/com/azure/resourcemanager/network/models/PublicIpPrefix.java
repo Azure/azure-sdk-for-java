@@ -17,39 +17,76 @@ import java.util.List;
 import java.util.Set;
 
 /** Type representing PublicIpPrefix. */
-public interface PublicIpPrefix
-    extends GroupableResource<NetworkManager, PublicIpPrefixInner>,
-        Refreshable<PublicIpPrefix>,
-        Updatable<PublicIpPrefix.Update>,
-        UpdatableWithTags<PublicIpPrefix> {
-    /** @return the ipPrefix value. */
+public interface PublicIpPrefix extends GroupableResource<NetworkManager, PublicIpPrefixInner>,
+    Refreshable<PublicIpPrefix>, Updatable<PublicIpPrefix.Update>, UpdatableWithTags<PublicIpPrefix> {
+    /**
+     * Gets the IP prefix value.
+     *
+     * @return the ipPrefix value.
+     */
     String ipPrefix();
 
-    /** @return the ipTags value. */
+    /**
+     * Gets the IP tags value.
+     *
+     * @return the ipTags value.
+     */
     List<IpTag> ipTags();
 
-    /** @return the loadBalancerFrontendIpConfiguration value. */
+    /**
+     * Gets the load balancer frontend IP configuration.
+     *
+     * @return the loadBalancerFrontendIpConfiguration value.
+     */
     SubResource loadBalancerFrontendIpConfiguration();
 
-    /** @return the prefixLength value. */
+    /**
+     * Gets the prefix length.
+     *
+     * @return the prefixLength value.
+     */
     Integer prefixLength();
 
-    /** @return the provisioningState value. */
+    /**
+     * Gets the provisioning state.
+     *
+     * @return the provisioningState value.
+     */
     ProvisioningState provisioningState();
 
-    /** @return the publicIpAddresses value. */
+    /**
+     * Gets the public IP addresses.
+     *
+     * @return the publicIpAddresses value.
+     */
     List<ReferencedPublicIpAddress> publicIpAddresses();
 
-    /** @return the publicIpAddressVersion value. */
+    /**
+     * Gets the public IP address version.
+     *
+     * @return the publicIpAddressVersion value.
+     */
     IpVersion publicIpAddressVersion();
 
-    /** @return the resourceGuid value. */
+    /**
+     * Gets the resource GUID.
+     *
+     * @return the resourceGuid value.
+     */
     String resourceGuid();
 
-    /** @return the sku value. */
+    /**
+     * Gets the SKU.
+     *
+     * @return the sku value.
+     */
     PublicIpPrefixSku sku();
 
-    /** @return the availability zones assigned to the public Ip prefix */
+    /**
+     * Gets the availability zones assigned to the public IP prefix.
+     *
+     * @return the availability zones assigned to the public Ip prefix
+     */
     Set<AvailabilityZoneId> availabilityZones();
 
     /** The entirety of the PublicIpPrefix definition. */
@@ -125,14 +162,9 @@ public interface PublicIpPrefix
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<PublicIpPrefix>,
-                Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithIpTags,
-                DefinitionStages.WithPrefixLength,
-                DefinitionStages.WithPublicIpAddressVersion,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithAvailabilityZone {
+        interface WithCreate extends Creatable<PublicIpPrefix>, Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithIpTags, DefinitionStages.WithPrefixLength, DefinitionStages.WithPublicIpAddressVersion,
+            DefinitionStages.WithSku, DefinitionStages.WithAvailabilityZone {
         }
     }
 

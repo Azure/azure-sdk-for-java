@@ -170,7 +170,6 @@ public final class PeekedMessageItem implements XmlSerializable<PeekedMessageIte
         return this;
     }
 
-
     /**
      * Get the body property: The content of the Message.
      *
@@ -233,8 +232,7 @@ public final class PeekedMessageItem implements XmlSerializable<PeekedMessageIte
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the PeekedMessageItem.
      */
-    public static PeekedMessageItem fromXml(XmlReader xmlReader, String rootElementName)
-        throws XMLStreamException {
+    public static PeekedMessageItem fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "QueueMessage" : rootElementName;
         return xmlReader.readObject(finalRootElementName, reader -> {
             PeekedMessageItem deserializedPeekedMessageItem = new PeekedMessageItem();
@@ -244,11 +242,9 @@ public final class PeekedMessageItem implements XmlSerializable<PeekedMessageIte
                 if ("MessageId".equals(elementName.getLocalPart())) {
                     deserializedPeekedMessageItem.messageId = reader.getStringElement();
                 } else if ("InsertionTime".equals(elementName.getLocalPart())) {
-                    deserializedPeekedMessageItem.insertionTime
-                        = reader.getNullableElement(DateTimeRfc1123::new);
+                    deserializedPeekedMessageItem.insertionTime = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("ExpirationTime".equals(elementName.getLocalPart())) {
-                    deserializedPeekedMessageItem.expirationTime
-                        = reader.getNullableElement(DateTimeRfc1123::new);
+                    deserializedPeekedMessageItem.expirationTime = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("DequeueCount".equals(elementName.getLocalPart())) {
                     deserializedPeekedMessageItem.dequeueCount = reader.getLongElement();
                 } else if ("MessageText".equals(elementName.getLocalPart())) {

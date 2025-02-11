@@ -14,26 +14,21 @@ import org.junit.jupiter.api.Assertions;
 public final class UserRoleListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserRoleListResponse model =
-            BinaryData
-                .fromString("{\"value\":[{\"role\":\"None\"},{\"role\":\"Admin\"}],\"nextLink\":\"wd\"}")
-                .toObject(UserRoleListResponse.class);
-        Assertions.assertEquals(UserRole.NONE, model.value().get(0).role());
-        Assertions.assertEquals("wd", model.nextLink());
+        UserRoleListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"role\":\"Admin\"},{\"role\":\"User\"},{\"role\":\"User\"},{\"role\":\"None\"}],\"nextLink\":\"sauuimj\"}")
+            .toObject(UserRoleListResponse.class);
+        Assertions.assertEquals(UserRole.ADMIN, model.value().get(0).role());
+        Assertions.assertEquals("sauuimj", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserRoleListResponse model =
-            new UserRoleListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new UserRoleResponseInner().withRole(UserRole.NONE),
-                            new UserRoleResponseInner().withRole(UserRole.ADMIN)))
-                .withNextLink("wd");
+        UserRoleListResponse model = new UserRoleListResponse().withValue(Arrays.asList(
+            new UserRoleResponseInner().withRole(UserRole.ADMIN), new UserRoleResponseInner().withRole(UserRole.USER),
+            new UserRoleResponseInner().withRole(UserRole.USER), new UserRoleResponseInner().withRole(UserRole.NONE)))
+            .withNextLink("sauuimj");
         model = BinaryData.fromObject(model).toObject(UserRoleListResponse.class);
-        Assertions.assertEquals(UserRole.NONE, model.value().get(0).role());
-        Assertions.assertEquals("wd", model.nextLink());
+        Assertions.assertEquals(UserRole.ADMIN, model.value().get(0).role());
+        Assertions.assertEquals("sauuimj", model.nextLink());
     }
 }

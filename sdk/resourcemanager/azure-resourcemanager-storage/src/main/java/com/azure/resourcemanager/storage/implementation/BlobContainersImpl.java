@@ -71,9 +71,7 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     @Override
     public Mono<BlobContainer> getAsync(String resourceGroupName, String accountName, String containerName) {
         BlobContainersClient client = this.innerModel();
-        return client
-            .getAsync(resourceGroupName, accountName, containerName)
-            .map(this::wrapBlobContainerModel);
+        return client.getAsync(resourceGroupName, accountName, containerName).map(this::wrapBlobContainerModel);
     }
 
     @Override
@@ -83,8 +81,8 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     }
 
     @Override
-    public Mono<LegalHold> setLegalHoldAsync(
-        String resourceGroupName, String accountName, String containerName, List<String> tags) {
+    public Mono<LegalHold> setLegalHoldAsync(String resourceGroupName, String accountName, String containerName,
+        List<String> tags) {
         BlobContainersClient client = this.innerModel();
         return client
             .setLegalHoldAsync(resourceGroupName, accountName, containerName, new LegalHoldInner().withTags(tags))
@@ -92,8 +90,8 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     }
 
     @Override
-    public Mono<LegalHold> clearLegalHoldAsync(
-        String resourceGroupName, String accountName, String containerName, List<String> tags) {
+    public Mono<LegalHold> clearLegalHoldAsync(String resourceGroupName, String accountName, String containerName,
+        List<String> tags) {
         BlobContainersClient client = this.innerModel();
         return client
             .clearLegalHoldAsync(resourceGroupName, accountName, containerName, new LegalHoldInner().withTags(tags))
@@ -101,80 +99,61 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
     }
 
     @Override
-    public Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName) {
+    public Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName) {
         return getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
     }
 
     @Override
-    public Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName, String eTagValue) {
+    public Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName, String eTagValue) {
         BlobContainersClient client = this.innerModel();
-        return client
-            .getImmutabilityPolicyWithResponseAsync(resourceGroupName, accountName, containerName, eTagValue)
+        return client.getImmutabilityPolicyWithResponseAsync(resourceGroupName, accountName, containerName, eTagValue)
             .flatMap(r -> Mono.justOrEmpty(r.getValue()))
             .map(this::wrapImmutabilityPolicyModel);
     }
 
     @Override
-    public Mono<Void> deleteImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName) {
+    public Mono<Void> deleteImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName) {
         return deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
     }
 
     @Override
-    public Mono<Void> deleteImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName, String eTagValue) {
+    public Mono<Void> deleteImmutabilityPolicyAsync(String resourceGroupName, String accountName, String containerName,
+        String eTagValue) {
         return innerModel().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
             .then();
     }
 
     @Override
-    public Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName) {
+    public Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName) {
         return lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
     }
 
     @Override
-    public Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(
-        String resourceGroupName, String accountName, String containerName, String eTagValue) {
+    public Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName, String eTagValue) {
         BlobContainersClient client = this.innerModel();
-        return client
-            .lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
+        return client.lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
             .map(inner -> new ImmutabilityPolicyImpl(inner, manager()));
     }
 
     @Override
-    public Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(
-        String resourceGroupName,
-        String accountName,
-        String containerName,
-        int immutabilityPeriodSinceCreationInDays,
-        Boolean allowProtectedAppendWrites) {
-        return extendImmutabilityPolicyAsync(
-            resourceGroupName,
-            accountName,
-            containerName,
-            immutabilityPeriodSinceCreationInDays,
-            allowProtectedAppendWrites,
-            null);
+    public Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName, int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites) {
+        return extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName,
+            immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites, null);
     }
 
     @Override
-    public Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(
-        String resourceGroupName,
-        String accountName,
-        String containerName,
-        int immutabilityPeriodSinceCreationInDays,
-        Boolean allowProtectedAppendWrites,
+    public Mono<ImmutabilityPolicy> extendImmutabilityPolicyAsync(String resourceGroupName, String accountName,
+        String containerName, int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites,
         String eTagValue) {
         BlobContainersClient client = this.innerModel();
         return client
-            .extendImmutabilityPolicyWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                containerName,
-                eTagValue,
+            .extendImmutabilityPolicyWithResponseAsync(resourceGroupName, accountName, containerName, eTagValue,
                 new ImmutabilityPolicyInner()
                     .withImmutabilityPeriodSinceCreationInDays(immutabilityPeriodSinceCreationInDays)
                     .withAllowProtectedAppendWrites(allowProtectedAppendWrites))
@@ -199,59 +178,61 @@ public class BlobContainersImpl extends WrapperImpl<BlobContainersClient> implem
 
     @Override
     public LegalHold setLegalHold(String resourceGroupName, String accountName, String containerName,
-                                  List<String> tags) {
+        List<String> tags) {
         return this.setLegalHoldAsync(resourceGroupName, accountName, containerName, tags).block();
     }
 
     @Override
     public LegalHold clearLegalHold(String resourceGroupName, String accountName, String containerName,
-                                    List<String> tags) {
+        List<String> tags) {
         return this.clearLegalHoldAsync(resourceGroupName, accountName, containerName, tags).block();
     }
 
     @Override
     public ImmutabilityPolicy getImmutabilityPolicy(String resourceGroupName, String accountName,
-                                                    String containerName) {
+        String containerName) {
         return this.getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName).block();
     }
 
     @Override
-    public void deleteImmutabilityPolicy(String resourceGroupName, String accountName,
-                                                       String containerName) {
+    public void deleteImmutabilityPolicy(String resourceGroupName, String accountName, String containerName) {
         this.deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName).block();
     }
 
     @Override
     public ImmutabilityPolicy lockImmutabilityPolicy(String resourceGroupName, String accountName,
-                                                     String containerName) {
+        String containerName) {
         return this.lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName).block();
     }
 
     @Override
     public ImmutabilityPolicy extendImmutabilityPolicy(String resourceGroupName, String accountName,
-                                                       String containerName, int immutabilityPeriodSinceCreationInDays,
-                                                       Boolean allowProtectedAppendWrites) {
-        return this.extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName,
-            immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites).block();
+        String containerName, int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites) {
+        return this
+            .extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName,
+                immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites)
+            .block();
     }
 
     @Override
     public void deleteImmutabilityPolicy(String resourceGroupName, String accountName, String containerName,
-                                         String eTagValue) {
+        String eTagValue) {
         this.deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue).block();
     }
 
     @Override
     public ImmutabilityPolicy lockImmutabilityPolicy(String resourceGroupName, String accountName, String containerName,
-                                                     String eTagValue) {
+        String eTagValue) {
         return this.lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue).block();
     }
 
     @Override
     public ImmutabilityPolicy extendImmutabilityPolicy(String resourceGroupName, String accountName,
-                                                       String containerName, int immutabilityPeriodSinceCreationInDays,
-                                                       Boolean allowProtectedAppendWrites, String eTagValue) {
-        return this.extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName,
-            immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites, eTagValue).block();
+        String containerName, int immutabilityPeriodSinceCreationInDays, Boolean allowProtectedAppendWrites,
+        String eTagValue) {
+        return this
+            .extendImmutabilityPolicyAsync(resourceGroupName, accountName, containerName,
+                immutabilityPeriodSinceCreationInDays, allowProtectedAppendWrites, eTagValue)
+            .block();
     }
 }

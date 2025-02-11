@@ -175,8 +175,8 @@ public final class JobManifestTasks implements JsonSerializable<JobManifestTasks
      * @param extractiveSummarizationTasks the extractiveSummarizationTasks value to set.
      * @return the JobManifestTasks object itself.
      */
-    public JobManifestTasks setExtractiveSummarizationTasks(
-            List<ExtractiveSummarizationTask> extractiveSummarizationTasks) {
+    public JobManifestTasks
+        setExtractiveSummarizationTasks(List<ExtractiveSummarizationTask> extractiveSummarizationTasks) {
         this.extractiveSummarizationTasks = extractiveSummarizationTasks;
         return this;
     }
@@ -216,8 +216,8 @@ public final class JobManifestTasks implements JsonSerializable<JobManifestTasks
      * @param customSingleClassificationTasks the customSingleClassificationTasks value to set.
      * @return the JobManifestTasks object itself.
      */
-    public JobManifestTasks setCustomSingleClassificationTasks(
-            List<CustomSingleClassificationTask> customSingleClassificationTasks) {
+    public JobManifestTasks
+        setCustomSingleClassificationTasks(List<CustomSingleClassificationTask> customSingleClassificationTasks) {
         this.customSingleClassificationTasks = customSingleClassificationTasks;
         return this;
     }
@@ -237,8 +237,8 @@ public final class JobManifestTasks implements JsonSerializable<JobManifestTasks
      * @param customMultiClassificationTasks the customMultiClassificationTasks value to set.
      * @return the JobManifestTasks object itself.
      */
-    public JobManifestTasks setCustomMultiClassificationTasks(
-            List<CustomMultiClassificationTask> customMultiClassificationTasks) {
+    public JobManifestTasks
+        setCustomMultiClassificationTasks(List<CustomMultiClassificationTask> customMultiClassificationTasks) {
         this.customMultiClassificationTasks = customMultiClassificationTasks;
         return this;
     }
@@ -249,15 +249,24 @@ public final class JobManifestTasks implements JsonSerializable<JobManifestTasks
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("entityRecognitionTasks", this.entityRecognitionTasks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("entityRecognitionPiiTasks", this.entityRecognitionPiiTasks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("keyPhraseExtractionTasks", this.keyPhraseExtractionTasks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("entityLinkingTasks", this.entityLinkingTasks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("sentimentAnalysisTasks", this.sentimentAnalysisTasks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("extractiveSummarizationTasks", this.extractiveSummarizationTasks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("customEntityRecognitionTasks", this.customEntityRecognitionTasks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("customSingleClassificationTasks", this.customSingleClassificationTasks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("customMultiClassificationTasks", this.customMultiClassificationTasks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("entityRecognitionTasks", this.entityRecognitionTasks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("entityRecognitionPiiTasks", this.entityRecognitionPiiTasks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("keyPhraseExtractionTasks", this.keyPhraseExtractionTasks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("entityLinkingTasks", this.entityLinkingTasks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("sentimentAnalysisTasks", this.sentimentAnalysisTasks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extractiveSummarizationTasks", this.extractiveSummarizationTasks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customEntityRecognitionTasks", this.customEntityRecognitionTasks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customSingleClassificationTasks", this.customSingleClassificationTasks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("customMultiClassificationTasks", this.customMultiClassificationTasks,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -278,32 +287,32 @@ public final class JobManifestTasks implements JsonSerializable<JobManifestTasks
                 reader.nextToken();
 
                 if ("entityRecognitionTasks".equals(fieldName)) {
-                    deserializedJobManifestTasks.entityRecognitionTasks =
-                            reader.readArray(reader1 -> EntitiesTask.fromJson(reader1));
+                    deserializedJobManifestTasks.entityRecognitionTasks
+                        = reader.readArray(reader1 -> EntitiesTask.fromJson(reader1));
                 } else if ("entityRecognitionPiiTasks".equals(fieldName)) {
-                    deserializedJobManifestTasks.entityRecognitionPiiTasks =
-                            reader.readArray(reader1 -> PiiTask.fromJson(reader1));
+                    deserializedJobManifestTasks.entityRecognitionPiiTasks
+                        = reader.readArray(reader1 -> PiiTask.fromJson(reader1));
                 } else if ("keyPhraseExtractionTasks".equals(fieldName)) {
-                    deserializedJobManifestTasks.keyPhraseExtractionTasks =
-                            reader.readArray(reader1 -> KeyPhrasesTask.fromJson(reader1));
+                    deserializedJobManifestTasks.keyPhraseExtractionTasks
+                        = reader.readArray(reader1 -> KeyPhrasesTask.fromJson(reader1));
                 } else if ("entityLinkingTasks".equals(fieldName)) {
-                    deserializedJobManifestTasks.entityLinkingTasks =
-                            reader.readArray(reader1 -> EntityLinkingTask.fromJson(reader1));
+                    deserializedJobManifestTasks.entityLinkingTasks
+                        = reader.readArray(reader1 -> EntityLinkingTask.fromJson(reader1));
                 } else if ("sentimentAnalysisTasks".equals(fieldName)) {
-                    deserializedJobManifestTasks.sentimentAnalysisTasks =
-                            reader.readArray(reader1 -> SentimentAnalysisTask.fromJson(reader1));
+                    deserializedJobManifestTasks.sentimentAnalysisTasks
+                        = reader.readArray(reader1 -> SentimentAnalysisTask.fromJson(reader1));
                 } else if ("extractiveSummarizationTasks".equals(fieldName)) {
-                    deserializedJobManifestTasks.extractiveSummarizationTasks =
-                            reader.readArray(reader1 -> ExtractiveSummarizationTask.fromJson(reader1));
+                    deserializedJobManifestTasks.extractiveSummarizationTasks
+                        = reader.readArray(reader1 -> ExtractiveSummarizationTask.fromJson(reader1));
                 } else if ("customEntityRecognitionTasks".equals(fieldName)) {
-                    deserializedJobManifestTasks.customEntityRecognitionTasks =
-                            reader.readArray(reader1 -> CustomEntitiesTask.fromJson(reader1));
+                    deserializedJobManifestTasks.customEntityRecognitionTasks
+                        = reader.readArray(reader1 -> CustomEntitiesTask.fromJson(reader1));
                 } else if ("customSingleClassificationTasks".equals(fieldName)) {
-                    deserializedJobManifestTasks.customSingleClassificationTasks =
-                            reader.readArray(reader1 -> CustomSingleClassificationTask.fromJson(reader1));
+                    deserializedJobManifestTasks.customSingleClassificationTasks
+                        = reader.readArray(reader1 -> CustomSingleClassificationTask.fromJson(reader1));
                 } else if ("customMultiClassificationTasks".equals(fieldName)) {
-                    deserializedJobManifestTasks.customMultiClassificationTasks =
-                            reader.readArray(reader1 -> CustomMultiClassificationTask.fromJson(reader1));
+                    deserializedJobManifestTasks.customMultiClassificationTasks
+                        = reader.readArray(reader1 -> CustomMultiClassificationTask.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

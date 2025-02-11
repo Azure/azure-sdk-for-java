@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The commitment plan association. */
+/**
+ * The commitment plan association.
+ */
 @Fluent
-public final class CommitmentPlanAssociation {
+public final class CommitmentPlanAssociation implements JsonSerializable<CommitmentPlanAssociation> {
     /*
      * The Azure resource id of the commitment plan.
      */
-    @JsonProperty(value = "commitmentPlanId")
     private String commitmentPlanId;
 
     /*
      * The location of of the commitment plan.
      */
-    @JsonProperty(value = "commitmentPlanLocation")
     private String commitmentPlanLocation;
 
-    /** Creates an instance of CommitmentPlanAssociation class. */
+    /**
+     * Creates an instance of CommitmentPlanAssociation class.
+     */
     public CommitmentPlanAssociation() {
     }
 
     /**
      * Get the commitmentPlanId property: The Azure resource id of the commitment plan.
-     *
+     * 
      * @return the commitmentPlanId value.
      */
     public String commitmentPlanId() {
@@ -37,7 +43,7 @@ public final class CommitmentPlanAssociation {
 
     /**
      * Set the commitmentPlanId property: The Azure resource id of the commitment plan.
-     *
+     * 
      * @param commitmentPlanId the commitmentPlanId value to set.
      * @return the CommitmentPlanAssociation object itself.
      */
@@ -48,7 +54,7 @@ public final class CommitmentPlanAssociation {
 
     /**
      * Get the commitmentPlanLocation property: The location of of the commitment plan.
-     *
+     * 
      * @return the commitmentPlanLocation value.
      */
     public String commitmentPlanLocation() {
@@ -57,7 +63,7 @@ public final class CommitmentPlanAssociation {
 
     /**
      * Set the commitmentPlanLocation property: The location of of the commitment plan.
-     *
+     * 
      * @param commitmentPlanLocation the commitmentPlanLocation value to set.
      * @return the CommitmentPlanAssociation object itself.
      */
@@ -68,9 +74,48 @@ public final class CommitmentPlanAssociation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commitmentPlanId", this.commitmentPlanId);
+        jsonWriter.writeStringField("commitmentPlanLocation", this.commitmentPlanLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommitmentPlanAssociation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommitmentPlanAssociation if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommitmentPlanAssociation.
+     */
+    public static CommitmentPlanAssociation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommitmentPlanAssociation deserializedCommitmentPlanAssociation = new CommitmentPlanAssociation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commitmentPlanId".equals(fieldName)) {
+                    deserializedCommitmentPlanAssociation.commitmentPlanId = reader.getString();
+                } else if ("commitmentPlanLocation".equals(fieldName)) {
+                    deserializedCommitmentPlanAssociation.commitmentPlanLocation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommitmentPlanAssociation;
+        });
     }
 }

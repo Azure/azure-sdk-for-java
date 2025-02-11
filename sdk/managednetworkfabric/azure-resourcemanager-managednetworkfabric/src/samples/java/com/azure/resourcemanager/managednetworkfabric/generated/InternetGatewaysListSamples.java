@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.managednetworkfabric.generated;
 
-/** Samples for InternetGateways List. */
+/**
+ * Samples for InternetGateways List.
+ */
 public final class InternetGatewaysListSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/InternetGateways_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * InternetGateways_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: InternetGateways_ListBySubscription_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void internetGatewaysListBySubscriptionMaximumSetGen(

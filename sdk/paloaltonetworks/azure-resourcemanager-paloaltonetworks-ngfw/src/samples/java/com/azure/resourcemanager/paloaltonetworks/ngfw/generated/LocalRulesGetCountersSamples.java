@@ -20,8 +20,8 @@ public final class LocalRulesGetCountersSamples {
      */
     public static void localRulesGetCountersMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRules().getCountersWithResponse("firewall-rg", "lrs1", "1", "firewall1",
-            com.azure.core.util.Context.NONE);
+        manager.localRules()
+            .getCountersWithResponse("firewall-rg", "lrs1", "1", "firewall1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class LocalRulesGetCountersSamples {
      */
     public static void localRulesGetCountersMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRules().getCountersWithResponse("firewall-rg", "lrs1", "1", null,
-            com.azure.core.util.Context.NONE);
+        manager.localRules()
+            .getCountersWithResponse("firewall-rg", "lrs1", "1", null, com.azure.core.util.Context.NONE);
     }
 }

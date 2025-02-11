@@ -12,16 +12,21 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 @Fluent
 public interface NestedResource extends Indexable {
     /**
+     * Gets resource id.
+     *
      * @return resource id.
      */
     String id();
 
     /**
+     * Gets the resource name.
+     *
      * @return the resource name.
      */
     String name();
 
     /**
+     * Gets the resource type.
      *
      * @return the resource type.
      */

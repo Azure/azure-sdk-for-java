@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Notifications. */
+/**
+ * Resource collection API of Notifications.
+ */
 public interface Notifications {
     /**
      * Lists a collection of properties defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Notifications {
 
     /**
      * Lists a collection of properties defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param top Number of records to return.
@@ -35,12 +37,12 @@ public interface Notifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Notification list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<NotificationContract> listByService(
-        String resourceGroupName, String serviceName, Integer top, Integer skip, Context context);
+    PagedIterable<NotificationContract> listByService(String resourceGroupName, String serviceName, Integer top,
+        Integer skip, Context context);
 
     /**
      * Gets the details of the Notification specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -50,12 +52,12 @@ public interface Notifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Notification specified by its identifier along with {@link Response}.
      */
-    Response<NotificationContract> getWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
+    Response<NotificationContract> getWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, Context context);
 
     /**
      * Gets the details of the Notification specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -68,7 +70,7 @@ public interface Notifications {
 
     /**
      * Create or Update API Management publisher notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -79,16 +81,12 @@ public interface Notifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notification details along with {@link Response}.
      */
-    Response<NotificationContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String ifMatch,
-        Context context);
+    Response<NotificationContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String ifMatch, Context context);
 
     /**
      * Create or Update API Management publisher notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -97,6 +95,6 @@ public interface Notifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return notification details.
      */
-    NotificationContract createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName);
+    NotificationContract createOrUpdate(String resourceGroupName, String serviceName,
+        NotificationName notificationName);
 }

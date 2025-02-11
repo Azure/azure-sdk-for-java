@@ -290,7 +290,6 @@ public final class AzureSqlSource extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (partitionSettings() != null) {
             partitionSettings().validate();
         }

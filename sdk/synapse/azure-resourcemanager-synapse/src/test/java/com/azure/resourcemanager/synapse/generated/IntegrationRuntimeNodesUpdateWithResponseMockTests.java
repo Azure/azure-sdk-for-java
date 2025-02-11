@@ -6,69 +6,35 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
 import com.azure.resourcemanager.synapse.models.SelfHostedIntegrationRuntimeNode;
 import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeNodeRequest;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IntegrationRuntimeNodesUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"nodeName\":\"bhdvafjrqpjiy\",\"machineName\":\"jc\",\"hostServiceUri\":\"a\",\"status\":\"Upgrading\",\"capabilities\":{\"tqjfgxxsaet\":\"dfkbnrzorpdltbq\",\"cduwjoedx\":\"zdgvpyigdaqqilz\"},\"versionStatus\":\"ucaifpaurwwgilf\",\"version\":\"qacdmkxwxdcvjwcy\",\"registerTime\":\"2021-04-14T09:39:28Z\",\"lastConnectTime\":\"2021-03-31T03:16:36Z\",\"expiryTime\":\"2021-11-24T09:32:16Z\",\"lastStartTime\":\"2021-02-02T19:27:24Z\",\"lastStopTime\":\"2020-12-21T19:16:47Z\",\"lastUpdateResult\":\"None\",\"lastStartUpdateTime\":\"2021-07-23T12:28:28Z\",\"lastEndUpdateTime\":\"2021-02-02T16:59:30Z\",\"isActiveDispatcher\":false,\"concurrentJobsLimit\":976931664,\"maxConcurrentJobs\":238330415,\"\":{\"ngydgr\":\"datazhzzwvywrg\"}}";
 
-        String responseStr =
-            "{\"nodeName\":\"toj\",\"machineName\":\"fnybydhuihaouw\",\"hostServiceUri\":\"huao\",\"status\":\"Initializing\",\"capabilities\":{\"amqprlo\":\"hwvumosqir\",\"zcmtagelajdyolj\":\"rugejcvjkjy\",\"qfmzsizzhravrc\":\"qy\"},\"versionStatus\":\"jymgqbgcxhn\",\"version\":\"gzxlermkmerghski\",\"registerTime\":\"2021-05-14T02:10:11Z\",\"lastConnectTime\":\"2021-02-27T06:12:37Z\",\"expiryTime\":\"2021-11-21T06:30:45Z\",\"lastStartTime\":\"2021-03-02T04:05:56Z\",\"lastStopTime\":\"2021-02-15T10:23:10Z\",\"lastUpdateResult\":\"None\",\"lastStartUpdateTime\":\"2021-11-07T19:57:43Z\",\"lastEndUpdateTime\":\"2021-05-23T05:58:13Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":1899853683,\"maxConcurrentJobs\":882272566,\"\":{\"yuf\":\"datahkpafyaloowwzizz\"}}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        SelfHostedIntegrationRuntimeNode response = manager.integrationRuntimeNodes()
+            .updateWithResponse("y", "xpvelszerqzevxo", "eintxwaljglzobl", "waafrqulh",
+                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(1195414166),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        SelfHostedIntegrationRuntimeNode response =
-            manager
-                .integrationRuntimeNodes()
-                .updateWithResponse(
-                    "vdlsflxkqesdfeds",
-                    "gzancoinmphy",
-                    "cqidkltvdhqnufbx",
-                    "e",
-                    new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(440645964),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
     }
 }

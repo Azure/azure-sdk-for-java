@@ -10,10 +10,6 @@ module com.azure.resourcemanager.sqlvirtualmachine {
     exports com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
     exports com.azure.resourcemanager.sqlvirtualmachine.models;
 
-    opens com.azure.resourcemanager.sqlvirtualmachine.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.sqlvirtualmachine.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.sqlvirtualmachine.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.sqlvirtualmachine.models to com.azure.core;
 }

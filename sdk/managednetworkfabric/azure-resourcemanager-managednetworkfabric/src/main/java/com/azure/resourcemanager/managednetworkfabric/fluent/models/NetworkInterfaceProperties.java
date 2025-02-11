@@ -5,64 +5,64 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.InterfaceType;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Network Interface Properties defines the properties of the resource. */
+/**
+ * Network Interface Properties defines the properties of the resource.
+ */
 @Fluent
 public final class NetworkInterfaceProperties extends AnnotationResource {
     /*
      * Physical Identifier of the network interface.
      */
-    @JsonProperty(value = "physicalIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String physicalIdentifier;
 
     /*
      * The ARM resource id of the interface or compute server its connected to.
      */
-    @JsonProperty(value = "connectedTo", access = JsonProperty.Access.WRITE_ONLY)
     private String connectedTo;
 
     /*
      * The Interface Type. Example: Management/Data
      */
-    @JsonProperty(value = "interfaceType", access = JsonProperty.Access.WRITE_ONLY)
     private InterfaceType interfaceType;
 
     /*
      * IPv4Address of the interface.
      */
-    @JsonProperty(value = "ipv4Address", access = JsonProperty.Access.WRITE_ONLY)
     private String ipv4Address;
 
     /*
      * IPv6Address of the interface.
      */
-    @JsonProperty(value = "ipv6Address", access = JsonProperty.Access.WRITE_ONLY)
     private String ipv6Address;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Administrative state of the resource.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
 
-    /** Creates an instance of NetworkInterfaceProperties class. */
+    /**
+     * Creates an instance of NetworkInterfaceProperties class.
+     */
     public NetworkInterfaceProperties() {
     }
 
     /**
      * Get the physicalIdentifier property: Physical Identifier of the network interface.
-     *
+     * 
      * @return the physicalIdentifier value.
      */
     public String physicalIdentifier() {
@@ -71,7 +71,7 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
 
     /**
      * Get the connectedTo property: The ARM resource id of the interface or compute server its connected to.
-     *
+     * 
      * @return the connectedTo value.
      */
     public String connectedTo() {
@@ -80,7 +80,7 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
 
     /**
      * Get the interfaceType property: The Interface Type. Example: Management/Data.
-     *
+     * 
      * @return the interfaceType value.
      */
     public InterfaceType interfaceType() {
@@ -89,7 +89,7 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
 
     /**
      * Get the ipv4Address property: IPv4Address of the interface.
-     *
+     * 
      * @return the ipv4Address value.
      */
     public String ipv4Address() {
@@ -98,7 +98,7 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
 
     /**
      * Get the ipv6Address property: IPv6Address of the interface.
-     *
+     * 
      * @return the ipv6Address value.
      */
     public String ipv6Address() {
@@ -107,7 +107,7 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,14 +116,16 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
         return this.administrativeState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkInterfaceProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -132,11 +134,62 @@ public final class NetworkInterfaceProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfaceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfaceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceProperties.
+     */
+    public static NetworkInterfaceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfaceProperties deserializedNetworkInterfaceProperties = new NetworkInterfaceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.withAnnotation(reader.getString());
+                } else if ("physicalIdentifier".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.physicalIdentifier = reader.getString();
+                } else if ("connectedTo".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.connectedTo = reader.getString();
+                } else if ("interfaceType".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.interfaceType = InterfaceType.fromString(reader.getString());
+                } else if ("ipv4Address".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.ipv4Address = reader.getString();
+                } else if ("ipv6Address".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.ipv6Address = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedNetworkInterfaceProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfaceProperties;
+        });
     }
 }

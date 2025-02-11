@@ -143,12 +143,11 @@ public final class TransformationsClientImpl implements TransformationsClient {
         } else {
             transformation.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, apiVersion,
-                this.client.getSubscriptionId(), resourceGroupName, jobName, transformationName, transformation, accept,
-                context))
+            .withContext(context -> service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, jobName,
+                transformationName, transformation, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -199,10 +198,9 @@ public final class TransformationsClientImpl implements TransformationsClient {
         } else {
             transformation.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, apiVersion,
+        return service.createOrReplace(this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(),
             this.client.getSubscriptionId(), resourceGroupName, jobName, transformationName, transformation, accept,
             context);
     }
@@ -324,10 +322,9 @@ public final class TransformationsClientImpl implements TransformationsClient {
         } else {
             transformation.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), ifMatch, apiVersion,
+            .withContext(context -> service.update(this.client.getEndpoint(), ifMatch, this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, jobName, transformationName, transformation, accept,
                 context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -380,11 +377,11 @@ public final class TransformationsClientImpl implements TransformationsClient {
         } else {
             transformation.validate();
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), ifMatch, apiVersion, this.client.getSubscriptionId(),
-            resourceGroupName, jobName, transformationName, transformation, accept, context);
+        return service.update(this.client.getEndpoint(), ifMatch, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, jobName, transformationName, transformation, accept,
+            context);
     }
 
     /**
@@ -495,11 +492,10 @@ public final class TransformationsClientImpl implements TransformationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter transformationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, jobName, transformationName, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, jobName, transformationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -537,11 +533,10 @@ public final class TransformationsClientImpl implements TransformationsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter transformationName is required and cannot be null."));
         }
-        final String apiVersion = "2021-10-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            jobName, transformationName, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, jobName, transformationName, accept, context);
     }
 
     /**

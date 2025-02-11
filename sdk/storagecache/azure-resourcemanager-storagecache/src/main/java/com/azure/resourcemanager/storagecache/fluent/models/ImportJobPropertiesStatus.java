@@ -5,73 +5,72 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.ImportStatusType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The status of the import.
  */
 @Immutable
-public final class ImportJobPropertiesStatus {
+public final class ImportJobPropertiesStatus implements JsonSerializable<ImportJobPropertiesStatus> {
     /*
-     * The state of the import job. InProgress indicates the import is still running. Canceled indicates it has been canceled by the user. Completed indicates import finished, successfully importing all discovered blobs into the Lustre namespace. CompletedPartial indicates the import finished but some blobs either were found to be conflicting and could not be imported or other errors were encountered. Failed means the import was unable to complete due to a fatal error.
+     * The state of the import job. InProgress indicates the import is still running. Canceled indicates it has been
+     * canceled by the user. Completed indicates import finished, successfully importing all discovered blobs into the
+     * Lustre namespace. CompletedPartial indicates the import finished but some blobs either were found to be
+     * conflicting and could not be imported or other errors were encountered. Failed means the import was unable to
+     * complete due to a fatal error.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private ImportStatusType state;
 
     /*
      * The status message of the import job.
      */
-    @JsonProperty(value = "statusMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String statusMessage;
 
     /*
      * The total blob objects walked.
      */
-    @JsonProperty(value = "totalBlobsWalked", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalBlobsWalked;
 
     /*
      * A recent and frequently updated rate of blobs walked per second.
      */
-    @JsonProperty(value = "blobsWalkedPerSecond", access = JsonProperty.Access.WRITE_ONLY)
     private Long blobsWalkedPerSecond;
 
     /*
      * The total blobs that have been imported since import began.
      */
-    @JsonProperty(value = "totalBlobsImported", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalBlobsImported;
 
     /*
      * A recent and frequently updated rate of total files, directories, and symlinks imported per second.
      */
-    @JsonProperty(value = "blobsImportedPerSecond", access = JsonProperty.Access.WRITE_ONLY)
     private Long blobsImportedPerSecond;
 
     /*
      * The time of the last completed archive operation
      */
-    @JsonProperty(value = "lastCompletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastCompletionTime;
 
     /*
      * The time the latest archive operation started
      */
-    @JsonProperty(value = "lastStartedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastStartedTime;
 
     /*
      * Number of errors in the import job.
      */
-    @JsonProperty(value = "totalErrors", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalErrors;
 
     /*
      * Number of conflicts in the import job.
      */
-    @JsonProperty(value = "totalConflicts", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalConflicts;
 
     /**
@@ -181,5 +180,62 @@ public final class ImportJobPropertiesStatus {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImportJobPropertiesStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImportJobPropertiesStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImportJobPropertiesStatus.
+     */
+    public static ImportJobPropertiesStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImportJobPropertiesStatus deserializedImportJobPropertiesStatus = new ImportJobPropertiesStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.state = ImportStatusType.fromString(reader.getString());
+                } else if ("statusMessage".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.statusMessage = reader.getString();
+                } else if ("totalBlobsWalked".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.totalBlobsWalked = reader.getNullable(JsonReader::getLong);
+                } else if ("blobsWalkedPerSecond".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.blobsWalkedPerSecond
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("totalBlobsImported".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.totalBlobsImported = reader.getNullable(JsonReader::getLong);
+                } else if ("blobsImportedPerSecond".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.blobsImportedPerSecond
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("lastCompletionTime".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.lastCompletionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastStartedTime".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.lastStartedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("totalErrors".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.totalErrors = reader.getNullable(JsonReader::getInt);
+                } else if ("totalConflicts".equals(fieldName)) {
+                    deserializedImportJobPropertiesStatus.totalConflicts = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImportJobPropertiesStatus;
+        });
     }
 }

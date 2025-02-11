@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolTableInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolTablesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolTablesClient.
+ */
 public interface SqlPoolTablesClient {
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -28,14 +30,14 @@ public interface SqlPoolTablesClient {
      * @return tables of a given schema in a SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolTableInner> listBySchema(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName);
+    PagedIterable<SqlPoolTableInner> listBySchema(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName);
 
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -48,17 +50,12 @@ public interface SqlPoolTablesClient {
      * @return tables of a given schema in a SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolTableInner> listBySchema(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String filter,
-        Context context);
+    PagedIterable<SqlPoolTableInner> listBySchema(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String filter, Context context);
 
     /**
      * Get Sql pool table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -71,17 +68,12 @@ public interface SqlPoolTablesClient {
      * @return sql pool table along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolTableInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        Context context);
+    Response<SqlPoolTableInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, Context context);
 
     /**
      * Get Sql pool table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -93,6 +85,6 @@ public interface SqlPoolTablesClient {
      * @return sql pool table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolTableInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName);
+    SqlPoolTableInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName);
 }

@@ -21,8 +21,8 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testGetMetadataConfiguration(HttpClient client, String clientUri) {
-        AttestationOpenIdMetadata metadataConfig1 = getAttestationBuilder(client, clientUri).buildClient()
-            .getOpenIdMetadata();
+        AttestationOpenIdMetadata metadataConfig1
+            = getAttestationBuilder(client, clientUri).buildClient().getOpenIdMetadata();
         verifyMetadataConfigurationResponse(clientUri, metadataConfig1);
 
     }
@@ -30,17 +30,17 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void getOpenIdMetadataWithResponse(HttpClient client, String clientUri) {
-        Response<AttestationOpenIdMetadata> metadataConfig = getAttestationBuilder(client, clientUri).buildClient()
-            .getOpenIdMetadataWithResponse(Context.NONE);
+        Response<AttestationOpenIdMetadata> metadataConfig
+            = getAttestationBuilder(client, clientUri).buildClient().getOpenIdMetadataWithResponse(Context.NONE);
         verifyMetadataConfigurationResponse(clientUri, metadataConfig.getValue());
     }
-
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testGetMetadataConfigurationAsync(HttpClient client, String clientUri) {
         StepVerifier.create(getAttestationBuilder(client, clientUri).buildAsyncClient().getOpenIdMetadata())
-            .assertNext(metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
+            .assertNext(
+                metadataConfigResponse -> verifyMetadataConfigurationResponse(clientUri, metadataConfigResponse))
             .expectComplete()
             .verify();
 
@@ -76,4 +76,3 @@ public class AttestationMetadataTest extends AttestationClientTestBase {
         assertNotNull(metadataConfigResponse.getSupportedClaims());
     }
 }
-

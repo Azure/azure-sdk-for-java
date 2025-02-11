@@ -5,452 +5,393 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
 /**
  * InMageAzureV2 provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageAzureV2")
 @Fluent
 public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSpecificSettings {
     /*
+     * Gets the Instance type.
+     */
+    private String instanceType = "InMageAzureV2";
+
+    /*
      * The infrastructure VM Id.
      */
-    @JsonProperty(value = "infrastructureVmId")
     private String infrastructureVmId;
 
     /*
      * The vCenter infrastructure Id.
      */
-    @JsonProperty(value = "vCenterInfrastructureId")
     private String vCenterInfrastructureId;
 
     /*
      * The protection stage.
      */
-    @JsonProperty(value = "protectionStage")
     private String protectionStage;
 
     /*
      * The virtual machine Id.
      */
-    @JsonProperty(value = "vmId")
     private String vmId;
 
     /*
      * The protection state for the vm.
      */
-    @JsonProperty(value = "vmProtectionState")
     private String vmProtectionState;
 
     /*
      * The protection state description for the vm.
      */
-    @JsonProperty(value = "vmProtectionStateDescription")
     private String vmProtectionStateDescription;
 
     /*
      * The resync progress percentage.
      */
-    @JsonProperty(value = "resyncProgressPercentage")
     private Integer resyncProgressPercentage;
 
     /*
      * The RPO in seconds.
      */
-    @JsonProperty(value = "rpoInSeconds")
     private Long rpoInSeconds;
 
     /*
      * The compressed data change rate in MB.
      */
-    @JsonProperty(value = "compressedDataRateInMB")
     private Double compressedDataRateInMB;
 
     /*
      * The uncompressed data change rate in MB.
      */
-    @JsonProperty(value = "uncompressedDataRateInMB")
     private Double uncompressedDataRateInMB;
 
     /*
      * The source IP address.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * The agent version.
      */
-    @JsonProperty(value = "agentVersion")
     private String agentVersion;
 
     /*
      * Agent expiry date.
      */
-    @JsonProperty(value = "agentExpiryDate")
     private OffsetDateTime agentExpiryDate;
 
     /*
      * A value indicating whether installed agent needs to be updated.
      */
-    @JsonProperty(value = "isAgentUpdateRequired")
     private String isAgentUpdateRequired;
 
     /*
      * A value indicating whether the source server requires a restart after update.
      */
-    @JsonProperty(value = "isRebootAfterUpdateRequired")
     private String isRebootAfterUpdateRequired;
 
     /*
      * The last heartbeat received from the source server.
      */
-    @JsonProperty(value = "lastHeartbeat")
     private OffsetDateTime lastHeartbeat;
 
     /*
      * The process server Id.
      */
-    @JsonProperty(value = "processServerId")
     private String processServerId;
 
     /*
      * The process server name.
      */
-    @JsonProperty(value = "processServerName")
     private String processServerName;
 
     /*
      * The multi vm group Id.
      */
-    @JsonProperty(value = "multiVmGroupId")
     private String multiVmGroupId;
 
     /*
      * The multi vm group name.
      */
-    @JsonProperty(value = "multiVmGroupName")
     private String multiVmGroupName;
 
     /*
      * A value indicating whether multi vm sync is enabled or disabled.
      */
-    @JsonProperty(value = "multiVmSyncStatus")
     private String multiVmSyncStatus;
 
     /*
      * The list of protected disks.
      */
-    @JsonProperty(value = "protectedDisks")
     private List<InMageAzureV2ProtectedDiskDetails> protectedDisks;
 
     /*
      * A value indicating whether any disk is resized for this VM.
      */
-    @JsonProperty(value = "diskResized")
     private String diskResized;
 
     /*
      * The master target Id.
      */
-    @JsonProperty(value = "masterTargetId")
     private String masterTargetId;
 
     /*
      * The CPU count of the VM on the primary side.
      */
-    @JsonProperty(value = "sourceVmCpuCount")
     private Integer sourceVmCpuCount;
 
     /*
      * The RAM size of the VM on the primary side.
      */
-    @JsonProperty(value = "sourceVmRamSizeInMB")
     private Integer sourceVmRamSizeInMB;
 
     /*
      * The type of the OS on the VM.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * The OS disk VHD name.
      */
-    @JsonProperty(value = "vhdName")
     private String vhdName;
 
     /*
      * The id of the disk containing the OS.
      */
-    @JsonProperty(value = "osDiskId")
     private String osDiskId;
 
     /*
      * Azure VM Disk details.
      */
-    @JsonProperty(value = "azureVMDiskDetails")
     private List<AzureVmDiskDetails> azureVMDiskDetails;
 
     /*
      * Recovery Azure given name.
      */
-    @JsonProperty(value = "recoveryAzureVMName")
     private String recoveryAzureVMName;
 
     /*
      * The Recovery Azure VM size.
      */
-    @JsonProperty(value = "recoveryAzureVMSize")
     private String recoveryAzureVMSize;
 
     /*
      * The recovery Azure storage account.
      */
-    @JsonProperty(value = "recoveryAzureStorageAccount")
     private String recoveryAzureStorageAccount;
 
     /*
      * The ARM id of the log storage account used for replication. This will be set to null if no log storage account
      * was provided during enable protection.
      */
-    @JsonProperty(value = "recoveryAzureLogStorageAccountId")
     private String recoveryAzureLogStorageAccountId;
 
     /*
      * The PE Network details.
      */
-    @JsonProperty(value = "vmNics")
     private List<VMNicDetails> vmNics;
 
     /*
      * The selected recovery azure network Id.
      */
-    @JsonProperty(value = "selectedRecoveryAzureNetworkId")
     private String selectedRecoveryAzureNetworkId;
 
     /*
      * The test failover virtual network.
      */
-    @JsonProperty(value = "selectedTfoAzureNetworkId")
     private String selectedTfoAzureNetworkId;
 
     /*
      * The selected source nic Id which will be used as the primary nic during failover.
      */
-    @JsonProperty(value = "selectedSourceNicId")
     private String selectedSourceNicId;
 
     /*
      * A value indicating the discovery type of the machine. Value can be vCenter or physical.
      */
-    @JsonProperty(value = "discoveryType")
     private String discoveryType;
 
     /*
      * The selected option to enable RDP\SSH on target vm after failover. String value of
      * SrsDataContract.EnableRDPOnTargetOption enum.
      */
-    @JsonProperty(value = "enableRdpOnTargetOption")
     private String enableRdpOnTargetOption;
 
     /*
      * The datastores of the on-premise machine. Value can be list of strings that contain datastore names.
      */
-    @JsonProperty(value = "datastores")
     private List<String> datastores;
 
     /*
      * The ARM Id of the target Azure VM. This value will be null until the VM is failed over. Only after failure it
      * will be populated with the ARM Id of the Azure VM.
      */
-    @JsonProperty(value = "targetVmId")
     private String targetVmId;
 
     /*
      * The target resource group Id.
      */
-    @JsonProperty(value = "recoveryAzureResourceGroupId")
     private String recoveryAzureResourceGroupId;
 
     /*
      * The recovery availability set Id.
      */
-    @JsonProperty(value = "recoveryAvailabilitySetId")
     private String recoveryAvailabilitySetId;
 
     /*
      * The target availability zone.
      */
-    @JsonProperty(value = "targetAvailabilityZone")
     private String targetAvailabilityZone;
 
     /*
      * The target proximity placement group Id.
      */
-    @JsonProperty(value = "targetProximityPlacementGroupId")
     private String targetProximityPlacementGroupId;
 
     /*
      * A value indicating whether managed disks should be used during failover.
      */
-    @JsonProperty(value = "useManagedDisks")
     private String useManagedDisks;
 
     /*
      * License Type of the VM to be used.
      */
-    @JsonProperty(value = "licenseType")
     private String licenseType;
 
     /*
      * The SQL Server license type.
      */
-    @JsonProperty(value = "sqlServerLicenseType")
     private String sqlServerLicenseType;
 
     /*
      * The validation errors of the on-premise machine Value can be list of validation errors.
      */
-    @JsonProperty(value = "validationErrors")
     private List<HealthError> validationErrors;
 
     /*
      * The last RPO calculated time.
      */
-    @JsonProperty(value = "lastRpoCalculatedTime")
     private OffsetDateTime lastRpoCalculatedTime;
 
     /*
      * The last update time received from on-prem components.
      */
-    @JsonProperty(value = "lastUpdateReceivedTime")
     private OffsetDateTime lastUpdateReceivedTime;
 
     /*
      * The replica id of the protected item.
      */
-    @JsonProperty(value = "replicaId")
     private String replicaId;
 
     /*
      * The OS Version of the protected item.
      */
-    @JsonProperty(value = "osVersion")
     private String osVersion;
 
     /*
      * The list of protected managed disks.
      */
-    @JsonProperty(value = "protectedManagedDisks")
     private List<InMageAzureV2ManagedDiskDetails> protectedManagedDisks;
 
     /*
      * The last recovery point received time.
      */
-    @JsonProperty(value = "lastRecoveryPointReceived", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastRecoveryPointReceived;
 
     /*
      * The firmware type of this protected item.
      */
-    @JsonProperty(value = "firmwareType")
     private String firmwareType;
 
     /*
      * The target generation for this protected item.
      */
-    @JsonProperty(value = "azureVmGeneration")
     private String azureVmGeneration;
 
     /*
      * A value indicating whether additional IR stats are available or not.
      */
-    @JsonProperty(value = "isAdditionalStatsAvailable")
     private Boolean isAdditionalStatsAvailable;
 
     /*
      * The total transferred data in bytes.
      */
-    @JsonProperty(value = "totalDataTransferred")
     private Long totalDataTransferred;
 
     /*
      * The progress health.
      */
-    @JsonProperty(value = "totalProgressHealth")
     private String totalProgressHealth;
 
     /*
      * The target VM tags.
      */
-    @JsonProperty(value = "targetVmTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetVmTags;
 
     /*
      * The tags for the seed managed disks.
      */
-    @JsonProperty(value = "seedManagedDiskTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> seedManagedDiskTags;
 
     /*
      * The tags for the target managed disks.
      */
-    @JsonProperty(value = "targetManagedDiskTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetManagedDiskTags;
 
     /*
      * The tags for the target NICs.
      */
-    @JsonProperty(value = "targetNicTags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetNicTags;
 
     /*
      * The switch provider blocking error information.
      */
-    @JsonProperty(value = "switchProviderBlockingErrorDetails")
     private List<InMageAzureV2SwitchProviderBlockingErrorDetails> switchProviderBlockingErrorDetails;
 
     /*
      * The switch provider blocking error information.
      */
-    @JsonProperty(value = "switchProviderDetails")
     private InMageAzureV2SwitchProviderDetails switchProviderDetails;
 
     /*
      * A value indicating the inplace OS Upgrade version.
      */
-    @JsonProperty(value = "supportedOSVersions")
     private List<String> supportedOSVersions;
 
     /*
      * A value indicating all available inplace OS Upgrade configurations.
      */
-    @JsonProperty(value = "allAvailableOSUpgradeConfigurations")
     private List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations;
 
     /*
      * The name of the OS on the VM.
      */
-    @JsonProperty(value = "osName", access = JsonProperty.Access.WRITE_ONLY)
     private String osName;
 
     /**
      * Creates an instance of InMageAzureV2ReplicationDetails class.
      */
     public InMageAzureV2ReplicationDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the Instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -1621,8 +1562,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     }
 
     /**
-     * Get the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or
-     * not.
+     * Get the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or not.
      * 
      * @return the isAdditionalStatsAvailable value.
      */
@@ -1631,8 +1571,7 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
     }
 
     /**
-     * Set the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or
-     * not.
+     * Set the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or not.
      * 
      * @param isAdditionalStatsAvailable the isAdditionalStatsAvailable value to set.
      * @return the InMageAzureV2ReplicationDetails object itself.
@@ -1863,7 +1802,6 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
      */
     @Override
     public void validate() {
-        super.validate();
         if (protectedDisks() != null) {
             protectedDisks().forEach(e -> e.validate());
         }
@@ -1888,5 +1826,300 @@ public final class InMageAzureV2ReplicationDetails extends ReplicationProviderSp
         if (allAvailableOSUpgradeConfigurations() != null) {
             allAvailableOSUpgradeConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("infrastructureVmId", this.infrastructureVmId);
+        jsonWriter.writeStringField("vCenterInfrastructureId", this.vCenterInfrastructureId);
+        jsonWriter.writeStringField("protectionStage", this.protectionStage);
+        jsonWriter.writeStringField("vmId", this.vmId);
+        jsonWriter.writeStringField("vmProtectionState", this.vmProtectionState);
+        jsonWriter.writeStringField("vmProtectionStateDescription", this.vmProtectionStateDescription);
+        jsonWriter.writeNumberField("resyncProgressPercentage", this.resyncProgressPercentage);
+        jsonWriter.writeNumberField("rpoInSeconds", this.rpoInSeconds);
+        jsonWriter.writeNumberField("compressedDataRateInMB", this.compressedDataRateInMB);
+        jsonWriter.writeNumberField("uncompressedDataRateInMB", this.uncompressedDataRateInMB);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeStringField("agentExpiryDate",
+            this.agentExpiryDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.agentExpiryDate));
+        jsonWriter.writeStringField("isAgentUpdateRequired", this.isAgentUpdateRequired);
+        jsonWriter.writeStringField("isRebootAfterUpdateRequired", this.isRebootAfterUpdateRequired);
+        jsonWriter.writeStringField("lastHeartbeat",
+            this.lastHeartbeat == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastHeartbeat));
+        jsonWriter.writeStringField("processServerId", this.processServerId);
+        jsonWriter.writeStringField("processServerName", this.processServerName);
+        jsonWriter.writeStringField("multiVmGroupId", this.multiVmGroupId);
+        jsonWriter.writeStringField("multiVmGroupName", this.multiVmGroupName);
+        jsonWriter.writeStringField("multiVmSyncStatus", this.multiVmSyncStatus);
+        jsonWriter.writeArrayField("protectedDisks", this.protectedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("diskResized", this.diskResized);
+        jsonWriter.writeStringField("masterTargetId", this.masterTargetId);
+        jsonWriter.writeNumberField("sourceVmCpuCount", this.sourceVmCpuCount);
+        jsonWriter.writeNumberField("sourceVmRamSizeInMB", this.sourceVmRamSizeInMB);
+        jsonWriter.writeStringField("osType", this.osType);
+        jsonWriter.writeStringField("vhdName", this.vhdName);
+        jsonWriter.writeStringField("osDiskId", this.osDiskId);
+        jsonWriter.writeArrayField("azureVMDiskDetails", this.azureVMDiskDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("recoveryAzureVMName", this.recoveryAzureVMName);
+        jsonWriter.writeStringField("recoveryAzureVMSize", this.recoveryAzureVMSize);
+        jsonWriter.writeStringField("recoveryAzureStorageAccount", this.recoveryAzureStorageAccount);
+        jsonWriter.writeStringField("recoveryAzureLogStorageAccountId", this.recoveryAzureLogStorageAccountId);
+        jsonWriter.writeArrayField("vmNics", this.vmNics, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("selectedRecoveryAzureNetworkId", this.selectedRecoveryAzureNetworkId);
+        jsonWriter.writeStringField("selectedTfoAzureNetworkId", this.selectedTfoAzureNetworkId);
+        jsonWriter.writeStringField("selectedSourceNicId", this.selectedSourceNicId);
+        jsonWriter.writeStringField("discoveryType", this.discoveryType);
+        jsonWriter.writeStringField("enableRdpOnTargetOption", this.enableRdpOnTargetOption);
+        jsonWriter.writeArrayField("datastores", this.datastores, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("targetVmId", this.targetVmId);
+        jsonWriter.writeStringField("recoveryAzureResourceGroupId", this.recoveryAzureResourceGroupId);
+        jsonWriter.writeStringField("recoveryAvailabilitySetId", this.recoveryAvailabilitySetId);
+        jsonWriter.writeStringField("targetAvailabilityZone", this.targetAvailabilityZone);
+        jsonWriter.writeStringField("targetProximityPlacementGroupId", this.targetProximityPlacementGroupId);
+        jsonWriter.writeStringField("useManagedDisks", this.useManagedDisks);
+        jsonWriter.writeStringField("licenseType", this.licenseType);
+        jsonWriter.writeStringField("sqlServerLicenseType", this.sqlServerLicenseType);
+        jsonWriter.writeArrayField("validationErrors", this.validationErrors,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("lastRpoCalculatedTime",
+            this.lastRpoCalculatedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastRpoCalculatedTime));
+        jsonWriter.writeStringField("lastUpdateReceivedTime",
+            this.lastUpdateReceivedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastUpdateReceivedTime));
+        jsonWriter.writeStringField("replicaId", this.replicaId);
+        jsonWriter.writeStringField("osVersion", this.osVersion);
+        jsonWriter.writeArrayField("protectedManagedDisks", this.protectedManagedDisks,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("firmwareType", this.firmwareType);
+        jsonWriter.writeStringField("azureVmGeneration", this.azureVmGeneration);
+        jsonWriter.writeBooleanField("isAdditionalStatsAvailable", this.isAdditionalStatsAvailable);
+        jsonWriter.writeNumberField("totalDataTransferred", this.totalDataTransferred);
+        jsonWriter.writeStringField("totalProgressHealth", this.totalProgressHealth);
+        jsonWriter.writeMapField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("seedManagedDiskTags", this.seedManagedDiskTags,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetManagedDiskTags", this.targetManagedDiskTags,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("switchProviderBlockingErrorDetails", this.switchProviderBlockingErrorDetails,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("switchProviderDetails", this.switchProviderDetails);
+        jsonWriter.writeArrayField("supportedOSVersions", this.supportedOSVersions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("allAvailableOSUpgradeConfigurations", this.allAvailableOSUpgradeConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageAzureV2ReplicationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageAzureV2ReplicationDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageAzureV2ReplicationDetails.
+     */
+    public static InMageAzureV2ReplicationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageAzureV2ReplicationDetails deserializedInMageAzureV2ReplicationDetails
+                = new InMageAzureV2ReplicationDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.instanceType = reader.getString();
+                } else if ("infrastructureVmId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.infrastructureVmId = reader.getString();
+                } else if ("vCenterInfrastructureId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.vCenterInfrastructureId = reader.getString();
+                } else if ("protectionStage".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.protectionStage = reader.getString();
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.vmId = reader.getString();
+                } else if ("vmProtectionState".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.vmProtectionState = reader.getString();
+                } else if ("vmProtectionStateDescription".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.vmProtectionStateDescription = reader.getString();
+                } else if ("resyncProgressPercentage".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.resyncProgressPercentage
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("rpoInSeconds".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.rpoInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("compressedDataRateInMB".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.compressedDataRateInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("uncompressedDataRateInMB".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.uncompressedDataRateInMB
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.ipAddress = reader.getString();
+                } else if ("agentVersion".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.agentVersion = reader.getString();
+                } else if ("agentExpiryDate".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.agentExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isAgentUpdateRequired".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.isAgentUpdateRequired = reader.getString();
+                } else if ("isRebootAfterUpdateRequired".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.isRebootAfterUpdateRequired = reader.getString();
+                } else if ("lastHeartbeat".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.lastHeartbeat = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("processServerId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.processServerId = reader.getString();
+                } else if ("processServerName".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.processServerName = reader.getString();
+                } else if ("multiVmGroupId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.multiVmGroupId = reader.getString();
+                } else if ("multiVmGroupName".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.multiVmGroupName = reader.getString();
+                } else if ("multiVmSyncStatus".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.multiVmSyncStatus = reader.getString();
+                } else if ("protectedDisks".equals(fieldName)) {
+                    List<InMageAzureV2ProtectedDiskDetails> protectedDisks
+                        = reader.readArray(reader1 -> InMageAzureV2ProtectedDiskDetails.fromJson(reader1));
+                    deserializedInMageAzureV2ReplicationDetails.protectedDisks = protectedDisks;
+                } else if ("diskResized".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.diskResized = reader.getString();
+                } else if ("masterTargetId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.masterTargetId = reader.getString();
+                } else if ("sourceVmCpuCount".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.sourceVmCpuCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("sourceVmRamSizeInMB".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.sourceVmRamSizeInMB
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("osType".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.osType = reader.getString();
+                } else if ("vhdName".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.vhdName = reader.getString();
+                } else if ("osDiskId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.osDiskId = reader.getString();
+                } else if ("azureVMDiskDetails".equals(fieldName)) {
+                    List<AzureVmDiskDetails> azureVMDiskDetails
+                        = reader.readArray(reader1 -> AzureVmDiskDetails.fromJson(reader1));
+                    deserializedInMageAzureV2ReplicationDetails.azureVMDiskDetails = azureVMDiskDetails;
+                } else if ("recoveryAzureVMName".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.recoveryAzureVMName = reader.getString();
+                } else if ("recoveryAzureVMSize".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.recoveryAzureVMSize = reader.getString();
+                } else if ("recoveryAzureStorageAccount".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.recoveryAzureStorageAccount = reader.getString();
+                } else if ("recoveryAzureLogStorageAccountId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.recoveryAzureLogStorageAccountId = reader.getString();
+                } else if ("vmNics".equals(fieldName)) {
+                    List<VMNicDetails> vmNics = reader.readArray(reader1 -> VMNicDetails.fromJson(reader1));
+                    deserializedInMageAzureV2ReplicationDetails.vmNics = vmNics;
+                } else if ("selectedRecoveryAzureNetworkId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.selectedRecoveryAzureNetworkId = reader.getString();
+                } else if ("selectedTfoAzureNetworkId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.selectedTfoAzureNetworkId = reader.getString();
+                } else if ("selectedSourceNicId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.selectedSourceNicId = reader.getString();
+                } else if ("discoveryType".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.discoveryType = reader.getString();
+                } else if ("enableRdpOnTargetOption".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.enableRdpOnTargetOption = reader.getString();
+                } else if ("datastores".equals(fieldName)) {
+                    List<String> datastores = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInMageAzureV2ReplicationDetails.datastores = datastores;
+                } else if ("targetVmId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.targetVmId = reader.getString();
+                } else if ("recoveryAzureResourceGroupId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.recoveryAzureResourceGroupId = reader.getString();
+                } else if ("recoveryAvailabilitySetId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.recoveryAvailabilitySetId = reader.getString();
+                } else if ("targetAvailabilityZone".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.targetAvailabilityZone = reader.getString();
+                } else if ("targetProximityPlacementGroupId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.targetProximityPlacementGroupId = reader.getString();
+                } else if ("useManagedDisks".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.useManagedDisks = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.licenseType = reader.getString();
+                } else if ("sqlServerLicenseType".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.sqlServerLicenseType = reader.getString();
+                } else if ("validationErrors".equals(fieldName)) {
+                    List<HealthError> validationErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedInMageAzureV2ReplicationDetails.validationErrors = validationErrors;
+                } else if ("lastRpoCalculatedTime".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.lastRpoCalculatedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdateReceivedTime".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.lastUpdateReceivedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("replicaId".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.replicaId = reader.getString();
+                } else if ("osVersion".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.osVersion = reader.getString();
+                } else if ("protectedManagedDisks".equals(fieldName)) {
+                    List<InMageAzureV2ManagedDiskDetails> protectedManagedDisks
+                        = reader.readArray(reader1 -> InMageAzureV2ManagedDiskDetails.fromJson(reader1));
+                    deserializedInMageAzureV2ReplicationDetails.protectedManagedDisks = protectedManagedDisks;
+                } else if ("lastRecoveryPointReceived".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.lastRecoveryPointReceived = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("firmwareType".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.firmwareType = reader.getString();
+                } else if ("azureVmGeneration".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.azureVmGeneration = reader.getString();
+                } else if ("isAdditionalStatsAvailable".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.isAdditionalStatsAvailable
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("totalDataTransferred".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.totalDataTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("totalProgressHealth".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.totalProgressHealth = reader.getString();
+                } else if ("targetVmTags".equals(fieldName)) {
+                    Map<String, String> targetVmTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInMageAzureV2ReplicationDetails.targetVmTags = targetVmTags;
+                } else if ("seedManagedDiskTags".equals(fieldName)) {
+                    Map<String, String> seedManagedDiskTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInMageAzureV2ReplicationDetails.seedManagedDiskTags = seedManagedDiskTags;
+                } else if ("targetManagedDiskTags".equals(fieldName)) {
+                    Map<String, String> targetManagedDiskTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInMageAzureV2ReplicationDetails.targetManagedDiskTags = targetManagedDiskTags;
+                } else if ("targetNicTags".equals(fieldName)) {
+                    Map<String, String> targetNicTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInMageAzureV2ReplicationDetails.targetNicTags = targetNicTags;
+                } else if ("switchProviderBlockingErrorDetails".equals(fieldName)) {
+                    List<InMageAzureV2SwitchProviderBlockingErrorDetails> switchProviderBlockingErrorDetails = reader
+                        .readArray(reader1 -> InMageAzureV2SwitchProviderBlockingErrorDetails.fromJson(reader1));
+                    deserializedInMageAzureV2ReplicationDetails.switchProviderBlockingErrorDetails
+                        = switchProviderBlockingErrorDetails;
+                } else if ("switchProviderDetails".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.switchProviderDetails
+                        = InMageAzureV2SwitchProviderDetails.fromJson(reader);
+                } else if ("supportedOSVersions".equals(fieldName)) {
+                    List<String> supportedOSVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInMageAzureV2ReplicationDetails.supportedOSVersions = supportedOSVersions;
+                } else if ("allAvailableOSUpgradeConfigurations".equals(fieldName)) {
+                    List<OSUpgradeSupportedVersions> allAvailableOSUpgradeConfigurations
+                        = reader.readArray(reader1 -> OSUpgradeSupportedVersions.fromJson(reader1));
+                    deserializedInMageAzureV2ReplicationDetails.allAvailableOSUpgradeConfigurations
+                        = allAvailableOSUpgradeConfigurations;
+                } else if ("osName".equals(fieldName)) {
+                    deserializedInMageAzureV2ReplicationDetails.osName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageAzureV2ReplicationDetails;
+        });
     }
 }

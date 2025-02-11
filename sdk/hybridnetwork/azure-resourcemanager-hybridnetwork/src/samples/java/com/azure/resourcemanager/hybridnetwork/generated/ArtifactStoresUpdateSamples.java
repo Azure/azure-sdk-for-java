@@ -25,7 +25,8 @@ public final class ArtifactStoresUpdateSamples {
     public static void
         updateArtifactStoreResourceTags(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
         ArtifactStore resource = manager.artifactStores()
-            .getWithResponse("rg", "TestPublisher", "TestArtifactStore", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("rg", "TestPublisher", "TestArtifactStore", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

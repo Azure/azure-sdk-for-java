@@ -5,28 +5,101 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.ActionRequestProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Action for alert rule. */
+/**
+ * Action for alert rule.
+ */
 @Fluent
 public final class ActionRequest extends ResourceWithEtag {
     /*
      * Action properties for put request
      */
-    @JsonProperty(value = "properties")
     private ActionRequestProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ActionRequest class.
+     */
+    public ActionRequest() {
+    }
 
     /**
      * Get the innerProperties property: Action properties for put request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ActionRequestProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ActionRequest withEtag(String etag) {
         super.withEtag(etag);
@@ -35,7 +108,7 @@ public final class ActionRequest extends ResourceWithEtag {
 
     /**
      * Get the triggerUri property: Logic App Callback URL for this specific workflow.
-     *
+     * 
      * @return the triggerUri value.
      */
     public String triggerUri() {
@@ -44,7 +117,7 @@ public final class ActionRequest extends ResourceWithEtag {
 
     /**
      * Set the triggerUri property: Logic App Callback URL for this specific workflow.
-     *
+     * 
      * @param triggerUri the triggerUri value to set.
      * @return the ActionRequest object itself.
      */
@@ -59,7 +132,7 @@ public final class ActionRequest extends ResourceWithEtag {
     /**
      * Get the logicAppResourceId property: Logic App Resource Id,
      * /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
-     *
+     * 
      * @return the logicAppResourceId value.
      */
     public String logicAppResourceId() {
@@ -69,7 +142,7 @@ public final class ActionRequest extends ResourceWithEtag {
     /**
      * Set the logicAppResourceId property: Logic App Resource Id,
      * /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
-     *
+     * 
      * @param logicAppResourceId the logicAppResourceId value to set.
      * @return the ActionRequest object itself.
      */
@@ -83,14 +156,61 @@ public final class ActionRequest extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ActionRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ActionRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ActionRequest.
+     */
+    public static ActionRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ActionRequest deserializedActionRequest = new ActionRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedActionRequest.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedActionRequest.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedActionRequest.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedActionRequest.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedActionRequest.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedActionRequest.innerProperties = ActionRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActionRequest;
+        });
     }
 }

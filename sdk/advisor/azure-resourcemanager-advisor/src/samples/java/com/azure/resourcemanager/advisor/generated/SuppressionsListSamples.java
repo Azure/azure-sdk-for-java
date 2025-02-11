@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.advisor.generated;
 
-/** Samples for Suppressions List. */
+/**
+ * Samples for Suppressions List.
+ */
 public final class SuppressionsListSamples {
     /*
-     * x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListSuppressions.json
+     * x-ms-original-file:
+     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListSuppressions.json
      */
     /**
      * Sample code: ListSuppressions.
-     *
+     * 
      * @param manager Entry point to AdvisorManager.
      */
     public static void listSuppressions(com.azure.resourcemanager.advisor.AdvisorManager manager) {

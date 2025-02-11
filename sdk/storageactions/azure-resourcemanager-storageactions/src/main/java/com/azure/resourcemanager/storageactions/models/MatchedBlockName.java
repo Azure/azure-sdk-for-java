@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storageactions.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class MatchedBlockName extends ExpandableStringEnum<MatchedBlockNam
      * @param name a name to look for.
      * @return the corresponding MatchedBlockName.
      */
-    @JsonCreator
     public static MatchedBlockName fromString(String name) {
         return fromString(name, MatchedBlockName.class);
     }

@@ -127,13 +127,33 @@ public final class RunCommandDocumentInner extends RunCommandDocumentBaseInner {
      */
     @Override
     public void validate() {
-        super.validate();
         if (script() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property script in model RunCommandDocumentInner"));
         }
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
+        }
+        if (schema() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property schema in model RunCommandDocumentInner"));
+        }
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model RunCommandDocumentInner"));
+        }
+        if (osType() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property osType in model RunCommandDocumentInner"));
+        }
+        if (label() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property label in model RunCommandDocumentInner"));
+        }
+        if (description() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model RunCommandDocumentInner"));
         }
     }
 

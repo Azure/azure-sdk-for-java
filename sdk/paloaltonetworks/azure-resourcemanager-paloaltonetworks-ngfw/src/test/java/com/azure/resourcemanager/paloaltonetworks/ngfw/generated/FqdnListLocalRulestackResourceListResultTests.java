@@ -25,20 +25,25 @@ public final class FqdnListLocalRulestackResourceListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FqdnListLocalRulestackResourceListResult model = new FqdnListLocalRulestackResourceListResult()
-            .withValue(Arrays.asList(
+        FqdnListLocalRulestackResourceListResult model
+            = new FqdnListLocalRulestackResourceListResult().withValue(Arrays.asList(
                 new FqdnListLocalRulestackResourceInner().withDescription("dxihc")
                     .withFqdnList(Arrays.asList("phkmcrjdqnsdfz", "bg", "gkylkdghr", "euutlwxezwzh"))
-                    .withEtag("vbwnhhtq").withAuditComment("ehgpp"),
+                    .withEtag("vbwnhhtq")
+                    .withAuditComment("ehgpp"),
                 new FqdnListLocalRulestackResourceInner().withDescription("iftxfkf")
-                    .withFqdnList(Arrays.asList("gpr", "ptil", "ucb")).withEtag("tgdqohmcwsldriz")
+                    .withFqdnList(Arrays.asList("gpr", "ptil", "ucb"))
+                    .withEtag("tgdqohmcwsldriz")
                     .withAuditComment("pwbralllibphbqz"),
                 new FqdnListLocalRulestackResourceInner().withDescription("pteecjme")
-                    .withFqdnList(Arrays.asList("ls", "vasylwxdzau")).withEtag("eoohguufuzboyj")
+                    .withFqdnList(Arrays.asList("ls", "vasylwxdzau"))
+                    .withEtag("eoohguufuzboyj")
                     .withAuditComment("hwtzolb"),
                 new FqdnListLocalRulestackResourceInner().withDescription("eabfqxnm")
-                    .withFqdnList(Arrays.asList("qtibxyijddtv")).withEtag("ttadijae").withAuditComment("mrsieekp")))
-            .withNextLink("bpmzzn");
+                    .withFqdnList(Arrays.asList("qtibxyijddtv"))
+                    .withEtag("ttadijae")
+                    .withAuditComment("mrsieekp")))
+                .withNextLink("bpmzzn");
         model = BinaryData.fromObject(model).toObject(FqdnListLocalRulestackResourceListResult.class);
         Assertions.assertEquals("dxihc", model.value().get(0).description());
         Assertions.assertEquals("phkmcrjdqnsdfz", model.value().get(0).fqdnList().get(0));

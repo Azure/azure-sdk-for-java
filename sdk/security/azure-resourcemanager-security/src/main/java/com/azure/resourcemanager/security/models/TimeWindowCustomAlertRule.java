@@ -5,64 +5,28 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
  * A custom alert rule that checks if the number of activities (depends on the custom alert type) in a time window is
  * within the given range.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "ruleType",
-    defaultImpl = TimeWindowCustomAlertRule.class,
-    visible = true)
-@JsonTypeName("TimeWindowCustomAlertRule")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "ActiveConnectionsNotInAllowedRange", value = ActiveConnectionsNotInAllowedRange.class),
-    @JsonSubTypes.Type(name = "AmqpC2DMessagesNotInAllowedRange", value = AmqpC2DMessagesNotInAllowedRange.class),
-    @JsonSubTypes.Type(name = "MqttC2DMessagesNotInAllowedRange", value = MqttC2DMessagesNotInAllowedRange.class),
-    @JsonSubTypes.Type(name = "HttpC2DMessagesNotInAllowedRange", value = HttpC2DMessagesNotInAllowedRange.class),
-    @JsonSubTypes.Type(
-        name = "AmqpC2DRejectedMessagesNotInAllowedRange",
-        value = AmqpC2DRejectedMessagesNotInAllowedRange.class),
-    @JsonSubTypes.Type(
-        name = "MqttC2DRejectedMessagesNotInAllowedRange",
-        value = MqttC2DRejectedMessagesNotInAllowedRange.class),
-    @JsonSubTypes.Type(
-        name = "HttpC2DRejectedMessagesNotInAllowedRange",
-        value = HttpC2DRejectedMessagesNotInAllowedRange.class),
-    @JsonSubTypes.Type(name = "AmqpD2CMessagesNotInAllowedRange", value = AmqpD2CMessagesNotInAllowedRange.class),
-    @JsonSubTypes.Type(name = "MqttD2CMessagesNotInAllowedRange", value = MqttD2CMessagesNotInAllowedRange.class),
-    @JsonSubTypes.Type(name = "HttpD2CMessagesNotInAllowedRange", value = HttpD2CMessagesNotInAllowedRange.class),
-    @JsonSubTypes.Type(
-        name = "DirectMethodInvokesNotInAllowedRange",
-        value = DirectMethodInvokesNotInAllowedRange.class),
-    @JsonSubTypes.Type(name = "FailedLocalLoginsNotInAllowedRange", value = FailedLocalLoginsNotInAllowedRange.class),
-    @JsonSubTypes.Type(name = "FileUploadsNotInAllowedRange", value = FileUploadsNotInAllowedRange.class),
-    @JsonSubTypes.Type(name = "QueuePurgesNotInAllowedRange", value = QueuePurgesNotInAllowedRange.class),
-    @JsonSubTypes.Type(name = "TwinUpdatesNotInAllowedRange", value = TwinUpdatesNotInAllowedRange.class),
-    @JsonSubTypes.Type(
-        name = "UnauthorizedOperationsNotInAllowedRange",
-        value = UnauthorizedOperationsNotInAllowedRange.class) })
 @Fluent
 public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
     /*
      * The type of the custom alert rule.
      */
-    @JsonTypeId
-    @JsonProperty(value = "ruleType", required = true)
     private String ruleType = "TimeWindowCustomAlertRule";
 
     /*
      * The time window size in iso8601 format.
      */
-    @JsonProperty(value = "timeWindowSize", required = true)
     private Duration timeWindowSize;
 
     /**
@@ -135,7 +99,6 @@ public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
      */
     @Override
     public void validate() {
-        super.validate();
         if (timeWindowSize() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
@@ -144,4 +107,113 @@ public class TimeWindowCustomAlertRule extends ThresholdCustomAlertRule {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TimeWindowCustomAlertRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", isEnabled());
+        jsonWriter.writeIntField("minThreshold", minThreshold());
+        jsonWriter.writeIntField("maxThreshold", maxThreshold());
+        jsonWriter.writeStringField("timeWindowSize", CoreUtils.durationToStringWithDays(this.timeWindowSize));
+        jsonWriter.writeStringField("ruleType", this.ruleType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TimeWindowCustomAlertRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TimeWindowCustomAlertRule if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TimeWindowCustomAlertRule.
+     */
+    public static TimeWindowCustomAlertRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("ruleType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ActiveConnectionsNotInAllowedRange".equals(discriminatorValue)) {
+                    return ActiveConnectionsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("AmqpC2DMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return AmqpC2DMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("MqttC2DMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return MqttC2DMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("HttpC2DMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return HttpC2DMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("AmqpC2DRejectedMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return AmqpC2DRejectedMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("MqttC2DRejectedMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return MqttC2DRejectedMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("HttpC2DRejectedMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return HttpC2DRejectedMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("AmqpD2CMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return AmqpD2CMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("MqttD2CMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return MqttD2CMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("HttpD2CMessagesNotInAllowedRange".equals(discriminatorValue)) {
+                    return HttpD2CMessagesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("DirectMethodInvokesNotInAllowedRange".equals(discriminatorValue)) {
+                    return DirectMethodInvokesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("FailedLocalLoginsNotInAllowedRange".equals(discriminatorValue)) {
+                    return FailedLocalLoginsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("FileUploadsNotInAllowedRange".equals(discriminatorValue)) {
+                    return FileUploadsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("QueuePurgesNotInAllowedRange".equals(discriminatorValue)) {
+                    return QueuePurgesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("TwinUpdatesNotInAllowedRange".equals(discriminatorValue)) {
+                    return TwinUpdatesNotInAllowedRange.fromJson(readerToUse.reset());
+                } else if ("UnauthorizedOperationsNotInAllowedRange".equals(discriminatorValue)) {
+                    return UnauthorizedOperationsNotInAllowedRange.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TimeWindowCustomAlertRule fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TimeWindowCustomAlertRule deserializedTimeWindowCustomAlertRule = new TimeWindowCustomAlertRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedTimeWindowCustomAlertRule.withIsEnabled(reader.getBoolean());
+                } else if ("minThreshold".equals(fieldName)) {
+                    deserializedTimeWindowCustomAlertRule.withMinThreshold(reader.getInt());
+                } else if ("maxThreshold".equals(fieldName)) {
+                    deserializedTimeWindowCustomAlertRule.withMaxThreshold(reader.getInt());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedTimeWindowCustomAlertRule.withDisplayName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedTimeWindowCustomAlertRule.withDescription(reader.getString());
+                } else if ("timeWindowSize".equals(fieldName)) {
+                    deserializedTimeWindowCustomAlertRule.timeWindowSize
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedTimeWindowCustomAlertRule.ruleType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTimeWindowCustomAlertRule;
+        });
+    }
 }

@@ -6,91 +6,136 @@ package com.azure.resourcemanager.costmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.models.AccumulatedType;
 import com.azure.resourcemanager.costmanagement.models.ChartType;
+import com.azure.resourcemanager.costmanagement.models.FunctionType;
+import com.azure.resourcemanager.costmanagement.models.KpiProperties;
+import com.azure.resourcemanager.costmanagement.models.KpiType;
 import com.azure.resourcemanager.costmanagement.models.MetricType;
+import com.azure.resourcemanager.costmanagement.models.OperatorType;
+import com.azure.resourcemanager.costmanagement.models.PivotProperties;
+import com.azure.resourcemanager.costmanagement.models.PivotType;
+import com.azure.resourcemanager.costmanagement.models.QueryColumnType;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigAggregation;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigComparisonExpression;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigDatasetConfiguration;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigFilter;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigGrouping;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigSorting;
+import com.azure.resourcemanager.costmanagement.models.ReportConfigTimePeriod;
+import com.azure.resourcemanager.costmanagement.models.ReportGranularityType;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
 import com.azure.resourcemanager.costmanagement.models.View;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ViewsCreateOrUpdateByScopeWithResponseMockTests {
     @Test
     public void testCreateOrUpdateByScopeWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"displayName\":\"bfu\",\"scope\":\"frojsydgr\",\"createdOn\":\"2021-04-19T05:33:50Z\",\"modifiedOn\":\"2021-11-05T07:34:40Z\",\"dateRange\":\"ywezskiecafyg\",\"currency\":\"xieqv\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"WeekToDate\",\"timePeriod\":{\"from\":\"2021-04-25T16:17:08Z\",\"to\":\"2021-09-22T06:47:14Z\"},\"dataSet\":{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"xalybxawoijpo\",\"tblxpkkwjdjodqhy\",\"incnr\"]},\"aggregation\":{\"kadppyibngq\":{\"name\":\"hllizhceumoq\",\"function\":\"Sum\"},\"vvadswzs\":{\"name\":\"adywrxwhydt\",\"function\":\"Sum\"},\"wuowhlxlnwy\":{\"name\":\"uyem\",\"function\":\"Sum\"}},\"grouping\":[{\"type\":\"TagKey\",\"name\":\"vblgmokzk\"},{\"type\":\"Dimension\",\"name\":\"rfowtdvrfmvlih\"}],\"sorting\":[{\"name\":\"drqc\"},{\"name\":\"jidhftu\"},{\"name\":\"vhdxlwyo\"},{\"name\":\"bfqz\"}],\"filter\":{\"and\":[{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"xhafratqx\",\"operator\":\"Contains\",\"values\":[]},\"tags\":{\"name\":\"roumzznva\",\"operator\":\"Contains\",\"values\":[]}}},\"includeMonetaryCommitment\":true},\"chart\":\"Area\",\"accumulated\":\"false\",\"metric\":\"AmortizedCost\",\"kpis\":[{\"type\":\"Budget\",\"id\":\"usllywpvtiotz\",\"enabled\":false}],\"pivots\":[{\"type\":\"Dimension\",\"name\":\"ryf\"},{\"type\":\"Dimension\",\"name\":\"sigrowsocnequygd\"}]},\"eTag\":\"oqgrmtqjkqevadr\",\"id\":\"mwiuawvcm\",\"name\":\"z\",\"type\":\"xiid\"}";
 
-        String responseStr =
-            "{\"properties\":{\"displayName\":\"owbb\",\"scope\":\"yavutpthjoxois\",\"createdOn\":\"2021-09-20T02:33:28Z\",\"modifiedOn\":\"2021-01-03T07:30:36Z\",\"dateRange\":\"iml\",\"currency\":\"ljxkcgxxlx\",\"query\":{\"type\":\"Usage\",\"timeframe\":\"Custom\",\"includeMonetaryCommitment\":false},\"chart\":\"Area\",\"accumulated\":\"false\",\"metric\":\"ActualCost\",\"kpis\":[],\"pivots\":[]},\"eTag\":\"pfgfbkjub\",\"id\":\"yhgk\",\"name\":\"minsgowzf\",\"type\":\"tsttktlahbq\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        View response = manager.views()
+            .define("fwmyymv")
+            .withExistingScope("onql")
+            .withEtag("itnspxlzde")
+            .withDisplayName("pb")
+            .withScope("ckdvez")
+            .withDateRange("zhddubbnqf")
+            .withChart(ChartType.GROUPED_COLUMN)
+            .withAccumulated(AccumulatedType.FALSE)
+            .withMetric(MetricType.ACTUAL_COST)
+            .withKpis(Arrays.asList(new KpiProperties().withType(KpiType.FORECAST).withId("iytxt").withEnabled(false)))
+            .withPivots(Arrays.asList(new PivotProperties().withType(PivotType.DIMENSION).withName("ktg"),
+                new PivotProperties().withType(PivotType.TAG_KEY).withName("ouambewre"),
+                new PivotProperties().withType(PivotType.DIMENSION).withName("weg"),
+                new PivotProperties().withType(PivotType.TAG_KEY).withName("eyxeyguqigi")))
+            .withTypePropertiesType(ReportType.USAGE)
+            .withTimeframe(ReportTimeframeType.CUSTOM)
+            .withTimePeriod(new ReportConfigTimePeriod().withFrom(OffsetDateTime.parse("2021-10-21T13:38:19Z"))
+                .withTo(OffsetDateTime.parse("2021-07-29T15:54:11Z")))
+            .withDataSet(new ReportConfigDataset().withGranularity(ReportGranularityType.DAILY)
+                .withConfiguration(new ReportConfigDatasetConfiguration()
+                    .withColumns(Arrays.asList("qjtiogqgdm", "nictteajo", "iygspnbonhpczyk", "ktpv")))
+                .withAggregation(
+                    mapOf("umqy", new ReportConfigAggregation().withName("csehchkhufm").withFunction(FunctionType.SUM)))
+                .withGrouping(
+                    Arrays.asList(new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("zulo"),
+                        new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("aeuzanh"),
+                        new ReportConfigGrouping().withType(QueryColumnType.DIMENSION).withName("nhsenwphpzfng"),
+                        new ReportConfigGrouping().withType(QueryColumnType.TAG_KEY).withName("clid")))
+                .withSorting(Arrays.asList(new ReportConfigSorting().withName("jwjj")))
+                .withFilter(new ReportConfigFilter()
+                    .withAnd(
+                        Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter(), new ReportConfigFilter()))
+                    .withOr(Arrays.asList(new ReportConfigFilter(), new ReportConfigFilter()))
+                    .withDimensions(new ReportConfigComparisonExpression().withName("k")
+                        .withOperator(OperatorType.IN)
+                        .withValues(Arrays.asList()))
+                    .withTags(new ReportConfigComparisonExpression().withName("htssruqnmdvhazc")
+                        .withOperator(OperatorType.IN)
+                        .withValues(Arrays.asList()))))
+            .withIncludeMonetaryCommitment(false)
+            .create();
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        View response =
-            manager
-                .views()
-                .define("miloxggdufiqndie")
-                .withExistingScope("wjhhgdnhxmsivf")
-                .withEtag("lbywdxsm")
-                .withDisplayName("ofjchvcyyysf")
-                .withScope("otcubi")
-                .withChart(ChartType.AREA)
-                .withAccumulated(AccumulatedType.FALSE)
-                .withMetric(MetricType.AHUB)
-                .withKpis(Arrays.asList())
-                .withPivots(Arrays.asList())
-                .withTypePropertiesType(ReportType.USAGE)
-                .withTimeframe(ReportTimeframeType.WEEK_TO_DATE)
-                .withIncludeMonetaryCommitment(false)
-                .create();
-
-        Assertions.assertEquals("pfgfbkjub", response.etag());
-        Assertions.assertEquals("owbb", response.displayName());
-        Assertions.assertEquals("yavutpthjoxois", response.scope());
+        Assertions.assertEquals("oqgrmtqjkqevadr", response.etag());
+        Assertions.assertEquals("bfu", response.displayName());
+        Assertions.assertEquals("frojsydgr", response.scope());
+        Assertions.assertEquals("ywezskiecafyg", response.dateRange());
         Assertions.assertEquals(ChartType.AREA, response.chart());
         Assertions.assertEquals(AccumulatedType.FALSE, response.accumulated());
-        Assertions.assertEquals(MetricType.ACTUAL_COST, response.metric());
+        Assertions.assertEquals(MetricType.AMORTIZED_COST, response.metric());
+        Assertions.assertEquals(KpiType.BUDGET, response.kpis().get(0).type());
+        Assertions.assertEquals("usllywpvtiotz", response.kpis().get(0).id());
+        Assertions.assertEquals(false, response.kpis().get(0).enabled());
+        Assertions.assertEquals(PivotType.DIMENSION, response.pivots().get(0).type());
+        Assertions.assertEquals("ryf", response.pivots().get(0).name());
         Assertions.assertEquals(ReportType.USAGE, response.typePropertiesType());
-        Assertions.assertEquals(ReportTimeframeType.CUSTOM, response.timeframe());
-        Assertions.assertEquals(false, response.includeMonetaryCommitment());
+        Assertions.assertEquals(ReportTimeframeType.WEEK_TO_DATE, response.timeframe());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-25T16:17:08Z"), response.timePeriod().from());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-22T06:47:14Z"), response.timePeriod().to());
+        Assertions.assertEquals(ReportGranularityType.DAILY, response.dataSet().granularity());
+        Assertions.assertEquals("xalybxawoijpo", response.dataSet().configuration().columns().get(0));
+        Assertions.assertEquals("hllizhceumoq", response.dataSet().aggregation().get("kadppyibngq").name());
+        Assertions.assertEquals(FunctionType.SUM, response.dataSet().aggregation().get("kadppyibngq").function());
+        Assertions.assertEquals(QueryColumnType.TAG_KEY, response.dataSet().grouping().get(0).type());
+        Assertions.assertEquals("vblgmokzk", response.dataSet().grouping().get(0).name());
+        Assertions.assertEquals("drqc", response.dataSet().sorting().get(0).name());
+        Assertions.assertEquals("xhafratqx", response.dataSet().filter().dimensions().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, response.dataSet().filter().dimensions().operator());
+        Assertions.assertEquals("roumzznva", response.dataSet().filter().tags().name());
+        Assertions.assertEquals(OperatorType.CONTAINS, response.dataSet().filter().tags().operator());
+        Assertions.assertEquals(true, response.includeMonetaryCommitment());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

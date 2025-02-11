@@ -21,39 +21,29 @@ public final class WorkflowVersionTriggersImpl implements WorkflowVersionTrigger
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public WorkflowVersionTriggersImpl(
-        WorkflowVersionTriggersClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public WorkflowVersionTriggersImpl(WorkflowVersionTriggersClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String versionId,
-        String triggerName,
-        GetCallbackUrlParameters parameters,
+    public Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(String resourceGroupName,
+        String workflowName, String versionId, String triggerName, GetCallbackUrlParameters parameters,
         Context context) {
-        Response<WorkflowTriggerCallbackUrlInner> inner =
-            this
-                .serviceClient()
-                .listCallbackUrlWithResponse(
-                    resourceGroupName, workflowName, versionId, triggerName, parameters, context);
+        Response<WorkflowTriggerCallbackUrlInner> inner = this.serviceClient()
+            .listCallbackUrlWithResponse(resourceGroupName, workflowName, versionId, triggerName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WorkflowTriggerCallbackUrlImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public WorkflowTriggerCallbackUrl listCallbackUrl(
-        String resourceGroupName, String workflowName, String versionId, String triggerName) {
-        WorkflowTriggerCallbackUrlInner inner =
-            this.serviceClient().listCallbackUrl(resourceGroupName, workflowName, versionId, triggerName);
+    public WorkflowTriggerCallbackUrl listCallbackUrl(String resourceGroupName, String workflowName, String versionId,
+        String triggerName) {
+        WorkflowTriggerCallbackUrlInner inner
+            = this.serviceClient().listCallbackUrl(resourceGroupName, workflowName, versionId, triggerName);
         if (inner != null) {
             return new WorkflowTriggerCallbackUrlImpl(inner, this.manager());
         } else {

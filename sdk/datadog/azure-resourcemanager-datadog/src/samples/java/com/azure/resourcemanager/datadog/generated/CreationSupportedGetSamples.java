@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.datadog.generated;
 
-/** Samples for CreationSupported Get. */
+/**
+ * Samples for CreationSupported Get.
+ */
 public final class CreationSupportedGetSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/CreationSupported_Get.json
+     * x-ms-original-file:
+     * specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/CreationSupported_Get.json
      */
     /**
      * Sample code: CreationSupported_Get.
-     *
+     * 
      * @param manager Entry point to MicrosoftDatadogManager.
      */
     public static void creationSupportedGet(com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {

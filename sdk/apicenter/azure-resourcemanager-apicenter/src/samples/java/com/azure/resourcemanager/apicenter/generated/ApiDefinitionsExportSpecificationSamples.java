@@ -18,7 +18,8 @@ public final class ApiDefinitionsExportSpecificationSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void apiDefinitionsExportSpecification(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.apiDefinitions().exportSpecification("contoso-resources", "contoso", "default", "echo-api",
-            "2023-01-01", "openapi", com.azure.core.util.Context.NONE);
+        manager.apiDefinitions()
+            .exportSpecification("contoso-resources", "contoso", "default", "echo-api", "2023-01-01", "openapi",
+                com.azure.core.util.Context.NONE);
     }
 }

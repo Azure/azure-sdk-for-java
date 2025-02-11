@@ -19,16 +19,14 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
 
     protected abstract HttpClient buildAssertingClient(HttpClient httpClient);
 
-
     protected TableClientBuilder getClientBuilder(String tableName, boolean enableTenantDiscovery) {
-        return TestUtils.isCosmosTest() ? getClientBuilderWithConnectionString(tableName, enableTenantDiscovery)
-            : getClientBuilderUsingEntra(tableName, enableTenantDiscovery);
+        return getClientBuilderUsingEntra(tableName, enableTenantDiscovery);
     }
 
     protected TableClientBuilder getClientBuilderUsingEntra(String tableName, boolean enableTenantDiscovery) {
-        final TableClientBuilder tableClientBuilder = new TableClientBuilder()
-            .credential(TestUtils.getTestTokenCredential(interceptorManager))
-            .endpoint(TestUtils.getEndpoint(interceptorManager.isPlaybackMode()));
+        final TableClientBuilder tableClientBuilder
+            = new TableClientBuilder().credential(TestUtils.getTestTokenCredential(interceptorManager))
+                .endpoint(TestUtils.getEndpoint(interceptorManager.isPlaybackMode()));
 
         if (enableTenantDiscovery) {
             tableClientBuilder.enableTenantDiscovery();
@@ -48,10 +46,8 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
         return configureTestClientBuilder(tableClientBuilder, tableName);
     }
 
-
     private TableClientBuilder configureTestClientBuilder(TableClientBuilder tableClientBuilder, String tableName) {
-        tableClientBuilder
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+        tableClientBuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .tableName(tableName);
 
         if (interceptorManager.isPlaybackMode()) {

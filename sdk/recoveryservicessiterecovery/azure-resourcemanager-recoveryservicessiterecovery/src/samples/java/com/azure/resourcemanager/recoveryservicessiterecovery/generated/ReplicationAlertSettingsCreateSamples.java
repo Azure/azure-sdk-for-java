@@ -23,9 +23,12 @@ public final class ReplicationAlertSettingsCreateSamples {
      */
     public static void configuresEmailNotificationsForThisVault(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationAlertSettings().define("defaultAlertSetting").withExistingVault("vault1", "resourceGroupPS1")
+        manager.replicationAlertSettings()
+            .define("defaultAlertSetting")
+            .withExistingVault("vault1", "resourceGroupPS1")
             .withProperties(new ConfigureAlertRequestProperties().withSendToOwners("false")
-                .withCustomEmailAddresses(Arrays.asList("ronehr@microsoft.com")).withLocale(""))
+                .withCustomEmailAddresses(Arrays.asList("ronehr@microsoft.com"))
+                .withLocale(""))
             .create();
     }
 }

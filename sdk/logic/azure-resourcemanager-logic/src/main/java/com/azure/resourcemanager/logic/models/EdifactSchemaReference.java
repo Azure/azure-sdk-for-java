@@ -6,60 +6,61 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Edifact schema reference. */
+/**
+ * The Edifact schema reference.
+ */
 @Fluent
-public final class EdifactSchemaReference {
+public final class EdifactSchemaReference implements JsonSerializable<EdifactSchemaReference> {
     /*
      * The message id.
      */
-    @JsonProperty(value = "messageId", required = true)
     private String messageId;
 
     /*
      * The message version.
      */
-    @JsonProperty(value = "messageVersion", required = true)
     private String messageVersion;
 
     /*
      * The message release version.
      */
-    @JsonProperty(value = "messageRelease", required = true)
     private String messageRelease;
 
     /*
      * The sender application id.
      */
-    @JsonProperty(value = "senderApplicationId")
     private String senderApplicationId;
 
     /*
      * The sender application qualifier.
      */
-    @JsonProperty(value = "senderApplicationQualifier")
     private String senderApplicationQualifier;
 
     /*
      * The association assigned code.
      */
-    @JsonProperty(value = "associationAssignedCode")
     private String associationAssignedCode;
 
     /*
      * The schema name.
      */
-    @JsonProperty(value = "schemaName", required = true)
     private String schemaName;
 
-    /** Creates an instance of EdifactSchemaReference class. */
+    /**
+     * Creates an instance of EdifactSchemaReference class.
+     */
     public EdifactSchemaReference() {
     }
 
     /**
      * Get the messageId property: The message id.
-     *
+     * 
      * @return the messageId value.
      */
     public String messageId() {
@@ -68,7 +69,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Set the messageId property: The message id.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the EdifactSchemaReference object itself.
      */
@@ -79,7 +80,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Get the messageVersion property: The message version.
-     *
+     * 
      * @return the messageVersion value.
      */
     public String messageVersion() {
@@ -88,7 +89,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Set the messageVersion property: The message version.
-     *
+     * 
      * @param messageVersion the messageVersion value to set.
      * @return the EdifactSchemaReference object itself.
      */
@@ -99,7 +100,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Get the messageRelease property: The message release version.
-     *
+     * 
      * @return the messageRelease value.
      */
     public String messageRelease() {
@@ -108,7 +109,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Set the messageRelease property: The message release version.
-     *
+     * 
      * @param messageRelease the messageRelease value to set.
      * @return the EdifactSchemaReference object itself.
      */
@@ -119,7 +120,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Get the senderApplicationId property: The sender application id.
-     *
+     * 
      * @return the senderApplicationId value.
      */
     public String senderApplicationId() {
@@ -128,7 +129,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Set the senderApplicationId property: The sender application id.
-     *
+     * 
      * @param senderApplicationId the senderApplicationId value to set.
      * @return the EdifactSchemaReference object itself.
      */
@@ -139,7 +140,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Get the senderApplicationQualifier property: The sender application qualifier.
-     *
+     * 
      * @return the senderApplicationQualifier value.
      */
     public String senderApplicationQualifier() {
@@ -148,7 +149,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Set the senderApplicationQualifier property: The sender application qualifier.
-     *
+     * 
      * @param senderApplicationQualifier the senderApplicationQualifier value to set.
      * @return the EdifactSchemaReference object itself.
      */
@@ -159,7 +160,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Get the associationAssignedCode property: The association assigned code.
-     *
+     * 
      * @return the associationAssignedCode value.
      */
     public String associationAssignedCode() {
@@ -168,7 +169,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Set the associationAssignedCode property: The association assigned code.
-     *
+     * 
      * @param associationAssignedCode the associationAssignedCode value to set.
      * @return the EdifactSchemaReference object itself.
      */
@@ -179,7 +180,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Get the schemaName property: The schema name.
-     *
+     * 
      * @return the schemaName value.
      */
     public String schemaName() {
@@ -188,7 +189,7 @@ public final class EdifactSchemaReference {
 
     /**
      * Set the schemaName property: The schema name.
-     *
+     * 
      * @param schemaName the schemaName value to set.
      * @return the EdifactSchemaReference object itself.
      */
@@ -199,35 +200,86 @@ public final class EdifactSchemaReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (messageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property messageId in model EdifactSchemaReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property messageId in model EdifactSchemaReference"));
         }
         if (messageVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property messageVersion in model EdifactSchemaReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property messageVersion in model EdifactSchemaReference"));
         }
         if (messageRelease() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property messageRelease in model EdifactSchemaReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property messageRelease in model EdifactSchemaReference"));
         }
         if (schemaName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schemaName in model EdifactSchemaReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schemaName in model EdifactSchemaReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EdifactSchemaReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeStringField("messageVersion", this.messageVersion);
+        jsonWriter.writeStringField("messageRelease", this.messageRelease);
+        jsonWriter.writeStringField("schemaName", this.schemaName);
+        jsonWriter.writeStringField("senderApplicationId", this.senderApplicationId);
+        jsonWriter.writeStringField("senderApplicationQualifier", this.senderApplicationQualifier);
+        jsonWriter.writeStringField("associationAssignedCode", this.associationAssignedCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdifactSchemaReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdifactSchemaReference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdifactSchemaReference.
+     */
+    public static EdifactSchemaReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdifactSchemaReference deserializedEdifactSchemaReference = new EdifactSchemaReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageId".equals(fieldName)) {
+                    deserializedEdifactSchemaReference.messageId = reader.getString();
+                } else if ("messageVersion".equals(fieldName)) {
+                    deserializedEdifactSchemaReference.messageVersion = reader.getString();
+                } else if ("messageRelease".equals(fieldName)) {
+                    deserializedEdifactSchemaReference.messageRelease = reader.getString();
+                } else if ("schemaName".equals(fieldName)) {
+                    deserializedEdifactSchemaReference.schemaName = reader.getString();
+                } else if ("senderApplicationId".equals(fieldName)) {
+                    deserializedEdifactSchemaReference.senderApplicationId = reader.getString();
+                } else if ("senderApplicationQualifier".equals(fieldName)) {
+                    deserializedEdifactSchemaReference.senderApplicationQualifier = reader.getString();
+                } else if ("associationAssignedCode".equals(fieldName)) {
+                    deserializedEdifactSchemaReference.associationAssignedCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdifactSchemaReference;
+        });
+    }
 }

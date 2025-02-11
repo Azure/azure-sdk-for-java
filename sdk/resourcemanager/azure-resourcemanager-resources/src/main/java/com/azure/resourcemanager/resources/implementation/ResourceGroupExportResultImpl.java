@@ -17,10 +17,8 @@ import java.io.IOException;
 /**
  * Implementation for {@link DeploymentExportResult}.
  */
-final class ResourceGroupExportResultImpl extends
-        WrapperImpl<ResourceGroupExportResultInner>
-        implements
-        ResourceGroupExportResult {
+final class ResourceGroupExportResultImpl extends WrapperImpl<ResourceGroupExportResultInner>
+    implements ResourceGroupExportResult {
 
     private final SerializerAdapter serializerAdapter;
 

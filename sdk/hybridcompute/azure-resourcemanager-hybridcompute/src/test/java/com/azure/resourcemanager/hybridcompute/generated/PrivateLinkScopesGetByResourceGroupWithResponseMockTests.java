@@ -22,7 +22,7 @@ public final class PrivateLinkScopesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"sxz\",\"privateLinkScopeId\":\"ksrl\",\"privateEndpointConnections\":[{\"id\":\"sqplpvmjcd\",\"name\":\"wb\",\"type\":\"yvteowxvgpiudeu\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"zec\",\"description\":\"axwk\"},\"provisioningState\":\"ykhv\",\"groupIds\":[\"epmrut\",\"nabaobnslujd\"]}},{\"id\":\"tymkmvguihywart\",\"name\":\"phkixkykxdssjpe\",\"type\":\"ucfx\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"flrmymyi\",\"description\":\"cqlh\"},\"provisioningState\":\"s\",\"groupIds\":[\"miii\",\"v\"]}},{\"id\":\"cgxuugqkctotiowl\",\"name\":\"e\",\"type\":\"ptjgwdt\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"anblwphqlkccu\",\"description\":\"gygqwah\"},\"provisioningState\":\"ulwgniiprglvawuw\",\"groupIds\":[\"fypiv\",\"sbbjpmcu\"]}},{\"id\":\"mifoxxkub\",\"name\":\"havpmhbrbqgvg\",\"type\":\"pbbttefjoknss\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"edikdfrdbiq\",\"description\":\"rjgeih\"},\"provisioningState\":\"lg\",\"groupIds\":[\"iwzcxmjpbyeph\",\"gt\",\"ljvrcmyfqipgxhnp\",\"myqwcab\"]}}]},\"location\":\"ui\",\"tags\":{\"fjlrxwtoauk\":\"yaswlpaugmr\"},\"id\":\"fkvcisi\",\"name\":\"moaedsxj\",\"type\":\"uivedwcgyeewxeiq\"}";
+            = "{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"bmjk\",\"privateLinkScopeId\":\"bjgsjjxxahmrn\",\"privateEndpointConnections\":[{\"id\":\"qegxyivpin\",\"name\":\"hwbjijkgqxnhmbk\",\"type\":\"njaujvaan\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"ycwkdtaawx\",\"description\":\"fe\"},\"provisioningState\":\"umrrqmbzm\",\"groupIds\":[\"atbnxwbj\",\"idbirkfpkso\",\"dgo\"]}},{\"id\":\"wijymr\",\"name\":\"guzozkyew\",\"type\":\"nzhhhqos\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"kutycyarnroohgua\",\"description\":\"zoghktdpyczhc\"},\"provisioningState\":\"ocnhzqrottjzcfyj\",\"groupIds\":[\"wrlohapqinfszpyg\",\"qdhmrjzralcxpjby\",\"psjoqcjenk\"]}},{\"id\":\"fq\",\"name\":\"sqxfxjelgcmpz\",\"type\":\"hhhqxuwyv\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"yv\",\"description\":\"vbsizusjszlbscm\"},\"provisioningState\":\"zijiufehgmv\",\"groupIds\":[\"wyvq\",\"xrerlniylylyf\"]}}]},\"location\":\"zutgqztwhghmupg\",\"tags\":{\"bklqpxz\":\"tcdxabbujftaben\",\"nlzafwxudgnh\":\"cafeddw\",\"pbeme\":\"ookrtalvnbw\",\"kyrdnqodx\":\"uclvdjj\"},\"id\":\"hhxhq\",\"name\":\"aqnvzoqgyipemchg\",\"type\":\"v\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,12 @@ public final class PrivateLinkScopesGetByResourceGroupWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         HybridComputePrivateLinkScope response = manager.privateLinkScopes()
-            .getByResourceGroupWithResponse("ywaeeczgf", "ukklelss", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("ormkfqlwxldyk", "lsygaol", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ui", response.location());
-        Assertions.assertEquals("yaswlpaugmr", response.tags().get("fjlrxwtoauk"));
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED, response.properties().publicNetworkAccess());
+        Assertions.assertEquals("zutgqztwhghmupg", response.location());
+        Assertions.assertEquals("tcdxabbujftaben", response.tags().get("bklqpxz"));
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER,
+            response.properties().publicNetworkAccess());
     }
 }

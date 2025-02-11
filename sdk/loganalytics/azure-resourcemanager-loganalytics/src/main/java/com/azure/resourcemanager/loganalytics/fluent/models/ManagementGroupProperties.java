@@ -5,67 +5,69 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Management group properties. */
+/**
+ * Management group properties.
+ */
 @Fluent
-public final class ManagementGroupProperties {
+public final class ManagementGroupProperties implements JsonSerializable<ManagementGroupProperties> {
     /*
      * The number of servers connected to the management group.
      */
-    @JsonProperty(value = "serverCount")
     private Integer serverCount;
 
     /*
      * Gets or sets a value indicating whether the management group is a gateway.
      */
-    @JsonProperty(value = "isGateway")
     private Boolean isGateway;
 
     /*
      * The name of the management group.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The unique ID of the management group.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The datetime that the management group was created.
      */
-    @JsonProperty(value = "created")
     private OffsetDateTime created;
 
     /*
      * The last datetime that the management group received data.
      */
-    @JsonProperty(value = "dataReceived")
     private OffsetDateTime dataReceived;
 
     /*
      * The version of System Center that is managing the management group.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * The SKU of System Center that is managing the management group.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
-    /** Creates an instance of ManagementGroupProperties class. */
+    /**
+     * Creates an instance of ManagementGroupProperties class.
+     */
     public ManagementGroupProperties() {
     }
 
     /**
      * Get the serverCount property: The number of servers connected to the management group.
-     *
+     * 
      * @return the serverCount value.
      */
     public Integer serverCount() {
@@ -74,7 +76,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Set the serverCount property: The number of servers connected to the management group.
-     *
+     * 
      * @param serverCount the serverCount value to set.
      * @return the ManagementGroupProperties object itself.
      */
@@ -85,7 +87,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Get the isGateway property: Gets or sets a value indicating whether the management group is a gateway.
-     *
+     * 
      * @return the isGateway value.
      */
     public Boolean isGateway() {
@@ -94,7 +96,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Set the isGateway property: Gets or sets a value indicating whether the management group is a gateway.
-     *
+     * 
      * @param isGateway the isGateway value to set.
      * @return the ManagementGroupProperties object itself.
      */
@@ -105,7 +107,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Get the name property: The name of the management group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -114,7 +116,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Set the name property: The name of the management group.
-     *
+     * 
      * @param name the name value to set.
      * @return the ManagementGroupProperties object itself.
      */
@@ -125,7 +127,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Get the id property: The unique ID of the management group.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -134,7 +136,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Set the id property: The unique ID of the management group.
-     *
+     * 
      * @param id the id value to set.
      * @return the ManagementGroupProperties object itself.
      */
@@ -145,7 +147,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Get the created property: The datetime that the management group was created.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -154,7 +156,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Set the created property: The datetime that the management group was created.
-     *
+     * 
      * @param created the created value to set.
      * @return the ManagementGroupProperties object itself.
      */
@@ -165,7 +167,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Get the dataReceived property: The last datetime that the management group received data.
-     *
+     * 
      * @return the dataReceived value.
      */
     public OffsetDateTime dataReceived() {
@@ -174,7 +176,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Set the dataReceived property: The last datetime that the management group received data.
-     *
+     * 
      * @param dataReceived the dataReceived value to set.
      * @return the ManagementGroupProperties object itself.
      */
@@ -185,7 +187,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Get the version property: The version of System Center that is managing the management group.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -194,7 +196,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Set the version property: The version of System Center that is managing the management group.
-     *
+     * 
      * @param version the version value to set.
      * @return the ManagementGroupProperties object itself.
      */
@@ -205,7 +207,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Get the sku property: The SKU of System Center that is managing the management group.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -214,7 +216,7 @@ public final class ManagementGroupProperties {
 
     /**
      * Set the sku property: The SKU of System Center that is managing the management group.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ManagementGroupProperties object itself.
      */
@@ -225,9 +227,70 @@ public final class ManagementGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("serverCount", this.serverCount);
+        jsonWriter.writeBooleanField("isGateway", this.isGateway);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("created",
+            this.created == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.created));
+        jsonWriter.writeStringField("dataReceived",
+            this.dataReceived == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dataReceived));
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementGroupProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementGroupProperties.
+     */
+    public static ManagementGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementGroupProperties deserializedManagementGroupProperties = new ManagementGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverCount".equals(fieldName)) {
+                    deserializedManagementGroupProperties.serverCount = reader.getNullable(JsonReader::getInt);
+                } else if ("isGateway".equals(fieldName)) {
+                    deserializedManagementGroupProperties.isGateway = reader.getNullable(JsonReader::getBoolean);
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagementGroupProperties.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedManagementGroupProperties.id = reader.getString();
+                } else if ("created".equals(fieldName)) {
+                    deserializedManagementGroupProperties.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dataReceived".equals(fieldName)) {
+                    deserializedManagementGroupProperties.dataReceived = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("version".equals(fieldName)) {
+                    deserializedManagementGroupProperties.version = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedManagementGroupProperties.sku = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementGroupProperties;
+        });
     }
 }

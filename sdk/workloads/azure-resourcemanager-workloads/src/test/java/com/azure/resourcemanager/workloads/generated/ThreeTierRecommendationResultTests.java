@@ -11,35 +11,31 @@ import org.junit.jupiter.api.Assertions;
 public final class ThreeTierRecommendationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ThreeTierRecommendationResult model =
-            BinaryData
-                .fromString(
-                    "{\"deploymentType\":\"ThreeTier\",\"dbVmSku\":\"ocrkvcikh\",\"databaseInstanceCount\":191719140386438255,\"centralServerVmSku\":\"qgxqquezikyw\",\"centralServerInstanceCount\":5773769686889892375,\"applicationServerVmSku\":\"lla\",\"applicationServerInstanceCount\":8033658748454090244}")
-                .toObject(ThreeTierRecommendationResult.class);
-        Assertions.assertEquals("ocrkvcikh", model.dbVmSku());
-        Assertions.assertEquals(191719140386438255L, model.databaseInstanceCount());
-        Assertions.assertEquals("qgxqquezikyw", model.centralServerVmSku());
-        Assertions.assertEquals(5773769686889892375L, model.centralServerInstanceCount());
-        Assertions.assertEquals("lla", model.applicationServerVmSku());
-        Assertions.assertEquals(8033658748454090244L, model.applicationServerInstanceCount());
+        ThreeTierRecommendationResult model = BinaryData.fromString(
+            "{\"deploymentType\":\"ThreeTier\",\"dbVmSku\":\"q\",\"databaseInstanceCount\":3975020961959459727,\"centralServerVmSku\":\"rsbfovasrruvw\",\"centralServerInstanceCount\":5986857107017021380,\"applicationServerVmSku\":\"sub\",\"applicationServerInstanceCount\":2319304863641210663}")
+            .toObject(ThreeTierRecommendationResult.class);
+        Assertions.assertEquals("q", model.dbVmSku());
+        Assertions.assertEquals(3975020961959459727L, model.databaseInstanceCount());
+        Assertions.assertEquals("rsbfovasrruvw", model.centralServerVmSku());
+        Assertions.assertEquals(5986857107017021380L, model.centralServerInstanceCount());
+        Assertions.assertEquals("sub", model.applicationServerVmSku());
+        Assertions.assertEquals(2319304863641210663L, model.applicationServerInstanceCount());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThreeTierRecommendationResult model =
-            new ThreeTierRecommendationResult()
-                .withDbVmSku("ocrkvcikh")
-                .withDatabaseInstanceCount(191719140386438255L)
-                .withCentralServerVmSku("qgxqquezikyw")
-                .withCentralServerInstanceCount(5773769686889892375L)
-                .withApplicationServerVmSku("lla")
-                .withApplicationServerInstanceCount(8033658748454090244L);
+        ThreeTierRecommendationResult model = new ThreeTierRecommendationResult().withDbVmSku("q")
+            .withDatabaseInstanceCount(3975020961959459727L)
+            .withCentralServerVmSku("rsbfovasrruvw")
+            .withCentralServerInstanceCount(5986857107017021380L)
+            .withApplicationServerVmSku("sub")
+            .withApplicationServerInstanceCount(2319304863641210663L);
         model = BinaryData.fromObject(model).toObject(ThreeTierRecommendationResult.class);
-        Assertions.assertEquals("ocrkvcikh", model.dbVmSku());
-        Assertions.assertEquals(191719140386438255L, model.databaseInstanceCount());
-        Assertions.assertEquals("qgxqquezikyw", model.centralServerVmSku());
-        Assertions.assertEquals(5773769686889892375L, model.centralServerInstanceCount());
-        Assertions.assertEquals("lla", model.applicationServerVmSku());
-        Assertions.assertEquals(8033658748454090244L, model.applicationServerInstanceCount());
+        Assertions.assertEquals("q", model.dbVmSku());
+        Assertions.assertEquals(3975020961959459727L, model.databaseInstanceCount());
+        Assertions.assertEquals("rsbfovasrruvw", model.centralServerVmSku());
+        Assertions.assertEquals(5986857107017021380L, model.centralServerInstanceCount());
+        Assertions.assertEquals("sub", model.applicationServerVmSku());
+        Assertions.assertEquals(2319304863641210663L, model.applicationServerInstanceCount());
     }
 }

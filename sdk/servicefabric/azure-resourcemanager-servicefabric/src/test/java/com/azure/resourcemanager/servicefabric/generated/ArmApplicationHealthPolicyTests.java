@@ -36,9 +36,10 @@ public final class ArmApplicationHealthPolicyTests {
     public void testSerialize() throws Exception {
         ArmApplicationHealthPolicy model = new ArmApplicationHealthPolicy().withConsiderWarningAsError(true)
             .withMaxPercentUnhealthyDeployedApplications(1553831435)
-            .withDefaultServiceTypeHealthPolicy(new ArmServiceTypeHealthPolicy()
-                .withMaxPercentUnhealthyServices(1616367631).withMaxPercentUnhealthyPartitionsPerService(1933405011)
-                .withMaxPercentUnhealthyReplicasPerPartition(1057432086))
+            .withDefaultServiceTypeHealthPolicy(
+                new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1616367631)
+                    .withMaxPercentUnhealthyPartitionsPerService(1933405011)
+                    .withMaxPercentUnhealthyReplicasPerPartition(1057432086))
             .withServiceTypeHealthPolicyMap(mapOf("vwpm",
                 new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1948356330)
                     .withMaxPercentUnhealthyPartitionsPerService(2126872967)

@@ -239,10 +239,8 @@ public final class DatasetsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasetResource>> createOrUpdateDatasetWithResponseAsync(String datasetName,
         DatasetResource dataset, String ifMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdateDataset(this.client.getEndpoint(), datasetName,
-            apiVersion, ifMatch, dataset, accept, context));
+        return FluxUtil
+            .withContext(context -> createOrUpdateDatasetWithResponseAsync(datasetName, dataset, ifMatch, context));
     }
 
     /**
@@ -388,10 +386,7 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DatasetResource>> getDatasetWithResponseAsync(String datasetName, String ifNoneMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getDataset(this.client.getEndpoint(), datasetName, apiVersion,
-            ifNoneMatch, accept, context));
+        return FluxUtil.withContext(context -> getDatasetWithResponseAsync(datasetName, ifNoneMatch, context));
     }
 
     /**
@@ -522,10 +517,7 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteDatasetWithResponseAsync(String datasetName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.deleteDataset(this.client.getEndpoint(), datasetName, apiVersion, accept, context));
+        return FluxUtil.withContext(context -> deleteDatasetWithResponseAsync(datasetName, context));
     }
 
     /**
@@ -614,10 +606,7 @@ public final class DatasetsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameDatasetWithResponseAsync(String datasetName, ArtifactRenameRequest request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.renameDataset(this.client.getEndpoint(), datasetName, apiVersion,
-            request, accept, context));
+        return FluxUtil.withContext(context -> renameDatasetWithResponseAsync(datasetName, request, context));
     }
 
     /**
@@ -704,9 +693,7 @@ public final class DatasetsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -725,9 +712,7 @@ public final class DatasetsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -746,9 +731,7 @@ public final class DatasetsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -762,9 +745,7 @@ public final class DatasetsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

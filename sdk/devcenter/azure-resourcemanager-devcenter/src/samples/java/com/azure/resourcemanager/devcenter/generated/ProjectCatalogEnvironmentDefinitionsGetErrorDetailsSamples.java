@@ -9,7 +9,8 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class ProjectCatalogEnvironmentDefinitionsGetErrorDetailsSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/ProjectCatalogEnvironmentDefinitions_GetErrorDetails.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * ProjectCatalogEnvironmentDefinitions_GetErrorDetails.json
      */
     /**
      * Sample code: ProjectCatalogEnvironmentDefinitions_GetErrorDetails.

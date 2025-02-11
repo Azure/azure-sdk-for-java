@@ -101,8 +101,8 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     private static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
     private static final String API_VERSION = "2021-04-01";
     private static final TokenCredential CREDENTIAL = getTokenCredential(ENVIRONMENT.getTestMode());
-    private static final BearerTokenAuthenticationPolicy CREDENTIAL_POLICY =
-        new BearerTokenAuthenticationPolicy(CREDENTIAL, "https://management.azure.com/.default");
+    private static final BearerTokenAuthenticationPolicy CREDENTIAL_POLICY
+        = new BearerTokenAuthenticationPolicy(CREDENTIAL, "https://management.azure.com/.default");
     private BlobContainerAsyncClient vlwContainer;
     private BlobAsyncClient vlwBlob;
 
@@ -111,22 +111,23 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             vlwContainerName = UUID.randomUUID().toString();
 
-            String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
+            String url = String.format(
+                "https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                     + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s",
                 SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, API_VERSION);
-            HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(CREDENTIAL_POLICY)
-                .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(CREDENTIAL_POLICY).build();
 
-            ImmutableStorageWithVersioningTests.ImmutableStorageWithVersioning immutableStorageWithVersioning =
-                new ImmutableStorageWithVersioningTests.ImmutableStorageWithVersioning();
+            ImmutableStorageWithVersioningTests.ImmutableStorageWithVersioning immutableStorageWithVersioning
+                = new ImmutableStorageWithVersioningTests.ImmutableStorageWithVersioning();
             immutableStorageWithVersioning.setEnabled(true);
-            ImmutableStorageWithVersioningTests.Properties properties = new ImmutableStorageWithVersioningTests.Properties();
+            ImmutableStorageWithVersioningTests.Properties properties
+                = new ImmutableStorageWithVersioningTests.Properties();
             properties.setImmutableStorageWithVersioning(immutableStorageWithVersioning);
             ImmutableStorageWithVersioningTests.Body body = new ImmutableStorageWithVersioningTests.Body();
-            body.setId(String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
-                    + "%s/blobServices/default/containers/%s", SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME,
-                vlwContainerName));
+            body.setId(String.format(
+                "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
+                    + "%s/blobServices/default/containers/%s",
+                SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName));
             body.setName(vlwContainerName);
             body.setType("Microsoft.Storage/storageAccounts/blobServices/containers");
             body.setProperties(properties);
@@ -148,8 +149,8 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
 
     @BeforeEach
     public void setup() {
-        vlwContainer = versionedBlobServiceAsyncClient.getBlobContainerAsyncClient(
-            testResourceNamer.recordValueFromConfig(vlwContainerName));
+        vlwContainer = versionedBlobServiceAsyncClient
+            .getBlobContainerAsyncClient(testResourceNamer.recordValueFromConfig(vlwContainerName));
         vlwBlob = vlwContainer.getBlobAsyncClient(generateBlobName());
         vlwBlob.upload(Flux.just(ByteBuffer.wrap(new byte[0])), null).block();
     }
@@ -157,25 +158,23 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     @AfterAll
     public static void cleanupSpec() throws MalformedURLException {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
-            HttpPipeline httpPipeline = new HttpPipelineBuilder()
-                .policies(CREDENTIAL_POLICY)
-                .build();
-            BlobServiceClient cleanupClient = new BlobServiceClientBuilder()
-                .credential(ENVIRONMENT.getVersionedAccount().getCredential())
-                .endpoint(ENVIRONMENT.getVersionedAccount().getBlobEndpoint())
-                .buildClient();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(CREDENTIAL_POLICY).build();
+            BlobServiceClient cleanupClient
+                = new BlobServiceClientBuilder().credential(ENVIRONMENT.getVersionedAccount().getCredential())
+                    .endpoint(ENVIRONMENT.getVersionedAccount().getBlobEndpoint())
+                    .buildClient();
 
             BlobContainerClient containerClient = cleanupClient.getBlobContainerClient(vlwContainerName);
             BlobContainerProperties containerProperties = containerClient.getProperties();
 
             if (containerProperties.getLeaseState() == LeaseStateType.LEASED) {
-                createLeaseClient(containerClient).breakLeaseWithResponse(new BlobBreakLeaseOptions()
-                    .setBreakPeriod(Duration.ofSeconds(0)), null, null);
+                createLeaseClient(containerClient).breakLeaseWithResponse(
+                    new BlobBreakLeaseOptions().setBreakPeriod(Duration.ofSeconds(0)), null, null);
             }
             if (containerProperties.isImmutableStorageWithVersioningEnabled()) {
-                ListBlobsOptions options = new ListBlobsOptions().setDetails(new BlobListDetails()
-                    .setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true));
-                for (BlobItem blob: containerClient.listBlobs(options, null)) {
+                ListBlobsOptions options = new ListBlobsOptions()
+                    .setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true));
+                for (BlobItem blob : containerClient.listBlobs(options, null)) {
                     BlobClient blobClient = containerClient.getBlobClient(blob.getName());
                     BlobItemProperties blobProperties = blob.getProperties();
                     if (Objects.equals(true, blobProperties.hasLegalHold())) {
@@ -188,11 +187,13 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                 }
             }
 
-            String url = String.format("https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
+            String url = String.format(
+                "https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                     + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s",
                 SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, API_VERSION);
-            HttpResponse response = httpPipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(url),
-                new HttpHeaders(), Flux.empty())).block();
+            HttpResponse response
+                = httpPipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(url), new HttpHeaders(), Flux.empty()))
+                    .block();
             assertNotNull(response);
             if (response.getStatusCode() != 200) {
                 LOGGER.warning(response.getBodyAsString().block());
@@ -207,10 +208,10 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         } else if (testMode == TestMode.LIVE) {
             Configuration config = Configuration.getGlobalConfiguration();
 
-            ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
-                .addLast(new EnvironmentCredentialBuilder().build())
-                .addLast(new AzureCliCredentialBuilder().build())
-                .addLast(new AzureDeveloperCliCredentialBuilder().build());
+            ChainedTokenCredentialBuilder builder
+                = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                    .addLast(new AzureCliCredentialBuilder().build())
+                    .addLast(new AzureDeveloperCliCredentialBuilder().build());
 
             String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
             String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -222,8 +223,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
                 && !CoreUtils.isNullOrEmpty(tenantId)
                 && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
-                builder.addLast(new AzurePipelinesCredentialBuilder()
-                    .systemAccessToken(systemAccessToken)
+                builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
                     .clientId(clientId)
                     .tenantId(tenantId)
                     .serviceConnectionId(serviceConnectionId)
@@ -242,19 +242,16 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     @Test
     public void setImmutabilityPolicyMin() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
 
-        StepVerifier.create(vlwBlob.setImmutabilityPolicy(immutabilityPolicy))
-            .assertNext(r -> {
-                assertEquals(expectedImmutabilityPolicyExpiry, r.getExpiryTime());
-                assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getPolicyMode());
-            })
-            .verifyComplete();
+        StepVerifier.create(vlwBlob.setImmutabilityPolicy(immutabilityPolicy)).assertNext(r -> {
+            assertEquals(expectedImmutabilityPolicyExpiry, r.getExpiryTime());
+            assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getPolicyMode());
+        }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -262,39 +259,32 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     public void setImmutabilityPolicy() {
         BlobImmutabilityPolicyMode policyMode = BlobImmutabilityPolicyMode.UNLOCKED;
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(policyMode);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(policyMode);
 
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
 
         // when: "set immutability policy"
-        StepVerifier.create(vlwBlob.setImmutabilityPolicyWithResponse(immutabilityPolicy, null))
-            .assertNext(r -> {
-                assertEquals(expectedImmutabilityPolicyExpiry, r.getValue().getExpiryTime());
-                assertEquals(policyMode, r.getValue().getPolicyMode());
-            })
-            .verifyComplete();
+        StepVerifier.create(vlwBlob.setImmutabilityPolicyWithResponse(immutabilityPolicy, null)).assertNext(r -> {
+            assertEquals(expectedImmutabilityPolicyExpiry, r.getValue().getExpiryTime());
+            assertEquals(policyMode, r.getValue().getPolicyMode());
+        }).verifyComplete();
 
         // when: "get properties"
-        StepVerifier.create(vlwBlob.getProperties())
-            .assertNext(r -> {
-                assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
-                assertEquals(policyMode, r.getImmutabilityPolicy().getPolicyMode());
-            })
-            .verifyComplete();
+        StepVerifier.create(vlwBlob.getProperties()).assertNext(r -> {
+            assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
+            assertEquals(policyMode, r.getImmutabilityPolicy().getPolicyMode());
+        }).verifyComplete();
 
         // when: "list blob"
-        ListBlobsOptions options = new ListBlobsOptions().setPrefix(vlwBlob.getBlobName()).setDetails(
-            new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true));
-        StepVerifier.create(vlwContainer.listBlobs(options, null))
-            .assertNext(r -> {
-                assertEquals(vlwBlob.getBlobName(), r.getName());
-                assertEquals(expectedImmutabilityPolicyExpiry, r.getProperties().getImmutabilityPolicy().getExpiryTime());
-                assertEquals(policyMode, r.getProperties().getImmutabilityPolicy().getPolicyMode());
-            })
-            .verifyComplete();
+        ListBlobsOptions options = new ListBlobsOptions().setPrefix(vlwBlob.getBlobName())
+            .setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true));
+        StepVerifier.create(vlwContainer.listBlobs(options, null)).assertNext(r -> {
+            assertEquals(vlwBlob.getBlobName(), r.getName());
+            assertEquals(expectedImmutabilityPolicyExpiry, r.getProperties().getImmutabilityPolicy().getExpiryTime());
+            assertEquals(policyMode, r.getProperties().getImmutabilityPolicy().getPolicyMode());
+        }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -303,27 +293,22 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         List<OffsetDateTime> unmodifiedDates = Arrays.asList(null, NEW_DATE);
 
         for (OffsetDateTime unmodified : unmodifiedDates) {
-            BlobRequestConditions bac = new BlobRequestConditions()
-                .setIfUnmodifiedSince(unmodified);
+            BlobRequestConditions bac = new BlobRequestConditions().setIfUnmodifiedSince(unmodified);
             OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
-            BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-                .setExpiryTime(expiryTime)
+            BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy().setExpiryTime(expiryTime)
                 .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-            assertAsyncResponseStatusCode(vlwBlob.setImmutabilityPolicyWithResponse(immutabilityPolicy,
-                bac), 200);
+            assertAsyncResponseStatusCode(vlwBlob.setImmutabilityPolicyWithResponse(immutabilityPolicy, bac), 200);
         }
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void setImmutabilityPolicyACFail() {
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setIfUnmodifiedSince(OLD_DATE);
+        BlobRequestConditions bac = new BlobRequestConditions().setIfUnmodifiedSince(OLD_DATE);
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
         StepVerifier.create(vlwBlob.setImmutabilityPolicyWithResponse(immutabilityPolicy, bac))
             .verifyErrorSatisfies(r -> {
@@ -336,36 +321,34 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     @ParameterizedTest
     @MethodSource("setImmutabilityPolicyACIASupplier")
     public void setImmutabilityPolicyACIA(String leaseId, String tags, String ifMatch, String ifNoneMatch,
-                                          OffsetDateTime ifModifiedSince, String wrongCondition) {
-        BlobRequestConditions bac = new BlobRequestConditions()
-            .setLeaseId(leaseId)
+        OffsetDateTime ifModifiedSince, String wrongCondition) {
+        BlobRequestConditions bac = new BlobRequestConditions().setLeaseId(leaseId)
             .setTagsConditions(tags)
             .setIfMatch(ifMatch)
             .setIfNoneMatch(ifNoneMatch)
             .setIfModifiedSince(ifModifiedSince);
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
         StepVerifier.create(vlwBlob.setImmutabilityPolicyWithResponse(immutabilityPolicy, bac))
             .verifyErrorSatisfies(r -> {
                 IllegalArgumentException e = assertInstanceOf(IllegalArgumentException.class, r);
-                assertEquals(String.format("%s does not support the %s request condition(s) for parameter 'requestConditions'.",
-                    "setImmutabilityPolicy(WithResponse)", wrongCondition), e.getMessage());
+                assertEquals(
+                    String.format("%s does not support the %s request condition(s) for parameter 'requestConditions'.",
+                        "setImmutabilityPolicy(WithResponse)", wrongCondition),
+                    e.getMessage());
             });
     }
 
     private static Stream<Arguments> setImmutabilityPolicyACIASupplier() {
-        return Stream.of(
-            Arguments.of("leaseId", null, null, null, null, "LeaseId"),
+        return Stream.of(Arguments.of("leaseId", null, null, null, null, "LeaseId"),
             Arguments.of(null, "tagsConditions", null, null, null, "TagsConditions"),
             Arguments.of(null, null, "ifMatch", null, null, "IfMatch"),
             Arguments.of(null, null, null, "ifNoneMatch", null, "IfNoneMatch"),
             Arguments.of(null, null, null, null, OLD_DATE, "IfModifiedSince"),
-            Arguments.of("leaseId", "tagsConditions", "ifMatch", "ifNoneMatch", OLD_DATE, "LeaseId, TagsConditions, "
-                + "IfModifiedSince, IfMatch, IfNoneMatch")
-        );
+            Arguments.of("leaseId", "tagsConditions", "ifMatch", "ifNoneMatch", OLD_DATE,
+                "LeaseId, TagsConditions, " + "IfModifiedSince, IfMatch, IfNoneMatch"));
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -373,9 +356,8 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     public void setImmutabilityPolicyError() {
         BlobAsyncClient blob = vlwContainer.getBlobAsyncClient(generateBlobName());
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
         StepVerifier.create(blob.setImmutabilityPolicyWithResponse(immutabilityPolicy, null))
             .verifyErrorSatisfies(r -> {
@@ -388,9 +370,8 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     @Test
     public void setImmutabilityPolicyIA() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.MUTABLE);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.MUTABLE);
 
         StepVerifier.create(vlwBlob.setImmutabilityPolicyWithResponse(immutabilityPolicy, null))
             .verifyErrorSatisfies(r -> {
@@ -403,50 +384,45 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     @Test
     public void deleteImmutabilityPolicyMin() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        StepVerifier.create(vlwBlob.setImmutabilityPolicy(immutabilityPolicy).then(vlwBlob.deleteImmutabilityPolicy())
-            .then(vlwBlob.getProperties()))
-            .assertNext(r -> {
+        StepVerifier.create(vlwBlob.setImmutabilityPolicy(immutabilityPolicy)
+            .then(vlwBlob.deleteImmutabilityPolicy())
+            .then(vlwBlob.getProperties())).assertNext(r -> {
                 assertNull(r.getImmutabilityPolicy().getPolicyMode());
                 assertNull(r.getImmutabilityPolicy().getExpiryTime());
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void deleteImmutabilityPolicy() {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        StepVerifier.create(vlwBlob.setImmutabilityPolicy(immutabilityPolicy).then(vlwBlob.deleteImmutabilityPolicyWithResponse())
-            .then(vlwBlob.getProperties()))
-            .assertNext(r -> {
+        StepVerifier.create(vlwBlob.setImmutabilityPolicy(immutabilityPolicy)
+            .then(vlwBlob.deleteImmutabilityPolicyWithResponse())
+            .then(vlwBlob.getProperties())).assertNext(r -> {
                 assertNull(r.getImmutabilityPolicy().getPolicyMode());
                 assertNull(r.getImmutabilityPolicy().getExpiryTime());
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void deleteImmutabilityPolicyError() {
         BlobAsyncClient blobClient = vlwContainer.getBlobAsyncClient(generateBlobName());
-        StepVerifier.create(blobClient.deleteImmutabilityPolicyWithResponse())
-            .verifyErrorSatisfies(r -> {
-                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(BlobErrorCode.BLOB_NOT_FOUND, e.getErrorCode());
-            });
+        StepVerifier.create(blobClient.deleteImmutabilityPolicyWithResponse()).verifyErrorSatisfies(r -> {
+            BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+            assertEquals(BlobErrorCode.BLOB_NOT_FOUND, e.getErrorCode());
+        });
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void setLegalHoldMin(boolean legalHold) {
         StepVerifier.create(vlwBlob.setLegalHold(legalHold))
             .assertNext(r -> assertEquals(legalHold, r.hasLegalHold()))
@@ -455,7 +431,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void setLegalHold(boolean legalHold) {
         // when: "set legal hold"
         StepVerifier.create(vlwBlob.setLegalHoldWithResponse(legalHold))
@@ -470,12 +446,10 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         // when: "list blob"
         ListBlobsOptions options = new ListBlobsOptions().setPrefix(vlwBlob.getBlobName())
             .setDetails(new BlobListDetails().setRetrieveImmutabilityPolicy(true).setRetrieveLegalHold(true));
-        StepVerifier.create(vlwContainer.listBlobs(options, null))
-            .assertNext(r -> {
-                assertEquals(vlwBlob.getBlobName(), r.getName());
-                assertEquals(legalHold, r.getProperties().hasLegalHold());
-            })
-            .verifyComplete();
+        StepVerifier.create(vlwContainer.listBlobs(options, null)).assertNext(r -> {
+            assertEquals(vlwBlob.getBlobName(), r.getName());
+            assertEquals(legalHold, r.getProperties().hasLegalHold());
+        }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -483,11 +457,10 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     public void setLegalHoldError() {
         BlobAsyncClient blob = vlwContainer.getBlobAsyncClient(generateBlobName());
 
-        StepVerifier.create(blob.setLegalHoldWithResponse(false))
-            .verifyErrorSatisfies(r -> {
-                BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
-                assertEquals(BlobErrorCode.BLOB_NOT_FOUND, e.getErrorCode());
-            });
+        StepVerifier.create(blob.setLegalHoldWithResponse(false)).verifyErrorSatisfies(r -> {
+            BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
+            assertEquals(BlobErrorCode.BLOB_NOT_FOUND, e.getErrorCode());
+        });
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -497,8 +470,9 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             .assertNext(r -> assertTrue(r.isImmutableStorageWithVersioningEnabled()))
             .verifyComplete();
 
-        StepVerifier.create(vlwContainer.getServiceAsyncClient().listBlobContainers(
-                new ListBlobContainersOptions().setPrefix(vlwContainer.getBlobContainerName())))
+        StepVerifier
+            .create(vlwContainer.getServiceAsyncClient()
+                .listBlobContainers(new ListBlobContainersOptions().setPrefix(vlwContainer.getBlobContainerName())))
             .assertNext(r -> assertTrue(r.getProperties().isImmutableStorageWithVersioningEnabled()))
             .verifyComplete();
     }
@@ -506,23 +480,22 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void appendBlobCreate() {
-        AppendBlobAsyncClient appendBlob = vlwContainer.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+        AppendBlobAsyncClient appendBlob
+            = vlwContainer.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        StepVerifier.create(appendBlob.createWithResponse(new AppendBlobCreateOptions()
-            .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true)).then(appendBlob.getProperties()))
-            .assertNext(r -> {
+        StepVerifier.create(appendBlob
+            .createWithResponse(
+                new AppendBlobCreateOptions().setImmutabilityPolicy(immutabilityPolicy).setLegalHold(true))
+            .then(appendBlob.getProperties())).assertNext(r -> {
                 assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
                 assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());
                 assertTrue(r.hasLegalHold());
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -532,20 +505,17 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-
-        StepVerifier.create(pageBlob.createWithResponse(new PageBlobCreateOptions(512)
-            .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true)).then(pageBlob.getProperties()))
-            .assertNext(r -> {
+        StepVerifier.create(pageBlob
+            .createWithResponse(
+                new PageBlobCreateOptions(512).setImmutabilityPolicy(immutabilityPolicy).setLegalHold(true))
+            .then(pageBlob.getProperties())).assertNext(r -> {
                 assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
                 assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());
                 assertTrue(r.hasLegalHold());
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -555,13 +525,16 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        StepVerifier.create(blockBlob.commitBlockListWithResponse(new BlockBlobCommitBlockListOptions(new ArrayList<>())
-            .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true)).then(blockBlob.getProperties()))
+        StepVerifier
+            .create(
+                blockBlob
+                    .commitBlockListWithResponse(
+                        new BlockBlobCommitBlockListOptions(new ArrayList<>()).setImmutabilityPolicy(immutabilityPolicy)
+                            .setLegalHold(true))
+                    .then(blockBlob.getProperties()))
             .assertNext(r -> {
                 assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
                 assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());
@@ -577,13 +550,17 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        StepVerifier.create(blockBlob.uploadWithResponse(new BlockBlobSimpleUploadOptions(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-            .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true)).then(blockBlob.getProperties()))
+        StepVerifier
+            .create(
+                blockBlob
+                    .uploadWithResponse(
+                        new BlockBlobSimpleUploadOptions(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+                            .setImmutabilityPolicy(immutabilityPolicy)
+                            .setLegalHold(true))
+                    .then(blockBlob.getProperties()))
             .assertNext(r -> {
                 assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
                 assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());
@@ -600,21 +577,18 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
         StepVerifier.create(vlwBlob.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultFlux())
-            .setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(blockSize)
-                .setMaxSingleUploadSizeLong(blockSize))
+            .setParallelTransferOptions(
+                new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(blockSize))
             .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true)).then(vlwBlob.getProperties()))
-            .assertNext(r -> {
+            .setLegalHold(true)).then(vlwBlob.getProperties())).assertNext(r -> {
                 assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
                 assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());
                 assertTrue(r.hasLegalHold());
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     private static Stream<Arguments> blobUploadSupplier() {
@@ -624,56 +598,51 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void syncCopy() {
-        BlockBlobAsyncClient destination = vlwContainer.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient destination
+            = vlwContainer.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
         String sas = vlwBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
             new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
 
-        Mono<BlobProperties> response = destination.copyFromUrlWithResponse(new BlobCopyFromUrlOptions(vlwBlob.getBlobUrl() + "?" + sas)
-            .setImmutabilityPolicy(immutabilityPolicy)
-            .setLegalHold(true))
+        Mono<BlobProperties> response = destination.copyFromUrlWithResponse(
+            new BlobCopyFromUrlOptions(vlwBlob.getBlobUrl() + "?" + sas).setImmutabilityPolicy(immutabilityPolicy)
+                .setLegalHold(true))
             .then(destination.getProperties());
 
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
-                assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());
-                assertTrue(r.hasLegalHold());
-            })
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
+            assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());
+            assertTrue(r.hasLegalHold());
+        }).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     public void copy() {
-        BlockBlobAsyncClient destination = vlwContainer.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient destination
+            = vlwContainer.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
 
-        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(
-            destination.beginCopy(new BlobBeginCopyOptions(vlwBlob.getBlobUrl())
-                .setImmutabilityPolicy(immutabilityPolicy)
+        PollerFlux<BlobCopyInfo, Void> poller = setPlaybackPollerFluxPollInterval(destination
+            .beginCopy(new BlobBeginCopyOptions(vlwBlob.getBlobUrl()).setImmutabilityPolicy(immutabilityPolicy)
                 .setLegalHold(true)));
 
         Mono<BlobProperties> response = poller.then(destination.getProperties());
 
-        StepVerifier.create(response)
-            .assertNext(r -> {
-                assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
-                assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());
-                assertTrue(r.hasLegalHold());
-            })
-            .verifyComplete();
+        StepVerifier.create(response).assertNext(r -> {
+            assertEquals(expectedImmutabilityPolicyExpiry, r.getImmutabilityPolicy().getExpiryTime());
+            assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getImmutabilityPolicy().getPolicyMode());
+            assertTrue(r.hasLegalHold());
+        }).verifyComplete();
     }
 
     /* SAS tests */
@@ -689,23 +658,18 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
         String sas = versionedBlobServiceAsyncClient.generateAccountSas(sasValues);
-        BlobAsyncClient client = getBlobAsyncClient(sas, vlwContainer.getBlobContainerUrl(), vlwBlob.getBlobName(),
-            null);
+        BlobAsyncClient client
+            = getBlobAsyncClient(sas, vlwContainer.getBlobContainerUrl(), vlwBlob.getBlobName(), null);
 
-        StepVerifier.create(client.setImmutabilityPolicy(immutabilityPolicy))
-            .assertNext(r -> {
-                assertEquals(expectedImmutabilityPolicyExpiry, r.getExpiryTime());
-                assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getPolicyMode());
-            })
-            .verifyComplete();
+        StepVerifier.create(client.setImmutabilityPolicy(immutabilityPolicy)).assertNext(r -> {
+            assertEquals(expectedImmutabilityPolicyExpiry, r.getExpiryTime());
+            assertEquals(BlobImmutabilityPolicyMode.UNLOCKED, r.getPolicyMode());
+        }).verifyComplete();
 
-        StepVerifier.create(client.setLegalHold(false))
-            .assertNext(r -> assertFalse(r.hasLegalHold()))
-            .verifyComplete();
+        StepVerifier.create(client.setLegalHold(false)).assertNext(r -> assertFalse(r.hasLegalHold())).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -717,23 +681,18 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
         String sas = vlwContainer.generateSas(sasValues);
-        BlobAsyncClient client = getBlobAsyncClient(sas, vlwContainer.getBlobContainerUrl(), vlwBlob.getBlobName(),
-            null);
+        BlobAsyncClient client
+            = getBlobAsyncClient(sas, vlwContainer.getBlobContainerUrl(), vlwBlob.getBlobName(), null);
 
-        StepVerifier.create(client.setImmutabilityPolicy(immutabilityPolicy))
-            .assertNext(r -> {
-                assertEquals(expectedImmutabilityPolicyExpiry, r.getExpiryTime());
-                assertEquals(BlobImmutabilityPolicyMode.UNLOCKED.toString(), r.getPolicyMode().toString());
-            })
-            .verifyComplete();
+        StepVerifier.create(client.setImmutabilityPolicy(immutabilityPolicy)).assertNext(r -> {
+            assertEquals(expectedImmutabilityPolicyExpiry, r.getExpiryTime());
+            assertEquals(BlobImmutabilityPolicyMode.UNLOCKED.toString(), r.getPolicyMode().toString());
+        }).verifyComplete();
 
-        StepVerifier.create(client.setLegalHold(false))
-            .assertNext(r -> assertFalse(r.hasLegalHold()))
-            .verifyComplete();
+        StepVerifier.create(client.setLegalHold(false)).assertNext(r -> assertFalse(r.hasLegalHold())).verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
@@ -745,23 +704,118 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
         expiryTime = testResourceNamer.now().plusDays(2);
         // The service rounds Immutability Policy Expiry to the nearest second.
         OffsetDateTime expectedImmutabilityPolicyExpiry = expiryTime.truncatedTo(ChronoUnit.SECONDS);
-        BlobImmutabilityPolicy immutabilityPolicy = new BlobImmutabilityPolicy()
-            .setExpiryTime(expiryTime)
-            .setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
+        BlobImmutabilityPolicy immutabilityPolicy
+            = new BlobImmutabilityPolicy().setExpiryTime(expiryTime).setPolicyMode(BlobImmutabilityPolicyMode.UNLOCKED);
         String sas = vlwBlob.generateSas(sasValues);
-        BlobAsyncClient client = getBlobAsyncClient(sas, vlwContainer.getBlobContainerUrl(), vlwBlob.getBlobName(),
-            null);
+        BlobAsyncClient client
+            = getBlobAsyncClient(sas, vlwContainer.getBlobContainerUrl(), vlwBlob.getBlobName(), null);
 
-        StepVerifier.create(client.setImmutabilityPolicy(immutabilityPolicy))
-            .assertNext(r -> {
-                assertEquals(expectedImmutabilityPolicyExpiry, r.getExpiryTime());
-                assertEquals(BlobImmutabilityPolicyMode.UNLOCKED.toString(), r.getPolicyMode().toString());
-            })
-            .verifyComplete();
+        StepVerifier.create(client.setImmutabilityPolicy(immutabilityPolicy)).assertNext(r -> {
+            assertEquals(expectedImmutabilityPolicyExpiry, r.getExpiryTime());
+            assertEquals(BlobImmutabilityPolicyMode.UNLOCKED.toString(), r.getPolicyMode().toString());
+        }).verifyComplete();
 
-        StepVerifier.create(client.setLegalHold(false))
-            .assertNext(r -> assertFalse(r.hasLegalHold()))
-            .verifyComplete();
+        StepVerifier.create(client.setLegalHold(false)).assertNext(r -> assertFalse(r.hasLegalHold())).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @Test
+    public void testVersionBlobImmutabilityExpiry() {
+        OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
+        OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
+
+        Mono<Void> response = vlwBlob.getBlockBlobAsyncClient()
+            .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+            .flatMap(r1 -> vlwBlob.getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+                .flatMap(r2 -> {
+                    BlobAsyncClient oldBlob = vlwBlob.getVersionClient(r1.getVersionId());
+                    BlobAsyncClient newBlob = vlwBlob.getVersionClient(r2.getVersionId());
+
+                    BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
+                    BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
+
+                    return oldBlob.setImmutabilityPolicy(policy1)
+                        .then(newBlob.setImmutabilityPolicy(policy2))
+                        .then(Mono.zip(oldBlob.getProperties(), newBlob.getProperties()))
+                        .flatMap(propTuple -> {
+                            assertEquals(policy1.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+                                propTuple.getT1().getImmutabilityPolicy().getExpiryTime());
+                            assertEquals(policy2.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+                                propTuple.getT2().getImmutabilityPolicy().getExpiryTime());
+                            //cleanup
+                            return oldBlob.deleteImmutabilityPolicy().then(oldBlob.delete());
+                        });
+                }));
+
+        StepVerifier.create(response).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @Test
+    public void testImmutabilitySnapshot() {
+        OffsetDateTime time1 = testResourceNamer.now().plusDays(3);
+        OffsetDateTime time2 = testResourceNamer.now().plusDays(4);
+
+        Mono<Void> response = vlwBlob.createSnapshot().flatMap(snapshotBlob -> {
+            BlobImmutabilityPolicy policy1 = new BlobImmutabilityPolicy().setExpiryTime(time1);
+            BlobImmutabilityPolicy policy2 = new BlobImmutabilityPolicy().setExpiryTime(time2);
+
+            return vlwBlob.setImmutabilityPolicy(policy1)
+                .then(snapshotBlob.setImmutabilityPolicy(policy2))
+                .then(Mono.zip(vlwBlob.getProperties(), snapshotBlob.getProperties()))
+                .flatMap(propTuple -> {
+                    assertEquals(policy1.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+                        propTuple.getT1().getImmutabilityPolicy().getExpiryTime());
+                    assertEquals(policy2.getExpiryTime().truncatedTo(ChronoUnit.SECONDS),
+                        propTuple.getT2().getImmutabilityPolicy().getExpiryTime());
+                    //cleanup
+                    return snapshotBlob.deleteImmutabilityPolicy().then(snapshotBlob.delete());
+                });
+        });
+
+        StepVerifier.create(response).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @Test
+    public void testLegalHoldVersion() {
+        Mono<Void> response = vlwBlob.getBlockBlobAsyncClient()
+            .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+            .flatMap(r1 -> vlwBlob.getBlockBlobAsyncClient()
+                .upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), true)
+                .flatMap(r2 -> {
+                    BlobAsyncClient oldBlob = vlwBlob.getVersionClient(r1.getVersionId());
+                    BlobAsyncClient newBlob = vlwBlob.getVersionClient(r2.getVersionId());
+
+                    return oldBlob.setLegalHold(true).flatMap(r -> {
+                        assertTrue(r.hasLegalHold());
+                        return Mono.empty();
+                    }).then(oldBlob.getProperties()).flatMap(r -> {
+                        assertTrue(r.hasLegalHold());
+                        return Mono.empty();
+                    }).then(newBlob.getProperties()).flatMap(r -> {
+                        assertNull(r.hasLegalHold());
+                        return Mono.empty();
+                    }).then(oldBlob.setLegalHold(false)).then(oldBlob.delete());
+                }));
+
+        StepVerifier.create(response).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-06-12")
+    @Test
+    public void testLegalHoldSnapshot() {
+        Mono<Void> response = vlwBlob.createSnapshot().flatMap(snapshotBlob -> vlwBlob.setLegalHold(true).flatMap(r -> {
+            assertTrue(r.hasLegalHold());
+            return snapshotBlob.getProperties().flatMap(props -> {
+                assertNull(props.hasLegalHold());
+                //cleanup
+                return snapshotBlob.setLegalHold(false).then(snapshotBlob.delete());
+            });
+        }));
+
+        StepVerifier.create(response).verifyComplete();
     }
 
 }

@@ -13,29 +13,25 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageAccountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageAccount model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"fkgukdkexxppof\",\"type\":\"Secondary\",\"identity\":{\"userAssignedIdentity\":\"c\",\"useSystemAssignedIdentity\":false},\"status\":\"gddtocj\"}")
-                .toObject(StorageAccount.class);
-        Assertions.assertEquals("fkgukdkexxppof", model.id());
+        StorageAccount model = BinaryData.fromString(
+            "{\"id\":\"pikad\",\"type\":\"Secondary\",\"identity\":{\"userAssignedIdentity\":\"qagnbuyn\",\"useSystemAssignedIdentity\":true},\"status\":\"gg\"}")
+            .toObject(StorageAccount.class);
+        Assertions.assertEquals("pikad", model.id());
         Assertions.assertEquals(StorageAccountType.SECONDARY, model.type());
-        Assertions.assertEquals("c", model.identity().userAssignedIdentity());
-        Assertions.assertEquals(false, model.identity().useSystemAssignedIdentity());
+        Assertions.assertEquals("qagnbuyn", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(true, model.identity().useSystemAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageAccount model =
-            new StorageAccount()
-                .withId("fkgukdkexxppof")
-                .withType(StorageAccountType.SECONDARY)
-                .withIdentity(
-                    new ResourceIdentity().withUserAssignedIdentity("c").withUseSystemAssignedIdentity(false));
+        StorageAccount model = new StorageAccount().withId("pikad")
+            .withType(StorageAccountType.SECONDARY)
+            .withIdentity(
+                new ResourceIdentity().withUserAssignedIdentity("qagnbuyn").withUseSystemAssignedIdentity(true));
         model = BinaryData.fromObject(model).toObject(StorageAccount.class);
-        Assertions.assertEquals("fkgukdkexxppof", model.id());
+        Assertions.assertEquals("pikad", model.id());
         Assertions.assertEquals(StorageAccountType.SECONDARY, model.type());
-        Assertions.assertEquals("c", model.identity().userAssignedIdentity());
-        Assertions.assertEquals(false, model.identity().useSystemAssignedIdentity());
+        Assertions.assertEquals("qagnbuyn", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(true, model.identity().useSystemAssignedIdentity());
     }
 }

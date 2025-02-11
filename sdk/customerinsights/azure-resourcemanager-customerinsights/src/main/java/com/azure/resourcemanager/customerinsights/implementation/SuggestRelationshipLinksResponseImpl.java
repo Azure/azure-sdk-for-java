@@ -15,8 +15,7 @@ public final class SuggestRelationshipLinksResponseImpl implements SuggestRelati
 
     private final com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager;
 
-    SuggestRelationshipLinksResponseImpl(
-        SuggestRelationshipLinksResponseInner innerObject,
+    SuggestRelationshipLinksResponseImpl(SuggestRelationshipLinksResponseInner innerObject,
         com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

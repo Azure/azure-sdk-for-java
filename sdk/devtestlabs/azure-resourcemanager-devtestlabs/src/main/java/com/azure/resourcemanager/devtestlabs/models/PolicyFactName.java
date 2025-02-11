@@ -5,44 +5,65 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc. */
+/**
+ * The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc.
+ */
 public final class PolicyFactName extends ExpandableStringEnum<PolicyFactName> {
-    /** Static value UserOwnedLabVmCount for PolicyFactName. */
+    /**
+     * Static value UserOwnedLabVmCount for PolicyFactName.
+     */
     public static final PolicyFactName USER_OWNED_LAB_VM_COUNT = fromString("UserOwnedLabVmCount");
 
-    /** Static value UserOwnedLabPremiumVmCount for PolicyFactName. */
+    /**
+     * Static value UserOwnedLabPremiumVmCount for PolicyFactName.
+     */
     public static final PolicyFactName USER_OWNED_LAB_PREMIUM_VM_COUNT = fromString("UserOwnedLabPremiumVmCount");
 
-    /** Static value LabVmCount for PolicyFactName. */
+    /**
+     * Static value LabVmCount for PolicyFactName.
+     */
     public static final PolicyFactName LAB_VM_COUNT = fromString("LabVmCount");
 
-    /** Static value LabPremiumVmCount for PolicyFactName. */
+    /**
+     * Static value LabPremiumVmCount for PolicyFactName.
+     */
     public static final PolicyFactName LAB_PREMIUM_VM_COUNT = fromString("LabPremiumVmCount");
 
-    /** Static value LabVmSize for PolicyFactName. */
+    /**
+     * Static value LabVmSize for PolicyFactName.
+     */
     public static final PolicyFactName LAB_VM_SIZE = fromString("LabVmSize");
 
-    /** Static value GalleryImage for PolicyFactName. */
+    /**
+     * Static value GalleryImage for PolicyFactName.
+     */
     public static final PolicyFactName GALLERY_IMAGE = fromString("GalleryImage");
 
-    /** Static value UserOwnedLabVmCountInSubnet for PolicyFactName. */
+    /**
+     * Static value UserOwnedLabVmCountInSubnet for PolicyFactName.
+     */
     public static final PolicyFactName USER_OWNED_LAB_VM_COUNT_IN_SUBNET = fromString("UserOwnedLabVmCountInSubnet");
 
-    /** Static value LabTargetCost for PolicyFactName. */
+    /**
+     * Static value LabTargetCost for PolicyFactName.
+     */
     public static final PolicyFactName LAB_TARGET_COST = fromString("LabTargetCost");
 
-    /** Static value EnvironmentTemplate for PolicyFactName. */
+    /**
+     * Static value EnvironmentTemplate for PolicyFactName.
+     */
     public static final PolicyFactName ENVIRONMENT_TEMPLATE = fromString("EnvironmentTemplate");
 
-    /** Static value ScheduleEditPermission for PolicyFactName. */
+    /**
+     * Static value ScheduleEditPermission for PolicyFactName.
+     */
     public static final PolicyFactName SCHEDULE_EDIT_PERMISSION = fromString("ScheduleEditPermission");
 
     /**
      * Creates a new instance of PolicyFactName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,18 +72,17 @@ public final class PolicyFactName extends ExpandableStringEnum<PolicyFactName> {
 
     /**
      * Creates or finds a PolicyFactName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyFactName.
      */
-    @JsonCreator
     public static PolicyFactName fromString(String name) {
         return fromString(name, PolicyFactName.class);
     }
 
     /**
      * Gets known PolicyFactName values.
-     *
+     * 
      * @return known PolicyFactName values.
      */
     public static Collection<PolicyFactName> values() {

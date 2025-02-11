@@ -16,34 +16,30 @@ import org.junit.jupiter.api.Assertions;
 public final class EventSourceCreateOrUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventSourceCreateOrUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EventSourceCreateOrUpdateParameters\",\"localTimestamp\":{\"format\":\"Embedded\",\"timeZoneOffset\":{\"propertyName\":\"qajzyulpkudjkr\"}},\"location\":\"khbzhfepgzg\",\"tags\":{\"scpai\":\"zloc\",\"l\":\"rhhbcs\",\"bnbdxkqpxokajion\":\"mmajtjaodx\"}}")
-                .toObject(EventSourceCreateOrUpdateParameters.class);
-        Assertions.assertEquals("khbzhfepgzg", model.location());
-        Assertions.assertEquals("zloc", model.tags().get("scpai"));
+        EventSourceCreateOrUpdateParameters model = BinaryData.fromString(
+            "{\"kind\":\"EventSourceCreateOrUpdateParameters\",\"localTimestamp\":{\"format\":\"Embedded\",\"timeZoneOffset\":{\"propertyName\":\"q\"}},\"location\":\"canoaeupf\",\"tags\":{\"cma\":\"ltrpmopj\",\"kthfui\":\"u\",\"odpuozmyzydag\":\"aodsfcpkv\",\"hrdxwzywqsmbs\":\"uaxbezyiuokkt\"}}")
+            .toObject(EventSourceCreateOrUpdateParameters.class);
+        Assertions.assertEquals("canoaeupf", model.location());
+        Assertions.assertEquals("ltrpmopj", model.tags().get("cma"));
         Assertions.assertEquals(LocalTimestampFormat.EMBEDDED, model.localTimestamp().format());
-        Assertions.assertEquals("qajzyulpkudjkr", model.localTimestamp().timeZoneOffset().propertyName());
+        Assertions.assertEquals("q", model.localTimestamp().timeZoneOffset().propertyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventSourceCreateOrUpdateParameters model =
-            new EventSourceCreateOrUpdateParameters()
-                .withLocation("khbzhfepgzg")
-                .withTags(mapOf("scpai", "zloc", "l", "rhhbcs", "bnbdxkqpxokajion", "mmajtjaodx"))
-                .withLocalTimestamp(
-                    new LocalTimestamp()
-                        .withFormat(LocalTimestampFormat.EMBEDDED)
-                        .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("qajzyulpkudjkr")));
+        EventSourceCreateOrUpdateParameters model = new EventSourceCreateOrUpdateParameters().withLocation("canoaeupf")
+            .withTags(
+                mapOf("cma", "ltrpmopj", "kthfui", "u", "odpuozmyzydag", "aodsfcpkv", "hrdxwzywqsmbs", "uaxbezyiuokkt"))
+            .withLocalTimestamp(new LocalTimestamp().withFormat(LocalTimestampFormat.EMBEDDED)
+                .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("q")));
         model = BinaryData.fromObject(model).toObject(EventSourceCreateOrUpdateParameters.class);
-        Assertions.assertEquals("khbzhfepgzg", model.location());
-        Assertions.assertEquals("zloc", model.tags().get("scpai"));
+        Assertions.assertEquals("canoaeupf", model.location());
+        Assertions.assertEquals("ltrpmopj", model.tags().get("cma"));
         Assertions.assertEquals(LocalTimestampFormat.EMBEDDED, model.localTimestamp().format());
-        Assertions.assertEquals("qajzyulpkudjkr", model.localTimestamp().timeZoneOffset().propertyName());
+        Assertions.assertEquals("q", model.localTimestamp().timeZoneOffset().propertyName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

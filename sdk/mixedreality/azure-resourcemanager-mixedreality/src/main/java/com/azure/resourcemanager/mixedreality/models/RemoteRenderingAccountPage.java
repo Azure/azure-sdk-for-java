@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.mixedreality.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mixedreality.fluent.models.RemoteRenderingAccountInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,26 +18,26 @@ import java.util.List;
  * of results.
  */
 @Fluent
-public final class RemoteRenderingAccountPage {
+public final class RemoteRenderingAccountPage implements JsonSerializable<RemoteRenderingAccountPage> {
     /*
      * List of resources supported by the Resource Provider.
      */
-    @JsonProperty(value = "value")
     private List<RemoteRenderingAccountInner> value;
 
     /*
      * URL to get the next set of resource list results if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RemoteRenderingAccountPage class. */
+    /**
+     * Creates an instance of RemoteRenderingAccountPage class.
+     */
     public RemoteRenderingAccountPage() {
     }
 
     /**
      * Get the value property: List of resources supported by the Resource Provider.
-     *
+     * 
      * @return the value value.
      */
     public List<RemoteRenderingAccountInner> value() {
@@ -42,7 +46,7 @@ public final class RemoteRenderingAccountPage {
 
     /**
      * Set the value property: List of resources supported by the Resource Provider.
-     *
+     * 
      * @param value the value value to set.
      * @return the RemoteRenderingAccountPage object itself.
      */
@@ -53,7 +57,7 @@ public final class RemoteRenderingAccountPage {
 
     /**
      * Get the nextLink property: URL to get the next set of resource list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class RemoteRenderingAccountPage {
 
     /**
      * Set the nextLink property: URL to get the next set of resource list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RemoteRenderingAccountPage object itself.
      */
@@ -73,12 +77,53 @@ public final class RemoteRenderingAccountPage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemoteRenderingAccountPage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemoteRenderingAccountPage if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemoteRenderingAccountPage.
+     */
+    public static RemoteRenderingAccountPage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemoteRenderingAccountPage deserializedRemoteRenderingAccountPage = new RemoteRenderingAccountPage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RemoteRenderingAccountInner> value
+                        = reader.readArray(reader1 -> RemoteRenderingAccountInner.fromJson(reader1));
+                    deserializedRemoteRenderingAccountPage.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountPage.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemoteRenderingAccountPage;
+        });
     }
 }

@@ -10,10 +10,6 @@ module com.azure.resourcemanager.botservice {
     exports com.azure.resourcemanager.botservice.fluent.models;
     exports com.azure.resourcemanager.botservice.models;
 
-    opens com.azure.resourcemanager.botservice.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.botservice.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.botservice.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.botservice.models to com.azure.core;
 }

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gateway access token. */
+/**
+ * Gateway access token.
+ */
 @Fluent
-public final class GatewayTokenContractInner {
+public final class GatewayTokenContractInner implements JsonSerializable<GatewayTokenContractInner> {
     /*
      * Shared Access Authentication token value for the Gateway.
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of GatewayTokenContractInner class. */
+    /**
+     * Creates an instance of GatewayTokenContractInner class.
+     */
     public GatewayTokenContractInner() {
     }
 
     /**
      * Get the value property: Shared Access Authentication token value for the Gateway.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -31,7 +38,7 @@ public final class GatewayTokenContractInner {
 
     /**
      * Set the value property: Shared Access Authentication token value for the Gateway.
-     *
+     * 
      * @param value the value value to set.
      * @return the GatewayTokenContractInner object itself.
      */
@@ -42,9 +49,45 @@ public final class GatewayTokenContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayTokenContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayTokenContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GatewayTokenContractInner.
+     */
+    public static GatewayTokenContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayTokenContractInner deserializedGatewayTokenContractInner = new GatewayTokenContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedGatewayTokenContractInner.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayTokenContractInner;
+        });
     }
 }

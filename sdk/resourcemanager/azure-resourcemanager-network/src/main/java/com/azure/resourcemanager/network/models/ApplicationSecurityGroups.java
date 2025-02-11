@@ -17,15 +17,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point to application security group management. */
 @Fluent
-public interface ApplicationSecurityGroups
-    extends SupportsCreating<ApplicationSecurityGroup.DefinitionStages.Blank>,
-        SupportsListing<ApplicationSecurityGroup>,
-        SupportsListingByResourceGroup<ApplicationSecurityGroup>,
-        SupportsGettingByResourceGroup<ApplicationSecurityGroup>,
-        SupportsGettingById<ApplicationSecurityGroup>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<ApplicationSecurityGroup>,
-        SupportsBatchDeletion,
-        HasManager<NetworkManager> {
+public interface ApplicationSecurityGroups extends SupportsCreating<ApplicationSecurityGroup.DefinitionStages.Blank>,
+    SupportsListing<ApplicationSecurityGroup>, SupportsListingByResourceGroup<ApplicationSecurityGroup>,
+    SupportsGettingByResourceGroup<ApplicationSecurityGroup>, SupportsGettingById<ApplicationSecurityGroup>,
+    SupportsDeletingById, SupportsDeletingByResourceGroup, SupportsBatchCreation<ApplicationSecurityGroup>,
+    SupportsBatchDeletion, HasManager<NetworkManager> {
 }

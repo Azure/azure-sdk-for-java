@@ -15,8 +15,7 @@ public final class OperationCollectionImpl implements OperationCollection {
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    OperationCollectionImpl(
-        OperationCollectionInner innerObject,
+    OperationCollectionImpl(OperationCollectionInner innerObject,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class UserRoleResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserRoleResponseInner model =
-            BinaryData.fromString("{\"role\":\"None\"}").toObject(UserRoleResponseInner.class);
-        Assertions.assertEquals(UserRole.NONE, model.role());
+        UserRoleResponseInner model
+            = BinaryData.fromString("{\"role\":\"Admin\"}").toObject(UserRoleResponseInner.class);
+        Assertions.assertEquals(UserRole.ADMIN, model.role());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserRoleResponseInner model = new UserRoleResponseInner().withRole(UserRole.NONE);
+        UserRoleResponseInner model = new UserRoleResponseInner().withRole(UserRole.ADMIN);
         model = BinaryData.fromObject(model).toObject(UserRoleResponseInner.class);
-        Assertions.assertEquals(UserRole.NONE, model.role());
+        Assertions.assertEquals(UserRole.ADMIN, model.role());
     }
 }

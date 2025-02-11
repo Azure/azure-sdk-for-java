@@ -116,6 +116,9 @@ public final class MetadataWorkspace implements JsonSerializable<MetadataWorkspa
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

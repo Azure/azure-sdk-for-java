@@ -20,29 +20,26 @@ public final class OperationResultsImpl implements OperationResults {
 
     private final com.azure.resourcemanager.labservices.LabServicesManager serviceManager;
 
-    public OperationResultsImpl(
-        OperationResultsClient innerClient, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
+    public OperationResultsImpl(OperationResultsClient innerClient,
+        com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<OperationResult> getWithResponse(String operationResultId, Context context) {
+        Response<OperationResultInner> inner = this.serviceClient().getWithResponse(operationResultId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationResult get(String operationResultId) {
         OperationResultInner inner = this.serviceClient().get(operationResultId);
         if (inner != null) {
             return new OperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OperationResult> getWithResponse(String operationResultId, Context context) {
-        Response<OperationResultInner> inner = this.serviceClient().getWithResponse(operationResultId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

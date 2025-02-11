@@ -7,9 +7,8 @@ package com.azure.analytics.purview.datamap.generated;
 import com.azure.analytics.purview.datamap.models.AtlasEntity;
 import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -20,25 +19,21 @@ import org.junit.jupiter.api.Test;
 public final class EntityAddCustomAttributeTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testEntityAddCustomAttributeTests() throws IOException {
+    public void testEntityAddCustomAttributeTests() {
         // method invocation
         EntityMutationResult response
-            = entityClient
-                .createOrUpdate(
-                    new AtlasEntityWithExtInfo().setReferredEntities(mapOf())
-                        .setEntity(
-                            new AtlasEntity()
-                                .setAttributes(mapOf("owner", "ExampleOwner", "modifiedTime", 0, "createTime", 0,
-                                    "qualifiedName", "https://exampleaccount.core.windows.net", "name",
-                                    "ExampleStorageAccount", "description",
-                                    JacksonAdapter.createDefaultSerializerAdapter()
-                                        .deserialize("null", Object.class, SerializerEncoding.JSON),
-                                    "publicAccessLevel",
-                                    JacksonAdapter.createDefaultSerializerAdapter()
-                                        .deserialize("null", Object.class, SerializerEncoding.JSON)))
-                                .setTypeName("azure_storage_account")
-                                .setCustomAttributes(mapOf("custAttr1", "attr1", "custAttr2", "attr2"))),
-                    null, null);
+            = entityClient.createOrUpdate(new AtlasEntityWithExtInfo().setReferredEntities(mapOf())
+                .setEntity(new AtlasEntity()
+                    .setAttributes(mapOf("owner", BinaryData.fromBytes("ExampleOwner".getBytes(StandardCharsets.UTF_8)),
+                        "modifiedTime", BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "createTime",
+                        BinaryData.fromBytes("0".getBytes(StandardCharsets.UTF_8)), "qualifiedName",
+                        BinaryData
+                            .fromBytes("https://exampleaccount.core.windows.net".getBytes(StandardCharsets.UTF_8)),
+                        "name", BinaryData.fromBytes("ExampleStorageAccount".getBytes(StandardCharsets.UTF_8)),
+                        "description", null, "publicAccessLevel", null))
+                    .setTypeName("azure_storage_account")
+                    .setCustomAttributes(mapOf("custAttr1", "attr1", "custAttr2", "attr2"))),
+                null, null);
 
         // response assertion
         Assertions.assertNotNull(response);

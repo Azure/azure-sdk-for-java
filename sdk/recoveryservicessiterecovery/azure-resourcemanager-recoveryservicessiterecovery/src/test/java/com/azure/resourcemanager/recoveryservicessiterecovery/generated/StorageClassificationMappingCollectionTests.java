@@ -25,17 +25,15 @@ public final class StorageClassificationMappingCollectionTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageClassificationMappingCollection model
-            = new StorageClassificationMappingCollection()
-                .withValue(
-                    Arrays.asList(
-                        new StorageClassificationMappingInner()
-                            .withProperties(new StorageClassificationMappingProperties()
-                                .withTargetStorageClassificationId("mlnwiaaomylweazu"))
-                            .withLocation("sethwwn"),
-                        new StorageClassificationMappingInner()
-                            .withProperties(new StorageClassificationMappingProperties()
-                                .withTargetStorageClassificationId("jhlimmbcxfhbcpo"))
-                            .withLocation("vxcjzhqizxfpxtgq")))
+            = new StorageClassificationMappingCollection().withValue(Arrays.asList(
+                new StorageClassificationMappingInner()
+                    .withProperties(new StorageClassificationMappingProperties()
+                        .withTargetStorageClassificationId("mlnwiaaomylweazu"))
+                    .withLocation("sethwwn"),
+                new StorageClassificationMappingInner()
+                    .withProperties(new StorageClassificationMappingProperties()
+                        .withTargetStorageClassificationId("jhlimmbcxfhbcpo"))
+                    .withLocation("vxcjzhqizxfpxtgq")))
                 .withNextLink("tgguwpijrajcivmm");
         model = BinaryData.fromObject(model).toObject(StorageClassificationMappingCollection.class);
         Assertions.assertEquals("mlnwiaaomylweazu", model.value().get(0).properties().targetStorageClassificationId());

@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of RunAs credential to use for hybrid worker. */
+/**
+ * Definition of RunAs credential to use for hybrid worker.
+ */
 @Fluent
-public final class RunAsCredentialAssociationProperty {
+public final class RunAsCredentialAssociationProperty implements JsonSerializable<RunAsCredentialAssociationProperty> {
     /*
      * Gets or sets the name of the credential.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
+     * Creates an instance of RunAsCredentialAssociationProperty class.
+     */
+    public RunAsCredentialAssociationProperty() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the credential.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -27,7 +38,7 @@ public final class RunAsCredentialAssociationProperty {
 
     /**
      * Set the name property: Gets or sets the name of the credential.
-     *
+     * 
      * @param name the name value to set.
      * @return the RunAsCredentialAssociationProperty object itself.
      */
@@ -38,9 +49,46 @@ public final class RunAsCredentialAssociationProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunAsCredentialAssociationProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunAsCredentialAssociationProperty if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunAsCredentialAssociationProperty.
+     */
+    public static RunAsCredentialAssociationProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunAsCredentialAssociationProperty deserializedRunAsCredentialAssociationProperty
+                = new RunAsCredentialAssociationProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRunAsCredentialAssociationProperty.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunAsCredentialAssociationProperty;
+        });
     }
 }

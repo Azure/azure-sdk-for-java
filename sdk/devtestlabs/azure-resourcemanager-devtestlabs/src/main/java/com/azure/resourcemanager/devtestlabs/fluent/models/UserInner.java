@@ -6,42 +6,97 @@ package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.UserIdentity;
 import com.azure.resourcemanager.devtestlabs.models.UserSecretStore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Profile of a lab user. */
+/**
+ * Profile of a lab user.
+ */
 @Fluent
 public final class UserInner extends Resource {
     /*
      * The properties of the resource.
      */
-    @JsonProperty(value = "properties")
     private UserProperties innerProperties;
 
-    /** Creates an instance of UserInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of UserInner class.
+     */
     public UserInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UserProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -50,7 +105,7 @@ public final class UserInner extends Resource {
 
     /**
      * Get the identity property: The identity of the user.
-     *
+     * 
      * @return the identity value.
      */
     public UserIdentity identity() {
@@ -59,7 +114,7 @@ public final class UserInner extends Resource {
 
     /**
      * Set the identity property: The identity of the user.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the UserInner object itself.
      */
@@ -73,7 +128,7 @@ public final class UserInner extends Resource {
 
     /**
      * Get the secretStore property: The secret store of the user.
-     *
+     * 
      * @return the secretStore value.
      */
     public UserSecretStore secretStore() {
@@ -82,7 +137,7 @@ public final class UserInner extends Resource {
 
     /**
      * Set the secretStore property: The secret store of the user.
-     *
+     * 
      * @param secretStore the secretStore value to set.
      * @return the UserInner object itself.
      */
@@ -96,7 +151,7 @@ public final class UserInner extends Resource {
 
     /**
      * Get the createdDate property: The creation date of the user profile.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -105,7 +160,7 @@ public final class UserInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning status of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -114,7 +169,7 @@ public final class UserInner extends Resource {
 
     /**
      * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
+     * 
      * @return the uniqueIdentifier value.
      */
     public String uniqueIdentifier() {
@@ -123,12 +178,62 @@ public final class UserInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserInner.
+     */
+    public static UserInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserInner deserializedUserInner = new UserInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedUserInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUserInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUserInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedUserInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUserInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUserInner.innerProperties = UserProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserInner;
+        });
     }
 }

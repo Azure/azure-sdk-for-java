@@ -6,32 +6,41 @@ package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The current state of a private endpoint connection. */
+/**
+ * The current state of a private endpoint connection.
+ */
 @Fluent
-public final class PrivateLinkServiceConnectionState {
+public final class PrivateLinkServiceConnectionState implements JsonSerializable<PrivateLinkServiceConnectionState> {
     /*
      * The status of a private endpoint connection
      */
-    @JsonProperty(value = "status", required = true)
     private PrivateLinkServiceConnectionStatus status;
 
     /*
      * The description for the current state of a private endpoint connection
      */
-    @JsonProperty(value = "description", required = true)
     private String description;
 
     /*
      * Actions required for a private endpoint connection
      */
-    @JsonProperty(value = "actionsRequired")
     private String actionsRequired;
 
     /**
+     * Creates an instance of PrivateLinkServiceConnectionState class.
+     */
+    public PrivateLinkServiceConnectionState() {
+    }
+
+    /**
      * Get the status property: The status of a private endpoint connection.
-     *
+     * 
      * @return the status value.
      */
     public PrivateLinkServiceConnectionStatus status() {
@@ -40,7 +49,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Set the status property: The status of a private endpoint connection.
-     *
+     * 
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -51,7 +60,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Get the description property: The description for the current state of a private endpoint connection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -60,7 +69,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Set the description property: The description for the current state of a private endpoint connection.
-     *
+     * 
      * @param description the description value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -71,7 +80,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Get the actionsRequired property: Actions required for a private endpoint connection.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public String actionsRequired() {
@@ -80,7 +89,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Set the actionsRequired property: Actions required for a private endpoint connection.
-     *
+     * 
      * @param actionsRequired the actionsRequired value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -91,23 +100,66 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model PrivateLinkServiceConnectionState"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property status in model PrivateLinkServiceConnectionState"));
         }
         if (description() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property description in model PrivateLinkServiceConnectionState"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property description in model PrivateLinkServiceConnectionState"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkServiceConnectionState.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("actionsRequired", this.actionsRequired);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkServiceConnectionState from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkServiceConnectionState if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrivateLinkServiceConnectionState.
+     */
+    public static PrivateLinkServiceConnectionState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkServiceConnectionState deserializedPrivateLinkServiceConnectionState
+                = new PrivateLinkServiceConnectionState();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnectionState.status
+                        = PrivateLinkServiceConnectionStatus.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnectionState.description = reader.getString();
+                } else if ("actionsRequired".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnectionState.actionsRequired = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkServiceConnectionState;
+        });
+    }
 }

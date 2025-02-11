@@ -19,12 +19,14 @@ import java.util.Map;
 @Fluent
 public final class RemoteDependencyData extends MonitorDomain {
     /*
-     * Identifier of a dependency call instance. Used for correlation with the request telemetry item corresponding to this dependency call.
+     * Identifier of a dependency call instance. Used for correlation with the request telemetry item corresponding to
+     * this dependency call.
      */
     private String id;
 
     /*
-     * Name of the command initiated with this dependency call. Low cardinality value. Examples are stored procedure name and URL path template.
+     * Name of the command initiated with this dependency call. Low cardinality value. Examples are stored procedure
+     * name and URL path template.
      */
     private String name;
 
@@ -39,7 +41,8 @@ public final class RemoteDependencyData extends MonitorDomain {
     private String data;
 
     /*
-     * Dependency type name. Very low cardinality value for logical grouping of dependencies and interpretation of other fields like commandName and resultCode. Examples are SQL, Azure table, and HTTP.
+     * Dependency type name. Very low cardinality value for logical grouping of dependencies and interpretation of other
+     * fields like commandName and resultCode. Examples are SQL, Azure table, and HTTP.
      */
     private String type;
 
@@ -77,7 +80,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     /**
      * Get the id property: Identifier of a dependency call instance. Used for correlation with the request telemetry
      * item corresponding to this dependency call.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -87,7 +90,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     /**
      * Set the id property: Identifier of a dependency call instance. Used for correlation with the request telemetry
      * item corresponding to this dependency call.
-     *
+     * 
      * @param id the id value to set.
      * @return the RemoteDependencyData object itself.
      */
@@ -99,7 +102,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     /**
      * Get the name property: Name of the command initiated with this dependency call. Low cardinality value. Examples
      * are stored procedure name and URL path template.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -109,7 +112,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     /**
      * Set the name property: Name of the command initiated with this dependency call. Low cardinality value. Examples
      * are stored procedure name and URL path template.
-     *
+     * 
      * @param name the name value to set.
      * @return the RemoteDependencyData object itself.
      */
@@ -120,7 +123,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Get the resultCode property: Result code of a dependency call. Examples are SQL error code and HTTP status code.
-     *
+     * 
      * @return the resultCode value.
      */
     public String getResultCode() {
@@ -129,7 +132,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Set the resultCode property: Result code of a dependency call. Examples are SQL error code and HTTP status code.
-     *
+     * 
      * @param resultCode the resultCode value to set.
      * @return the RemoteDependencyData object itself.
      */
@@ -141,7 +144,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     /**
      * Get the data property: Command initiated by this dependency call. Examples are SQL statement and HTTP URL with
      * all query parameters.
-     *
+     * 
      * @return the data value.
      */
     public String getData() {
@@ -151,7 +154,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     /**
      * Set the data property: Command initiated by this dependency call. Examples are SQL statement and HTTP URL with
      * all query parameters.
-     *
+     * 
      * @param data the data value to set.
      * @return the RemoteDependencyData object itself.
      */
@@ -163,7 +166,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     /**
      * Get the type property: Dependency type name. Very low cardinality value for logical grouping of dependencies and
      * interpretation of other fields like commandName and resultCode. Examples are SQL, Azure table, and HTTP.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -173,7 +176,7 @@ public final class RemoteDependencyData extends MonitorDomain {
     /**
      * Set the type property: Dependency type name. Very low cardinality value for logical grouping of dependencies and
      * interpretation of other fields like commandName and resultCode. Examples are SQL, Azure table, and HTTP.
-     *
+     * 
      * @param type the type value to set.
      * @return the RemoteDependencyData object itself.
      */
@@ -184,7 +187,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Get the target property: Target site of a dependency call. Examples are server name, host address.
-     *
+     * 
      * @return the target value.
      */
     public String getTarget() {
@@ -193,7 +196,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Set the target property: Target site of a dependency call. Examples are server name, host address.
-     *
+     * 
      * @param target the target value to set.
      * @return the RemoteDependencyData object itself.
      */
@@ -204,7 +207,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Get the duration property: Request duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days.
-     *
+     * 
      * @return the duration value.
      */
     public String getDuration() {
@@ -213,7 +216,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Set the duration property: Request duration in format: DD.HH:MM:SS.MMMMMM. Must be less than 1000 days.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the RemoteDependencyData object itself.
      */
@@ -224,7 +227,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Get the success property: Indication of successful or unsuccessful call.
-     *
+     * 
      * @return the success value.
      */
     public Boolean isSuccess() {
@@ -233,7 +236,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Set the success property: Indication of successful or unsuccessful call.
-     *
+     * 
      * @param success the success value to set.
      * @return the RemoteDependencyData object itself.
      */
@@ -244,7 +247,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Get the properties property: Collection of custom properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> getProperties() {
@@ -253,7 +256,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Set the properties property: Collection of custom properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RemoteDependencyData object itself.
      */
@@ -264,7 +267,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Get the measurements property: Collection of custom measurements.
-     *
+     * 
      * @return the measurements value.
      */
     public Map<String, Double> getMeasurements() {
@@ -273,7 +276,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Set the measurements property: Collection of custom measurements.
-     *
+     * 
      * @param measurements the measurements value to set.
      * @return the RemoteDependencyData object itself.
      */
@@ -306,8 +309,8 @@ public final class RemoteDependencyData extends MonitorDomain {
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeStringField("target", this.target);
         jsonWriter.writeBooleanField("success", this.success);
-        jsonWriter.writeMapField("properties", this.properties, JsonWriter::writeString);
-        jsonWriter.writeMapField("measurements", this.measurements, JsonWriter::writeDouble);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("measurements", this.measurements, (writer, element) -> writer.writeDouble(element));
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -318,7 +321,7 @@ public final class RemoteDependencyData extends MonitorDomain {
 
     /**
      * Reads an instance of RemoteDependencyData from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of RemoteDependencyData if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
@@ -352,9 +355,11 @@ public final class RemoteDependencyData extends MonitorDomain {
                 } else if ("success".equals(fieldName)) {
                     deserializedRemoteDependencyData.success = reader.getNullable(JsonReader::getBoolean);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedRemoteDependencyData.properties = reader.readMap(JsonReader::getString);
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRemoteDependencyData.properties = properties;
                 } else if ("measurements".equals(fieldName)) {
-                    deserializedRemoteDependencyData.measurements = reader.readMap(JsonReader::getDouble);
+                    Map<String, Double> measurements = reader.readMap(reader1 -> reader1.getDouble());
+                    deserializedRemoteDependencyData.measurements = measurements;
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

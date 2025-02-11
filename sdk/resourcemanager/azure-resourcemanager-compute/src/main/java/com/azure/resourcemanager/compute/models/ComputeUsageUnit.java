@@ -27,6 +27,15 @@ public final class ComputeUsageUnit extends ExpandableStringEnum<ComputeUsageUni
     public static final ComputeUsageUnit BYTES_PER_SECOND = fromString("BytesPerSecond");
 
     /**
+     * Creates a new instance of ComputeUsageUnit value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ComputeUsageUnit() {
+    }
+
+    /**
      * Creates or finds a compute usage unit based on its name.
      *
      * @param name a name
@@ -36,7 +45,10 @@ public final class ComputeUsageUnit extends ExpandableStringEnum<ComputeUsageUni
         return fromString(name, ComputeUsageUnit.class);
     }
 
-    /** @return known compute usage units */
+    /**
+     * Gets known compute usage units.
+     *
+     * @return known compute usage units */
     public Collection<ComputeUsageUnit> values() {
         return values(ComputeUsageUnit.class);
     }

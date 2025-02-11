@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedByInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedByInfo model
-            = BinaryData.fromString("{\"resourceId\":\"xywnytnrsynlqidy\"}").toObject(ManagedByInfo.class);
-        Assertions.assertEquals("xywnytnrsynlqidy", model.resourceId());
+        ManagedByInfo model = BinaryData.fromString("{\"resourceId\":\"abgl\"}").toObject(ManagedByInfo.class);
+        Assertions.assertEquals("abgl", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedByInfo model = new ManagedByInfo().withResourceId("xywnytnrsynlqidy");
+        ManagedByInfo model = new ManagedByInfo().withResourceId("abgl");
         model = BinaryData.fromObject(model).toObject(ManagedByInfo.class);
-        Assertions.assertEquals("xywnytnrsynlqidy", model.resourceId());
+        Assertions.assertEquals("abgl", model.resourceId());
     }
 }

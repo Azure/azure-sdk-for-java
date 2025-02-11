@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Blur type. */
+/**
+ * Blur type.
+ */
 public final class BlurType extends ExpandableStringEnum<BlurType> {
-    /** Static value Box for BlurType. */
+    /**
+     * Static value Box for BlurType.
+     */
     public static final BlurType BOX = fromString("Box");
 
-    /** Static value Low for BlurType. */
+    /**
+     * Static value Low for BlurType.
+     */
     public static final BlurType LOW = fromString("Low");
 
-    /** Static value Med for BlurType. */
+    /**
+     * Static value Med for BlurType.
+     */
     public static final BlurType MED = fromString("Med");
 
-    /** Static value High for BlurType. */
+    /**
+     * Static value High for BlurType.
+     */
     public static final BlurType HIGH = fromString("High");
 
-    /** Static value Black for BlurType. */
+    /**
+     * Static value Black for BlurType.
+     */
     public static final BlurType BLACK = fromString("Black");
 
     /**
      * Creates a new instance of BlurType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class BlurType extends ExpandableStringEnum<BlurType> {
 
     /**
      * Creates or finds a BlurType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BlurType.
      */
-    @JsonCreator
     public static BlurType fromString(String name) {
         return fromString(name, BlurType.class);
     }
 
     /**
      * Gets known BlurType values.
-     *
+     * 
      * @return known BlurType values.
      */
     public static Collection<BlurType> values() {

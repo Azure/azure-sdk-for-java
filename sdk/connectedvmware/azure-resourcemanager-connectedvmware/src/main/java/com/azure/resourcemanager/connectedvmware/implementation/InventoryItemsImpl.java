@@ -21,22 +21,18 @@ public final class InventoryItemsImpl implements InventoryItems {
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    public InventoryItemsImpl(
-        InventoryItemsClient innerClient,
+    public InventoryItemsImpl(InventoryItemsClient innerClient,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<InventoryItem> getWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context) {
-        Response<InventoryItemInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vcenterName, inventoryItemName, context);
+    public Response<InventoryItem> getWithResponse(String resourceGroupName, String vcenterName,
+        String inventoryItemName, Context context) {
+        Response<InventoryItemInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vcenterName, inventoryItemName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new InventoryItemImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,8 +48,8 @@ public final class InventoryItemsImpl implements InventoryItems {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String vcenterName, String inventoryItemName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, vcenterName, inventoryItemName, context);
     }
 
@@ -63,119 +59,87 @@ public final class InventoryItemsImpl implements InventoryItems {
 
     public PagedIterable<InventoryItem> listByVCenter(String resourceGroupName, String vcenterName) {
         PagedIterable<InventoryItemInner> inner = this.serviceClient().listByVCenter(resourceGroupName, vcenterName);
-        return Utils.mapPage(inner, inner1 -> new InventoryItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InventoryItemImpl(inner1, this.manager()));
     }
 
     public PagedIterable<InventoryItem> listByVCenter(String resourceGroupName, String vcenterName, Context context) {
-        PagedIterable<InventoryItemInner> inner =
-            this.serviceClient().listByVCenter(resourceGroupName, vcenterName, context);
-        return Utils.mapPage(inner, inner1 -> new InventoryItemImpl(inner1, this.manager()));
+        PagedIterable<InventoryItemInner> inner
+            = this.serviceClient().listByVCenter(resourceGroupName, vcenterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InventoryItemImpl(inner1, this.manager()));
     }
 
     public InventoryItem getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
-        String inventoryItemName = Utils.getValueFromIdByName(id, "inventoryItems");
+        String inventoryItemName = ResourceManagerUtils.getValueFromIdByName(id, "inventoryItems");
         if (inventoryItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
         }
         return this.getWithResponse(resourceGroupName, vcenterName, inventoryItemName, Context.NONE).getValue();
     }
 
     public Response<InventoryItem> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
-        String inventoryItemName = Utils.getValueFromIdByName(id, "inventoryItems");
+        String inventoryItemName = ResourceManagerUtils.getValueFromIdByName(id, "inventoryItems");
         if (inventoryItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
         }
         return this.getWithResponse(resourceGroupName, vcenterName, inventoryItemName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
-        String inventoryItemName = Utils.getValueFromIdByName(id, "inventoryItems");
+        String inventoryItemName = ResourceManagerUtils.getValueFromIdByName(id, "inventoryItems");
         if (inventoryItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, vcenterName, inventoryItemName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
-        String inventoryItemName = Utils.getValueFromIdByName(id, "inventoryItems");
+        String inventoryItemName = ResourceManagerUtils.getValueFromIdByName(id, "inventoryItems");
         if (inventoryItemName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, vcenterName, inventoryItemName, context);
     }

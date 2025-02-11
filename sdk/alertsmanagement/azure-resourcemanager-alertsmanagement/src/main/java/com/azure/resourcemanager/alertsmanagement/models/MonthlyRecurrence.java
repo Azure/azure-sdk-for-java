@@ -6,25 +6,46 @@ package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Monthly recurrence object. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "recurrenceType")
-@JsonTypeName("Monthly")
+/**
+ * Monthly recurrence object.
+ */
 @Fluent
 public final class MonthlyRecurrence extends Recurrence {
     /*
+     * Specifies when the recurrence should be applied.
+     */
+    private RecurrenceType recurrenceType = RecurrenceType.MONTHLY;
+
+    /*
      * Specifies the values for monthly recurrence pattern.
      */
-    @JsonProperty(value = "daysOfMonth", required = true)
     private List<Integer> daysOfMonth;
 
     /**
+     * Creates an instance of MonthlyRecurrence class.
+     */
+    public MonthlyRecurrence() {
+    }
+
+    /**
+     * Get the recurrenceType property: Specifies when the recurrence should be applied.
+     * 
+     * @return the recurrenceType value.
+     */
+    @Override
+    public RecurrenceType recurrenceType() {
+        return this.recurrenceType;
+    }
+
+    /**
      * Get the daysOfMonth property: Specifies the values for monthly recurrence pattern.
-     *
+     * 
      * @return the daysOfMonth value.
      */
     public List<Integer> daysOfMonth() {
@@ -33,7 +54,7 @@ public final class MonthlyRecurrence extends Recurrence {
 
     /**
      * Set the daysOfMonth property: Specifies the values for monthly recurrence pattern.
-     *
+     * 
      * @param daysOfMonth the daysOfMonth value to set.
      * @return the MonthlyRecurrence object itself.
      */
@@ -42,14 +63,18 @@ public final class MonthlyRecurrence extends Recurrence {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MonthlyRecurrence withStartTime(String startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MonthlyRecurrence withEndTime(String endTime) {
         super.withEndTime(endTime);
@@ -58,18 +83,64 @@ public final class MonthlyRecurrence extends Recurrence {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (daysOfMonth() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property daysOfMonth in model MonthlyRecurrence"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property daysOfMonth in model MonthlyRecurrence"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MonthlyRecurrence.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime", startTime());
+        jsonWriter.writeStringField("endTime", endTime());
+        jsonWriter.writeArrayField("daysOfMonth", this.daysOfMonth, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeStringField("recurrenceType",
+            this.recurrenceType == null ? null : this.recurrenceType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonthlyRecurrence from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonthlyRecurrence if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MonthlyRecurrence.
+     */
+    public static MonthlyRecurrence fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonthlyRecurrence deserializedMonthlyRecurrence = new MonthlyRecurrence();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedMonthlyRecurrence.withStartTime(reader.getString());
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedMonthlyRecurrence.withEndTime(reader.getString());
+                } else if ("daysOfMonth".equals(fieldName)) {
+                    List<Integer> daysOfMonth = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedMonthlyRecurrence.daysOfMonth = daysOfMonth;
+                } else if ("recurrenceType".equals(fieldName)) {
+                    deserializedMonthlyRecurrence.recurrenceType = RecurrenceType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonthlyRecurrence;
+        });
+    }
 }

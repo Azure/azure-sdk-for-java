@@ -148,6 +148,9 @@ public final class AcsRouterCommunicationError implements JsonSerializable<AcsRo
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

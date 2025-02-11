@@ -41,14 +41,12 @@ final class QuickPulseDataCollector {
     private final AtomicReference<Counters> counters = new AtomicReference<>(null);
     private final CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator
         = getCpuPerformanceCounterCalculator();
-    private final boolean useNormalizedValueForNonNormalizedCpuPercentage;
 
     private volatile QuickPulseStatus quickPulseStatus = QuickPulseStatus.QP_IS_OFF;
 
     private volatile Supplier<String> instrumentationKeySupplier;
 
-    QuickPulseDataCollector(boolean useNormalizedValueForNonNormalizedCpuPercentage) {
-        this.useNormalizedValueForNonNormalizedCpuPercentage = useNormalizedValueForNonNormalizedCpuPercentage;
+    QuickPulseDataCollector() {
     }
 
     private static CpuPerformanceCounterCalculator getCpuPerformanceCounterCalculator() {
@@ -319,14 +317,14 @@ final class QuickPulseDataCollector {
         final long rdds;
         final double rddsDuration;
         final int unsuccessfulRdds;
-        final long memoryCommitted;
-        final double cpuUsage;
+        final long processPhysicalMemory;
+        final double processNormalizedCpuUsage;
         final List<QuickPulseDocument> documentList = new ArrayList<>();
 
         private FinalCounters(Counters currentCounters) {
 
-            memoryCommitted = getMemoryCommitted(memory);
-            cpuUsage = getNonNormalizedCpuPercentage(cpuPerformanceCounterCalculator);
+            processPhysicalMemory = getPhysicalMemory(memory);
+            processNormalizedCpuUsage = getNormalizedCpuPercentage(cpuPerformanceCounterCalculator);
             exceptions = currentCounters.exceptions.get();
 
             CountAndDuration countAndDuration
@@ -344,19 +342,20 @@ final class QuickPulseDataCollector {
             }
         }
 
-        private long getMemoryCommitted(@Nullable MemoryMXBean memory) {
+        private long getPhysicalMemory(@Nullable MemoryMXBean memory) {
             if (memory == null) {
                 return -1;
             }
             MemoryUsage heapMemoryUsage = memory.getHeapMemoryUsage();
-            if (heapMemoryUsage == null) {
+            MemoryUsage nonHeapMemoryUsage = memory.getNonHeapMemoryUsage();
+            if (heapMemoryUsage == null || nonHeapMemoryUsage == null) {
                 return -1;
             }
-            return heapMemoryUsage.getCommitted();
+            return heapMemoryUsage.getUsed() + nonHeapMemoryUsage.getUsed();
         }
 
         private double
-            getNonNormalizedCpuPercentage(@Nullable CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator) {
+            getNormalizedCpuPercentage(@Nullable CpuPerformanceCounterCalculator cpuPerformanceCounterCalculator) {
             if (cpuPerformanceCounterCalculator == null) {
                 return -1;
             }
@@ -364,12 +363,7 @@ final class QuickPulseDataCollector {
             if (cpuDatum == null) {
                 return -1;
             }
-
-            if (useNormalizedValueForNonNormalizedCpuPercentage) {
-                // normalize for backwards compatibility even though this is supposed to be non-normalized
-                cpuDatum /= operatingSystemMxBean.getAvailableProcessors();
-            }
-
+            cpuDatum /= operatingSystemMxBean.getAvailableProcessors();
             return cpuDatum;
         }
     }

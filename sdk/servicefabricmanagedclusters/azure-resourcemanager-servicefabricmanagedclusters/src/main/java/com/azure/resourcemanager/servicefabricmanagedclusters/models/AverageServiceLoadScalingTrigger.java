@@ -184,7 +184,6 @@ public final class AverageServiceLoadScalingTrigger extends ScalingTrigger {
      */
     @Override
     public void validate() {
-        super.validate();
         if (metricName() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

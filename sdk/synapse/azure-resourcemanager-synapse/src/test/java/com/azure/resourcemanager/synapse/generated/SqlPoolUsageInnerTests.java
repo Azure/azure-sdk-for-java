@@ -10,11 +10,9 @@ import com.azure.resourcemanager.synapse.fluent.models.SqlPoolUsageInner;
 public final class SqlPoolUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPoolUsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"lxgwimfnjhf\",\"resourceName\":\"wmszkk\",\"displayName\":\"qreyfkzi\",\"currentValue\":47.32813703422634,\"limit\":4.556100953874753,\"unit\":\"ivx\",\"nextResetTime\":\"2021-12-04T11:19:32Z\"}")
-                .toObject(SqlPoolUsageInner.class);
+        SqlPoolUsageInner model = BinaryData.fromString(
+            "{\"name\":\"y\",\"resourceName\":\"etoge\",\"displayName\":\"oxslh\",\"currentValue\":35.44101401146429,\"limit\":63.22883329954221,\"unit\":\"nk\",\"nextResetTime\":\"2021-02-01T01:24:39Z\"}")
+            .toObject(SqlPoolUsageInner.class);
     }
 
     @org.junit.jupiter.api.Test

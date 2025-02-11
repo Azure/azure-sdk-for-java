@@ -14,7 +14,8 @@ import com.azure.resourcemanager.mysql.models.Server;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReplicasImpl implements Replicas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicasImpl.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ReplicasImpl.class);
 
     private final ReplicasClient innerClient;
 

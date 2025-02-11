@@ -42,12 +42,8 @@ public class RuleProperties {
 
             @Override
             public RuleProperties toModel(RuleDescriptionImpl description) {
-                final RuleFilter filter = description.getFilter() != null
-                    ? toModel(description.getFilter())
-                    : null;
-                final RuleAction action = description.getAction() != null
-                    ? toModel(description.getAction())
-                    : null;
+                final RuleFilter filter = description.getFilter() != null ? toModel(description.getFilter()) : null;
+                final RuleAction action = description.getAction() != null ? toModel(description.getAction()) : null;
 
                 return new RuleProperties(description.getName(), filter, action);
             }
@@ -81,19 +77,19 @@ public class RuleProperties {
                     return FalseRuleFilter.getInstance();
                 } else if (implementation instanceof CorrelationFilterImpl) {
                     final CorrelationFilterImpl filter = (CorrelationFilterImpl) implementation;
-                    final CorrelationRuleFilter returned = new CorrelationRuleFilter()
-                        .setContentType(filter.getContentType())
-                        .setCorrelationId(filter.getCorrelationId())
-                        .setLabel(filter.getLabel())
-                        .setMessageId(filter.getMessageId())
-                        .setTo(filter.getTo())
-                        .setSessionId(filter.getSessionId())
-                        .setReplyTo(filter.getReplyTo())
-                        .setReplyToSessionId(filter.getReplyToSessionId());
+                    final CorrelationRuleFilter returned
+                        = new CorrelationRuleFilter().setContentType(filter.getContentType())
+                            .setCorrelationId(filter.getCorrelationId())
+                            .setLabel(filter.getLabel())
+                            .setMessageId(filter.getMessageId())
+                            .setTo(filter.getTo())
+                            .setSessionId(filter.getSessionId())
+                            .setReplyTo(filter.getReplyTo())
+                            .setReplyToSessionId(filter.getReplyToSessionId());
 
                     if (filter.getProperties() != null) {
-                        filter.getProperties().forEach(keyValue ->
-                            returned.getProperties().put(keyValue.getKey(), keyValue.getValue()));
+                        filter.getProperties()
+                            .forEach(keyValue -> returned.getProperties().put(keyValue.getKey(), keyValue.getValue()));
                     }
 
                     return returned;
@@ -103,8 +99,8 @@ public class RuleProperties {
                         filter.getCompatibilityLevel(), filter.isRequiresPreprocessing());
 
                     if (filter.getParameters() != null) {
-                        filter.getParameters().forEach(keyValue ->
-                            returned.getParameters().put(keyValue.getKey(), keyValue.getValue()));
+                        filter.getParameters()
+                            .forEach(keyValue -> returned.getParameters().put(keyValue.getKey(), keyValue.getValue()));
                     }
 
                     return returned;
@@ -115,17 +111,12 @@ public class RuleProperties {
 
             @Override
             public RuleDescriptionImpl toImplementation(RuleProperties ruleProperties) {
-                final RuleFilterImpl filter = ruleProperties.getFilter() != null
-                    ? toImplementation(ruleProperties.getFilter())
-                    : null;
-                final RuleActionImpl action = ruleProperties.getAction() != null
-                    ? toImplementation(ruleProperties.getAction())
-                    : null;
+                final RuleFilterImpl filter
+                    = ruleProperties.getFilter() != null ? toImplementation(ruleProperties.getFilter()) : null;
+                final RuleActionImpl action
+                    = ruleProperties.getAction() != null ? toImplementation(ruleProperties.getAction()) : null;
 
-                return new RuleDescriptionImpl()
-                    .setName(ruleProperties.getName())
-                    .setAction(action)
-                    .setFilter(filter);
+                return new RuleDescriptionImpl().setName(ruleProperties.getName()).setAction(action).setFilter(filter);
             }
 
             @Override
@@ -134,15 +125,17 @@ public class RuleProperties {
                     return emptyRuleAction;
                 } else if (model instanceof SqlRuleAction) {
                     final SqlRuleAction action = (SqlRuleAction) model;
-                    final SqlRuleActionImpl returned = new SqlRuleActionImpl()
-                        .setSqlExpression(action.getSqlExpression())
-                        .setCompatibilityLevel(action.getCompatibilityLevel())
-                        .setRequiresPreprocessing(action.isPreprocessingRequired());
+                    final SqlRuleActionImpl returned
+                        = new SqlRuleActionImpl().setSqlExpression(action.getSqlExpression())
+                            .setCompatibilityLevel(action.getCompatibilityLevel())
+                            .setRequiresPreprocessing(action.isPreprocessingRequired());
 
                     if (!action.getParameters().isEmpty()) {
-                        final List<KeyValueImpl> parameters = action.getParameters().entrySet().stream()
-                            .map(entry -> new KeyValueImpl()
-                                .setKey(entry.getKey()).setValue(entry.getValue().toString()))
+                        final List<KeyValueImpl> parameters = action.getParameters()
+                            .entrySet()
+                            .stream()
+                            .map(entry -> new KeyValueImpl().setKey(entry.getKey())
+                                .setValue(entry.getValue().toString()))
                             .collect(Collectors.toList());
 
                         returned.setParameters(parameters);
@@ -162,21 +155,22 @@ public class RuleProperties {
                     return falseFilter;
                 } else if (model instanceof CorrelationRuleFilter) {
                     final CorrelationRuleFilter filter = (CorrelationRuleFilter) model;
-                    final CorrelationFilterImpl returned = new CorrelationFilterImpl()
-                        .setContentType(filter.getContentType())
-                        .setCorrelationId(filter.getCorrelationId())
-                        .setLabel(filter.getLabel())
-                        .setMessageId(filter.getMessageId())
-                        .setTo(filter.getTo())
-                        .setSessionId(filter.getSessionId())
-                        .setReplyTo(filter.getReplyTo())
-                        .setReplyToSessionId(filter.getReplyToSessionId());
+                    final CorrelationFilterImpl returned
+                        = new CorrelationFilterImpl().setContentType(filter.getContentType())
+                            .setCorrelationId(filter.getCorrelationId())
+                            .setLabel(filter.getLabel())
+                            .setMessageId(filter.getMessageId())
+                            .setTo(filter.getTo())
+                            .setSessionId(filter.getSessionId())
+                            .setReplyTo(filter.getReplyTo())
+                            .setReplyToSessionId(filter.getReplyToSessionId());
 
                     if (!filter.getProperties().isEmpty()) {
-                        final List<KeyValueImpl> parameters = filter.getProperties().entrySet()
+                        final List<KeyValueImpl> parameters = filter.getProperties()
+                            .entrySet()
                             .stream()
-                            .map(entry -> new KeyValueImpl()
-                                .setKey(entry.getKey()).setValue(entry.getValue().toString()))
+                            .map(entry -> new KeyValueImpl().setKey(entry.getKey())
+                                .setValue(entry.getValue().toString()))
                             .collect(Collectors.toList());
 
                         returned.setProperties(parameters);
@@ -185,16 +179,16 @@ public class RuleProperties {
                     return returned;
                 } else if (model instanceof SqlRuleFilter) {
                     final SqlRuleFilter filter = (SqlRuleFilter) model;
-                    final SqlFilterImpl returned = new SqlFilterImpl()
-                        .setSqlExpression(filter.getSqlExpression())
+                    final SqlFilterImpl returned = new SqlFilterImpl().setSqlExpression(filter.getSqlExpression())
                         .setCompatibilityLevel(filter.getCompatibilityLevel())
                         .setRequiresPreprocessing(filter.isPreprocessingRequired());
 
                     if (!filter.getParameters().isEmpty()) {
-                        final List<KeyValueImpl> parameters = filter.getParameters().entrySet()
+                        final List<KeyValueImpl> parameters = filter.getParameters()
+                            .entrySet()
                             .stream()
-                            .map(entry -> new KeyValueImpl()
-                                .setKey(entry.getKey()).setValue(entry.getValue().toString()))
+                            .map(entry -> new KeyValueImpl().setKey(entry.getKey())
+                                .setValue(entry.getValue().toString()))
                             .collect(Collectors.toList());
 
                         returned.setParameters(parameters);

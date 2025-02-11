@@ -8,28 +8,29 @@ import com.azure.resourcemanager.timeseriesinsights.models.EventSourceUpdatePara
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for EventSources Update. */
+/**
+ * Samples for EventSources Update.
+ */
 public final class EventSourcesUpdateSamples {
     /*
-     * x-ms-original-file: specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/EventSourcesPatchTags.json
+     * x-ms-original-file:
+     * specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/
+     * EventSourcesPatchTags.json
      */
     /**
      * Sample code: UpdateEventSource.
-     *
+     * 
      * @param manager Entry point to TimeSeriesInsightsManager.
      */
-    public static void updateEventSource(
-        com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
-        manager
-            .eventSources()
-            .updateWithResponse(
-                "rg1",
-                "env1",
-                "es1",
-                new EventSourceUpdateParameters().withTags(mapOf("someKey", "someValue")),
+    public static void
+        updateEventSource(com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
+        manager.eventSources()
+            .updateWithResponse("rg1", "env1", "es1",
+                new EventSourceUpdateParameters().withTags(mapOf("someKey", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

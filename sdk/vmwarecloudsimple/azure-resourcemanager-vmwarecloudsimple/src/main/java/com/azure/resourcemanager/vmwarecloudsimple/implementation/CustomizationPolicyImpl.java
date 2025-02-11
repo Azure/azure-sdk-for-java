@@ -14,8 +14,7 @@ public final class CustomizationPolicyImpl implements CustomizationPolicy {
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    CustomizationPolicyImpl(
-        CustomizationPolicyInner innerObject,
+    CustomizationPolicyImpl(CustomizationPolicyInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

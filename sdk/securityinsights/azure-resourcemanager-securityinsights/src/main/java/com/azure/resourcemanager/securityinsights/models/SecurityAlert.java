@@ -5,29 +5,70 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.SecurityAlertProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Represents a security alert entity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("SecurityAlert")
+/**
+ * Represents a security alert entity.
+ */
 @Fluent
-public final class SecurityAlert extends EntityInner {
+public final class SecurityAlert extends Entity {
+    /*
+     * The kind of the entity.
+     */
+    private EntityKindEnum kind = EntityKindEnum.SECURITY_ALERT;
+
     /*
      * SecurityAlert entity properties
      */
-    @JsonProperty(value = "properties")
     private SecurityAlertProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SecurityAlert class.
+     */
+    public SecurityAlert() {
+    }
+
+    /**
+     * Get the kind property: The kind of the entity.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EntityKindEnum kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: SecurityAlert entity properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityAlertProperties innerProperties() {
@@ -35,8 +76,48 @@ public final class SecurityAlert extends EntityInner {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the alertDisplayName property: The display name of the alert.
-     *
+     * 
      * @return the alertDisplayName value.
      */
     public String alertDisplayName() {
@@ -45,7 +126,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the alertType property: The type name of the alert.
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -54,7 +135,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the compromisedEntity property: Display name of the main entity being reported on.
-     *
+     * 
      * @return the compromisedEntity value.
      */
     public String compromisedEntity() {
@@ -63,7 +144,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the confidenceLevel property: The confidence level of this alert.
-     *
+     * 
      * @return the confidenceLevel value.
      */
     public ConfidenceLevel confidenceLevel() {
@@ -72,7 +153,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the confidenceReasons property: The confidence reasons.
-     *
+     * 
      * @return the confidenceReasons value.
      */
     public List<SecurityAlertPropertiesConfidenceReasonsItem> confidenceReasons() {
@@ -81,7 +162,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the confidenceScore property: The confidence score of the alert.
-     *
+     * 
      * @return the confidenceScore value.
      */
     public Double confidenceScore() {
@@ -91,7 +172,7 @@ public final class SecurityAlert extends EntityInner {
     /**
      * Get the confidenceScoreStatus property: The confidence score calculation status, i.e. indicating if score
      * calculation is pending for this alert, not applicable or final.
-     *
+     * 
      * @return the confidenceScoreStatus value.
      */
     public ConfidenceScoreStatus confidenceScoreStatus() {
@@ -100,7 +181,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the description property: Alert description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -110,7 +191,7 @@ public final class SecurityAlert extends EntityInner {
     /**
      * Get the endTimeUtc property: The impact end time of the alert (the time of the last event contributing to the
      * alert).
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -119,7 +200,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the intent property: Holds the alert intent stage(s) mapping for this alert.
-     *
+     * 
      * @return the intent value.
      */
     public KillChainIntent intent() {
@@ -128,7 +209,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the providerAlertId property: The identifier of the alert inside the product which generated the alert.
-     *
+     * 
      * @return the providerAlertId value.
      */
     public String providerAlertId() {
@@ -137,7 +218,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the processingEndTime property: The time the alert was made available for consumption.
-     *
+     * 
      * @return the processingEndTime value.
      */
     public OffsetDateTime processingEndTime() {
@@ -146,7 +227,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the productComponentName property: The name of a component inside the product which generated the alert.
-     *
+     * 
      * @return the productComponentName value.
      */
     public String productComponentName() {
@@ -155,7 +236,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the productName property: The name of the product which published this alert.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -164,7 +245,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the productVersion property: The version of the product generating the alert.
-     *
+     * 
      * @return the productVersion value.
      */
     public String productVersion() {
@@ -173,7 +254,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the remediationSteps property: Manual action items to take to remediate the alert.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public List<String> remediationSteps() {
@@ -182,7 +263,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the severity property: The severity of the alert.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -191,7 +272,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Set the severity property: The severity of the alert.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the SecurityAlert object itself.
      */
@@ -206,7 +287,7 @@ public final class SecurityAlert extends EntityInner {
     /**
      * Get the startTimeUtc property: The impact start time of the alert (the time of the first event contributing to
      * the alert).
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -215,7 +296,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the status property: The lifecycle status of the alert.
-     *
+     * 
      * @return the status value.
      */
     public AlertStatus status() {
@@ -224,7 +305,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the systemAlertId property: Holds the product identifier of the alert for the product.
-     *
+     * 
      * @return the systemAlertId value.
      */
     public String systemAlertId() {
@@ -233,7 +314,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the tactics property: The tactics of the alert.
-     *
+     * 
      * @return the tactics value.
      */
     public List<AttackTactic> tactics() {
@@ -242,7 +323,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the timeGenerated property: The time the alert was generated.
-     *
+     * 
      * @return the timeGenerated value.
      */
     public OffsetDateTime timeGenerated() {
@@ -251,7 +332,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the vendorName property: The name of the vendor that raise the alert.
-     *
+     * 
      * @return the vendorName value.
      */
     public String vendorName() {
@@ -260,7 +341,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the alertLink property: The uri link of the alert.
-     *
+     * 
      * @return the alertLink value.
      */
     public String alertLink() {
@@ -269,7 +350,7 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Get the resourceIdentifiers property: The list of resource identifiers of the alert.
-     *
+     * 
      * @return the resourceIdentifiers value.
      */
     public List<Object> resourceIdentifiers() {
@@ -279,7 +360,7 @@ public final class SecurityAlert extends EntityInner {
     /**
      * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
      * to the user.
-     *
+     * 
      * @return the additionalData value.
      */
     public Map<String, Object> additionalData() {
@@ -289,7 +370,7 @@ public final class SecurityAlert extends EntityInner {
     /**
      * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
      * graph item instance. This property is optional and might be system generated.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -298,14 +379,61 @@ public final class SecurityAlert extends EntityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityAlert from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityAlert if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecurityAlert.
+     */
+    public static SecurityAlert fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityAlert deserializedSecurityAlert = new SecurityAlert();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecurityAlert.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSecurityAlert.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSecurityAlert.type = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedSecurityAlert.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSecurityAlert.kind = EntityKindEnum.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSecurityAlert.innerProperties = SecurityAlertProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityAlert;
+        });
     }
 }

@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.devspaces.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devspaces.models.ResourceProviderOperationDisplay;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The ResourceProviderOperationDefinition model. */
+/**
+ * The ResourceProviderOperationDefinition model.
+ */
 @Fluent
-public final class ResourceProviderOperationDefinitionInner {
+public final class ResourceProviderOperationDefinitionInner
+    implements JsonSerializable<ResourceProviderOperationDefinitionInner> {
     /*
      * Resource provider operation name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The display property.
      */
-    @JsonProperty(value = "display")
     private ResourceProviderOperationDisplay display;
 
-    /** Creates an instance of ResourceProviderOperationDefinitionInner class. */
+    /**
+     * Creates an instance of ResourceProviderOperationDefinitionInner class.
+     */
     public ResourceProviderOperationDefinitionInner() {
     }
 
     /**
      * Get the name property: Resource provider operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +45,7 @@ public final class ResourceProviderOperationDefinitionInner {
 
     /**
      * Set the name property: Resource provider operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceProviderOperationDefinitionInner object itself.
      */
@@ -49,7 +56,7 @@ public final class ResourceProviderOperationDefinitionInner {
 
     /**
      * Get the display property: The display property.
-     *
+     * 
      * @return the display value.
      */
     public ResourceProviderOperationDisplay display() {
@@ -58,7 +65,7 @@ public final class ResourceProviderOperationDefinitionInner {
 
     /**
      * Set the display property: The display property.
-     *
+     * 
      * @param display the display value to set.
      * @return the ResourceProviderOperationDefinitionInner object itself.
      */
@@ -69,12 +76,53 @@ public final class ResourceProviderOperationDefinitionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (display() != null) {
             display().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceProviderOperationDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceProviderOperationDefinitionInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceProviderOperationDefinitionInner.
+     */
+    public static ResourceProviderOperationDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceProviderOperationDefinitionInner deserializedResourceProviderOperationDefinitionInner
+                = new ResourceProviderOperationDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceProviderOperationDefinitionInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedResourceProviderOperationDefinitionInner.display
+                        = ResourceProviderOperationDisplay.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceProviderOperationDefinitionInner;
+        });
     }
 }

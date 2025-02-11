@@ -6,42 +6,59 @@ package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.models.StorageAccount;
 import com.azure.resourcemanager.loganalytics.models.StorageInsightStatus;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The top level storage insight resource container. */
+/**
+ * The top level storage insight resource container.
+ */
 @Fluent
 public final class StorageInsightInner extends ProxyResource {
     /*
      * Storage insight properties.
      */
-    @JsonProperty(value = "properties")
     private StorageInsightProperties innerProperties;
 
     /*
      * The ETag of the storage insight.
      */
-    @JsonProperty(value = "eTag")
     private String etag;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of StorageInsightInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StorageInsightInner class.
+     */
     public StorageInsightInner() {
     }
 
     /**
      * Get the innerProperties property: Storage insight properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StorageInsightProperties innerProperties() {
@@ -50,7 +67,7 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Get the etag property: The ETag of the storage insight.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -59,7 +76,7 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Set the etag property: The ETag of the storage insight.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the StorageInsightInner object itself.
      */
@@ -70,7 +87,7 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -79,7 +96,7 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the StorageInsightInner object itself.
      */
@@ -89,8 +106,38 @@ public final class StorageInsightInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the containers property: The names of the blob containers that the workspace should read.
-     *
+     * 
      * @return the containers value.
      */
     public List<String> containers() {
@@ -99,7 +146,7 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Set the containers property: The names of the blob containers that the workspace should read.
-     *
+     * 
      * @param containers the containers value to set.
      * @return the StorageInsightInner object itself.
      */
@@ -113,7 +160,7 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Get the tables property: The names of the Azure tables that the workspace should read.
-     *
+     * 
      * @return the tables value.
      */
     public List<String> tables() {
@@ -122,7 +169,7 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Set the tables property: The names of the Azure tables that the workspace should read.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the StorageInsightInner object itself.
      */
@@ -136,7 +183,7 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Get the storageAccount property: The storage account connection details.
-     *
+     * 
      * @return the storageAccount value.
      */
     public StorageAccount storageAccount() {
@@ -145,7 +192,7 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Set the storageAccount property: The storage account connection details.
-     *
+     * 
      * @param storageAccount the storageAccount value to set.
      * @return the StorageInsightInner object itself.
      */
@@ -159,7 +206,7 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Get the status property: The status of the storage insight.
-     *
+     * 
      * @return the status value.
      */
     public StorageInsightStatus status() {
@@ -168,12 +215,62 @@ public final class StorageInsightInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("eTag", this.etag);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageInsightInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageInsightInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageInsightInner.
+     */
+    public static StorageInsightInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageInsightInner deserializedStorageInsightInner = new StorageInsightInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageInsightInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageInsightInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageInsightInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageInsightInner.innerProperties = StorageInsightProperties.fromJson(reader);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedStorageInsightInner.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedStorageInsightInner.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageInsightInner;
+        });
     }
 }

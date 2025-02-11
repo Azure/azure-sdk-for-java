@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Test;
 public final class GitHubRepoPropertiesTests {
     @Test
     public void testDeserialize() {
-        GitHubRepoProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Failed\",\"accountId\":5381243547184167814,\"repoUrl\":\"s\",\"ownerName\":\"y\"}")
-                .toObject(GitHubRepoProperties.class);
+        GitHubRepoProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Failed\",\"accountId\":5381243547184167814,\"repoUrl\":\"s\",\"ownerName\":\"y\"}")
+            .toObject(GitHubRepoProperties.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
         Assertions.assertEquals(5381243547184167814L, model.accountId());
         Assertions.assertEquals("s", model.repoUrl());
@@ -26,12 +24,10 @@ public final class GitHubRepoPropertiesTests {
 
     @Test
     public void testSerialize() {
-        GitHubRepoProperties model =
-            new GitHubRepoProperties()
-                .withProvisioningState(ProvisioningState.FAILED)
-                .withAccountId(5381243547184167814L)
-                .withRepoUrl("s")
-                .withOwnerName("y");
+        GitHubRepoProperties model = new GitHubRepoProperties().withProvisioningState(ProvisioningState.FAILED)
+            .withAccountId(5381243547184167814L)
+            .withRepoUrl("s")
+            .withOwnerName("y");
         model = BinaryData.fromObject(model).toObject(GitHubRepoProperties.class);
         Assertions.assertEquals(ProvisioningState.FAILED, model.provisioningState());
         Assertions.assertEquals(5381243547184167814L, model.accountId());

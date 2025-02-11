@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class ScheduleRunType extends ExpandableStringEnum<ScheduleRunType>
      * @param name a name to look for.
      * @return the corresponding ScheduleRunType.
      */
-    @JsonCreator
     public static ScheduleRunType fromString(String name) {
         return fromString(name, ScheduleRunType.class);
     }

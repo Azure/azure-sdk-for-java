@@ -9,75 +9,107 @@ import com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResul
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An immutable client-side representation of OperationStatusResult. */
+/**
+ * An immutable client-side representation of OperationStatusResult.
+ */
 public interface OperationStatusResult {
     /**
-     * Gets the id property: Fully qualified ID for the async operation.
-     *
-     * @return the id value.
-     */
-    String id();
-
-    /**
-     * Gets the resourceId property: Fully qualified ID of the resource against which the original async operation was
-     * started.
-     *
-     * @return the resourceId value.
-     */
-    String resourceId();
-
-    /**
-     * Gets the name property: Name of the async operation.
-     *
-     * @return the name value.
-     */
-    String name();
-
-    /**
-     * Gets the status property: Operation status.
-     *
-     * @return the status value.
-     */
-    String status();
-
-    /**
-     * Gets the percentComplete property: Percent of the operation that is complete.
-     *
-     * @return the percentComplete value.
-     */
-    Float percentComplete();
-
-    /**
-     * Gets the startTime property: The start time of the operation.
-     *
-     * @return the startTime value.
-     */
-    OffsetDateTime startTime();
-
-    /**
      * Gets the endTime property: The end time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     OffsetDateTime endTime();
 
     /**
-     * Gets the operations property: The operations list.
-     *
-     * @return the operations value.
-     */
-    List<OperationStatusResult> operations();
-
-    /**
      * Gets the error property: If present, details of the operation error.
-     *
+     * 
      * @return the error value.
      */
     ManagementError error();
 
     /**
+     * Gets the id property: Fully qualified ID for the async operation.
+     * 
+     * @return the id value.
+     */
+    String id();
+
+    /**
+     * Gets the name property: Name of the async operation.
+     * 
+     * @return the name value.
+     */
+    String name();
+
+    /**
+     * Gets the operations property: The operations list.
+     * 
+     * @return the operations value.
+     */
+    List<OperationStatusResult> operations();
+
+    /**
+     * Gets the percentComplete property: Percent of the operation that is complete.
+     * 
+     * @return the percentComplete value.
+     */
+    Float percentComplete();
+
+    /**
+     * Gets the resourceId property: Fully qualified ID of the resource against which the original async operation was
+     * started.
+     * 
+     * @return the resourceId value.
+     */
+    String resourceId();
+
+    /**
+     * Gets the startTime property: The start time of the operation.
+     * 
+     * @return the startTime value.
+     */
+    OffsetDateTime startTime();
+
+    /**
+     * Gets the status property: Operation status.
+     * 
+     * @return the status value.
+     */
+    String status();
+
+    /**
+     * Gets the exitCode property: For actions that run commands or scripts, the exit code of the script execution.
+     * 
+     * @return the exitCode value.
+     */
+    String exitCode();
+
+    /**
+     * Gets the outputHead property: For actions that run commands or scripts, the leading bytes of the output of the
+     * script execution.
+     * 
+     * @return the outputHead value.
+     */
+    String outputHead();
+
+    /**
+     * Gets the resultRef property: For actions that run commands or scripts, a reference to the location of the result.
+     * 
+     * @return the resultRef value.
+     */
+    String resultRef();
+
+    /**
+     * Gets the resultUrl property: For actions that run commands or scripts, the URL where the full output of the
+     * script output can be retrieved.
+     * 
+     * @return the resultUrl value.
+     */
+    String resultUrl();
+
+    /**
      * Gets the inner com.azure.resourcemanager.networkcloud.fluent.models.OperationStatusResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationStatusResultInner innerModel();

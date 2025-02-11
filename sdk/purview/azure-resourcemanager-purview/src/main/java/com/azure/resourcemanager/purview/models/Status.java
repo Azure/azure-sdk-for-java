@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status. */
+/**
+ * The status.
+ */
 public final class Status extends ExpandableStringEnum<Status> {
-    /** Static value Unknown for Status. */
+    /**
+     * Static value Unknown for Status.
+     */
     public static final Status UNKNOWN = fromString("Unknown");
 
-    /** Static value Pending for Status. */
+    /**
+     * Static value Pending for Status.
+     */
     public static final Status PENDING = fromString("Pending");
 
-    /** Static value Approved for Status. */
+    /**
+     * Static value Approved for Status.
+     */
     public static final Status APPROVED = fromString("Approved");
 
-    /** Static value Rejected for Status. */
+    /**
+     * Static value Rejected for Status.
+     */
     public static final Status REJECTED = fromString("Rejected");
 
-    /** Static value Disconnected for Status. */
+    /**
+     * Static value Disconnected for Status.
+     */
     public static final Status DISCONNECTED = fromString("Disconnected");
 
     /**
      * Creates a new instance of Status value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /**
      * Creates or finds a Status from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Status.
      */
-    @JsonCreator
     public static Status fromString(String name) {
         return fromString(name, Status.class);
     }
 
     /**
      * Gets known Status values.
-     *
+     * 
      * @return known Status values.
      */
     public static Collection<Status> values() {

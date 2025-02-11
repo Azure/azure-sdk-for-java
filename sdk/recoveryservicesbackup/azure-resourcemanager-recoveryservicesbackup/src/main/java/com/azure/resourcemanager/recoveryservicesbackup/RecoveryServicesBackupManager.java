@@ -11,15 +11,15 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -36,10 +36,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupPro
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupResourceEncryptionConfigsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupResourceStorageConfigsNonCrrsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupResourceVaultConfigsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupStatusImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupUsageSummariesImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupWorkloadItemsImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.BackupsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.BmsPrepareDataMoveOperationResultsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.DeletedProtectionContainersImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ExportJobsOperationResultsImpl;
@@ -76,8 +76,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.implementation.RestoresI
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.SecurityPINsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.TieringCostOperationStatusImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationResultsImpl;
-import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationStatusesImpl;
+import com.azure.resourcemanager.recoveryservicesbackup.implementation.ValidateOperationsImpl;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupEngines;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupJobs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupOperationResults;
@@ -90,10 +90,10 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectionI
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceStorageConfigsNonCrrs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfigs;
-import com.azure.resourcemanager.recoveryservicesbackup.models.Backups;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupUsageSummaries;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupWorkloadItems;
+import com.azure.resourcemanager.recoveryservicesbackup.models.Backups;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BmsPrepareDataMoveOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DeletedProtectionContainers;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ExportJobsOperationResults;
@@ -129,8 +129,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.Restores;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPINs;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TieringCostOperationStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationResults;
-import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperations;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationStatuses;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -415,7 +415,7 @@ public final class RecoveryServicesBackupManager {
                 .append("-")
                 .append("com.azure.resourcemanager.recoveryservicesbackup")
                 .append("/")
-                .append("1.4.0");
+                .append("1.5.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -448,7 +448,7 @@ public final class RecoveryServicesBackupManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));

@@ -15,33 +15,33 @@ public final class HealthProbeSettingsModelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HealthProbeSettingsModel model = BinaryData.fromString(
-            "{\"properties\":{\"resourceState\":\"Disabling\",\"path\":\"ifmviklbydvk\",\"protocol\":\"Http\",\"intervalInSeconds\":1006090143,\"healthProbeMethod\":\"GET\",\"enabledState\":\"Enabled\"},\"name\":\"dsrhnjiv\",\"type\":\"v\",\"id\":\"ovqfzge\"}")
+            "{\"properties\":{\"resourceState\":\"Disabled\",\"path\":\"ktwkuziyc\",\"protocol\":\"Https\",\"intervalInSeconds\":1330328967,\"healthProbeMethod\":\"HEAD\",\"enabledState\":\"Disabled\"},\"name\":\"ktyhjt\",\"type\":\"dcgzul\",\"id\":\"mrqzzrrjvpgl\"}")
             .toObject(HealthProbeSettingsModel.class);
-        Assertions.assertEquals("ovqfzge", model.id());
-        Assertions.assertEquals("dsrhnjiv", model.name());
-        Assertions.assertEquals("ifmviklbydvk", model.path());
-        Assertions.assertEquals(FrontDoorProtocol.HTTP, model.protocol());
-        Assertions.assertEquals(1006090143, model.intervalInSeconds());
-        Assertions.assertEquals(FrontDoorHealthProbeMethod.GET, model.healthProbeMethod());
-        Assertions.assertEquals(HealthProbeEnabled.ENABLED, model.enabledState());
+        Assertions.assertEquals("mrqzzrrjvpgl", model.id());
+        Assertions.assertEquals("ktyhjt", model.name());
+        Assertions.assertEquals("ktwkuziyc", model.path());
+        Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.protocol());
+        Assertions.assertEquals(1330328967, model.intervalInSeconds());
+        Assertions.assertEquals(FrontDoorHealthProbeMethod.HEAD, model.healthProbeMethod());
+        Assertions.assertEquals(HealthProbeEnabled.DISABLED, model.enabledState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HealthProbeSettingsModel model = new HealthProbeSettingsModel().withId("ovqfzge")
-            .withName("dsrhnjiv")
-            .withPath("ifmviklbydvk")
-            .withProtocol(FrontDoorProtocol.HTTP)
-            .withIntervalInSeconds(1006090143)
-            .withHealthProbeMethod(FrontDoorHealthProbeMethod.GET)
-            .withEnabledState(HealthProbeEnabled.ENABLED);
+        HealthProbeSettingsModel model = new HealthProbeSettingsModel().withId("mrqzzrrjvpgl")
+            .withName("ktyhjt")
+            .withPath("ktwkuziyc")
+            .withProtocol(FrontDoorProtocol.HTTPS)
+            .withIntervalInSeconds(1330328967)
+            .withHealthProbeMethod(FrontDoorHealthProbeMethod.HEAD)
+            .withEnabledState(HealthProbeEnabled.DISABLED);
         model = BinaryData.fromObject(model).toObject(HealthProbeSettingsModel.class);
-        Assertions.assertEquals("ovqfzge", model.id());
-        Assertions.assertEquals("dsrhnjiv", model.name());
-        Assertions.assertEquals("ifmviklbydvk", model.path());
-        Assertions.assertEquals(FrontDoorProtocol.HTTP, model.protocol());
-        Assertions.assertEquals(1006090143, model.intervalInSeconds());
-        Assertions.assertEquals(FrontDoorHealthProbeMethod.GET, model.healthProbeMethod());
-        Assertions.assertEquals(HealthProbeEnabled.ENABLED, model.enabledState());
+        Assertions.assertEquals("mrqzzrrjvpgl", model.id());
+        Assertions.assertEquals("ktyhjt", model.name());
+        Assertions.assertEquals("ktwkuziyc", model.path());
+        Assertions.assertEquals(FrontDoorProtocol.HTTPS, model.protocol());
+        Assertions.assertEquals(1330328967, model.intervalInSeconds());
+        Assertions.assertEquals(FrontDoorHealthProbeMethod.HEAD, model.healthProbeMethod());
+        Assertions.assertEquals(HealthProbeEnabled.DISABLED, model.enabledState());
     }
 }

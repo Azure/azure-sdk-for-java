@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Update details for product log. */
+/**
+ * Update details for product log.
+ */
 @Immutable
-public final class MarketplaceProductLogUpdate {
+public final class MarketplaceProductLogUpdate implements JsonSerializable<MarketplaceProductLogUpdate> {
     /*
      * Operation to log.
      */
-    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
      * Operation status to log.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Error related to the operation.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private String error;
 
     /*
      * Error details related to operation.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private String details;
 
-    /** Creates an instance of MarketplaceProductLogUpdate class. */
+    /**
+     * Creates an instance of MarketplaceProductLogUpdate class.
+     */
     public MarketplaceProductLogUpdate() {
     }
 
     /**
      * Get the operation property: Operation to log.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -49,7 +53,7 @@ public final class MarketplaceProductLogUpdate {
 
     /**
      * Get the status property: Operation status to log.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -58,7 +62,7 @@ public final class MarketplaceProductLogUpdate {
 
     /**
      * Get the error property: Error related to the operation.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -67,7 +71,7 @@ public final class MarketplaceProductLogUpdate {
 
     /**
      * Get the details property: Error details related to operation.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -76,9 +80,50 @@ public final class MarketplaceProductLogUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MarketplaceProductLogUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MarketplaceProductLogUpdate if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MarketplaceProductLogUpdate.
+     */
+    public static MarketplaceProductLogUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MarketplaceProductLogUpdate deserializedMarketplaceProductLogUpdate = new MarketplaceProductLogUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operation".equals(fieldName)) {
+                    deserializedMarketplaceProductLogUpdate.operation = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedMarketplaceProductLogUpdate.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedMarketplaceProductLogUpdate.error = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    deserializedMarketplaceProductLogUpdate.details = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMarketplaceProductLogUpdate;
+        });
     }
 }

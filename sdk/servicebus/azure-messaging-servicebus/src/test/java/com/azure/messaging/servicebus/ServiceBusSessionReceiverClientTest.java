@@ -32,8 +32,8 @@ class ServiceBusSessionReceiverClientTest {
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
         MockitoAnnotations.initMocks(this);
-        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null,
-            "fqdn", "entity", null, ReceiverKind.ASYNC_RECEIVER));
+        when(asyncClient.getInstrumentation()).thenReturn(
+            new ServiceBusReceiverInstrumentation(null, null, "fqdn", "entity", null, ReceiverKind.ASYNC_RECEIVER));
     }
 
     @AfterEach
@@ -41,48 +41,41 @@ class ServiceBusSessionReceiverClientTest {
         Mockito.framework().clearInlineMock(this);
     }
 
-
     @Test
     void acceptSession() {
         when(sessionAsyncClient.acceptSession(anyString())).thenReturn(Mono.just(asyncClient));
-        ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
-            false,
-            Duration.ofMillis(100));
+        ServiceBusSessionReceiverClient sessionClient
+            = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofMillis(100));
 
         assertNotNull(sessionClient.acceptSession("sessionId"));
     }
 
     @Test
     void acceptSessionTimeout() {
-        when(sessionAsyncClient.acceptSession(anyString())).thenReturn(Mono.just(asyncClient)
-            .delayElement(Duration.ofMillis(500)));
-        ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
-            false,
-            Duration.ofMillis(50));
+        when(sessionAsyncClient.acceptSession(anyString()))
+            .thenReturn(Mono.just(asyncClient).delayElement(Duration.ofMillis(500)));
+        ServiceBusSessionReceiverClient sessionClient
+            = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofMillis(50));
 
-        assertThrows(IllegalStateException.class,
-            () -> sessionClient.acceptSession("sessionId"));
+        assertThrows(IllegalStateException.class, () -> sessionClient.acceptSession("sessionId"));
     }
 
     @Test
     void acceptNextSession() {
         when(sessionAsyncClient.acceptNextSession()).thenReturn(Mono.just(asyncClient));
-        ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
-            false,
-            Duration.ofMillis(100));
+        ServiceBusSessionReceiverClient sessionClient
+            = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofMillis(100));
 
         assertNotNull(sessionClient.acceptNextSession());
     }
 
     @Test
     void acceptNextSessionTimeout() {
-        when(sessionAsyncClient.acceptNextSession()).thenReturn(Mono.just(asyncClient)
-            .delayElement(Duration.ofMillis(500)));
-        ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
-            false,
-            Duration.ofMillis(50));
+        when(sessionAsyncClient.acceptNextSession())
+            .thenReturn(Mono.just(asyncClient).delayElement(Duration.ofMillis(500)));
+        ServiceBusSessionReceiverClient sessionClient
+            = new ServiceBusSessionReceiverClient(sessionAsyncClient, false, Duration.ofMillis(50));
 
-        assertThrows(IllegalStateException.class,
-            () -> sessionClient.acceptNextSession());
+        assertThrows(IllegalStateException.class, () -> sessionClient.acceptNextSession());
     }
 }

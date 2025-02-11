@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** An enumeration of type of objects. */
+/**
+ * An enumeration of type of objects.
+ */
 public final class ObjectType extends ExpandableStringEnum<ObjectType> {
-    /** Static value StoredProcedures for ObjectType. */
+    /**
+     * Static value StoredProcedures for ObjectType.
+     */
     public static final ObjectType STORED_PROCEDURES = fromString("StoredProcedures");
 
-    /** Static value Table for ObjectType. */
+    /**
+     * Static value Table for ObjectType.
+     */
     public static final ObjectType TABLE = fromString("Table");
 
-    /** Static value User for ObjectType. */
+    /**
+     * Static value User for ObjectType.
+     */
     public static final ObjectType USER = fromString("User");
 
-    /** Static value View for ObjectType. */
+    /**
+     * Static value View for ObjectType.
+     */
     public static final ObjectType VIEW = fromString("View");
 
-    /** Static value Function for ObjectType. */
+    /**
+     * Static value Function for ObjectType.
+     */
     public static final ObjectType FUNCTION = fromString("Function");
 
     /**
      * Creates a new instance of ObjectType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
 
     /**
      * Creates or finds a ObjectType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ObjectType.
      */
-    @JsonCreator
     public static ObjectType fromString(String name) {
         return fromString(name, ObjectType.class);
     }
 
     /**
      * Gets known ObjectType values.
-     *
+     * 
      * @return known ObjectType values.
      */
     public static Collection<ObjectType> values() {

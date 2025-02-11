@@ -5,38 +5,25 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * AzureRestoreValidation request.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "objectType",
-    defaultImpl = ValidateRestoreOperationRequest.class,
-    visible = true)
-@JsonTypeName("ValidateRestoreOperationRequest")
-@JsonSubTypes({
-    @JsonSubTypes.Type(
-        name = "ValidateIaasVMRestoreOperationRequest",
-        value = ValidateIaasVMRestoreOperationRequest.class) })
 @Fluent
 public class ValidateRestoreOperationRequest extends ValidateOperationRequest {
     /*
-     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
+     * This property will be used as the discriminator for deciding the specific types in the polymorphic chain of
+     * types.
      */
-    @JsonTypeId
-    @JsonProperty(value = "objectType", required = true)
     private String objectType = "ValidateRestoreOperationRequest";
 
     /*
      * Sets restore request to be validated
      */
-    @JsonProperty(value = "restoreRequest")
     private RestoreRequest restoreRequest;
 
     /**
@@ -83,9 +70,73 @@ public class ValidateRestoreOperationRequest extends ValidateOperationRequest {
      */
     @Override
     public void validate() {
-        super.validate();
         if (restoreRequest() != null) {
             restoreRequest().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeJsonField("restoreRequest", this.restoreRequest);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateRestoreOperationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateRestoreOperationRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidateRestoreOperationRequest.
+     */
+    public static ValidateRestoreOperationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("objectType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("ValidateIaasVMRestoreOperationRequest".equals(discriminatorValue)) {
+                    return ValidateIaasVMRestoreOperationRequest.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ValidateRestoreOperationRequest fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateRestoreOperationRequest deserializedValidateRestoreOperationRequest
+                = new ValidateRestoreOperationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedValidateRestoreOperationRequest.objectType = reader.getString();
+                } else if ("restoreRequest".equals(fieldName)) {
+                    deserializedValidateRestoreOperationRequest.restoreRequest = RestoreRequest.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateRestoreOperationRequest;
+        });
     }
 }

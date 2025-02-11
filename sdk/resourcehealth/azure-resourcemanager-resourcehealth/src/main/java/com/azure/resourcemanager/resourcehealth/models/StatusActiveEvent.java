@@ -5,80 +5,80 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Active event type of emerging issue. */
+/**
+ * Active event type of emerging issue.
+ */
 @Fluent
-public final class StatusActiveEvent {
+public final class StatusActiveEvent implements JsonSerializable<StatusActiveEvent> {
     /*
      * The active event title.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * The details of active event.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The tracking id of this active event.
      */
-    @JsonProperty(value = "trackingId")
     private String trackingId;
 
     /*
      * The impact start time on this active event.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The cloud type of this active event.
      */
-    @JsonProperty(value = "cloud")
     private String cloud;
 
     /*
      * The severity level of this active event.
      */
-    @JsonProperty(value = "severity")
     private SeverityValues severity;
 
     /*
      * The stage of this active event.
      */
-    @JsonProperty(value = "stage")
     private StageValues stage;
 
     /*
      * The boolean value of this active event if published or not.
      */
-    @JsonProperty(value = "published")
     private Boolean published;
 
     /*
      * The last time modified on this banner.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * The list of emerging issues impacts.
      */
-    @JsonProperty(value = "impacts")
     private List<EmergingIssueImpact> impacts;
 
-    /** Creates an instance of StatusActiveEvent class. */
+    /**
+     * Creates an instance of StatusActiveEvent class.
+     */
     public StatusActiveEvent() {
     }
 
     /**
      * Get the title property: The active event title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -87,7 +87,7 @@ public final class StatusActiveEvent {
 
     /**
      * Set the title property: The active event title.
-     *
+     * 
      * @param title the title value to set.
      * @return the StatusActiveEvent object itself.
      */
@@ -98,7 +98,7 @@ public final class StatusActiveEvent {
 
     /**
      * Get the description property: The details of active event.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -107,7 +107,7 @@ public final class StatusActiveEvent {
 
     /**
      * Set the description property: The details of active event.
-     *
+     * 
      * @param description the description value to set.
      * @return the StatusActiveEvent object itself.
      */
@@ -118,7 +118,7 @@ public final class StatusActiveEvent {
 
     /**
      * Get the trackingId property: The tracking id of this active event.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -127,7 +127,7 @@ public final class StatusActiveEvent {
 
     /**
      * Set the trackingId property: The tracking id of this active event.
-     *
+     * 
      * @param trackingId the trackingId value to set.
      * @return the StatusActiveEvent object itself.
      */
@@ -138,7 +138,7 @@ public final class StatusActiveEvent {
 
     /**
      * Get the startTime property: The impact start time on this active event.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -147,7 +147,7 @@ public final class StatusActiveEvent {
 
     /**
      * Set the startTime property: The impact start time on this active event.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the StatusActiveEvent object itself.
      */
@@ -158,7 +158,7 @@ public final class StatusActiveEvent {
 
     /**
      * Get the cloud property: The cloud type of this active event.
-     *
+     * 
      * @return the cloud value.
      */
     public String cloud() {
@@ -167,7 +167,7 @@ public final class StatusActiveEvent {
 
     /**
      * Set the cloud property: The cloud type of this active event.
-     *
+     * 
      * @param cloud the cloud value to set.
      * @return the StatusActiveEvent object itself.
      */
@@ -178,7 +178,7 @@ public final class StatusActiveEvent {
 
     /**
      * Get the severity property: The severity level of this active event.
-     *
+     * 
      * @return the severity value.
      */
     public SeverityValues severity() {
@@ -187,7 +187,7 @@ public final class StatusActiveEvent {
 
     /**
      * Set the severity property: The severity level of this active event.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the StatusActiveEvent object itself.
      */
@@ -198,7 +198,7 @@ public final class StatusActiveEvent {
 
     /**
      * Get the stage property: The stage of this active event.
-     *
+     * 
      * @return the stage value.
      */
     public StageValues stage() {
@@ -207,7 +207,7 @@ public final class StatusActiveEvent {
 
     /**
      * Set the stage property: The stage of this active event.
-     *
+     * 
      * @param stage the stage value to set.
      * @return the StatusActiveEvent object itself.
      */
@@ -218,7 +218,7 @@ public final class StatusActiveEvent {
 
     /**
      * Get the published property: The boolean value of this active event if published or not.
-     *
+     * 
      * @return the published value.
      */
     public Boolean published() {
@@ -227,7 +227,7 @@ public final class StatusActiveEvent {
 
     /**
      * Set the published property: The boolean value of this active event if published or not.
-     *
+     * 
      * @param published the published value to set.
      * @return the StatusActiveEvent object itself.
      */
@@ -238,7 +238,7 @@ public final class StatusActiveEvent {
 
     /**
      * Get the lastModifiedTime property: The last time modified on this banner.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -247,7 +247,7 @@ public final class StatusActiveEvent {
 
     /**
      * Set the lastModifiedTime property: The last time modified on this banner.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the StatusActiveEvent object itself.
      */
@@ -258,7 +258,7 @@ public final class StatusActiveEvent {
 
     /**
      * Get the impacts property: The list of emerging issues impacts.
-     *
+     * 
      * @return the impacts value.
      */
     public List<EmergingIssueImpact> impacts() {
@@ -267,7 +267,7 @@ public final class StatusActiveEvent {
 
     /**
      * Set the impacts property: The list of emerging issues impacts.
-     *
+     * 
      * @param impacts the impacts value to set.
      * @return the StatusActiveEvent object itself.
      */
@@ -278,12 +278,83 @@ public final class StatusActiveEvent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (impacts() != null) {
             impacts().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("trackingId", this.trackingId);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("cloud", this.cloud);
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("stage", this.stage == null ? null : this.stage.toString());
+        jsonWriter.writeBooleanField("published", this.published);
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeArrayField("impacts", this.impacts, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatusActiveEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatusActiveEvent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatusActiveEvent.
+     */
+    public static StatusActiveEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatusActiveEvent deserializedStatusActiveEvent = new StatusActiveEvent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("title".equals(fieldName)) {
+                    deserializedStatusActiveEvent.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedStatusActiveEvent.description = reader.getString();
+                } else if ("trackingId".equals(fieldName)) {
+                    deserializedStatusActiveEvent.trackingId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedStatusActiveEvent.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("cloud".equals(fieldName)) {
+                    deserializedStatusActiveEvent.cloud = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedStatusActiveEvent.severity = SeverityValues.fromString(reader.getString());
+                } else if ("stage".equals(fieldName)) {
+                    deserializedStatusActiveEvent.stage = StageValues.fromString(reader.getString());
+                } else if ("published".equals(fieldName)) {
+                    deserializedStatusActiveEvent.published = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedStatusActiveEvent.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("impacts".equals(fieldName)) {
+                    List<EmergingIssueImpact> impacts
+                        = reader.readArray(reader1 -> EmergingIssueImpact.fromJson(reader1));
+                    deserializedStatusActiveEvent.impacts = impacts;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatusActiveEvent;
+        });
     }
 }

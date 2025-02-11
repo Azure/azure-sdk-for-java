@@ -5,29 +5,32 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The QuotaAllocationRequestBaseProperties model.
  */
 @Fluent
-public final class QuotaAllocationRequestBaseProperties {
+public final class QuotaAllocationRequestBaseProperties
+    implements JsonSerializable<QuotaAllocationRequestBaseProperties> {
     /*
      * The new quota limit for the subscription. The incremental quota will be allocated from pre-approved group quota.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
-     * Name of the resource provided by the resource provider. This property is already included in the request URI, so it is a readonly property returned in the response.
+     * Name of the resource provided by the resource provider. This property is already included in the request URI, so
+     * it is a readonly property returned in the response.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaAllocationRequestBasePropertiesName innerName;
 
     /*
      * The location for which the subscription is allocated
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /**
@@ -115,5 +118,48 @@ public final class QuotaAllocationRequestBaseProperties {
         if (innerName() != null) {
             innerName().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeStringField("region", this.region);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaAllocationRequestBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaAllocationRequestBaseProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaAllocationRequestBaseProperties.
+     */
+    public static QuotaAllocationRequestBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaAllocationRequestBaseProperties deserializedQuotaAllocationRequestBaseProperties
+                = new QuotaAllocationRequestBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("limit".equals(fieldName)) {
+                    deserializedQuotaAllocationRequestBaseProperties.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuotaAllocationRequestBaseProperties.innerName
+                        = QuotaAllocationRequestBasePropertiesName.fromJson(reader);
+                } else if ("region".equals(fieldName)) {
+                    deserializedQuotaAllocationRequestBaseProperties.region = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaAllocationRequestBaseProperties;
+        });
     }
 }

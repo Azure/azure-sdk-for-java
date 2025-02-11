@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** AvailableUpgrade represents an upgrade available for a Kubernetes cluster. */
+/**
+ * AvailableUpgrade represents an upgrade available for a Kubernetes cluster.
+ */
 @Immutable
-public final class AvailableUpgrade {
+public final class AvailableUpgrade implements JsonSerializable<AvailableUpgrade> {
     /*
      * The version lifecycle indicator.
      */
-    @JsonProperty(value = "availabilityLifecycle", access = JsonProperty.Access.WRITE_ONLY)
     private AvailabilityLifecycle availabilityLifecycle;
 
     /*
      * The version available for upgrading.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
-    /** Creates an instance of AvailableUpgrade class. */
+    /**
+     * Creates an instance of AvailableUpgrade class.
+     */
     public AvailableUpgrade() {
     }
 
     /**
      * Get the availabilityLifecycle property: The version lifecycle indicator.
-     *
+     * 
      * @return the availabilityLifecycle value.
      */
     public AvailabilityLifecycle availabilityLifecycle() {
@@ -37,7 +43,7 @@ public final class AvailableUpgrade {
 
     /**
      * Get the version property: The version available for upgrading.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -46,9 +52,47 @@ public final class AvailableUpgrade {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableUpgrade from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableUpgrade if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableUpgrade.
+     */
+    public static AvailableUpgrade fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableUpgrade deserializedAvailableUpgrade = new AvailableUpgrade();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("availabilityLifecycle".equals(fieldName)) {
+                    deserializedAvailableUpgrade.availabilityLifecycle
+                        = AvailabilityLifecycle.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedAvailableUpgrade.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableUpgrade;
+        });
     }
 }

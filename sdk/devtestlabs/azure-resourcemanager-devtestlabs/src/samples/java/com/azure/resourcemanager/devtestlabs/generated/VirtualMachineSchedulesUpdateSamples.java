@@ -8,26 +8,23 @@ import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualMachineSchedules Update. */
+/**
+ * Samples for VirtualMachineSchedules Update.
+ */
 public final class VirtualMachineSchedulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/VirtualMachineSchedules_Update.json
+     * x-ms-original-file: specification/devtestlabs/resource-manager/Microsoft.DevTestLab/stable/2018-09-15/examples/
+     * VirtualMachineSchedules_Update.json
      */
     /**
      * Sample code: VirtualMachineSchedules_Update.
-     *
+     * 
      * @param manager Entry point to DevTestLabsManager.
      */
     public static void virtualMachineSchedulesUpdate(com.azure.resourcemanager.devtestlabs.DevTestLabsManager manager) {
-        manager
-            .virtualMachineSchedules()
-            .updateWithResponse(
-                "resourceGroupName",
-                "{labName}",
-                "{vmName}",
-                "LabVmsShutdown",
-                new ScheduleFragment().withTags(mapOf("tagName1", "tagValue1")),
-                com.azure.core.util.Context.NONE);
+        manager.virtualMachineSchedules()
+            .updateWithResponse("resourceGroupName", "{labName}", "{vmName}", "LabVmsShutdown",
+                new ScheduleFragment().withTags(mapOf("tagName1", "tagValue1")), com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

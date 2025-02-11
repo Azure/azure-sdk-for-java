@@ -26,13 +26,11 @@ public class QueueErrorDeserializationTests {
     public void errorResponseBody() {
         String errorResponse = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>ContainerAlreadyExists</Code>"
             + "<Message>The specified container already exists.</Message></Error>";
-        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 409,
-                new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml"),
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(request -> Mono.just(
+            new MockHttpResponse(request, 409, new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml"),
                 errorResponse.getBytes(StandardCharsets.UTF_8))))
             .build();
-        QueueClient fileClient = new QueueClientBuilder()
-            .endpoint("https://account.blob.core.windows.net/")
+        QueueClient fileClient = new QueueClientBuilder().endpoint("https://account.blob.core.windows.net/")
             .queueName("queue")
             .credential(new MockTokenCredential())
             .pipeline(httpPipeline)

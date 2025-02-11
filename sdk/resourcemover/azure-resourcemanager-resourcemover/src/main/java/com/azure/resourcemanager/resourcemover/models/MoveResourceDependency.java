@@ -5,60 +5,61 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Defines the dependency of the move resource. */
+/**
+ * Defines the dependency of the move resource.
+ */
 @Fluent
-public final class MoveResourceDependency {
+public final class MoveResourceDependency implements JsonSerializable<MoveResourceDependency> {
     /*
      * Gets the source ARM ID of the dependent resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Gets the dependency resolution status.
      */
-    @JsonProperty(value = "resolutionStatus")
     private String resolutionStatus;
 
     /*
      * Defines the resolution type.
      */
-    @JsonProperty(value = "resolutionType")
     private ResolutionType resolutionType;
 
     /*
      * Defines the dependency type.
      */
-    @JsonProperty(value = "dependencyType")
     private DependencyType dependencyType;
 
     /*
      * Defines the properties for manual resolution.
      */
-    @JsonProperty(value = "manualResolution")
     private ManualResolutionProperties manualResolution;
 
     /*
      * Defines the properties for automatic resolution.
      */
-    @JsonProperty(value = "automaticResolution")
     private AutomaticResolutionProperties automaticResolution;
 
     /*
      * Gets or sets a value indicating whether the dependency is optional.
      */
-    @JsonProperty(value = "isOptional")
     private String isOptional;
 
-    /** Creates an instance of MoveResourceDependency class. */
+    /**
+     * Creates an instance of MoveResourceDependency class.
+     */
     public MoveResourceDependency() {
     }
 
     /**
      * Get the id property: Gets the source ARM ID of the dependent resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -67,7 +68,7 @@ public final class MoveResourceDependency {
 
     /**
      * Set the id property: Gets the source ARM ID of the dependent resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the MoveResourceDependency object itself.
      */
@@ -78,7 +79,7 @@ public final class MoveResourceDependency {
 
     /**
      * Get the resolutionStatus property: Gets the dependency resolution status.
-     *
+     * 
      * @return the resolutionStatus value.
      */
     public String resolutionStatus() {
@@ -87,7 +88,7 @@ public final class MoveResourceDependency {
 
     /**
      * Set the resolutionStatus property: Gets the dependency resolution status.
-     *
+     * 
      * @param resolutionStatus the resolutionStatus value to set.
      * @return the MoveResourceDependency object itself.
      */
@@ -98,7 +99,7 @@ public final class MoveResourceDependency {
 
     /**
      * Get the resolutionType property: Defines the resolution type.
-     *
+     * 
      * @return the resolutionType value.
      */
     public ResolutionType resolutionType() {
@@ -107,7 +108,7 @@ public final class MoveResourceDependency {
 
     /**
      * Set the resolutionType property: Defines the resolution type.
-     *
+     * 
      * @param resolutionType the resolutionType value to set.
      * @return the MoveResourceDependency object itself.
      */
@@ -118,7 +119,7 @@ public final class MoveResourceDependency {
 
     /**
      * Get the dependencyType property: Defines the dependency type.
-     *
+     * 
      * @return the dependencyType value.
      */
     public DependencyType dependencyType() {
@@ -127,7 +128,7 @@ public final class MoveResourceDependency {
 
     /**
      * Set the dependencyType property: Defines the dependency type.
-     *
+     * 
      * @param dependencyType the dependencyType value to set.
      * @return the MoveResourceDependency object itself.
      */
@@ -138,7 +139,7 @@ public final class MoveResourceDependency {
 
     /**
      * Get the manualResolution property: Defines the properties for manual resolution.
-     *
+     * 
      * @return the manualResolution value.
      */
     public ManualResolutionProperties manualResolution() {
@@ -147,7 +148,7 @@ public final class MoveResourceDependency {
 
     /**
      * Set the manualResolution property: Defines the properties for manual resolution.
-     *
+     * 
      * @param manualResolution the manualResolution value to set.
      * @return the MoveResourceDependency object itself.
      */
@@ -158,7 +159,7 @@ public final class MoveResourceDependency {
 
     /**
      * Get the automaticResolution property: Defines the properties for automatic resolution.
-     *
+     * 
      * @return the automaticResolution value.
      */
     public AutomaticResolutionProperties automaticResolution() {
@@ -167,7 +168,7 @@ public final class MoveResourceDependency {
 
     /**
      * Set the automaticResolution property: Defines the properties for automatic resolution.
-     *
+     * 
      * @param automaticResolution the automaticResolution value to set.
      * @return the MoveResourceDependency object itself.
      */
@@ -178,7 +179,7 @@ public final class MoveResourceDependency {
 
     /**
      * Get the isOptional property: Gets or sets a value indicating whether the dependency is optional.
-     *
+     * 
      * @return the isOptional value.
      */
     public String isOptional() {
@@ -187,7 +188,7 @@ public final class MoveResourceDependency {
 
     /**
      * Set the isOptional property: Gets or sets a value indicating whether the dependency is optional.
-     *
+     * 
      * @param isOptional the isOptional value to set.
      * @return the MoveResourceDependency object itself.
      */
@@ -198,7 +199,7 @@ public final class MoveResourceDependency {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -208,5 +209,62 @@ public final class MoveResourceDependency {
         if (automaticResolution() != null) {
             automaticResolution().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("resolutionStatus", this.resolutionStatus);
+        jsonWriter.writeStringField("resolutionType",
+            this.resolutionType == null ? null : this.resolutionType.toString());
+        jsonWriter.writeStringField("dependencyType",
+            this.dependencyType == null ? null : this.dependencyType.toString());
+        jsonWriter.writeJsonField("manualResolution", this.manualResolution);
+        jsonWriter.writeJsonField("automaticResolution", this.automaticResolution);
+        jsonWriter.writeStringField("isOptional", this.isOptional);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MoveResourceDependency from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MoveResourceDependency if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MoveResourceDependency.
+     */
+    public static MoveResourceDependency fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MoveResourceDependency deserializedMoveResourceDependency = new MoveResourceDependency();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMoveResourceDependency.id = reader.getString();
+                } else if ("resolutionStatus".equals(fieldName)) {
+                    deserializedMoveResourceDependency.resolutionStatus = reader.getString();
+                } else if ("resolutionType".equals(fieldName)) {
+                    deserializedMoveResourceDependency.resolutionType = ResolutionType.fromString(reader.getString());
+                } else if ("dependencyType".equals(fieldName)) {
+                    deserializedMoveResourceDependency.dependencyType = DependencyType.fromString(reader.getString());
+                } else if ("manualResolution".equals(fieldName)) {
+                    deserializedMoveResourceDependency.manualResolution = ManualResolutionProperties.fromJson(reader);
+                } else if ("automaticResolution".equals(fieldName)) {
+                    deserializedMoveResourceDependency.automaticResolution
+                        = AutomaticResolutionProperties.fromJson(reader);
+                } else if ("isOptional".equals(fieldName)) {
+                    deserializedMoveResourceDependency.isOptional = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMoveResourceDependency;
+        });
     }
 }

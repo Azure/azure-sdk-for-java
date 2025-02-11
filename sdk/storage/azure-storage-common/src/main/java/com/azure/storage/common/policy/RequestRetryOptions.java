@@ -102,8 +102,7 @@ public final class RequestRetryOptions {
         }
 
         if (tryTimeout != null) {
-            StorageImplUtils.assertInBounds("'tryTimeout' in seconds", tryTimeout.getSeconds(), 1,
-                Integer.MAX_VALUE);
+            StorageImplUtils.assertInBounds("'tryTimeout' in seconds", tryTimeout.getSeconds(), 1, Integer.MAX_VALUE);
             this.tryTimeout = tryTimeout;
         } else {
             /*
@@ -114,8 +113,7 @@ public final class RequestRetryOptions {
             this.tryTimeout = Duration.ofSeconds(Integer.MAX_VALUE);
         }
 
-        if ((retryDelay == null && maxRetryDelay != null)
-            || (retryDelay != null && maxRetryDelay == null)) {
+        if ((retryDelay == null && maxRetryDelay != null) || (retryDelay != null && maxRetryDelay == null)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("Both retryDelay and maxRetryDelay must be null or neither can be null"));
         }
@@ -132,9 +130,11 @@ public final class RequestRetryOptions {
                 case EXPONENTIAL:
                     this.retryDelay = Duration.ofSeconds(4);
                     break;
+
                 case FIXED:
                     this.retryDelay = Duration.ofSeconds(30);
                     break;
+
                 default:
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid 'RetryPolicyType'."));
             }
@@ -240,6 +240,7 @@ public final class RequestRetryOptions {
                 // The first try should have zero delay. Every other try has the fixed value
                 delay = tryCount > 1 ? this.retryDelay.toMillis() : 0;
                 break;
+
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid retry policy type."));
         }

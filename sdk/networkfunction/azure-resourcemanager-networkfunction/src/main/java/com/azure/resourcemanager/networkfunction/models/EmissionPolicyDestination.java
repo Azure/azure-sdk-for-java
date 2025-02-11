@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.networkfunction.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Emission policy destination properties. */
+/**
+ * Emission policy destination properties.
+ */
 @Fluent
-public final class EmissionPolicyDestination {
+public final class EmissionPolicyDestination implements JsonSerializable<EmissionPolicyDestination> {
     /*
      * Emission destination type.
      */
-    @JsonProperty(value = "destinationType")
     private DestinationType destinationType;
 
-    /** Creates an instance of EmissionPolicyDestination class. */
+    /**
+     * Creates an instance of EmissionPolicyDestination class.
+     */
     public EmissionPolicyDestination() {
     }
 
     /**
      * Get the destinationType property: Emission destination type.
-     *
+     * 
      * @return the destinationType value.
      */
     public DestinationType destinationType() {
@@ -31,7 +38,7 @@ public final class EmissionPolicyDestination {
 
     /**
      * Set the destinationType property: Emission destination type.
-     *
+     * 
      * @param destinationType the destinationType value to set.
      * @return the EmissionPolicyDestination object itself.
      */
@@ -42,9 +49,47 @@ public final class EmissionPolicyDestination {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("destinationType",
+            this.destinationType == null ? null : this.destinationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmissionPolicyDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmissionPolicyDestination if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EmissionPolicyDestination.
+     */
+    public static EmissionPolicyDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmissionPolicyDestination deserializedEmissionPolicyDestination = new EmissionPolicyDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("destinationType".equals(fieldName)) {
+                    deserializedEmissionPolicyDestination.destinationType
+                        = DestinationType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmissionPolicyDestination;
+        });
     }
 }

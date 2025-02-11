@@ -23,24 +23,19 @@ public final class OutboundNetworkDependenciesEndpointsImpl implements OutboundN
 
     private final com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager;
 
-    public OutboundNetworkDependenciesEndpointsImpl(
-        OutboundNetworkDependenciesEndpointsClient innerClient,
+    public OutboundNetworkDependenciesEndpointsImpl(OutboundNetworkDependenciesEndpointsClient innerClient,
         com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<List<OutboundEnvironmentEndpoint>> listWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        Response<List<OutboundEnvironmentEndpointInner>> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, workspaceName, context);
+    public Response<List<OutboundEnvironmentEndpoint>> listWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
+        Response<List<OutboundEnvironmentEndpointInner>> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, workspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -52,12 +47,9 @@ public final class OutboundNetworkDependenciesEndpointsImpl implements OutboundN
     public List<OutboundEnvironmentEndpoint> list(String resourceGroupName, String workspaceName) {
         List<OutboundEnvironmentEndpointInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new OutboundEnvironmentEndpointImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

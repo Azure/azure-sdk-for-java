@@ -22,7 +22,9 @@ public final class DomainsCancelVerificationSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void cancelVerification(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().cancelVerification("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            new VerificationParameter().withVerificationType(VerificationType.SPF), com.azure.core.util.Context.NONE);
+        manager.domains()
+            .cancelVerification("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                new VerificationParameter().withVerificationType(VerificationType.SPF),
+                com.azure.core.util.Context.NONE);
     }
 }

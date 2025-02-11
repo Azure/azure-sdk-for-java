@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DayOfWeek;
-import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionFormat;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WeekOfMonth;
+import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionFormat;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 

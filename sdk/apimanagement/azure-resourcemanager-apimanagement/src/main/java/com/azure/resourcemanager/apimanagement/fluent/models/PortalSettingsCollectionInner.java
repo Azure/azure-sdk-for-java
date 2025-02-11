@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.PortalSettingsContract;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Descriptions of API Management policies. */
+/**
+ * Descriptions of API Management policies.
+ */
 @Fluent
-public final class PortalSettingsCollectionInner {
+public final class PortalSettingsCollectionInner implements JsonSerializable<PortalSettingsCollectionInner> {
     /*
      * Descriptions of API Management policies.
      */
-    @JsonProperty(value = "value")
     private List<PortalSettingsContract> value;
 
     /*
      * Total record count number.
      */
-    @JsonProperty(value = "count")
     private Long count;
 
-    /** Creates an instance of PortalSettingsCollectionInner class. */
+    /**
+     * Creates an instance of PortalSettingsCollectionInner class.
+     */
     public PortalSettingsCollectionInner() {
     }
 
     /**
      * Get the value property: Descriptions of API Management policies.
-     *
+     * 
      * @return the value value.
      */
     public List<PortalSettingsContract> value() {
@@ -39,7 +45,7 @@ public final class PortalSettingsCollectionInner {
 
     /**
      * Set the value property: Descriptions of API Management policies.
-     *
+     * 
      * @param value the value value to set.
      * @return the PortalSettingsCollectionInner object itself.
      */
@@ -50,7 +56,7 @@ public final class PortalSettingsCollectionInner {
 
     /**
      * Get the count property: Total record count number.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -59,7 +65,7 @@ public final class PortalSettingsCollectionInner {
 
     /**
      * Set the count property: Total record count number.
-     *
+     * 
      * @param count the count value to set.
      * @return the PortalSettingsCollectionInner object itself.
      */
@@ -70,12 +76,54 @@ public final class PortalSettingsCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("count", this.count);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PortalSettingsCollectionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PortalSettingsCollectionInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PortalSettingsCollectionInner.
+     */
+    public static PortalSettingsCollectionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PortalSettingsCollectionInner deserializedPortalSettingsCollectionInner
+                = new PortalSettingsCollectionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PortalSettingsContract> value
+                        = reader.readArray(reader1 -> PortalSettingsContract.fromJson(reader1));
+                    deserializedPortalSettingsCollectionInner.value = value;
+                } else if ("count".equals(fieldName)) {
+                    deserializedPortalSettingsCollectionInner.count = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPortalSettingsCollectionInner;
+        });
     }
 }

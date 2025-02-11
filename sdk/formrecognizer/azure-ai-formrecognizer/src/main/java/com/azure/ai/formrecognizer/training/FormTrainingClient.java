@@ -155,8 +155,8 @@ public final class FormTrainingClient {
      * @return A new {@link FormRecognizerClient} object.
      */
     public FormRecognizerClient getFormRecognizerClient() {
-        return new FormRecognizerClientBuilder().endpoint(service.getEndpoint()).pipeline(service
-                .getHttpPipeline())
+        return new FormRecognizerClientBuilder().endpoint(service.getEndpoint())
+            .pipeline(service.getHttpPipeline())
             .buildClient();
     }
 
@@ -252,38 +252,37 @@ public final class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-                                                                                    boolean useTrainingLabels, TrainingOptions trainingOptions, Context context) {
+        boolean useTrainingLabels, TrainingOptions trainingOptions, Context context) {
         return beginTrainingInternal(trainingFilesUrl, useTrainingLabels, trainingOptions, context);
     }
 
     private SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginTrainingInternal(String trainingFilesUrl,
-                                                                                             boolean useTrainingLabels, TrainingOptions trainingOptions, Context context) {
+        boolean useTrainingLabels, TrainingOptions trainingOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(trainingFilesUrl)) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'trainingFilesUrl' cannot be null."));
         }
         trainingOptions = trainingOptions == null ? new TrainingOptions() : trainingOptions;
         TrainSourceFilter trainSourceFilter = new TrainSourceFilter()
             .setIncludeSubFolders(trainingOptions.getTrainingFileFilter() != null
-                ? trainingOptions.getTrainingFileFilter().isSubfoldersIncluded() : false)
+                ? trainingOptions.getTrainingFileFilter().isSubfoldersIncluded()
+                : false)
             .setPrefix(trainingOptions.getTrainingFileFilter() != null
-                ? trainingOptions.getTrainingFileFilter().getPrefix() : null);
-        TrainRequest serviceTrainRequest = new TrainRequest()
-            .setSource(trainingFilesUrl)
+                ? trainingOptions.getTrainingFileFilter().getPrefix()
+                : null);
+        TrainRequest serviceTrainRequest = new TrainRequest().setSource(trainingFilesUrl)
             .setSourceFilter(trainSourceFilter)
             .setUseLabelFile(useTrainingLabels)
             .setModelName(trainingOptions.getModelName());
-        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
-            (cxt) -> {
-                try {
-                    ResponseBase<CustomModelsTrainHeaders, Void> trainWithResponse = customModelsImpl.trainWithResponse(serviceTrainRequest, context);
-                    return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(trainWithResponse.getDeserializedHeaders().getLocation())));
-                } catch (ErrorResponseException ex) {
-                    throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
-                }
-            },
-            createModelPollOperation(context),
-            getCancellationIsNotSupported(),
-            fetchModelResultOperation(context));
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL, (cxt) -> {
+            try {
+                ResponseBase<CustomModelsTrainHeaders, Void> trainWithResponse
+                    = customModelsImpl.trainWithResponse(serviceTrainRequest, context);
+                return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(
+                    parseModelId(trainWithResponse.getDeserializedHeaders().getLocation())));
+            } catch (ErrorResponseException ex) {
+                throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
+            }
+        }, createModelPollOperation(context), getCancellationIsNotSupported(), fetchModelResultOperation(context));
     }
 
     /**
@@ -343,7 +342,8 @@ public final class FormTrainingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomFormModel> getCustomModelWithResponse(String modelId, Context context) {
         if (modelId == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot be null or empty"));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot be null or empty"));
         }
         try {
             Response<Model> response = customModelsImpl.getWithResponse(UUID.fromString(modelId), true, context);
@@ -396,9 +396,8 @@ public final class FormTrainingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccountProperties> getAccountPropertiesWithResponse(Context context) {
         Response<Models> response = customModelsImpl.getSummaryWithResponse(context);
-        return new SimpleResponse<>(response,
-            new AccountProperties(response.getValue().getSummary().getCount(),
-                response.getValue().getSummary().getLimit()));
+        return new SimpleResponse<>(response, new AccountProperties(response.getValue().getSummary().getCount(),
+            response.getValue().getSummary().getLimit()));
     }
 
     /**
@@ -555,35 +554,32 @@ public final class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
-                                                                                         CopyAuthorization target) {
+        CopyAuthorization target) {
         return beginCopyModelInternal(modelId, target, null, Context.NONE);
     }
 
     SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModelInternal(String modelId,
-                                                                                          CopyAuthorization target, Duration pollInterval, Context context) {
+        CopyAuthorization target, Duration pollInterval, Context context) {
         if (CoreUtils.isNullOrEmpty(modelId)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
-                + " be null or empty"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'modelId' is required and cannot" + " be null or empty"));
         }
         if (target == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'target' is required and cannot"
-                + " be null or empty"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'target' is required and cannot" + " be null or empty"));
         }
-        CopyRequest copyRequest = new CopyRequest()
-            .setTargetResourceId(target.getResourceId())
+        CopyRequest copyRequest = new CopyRequest().setTargetResourceId(target.getResourceId())
             .setTargetResourceRegion(target.getResourceRegion())
-            .setCopyAuthorization(new CopyAuthorizationResult()
-                .setModelId(target.getModelId())
+            .setCopyAuthorization(new CopyAuthorizationResult().setModelId(target.getModelId())
                 .setAccessToken(target.getAccessToken())
                 .setExpirationDateTimeTicks(target.getExpiresOn().toEpochSecond()));
 
-        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
-            (cxt) -> {
-                ResponseBase<CustomModelsCopyHeaders, Void> copyWithResponse = customModelsImpl.copyWithResponse(UUID.fromString(modelId), copyRequest, context);
-                return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(copyWithResponse.getDeserializedHeaders().getOperationLocation())));
-            },
-            createCopyPollOperation(modelId, context),
-            getCancellationIsNotSupported(),
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL, (cxt) -> {
+            ResponseBase<CustomModelsCopyHeaders, Void> copyWithResponse
+                = customModelsImpl.copyWithResponse(UUID.fromString(modelId), copyRequest, context);
+            return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(
+                parseModelId(copyWithResponse.getDeserializedHeaders().getOperationLocation())));
+        }, createCopyPollOperation(modelId, context), getCancellationIsNotSupported(),
             fetchCopyModelResultOperation(modelId, target.getModelId(), context));
     }
 
@@ -633,7 +629,7 @@ public final class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModelInfo> beginCopyModel(String modelId,
-                                                                                         CopyAuthorization target, Duration pollInterval, Context context) {
+        CopyAuthorization target, Duration pollInterval, Context context) {
         return beginCopyModelInternal(modelId, target, pollInterval, context);
     }
 
@@ -707,12 +703,13 @@ public final class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CopyAuthorization> getCopyAuthorizationWithResponse(String resourceId, String resourceRegion,
-                                                                        Context context) {
-        ResponseBase<CustomModelsAuthorizeModelCopyHeaders, CopyAuthorizationResult> response = customModelsImpl.authorizeModelCopyWithResponse(context);
+        Context context) {
+        ResponseBase<CustomModelsAuthorizeModelCopyHeaders, CopyAuthorizationResult> response
+            = customModelsImpl.authorizeModelCopyWithResponse(context);
         CopyAuthorizationResult copyAuthorizationResult = response.getValue();
-        return new SimpleResponse<>(response, new CopyAuthorization(copyAuthorizationResult.getModelId(),
-            copyAuthorizationResult.getAccessToken(), resourceId, resourceRegion,
-            copyAuthorizationResult.getExpirationDateTimeTicks()));
+        return new SimpleResponse<>(response,
+            new CopyAuthorization(copyAuthorizationResult.getModelId(), copyAuthorizationResult.getAccessToken(),
+                resourceId, resourceRegion, copyAuthorizationResult.getExpirationDateTimeTicks()));
 
     }
 
@@ -807,33 +804,31 @@ public final class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModel(List<String> modelIds,
-                                                                                               CreateComposedModelOptions createComposedModelOptions, Context context) {
+        CreateComposedModelOptions createComposedModelOptions, Context context) {
         return beginCreateComposedModelInternal(modelIds, createComposedModelOptions, context);
     }
 
     SyncPoller<FormRecognizerOperationResult, CustomFormModel> beginCreateComposedModelInternal(List<String> modelIds,
-                                                                                                CreateComposedModelOptions creatComposeModelOptions, Context context) {
+        CreateComposedModelOptions creatComposeModelOptions, Context context) {
         if (CoreUtils.isNullOrEmpty(modelIds)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'modelIds' is required and cannot"
-                + " be null or empty"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'modelIds' is required and cannot" + " be null or empty"));
         }
         creatComposeModelOptions = getCreateComposeModelOptions(creatComposeModelOptions);
 
-        final ComposeRequest composeRequest = new ComposeRequest()
-            .setModelIds(modelIds.stream()
-                .map(UUID::fromString).collect(Collectors.toList()))
-            .setModelName(creatComposeModelOptions.getModelName());
-        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL,
-            (cxt) -> {
-                ResponseBase<CustomModelsComposeHeaders, Void> composeWithResponse = customModelsImpl.composeWithResponse(composeRequest, context);
-                return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(parseModelId(composeWithResponse.getDeserializedHeaders().getLocation())));
-            },
-            createModelPollOperation(context),
-            getCancellationIsNotSupported(),
-            fetchModelResultOperation(context));
+        final ComposeRequest composeRequest
+            = new ComposeRequest().setModelIds(modelIds.stream().map(UUID::fromString).collect(Collectors.toList()))
+                .setModelName(creatComposeModelOptions.getModelName());
+        return SyncPoller.createPoller(DEFAULT_POLL_INTERVAL, (cxt) -> {
+            ResponseBase<CustomModelsComposeHeaders, Void> composeWithResponse
+                = customModelsImpl.composeWithResponse(composeRequest, context);
+            return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, new FormRecognizerOperationResult(
+                parseModelId(composeWithResponse.getDeserializedHeaders().getLocation())));
+        }, createModelPollOperation(context), getCancellationIsNotSupported(), fetchModelResultOperation(context));
     }
 
-    private BiFunction<PollingContext<FormRecognizerOperationResult>, PollResponse<FormRecognizerOperationResult>, FormRecognizerOperationResult>
+    private
+        BiFunction<PollingContext<FormRecognizerOperationResult>, PollResponse<FormRecognizerOperationResult>, FormRecognizerOperationResult>
         getCancellationIsNotSupported() {
         return (pollingContext, activationResponse) -> {
             throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
@@ -846,8 +841,8 @@ public final class FormTrainingClient {
     private Function<PollingContext<FormRecognizerOperationResult>, PollResponse<FormRecognizerOperationResult>>
         createModelPollOperation(Context context) {
         return (pollingContext) -> {
-            PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
-                pollingContext.getLatestResponse();
+            PollResponse<FormRecognizerOperationResult> operationResultPollResponse
+                = pollingContext.getLatestResponse();
             UUID modelUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
             try {
                 Response<Model> modelSimpleResponse = customModelsImpl.getWithResponse(modelUid, true, context);
@@ -858,34 +853,40 @@ public final class FormTrainingClient {
         };
     }
 
-    private PollResponse<FormRecognizerOperationResult> processTrainingModelResponse(
-        Response<Model> trainingModel,
+    private PollResponse<FormRecognizerOperationResult> processTrainingModelResponse(Response<Model> trainingModel,
         PollResponse<FormRecognizerOperationResult> trainingModelOperationResponse) {
         LongRunningOperationStatus status;
         switch (trainingModel.getValue().getModelInfo().getStatus()) {
             case CREATING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
+
             case READY:
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
+
             case INVALID:
-                throw LOGGER.logExceptionAsError(new FormRecognizerException(String.format("Invalid model created"
-                    + " with model Id %s", trainingModel.getValue().getModelInfo().getModelId()),
-                    trainingModel.getValue().getTrainResult().getErrors().stream()
+                throw LOGGER.logExceptionAsError(new FormRecognizerException(
+                    String.format("Invalid model created" + " with model Id %s",
+                        trainingModel.getValue().getModelInfo().getModelId()),
+                    trainingModel.getValue()
+                        .getTrainResult()
+                        .getErrors()
+                        .stream()
                         .map(errorInformation -> new FormRecognizerErrorInformation(errorInformation.getCode(),
                             errorInformation.getMessage()))
                         .collect(Collectors.toList())));
+
             default:
-                status = LongRunningOperationStatus.fromString(
-                    trainingModel.getValue().getModelInfo().getStatus().toString(), true);
+                status = LongRunningOperationStatus
+                    .fromString(trainingModel.getValue().getModelInfo().getStatus().toString(), true);
                 break;
         }
         return new PollResponse<>(status, trainingModelOperationResponse.getValue());
     }
 
-    private Function<PollingContext<FormRecognizerOperationResult>, CustomFormModel> fetchModelResultOperation(
-        Context context) {
+    private Function<PollingContext<FormRecognizerOperationResult>, CustomFormModel>
+        fetchModelResultOperation(Context context) {
         return (pollingContext) -> {
             final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
             try {
@@ -900,11 +901,12 @@ public final class FormTrainingClient {
     private Function<PollingContext<FormRecognizerOperationResult>, PollResponse<FormRecognizerOperationResult>>
         createCopyPollOperation(String modelId, Context context) {
         return (pollingContext) -> {
-            PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
-                pollingContext.getLatestResponse();
+            PollResponse<FormRecognizerOperationResult> operationResultPollResponse
+                = pollingContext.getLatestResponse();
             UUID targetId = UUID.fromString(operationResultPollResponse.getValue().getResultId());
             try {
-                Response<CopyOperationResult> modelSimpleResponse = customModelsImpl.getCopyResultWithResponse(UUID.fromString(modelId), targetId, context);
+                Response<CopyOperationResult> modelSimpleResponse
+                    = customModelsImpl.getCopyResultWithResponse(UUID.fromString(modelId), targetId, context);
                 return processCopyModelResponse(modelSimpleResponse, operationResultPollResponse);
             } catch (ErrorResponseException ex) {
                 throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
@@ -921,15 +923,21 @@ public final class FormTrainingClient {
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
+
             case SUCCEEDED:
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
+
             case FAILED:
                 throw LOGGER.logExceptionAsError(new FormRecognizerException("Copy operation failed",
-                    copyModel.getValue().getCopyResult().getErrors().stream()
+                    copyModel.getValue()
+                        .getCopyResult()
+                        .getErrors()
+                        .stream()
                         .map(errorInformation -> new FormRecognizerErrorInformation(errorInformation.getCode(),
                             errorInformation.getMessage()))
                         .collect(Collectors.toList())));
+
             default:
                 status = LongRunningOperationStatus.fromString(copyModel.getValue().getStatus().toString(), true);
                 break;
@@ -945,13 +953,14 @@ public final class FormTrainingClient {
                 LOGGER.logExceptionAsError(new IllegalArgumentException("'modelId' cannot be null."));
             }
             try {
-                CopyOperationResult copyOperationResult = customModelsImpl.getCopyResultWithResponse(UUID.fromString(modelId), resultUid, context).getValue();
+                CopyOperationResult copyOperationResult
+                    = customModelsImpl.getCopyResultWithResponse(UUID.fromString(modelId), resultUid, context)
+                        .getValue();
                 return new CustomFormModelInfo(copyModelId,
                     copyOperationResult.getStatus() == OperationStatus.SUCCEEDED
                         ? CustomFormModelStatus.READY
                         : CustomFormModelStatus.fromString(copyOperationResult.getStatus().toString()),
-                    copyOperationResult.getCreatedDateTime(),
-                    copyOperationResult.getLastUpdatedDateTime());
+                    copyOperationResult.getCreatedDateTime(), copyOperationResult.getLastUpdatedDateTime());
             } catch (ErrorResponseException ex) {
                 throw LOGGER.logExceptionAsError(Utility.getHttpResponseException(ex));
             }

@@ -4,109 +4,110 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for Exports GetExecutionHistory. */
+/**
+ * Samples for Exports GetExecutionHistory.
+ */
 public final class ExportsGetExecutionHistorySamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByManagementGroup.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunHistoryGetByManagementGroup.json
      */
     /**
      * Sample code: ExportRunHistoryGetByManagementGroup.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportRunHistoryGetByManagementGroup(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .getExecutionHistoryWithResponse(
-                "providers/Microsoft.Management/managementGroups/TestMG",
-                "TestExport",
+    public static void
+        exportRunHistoryGetByManagementGroup(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .getExecutionHistoryWithResponse("providers/Microsoft.Management/managementGroups/TestMG", "TestExport",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetBySubscription.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunHistoryGetBySubscription.json
      */
     /**
      * Sample code: ExportRunHistoryGetBySubscription.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportRunHistoryGetBySubscription(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .getExecutionHistoryWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000", "TestExport", com.azure.core.util.Context.NONE);
+    public static void
+        exportRunHistoryGetBySubscription(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .getExecutionHistoryWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", "TestExport",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByResourceGroup.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunHistoryGetByResourceGroup.json
      */
     /**
      * Sample code: ExportRunHistoryGetByResourceGroup.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportRunHistoryGetByResourceGroup(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
+    public static void
+        exportRunHistoryGetByResourceGroup(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
             .getExecutionHistoryWithResponse(
-                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG",
-                "TestExport",
+                "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/MYDEVTESTRG", "TestExport",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByEnrollmentAccount.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunHistoryGetByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportRunHistoryGetByEnrollmentAccount.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportRunHistoryGetByEnrollmentAccount(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .getExecutionHistoryWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
-                "TestExport",
-                com.azure.core.util.Context.NONE);
+    public static void
+        exportRunHistoryGetByEnrollmentAccount(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .getExecutionHistoryWithResponse("providers/Microsoft.Billing/billingAccounts/100/enrollmentAccounts/456",
+                "TestExport", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByBillingAccount.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunHistoryGetByBillingAccount.json
      */
     /**
      * Sample code: ExportRunHistoryGetByBillingAccount.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportRunHistoryGetByBillingAccount(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .getExecutionHistoryWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/123456", "TestExport", com.azure.core.util.Context.NONE);
+    public static void
+        exportRunHistoryGetByBillingAccount(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .getExecutionHistoryWithResponse("providers/Microsoft.Billing/billingAccounts/123456", "TestExport",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByDepartment.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ExportRunHistoryGetByDepartment.json
      */
     /**
      * Sample code: ExportRunHistoryGetByDepartment.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void exportRunHistoryGetByDepartment(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .exports()
-            .getExecutionHistoryWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12/departments/1234",
-                "TestExport",
-                com.azure.core.util.Context.NONE);
+    public static void
+        exportRunHistoryGetByDepartment(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.exports()
+            .getExecutionHistoryWithResponse("providers/Microsoft.Billing/billingAccounts/12/departments/1234",
+                "TestExport", com.azure.core.util.Context.NONE);
     }
 }

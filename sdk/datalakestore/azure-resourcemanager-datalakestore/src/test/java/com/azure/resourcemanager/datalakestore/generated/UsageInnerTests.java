@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datalakestore.fluent.models.UsageInner;
 public final class UsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"unit\":\"Bytes\",\"id\":\"bpxjmfl\",\"currentValue\":178812834,\"limit\":1423802799,\"name\":{\"value\":\"kcciwwzjuqkhr\",\"localizedValue\":\"jiwkuofoskghsau\"}}")
-                .toObject(UsageInner.class);
+        UsageInner model = BinaryData.fromString(
+            "{\"unit\":\"CountsPerSecond\",\"id\":\"snjampmng\",\"currentValue\":1097907718,\"limit\":1460212605,\"name\":{\"value\":\"wooc\",\"localizedValue\":\"bonqvpkvlrxnjeas\"}}")
+            .toObject(UsageInner.class);
     }
 
     @org.junit.jupiter.api.Test

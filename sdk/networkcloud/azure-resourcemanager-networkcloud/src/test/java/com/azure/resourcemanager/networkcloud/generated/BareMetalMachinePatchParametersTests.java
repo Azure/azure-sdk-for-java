@@ -13,33 +13,21 @@ import org.junit.jupiter.api.Assertions;
 public final class BareMetalMachinePatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BareMetalMachinePatchParameters model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"machineDetails\":\"ieholewjwi\"},\"tags\":{\"wexjkmfxapjwogq\":\"wefqsfapaqtferr\",\"awbzasqb\":\"nobpudcdabtqwpw\",\"kyexaoguyaipi\":\"clj\",\"um\":\"sdaultxij\"}}")
-                .toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("wefqsfapaqtferr", model.tags().get("wexjkmfxapjwogq"));
-        Assertions.assertEquals("ieholewjwi", model.machineDetails());
+        BareMetalMachinePatchParameters model = BinaryData.fromString(
+            "{\"properties\":{\"machineDetails\":\"cil\"},\"tags\":{\"t\":\"aykggnoxu\",\"cpfnznthjtwkja\":\"ksxwpnd\",\"tcqiosmg\":\"srxuzvoam\"}}")
+            .toObject(BareMetalMachinePatchParameters.class);
+        Assertions.assertEquals("aykggnoxu", model.tags().get("t"));
+        Assertions.assertEquals("cil", model.machineDetails());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BareMetalMachinePatchParameters model =
-            new BareMetalMachinePatchParameters()
-                .withTags(
-                    mapOf(
-                        "wexjkmfxapjwogq",
-                        "wefqsfapaqtferr",
-                        "awbzasqb",
-                        "nobpudcdabtqwpw",
-                        "kyexaoguyaipi",
-                        "clj",
-                        "um",
-                        "sdaultxij"))
-                .withMachineDetails("ieholewjwi");
+        BareMetalMachinePatchParameters model = new BareMetalMachinePatchParameters()
+            .withTags(mapOf("t", "aykggnoxu", "cpfnznthjtwkja", "ksxwpnd", "tcqiosmg", "srxuzvoam"))
+            .withMachineDetails("cil");
         model = BinaryData.fromObject(model).toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("wefqsfapaqtferr", model.tags().get("wexjkmfxapjwogq"));
-        Assertions.assertEquals("ieholewjwi", model.machineDetails());
+        Assertions.assertEquals("aykggnoxu", model.tags().get("t"));
+        Assertions.assertEquals("cil", model.machineDetails());
     }
 
     // Use "Map.of" if available

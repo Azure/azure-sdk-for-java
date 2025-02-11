@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Terms of service contract properties. */
+/**
+ * Terms of service contract properties.
+ */
 @Fluent
-public final class TermsOfServiceProperties {
+public final class TermsOfServiceProperties implements JsonSerializable<TermsOfServiceProperties> {
     /*
      * A terms of service text.
      */
-    @JsonProperty(value = "text")
     private String text;
 
     /*
      * Display terms of service during a sign-up process.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Ask user for consent to the terms of service.
      */
-    @JsonProperty(value = "consentRequired")
     private Boolean consentRequired;
 
-    /** Creates an instance of TermsOfServiceProperties class. */
+    /**
+     * Creates an instance of TermsOfServiceProperties class.
+     */
     public TermsOfServiceProperties() {
     }
 
     /**
      * Get the text property: A terms of service text.
-     *
+     * 
      * @return the text value.
      */
     public String text() {
@@ -43,7 +48,7 @@ public final class TermsOfServiceProperties {
 
     /**
      * Set the text property: A terms of service text.
-     *
+     * 
      * @param text the text value to set.
      * @return the TermsOfServiceProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class TermsOfServiceProperties {
 
     /**
      * Get the enabled property: Display terms of service during a sign-up process.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -63,7 +68,7 @@ public final class TermsOfServiceProperties {
 
     /**
      * Set the enabled property: Display terms of service during a sign-up process.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the TermsOfServiceProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class TermsOfServiceProperties {
 
     /**
      * Get the consentRequired property: Ask user for consent to the terms of service.
-     *
+     * 
      * @return the consentRequired value.
      */
     public Boolean consentRequired() {
@@ -83,7 +88,7 @@ public final class TermsOfServiceProperties {
 
     /**
      * Set the consentRequired property: Ask user for consent to the terms of service.
-     *
+     * 
      * @param consentRequired the consentRequired value to set.
      * @return the TermsOfServiceProperties object itself.
      */
@@ -94,9 +99,51 @@ public final class TermsOfServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeBooleanField("consentRequired", this.consentRequired);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TermsOfServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TermsOfServiceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TermsOfServiceProperties.
+     */
+    public static TermsOfServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TermsOfServiceProperties deserializedTermsOfServiceProperties = new TermsOfServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("text".equals(fieldName)) {
+                    deserializedTermsOfServiceProperties.text = reader.getString();
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedTermsOfServiceProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("consentRequired".equals(fieldName)) {
+                    deserializedTermsOfServiceProperties.consentRequired = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTermsOfServiceProperties;
+        });
     }
 }

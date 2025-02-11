@@ -11,31 +11,33 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.fluent.models.AvailableGroundStationInner;
 import com.azure.resourcemanager.orbital.models.CapabilityParameter;
 
-/** An instance of this class provides access to all the operations defined in AvailableGroundStationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AvailableGroundStationsClient.
+ */
 public interface AvailableGroundStationsClient {
     /**
      * Returns list of available ground stations.
-     *
+     * 
      * @param capability Ground Station Capability.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the AvailableGroundStations API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for the AvailableGroundStations API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AvailableGroundStationInner> list(CapabilityParameter capability);
 
     /**
      * Returns list of available ground stations.
-     *
+     * 
      * @param capability Ground Station Capability.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the AvailableGroundStations API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for the AvailableGroundStations API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AvailableGroundStationInner> list(CapabilityParameter capability, Context context);

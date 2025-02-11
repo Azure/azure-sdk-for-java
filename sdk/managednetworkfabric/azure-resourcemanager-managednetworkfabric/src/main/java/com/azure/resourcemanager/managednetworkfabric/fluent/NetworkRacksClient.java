@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.NetworkRackInner;
 import com.azure.resourcemanager.managednetworkfabric.models.TagsUpdate;
 
-/** An instance of this class provides access to all the operations defined in NetworkRacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkRacksClient.
+ */
 public interface NetworkRacksClient {
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -30,14 +32,14 @@ public interface NetworkRacksClient {
      * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(
-        String resourceGroupName, String networkRackName, NetworkRackInner body);
+    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(String resourceGroupName,
+        String networkRackName, NetworkRackInner body);
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -48,14 +50,14 @@ public interface NetworkRacksClient {
      * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(
-        String resourceGroupName, String networkRackName, NetworkRackInner body, Context context);
+    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginCreate(String resourceGroupName,
+        String networkRackName, NetworkRackInner body, Context context);
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -69,9 +71,9 @@ public interface NetworkRacksClient {
 
     /**
      * Create Network Rack.
-     *
-     * <p>Create Network Rack resource.
-     *
+     * 
+     * Create Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Request payload.
@@ -86,9 +88,9 @@ public interface NetworkRacksClient {
 
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -98,14 +100,14 @@ public interface NetworkRacksClient {
      * @return network Rack resource details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkRackInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String networkRackName, Context context);
+    Response<NetworkRackInner> getByResourceGroupWithResponse(String resourceGroupName, String networkRackName,
+        Context context);
 
     /**
      * Gets a Network Rack.
-     *
-     * <p>Get Network Rack resource details.
-     *
+     * 
+     * Get Network Rack resource details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,9 +120,9 @@ public interface NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -130,14 +132,14 @@ public interface NetworkRacksClient {
      * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(
-        String resourceGroupName, String networkRackName, TagsUpdate body);
+    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(String resourceGroupName,
+        String networkRackName, TagsUpdate body);
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -148,14 +150,14 @@ public interface NetworkRacksClient {
      * @return the {@link SyncPoller} for polling of the Network Rack resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(
-        String resourceGroupName, String networkRackName, TagsUpdate body, Context context);
+    SyncPoller<PollResult<NetworkRackInner>, NetworkRackInner> beginUpdate(String resourceGroupName,
+        String networkRackName, TagsUpdate body, Context context);
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -169,9 +171,9 @@ public interface NetworkRacksClient {
 
     /**
      * Updates a Network Rack.
-     *
-     * <p>Update certain properties of the Network Rack resource.
-     *
+     * 
+     * Update certain properties of the Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param body Network Rack properties to update.
@@ -186,9 +188,9 @@ public interface NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,9 +203,9 @@ public interface NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -217,9 +219,9 @@ public interface NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,9 +233,9 @@ public interface NetworkRacksClient {
 
     /**
      * Deletes a Network Rack.
-     *
-     * <p>Delete Network Rack resource.
-     *
+     * 
+     * Delete Network Rack resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkRackName Name of the Network Rack.
      * @param context The context to associate with this operation.
@@ -246,9 +248,9 @@ public interface NetworkRacksClient {
 
     /**
      * List Network Racks by resource group.
-     *
-     * <p>List all Network Rack resources in the given resource group.
-     *
+     * 
+     * List all Network Rack resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -260,9 +262,9 @@ public interface NetworkRacksClient {
 
     /**
      * List Network Racks by resource group.
-     *
-     * <p>List all Network Rack resources in the given resource group.
-     *
+     * 
+     * List all Network Rack resources in the given resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,9 +277,9 @@ public interface NetworkRacksClient {
 
     /**
      * List Network Racks by subscription.
-     *
-     * <p>List all Network Rack resources in the given subscription.
-     *
+     * 
+     * List all Network Rack resources in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Network Racks as paginated response with {@link PagedIterable}.
@@ -287,9 +289,9 @@ public interface NetworkRacksClient {
 
     /**
      * List Network Racks by subscription.
-     *
-     * <p>List all Network Rack resources in the given subscription.
-     *
+     * 
+     * List all Network Rack resources in the given subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -5,87 +5,81 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Task of the Job.
  */
 @Fluent
-public final class AsrTask {
+public final class AsrTask implements JsonSerializable<AsrTask> {
     /*
      * The Id.
      */
-    @JsonProperty(value = "taskId")
     private String taskId;
 
     /*
      * The unique Task name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The start time.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * The state/actions applicable on this task.
      */
-    @JsonProperty(value = "allowedActions")
     private List<String> allowedActions;
 
     /*
      * The name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The State. It is one of these values - NotStarted, InProgress, Succeeded, Failed, Cancelled, Suspended or Other.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * The description of the task state. For example - For Succeeded state, description can be Completed,
      * PartiallySucceeded, CompletedWithInformation or Skipped.
      */
-    @JsonProperty(value = "stateDescription")
     private String stateDescription;
 
     /*
      * The type of task. Details in CustomDetails property depend on this type.
      */
-    @JsonProperty(value = "taskType")
     private String taskType;
 
     /*
      * The custom task details based on the task type.
      */
-    @JsonProperty(value = "customDetails")
     private TaskTypeDetails customDetails;
 
     /*
      * The custom task details based on the task type, if the task type is GroupTaskDetails or one of the types derived
      * from it.
      */
-    @JsonProperty(value = "groupTaskCustomDetails")
     private GroupTaskDetails groupTaskCustomDetails;
 
     /*
      * The task error details.
      */
-    @JsonProperty(value = "errors")
     private List<JobErrorDetails> errors;
 
     /**
@@ -355,5 +349,81 @@ public final class AsrTask {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("taskId", this.taskId);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeArrayField("allowedActions", this.allowedActions,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("stateDescription", this.stateDescription);
+        jsonWriter.writeStringField("taskType", this.taskType);
+        jsonWriter.writeJsonField("customDetails", this.customDetails);
+        jsonWriter.writeJsonField("groupTaskCustomDetails", this.groupTaskCustomDetails);
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AsrTask from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AsrTask if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the AsrTask.
+     */
+    public static AsrTask fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AsrTask deserializedAsrTask = new AsrTask();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("taskId".equals(fieldName)) {
+                    deserializedAsrTask.taskId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAsrTask.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedAsrTask.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAsrTask.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("allowedActions".equals(fieldName)) {
+                    List<String> allowedActions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAsrTask.allowedActions = allowedActions;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedAsrTask.friendlyName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedAsrTask.state = reader.getString();
+                } else if ("stateDescription".equals(fieldName)) {
+                    deserializedAsrTask.stateDescription = reader.getString();
+                } else if ("taskType".equals(fieldName)) {
+                    deserializedAsrTask.taskType = reader.getString();
+                } else if ("customDetails".equals(fieldName)) {
+                    deserializedAsrTask.customDetails = TaskTypeDetails.fromJson(reader);
+                } else if ("groupTaskCustomDetails".equals(fieldName)) {
+                    deserializedAsrTask.groupTaskCustomDetails = GroupTaskDetails.fromJson(reader);
+                } else if ("errors".equals(fieldName)) {
+                    List<JobErrorDetails> errors = reader.readArray(reader1 -> JobErrorDetails.fromJson(reader1));
+                    deserializedAsrTask.errors = errors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAsrTask;
+        });
     }
 }

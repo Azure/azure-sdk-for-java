@@ -30,8 +30,11 @@ public final class ProtectionContainerInnerTests {
         ProtectionContainerInner model
             = new ProtectionContainerInner()
                 .withProperties(new ProtectionContainerProperties().withFabricFriendlyName("tsthsucocm")
-                    .withFriendlyName("yazttbtwwrqpue").withFabricType("kzywbiex").withProtectedItemCount(1206070255)
-                    .withPairingStatus("ue").withRole("ibx")
+                    .withFriendlyName("yazttbtwwrqpue")
+                    .withFabricType("kzywbiex")
+                    .withProtectedItemCount(1206070255)
+                    .withPairingStatus("ue")
+                    .withRole("ibx")
                     .withFabricSpecificDetails(new ProtectionContainerFabricSpecificDetails()))
                 .withLocation("dkzjancuxrh");
         model = BinaryData.fromObject(model).toObject(ProtectionContainerInner.class);

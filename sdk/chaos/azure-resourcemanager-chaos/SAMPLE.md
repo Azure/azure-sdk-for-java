@@ -62,9 +62,9 @@ public final class CapabilitiesCreateOrUpdateSamples {
      */
     public static void createUpdateACapabilityThatExtendsAVirtualMachineTargetResource(
         com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.capabilities().createOrUpdateWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines",
-            "exampleVM", "Microsoft-VirtualMachine", "Shutdown-1.0", new CapabilityInner(),
-            com.azure.core.util.Context.NONE);
+        manager.capabilities()
+            .createOrUpdateWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
+                "Microsoft-VirtualMachine", "Shutdown-1.0", new CapabilityInner(), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -87,8 +87,9 @@ public final class CapabilitiesDeleteSamples {
      */
     public static void deleteACapabilityThatExtendsAVirtualMachineTargetResource(
         com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.capabilities().deleteWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
-            "Microsoft-VirtualMachine", "Shutdown-1.0", com.azure.core.util.Context.NONE);
+        manager.capabilities()
+            .deleteWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
+                "Microsoft-VirtualMachine", "Shutdown-1.0", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -111,8 +112,9 @@ public final class CapabilitiesGetSamples {
      */
     public static void
         getACapabilityThatExtendsAVirtualMachineTargetResource(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.capabilities().getWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
-            "Microsoft-VirtualMachine", "Shutdown-1.0", com.azure.core.util.Context.NONE);
+        manager.capabilities()
+            .getWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
+                "Microsoft-VirtualMachine", "Shutdown-1.0", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -135,8 +137,9 @@ public final class CapabilitiesListSamples {
      */
     public static void listAllCapabilitiesThatExtendAVirtualMachineTargetResource(
         com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.capabilities().list("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
-            "Microsoft-VirtualMachine", null, com.azure.core.util.Context.NONE);
+        manager.capabilities()
+            .list("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", "Microsoft-VirtualMachine", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -159,8 +162,8 @@ public final class CapabilityTypesGetSamples {
      */
     public static void getACapabilityTypeForAVirtualMachineTargetResourceOnWestus2Location(
         com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.capabilityTypes().getWithResponse("westus2", "Microsoft-VirtualMachine", "Shutdown-1.0",
-            com.azure.core.util.Context.NONE);
+        manager.capabilityTypes()
+            .getWithResponse("westus2", "Microsoft-VirtualMachine", "Shutdown-1.0", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -239,7 +242,9 @@ public final class ExperimentsCreateOrUpdateSamples {
      * @param manager Entry point to ChaosManager.
      */
     public static void createUpdateAExperimentInAResourceGroup(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.experiments().define("exampleExperiment").withRegion("eastus2euap")
+        manager.experiments()
+            .define("exampleExperiment")
+            .withRegion("eastus2euap")
             .withExistingResourceGroup("exampleRG")
             .withSteps(
                 Arrays.asList(new ChaosExperimentStep().withName("step1")
@@ -251,9 +256,11 @@ public final class ExperimentsCreateOrUpdateSamples {
                                 Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("false")))
                             .withSelectorId("selector1")))))))
             .withSelectors(Arrays.asList(new ChaosTargetListSelector().withId("selector1")
-                .withTargets(Arrays.asList(new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId(
-                    "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine")))))
-            .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)).create();
+                .withTargets(Arrays.asList(new TargetReference().withType(TargetReferenceType.CHAOS_TARGET)
+                    .withId(
+                        "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine")))))
+            .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .create();
     }
 }
 ```
@@ -297,8 +304,9 @@ public final class ExperimentsExecutionDetailsSamples {
      * @param manager Entry point to ChaosManager.
      */
     public static void getExperimentExecutionDetails(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.experiments().executionDetailsWithResponse("exampleRG", "exampleExperiment",
-            "f24500ad-744e-4a26-864b-b76199eac333", com.azure.core.util.Context.NONE);
+        manager.experiments()
+            .executionDetailsWithResponse("exampleRG", "exampleExperiment", "f24500ad-744e-4a26-864b-b76199eac333",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -320,8 +328,8 @@ public final class ExperimentsGetByResourceGroupSamples {
      * @param manager Entry point to ChaosManager.
      */
     public static void getAExperimentInAResourceGroup(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.experiments().getByResourceGroupWithResponse("exampleRG", "exampleExperiment",
-            com.azure.core.util.Context.NONE);
+        manager.experiments()
+            .getByResourceGroupWithResponse("exampleRG", "exampleExperiment", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -343,8 +351,9 @@ public final class ExperimentsGetExecutionSamples {
      * @param manager Entry point to ChaosManager.
      */
     public static void getTheExecutionOfAExperiment(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.experiments().getExecutionWithResponse("exampleRG", "exampleExperiment",
-            "f24500ad-744e-4a26-864b-b76199eac333", com.azure.core.util.Context.NONE);
+        manager.experiments()
+            .getExecutionWithResponse("exampleRG", "exampleExperiment", "f24500ad-744e-4a26-864b-b76199eac333",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -466,10 +475,12 @@ public final class ExperimentsUpdateSamples {
         Experiment resource = manager.experiments()
             .getByResourceGroupWithResponse("exampleRG", "exampleExperiment", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")).withIdentity(
-            new ResourceIdentity().withType(ResourceIdentityType.USER_ASSIGNED).withUserAssignedIdentities(mapOf(
-                "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ManagedIdentity/userAssignedIdentity/exampleUMI",
-                new UserAssignedIdentity())))
+        resource.update()
+            .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+            .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ManagedIdentity/userAssignedIdentity/exampleUMI",
+                    new UserAssignedIdentity())))
             .apply();
     }
 
@@ -504,8 +515,8 @@ public final class OperationStatusesGetSamples {
      * @param manager Entry point to ChaosManager.
      */
     public static void getSpecificOperationStatus(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.operationStatuses().getWithResponse("West US", "713192d7-503f-477a-9cfe-4efc3ee2bd11",
-            com.azure.core.util.Context.NONE);
+        manager.operationStatuses()
+            .getWithResponse("West US", "713192d7-503f-477a-9cfe-4efc3ee2bd11", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -579,13 +590,14 @@ public final class TargetsCreateOrUpdateSamples {
      */
     public static void createUpdateATargetThatExtendsAVirtualMachineResource(
         com.azure.resourcemanager.chaos.ChaosManager manager) throws IOException {
-        manager.targets().createOrUpdateWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
-            "Microsoft-Agent",
-            new TargetInner().withProperties(mapOf("identities",
-                SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
-                    "[{\"type\":\"CertificateSubjectIssuer\",\"subject\":\"CN=example.subject\"}]", Object.class,
-                    SerializerEncoding.JSON))),
-            com.azure.core.util.Context.NONE);
+        manager.targets()
+            .createOrUpdateWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
+                "Microsoft-Agent",
+                new TargetInner().withProperties(mapOf("identities",
+                    SerializerFactory.createDefaultManagementSerializerAdapter()
+                        .deserialize("[{\"type\":\"CertificateSubjectIssuer\",\"subject\":\"CN=example.subject\"}]",
+                            Object.class, SerializerEncoding.JSON))),
+                com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available
@@ -620,8 +632,9 @@ public final class TargetsDeleteSamples {
      */
     public static void
         deleteATargetThatExtendsAVirtualMachineResource(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.targets().deleteWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
-            "Microsoft-Agent", com.azure.core.util.Context.NONE);
+        manager.targets()
+            .deleteWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", "Microsoft-Agent",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -644,8 +657,9 @@ public final class TargetsGetSamples {
      */
     public static void
         getATargetThatExtendsAVirtualMachineResource(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.targets().getWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
-            "Microsoft-Agent", com.azure.core.util.Context.NONE);
+        manager.targets()
+            .getWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", "Microsoft-Agent",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -668,8 +682,9 @@ public final class TargetsListSamples {
      */
     public static void
         listAllTargetsThatExtendAVirtualMachineResource(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.targets().list("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", null,
-            com.azure.core.util.Context.NONE);
+        manager.targets()
+            .list("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

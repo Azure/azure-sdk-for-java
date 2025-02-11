@@ -162,8 +162,9 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public <T> Response<T> createOrReplaceDigitalTwinWithResponse(String digitalTwinId, T digitalTwin, Class<T> clazz,
         CreateOrReplaceDigitalTwinOptions options, Context context) {
-        return digitalTwinsAsyncClient.createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz,
-            options, context).block();
+        return digitalTwinsAsyncClient
+            .createOrReplaceDigitalTwinWithResponse(digitalTwinId, digitalTwin, clazz, options, context)
+            .block();
     }
 
     /**
@@ -462,8 +463,10 @@ public final class DigitalTwinsClient {
     public <T> DigitalTwinsResponse<T> createOrReplaceRelationshipWithResponse(String digitalTwinId,
         String relationshipId, T relationship, Class<T> clazz, CreateOrReplaceRelationshipOptions options,
         Context context) {
-        return digitalTwinsAsyncClient.createOrReplaceRelationshipWithResponse(digitalTwinId, relationshipId,
-            relationship, clazz, options, context).block();
+        return digitalTwinsAsyncClient
+            .createOrReplaceRelationshipWithResponse(digitalTwinId, relationshipId, relationship, clazz, options,
+                context)
+            .block();
     }
 
     /**
@@ -607,8 +610,9 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DigitalTwinsResponse<Void> updateRelationshipWithResponse(String digitalTwinId, String relationshipId,
         JsonPatchDocument jsonPatch, UpdateRelationshipOptions options, Context context) {
-        return digitalTwinsAsyncClient.updateRelationshipWithResponse(digitalTwinId, relationshipId, jsonPatch, options,
-            context).block();
+        return digitalTwinsAsyncClient
+            .updateRelationshipWithResponse(digitalTwinId, relationshipId, jsonPatch, options, context)
+            .block();
     }
 
     /**
@@ -1142,8 +1146,9 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DigitalTwinsResponse<Void> updateComponentWithResponse(String digitalTwinId, String componentName,
         JsonPatchDocument jsonPatch, UpdateComponentOptions options, Context context) {
-        return digitalTwinsAsyncClient.updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, options,
-            context).block();
+        return digitalTwinsAsyncClient
+            .updateComponentWithResponse(digitalTwinId, componentName, jsonPatch, options, context)
+            .block();
     }
 
     //endregion Component APIs
@@ -1636,8 +1641,9 @@ public final class DigitalTwinsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> publishComponentTelemetryWithResponse(String digitalTwinId, String componentName,
         String messageId, Object payload, PublishComponentTelemetryOptions options, Context context) {
-        return digitalTwinsAsyncClient.publishComponentTelemetryWithResponse(digitalTwinId, componentName, messageId,
-            payload, options, context).block();
+        return digitalTwinsAsyncClient
+            .publishComponentTelemetryWithResponse(digitalTwinId, componentName, messageId, payload, options, context)
+            .block();
     }
 
     //endregion TelemetryAPIs

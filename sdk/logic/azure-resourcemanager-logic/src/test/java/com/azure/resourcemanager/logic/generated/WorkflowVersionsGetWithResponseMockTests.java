@@ -6,69 +6,41 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
+import com.azure.resourcemanager.logic.models.ParameterType;
 import com.azure.resourcemanager.logic.models.WorkflowState;
 import com.azure.resourcemanager.logic.models.WorkflowVersion;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkflowVersionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"createdTime\":\"2021-08-01T10:49:36Z\",\"changedTime\":\"2021-10-11T18:27:11Z\",\"state\":\"Deleted\",\"version\":\"ynbdvbuxljiqy\",\"accessEndpoint\":\"dmgrfhvewgv\",\"endpointsConfiguration\":{\"workflow\":{\"outgoingIpAddresses\":[{},{}],\"accessEndpointIpAddresses\":[{},{},{},{}]},\"connector\":{\"outgoingIpAddresses\":[{},{},{},{}],\"accessEndpointIpAddresses\":[{}]}},\"accessControl\":{\"triggers\":{\"allowedCallerIpAddresses\":[{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"ydlyszthpnwzpki\":{},\"efygdaumerkgmgqy\":{},\"ejqka\":{}}}},\"contents\":{\"allowedCallerIpAddresses\":[{},{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"xoihcqxexbksa\":{},\"nec\":{}}}},\"actions\":{\"allowedCallerIpAddresses\":[{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"jye\":{},\"pcg\":{},\"szwvooxieyyww\":{}}}},\"workflowManagement\":{\"allowedCallerIpAddresses\":[{},{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"cjfybkt\":{}}}}},\"sku\":{\"name\":\"Free\",\"plan\":{\"id\":\"vzzszcrwhrxoyvy\",\"name\":\"efpyjtwwaxx\",\"type\":\"rdsmra\"}},\"integrationAccount\":{\"id\":\"glpxmd\",\"name\":\"lbocecmnqcgbijyp\",\"type\":\"byrkxzebvxuzch\"},\"definition\":\"dataeogdkcrc\",\"parameters\":{\"mgefxkattpk\":{\"type\":\"Float\",\"value\":\"datamadlp\",\"metadata\":\"datarewhuqkic\",\"description\":\"yykmkelbqmn\"}}},\"location\":\"wldv\",\"tags\":{\"pnkvnuwjrxbbxkhv\":\"gxakgoptbjooqo\"},\"id\":\"qbxvtgloifmlbhli\",\"name\":\"g\",\"type\":\"imtzzyjhyiey\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Running\",\"createdTime\":\"2021-04-16T03:03:13Z\",\"changedTime\":\"2021-08-15T19:45:38Z\",\"state\":\"Disabled\",\"version\":\"umoqodkad\",\"accessEndpoint\":\"yibngqladywrxwh\",\"endpointsConfiguration\":{},\"accessControl\":{},\"sku\":{\"name\":\"Standard\"},\"integrationAccount\":{\"id\":\"uyem\",\"name\":\"wuowhlxlnwy\",\"type\":\"ouvblgmo\"},\"definition\":\"datakltrfow\",\"parameters\":{}},\"location\":\"rfmvlihcvjdrqcrj\",\"tags\":{\"lwyojbfqzdkfnj\":\"ftukvhd\"},\"id\":\"ixh\",\"name\":\"fratqxmbjroumzz\",\"type\":\"valqjrhuzgfxo\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        WorkflowVersion response = manager.workflowVersions()
+            .getWithResponse("wxabvxw", "agoeillsz", "gy", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        WorkflowVersion response =
-            manager
-                .workflowVersions()
-                .getWithResponse("xalybxawoijpo", "tblxpkkwjdjodqhy", "incnr", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("rfmvlihcvjdrqcrj", response.location());
-        Assertions.assertEquals("ftukvhd", response.tags().get("lwyojbfqzdkfnj"));
-        Assertions.assertEquals(WorkflowState.DISABLED, response.state());
-        Assertions.assertEquals("uyem", response.integrationAccount().id());
+        Assertions.assertEquals("wldv", response.location());
+        Assertions.assertEquals("gxakgoptbjooqo", response.tags().get("pnkvnuwjrxbbxkhv"));
+        Assertions.assertEquals(WorkflowState.DELETED, response.state());
+        Assertions.assertEquals("glpxmd", response.integrationAccount().id());
+        Assertions.assertEquals(ParameterType.FLOAT, response.parameters().get("mgefxkattpk").type());
+        Assertions.assertEquals("yykmkelbqmn", response.parameters().get("mgefxkattpk").description());
     }
 }

@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomerSubscriptionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomerSubscriptionProperties model =
-            BinaryData.fromString("{\"tenantId\":\"ctazakljlahbcryf\"}").toObject(CustomerSubscriptionProperties.class);
+        CustomerSubscriptionProperties model = BinaryData.fromString("{\"tenantId\":\"ctazakljlahbcryf\"}")
+            .toObject(CustomerSubscriptionProperties.class);
         Assertions.assertEquals("ctazakljlahbcryf", model.tenantId());
     }
 

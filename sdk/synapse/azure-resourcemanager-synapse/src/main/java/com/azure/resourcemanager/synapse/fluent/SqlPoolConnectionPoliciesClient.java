@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolConnectionPolicyInner;
 import com.azure.resourcemanager.synapse.models.ConnectionPolicyName;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolConnectionPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolConnectionPoliciesClient.
+ */
 public interface SqlPoolConnectionPoliciesClient {
     /**
      * Get a Sql pool's connection policy, which is used with table auditing
-     *
-     * <p>Get a Sql pool's connection policy, which is used with table auditing.
-     *
+     * 
+     * Get a Sql pool's connection policy, which is used with table auditing.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -29,18 +31,14 @@ public interface SqlPoolConnectionPoliciesClient {
      * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolConnectionPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ConnectionPolicyName connectionPolicyName,
-        Context context);
+    Response<SqlPoolConnectionPolicyInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, ConnectionPolicyName connectionPolicyName, Context context);
 
     /**
      * Get a Sql pool's connection policy, which is used with table auditing
-     *
-     * <p>Get a Sql pool's connection policy, which is used with table auditing.
-     *
+     * 
+     * Get a Sql pool's connection policy, which is used with table auditing.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -51,6 +49,6 @@ public interface SqlPoolConnectionPoliciesClient {
      * @return a Sql pool's connection policy, which is used with table auditing.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolConnectionPolicyInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, ConnectionPolicyName connectionPolicyName);
+    SqlPoolConnectionPolicyInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        ConnectionPolicyName connectionPolicyName);
 }

@@ -25,17 +25,12 @@ public class EnvironmentConfiguration {
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
-    private static final Set<String> DEFAULT_CONFIGURATIONS = new HashSet<>(Arrays.asList(
-        Configuration.PROPERTY_HTTP_PROXY,
-        Configuration.PROPERTY_HTTPS_PROXY,
-        Configuration.PROPERTY_LOG_LEVEL,
-        Configuration.PROPERTY_HTTP_LOG_DETAIL_LEVEL,
-        Configuration.PROPERTY_REQUEST_RETRY_COUNT,
-        Configuration.PROPERTY_REQUEST_CONNECT_TIMEOUT,
-        Configuration.PROPERTY_REQUEST_WRITE_TIMEOUT,
-        Configuration.PROPERTY_REQUEST_RESPONSE_TIMEOUT,
-        Configuration.PROPERTY_REQUEST_READ_TIMEOUT
-    ));
+    private static final Set<String> DEFAULT_CONFIGURATIONS
+        = new HashSet<>(Arrays.asList(Configuration.PROPERTY_HTTP_PROXY, Configuration.PROPERTY_HTTPS_PROXY,
+            Configuration.PROPERTY_LOG_LEVEL, Configuration.PROPERTY_HTTP_LOG_DETAIL_LEVEL,
+            Configuration.PROPERTY_REQUEST_RETRY_COUNT, Configuration.PROPERTY_REQUEST_CONNECT_TIMEOUT,
+            Configuration.PROPERTY_REQUEST_WRITE_TIMEOUT, Configuration.PROPERTY_REQUEST_RESPONSE_TIMEOUT,
+            Configuration.PROPERTY_REQUEST_READ_TIMEOUT));
 
     private static final EnvironmentConfiguration GLOBAL_CONFIGURATION = new EnvironmentConfiguration();
 
@@ -52,6 +47,8 @@ public class EnvironmentConfiguration {
 
     /**
      * Clones original configuration.
+     *
+     * @param original The original configuration to clone.
      */
     public EnvironmentConfiguration(EnvironmentConfiguration original) {
         this.explicitConfigurations = new ConcurrentHashMap<>(original.explicitConfigurations);
@@ -61,8 +58,12 @@ public class EnvironmentConfiguration {
 
     /**
      * Constructs a configuration containing mocked environment. Use this constructor for testing.
+     *
+     * @param environmentConfigurationSource The mocked environment configuration source.
+     * @param systemPropertiesConfigurationSource The mocked system properties configuration source.
      */
-    public EnvironmentConfiguration(ConfigurationSource systemPropertiesConfigurationSource, ConfigurationSource environmentConfigurationSource) {
+    public EnvironmentConfiguration(ConfigurationSource systemPropertiesConfigurationSource,
+        ConfigurationSource environmentConfigurationSource) {
         this.explicitConfigurations = new ConcurrentHashMap<>();
 
         if (environmentConfigurationSource == null) {
@@ -81,7 +82,8 @@ public class EnvironmentConfiguration {
             this.sysPropertiesConfigurations = new ConcurrentHashMap<>();
         } else {
             Map<String, String> fromSystemProperties = systemPropertiesConfigurationSource.getProperties(null);
-            Objects.requireNonNull(fromSystemProperties, "'systemPropertiesConfigurationSource.getProperties(null)' can't be null");
+            Objects.requireNonNull(fromSystemProperties,
+                "'systemPropertiesConfigurationSource.getProperties(null)' can't be null");
             this.sysPropertiesConfigurations = new ConcurrentHashMap<>(fromSystemProperties.size());
             for (Map.Entry<String, String> config : fromSystemProperties.entrySet()) {
                 this.sysPropertiesConfigurations.put(config.getKey(), Optional.ofNullable(config.getValue()));
@@ -157,7 +159,8 @@ public class EnvironmentConfiguration {
      * @return The configuration value from either the configuration store, runtime parameters, or environment
      * variable, in that order, if found, otherwise null.
      */
-    private String getOrLoad(String name, ConcurrentMap<String, Optional<String>> configurations, boolean loadFromSystemProperties) {
+    private String getOrLoad(String name, ConcurrentMap<String, Optional<String>> configurations,
+        boolean loadFromSystemProperties) {
         Optional<String> value = configurations.get(name);
         if (value != null) {
             return value.orElse(null);
@@ -173,7 +176,7 @@ public class EnvironmentConfiguration {
      * <p>
      * This will overwrite the previous configuration value if it existed.
      *
-     * @param name  Name of the configuration.
+     * @param name Name of the configuration.
      * @param value Value of the configuration.
      * @return The updated Configuration object.
      */

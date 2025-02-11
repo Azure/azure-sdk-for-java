@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProductTagResourceContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProductTagResourceContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"pxvpifdfaif\",\"name\":\"zyzeyuubeidsz\",\"description\":\"ytoithgygvfl\",\"terms\":\"vdihoynkrx\",\"subscriptionRequired\":false,\"approvalRequired\":true,\"subscriptionsLimit\":925532435,\"state\":\"published\"}")
-                .toObject(ProductTagResourceContractProperties.class);
+        ProductTagResourceContractProperties model = BinaryData.fromString(
+            "{\"id\":\"pxvpifdfaif\",\"name\":\"zyzeyuubeidsz\",\"description\":\"ytoithgygvfl\",\"terms\":\"vdihoynkrx\",\"subscriptionRequired\":false,\"approvalRequired\":true,\"subscriptionsLimit\":925532435,\"state\":\"published\"}")
+            .toObject(ProductTagResourceContractProperties.class);
         Assertions.assertEquals("ytoithgygvfl", model.description());
         Assertions.assertEquals("vdihoynkrx", model.terms());
         Assertions.assertEquals(false, model.subscriptionRequired());
@@ -29,9 +27,8 @@ public final class ProductTagResourceContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProductTagResourceContractProperties model =
-            new ProductTagResourceContractProperties()
-                .withDescription("ytoithgygvfl")
+        ProductTagResourceContractProperties model
+            = new ProductTagResourceContractProperties().withDescription("ytoithgygvfl")
                 .withTerms("vdihoynkrx")
                 .withSubscriptionRequired(false)
                 .withApprovalRequired(true)

@@ -27,8 +27,7 @@ public class ChatErrorResponseException extends HttpResponseException {
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public ChatErrorResponseException(
-        String message, HttpResponse response, ChatError value) {
+    public ChatErrorResponseException(String message, HttpResponse response, ChatError value) {
         super(message, response, value);
     }
 

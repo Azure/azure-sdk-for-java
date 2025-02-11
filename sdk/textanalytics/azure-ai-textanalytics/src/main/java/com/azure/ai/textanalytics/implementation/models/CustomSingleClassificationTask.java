@@ -86,14 +86,15 @@ public final class CustomSingleClassificationTask implements JsonSerializable<Cu
      */
     public static CustomSingleClassificationTask fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            CustomSingleClassificationTask deserializedCustomSingleClassificationTask = new CustomSingleClassificationTask();
+            CustomSingleClassificationTask deserializedCustomSingleClassificationTask
+                = new CustomSingleClassificationTask();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("parameters".equals(fieldName)) {
                     deserializedCustomSingleClassificationTask.parameters
-                            = CustomSingleLabelClassificationTaskParameters.fromJson(reader);
+                        = CustomSingleLabelClassificationTaskParameters.fromJson(reader);
                 } else if ("taskName".equals(fieldName)) {
                     deserializedCustomSingleClassificationTask.taskName = reader.getString();
                 } else {

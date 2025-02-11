@@ -81,7 +81,7 @@ public final class ActiveDirectory implements JsonSerializable<ActiveDirectory> 
     private List<String> administrators;
 
     /*
-     * kdc server IP addresses for the active directory machine. This optional parameter is used only while creating
+     * kdc server IP address for the active directory machine. This optional parameter is used only while creating
      * kerberos volume.
      */
     private String kdcIp;
@@ -375,7 +375,7 @@ public final class ActiveDirectory implements JsonSerializable<ActiveDirectory> 
     }
 
     /**
-     * Get the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is used
+     * Get the kdcIp property: kdc server IP address for the active directory machine. This optional parameter is used
      * only while creating kerberos volume.
      * 
      * @return the kdcIp value.
@@ -385,7 +385,7 @@ public final class ActiveDirectory implements JsonSerializable<ActiveDirectory> 
     }
 
     /**
-     * Set the kdcIp property: kdc server IP addresses for the active directory machine. This optional parameter is used
+     * Set the kdcIp property: kdc server IP address for the active directory machine. This optional parameter is used
      * only while creating kerberos volume.
      * 
      * @param kdcIp the kdcIp value to set.

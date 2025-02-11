@@ -57,16 +57,18 @@ public final class TasksStateTasksCustomSingleClassificationTasksItem extends Ta
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TasksStateTasksCustomSingleClassificationTasksItem.
      */
-    public static TasksStateTasksCustomSingleClassificationTasksItem fromJson(JsonReader jsonReader) throws IOException {
+    public static TasksStateTasksCustomSingleClassificationTasksItem fromJson(JsonReader jsonReader)
+        throws IOException {
         return jsonReader.readObject(reader -> {
-            TasksStateTasksCustomSingleClassificationTasksItem deserializedTasksStateTasksCustomSingleClassificationTasksItem =
-                    new TasksStateTasksCustomSingleClassificationTasksItem();
+            TasksStateTasksCustomSingleClassificationTasksItem deserializedTasksStateTasksCustomSingleClassificationTasksItem
+                = new TasksStateTasksCustomSingleClassificationTasksItem();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("results".equals(fieldName)) {
-                    deserializedTasksStateTasksCustomSingleClassificationTasksItem.results = CustomSingleClassificationResult.fromJson(reader);
+                    deserializedTasksStateTasksCustomSingleClassificationTasksItem.results
+                        = CustomSingleClassificationResult.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

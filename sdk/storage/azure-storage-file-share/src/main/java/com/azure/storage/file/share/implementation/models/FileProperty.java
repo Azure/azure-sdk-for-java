@@ -23,7 +23,9 @@ import javax.xml.stream.XMLStreamException;
 @Fluent
 public final class FileProperty implements XmlSerializable<FileProperty> {
     /*
-     * Content length of the file. This value may not be up-to-date since an SMB client may have modified the file locally. The value of Content-Length may not reflect that fact until the handle is closed or the op-lock is broken. To retrieve current property values, call Get File Properties.
+     * Content length of the file. This value may not be up-to-date since an SMB client may have modified the file
+     * locally. The value of Content-Length may not reflect that fact until the handle is closed or the op-lock is
+     * broken. To retrieve current property values, call Get File Properties.
      */
     private long contentLength;
 
@@ -243,7 +245,6 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of FileProperty if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the FileProperty.
      */
     public static FileProperty fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -258,7 +259,6 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of FileProperty if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the FileProperty.
      */
     public static FileProperty fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
@@ -272,16 +272,16 @@ public final class FileProperty implements XmlSerializable<FileProperty> {
                     deserializedFileProperty.contentLength = reader.getLongElement();
                 } else if ("CreationTime".equals(elementName.getLocalPart())) {
                     deserializedFileProperty.creationTime
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("LastAccessTime".equals(elementName.getLocalPart())) {
                     deserializedFileProperty.lastAccessTime
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("LastWriteTime".equals(elementName.getLocalPart())) {
                     deserializedFileProperty.lastWriteTime
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("ChangeTime".equals(elementName.getLocalPart())) {
                     deserializedFileProperty.changeTime
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("Last-Modified".equals(elementName.getLocalPart())) {
                     deserializedFileProperty.lastModified = reader.getNullableElement(DateTimeRfc1123::new);
                 } else if ("Etag".equals(elementName.getLocalPart())) {

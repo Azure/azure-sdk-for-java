@@ -5,26 +5,32 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ProductEntityBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.ProductState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters supplied to the Update Product operation. */
+/**
+ * Parameters supplied to the Update Product operation.
+ */
 @Fluent
 public final class ProductUpdateProperties extends ProductEntityBaseParameters {
     /*
      * Product name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of ProductUpdateProperties class. */
+    /**
+     * Creates an instance of ProductUpdateProperties class.
+     */
     public ProductUpdateProperties() {
     }
 
     /**
      * Get the displayName property: Product name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -33,7 +39,7 @@ public final class ProductUpdateProperties extends ProductEntityBaseParameters {
 
     /**
      * Set the displayName property: Product name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ProductUpdateProperties object itself.
      */
@@ -42,42 +48,54 @@ public final class ProductUpdateProperties extends ProductEntityBaseParameters {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductUpdateProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductUpdateProperties withTerms(String terms) {
         super.withTerms(terms);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductUpdateProperties withSubscriptionRequired(Boolean subscriptionRequired) {
         super.withSubscriptionRequired(subscriptionRequired);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductUpdateProperties withApprovalRequired(Boolean approvalRequired) {
         super.withApprovalRequired(approvalRequired);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductUpdateProperties withSubscriptionsLimit(Integer subscriptionsLimit) {
         super.withSubscriptionsLimit(subscriptionsLimit);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProductUpdateProperties withState(ProductState state) {
         super.withState(state);
@@ -86,11 +104,66 @@ public final class ProductUpdateProperties extends ProductEntityBaseParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("terms", terms());
+        jsonWriter.writeBooleanField("subscriptionRequired", subscriptionRequired());
+        jsonWriter.writeBooleanField("approvalRequired", approvalRequired());
+        jsonWriter.writeNumberField("subscriptionsLimit", subscriptionsLimit());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProductUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProductUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProductUpdateProperties.
+     */
+    public static ProductUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProductUpdateProperties deserializedProductUpdateProperties = new ProductUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedProductUpdateProperties.withDescription(reader.getString());
+                } else if ("terms".equals(fieldName)) {
+                    deserializedProductUpdateProperties.withTerms(reader.getString());
+                } else if ("subscriptionRequired".equals(fieldName)) {
+                    deserializedProductUpdateProperties
+                        .withSubscriptionRequired(reader.getNullable(JsonReader::getBoolean));
+                } else if ("approvalRequired".equals(fieldName)) {
+                    deserializedProductUpdateProperties
+                        .withApprovalRequired(reader.getNullable(JsonReader::getBoolean));
+                } else if ("subscriptionsLimit".equals(fieldName)) {
+                    deserializedProductUpdateProperties.withSubscriptionsLimit(reader.getNullable(JsonReader::getInt));
+                } else if ("state".equals(fieldName)) {
+                    deserializedProductUpdateProperties.withState(ProductState.fromString(reader.getString()));
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedProductUpdateProperties.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProductUpdateProperties;
+        });
     }
 }

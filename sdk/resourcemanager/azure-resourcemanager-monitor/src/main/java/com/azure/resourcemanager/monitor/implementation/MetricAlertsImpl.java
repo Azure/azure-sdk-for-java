@@ -11,9 +11,8 @@ import com.azure.resourcemanager.monitor.fluent.MetricAlertsClient;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link MetricAlerts}. */
-class MetricAlertsImpl
-    extends TopLevelModifiableResourcesImpl<
-        MetricAlert, MetricAlertImpl, MetricAlertResourceInner, MetricAlertsClient, MonitorManager>
+class MetricAlertsImpl extends
+    TopLevelModifiableResourcesImpl<MetricAlert, MetricAlertImpl, MetricAlertResourceInner, MetricAlertsClient, MonitorManager>
     implements MetricAlerts {
 
     MetricAlertsImpl(final MonitorManager monitorManager) {

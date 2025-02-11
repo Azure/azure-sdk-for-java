@@ -17,11 +17,11 @@ public final class UpdateIoTSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateIoTSecuritySolutionProperties model = BinaryData.fromString(
-            "{\"userDefinedResources\":{\"query\":\"qqagwwr\",\"querySubscriptions\":[\"omzisglrrcz\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_PermissiveFirewallPolicy\",\"name\":\"ltn\",\"status\":\"Disabled\"}]}")
+            "{\"userDefinedResources\":{\"query\":\"xw\",\"querySubscriptions\":[\"zk\",\"foqreyfkzik\",\"jawneaiv\"]},\"recommendationsConfiguration\":[{\"recommendationType\":\"IoT_Baseline\",\"name\":\"lpcirelsf\",\"status\":\"Disabled\"},{\"recommendationType\":\"IoT_IPFilter_PermissiveRule\",\"name\":\"wabfatkl\",\"status\":\"Enabled\"},{\"recommendationType\":\"IoT_VulnerableTLSCipherSuite\",\"name\":\"jhwuaanozjos\",\"status\":\"Disabled\"}]}")
             .toObject(UpdateIoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("qqagwwr", model.userDefinedResources().query());
-        Assertions.assertEquals("omzisglrrcz", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
+        Assertions.assertEquals("xw", model.userDefinedResources().query());
+        Assertions.assertEquals("zk", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_BASELINE,
             model.recommendationsConfiguration().get(0).recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());
@@ -30,15 +30,21 @@ public final class UpdateIoTSecuritySolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateIoTSecuritySolutionProperties model = new UpdateIoTSecuritySolutionProperties()
-            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("qqagwwr")
-                .withQuerySubscriptions(Arrays.asList("omzisglrrcz")))
-            .withRecommendationsConfiguration(Arrays.asList(new RecommendationConfigurationProperties()
-                .withRecommendationType(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY)
-                .withStatus(RecommendationConfigStatus.DISABLED)));
+            .withUserDefinedResources(new UserDefinedResourcesProperties().withQuery("xw")
+                .withQuerySubscriptions(Arrays.asList("zk", "foqreyfkzik", "jawneaiv")))
+            .withRecommendationsConfiguration(Arrays.asList(
+                new RecommendationConfigurationProperties().withRecommendationType(RecommendationType.IO_T_BASELINE)
+                    .withStatus(RecommendationConfigStatus.DISABLED),
+                new RecommendationConfigurationProperties()
+                    .withRecommendationType(RecommendationType.IO_T_IPFILTER_PERMISSIVE_RULE)
+                    .withStatus(RecommendationConfigStatus.ENABLED),
+                new RecommendationConfigurationProperties()
+                    .withRecommendationType(RecommendationType.IO_T_VULNERABLE_TLSCIPHER_SUITE)
+                    .withStatus(RecommendationConfigStatus.DISABLED)));
         model = BinaryData.fromObject(model).toObject(UpdateIoTSecuritySolutionProperties.class);
-        Assertions.assertEquals("qqagwwr", model.userDefinedResources().query());
-        Assertions.assertEquals("omzisglrrcz", model.userDefinedResources().querySubscriptions().get(0));
-        Assertions.assertEquals(RecommendationType.IO_T_PERMISSIVE_FIREWALL_POLICY,
+        Assertions.assertEquals("xw", model.userDefinedResources().query());
+        Assertions.assertEquals("zk", model.userDefinedResources().querySubscriptions().get(0));
+        Assertions.assertEquals(RecommendationType.IO_T_BASELINE,
             model.recommendationsConfiguration().get(0).recommendationType());
         Assertions.assertEquals(RecommendationConfigStatus.DISABLED,
             model.recommendationsConfiguration().get(0).status());

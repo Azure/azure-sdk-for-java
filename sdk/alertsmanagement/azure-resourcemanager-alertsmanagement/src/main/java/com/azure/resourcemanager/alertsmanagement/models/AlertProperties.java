@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Alert property bag. */
+/**
+ * Alert property bag.
+ */
 @Fluent
-public final class AlertProperties {
+public final class AlertProperties implements JsonSerializable<AlertProperties> {
     /*
      * This object contains consistent fields across different monitor services.
      */
-    @JsonProperty(value = "essentials")
     private Essentials essentials;
 
     /*
      * Information specific to the monitor service that gives more contextual details about the alert.
      */
-    @JsonProperty(value = "context", access = JsonProperty.Access.WRITE_ONLY)
     private Object context;
 
     /*
      * Config which would be used for displaying the data in portal.
      */
-    @JsonProperty(value = "egressConfig", access = JsonProperty.Access.WRITE_ONLY)
     private Object egressConfig;
 
     /**
+     * Creates an instance of AlertProperties class.
+     */
+    public AlertProperties() {
+    }
+
+    /**
      * Get the essentials property: This object contains consistent fields across different monitor services.
-     *
+     * 
      * @return the essentials value.
      */
     public Essentials essentials() {
@@ -39,7 +48,7 @@ public final class AlertProperties {
 
     /**
      * Set the essentials property: This object contains consistent fields across different monitor services.
-     *
+     * 
      * @param essentials the essentials value to set.
      * @return the AlertProperties object itself.
      */
@@ -51,7 +60,7 @@ public final class AlertProperties {
     /**
      * Get the context property: Information specific to the monitor service that gives more contextual details about
      * the alert.
-     *
+     * 
      * @return the context value.
      */
     public Object context() {
@@ -60,7 +69,7 @@ public final class AlertProperties {
 
     /**
      * Get the egressConfig property: Config which would be used for displaying the data in portal.
-     *
+     * 
      * @return the egressConfig value.
      */
     public Object egressConfig() {
@@ -69,12 +78,52 @@ public final class AlertProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (essentials() != null) {
             essentials().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("essentials", this.essentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AlertProperties.
+     */
+    public static AlertProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertProperties deserializedAlertProperties = new AlertProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("essentials".equals(fieldName)) {
+                    deserializedAlertProperties.essentials = Essentials.fromJson(reader);
+                } else if ("context".equals(fieldName)) {
+                    deserializedAlertProperties.context = reader.readUntyped();
+                } else if ("egressConfig".equals(fieldName)) {
+                    deserializedAlertProperties.egressConfig = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertProperties;
+        });
     }
 }

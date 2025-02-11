@@ -9,27 +9,28 @@ import com.azure.resourcemanager.loganalytics.models.ColumnTypeEnum;
 import com.azure.resourcemanager.loganalytics.models.Schema;
 import java.util.Arrays;
 
-/** Samples for Tables CreateOrUpdate. */
+/**
+ * Samples for Tables CreateOrUpdate.
+ */
 public final class TablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/TablesUpsert.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * TablesUpsert.json
      */
     /**
      * Sample code: TablesUpsert.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void tablesUpsert(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .tables()
+        manager.tables()
             .define("AzureNetworkFlow")
             .withExistingWorkspace("oiautorest6685", "oiautorest6685")
             .withRetentionInDays(45)
             .withTotalRetentionInDays(70)
-            .withSchema(
-                new Schema()
-                    .withName("AzureNetworkFlow")
-                    .withColumns(Arrays.asList(new Column().withName("MyNewColumn").withType(ColumnTypeEnum.GUID))))
+            .withSchema(new Schema().withName("AzureNetworkFlow")
+                .withColumns(Arrays.asList(new Column().withName("MyNewColumn").withType(ColumnTypeEnum.GUID))))
             .create();
     }
 }

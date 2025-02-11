@@ -6,39 +6,41 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.PlmnId;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.PublicLandMobileNetwork;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Mobile network properties.
  */
 @Fluent
-public final class MobileNetworkPropertiesFormat {
+public final class MobileNetworkPropertiesFormat implements JsonSerializable<MobileNetworkPropertiesFormat> {
     /*
      * The provisioning state of the mobile network resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * The unique public land mobile network identifier for the network. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
+     * The unique public land mobile network identifier for the network. If both 'publicLandMobileNetworks' and
+     * 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
      */
-    @JsonProperty(value = "publicLandMobileNetworkIdentifier", required = true)
     private PlmnId publicLandMobileNetworkIdentifier;
 
     /*
-     * A list of public land mobile networks including their identifiers. If both 'publicLandMobileNetworks' and 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
+     * A list of public land mobile networks including their identifiers. If both 'publicLandMobileNetworks' and
+     * 'publicLandMobileNetworkIdentifier' are specified, then the 'publicLandMobileNetworks' will take precedence.
      */
-    @JsonProperty(value = "publicLandMobileNetworks")
     private List<PublicLandMobileNetwork> publicLandMobileNetworks;
 
     /*
      * The mobile network resource identifier
      */
-    @JsonProperty(value = "serviceKey", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceKey;
 
     /**
@@ -134,4 +136,54 @@ public final class MobileNetworkPropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MobileNetworkPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("publicLandMobileNetworkIdentifier", this.publicLandMobileNetworkIdentifier);
+        jsonWriter.writeArrayField("publicLandMobileNetworks", this.publicLandMobileNetworks,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MobileNetworkPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MobileNetworkPropertiesFormat if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MobileNetworkPropertiesFormat.
+     */
+    public static MobileNetworkPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MobileNetworkPropertiesFormat deserializedMobileNetworkPropertiesFormat
+                = new MobileNetworkPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicLandMobileNetworkIdentifier".equals(fieldName)) {
+                    deserializedMobileNetworkPropertiesFormat.publicLandMobileNetworkIdentifier
+                        = PlmnId.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedMobileNetworkPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("publicLandMobileNetworks".equals(fieldName)) {
+                    List<PublicLandMobileNetwork> publicLandMobileNetworks
+                        = reader.readArray(reader1 -> PublicLandMobileNetwork.fromJson(reader1));
+                    deserializedMobileNetworkPropertiesFormat.publicLandMobileNetworks = publicLandMobileNetworks;
+                } else if ("serviceKey".equals(fieldName)) {
+                    deserializedMobileNetworkPropertiesFormat.serviceKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMobileNetworkPropertiesFormat;
+        });
+    }
 }

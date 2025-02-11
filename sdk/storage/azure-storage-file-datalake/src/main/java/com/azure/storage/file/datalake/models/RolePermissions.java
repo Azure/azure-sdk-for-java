@@ -188,6 +188,8 @@ public class RolePermissions {
     }
 
     /**
+     * Gets the read permission status.
+     *
      * @return the read permission status
      */
     public boolean hasReadPermission() {
@@ -195,6 +197,8 @@ public class RolePermissions {
     }
 
     /**
+     * Gets the write permission status.
+     *
      * @return the write permission status
      */
     public boolean hasWritePermission() {
@@ -202,6 +206,8 @@ public class RolePermissions {
     }
 
     /**
+     * Gets the execute permission status.
+     *
      * @return the execute permission status
      */
     public boolean hasExecutePermission() {

@@ -63,7 +63,6 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(

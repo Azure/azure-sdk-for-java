@@ -11,16 +11,15 @@ import com.azure.resourcemanager.datadog.models.CreateResourceSupportedPropertie
 public final class CreateResourceSupportedResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateResourceSupportedResponseInner model =
-            BinaryData
-                .fromString("{\"properties\":{\"name\":\"odmailzyd\",\"creationSupported\":false}}")
+        CreateResourceSupportedResponseInner model
+            = BinaryData.fromString("{\"properties\":{\"name\":\"odmailzyd\",\"creationSupported\":false}}")
                 .toObject(CreateResourceSupportedResponseInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateResourceSupportedResponseInner model =
-            new CreateResourceSupportedResponseInner().withProperties(new CreateResourceSupportedProperties());
+        CreateResourceSupportedResponseInner model
+            = new CreateResourceSupportedResponseInner().withProperties(new CreateResourceSupportedProperties());
         model = BinaryData.fromObject(model).toObject(CreateResourceSupportedResponseInner.class);
     }
 }

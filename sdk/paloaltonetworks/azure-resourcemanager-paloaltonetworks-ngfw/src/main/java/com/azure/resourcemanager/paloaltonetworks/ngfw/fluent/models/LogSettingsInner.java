@@ -5,57 +5,54 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ApplicationInsights;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LogDestination;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LogOption;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LogType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Log Settings for Firewall.
  */
 @Fluent
-public final class LogSettingsInner {
+public final class LogSettingsInner implements JsonSerializable<LogSettingsInner> {
     /*
      * One of possible log type
      */
-    @JsonProperty(value = "logType")
     private LogType logType;
 
     /*
      * Log option SAME/INDIVIDUAL
      */
-    @JsonProperty(value = "logOption")
     private LogOption logOption;
 
     /*
      * Application Insight details
      */
-    @JsonProperty(value = "applicationInsights")
     private ApplicationInsights applicationInsights;
 
     /*
      * Common destination configurations
      */
-    @JsonProperty(value = "commonDestination")
     private LogDestination commonDestination;
 
     /*
      * Traffic destination configurations
      */
-    @JsonProperty(value = "trafficLogDestination")
     private LogDestination trafficLogDestination;
 
     /*
      * Threat destination configurations
      */
-    @JsonProperty(value = "threatLogDestination")
     private LogDestination threatLogDestination;
 
     /*
      * Decrypt destination configurations
      */
-    @JsonProperty(value = "decryptLogDestination")
     private LogDestination decryptLogDestination;
 
     /**
@@ -225,5 +222,59 @@ public final class LogSettingsInner {
         if (decryptLogDestination() != null) {
             decryptLogDestination().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("logType", this.logType == null ? null : this.logType.toString());
+        jsonWriter.writeStringField("logOption", this.logOption == null ? null : this.logOption.toString());
+        jsonWriter.writeJsonField("applicationInsights", this.applicationInsights);
+        jsonWriter.writeJsonField("commonDestination", this.commonDestination);
+        jsonWriter.writeJsonField("trafficLogDestination", this.trafficLogDestination);
+        jsonWriter.writeJsonField("threatLogDestination", this.threatLogDestination);
+        jsonWriter.writeJsonField("decryptLogDestination", this.decryptLogDestination);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogSettingsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogSettingsInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LogSettingsInner.
+     */
+    public static LogSettingsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogSettingsInner deserializedLogSettingsInner = new LogSettingsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logType".equals(fieldName)) {
+                    deserializedLogSettingsInner.logType = LogType.fromString(reader.getString());
+                } else if ("logOption".equals(fieldName)) {
+                    deserializedLogSettingsInner.logOption = LogOption.fromString(reader.getString());
+                } else if ("applicationInsights".equals(fieldName)) {
+                    deserializedLogSettingsInner.applicationInsights = ApplicationInsights.fromJson(reader);
+                } else if ("commonDestination".equals(fieldName)) {
+                    deserializedLogSettingsInner.commonDestination = LogDestination.fromJson(reader);
+                } else if ("trafficLogDestination".equals(fieldName)) {
+                    deserializedLogSettingsInner.trafficLogDestination = LogDestination.fromJson(reader);
+                } else if ("threatLogDestination".equals(fieldName)) {
+                    deserializedLogSettingsInner.threatLogDestination = LogDestination.fromJson(reader);
+                } else if ("decryptLogDestination".equals(fieldName)) {
+                    deserializedLogSettingsInner.decryptLogDestination = LogDestination.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogSettingsInner;
+        });
     }
 }

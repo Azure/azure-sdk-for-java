@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackOperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in OperationStatusesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationStatusesClient.
+ */
 public interface OperationStatusesClient {
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -29,19 +31,14 @@ public interface OperationStatusesClient {
      * @return asset track operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AssetTrackOperationStatusInner> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        String operationId,
-        Context context);
+    Response<AssetTrackOperationStatusInner> getWithResponse(String resourceGroupName, String accountName,
+        String assetName, String trackName, String operationId, Context context);
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -53,6 +50,6 @@ public interface OperationStatusesClient {
      * @return asset track operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AssetTrackOperationStatusInner get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
+    AssetTrackOperationStatusInner get(String resourceGroupName, String accountName, String assetName, String trackName,
+        String operationId);
 }

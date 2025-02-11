@@ -15,6 +15,7 @@ import com.azure.resourcemanager.compute.models.GalleryImageVersionStorageProfil
 import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.ImageVersionSecurityProfile;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
+import com.azure.resourcemanager.compute.models.ValidationsProfile;
 import java.io.IOException;
 import java.util.Map;
 
@@ -29,9 +30,9 @@ public final class GalleryImageVersionInner extends Resource {
     private GalleryImageVersionProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -39,9 +40,9 @@ public final class GalleryImageVersionInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of GalleryImageVersionInner class.
@@ -59,13 +60,13 @@ public final class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -79,13 +80,13 @@ public final class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -214,6 +215,38 @@ public final class GalleryImageVersionInner extends Resource {
         }
         this.innerProperties().withSecurityProfile(securityProfile);
         return this;
+    }
+
+    /**
+     * Get the restore property: Indicates if this is a soft-delete resource restoration request.
+     * 
+     * @return the restore value.
+     */
+    public Boolean restore() {
+        return this.innerProperties() == null ? null : this.innerProperties().restore();
+    }
+
+    /**
+     * Set the restore property: Indicates if this is a soft-delete resource restoration request.
+     * 
+     * @param restore the restore value to set.
+     * @return the GalleryImageVersionInner object itself.
+     */
+    public GalleryImageVersionInner withRestore(Boolean restore) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GalleryImageVersionProperties();
+        }
+        this.innerProperties().withRestore(restore);
+        return this;
+    }
+
+    /**
+     * Get the validationsProfile property: This is the validations profile of a Gallery Image Version.
+     * 
+     * @return the validationsProfile value.
+     */
+    public ValidationsProfile validationsProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().validationsProfile();
     }
 
     /**

@@ -22,8 +22,11 @@ public final class WorkspacesCreateSamples {
      */
     public static void
         workspacesCreateMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().define("E___-3").withRegion("jjwbseilitjgdrhbvvkwviqj")
-            .withExistingResourceGroup("rgworkspaces").create();
+        manager.workspaces()
+            .define("E___-3")
+            .withRegion("jjwbseilitjgdrhbvvkwviqj")
+            .withExistingResourceGroup("rgworkspaces")
+            .create();
     }
 
     /*
@@ -37,8 +40,12 @@ public final class WorkspacesCreateSamples {
      */
     public static void
         workspacesCreateMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().define("E___-3").withRegion("jjwbseilitjgdrhbvvkwviqj")
-            .withExistingResourceGroup("rgworkspaces").withTags(mapOf("key450", "fakeTokenPlaceholder")).create();
+        manager.workspaces()
+            .define("E___-3")
+            .withRegion("jjwbseilitjgdrhbvvkwviqj")
+            .withExistingResourceGroup("rgworkspaces")
+            .withTags(mapOf("key450", "fakeTokenPlaceholder"))
+            .create();
     }
 
     // Use "Map.of" if available

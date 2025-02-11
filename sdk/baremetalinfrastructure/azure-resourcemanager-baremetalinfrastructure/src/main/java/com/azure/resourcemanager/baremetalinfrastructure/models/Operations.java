@@ -7,13 +7,13 @@ package com.azure.resourcemanager.baremetalinfrastructure.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
-     * Lists all of the available consumption REST API operations.
-     *
-     * <p>Gets a list of AzureBareMetal management operations.
-     *
+     * Gets a list of AzureBareMetal management operations.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of AzureBareMetal management operations as paginated response with {@link PagedIterable}.
@@ -21,10 +21,8 @@ public interface Operations {
     PagedIterable<Operation> list();
 
     /**
-     * Lists all of the available consumption REST API operations.
-     *
-     * <p>Gets a list of AzureBareMetal management operations.
-     *
+     * Gets a list of AzureBareMetal management operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

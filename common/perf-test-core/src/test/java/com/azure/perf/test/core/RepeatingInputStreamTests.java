@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RepeatingInputStreamTests {
     @ParameterizedTest
-    @ValueSource(ints = {100, 2 * 1024 * 1024})
+    @ValueSource(ints = { 100, 2 * 1024 * 1024 })
     public void generateRandomStream(int length) throws IOException {
         RepeatingInputStream stream = new RepeatingInputStream(length);
         assertEquals(length, stream.available());
@@ -33,10 +33,11 @@ public class RepeatingInputStreamTests {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {10, 100, 2 * 1024 * 1024})
+    @ValueSource(ints = { 10, 100, 2 * 1024 * 1024 })
     public void generateStreamFromSource(int length) throws IOException {
         String bufferStr = "Sample content - we'll repeat this string.";
-        String expected = String.join("", Collections.nCopies((length/bufferStr.length()) + 1, bufferStr)).substring(0, length);
+        String expected
+            = String.join("", Collections.nCopies((length / bufferStr.length()) + 1, bufferStr)).substring(0, length);
 
         RepeatingInputStream stream = new RepeatingInputStream(BinaryData.fromString(bufferStr), length);
         assertEquals(length, stream.available());
@@ -61,9 +62,8 @@ public class RepeatingInputStreamTests {
 
     private void assertContentEquals(byte[] expected, InputStream actual, int step) throws IOException {
         byte[] buffer = readAllBytes(actual, step, expected.length);
-        for (int i = 0; i < expected.length; i ++) {
+        for (int i = 0; i < expected.length; i++) {
             assertEquals(expected[i], buffer[i]);
         }
     }
 }
-

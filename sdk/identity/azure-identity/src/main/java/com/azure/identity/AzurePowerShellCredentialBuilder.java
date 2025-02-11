@@ -73,8 +73,8 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
      */
     @SuppressWarnings("unchecked")
     public AzurePowerShellCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -89,15 +89,16 @@ public class AzurePowerShellCredentialBuilder extends CredentialBuilderBase<Azur
      */
     @SuppressWarnings("unchecked")
     public AzurePowerShellCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 
-     /**
-     * Creates a new {@link AzurePowerShellCredential} with the current configurations.
-     *
-     * @return a {@link AzurePowerShellCredential} with the current configurations.
-     */
+    /**
+    * Creates a new {@link AzurePowerShellCredential} with the current configurations.
+    *
+    * @return a {@link AzurePowerShellCredential} with the current configurations.
+    */
     public AzurePowerShellCredential build() {
         return new AzurePowerShellCredential(tenantId, identityClientOptions);
     }

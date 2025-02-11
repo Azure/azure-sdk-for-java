@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of signal the alert is based on, which could be metrics, logs or activity logs. */
+/**
+ * The type of signal the alert is based on, which could be metrics, logs or activity logs.
+ */
 public final class SignalType extends ExpandableStringEnum<SignalType> {
-    /** Static value Metric for SignalType. */
+    /**
+     * Static value Metric for SignalType.
+     */
     public static final SignalType METRIC = fromString("Metric");
 
-    /** Static value Log for SignalType. */
+    /**
+     * Static value Log for SignalType.
+     */
     public static final SignalType LOG = fromString("Log");
 
-    /** Static value Unknown for SignalType. */
+    /**
+     * Static value Unknown for SignalType.
+     */
     public static final SignalType UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of SignalType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SignalType() {
+    }
+
+    /**
      * Creates or finds a SignalType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SignalType.
      */
-    @JsonCreator
     public static SignalType fromString(String name) {
         return fromString(name, SignalType.class);
     }
 
     /**
      * Gets known SignalType values.
-     *
+     * 
      * @return known SignalType values.
      */
     public static Collection<SignalType> values() {

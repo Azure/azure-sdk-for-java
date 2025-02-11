@@ -13,19 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureLargeStorageInstanceTagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureLargeStorageInstanceTagsUpdate model = BinaryData
-            .fromString(
-                "{\"tags\":{\"cwif\":\"hxdeoejz\",\"ishc\":\"jttgzf\",\"eyeam\":\"khaj\",\"agalpbuxwgipwhon\":\"p\"}}")
-            .toObject(AzureLargeStorageInstanceTagsUpdate.class);
-        Assertions.assertEquals("hxdeoejz", model.tags().get("cwif"));
+        AzureLargeStorageInstanceTagsUpdate model
+            = BinaryData.fromString("{\"tags\":{\"jj\":\"pqyegualhbxxh\",\"ynpwlbj\":\"zvdudgwdslfhotwm\"}}")
+                .toObject(AzureLargeStorageInstanceTagsUpdate.class);
+        Assertions.assertEquals("pqyegualhbxxh", model.tags().get("jj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureLargeStorageInstanceTagsUpdate model = new AzureLargeStorageInstanceTagsUpdate()
-            .withTags(mapOf("cwif", "hxdeoejz", "ishc", "jttgzf", "eyeam", "khaj", "agalpbuxwgipwhon", "p"));
+            .withTags(mapOf("jj", "pqyegualhbxxh", "ynpwlbj", "zvdudgwdslfhotwm"));
         model = BinaryData.fromObject(model).toObject(AzureLargeStorageInstanceTagsUpdate.class);
-        Assertions.assertEquals("hxdeoejz", model.tags().get("cwif"));
+        Assertions.assertEquals("pqyegualhbxxh", model.tags().get("jj"));
     }
 
     // Use "Map.of" if available

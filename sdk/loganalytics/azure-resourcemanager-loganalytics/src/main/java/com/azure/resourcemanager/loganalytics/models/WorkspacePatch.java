@@ -5,41 +5,63 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.loganalytics.fluent.models.WorkspaceProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The top level Workspace resource container. */
+/**
+ * The top level Workspace resource container.
+ */
 @Fluent
 public final class WorkspacePatch extends AzureEntityResource {
     /*
      * Workspace properties.
      */
-    @JsonProperty(value = "properties")
     private WorkspaceProperties innerProperties;
 
     /*
      * The identity of the resource.
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * Resource tags. Optional.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of WorkspacePatch class. */
+    /*
+     * Resource Etag.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WorkspacePatch class.
+     */
     public WorkspacePatch() {
     }
 
     /**
      * Get the innerProperties property: Workspace properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkspaceProperties innerProperties() {
@@ -48,7 +70,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -57,7 +79,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the WorkspacePatch object itself.
      */
@@ -68,7 +90,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the tags property: Resource tags. Optional.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -77,7 +99,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Set the tags property: Resource tags. Optional.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WorkspacePatch object itself.
      */
@@ -87,8 +109,48 @@ public final class WorkspacePatch extends AzureEntityResource {
     }
 
     /**
+     * Get the etag property: Resource Etag.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the workspace.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkspaceEntityStatus provisioningState() {
@@ -97,7 +159,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the customerId property: This is a read-only property. Represents the ID associated with the workspace.
-     *
+     * 
      * @return the customerId value.
      */
     public String customerId() {
@@ -106,7 +168,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the sku property: The SKU of the workspace.
-     *
+     * 
      * @return the sku value.
      */
     public WorkspaceSku sku() {
@@ -115,7 +177,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Set the sku property: The SKU of the workspace.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the WorkspacePatch object itself.
      */
@@ -130,7 +192,7 @@ public final class WorkspacePatch extends AzureEntityResource {
     /**
      * Get the retentionInDays property: The workspace data retention in days. Allowed values are per pricing plan. See
      * pricing tiers documentation for details.
-     *
+     * 
      * @return the retentionInDays value.
      */
     public Integer retentionInDays() {
@@ -140,7 +202,7 @@ public final class WorkspacePatch extends AzureEntityResource {
     /**
      * Set the retentionInDays property: The workspace data retention in days. Allowed values are per pricing plan. See
      * pricing tiers documentation for details.
-     *
+     * 
      * @param retentionInDays the retentionInDays value to set.
      * @return the WorkspacePatch object itself.
      */
@@ -154,7 +216,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the workspaceCapping property: The daily volume cap for ingestion.
-     *
+     * 
      * @return the workspaceCapping value.
      */
     public WorkspaceCapping workspaceCapping() {
@@ -163,7 +225,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Set the workspaceCapping property: The daily volume cap for ingestion.
-     *
+     * 
      * @param workspaceCapping the workspaceCapping value to set.
      * @return the WorkspacePatch object itself.
      */
@@ -177,7 +239,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the createdDate property: Workspace creation date.
-     *
+     * 
      * @return the createdDate value.
      */
     public String createdDate() {
@@ -186,7 +248,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the modifiedDate property: Workspace modification date.
-     *
+     * 
      * @return the modifiedDate value.
      */
     public String modifiedDate() {
@@ -195,7 +257,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the publicNetworkAccessForIngestion property: The network access type for accessing Log Analytics ingestion.
-     *
+     * 
      * @return the publicNetworkAccessForIngestion value.
      */
     public PublicNetworkAccessType publicNetworkAccessForIngestion() {
@@ -204,7 +266,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Set the publicNetworkAccessForIngestion property: The network access type for accessing Log Analytics ingestion.
-     *
+     * 
      * @param publicNetworkAccessForIngestion the publicNetworkAccessForIngestion value to set.
      * @return the WorkspacePatch object itself.
      */
@@ -218,7 +280,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the publicNetworkAccessForQuery property: The network access type for accessing Log Analytics query.
-     *
+     * 
      * @return the publicNetworkAccessForQuery value.
      */
     public PublicNetworkAccessType publicNetworkAccessForQuery() {
@@ -227,7 +289,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Set the publicNetworkAccessForQuery property: The network access type for accessing Log Analytics query.
-     *
+     * 
      * @param publicNetworkAccessForQuery the publicNetworkAccessForQuery value to set.
      * @return the WorkspacePatch object itself.
      */
@@ -241,7 +303,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the forceCmkForQuery property: Indicates whether customer managed storage is mandatory for query management.
-     *
+     * 
      * @return the forceCmkForQuery value.
      */
     public Boolean forceCmkForQuery() {
@@ -250,7 +312,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Set the forceCmkForQuery property: Indicates whether customer managed storage is mandatory for query management.
-     *
+     * 
      * @param forceCmkForQuery the forceCmkForQuery value to set.
      * @return the WorkspacePatch object itself.
      */
@@ -264,7 +326,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the privateLinkScopedResources property: List of linked private link scope resources.
-     *
+     * 
      * @return the privateLinkScopedResources value.
      */
     public List<PrivateLinkScopedResource> privateLinkScopedResources() {
@@ -273,7 +335,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Get the features property: Workspace features.
-     *
+     * 
      * @return the features value.
      */
     public WorkspaceFeatures features() {
@@ -282,7 +344,7 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Set the features property: Workspace features.
-     *
+     * 
      * @param features the features value to set.
      * @return the WorkspacePatch object itself.
      */
@@ -298,7 +360,7 @@ public final class WorkspacePatch extends AzureEntityResource {
      * Get the defaultDataCollectionRuleResourceId property: The resource ID of the default Data Collection Rule to use
      * for this workspace. Expected format is -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
-     *
+     * 
      * @return the defaultDataCollectionRuleResourceId value.
      */
     public String defaultDataCollectionRuleResourceId() {
@@ -309,7 +371,7 @@ public final class WorkspacePatch extends AzureEntityResource {
      * Set the defaultDataCollectionRuleResourceId property: The resource ID of the default Data Collection Rule to use
      * for this workspace. Expected format is -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionRules/{dcrName}.
-     *
+     * 
      * @param defaultDataCollectionRuleResourceId the defaultDataCollectionRuleResourceId value to set.
      * @return the WorkspacePatch object itself.
      */
@@ -323,17 +385,68 @@ public final class WorkspacePatch extends AzureEntityResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspacePatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspacePatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspacePatch.
+     */
+    public static WorkspacePatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspacePatch deserializedWorkspacePatch = new WorkspacePatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWorkspacePatch.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWorkspacePatch.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWorkspacePatch.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedWorkspacePatch.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWorkspacePatch.innerProperties = WorkspaceProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedWorkspacePatch.identity = Identity.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedWorkspacePatch.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspacePatch;
+        });
     }
 }

@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The type of the lab virtual machine. */
+/**
+ * The type of the lab virtual machine.
+ */
 public enum VirtualMachineType {
-    /** Enum value User. */
+    /**
+     * Enum value User.
+     */
     USER("User"),
 
-    /** Enum value Template. */
+    /**
+     * Enum value Template.
+     */
     TEMPLATE("Template");
 
-    /** The actual serialized value for a VirtualMachineType instance. */
+    /**
+     * The actual serialized value for a VirtualMachineType instance.
+     */
     private final String value;
 
     VirtualMachineType(String value) {
@@ -24,11 +29,10 @@ public enum VirtualMachineType {
 
     /**
      * Parses a serialized value to a VirtualMachineType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VirtualMachineType object, or null if unable to parse.
      */
-    @JsonCreator
     public static VirtualMachineType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum VirtualMachineType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

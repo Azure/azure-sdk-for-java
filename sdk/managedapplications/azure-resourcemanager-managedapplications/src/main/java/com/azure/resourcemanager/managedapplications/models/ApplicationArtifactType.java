@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.managedapplications.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The managed application artifact type. */
+/**
+ * The managed application artifact type.
+ */
 public enum ApplicationArtifactType {
-    /** Enum value NotSpecified. */
+    /**
+     * Enum value NotSpecified.
+     */
     NOT_SPECIFIED("NotSpecified"),
 
-    /** Enum value Template. */
+    /**
+     * Enum value Template.
+     */
     TEMPLATE("Template"),
 
-    /** Enum value Custom. */
+    /**
+     * Enum value Custom.
+     */
     CUSTOM("Custom");
 
-    /** The actual serialized value for a ApplicationArtifactType instance. */
+    /**
+     * The actual serialized value for a ApplicationArtifactType instance.
+     */
     private final String value;
 
     ApplicationArtifactType(String value) {
@@ -27,11 +34,10 @@ public enum ApplicationArtifactType {
 
     /**
      * Parses a serialized value to a ApplicationArtifactType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ApplicationArtifactType object, or null if unable to parse.
      */
-    @JsonCreator
     public static ApplicationArtifactType fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum ApplicationArtifactType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

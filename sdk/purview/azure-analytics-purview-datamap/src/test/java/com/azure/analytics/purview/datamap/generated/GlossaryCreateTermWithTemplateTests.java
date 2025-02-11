@@ -6,9 +6,8 @@ package com.azure.analytics.purview.datamap.generated;
 
 import com.azure.analytics.purview.datamap.models.AtlasGlossaryHeader;
 import com.azure.analytics.purview.datamap.models.AtlasGlossaryTerm;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
-import java.io.IOException;
+import com.azure.core.util.BinaryData;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -19,16 +18,18 @@ import org.junit.jupiter.api.Test;
 public final class GlossaryCreateTermWithTemplateTests extends DataMapClientTestBase {
     @Test
     @Disabled
-    public void testGlossaryCreateTermWithTemplateTests() throws IOException {
+    public void testGlossaryCreateTermWithTemplateTests() {
         // method invocation
-        AtlasGlossaryTerm response = glossaryClient.createTerm(new AtlasGlossaryTerm().setName("ExampleTerm")
-            .setAnchor(new AtlasGlossaryHeader().setGlossaryGuid("c018ddaf-7c21-4b37-a838-dae5f110c3d8"))
-            .setAttributes(mapOf("ExampleTermTemplateAttribute",
-                mapOf("plain string", "Example String", "date", 1606233600000L, "single choice",
-                    "Example Single Choice A", "multi choice",
-                    JacksonAdapter.createDefaultSerializerAdapter()
-                        .deserialize("[\"Example Multi Choice A\",\"Example Multi Choice B\"]", Object.class,
-                            SerializerEncoding.JSON)))),
+        AtlasGlossaryTerm response = glossaryClient.createTerm(
+            new AtlasGlossaryTerm().setName("ExampleTerm")
+                .setAnchor(new AtlasGlossaryHeader().setGlossaryGuid("c018ddaf-7c21-4b37-a838-dae5f110c3d8"))
+                .setAttributes(mapOf("ExampleTermTemplateAttribute",
+                    mapOf("plain string", BinaryData.fromBytes("Example String".getBytes(StandardCharsets.UTF_8)),
+                        "date", BinaryData.fromBytes("1606233600000".getBytes(StandardCharsets.UTF_8)), "single choice",
+                        BinaryData.fromBytes("Example Single Choice A".getBytes(StandardCharsets.UTF_8)),
+                        "multi choice",
+                        BinaryData.fromBytes(
+                            "[Example Multi Choice A, Example Multi Choice B]".getBytes(StandardCharsets.UTF_8))))),
             null);
 
         // response assertion

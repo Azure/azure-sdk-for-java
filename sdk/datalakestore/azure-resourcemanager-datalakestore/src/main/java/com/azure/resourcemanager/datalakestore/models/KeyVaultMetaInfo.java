@@ -6,37 +6,42 @@ package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Metadata information used by account encryption. */
+/**
+ * Metadata information used by account encryption.
+ */
 @Fluent
-public final class KeyVaultMetaInfo {
+public final class KeyVaultMetaInfo implements JsonSerializable<KeyVaultMetaInfo> {
     /*
      * The resource identifier for the user managed Key Vault being used to encrypt.
      */
-    @JsonProperty(value = "keyVaultResourceId", required = true)
     private String keyVaultResourceId;
 
     /*
      * The name of the user managed encryption key.
      */
-    @JsonProperty(value = "encryptionKeyName", required = true)
     private String encryptionKeyName;
 
     /*
      * The version of the user managed encryption key.
      */
-    @JsonProperty(value = "encryptionKeyVersion", required = true)
     private String encryptionKeyVersion;
 
-    /** Creates an instance of KeyVaultMetaInfo class. */
+    /**
+     * Creates an instance of KeyVaultMetaInfo class.
+     */
     public KeyVaultMetaInfo() {
     }
 
     /**
      * Get the keyVaultResourceId property: The resource identifier for the user managed Key Vault being used to
      * encrypt.
-     *
+     * 
      * @return the keyVaultResourceId value.
      */
     public String keyVaultResourceId() {
@@ -46,7 +51,7 @@ public final class KeyVaultMetaInfo {
     /**
      * Set the keyVaultResourceId property: The resource identifier for the user managed Key Vault being used to
      * encrypt.
-     *
+     * 
      * @param keyVaultResourceId the keyVaultResourceId value to set.
      * @return the KeyVaultMetaInfo object itself.
      */
@@ -57,7 +62,7 @@ public final class KeyVaultMetaInfo {
 
     /**
      * Get the encryptionKeyName property: The name of the user managed encryption key.
-     *
+     * 
      * @return the encryptionKeyName value.
      */
     public String encryptionKeyName() {
@@ -66,7 +71,7 @@ public final class KeyVaultMetaInfo {
 
     /**
      * Set the encryptionKeyName property: The name of the user managed encryption key.
-     *
+     * 
      * @param encryptionKeyName the encryptionKeyName value to set.
      * @return the KeyVaultMetaInfo object itself.
      */
@@ -77,7 +82,7 @@ public final class KeyVaultMetaInfo {
 
     /**
      * Get the encryptionKeyVersion property: The version of the user managed encryption key.
-     *
+     * 
      * @return the encryptionKeyVersion value.
      */
     public String encryptionKeyVersion() {
@@ -86,7 +91,7 @@ public final class KeyVaultMetaInfo {
 
     /**
      * Set the encryptionKeyVersion property: The version of the user managed encryption key.
-     *
+     * 
      * @param encryptionKeyVersion the encryptionKeyVersion value to set.
      * @return the KeyVaultMetaInfo object itself.
      */
@@ -97,29 +102,69 @@ public final class KeyVaultMetaInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVaultResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultResourceId in model KeyVaultMetaInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyVaultResourceId in model KeyVaultMetaInfo"));
         }
         if (encryptionKeyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property encryptionKeyName in model KeyVaultMetaInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property encryptionKeyName in model KeyVaultMetaInfo"));
         }
         if (encryptionKeyVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property encryptionKeyVersion in model KeyVaultMetaInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property encryptionKeyVersion in model KeyVaultMetaInfo"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultMetaInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVaultResourceId", this.keyVaultResourceId);
+        jsonWriter.writeStringField("encryptionKeyName", this.encryptionKeyName);
+        jsonWriter.writeStringField("encryptionKeyVersion", this.encryptionKeyVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultMetaInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultMetaInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyVaultMetaInfo.
+     */
+    public static KeyVaultMetaInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultMetaInfo deserializedKeyVaultMetaInfo = new KeyVaultMetaInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultResourceId".equals(fieldName)) {
+                    deserializedKeyVaultMetaInfo.keyVaultResourceId = reader.getString();
+                } else if ("encryptionKeyName".equals(fieldName)) {
+                    deserializedKeyVaultMetaInfo.encryptionKeyName = reader.getString();
+                } else if ("encryptionKeyVersion".equals(fieldName)) {
+                    deserializedKeyVaultMetaInfo.encryptionKeyVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultMetaInfo;
+        });
+    }
 }

@@ -21,7 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 /** Initializes a new instance of the synchronous FarmBeatsClient type. */
 @ServiceClient(builder = FarmsClientBuilder.class)
 public final class FarmsClient {
-    @Generated private final FarmsAsyncClient client;
+    @Generated
+    private final FarmsAsyncClient client;
 
     /**
      * Initializes an instance of FarmsClient class.
@@ -126,8 +127,8 @@ public final class FarmsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(
-            String jobId, String partyId, String farmId, RequestOptions requestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginCreateCascadeDeleteJob(String jobId, String partyId, String farmId,
+        RequestOptions requestOptions) {
         return this.client.beginCreateCascadeDeleteJob(jobId, partyId, farmId, requestOptions).getSyncPoller();
     }
 
@@ -323,8 +324,8 @@ public final class FarmsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String partyId, String farmId, BinaryData farm, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateWithResponse(String partyId, String farmId, BinaryData farm,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateWithResponse(partyId, farmId, farm, requestOptions).block();
     }
 

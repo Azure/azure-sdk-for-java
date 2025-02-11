@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.IssueContractBaseProperties;
 import com.azure.resourcemanager.apimanagement.models.State;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Issue contract Update Properties. */
+/**
+ * Issue contract Update Properties.
+ */
 @Fluent
 public final class IssueUpdateContractProperties extends IssueContractBaseProperties {
     /*
      * The issue title.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Text describing the issue.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * A resource identifier for the user created the issue.
      */
-    @JsonProperty(value = "userId")
     private String userId;
 
-    /** Creates an instance of IssueUpdateContractProperties class. */
+    /**
+     * Creates an instance of IssueUpdateContractProperties class.
+     */
     public IssueUpdateContractProperties() {
     }
 
     /**
      * Get the title property: The issue title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -46,7 +52,7 @@ public final class IssueUpdateContractProperties extends IssueContractBaseProper
 
     /**
      * Set the title property: The issue title.
-     *
+     * 
      * @param title the title value to set.
      * @return the IssueUpdateContractProperties object itself.
      */
@@ -57,7 +63,7 @@ public final class IssueUpdateContractProperties extends IssueContractBaseProper
 
     /**
      * Get the description property: Text describing the issue.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -66,7 +72,7 @@ public final class IssueUpdateContractProperties extends IssueContractBaseProper
 
     /**
      * Set the description property: Text describing the issue.
-     *
+     * 
      * @param description the description value to set.
      * @return the IssueUpdateContractProperties object itself.
      */
@@ -77,7 +83,7 @@ public final class IssueUpdateContractProperties extends IssueContractBaseProper
 
     /**
      * Get the userId property: A resource identifier for the user created the issue.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -86,7 +92,7 @@ public final class IssueUpdateContractProperties extends IssueContractBaseProper
 
     /**
      * Set the userId property: A resource identifier for the user created the issue.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the IssueUpdateContractProperties object itself.
      */
@@ -95,21 +101,27 @@ public final class IssueUpdateContractProperties extends IssueContractBaseProper
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IssueUpdateContractProperties withCreatedDate(OffsetDateTime createdDate) {
         super.withCreatedDate(createdDate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IssueUpdateContractProperties withState(State state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IssueUpdateContractProperties withApiId(String apiId) {
         super.withApiId(apiId);
@@ -118,11 +130,64 @@ public final class IssueUpdateContractProperties extends IssueContractBaseProper
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("createdDate",
+            createdDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(createdDate()));
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("apiId", apiId());
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("userId", this.userId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IssueUpdateContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IssueUpdateContractProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IssueUpdateContractProperties.
+     */
+    public static IssueUpdateContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IssueUpdateContractProperties deserializedIssueUpdateContractProperties
+                = new IssueUpdateContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("createdDate".equals(fieldName)) {
+                    deserializedIssueUpdateContractProperties.withCreatedDate(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("state".equals(fieldName)) {
+                    deserializedIssueUpdateContractProperties.withState(State.fromString(reader.getString()));
+                } else if ("apiId".equals(fieldName)) {
+                    deserializedIssueUpdateContractProperties.withApiId(reader.getString());
+                } else if ("title".equals(fieldName)) {
+                    deserializedIssueUpdateContractProperties.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedIssueUpdateContractProperties.description = reader.getString();
+                } else if ("userId".equals(fieldName)) {
+                    deserializedIssueUpdateContractProperties.userId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIssueUpdateContractProperties;
+        });
     }
 }

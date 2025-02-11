@@ -5,38 +5,45 @@
 package com.azure.resourcemanager.dnsresolver.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRuleState;
 import com.azure.resourcemanager.dnsresolver.models.TargetDnsServer;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Represents the updatable properties of a forwarding rule within a DNS forwarding ruleset. */
+/**
+ * Represents the updatable properties of a forwarding rule within a DNS forwarding ruleset.
+ */
 @Fluent
-public final class ForwardingRulePatchProperties {
+public final class ForwardingRulePatchProperties implements JsonSerializable<ForwardingRulePatchProperties> {
     /*
      * DNS servers to forward the DNS query to.
      */
-    @JsonProperty(value = "targetDnsServers")
     private List<TargetDnsServer> targetDnsServers;
 
     /*
      * Metadata attached to the forwarding rule.
      */
-    @JsonProperty(value = "metadata")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> metadata;
 
     /*
      * The state of forwarding rule.
      */
-    @JsonProperty(value = "forwardingRuleState")
     private ForwardingRuleState forwardingRuleState;
 
     /**
+     * Creates an instance of ForwardingRulePatchProperties class.
+     */
+    public ForwardingRulePatchProperties() {
+    }
+
+    /**
      * Get the targetDnsServers property: DNS servers to forward the DNS query to.
-     *
+     * 
      * @return the targetDnsServers value.
      */
     public List<TargetDnsServer> targetDnsServers() {
@@ -45,7 +52,7 @@ public final class ForwardingRulePatchProperties {
 
     /**
      * Set the targetDnsServers property: DNS servers to forward the DNS query to.
-     *
+     * 
      * @param targetDnsServers the targetDnsServers value to set.
      * @return the ForwardingRulePatchProperties object itself.
      */
@@ -56,7 +63,7 @@ public final class ForwardingRulePatchProperties {
 
     /**
      * Get the metadata property: Metadata attached to the forwarding rule.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -65,7 +72,7 @@ public final class ForwardingRulePatchProperties {
 
     /**
      * Set the metadata property: Metadata attached to the forwarding rule.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ForwardingRulePatchProperties object itself.
      */
@@ -76,7 +83,7 @@ public final class ForwardingRulePatchProperties {
 
     /**
      * Get the forwardingRuleState property: The state of forwarding rule.
-     *
+     * 
      * @return the forwardingRuleState value.
      */
     public ForwardingRuleState forwardingRuleState() {
@@ -85,7 +92,7 @@ public final class ForwardingRulePatchProperties {
 
     /**
      * Set the forwardingRuleState property: The state of forwarding rule.
-     *
+     * 
      * @param forwardingRuleState the forwardingRuleState value to set.
      * @return the ForwardingRulePatchProperties object itself.
      */
@@ -96,12 +103,61 @@ public final class ForwardingRulePatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetDnsServers() != null) {
             targetDnsServers().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("targetDnsServers", this.targetDnsServers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("forwardingRuleState",
+            this.forwardingRuleState == null ? null : this.forwardingRuleState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForwardingRulePatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForwardingRulePatchProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ForwardingRulePatchProperties.
+     */
+    public static ForwardingRulePatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForwardingRulePatchProperties deserializedForwardingRulePatchProperties
+                = new ForwardingRulePatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetDnsServers".equals(fieldName)) {
+                    List<TargetDnsServer> targetDnsServers
+                        = reader.readArray(reader1 -> TargetDnsServer.fromJson(reader1));
+                    deserializedForwardingRulePatchProperties.targetDnsServers = targetDnsServers;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedForwardingRulePatchProperties.metadata = metadata;
+                } else if ("forwardingRuleState".equals(fieldName)) {
+                    deserializedForwardingRulePatchProperties.forwardingRuleState
+                        = ForwardingRuleState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForwardingRulePatchProperties;
+        });
     }
 }

@@ -6,50 +6,53 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.DatabaseShareOrigin;
 import com.azure.resourcemanager.kusto.models.TableLevelSharingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A class representing follower database request. */
+/**
+ * A class representing follower database request.
+ */
 @Fluent
-public final class FollowerDatabaseDefinitionInner {
+public final class FollowerDatabaseDefinitionInner implements JsonSerializable<FollowerDatabaseDefinitionInner> {
     /*
      * Resource id of the cluster that follows a database owned by this cluster.
      */
-    @JsonProperty(value = "clusterResourceId", required = true)
     private String clusterResourceId;
 
     /*
      * Resource name of the attached database configuration in the follower cluster.
      */
-    @JsonProperty(value = "attachedDatabaseConfigurationName", required = true)
     private String attachedDatabaseConfigurationName;
 
     /*
      * The database name owned by this cluster that was followed. * in case following all databases.
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
      * Table level sharing specifications
      */
-    @JsonProperty(value = "tableLevelSharingProperties", access = JsonProperty.Access.WRITE_ONLY)
     private TableLevelSharingProperties tableLevelSharingProperties;
 
     /*
      * The origin of the following setup.
      */
-    @JsonProperty(value = "databaseShareOrigin", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseShareOrigin databaseShareOrigin;
 
-    /** Creates an instance of FollowerDatabaseDefinitionInner class. */
+    /**
+     * Creates an instance of FollowerDatabaseDefinitionInner class.
+     */
     public FollowerDatabaseDefinitionInner() {
     }
 
     /**
      * Get the clusterResourceId property: Resource id of the cluster that follows a database owned by this cluster.
-     *
+     * 
      * @return the clusterResourceId value.
      */
     public String clusterResourceId() {
@@ -58,7 +61,7 @@ public final class FollowerDatabaseDefinitionInner {
 
     /**
      * Set the clusterResourceId property: Resource id of the cluster that follows a database owned by this cluster.
-     *
+     * 
      * @param clusterResourceId the clusterResourceId value to set.
      * @return the FollowerDatabaseDefinitionInner object itself.
      */
@@ -70,7 +73,7 @@ public final class FollowerDatabaseDefinitionInner {
     /**
      * Get the attachedDatabaseConfigurationName property: Resource name of the attached database configuration in the
      * follower cluster.
-     *
+     * 
      * @return the attachedDatabaseConfigurationName value.
      */
     public String attachedDatabaseConfigurationName() {
@@ -80,12 +83,12 @@ public final class FollowerDatabaseDefinitionInner {
     /**
      * Set the attachedDatabaseConfigurationName property: Resource name of the attached database configuration in the
      * follower cluster.
-     *
+     * 
      * @param attachedDatabaseConfigurationName the attachedDatabaseConfigurationName value to set.
      * @return the FollowerDatabaseDefinitionInner object itself.
      */
-    public FollowerDatabaseDefinitionInner withAttachedDatabaseConfigurationName(
-        String attachedDatabaseConfigurationName) {
+    public FollowerDatabaseDefinitionInner
+        withAttachedDatabaseConfigurationName(String attachedDatabaseConfigurationName) {
         this.attachedDatabaseConfigurationName = attachedDatabaseConfigurationName;
         return this;
     }
@@ -93,7 +96,7 @@ public final class FollowerDatabaseDefinitionInner {
     /**
      * Get the databaseName property: The database name owned by this cluster that was followed. * in case following all
      * databases.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -102,7 +105,7 @@ public final class FollowerDatabaseDefinitionInner {
 
     /**
      * Get the tableLevelSharingProperties property: Table level sharing specifications.
-     *
+     * 
      * @return the tableLevelSharingProperties value.
      */
     public TableLevelSharingProperties tableLevelSharingProperties() {
@@ -111,7 +114,7 @@ public final class FollowerDatabaseDefinitionInner {
 
     /**
      * Get the databaseShareOrigin property: The origin of the following setup.
-     *
+     * 
      * @return the databaseShareOrigin value.
      */
     public DatabaseShareOrigin databaseShareOrigin() {
@@ -120,22 +123,19 @@ public final class FollowerDatabaseDefinitionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clusterResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clusterResourceId in model FollowerDatabaseDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clusterResourceId in model FollowerDatabaseDefinitionInner"));
         }
         if (attachedDatabaseConfigurationName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property attachedDatabaseConfigurationName in model"
-                            + " FollowerDatabaseDefinitionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property attachedDatabaseConfigurationName in model FollowerDatabaseDefinitionInner"));
         }
         if (tableLevelSharingProperties() != null) {
             tableLevelSharingProperties().validate();
@@ -143,4 +143,53 @@ public final class FollowerDatabaseDefinitionInner {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FollowerDatabaseDefinitionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clusterResourceId", this.clusterResourceId);
+        jsonWriter.writeStringField("attachedDatabaseConfigurationName", this.attachedDatabaseConfigurationName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FollowerDatabaseDefinitionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FollowerDatabaseDefinitionInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FollowerDatabaseDefinitionInner.
+     */
+    public static FollowerDatabaseDefinitionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FollowerDatabaseDefinitionInner deserializedFollowerDatabaseDefinitionInner
+                = new FollowerDatabaseDefinitionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clusterResourceId".equals(fieldName)) {
+                    deserializedFollowerDatabaseDefinitionInner.clusterResourceId = reader.getString();
+                } else if ("attachedDatabaseConfigurationName".equals(fieldName)) {
+                    deserializedFollowerDatabaseDefinitionInner.attachedDatabaseConfigurationName = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedFollowerDatabaseDefinitionInner.databaseName = reader.getString();
+                } else if ("tableLevelSharingProperties".equals(fieldName)) {
+                    deserializedFollowerDatabaseDefinitionInner.tableLevelSharingProperties
+                        = TableLevelSharingProperties.fromJson(reader);
+                } else if ("databaseShareOrigin".equals(fieldName)) {
+                    deserializedFollowerDatabaseDefinitionInner.databaseShareOrigin
+                        = DatabaseShareOrigin.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFollowerDatabaseDefinitionInner;
+        });
+    }
 }

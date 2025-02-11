@@ -15,47 +15,36 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkableEnvironmentListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkableEnvironmentListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"environmentId\":\"ybcibvyvdcsit\",\"environmentName\":\"naamde\",\"planData\":{\"usageType\":\"hfiqscjeypvhe\",\"billingCycle\":\"kgqhcjrefovg\",\"planDetails\":\"qsl\",\"effectiveDate\":\"2021-08-20T18:32:02Z\"}},{\"environmentId\":\"xyqj\",\"environmentName\":\"cattpngjcrcczsq\",\"planData\":{\"usageType\":\"vmdajvnysou\",\"billingCycle\":\"e\",\"planDetails\":\"noae\",\"effectiveDate\":\"2021-10-06T07:30:47Z\"}}],\"nextLink\":\"yhltrpmopjmcm\"}")
-                .toObject(LinkableEnvironmentListResponse.class);
+        LinkableEnvironmentListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"environmentId\":\"ybcibvyvdcsit\",\"environmentName\":\"naamde\",\"planData\":{\"usageType\":\"hfiqscjeypvhe\",\"billingCycle\":\"kgqhcjrefovg\",\"planDetails\":\"qsl\",\"effectiveDate\":\"2021-08-20T18:32:02Z\"}},{\"environmentId\":\"xyqj\",\"environmentName\":\"cattpngjcrcczsq\",\"planData\":{\"usageType\":\"vmdajvnysou\",\"billingCycle\":\"e\",\"planDetails\":\"noae\",\"effectiveDate\":\"2021-10-06T07:30:47Z\"}}],\"nextLink\":\"yhltrpmopjmcm\"}")
+            .toObject(LinkableEnvironmentListResponse.class);
         Assertions.assertEquals("ybcibvyvdcsit", model.value().get(0).environmentId());
         Assertions.assertEquals("naamde", model.value().get(0).environmentName());
         Assertions.assertEquals("hfiqscjeypvhe", model.value().get(0).planData().usageType());
         Assertions.assertEquals("kgqhcjrefovg", model.value().get(0).planData().billingCycle());
         Assertions.assertEquals("qsl", model.value().get(0).planData().planDetails());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-08-20T18:32:02Z"), model.value().get(0).planData().effectiveDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T18:32:02Z"),
+            model.value().get(0).planData().effectiveDate());
         Assertions.assertEquals("yhltrpmopjmcm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkableEnvironmentListResponse model =
-            new LinkableEnvironmentListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LinkableEnvironmentResponseInner()
-                                .withEnvironmentId("ybcibvyvdcsit")
-                                .withEnvironmentName("naamde")
-                                .withPlanData(
-                                    new PlanData()
-                                        .withUsageType("hfiqscjeypvhe")
-                                        .withBillingCycle("kgqhcjrefovg")
-                                        .withPlanDetails("qsl")
-                                        .withEffectiveDate(OffsetDateTime.parse("2021-08-20T18:32:02Z"))),
-                            new LinkableEnvironmentResponseInner()
-                                .withEnvironmentId("xyqj")
-                                .withEnvironmentName("cattpngjcrcczsq")
-                                .withPlanData(
-                                    new PlanData()
-                                        .withUsageType("vmdajvnysou")
-                                        .withBillingCycle("e")
-                                        .withPlanDetails("noae")
-                                        .withEffectiveDate(OffsetDateTime.parse("2021-10-06T07:30:47Z")))))
+        LinkableEnvironmentListResponse model
+            = new LinkableEnvironmentListResponse()
+                .withValue(Arrays.asList(
+                    new LinkableEnvironmentResponseInner().withEnvironmentId("ybcibvyvdcsit")
+                        .withEnvironmentName("naamde")
+                        .withPlanData(new PlanData().withUsageType("hfiqscjeypvhe")
+                            .withBillingCycle("kgqhcjrefovg")
+                            .withPlanDetails("qsl")
+                            .withEffectiveDate(OffsetDateTime.parse("2021-08-20T18:32:02Z"))),
+                    new LinkableEnvironmentResponseInner().withEnvironmentId("xyqj")
+                        .withEnvironmentName("cattpngjcrcczsq")
+                        .withPlanData(new PlanData().withUsageType("vmdajvnysou")
+                            .withBillingCycle("e")
+                            .withPlanDetails("noae")
+                            .withEffectiveDate(OffsetDateTime.parse("2021-10-06T07:30:47Z")))))
                 .withNextLink("yhltrpmopjmcm");
         model = BinaryData.fromObject(model).toObject(LinkableEnvironmentListResponse.class);
         Assertions.assertEquals("ybcibvyvdcsit", model.value().get(0).environmentId());
@@ -63,9 +52,8 @@ public final class LinkableEnvironmentListResponseTests {
         Assertions.assertEquals("hfiqscjeypvhe", model.value().get(0).planData().usageType());
         Assertions.assertEquals("kgqhcjrefovg", model.value().get(0).planData().billingCycle());
         Assertions.assertEquals("qsl", model.value().get(0).planData().planDetails());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-08-20T18:32:02Z"), model.value().get(0).planData().effectiveDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-20T18:32:02Z"),
+            model.value().get(0).planData().effectiveDate());
         Assertions.assertEquals("yhltrpmopjmcm", model.nextLink());
     }
 }

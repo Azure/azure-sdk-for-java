@@ -92,28 +92,23 @@ public final class DedicatedCloudServiceImpl
     }
 
     public DedicatedCloudService create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudServices()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, dedicatedCloudServiceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudServices()
+            .createOrUpdateWithResponse(resourceGroupName, dedicatedCloudServiceName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public DedicatedCloudService create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudServices()
-                .createOrUpdateWithResponse(resourceGroupName, dedicatedCloudServiceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudServices()
+            .createOrUpdateWithResponse(resourceGroupName, dedicatedCloudServiceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    DedicatedCloudServiceImpl(
-        String name, com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
+    DedicatedCloudServiceImpl(String name,
+        com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = new DedicatedCloudServiceInner();
         this.serviceManager = serviceManager;
         this.dedicatedCloudServiceName = name;
@@ -125,53 +120,45 @@ public final class DedicatedCloudServiceImpl
     }
 
     public DedicatedCloudService apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudServices()
-                .updateWithResponse(
-                    resourceGroupName, dedicatedCloudServiceName, updateDedicatedCloudServiceRequest, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudServices()
+            .updateWithResponse(resourceGroupName, dedicatedCloudServiceName, updateDedicatedCloudServiceRequest,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public DedicatedCloudService apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudServices()
-                .updateWithResponse(
-                    resourceGroupName, dedicatedCloudServiceName, updateDedicatedCloudServiceRequest, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudServices()
+            .updateWithResponse(resourceGroupName, dedicatedCloudServiceName, updateDedicatedCloudServiceRequest,
+                context)
+            .getValue();
         return this;
     }
 
-    DedicatedCloudServiceImpl(
-        DedicatedCloudServiceInner innerObject,
+    DedicatedCloudServiceImpl(DedicatedCloudServiceInner innerObject,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dedicatedCloudServiceName = Utils.getValueFromIdByName(innerObject.id(), "dedicatedCloudServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dedicatedCloudServiceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dedicatedCloudServices");
     }
 
     public DedicatedCloudService refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudServices()
-                .getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudServiceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudServices()
+            .getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudServiceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DedicatedCloudService refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDedicatedCloudServices()
-                .getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudServiceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDedicatedCloudServices()
+            .getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudServiceName, context)
+            .getValue();
         return this;
     }
 

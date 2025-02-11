@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reverse shipment details. */
+/**
+ * Reverse shipment details.
+ */
 @Immutable
-public final class ReverseShippingDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReverseShippingDetails.class);
-
+public final class ReverseShippingDetails implements JsonSerializable<ReverseShippingDetails> {
     /*
      * SAS key to download the reverse shipment label of the package.
      */
-    @JsonProperty(value = "sasKeyForLabel", access = JsonProperty.Access.WRITE_ONLY)
     private String sasKeyForLabel;
 
     /*
      * Name of the carrier.
      */
-    @JsonProperty(value = "carrierName", access = JsonProperty.Access.WRITE_ONLY)
     private String carrierName;
 
     /*
      * Carrier Name for display purpose. Not to be used for any processing.
      */
-    @JsonProperty(value = "carrierDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String carrierDisplayName;
 
     /*
      * TrackingId of the package
      */
-    @JsonProperty(value = "trackingId", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingId;
 
     /*
      * TrackingUrl of the package.
      */
-    @JsonProperty(value = "trackingUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingUrl;
 
     /**
+     * Creates an instance of ReverseShippingDetails class.
+     */
+    public ReverseShippingDetails() {
+    }
+
+    /**
      * Get the sasKeyForLabel property: SAS key to download the reverse shipment label of the package.
-     *
+     * 
      * @return the sasKeyForLabel value.
      */
     public String sasKeyForLabel() {
@@ -55,7 +58,7 @@ public final class ReverseShippingDetails {
 
     /**
      * Get the carrierName property: Name of the carrier.
-     *
+     * 
      * @return the carrierName value.
      */
     public String carrierName() {
@@ -64,7 +67,7 @@ public final class ReverseShippingDetails {
 
     /**
      * Get the carrierDisplayName property: Carrier Name for display purpose. Not to be used for any processing.
-     *
+     * 
      * @return the carrierDisplayName value.
      */
     public String carrierDisplayName() {
@@ -73,7 +76,7 @@ public final class ReverseShippingDetails {
 
     /**
      * Get the trackingId property: TrackingId of the package.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -82,7 +85,7 @@ public final class ReverseShippingDetails {
 
     /**
      * Get the trackingUrl property: TrackingUrl of the package.
-     *
+     * 
      * @return the trackingUrl value.
      */
     public String trackingUrl() {
@@ -91,9 +94,52 @@ public final class ReverseShippingDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReverseShippingDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReverseShippingDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReverseShippingDetails.
+     */
+    public static ReverseShippingDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReverseShippingDetails deserializedReverseShippingDetails = new ReverseShippingDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sasKeyForLabel".equals(fieldName)) {
+                    deserializedReverseShippingDetails.sasKeyForLabel = reader.getString();
+                } else if ("carrierName".equals(fieldName)) {
+                    deserializedReverseShippingDetails.carrierName = reader.getString();
+                } else if ("carrierDisplayName".equals(fieldName)) {
+                    deserializedReverseShippingDetails.carrierDisplayName = reader.getString();
+                } else if ("trackingId".equals(fieldName)) {
+                    deserializedReverseShippingDetails.trackingId = reader.getString();
+                } else if ("trackingUrl".equals(fieldName)) {
+                    deserializedReverseShippingDetails.trackingUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReverseShippingDetails;
+        });
     }
 }

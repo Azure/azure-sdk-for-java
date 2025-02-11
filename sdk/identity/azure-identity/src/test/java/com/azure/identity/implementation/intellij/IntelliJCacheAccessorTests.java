@@ -32,7 +32,7 @@ public class IntelliJCacheAccessorTests {
     }
 
     private String getPath(String filename) {
-        String path =  getClass().getClassLoader().getResource(filename).getPath();
+        String path = getClass().getClassLoader().getResource(filename).getPath();
         if (path.contains(":")) {
             path = path.substring(1);
         }

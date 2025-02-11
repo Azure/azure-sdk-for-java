@@ -10,6 +10,8 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public interface HasResourceGroup {
     /**
+     * Gets the name of resource group.
+     *
      * @return the name of the resource group
      */
     String resourceGroupName();

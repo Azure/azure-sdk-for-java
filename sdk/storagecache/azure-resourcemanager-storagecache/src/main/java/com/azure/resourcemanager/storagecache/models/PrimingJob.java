@@ -6,53 +6,52 @@ package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A priming job instance.
  */
 @Fluent
-public final class PrimingJob {
+public final class PrimingJob implements JsonSerializable<PrimingJob> {
     /*
      * The priming job name.
      */
-    @JsonProperty(value = "primingJobName", required = true)
     private String primingJobName;
 
     /*
-     * The URL for the priming manifest file to download. This file must be readable from the HPC Cache. When the file is in Azure blob storage the URL should include a Shared Access Signature (SAS) granting read permissions on the blob.
+     * The URL for the priming manifest file to download. This file must be readable from the HPC Cache. When the file
+     * is in Azure blob storage the URL should include a Shared Access Signature (SAS) granting read permissions on the
+     * blob.
      */
-    @JsonProperty(value = "primingManifestUrl")
     private String primingManifestUrl;
 
     /*
      * The unique identifier of the priming job.
      */
-    @JsonProperty(value = "primingJobId", access = JsonProperty.Access.WRITE_ONLY)
     private String primingJobId;
 
     /*
      * The state of the priming operation.
      */
-    @JsonProperty(value = "primingJobState", access = JsonProperty.Access.WRITE_ONLY)
     private PrimingJobState primingJobState;
 
     /*
      * The status code of the priming job.
      */
-    @JsonProperty(value = "primingJobStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String primingJobStatus;
 
     /*
      * The job details or error information if any.
      */
-    @JsonProperty(value = "primingJobDetails", access = JsonProperty.Access.WRITE_ONLY)
     private String primingJobDetails;
 
     /*
      * The current progress of the priming job, as a percentage.
      */
-    @JsonProperty(value = "primingJobPercentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Double primingJobPercentComplete;
 
     /**
@@ -167,4 +166,54 @@ public final class PrimingJob {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PrimingJob.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primingJobName", this.primingJobName);
+        jsonWriter.writeStringField("primingManifestUrl", this.primingManifestUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrimingJob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrimingJob if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PrimingJob.
+     */
+    public static PrimingJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrimingJob deserializedPrimingJob = new PrimingJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primingJobName".equals(fieldName)) {
+                    deserializedPrimingJob.primingJobName = reader.getString();
+                } else if ("primingManifestUrl".equals(fieldName)) {
+                    deserializedPrimingJob.primingManifestUrl = reader.getString();
+                } else if ("primingJobId".equals(fieldName)) {
+                    deserializedPrimingJob.primingJobId = reader.getString();
+                } else if ("primingJobState".equals(fieldName)) {
+                    deserializedPrimingJob.primingJobState = PrimingJobState.fromString(reader.getString());
+                } else if ("primingJobStatus".equals(fieldName)) {
+                    deserializedPrimingJob.primingJobStatus = reader.getString();
+                } else if ("primingJobDetails".equals(fieldName)) {
+                    deserializedPrimingJob.primingJobDetails = reader.getString();
+                } else if ("primingJobPercentComplete".equals(fieldName)) {
+                    deserializedPrimingJob.primingJobPercentComplete = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrimingJob;
+        });
+    }
 }

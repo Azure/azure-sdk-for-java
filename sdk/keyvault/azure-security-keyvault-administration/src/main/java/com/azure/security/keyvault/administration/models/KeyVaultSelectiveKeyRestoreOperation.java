@@ -23,7 +23,7 @@ public final class KeyVaultSelectiveKeyRestoreOperation extends KeyVaultLongRunn
      * @param operationId Identifier for the full {@link KeyVaultSelectiveKeyRestoreOperation}.
      */
     public KeyVaultSelectiveKeyRestoreOperation(String status, String statusDetails, KeyVaultAdministrationError error,
-                                                String operationId, OffsetDateTime startTime, OffsetDateTime endTime) {
+        String operationId, OffsetDateTime startTime, OffsetDateTime endTime) {
         super(status, statusDetails, error, operationId, startTime, endTime);
     }
 }

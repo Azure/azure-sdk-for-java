@@ -43,7 +43,7 @@ Before running the tests on PLAYBACK mode, you need to run them on RECORD mode t
 
 1. Add the following environment variables to your development SDK to be used in JUnit runs:
     * AZURE_CLIENT_ID: *Client ID in Microsoft Entra ID*
-    [How to create a Client ID in Azure Portal](https://docs.microsoft.com/azure/active-directory/develop/quickstart-register-app)
+    [How to create a Client ID in Azure Portal](https://learn.microsoft.com/azure/active-directory/develop/quickstart-register-app)
     * AZURE_CLIENT_SECRET: *Client ID Secret*
     * AZURE_TENANT_ID: *Tenant ID in Microsoft Entra ID*
     * AZURE_SUBSCRIPTION_ID: *Azure subscription ID*

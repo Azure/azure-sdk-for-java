@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.implementation.connectionstring;
 
-
 /**
  * Type represents contract for applying filtering on {@link ConnectionSettings}.
  */
@@ -111,8 +110,7 @@ interface ConnectionSettingsFilter {
         };
     }
 
-    static boolean matchesSpecification(ConnectionSettings settings,
-                                        ConnectionSettingsFilter... constraints) {
+    static boolean matchesSpecification(ConnectionSettings settings, ConnectionSettingsFilter... constraints) {
         for (ConnectionSettingsFilter constraint : constraints) {
             ConnectionSettings remainingSettings = constraint.apply(settings);
             if (remainingSettings == null) {

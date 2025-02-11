@@ -14,7 +14,8 @@ import java.util.List;
 /** A List of databases. */
 @Fluent
 public final class DatabaseListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DatabaseListResult.class);
 
     /*
      * The list of databases housed in a server

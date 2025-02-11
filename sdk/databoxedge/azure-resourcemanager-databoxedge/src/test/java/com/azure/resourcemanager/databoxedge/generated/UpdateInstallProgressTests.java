@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databoxedge.models.UpdateInstallProgress;
 public final class UpdateInstallProgressTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateInstallProgress model =
-            BinaryData
-                .fromString(
-                    "{\"percentComplete\":820071175,\"numberOfUpdatesToInstall\":852408036,\"numberOfUpdatesInstalled\":1533389693}")
-                .toObject(UpdateInstallProgress.class);
+        UpdateInstallProgress model = BinaryData.fromString(
+            "{\"percentComplete\":592708150,\"numberOfUpdatesToInstall\":969530861,\"numberOfUpdatesInstalled\":626726522}")
+            .toObject(UpdateInstallProgress.class);
     }
 
     @org.junit.jupiter.api.Test

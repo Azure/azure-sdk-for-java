@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.sql.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.network.models.Network;
@@ -49,14 +48,15 @@ public class ManageSqlVirtualNetworkRules {
             // Create a virtual network with two subnets.
             System.out.println("Create a virtual network with two subnets: subnet1 and subnet2");
 
-            Network virtualNetwork = azureResourceManager.networks().define(vnetName)
+            Network virtualNetwork = azureResourceManager.networks()
+                .define(vnetName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .withAddressSpace("192.168.0.0/16")
                 .defineSubnet("subnet1")
-                    .withAddressPrefix("192.168.1.0/24")
-                    .withAccessFromService(ServiceEndpointType.MICROSOFT_SQL)
-                    .attach()
+                .withAddressPrefix("192.168.1.0/24")
+                .withAccessFromService(ServiceEndpointType.MICROSOFT_SQL)
+                .attach()
                 .withSubnet("subnet2", "192.168.2.0/24")
                 .create();
 
@@ -68,27 +68,27 @@ public class ManageSqlVirtualNetworkRules {
             // Create a SQL Server, with one virtual network rule.
             System.out.println("Create a SQL server with one virtual network rule");
 
-            SqlServer sqlServer = azureResourceManager.sqlServers().define(sqlServerName)
+            SqlServer sqlServer = azureResourceManager.sqlServers()
+                .define(sqlServerName)
                 .withRegion(Region.US_EAST)
                 .withExistingResourceGroup(rgName)
                 .withAdministratorLogin(administratorLogin)
                 .withAdministratorPassword(administratorPassword)
                 .withoutAccessFromAzureServices()
                 .defineVirtualNetworkRule("virtualNetworkRule1")
-                    .withSubnet(virtualNetwork.id(), "subnet1")
-                    .attach()
+                .withSubnet(virtualNetwork.id(), "subnet1")
+                .attach()
                 .create();
 
             Utils.print(sqlServer);
 
-
             // ============================================================
             // Get the virtual network rule created above.
-            SqlVirtualNetworkRule virtualNetworkRule = azureResourceManager.sqlServers().virtualNetworkRules()
+            SqlVirtualNetworkRule virtualNetworkRule = azureResourceManager.sqlServers()
+                .virtualNetworkRules()
                 .getBySqlServer(rgName, sqlServerName, "virtualNetworkRule1");
 
             Utils.print(virtualNetworkRule);
-
 
             // ============================================================
             // Add new virtual network rules.
@@ -101,16 +101,12 @@ public class ManageSqlVirtualNetworkRules {
 
             Utils.print(virtualNetworkRule);
 
-
             // ============================================================
             // Update a virtual network rules.
             System.out.println("Updating an existing virtual network rules in SQL Server.");
-            virtualNetworkRule.update()
-                .withSubnet(virtualNetwork.id(), "subnet1")
-                .apply();
+            virtualNetworkRule.update().withSubnet(virtualNetwork.id(), "subnet1").apply();
 
             Utils.print(virtualNetworkRule);
-
 
             // ============================================================
             // List and delete all virtual network rules.
@@ -122,7 +118,6 @@ public class ManageSqlVirtualNetworkRules {
                 System.out.println("Deleting a virtual network rule");
                 vnetRule.delete();
             }
-
 
             // Delete the SQL Server.
             System.out.println("Deleting a Sql Server");
@@ -145,13 +140,12 @@ public class ManageSqlVirtualNetworkRules {
      */
     public static void main(String[] args) {
         try {
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.azurestack.models.DeviceConfiguration;
 public final class DeviceConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeviceConfiguration model =
-            BinaryData
-                .fromString("{\"deviceVersion\":\"ureximoryocfs\",\"identitySystem\":\"AzureAD\"}")
+        DeviceConfiguration model
+            = BinaryData.fromString("{\"deviceVersion\":\"tvfcivfsn\",\"identitySystem\":\"AzureAD\"}")
                 .toObject(DeviceConfiguration.class);
     }
 

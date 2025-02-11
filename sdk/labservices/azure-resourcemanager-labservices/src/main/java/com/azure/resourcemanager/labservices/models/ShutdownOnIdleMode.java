@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.labservices.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines whether to shut down VM on idle and the criteria for idle detection. */
+/**
+ * Defines whether to shut down VM on idle and the criteria for idle detection.
+ */
 public enum ShutdownOnIdleMode {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value UserAbsence. */
+    /**
+     * Enum value UserAbsence.
+     */
     USER_ABSENCE("UserAbsence"),
 
-    /** Enum value LowUsage. */
+    /**
+     * Enum value LowUsage.
+     */
     LOW_USAGE("LowUsage");
 
-    /** The actual serialized value for a ShutdownOnIdleMode instance. */
+    /**
+     * The actual serialized value for a ShutdownOnIdleMode instance.
+     */
     private final String value;
 
     ShutdownOnIdleMode(String value) {
@@ -27,11 +34,10 @@ public enum ShutdownOnIdleMode {
 
     /**
      * Parses a serialized value to a ShutdownOnIdleMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ShutdownOnIdleMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static ShutdownOnIdleMode fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum ShutdownOnIdleMode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

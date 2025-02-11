@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets the status of the resource at the time the operation was called. */
+/**
+ * Gets the status of the resource at the time the operation was called.
+ */
 public final class CommitmentPlanProvisioningState extends ExpandableStringEnum<CommitmentPlanProvisioningState> {
-    /** Static value Accepted for CommitmentPlanProvisioningState. */
+    /**
+     * Static value Accepted for CommitmentPlanProvisioningState.
+     */
     public static final CommitmentPlanProvisioningState ACCEPTED = fromString("Accepted");
 
-    /** Static value Creating for CommitmentPlanProvisioningState. */
+    /**
+     * Static value Creating for CommitmentPlanProvisioningState.
+     */
     public static final CommitmentPlanProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Deleting for CommitmentPlanProvisioningState. */
+    /**
+     * Static value Deleting for CommitmentPlanProvisioningState.
+     */
     public static final CommitmentPlanProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Moving for CommitmentPlanProvisioningState. */
+    /**
+     * Static value Moving for CommitmentPlanProvisioningState.
+     */
     public static final CommitmentPlanProvisioningState MOVING = fromString("Moving");
 
-    /** Static value Failed for CommitmentPlanProvisioningState. */
+    /**
+     * Static value Failed for CommitmentPlanProvisioningState.
+     */
     public static final CommitmentPlanProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for CommitmentPlanProvisioningState. */
+    /**
+     * Static value Succeeded for CommitmentPlanProvisioningState.
+     */
     public static final CommitmentPlanProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for CommitmentPlanProvisioningState. */
+    /**
+     * Static value Canceled for CommitmentPlanProvisioningState.
+     */
     public static final CommitmentPlanProvisioningState CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of CommitmentPlanProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,18 +57,17 @@ public final class CommitmentPlanProvisioningState extends ExpandableStringEnum<
 
     /**
      * Creates or finds a CommitmentPlanProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CommitmentPlanProvisioningState.
      */
-    @JsonCreator
     public static CommitmentPlanProvisioningState fromString(String name) {
         return fromString(name, CommitmentPlanProvisioningState.class);
     }
 
     /**
      * Gets known CommitmentPlanProvisioningState values.
-     *
+     * 
      * @return known CommitmentPlanProvisioningState values.
      */
     public static Collection<CommitmentPlanProvisioningState> values() {

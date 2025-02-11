@@ -10,7 +10,7 @@ package com.azure.resourcemanager.streamanalytics.generated;
 public final class TransformationsCreateOrReplaceSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Transformation_Create.json
      */
     /**
@@ -19,7 +19,11 @@ public final class TransformationsCreateOrReplaceSamples {
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void createATransformation(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.transformations().define("transformation952").withExistingStreamingjob("sjrg4423", "sj8374")
-            .withStreamingUnits(6).withQuery("Select Id, Name from inputtest").create();
+        manager.transformations()
+            .define("transformation952")
+            .withExistingStreamingjob("sjrg4423", "sj8374")
+            .withStreamingUnits(6)
+            .withQuery("Select Id, Name from inputtest")
+            .create();
     }
 }

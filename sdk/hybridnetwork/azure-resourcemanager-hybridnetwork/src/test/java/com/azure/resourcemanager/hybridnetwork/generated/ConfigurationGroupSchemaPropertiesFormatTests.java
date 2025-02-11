@@ -20,8 +20,9 @@ public final class ConfigurationGroupSchemaPropertiesFormatTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationGroupSchemaPropertiesFormat model = new ConfigurationGroupSchemaPropertiesFormat()
-            .withDescription("suuv").withSchemaDefinition("jozkrwfndiod");
+        ConfigurationGroupSchemaPropertiesFormat model
+            = new ConfigurationGroupSchemaPropertiesFormat().withDescription("suuv")
+                .withSchemaDefinition("jozkrwfndiod");
         model = BinaryData.fromObject(model).toObject(ConfigurationGroupSchemaPropertiesFormat.class);
         Assertions.assertEquals("suuv", model.description());
         Assertions.assertEquals("jozkrwfndiod", model.schemaDefinition());

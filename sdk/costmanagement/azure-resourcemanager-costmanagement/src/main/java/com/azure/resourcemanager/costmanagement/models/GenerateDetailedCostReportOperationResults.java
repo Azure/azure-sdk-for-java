@@ -6,15 +6,17 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of GenerateDetailedCostReportOperationResults. */
+/**
+ * Resource collection API of GenerateDetailedCostReportOperationResults.
+ */
 public interface GenerateDetailedCostReportOperationResults {
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -25,10 +27,10 @@ public interface GenerateDetailedCostReportOperationResults {
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

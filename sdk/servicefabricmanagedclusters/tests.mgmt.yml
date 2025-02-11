@@ -1,0 +1,15 @@
+trigger: none
+
+pr: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: servicefabricmanagedclusters
+    Artifacts:
+      - name: azure-resourcemanager-servicefabricmanagedclusters
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerservicefabricmanagedclusters
+    # Only run tests on Windows to save cost.
+    MatrixFilters:
+      - pool=.*(win).*

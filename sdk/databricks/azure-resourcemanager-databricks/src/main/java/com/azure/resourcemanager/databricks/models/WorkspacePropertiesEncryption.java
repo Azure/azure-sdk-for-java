@@ -6,24 +6,31 @@ package com.azure.resourcemanager.databricks.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Encryption properties for databricks workspace. */
+/**
+ * Encryption properties for databricks workspace.
+ */
 @Fluent
-public final class WorkspacePropertiesEncryption {
+public final class WorkspacePropertiesEncryption implements JsonSerializable<WorkspacePropertiesEncryption> {
     /*
      * Encryption entities definition for the workspace.
      */
-    @JsonProperty(value = "entities", required = true)
     private EncryptionEntitiesDefinition entities;
 
-    /** Creates an instance of WorkspacePropertiesEncryption class. */
+    /**
+     * Creates an instance of WorkspacePropertiesEncryption class.
+     */
     public WorkspacePropertiesEncryption() {
     }
 
     /**
      * Get the entities property: Encryption entities definition for the workspace.
-     *
+     * 
      * @return the entities value.
      */
     public EncryptionEntitiesDefinition entities() {
@@ -32,7 +39,7 @@ public final class WorkspacePropertiesEncryption {
 
     /**
      * Set the entities property: Encryption entities definition for the workspace.
-     *
+     * 
      * @param entities the entities value to set.
      * @return the WorkspacePropertiesEncryption object itself.
      */
@@ -43,19 +50,56 @@ public final class WorkspacePropertiesEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (entities() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property entities in model WorkspacePropertiesEncryption"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property entities in model WorkspacePropertiesEncryption"));
         } else {
             entities().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkspacePropertiesEncryption.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("entities", this.entities);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkspacePropertiesEncryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkspacePropertiesEncryption if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkspacePropertiesEncryption.
+     */
+    public static WorkspacePropertiesEncryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkspacePropertiesEncryption deserializedWorkspacePropertiesEncryption
+                = new WorkspacePropertiesEncryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entities".equals(fieldName)) {
+                    deserializedWorkspacePropertiesEncryption.entities = EncryptionEntitiesDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkspacePropertiesEncryption;
+        });
+    }
 }

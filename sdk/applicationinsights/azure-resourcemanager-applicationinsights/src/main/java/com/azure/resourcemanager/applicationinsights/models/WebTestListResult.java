@@ -6,33 +6,39 @@ package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WebTestInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A list of 0 or more Application Insights WebTest definitions. */
+/**
+ * A list of 0 or more Application Insights WebTest definitions.
+ */
 @Fluent
-public final class WebTestListResult {
+public final class WebTestListResult implements JsonSerializable<WebTestListResult> {
     /*
      * Set of Application Insights WebTest definitions.
      */
-    @JsonProperty(value = "value", required = true)
     private List<WebTestInner> value;
 
     /*
      * The link to get the next part of the returned list of WebTest, should the return set be too large for a single
      * request. May be null.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of WebTestListResult class. */
+    /**
+     * Creates an instance of WebTestListResult class.
+     */
     public WebTestListResult() {
     }
 
     /**
      * Get the value property: Set of Application Insights WebTest definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<WebTestInner> value() {
@@ -41,7 +47,7 @@ public final class WebTestListResult {
 
     /**
      * Set the value property: Set of Application Insights WebTest definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the WebTestListResult object itself.
      */
@@ -53,7 +59,7 @@ public final class WebTestListResult {
     /**
      * Get the nextLink property: The link to get the next part of the returned list of WebTest, should the return set
      * be too large for a single request. May be null.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +69,7 @@ public final class WebTestListResult {
     /**
      * Set the nextLink property: The link to get the next part of the returned list of WebTest, should the return set
      * be too large for a single request. May be null.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WebTestListResult object itself.
      */
@@ -74,18 +80,58 @@ public final class WebTestListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model WebTestListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model WebTestListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WebTestListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebTestListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebTestListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebTestListResult.
+     */
+    public static WebTestListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebTestListResult deserializedWebTestListResult = new WebTestListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<WebTestInner> value = reader.readArray(reader1 -> WebTestInner.fromJson(reader1));
+                    deserializedWebTestListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWebTestListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebTestListResult;
+        });
+    }
 }

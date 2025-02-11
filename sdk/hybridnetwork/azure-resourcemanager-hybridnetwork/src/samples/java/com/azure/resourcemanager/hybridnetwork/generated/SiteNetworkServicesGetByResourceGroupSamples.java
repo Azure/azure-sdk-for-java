@@ -19,7 +19,7 @@ public final class SiteNetworkServicesGetByResourceGroupSamples {
      * @param manager Entry point to HybridNetworkManager.
      */
     public static void getNetworkSite(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.siteNetworkServices().getByResourceGroupWithResponse("rg1", "testSiteNetworkServiceName",
-            com.azure.core.util.Context.NONE);
+        manager.siteNetworkServices()
+            .getByResourceGroupWithResponse("rg1", "testSiteNetworkServiceName", com.azure.core.util.Context.NONE);
     }
 }

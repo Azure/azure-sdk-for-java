@@ -11,7 +11,7 @@ public final class ExtensionValuePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionValueProperties model = BinaryData
-            .fromString("{\"version\":\"twss\",\"extensionType\":\"ftpvjzbexil\",\"publisher\":\"nfqqnvwp\"}")
+            .fromString("{\"version\":\"bldtlww\",\"extensionType\":\"kdmtncvokotll\",\"publisher\":\"yhgsy\"}")
             .toObject(ExtensionValueProperties.class);
     }
 

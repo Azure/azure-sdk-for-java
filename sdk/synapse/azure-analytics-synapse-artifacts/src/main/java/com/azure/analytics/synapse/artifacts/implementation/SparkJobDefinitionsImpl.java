@@ -262,10 +262,8 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkJobDefinitionResource>> createOrUpdateSparkJobDefinitionWithResponseAsync(
         String sparkJobDefinitionName, SparkJobDefinitionResource sparkJobDefinition, String ifMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdateSparkJobDefinition(this.client.getEndpoint(),
-            sparkJobDefinitionName, apiVersion, ifMatch, sparkJobDefinition, accept, context));
+        return FluxUtil.withContext(context -> createOrUpdateSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName,
+            sparkJobDefinition, ifMatch, context));
     }
 
     /**
@@ -418,10 +416,8 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkJobDefinitionResource>>
         getSparkJobDefinitionWithResponseAsync(String sparkJobDefinitionName, String ifNoneMatch) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getSparkJobDefinition(this.client.getEndpoint(),
-            sparkJobDefinitionName, apiVersion, ifNoneMatch, accept, context));
+        return FluxUtil.withContext(
+            context -> getSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, ifNoneMatch, context));
     }
 
     /**
@@ -558,10 +554,8 @@ public final class SparkJobDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSparkJobDefinitionWithResponseAsync(String sparkJobDefinitionName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deleteSparkJobDefinition(this.client.getEndpoint(),
-            sparkJobDefinitionName, apiVersion, accept, context));
+        return FluxUtil
+            .withContext(context -> deleteSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, context));
     }
 
     /**
@@ -652,10 +646,8 @@ public final class SparkJobDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>> executeSparkJobDefinitionWithResponseAsync(String sparkJobDefinitionName) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.executeSparkJobDefinition(this.client.getEndpoint(),
-            sparkJobDefinitionName, apiVersion, accept, context));
+        return FluxUtil
+            .withContext(context -> executeSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, context));
     }
 
     /**
@@ -751,10 +743,8 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSparkJobDefinitionWithResponseAsync(String sparkJobDefinitionName,
         ArtifactRenameRequest request) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.renameSparkJobDefinition(this.client.getEndpoint(),
-            sparkJobDefinitionName, apiVersion, request, accept, context));
+        return FluxUtil.withContext(
+            context -> renameSparkJobDefinitionWithResponseAsync(sparkJobDefinitionName, request, context));
     }
 
     /**
@@ -854,10 +844,8 @@ public final class SparkJobDefinitionsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkBatchJob>>
         debugSparkJobDefinitionWithResponseAsync(SparkJobDefinitionResource sparkJobDefinitionAzureResource) {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.debugSparkJobDefinition(this.client.getEndpoint(), apiVersion,
-            sparkJobDefinitionAzureResource, accept, context));
+        return FluxUtil
+            .withContext(context -> debugSparkJobDefinitionWithResponseAsync(sparkJobDefinitionAzureResource, context));
     }
 
     /**
@@ -945,9 +933,7 @@ public final class SparkJobDefinitionsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -968,9 +954,7 @@ public final class SparkJobDefinitionsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
@@ -990,9 +974,7 @@ public final class SparkJobDefinitionsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1006,9 +988,7 @@ public final class SparkJobDefinitionsImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.

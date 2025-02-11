@@ -5,6 +5,7 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.models.ResponseError;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -128,13 +129,18 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("from", getFrom());
         jsonWriter.writeStringField("to", getTo());
-        jsonWriter.writeStringField("receivedTimestamp", getReceivedTimestamp() == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimestamp()));
+        jsonWriter.writeStringField("receivedTimestamp",
+            getReceivedTimestamp() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimestamp()));
         jsonWriter.writeJsonField("error", getError());
         jsonWriter.writeStringField("messageId", this.messageId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
@@ -162,8 +168,8 @@ public final class AcsMessageDeliveryStatusUpdatedEventData extends AcsMessageEv
                 } else if ("to".equals(fieldName)) {
                     deserializedAcsMessageDeliveryStatusUpdatedEventData.setTo(reader.getString());
                 } else if ("receivedTimestamp".equals(fieldName)) {
-                    deserializedAcsMessageDeliveryStatusUpdatedEventData.setReceivedTimestamp(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAcsMessageDeliveryStatusUpdatedEventData.setReceivedTimestamp(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("error".equals(fieldName)) {
                     deserializedAcsMessageDeliveryStatusUpdatedEventData
                         .setError(AcsMessageChannelEventError.fromJson(reader));

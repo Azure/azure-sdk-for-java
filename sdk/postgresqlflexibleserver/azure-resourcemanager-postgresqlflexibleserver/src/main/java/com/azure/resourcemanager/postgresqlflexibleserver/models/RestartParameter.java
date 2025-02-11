@@ -5,23 +5,25 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Represents server restart parameters.
  */
 @Fluent
-public final class RestartParameter {
+public final class RestartParameter implements JsonSerializable<RestartParameter> {
     /*
      * Indicates whether to restart the server with failover.
      */
-    @JsonProperty(value = "restartWithFailover")
     private Boolean restartWithFailover;
 
     /*
      * Failover mode.
      */
-    @JsonProperty(value = "failoverMode")
     private FailoverMode failoverMode;
 
     /**
@@ -76,5 +78,44 @@ public final class RestartParameter {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("restartWithFailover", this.restartWithFailover);
+        jsonWriter.writeStringField("failoverMode", this.failoverMode == null ? null : this.failoverMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestartParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestartParameter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestartParameter.
+     */
+    public static RestartParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestartParameter deserializedRestartParameter = new RestartParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("restartWithFailover".equals(fieldName)) {
+                    deserializedRestartParameter.restartWithFailover = reader.getNullable(JsonReader::getBoolean);
+                } else if ("failoverMode".equals(fieldName)) {
+                    deserializedRestartParameter.failoverMode = FailoverMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestartParameter;
+        });
     }
 }

@@ -4,18 +4,63 @@
 
 package com.azure.resourcemanager.datadog.generated;
 
-/** Samples for MonitoredSubscriptions CreateorUpdate. */
+import com.azure.resourcemanager.datadog.models.FilteringTag;
+import com.azure.resourcemanager.datadog.models.LogRules;
+import com.azure.resourcemanager.datadog.models.MetricRules;
+import com.azure.resourcemanager.datadog.models.MonitoredSubscription;
+import com.azure.resourcemanager.datadog.models.MonitoringTagRulesProperties;
+import com.azure.resourcemanager.datadog.models.Operation;
+import com.azure.resourcemanager.datadog.models.Status;
+import com.azure.resourcemanager.datadog.models.SubscriptionList;
+import com.azure.resourcemanager.datadog.models.TagAction;
+import java.util.Arrays;
+
+/**
+ * Samples for MonitoredSubscriptions CreateorUpdate.
+ */
 public final class MonitoredSubscriptionsCreateorUpdateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MonitoredSubscriptions_CreateorUpdate.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/
+     * MonitoredSubscriptions_CreateorUpdate.json
      */
     /**
      * Sample code: Monitors_AddMonitoredSubscriptions.
-     *
+     * 
      * @param manager Entry point to MicrosoftDatadogManager.
      */
-    public static void monitorsAddMonitoredSubscriptions(
-        com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
-        manager.monitoredSubscriptions().define("default").withExistingMonitor("myResourceGroup", "myMonitor").create();
+    public static void
+        monitorsAddMonitoredSubscriptions(com.azure.resourcemanager.datadog.MicrosoftDatadogManager manager) {
+        manager.monitoredSubscriptions()
+            .define("default")
+            .withExistingMonitor("myResourceGroup", "myMonitor")
+            .withProperties(new SubscriptionList().withOperation(Operation.ADD_BEGIN)
+                .withMonitoredSubscriptionList(Arrays.asList(new MonitoredSubscription()
+                    .withSubscriptionId("/subscriptions/00000000-0000-0000-0000-000000000000")
+                    .withStatus(Status.ACTIVE)
+                    .withTagRules(new MonitoringTagRulesProperties().withLogRules(new LogRules().withSendAadLogs(false)
+                        .withSendSubscriptionLogs(true)
+                        .withSendResourceLogs(true)
+                        .withFilteringTags(Arrays.asList(
+                            new FilteringTag().withName("Environment").withValue("Prod").withAction(TagAction.INCLUDE),
+                            new FilteringTag().withName("Environment").withValue("Dev").withAction(TagAction.EXCLUDE))))
+                        .withMetricRules(new MetricRules().withFilteringTags(Arrays.asList()))
+                        .withAutomuting(true)),
+                    new MonitoredSubscription()
+                        .withSubscriptionId("/subscriptions/00000000-0000-0000-0000-000000000001")
+                        .withStatus(Status.FAILED)
+                        .withTagRules(new MonitoringTagRulesProperties()
+                            .withLogRules(new LogRules().withSendAadLogs(false)
+                                .withSendSubscriptionLogs(true)
+                                .withSendResourceLogs(true)
+                                .withFilteringTags(Arrays.asList(
+                                    new FilteringTag().withName("Environment")
+                                        .withValue("Prod")
+                                        .withAction(TagAction.INCLUDE),
+                                    new FilteringTag().withName("Environment")
+                                        .withValue("Dev")
+                                        .withAction(TagAction.EXCLUDE))))
+                            .withMetricRules(new MetricRules().withFilteringTags(Arrays.asList()))
+                            .withAutomuting(true)))))
+            .create();
     }
 }

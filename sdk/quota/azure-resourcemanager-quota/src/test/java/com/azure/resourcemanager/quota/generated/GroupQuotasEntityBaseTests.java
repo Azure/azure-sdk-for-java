@@ -5,37 +5,22 @@
 package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.quota.models.AdditionalAttributes;
-import com.azure.resourcemanager.quota.models.EnvironmentType;
-import com.azure.resourcemanager.quota.models.GroupingId;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntityBase;
 import org.junit.jupiter.api.Assertions;
 
 public final class GroupQuotasEntityBaseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GroupQuotasEntityBase model = BinaryData.fromString(
-            "{\"displayName\":\"tbmufpo\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"ServiceTreeId\",\"value\":\"hwlrx\"},\"environment\":\"Production\"},\"provisioningState\":\"Succeeded\"}")
-            .toObject(GroupQuotasEntityBase.class);
-        Assertions.assertEquals("tbmufpo", model.displayName());
-        Assertions.assertEquals(GroupingIdType.SERVICE_TREE_ID,
-            model.additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("hwlrx", model.additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.PRODUCTION, model.additionalAttributes().environment());
+        GroupQuotasEntityBase model
+            = BinaryData.fromString("{\"displayName\":\"msxaobhd\",\"provisioningState\":\"Succeeded\"}")
+                .toObject(GroupQuotasEntityBase.class);
+        Assertions.assertEquals("msxaobhd", model.displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotasEntityBase model = new GroupQuotasEntityBase().withDisplayName("tbmufpo")
-            .withAdditionalAttributes(new AdditionalAttributes()
-                .withGroupId(new GroupingId().withGroupingIdType(GroupingIdType.SERVICE_TREE_ID).withValue("hwlrx"))
-                .withEnvironment(EnvironmentType.PRODUCTION));
+        GroupQuotasEntityBase model = new GroupQuotasEntityBase().withDisplayName("msxaobhd");
         model = BinaryData.fromObject(model).toObject(GroupQuotasEntityBase.class);
-        Assertions.assertEquals("tbmufpo", model.displayName());
-        Assertions.assertEquals(GroupingIdType.SERVICE_TREE_ID,
-            model.additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("hwlrx", model.additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.PRODUCTION, model.additionalAttributes().environment());
+        Assertions.assertEquals("msxaobhd", model.displayName());
     }
 }

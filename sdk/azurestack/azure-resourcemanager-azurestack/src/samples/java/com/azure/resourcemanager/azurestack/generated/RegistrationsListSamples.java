@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.azurestack.generated;
 
-/** Samples for Registrations List. */
+/**
+ * Samples for Registrations List.
+ */
 public final class RegistrationsListSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/ListBySubscription.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/Registration/
+     * ListBySubscription.json
      */
     /**
      * Sample code: Returns a list of all registrations under current subscription.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void returnsAListOfAllRegistrationsUnderCurrentSubscription(

@@ -11,20 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringBandwidthOfferTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringBandwidthOffer model =
-            BinaryData
-                .fromString("{\"offerName\":\"erfuwuttt\",\"valueInMbps\":2038091366}")
-                .toObject(PeeringBandwidthOffer.class);
-        Assertions.assertEquals("erfuwuttt", model.offerName());
-        Assertions.assertEquals(2038091366, model.valueInMbps());
+        PeeringBandwidthOffer model = BinaryData.fromString("{\"offerName\":\"esap\",\"valueInMbps\":2062643229}")
+            .toObject(PeeringBandwidthOffer.class);
+        Assertions.assertEquals("esap", model.offerName());
+        Assertions.assertEquals(2062643229, model.valueInMbps());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringBandwidthOffer model =
-            new PeeringBandwidthOffer().withOfferName("erfuwuttt").withValueInMbps(2038091366);
+        PeeringBandwidthOffer model = new PeeringBandwidthOffer().withOfferName("esap").withValueInMbps(2062643229);
         model = BinaryData.fromObject(model).toObject(PeeringBandwidthOffer.class);
-        Assertions.assertEquals("erfuwuttt", model.offerName());
-        Assertions.assertEquals(2038091366, model.valueInMbps());
+        Assertions.assertEquals("esap", model.offerName());
+        Assertions.assertEquals(2062643229, model.valueInMbps());
     }
 }

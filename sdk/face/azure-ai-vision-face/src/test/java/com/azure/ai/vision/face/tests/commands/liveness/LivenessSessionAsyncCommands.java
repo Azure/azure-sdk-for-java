@@ -30,7 +30,8 @@ class LivenessSessionAsyncCommands implements ILivenessSessionSyncCommands {
     }
 
     @Override
-    public CreateLivenessSessionResult createLivenessSessionSync(CreateLivenessSessionContent createLivenessSessionContent) {
+    public CreateLivenessSessionResult
+        createLivenessSessionSync(CreateLivenessSessionContent createLivenessSessionContent) {
         return FunctionUtils.callAndAwait(() -> createLivenessSession(createLivenessSessionContent));
     }
 

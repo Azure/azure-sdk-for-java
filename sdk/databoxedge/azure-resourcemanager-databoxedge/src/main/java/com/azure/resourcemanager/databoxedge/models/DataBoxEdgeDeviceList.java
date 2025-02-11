@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.fluent.models.DataBoxEdgeDeviceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The collection of Data Box Edge/Gateway devices. */
+/**
+ * The collection of Data Box Edge/Gateway devices.
+ */
 @Immutable
-public final class DataBoxEdgeDeviceList {
+public final class DataBoxEdgeDeviceList implements JsonSerializable<DataBoxEdgeDeviceList> {
     /*
      * The list of Data Box Edge/Gateway devices.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataBoxEdgeDeviceInner> value;
 
     /*
      * Link to the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DataBoxEdgeDeviceList class. */
+    /**
+     * Creates an instance of DataBoxEdgeDeviceList class.
+     */
     public DataBoxEdgeDeviceList() {
     }
 
     /**
      * Get the value property: The list of Data Box Edge/Gateway devices.
-     *
+     * 
      * @return the value value.
      */
     public List<DataBoxEdgeDeviceInner> value() {
@@ -39,7 +45,7 @@ public final class DataBoxEdgeDeviceList {
 
     /**
      * Get the nextLink property: Link to the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class DataBoxEdgeDeviceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxEdgeDeviceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxEdgeDeviceList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataBoxEdgeDeviceList.
+     */
+    public static DataBoxEdgeDeviceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxEdgeDeviceList deserializedDataBoxEdgeDeviceList = new DataBoxEdgeDeviceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DataBoxEdgeDeviceInner> value
+                        = reader.readArray(reader1 -> DataBoxEdgeDeviceInner.fromJson(reader1));
+                    deserializedDataBoxEdgeDeviceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxEdgeDeviceList;
+        });
     }
 }

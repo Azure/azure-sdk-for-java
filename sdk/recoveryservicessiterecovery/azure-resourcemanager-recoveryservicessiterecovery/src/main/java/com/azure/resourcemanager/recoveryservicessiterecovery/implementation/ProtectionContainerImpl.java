@@ -80,14 +80,17 @@ public final class ProtectionContainerImpl implements ProtectionContainer, Prote
     }
 
     public ProtectionContainer create() {
-        this.innerObject = serviceManager.serviceClient().getReplicationProtectionContainers().create(resourceName,
-            resourceGroupName, fabricName, protectionContainerName, createCreationInput, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationProtectionContainers()
+            .create(resourceName, resourceGroupName, fabricName, protectionContainerName, createCreationInput,
+                Context.NONE);
         return this;
     }
 
     public ProtectionContainer create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationProtectionContainers().create(resourceName,
-            resourceGroupName, fabricName, protectionContainerName, createCreationInput, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationProtectionContainers()
+            .create(resourceName, resourceGroupName, fabricName, protectionContainerName, createCreationInput, context);
         return this;
     }
 
@@ -100,47 +103,53 @@ public final class ProtectionContainerImpl implements ProtectionContainer, Prote
     }
 
     public ProtectionContainer refresh() {
-        this.innerObject = serviceManager.serviceClient().getReplicationProtectionContainers()
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationProtectionContainers()
             .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, Context.NONE)
             .getValue();
         return this;
     }
 
     public ProtectionContainer refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getReplicationProtectionContainers()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getReplicationProtectionContainers()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, context)
+            .getValue();
         return this;
     }
 
     public ProtectionContainer discoverProtectableItem(DiscoverProtectableItemRequest discoverProtectableItemRequest) {
-        return serviceManager.replicationProtectionContainers().discoverProtectableItem(resourceName, resourceGroupName,
-            fabricName, protectionContainerName, discoverProtectableItemRequest);
+        return serviceManager.replicationProtectionContainers()
+            .discoverProtectableItem(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                discoverProtectableItemRequest);
     }
 
     public ProtectionContainer discoverProtectableItem(DiscoverProtectableItemRequest discoverProtectableItemRequest,
         Context context) {
-        return serviceManager.replicationProtectionContainers().discoverProtectableItem(resourceName, resourceGroupName,
-            fabricName, protectionContainerName, discoverProtectableItemRequest, context);
+        return serviceManager.replicationProtectionContainers()
+            .discoverProtectableItem(resourceName, resourceGroupName, fabricName, protectionContainerName,
+                discoverProtectableItemRequest, context);
     }
 
     public void delete() {
-        serviceManager.replicationProtectionContainers().delete(resourceName, resourceGroupName, fabricName,
-            protectionContainerName);
+        serviceManager.replicationProtectionContainers()
+            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName);
     }
 
     public void delete(Context context) {
-        serviceManager.replicationProtectionContainers().delete(resourceName, resourceGroupName, fabricName,
-            protectionContainerName, context);
+        serviceManager.replicationProtectionContainers()
+            .delete(resourceName, resourceGroupName, fabricName, protectionContainerName, context);
     }
 
     public ProtectionContainer switchProtection(SwitchProtectionInput switchInput) {
-        return serviceManager.replicationProtectionContainers().switchProtection(resourceName, resourceGroupName,
-            fabricName, protectionContainerName, switchInput);
+        return serviceManager.replicationProtectionContainers()
+            .switchProtection(resourceName, resourceGroupName, fabricName, protectionContainerName, switchInput);
     }
 
     public ProtectionContainer switchProtection(SwitchProtectionInput switchInput, Context context) {
-        return serviceManager.replicationProtectionContainers().switchProtection(resourceName, resourceGroupName,
-            fabricName, protectionContainerName, switchInput, context);
+        return serviceManager.replicationProtectionContainers()
+            .switchProtection(resourceName, resourceGroupName, fabricName, protectionContainerName, switchInput,
+                context);
     }
 
     public ProtectionContainerImpl withProperties(CreateProtectionContainerInputProperties properties) {

@@ -5,36 +5,42 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the Data Box Edge/Gateway device extended info. */
+/**
+ * The properties of the Data Box Edge/Gateway device extended info.
+ */
 @Fluent
-public final class DataBoxEdgeDeviceExtendedInfoProperties {
+public final class DataBoxEdgeDeviceExtendedInfoProperties
+    implements JsonSerializable<DataBoxEdgeDeviceExtendedInfoProperties> {
     /*
      * The digital signature of encrypted certificate.
      */
-    @JsonProperty(value = "encryptionKeyThumbprint")
     private String encryptionKeyThumbprint;
 
     /*
      * The public part of the encryption certificate. Client uses this to encrypt any secret.
      */
-    @JsonProperty(value = "encryptionKey")
     private String encryptionKey;
 
     /*
      * The Resource ID of the Resource.
      */
-    @JsonProperty(value = "resourceKey", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceKey;
 
-    /** Creates an instance of DataBoxEdgeDeviceExtendedInfoProperties class. */
+    /**
+     * Creates an instance of DataBoxEdgeDeviceExtendedInfoProperties class.
+     */
     public DataBoxEdgeDeviceExtendedInfoProperties() {
     }
 
     /**
      * Get the encryptionKeyThumbprint property: The digital signature of encrypted certificate.
-     *
+     * 
      * @return the encryptionKeyThumbprint value.
      */
     public String encryptionKeyThumbprint() {
@@ -43,7 +49,7 @@ public final class DataBoxEdgeDeviceExtendedInfoProperties {
 
     /**
      * Set the encryptionKeyThumbprint property: The digital signature of encrypted certificate.
-     *
+     * 
      * @param encryptionKeyThumbprint the encryptionKeyThumbprint value to set.
      * @return the DataBoxEdgeDeviceExtendedInfoProperties object itself.
      */
@@ -55,7 +61,7 @@ public final class DataBoxEdgeDeviceExtendedInfoProperties {
     /**
      * Get the encryptionKey property: The public part of the encryption certificate. Client uses this to encrypt any
      * secret.
-     *
+     * 
      * @return the encryptionKey value.
      */
     public String encryptionKey() {
@@ -65,7 +71,7 @@ public final class DataBoxEdgeDeviceExtendedInfoProperties {
     /**
      * Set the encryptionKey property: The public part of the encryption certificate. Client uses this to encrypt any
      * secret.
-     *
+     * 
      * @param encryptionKey the encryptionKey value to set.
      * @return the DataBoxEdgeDeviceExtendedInfoProperties object itself.
      */
@@ -76,7 +82,7 @@ public final class DataBoxEdgeDeviceExtendedInfoProperties {
 
     /**
      * Get the resourceKey property: The Resource ID of the Resource.
-     *
+     * 
      * @return the resourceKey value.
      */
     public String resourceKey() {
@@ -85,9 +91,51 @@ public final class DataBoxEdgeDeviceExtendedInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("encryptionKeyThumbprint", this.encryptionKeyThumbprint);
+        jsonWriter.writeStringField("encryptionKey", this.encryptionKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxEdgeDeviceExtendedInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxEdgeDeviceExtendedInfoProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataBoxEdgeDeviceExtendedInfoProperties.
+     */
+    public static DataBoxEdgeDeviceExtendedInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxEdgeDeviceExtendedInfoProperties deserializedDataBoxEdgeDeviceExtendedInfoProperties
+                = new DataBoxEdgeDeviceExtendedInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("encryptionKeyThumbprint".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceExtendedInfoProperties.encryptionKeyThumbprint = reader.getString();
+                } else if ("encryptionKey".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceExtendedInfoProperties.encryptionKey = reader.getString();
+                } else if ("resourceKey".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceExtendedInfoProperties.resourceKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxEdgeDeviceExtendedInfoProperties;
+        });
     }
 }

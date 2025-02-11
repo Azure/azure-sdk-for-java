@@ -13,45 +13,35 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetaMetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetaMetricSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ruvw\",\"displayDescription\":\"sqfsubcgjbirxb\",\"displayName\":\"bsrfbj\",\"unit\":\"twss\",\"aggregationType\":\"ftpvjzbexil\",\"availabilities\":[{\"timeGrain\":\"qqnvwpmq\",\"blobDuration\":\"ruoujmk\"},{\"timeGrain\":\"hwqytj\",\"blobDuration\":\"bnw\"}]}")
-                .toObject(OperationMetaMetricSpecification.class);
-        Assertions.assertEquals("ruvw", model.name());
-        Assertions.assertEquals("sqfsubcgjbirxb", model.displayDescription());
-        Assertions.assertEquals("bsrfbj", model.displayName());
-        Assertions.assertEquals("twss", model.unit());
-        Assertions.assertEquals("ftpvjzbexil", model.aggregationType());
-        Assertions.assertEquals("qqnvwpmq", model.availabilities().get(0).timeGrain());
-        Assertions.assertEquals("ruoujmk", model.availabilities().get(0).blobDuration());
+        OperationMetaMetricSpecification model = BinaryData.fromString(
+            "{\"name\":\"gbkdmoizpos\",\"displayDescription\":\"grcfb\",\"displayName\":\"rmfqjhhkxbpvj\",\"unit\":\"jhxxjyn\",\"aggregationType\":\"divkrt\",\"availabilities\":[{\"timeGrain\":\"qzvszjf\",\"blobDuration\":\"vjfdx\"}]}")
+            .toObject(OperationMetaMetricSpecification.class);
+        Assertions.assertEquals("gbkdmoizpos", model.name());
+        Assertions.assertEquals("grcfb", model.displayDescription());
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.displayName());
+        Assertions.assertEquals("jhxxjyn", model.unit());
+        Assertions.assertEquals("divkrt", model.aggregationType());
+        Assertions.assertEquals("qzvszjf", model.availabilities().get(0).timeGrain());
+        Assertions.assertEquals("vjfdx", model.availabilities().get(0).blobDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetaMetricSpecification model =
-            new OperationMetaMetricSpecification()
-                .withName("ruvw")
-                .withDisplayDescription("sqfsubcgjbirxb")
-                .withDisplayName("bsrfbj")
-                .withUnit("twss")
-                .withAggregationType("ftpvjzbexil")
-                .withAvailabilities(
-                    Arrays
-                        .asList(
-                            new OperationMetaMetricAvailabilitiesSpecification()
-                                .withTimeGrain("qqnvwpmq")
-                                .withBlobDuration("ruoujmk"),
-                            new OperationMetaMetricAvailabilitiesSpecification()
-                                .withTimeGrain("hwqytj")
-                                .withBlobDuration("bnw")));
+        OperationMetaMetricSpecification model = new OperationMetaMetricSpecification().withName("gbkdmoizpos")
+            .withDisplayDescription("grcfb")
+            .withDisplayName("rmfqjhhkxbpvj")
+            .withUnit("jhxxjyn")
+            .withAggregationType("divkrt")
+            .withAvailabilities(
+                Arrays.asList(new OperationMetaMetricAvailabilitiesSpecification().withTimeGrain("qzvszjf")
+                    .withBlobDuration("vjfdx")));
         model = BinaryData.fromObject(model).toObject(OperationMetaMetricSpecification.class);
-        Assertions.assertEquals("ruvw", model.name());
-        Assertions.assertEquals("sqfsubcgjbirxb", model.displayDescription());
-        Assertions.assertEquals("bsrfbj", model.displayName());
-        Assertions.assertEquals("twss", model.unit());
-        Assertions.assertEquals("ftpvjzbexil", model.aggregationType());
-        Assertions.assertEquals("qqnvwpmq", model.availabilities().get(0).timeGrain());
-        Assertions.assertEquals("ruoujmk", model.availabilities().get(0).blobDuration());
+        Assertions.assertEquals("gbkdmoizpos", model.name());
+        Assertions.assertEquals("grcfb", model.displayDescription());
+        Assertions.assertEquals("rmfqjhhkxbpvj", model.displayName());
+        Assertions.assertEquals("jhxxjyn", model.unit());
+        Assertions.assertEquals("divkrt", model.aggregationType());
+        Assertions.assertEquals("qzvszjf", model.availabilities().get(0).timeGrain());
+        Assertions.assertEquals("vjfdx", model.availabilities().get(0).blobDuration());
     }
 }

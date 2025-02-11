@@ -6,5 +6,9 @@ package com.azure.compute.batch.models;
  * Optional parameters for creating a task.
  */
 public class CreateBatchTaskOptions extends BatchBaseOptions {
-
+    /**
+     * Creates an instance of {@link CreateBatchTaskOptions}.
+     */
+    public CreateBatchTaskOptions() {
+    }
 }

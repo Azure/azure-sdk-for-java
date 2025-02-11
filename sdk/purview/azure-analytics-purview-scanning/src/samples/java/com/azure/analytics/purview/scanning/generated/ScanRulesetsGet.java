@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScanRulesetsGet {
     public static void main(String[] args) {
-        ScanRulesetsClient scanRulesetsClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildScanRulesetsClient();
+        ScanRulesetsClient scanRulesetsClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildScanRulesetsClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.scanrulesetsget.scanrulesetsget
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = scanRulesetsClient.getWithResponse("myRuleSetName", requestOptions);

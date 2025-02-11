@@ -76,7 +76,7 @@ public final class RntbdRequest {
         return new RntbdRequest(header, metadata, payload);
     }
 
-    void encode(final ByteBuf out) {
+    public void encode(final ByteBuf out) {
 
         final int expectedLength = RntbdRequestFrame.LENGTH + this.headers.computeLength();
         final int start = out.writerIndex();

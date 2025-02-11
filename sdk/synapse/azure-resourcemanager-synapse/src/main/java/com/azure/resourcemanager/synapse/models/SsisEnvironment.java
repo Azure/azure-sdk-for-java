@@ -5,35 +5,51 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Ssis environment. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Environment")
+/**
+ * Ssis environment.
+ */
 @Fluent
 public final class SsisEnvironment extends SsisObjectMetadata {
     /*
+     * Type of metadata.
+     */
+    private SsisObjectMetadataType type = SsisObjectMetadataType.ENVIRONMENT;
+
+    /*
      * Folder id which contains environment.
      */
-    @JsonProperty(value = "folderId")
     private Long folderId;
 
     /*
      * Variable in environment
      */
-    @JsonProperty(value = "variables")
     private List<SsisVariable> variables;
 
-    /** Creates an instance of SsisEnvironment class. */
+    /**
+     * Creates an instance of SsisEnvironment class.
+     */
     public SsisEnvironment() {
     }
 
     /**
+     * Get the type property: Type of metadata.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public SsisObjectMetadataType type() {
+        return this.type;
+    }
+
+    /**
      * Get the folderId property: Folder id which contains environment.
-     *
+     * 
      * @return the folderId value.
      */
     public Long folderId() {
@@ -42,7 +58,7 @@ public final class SsisEnvironment extends SsisObjectMetadata {
 
     /**
      * Set the folderId property: Folder id which contains environment.
-     *
+     * 
      * @param folderId the folderId value to set.
      * @return the SsisEnvironment object itself.
      */
@@ -53,7 +69,7 @@ public final class SsisEnvironment extends SsisObjectMetadata {
 
     /**
      * Get the variables property: Variable in environment.
-     *
+     * 
      * @return the variables value.
      */
     public List<SsisVariable> variables() {
@@ -62,7 +78,7 @@ public final class SsisEnvironment extends SsisObjectMetadata {
 
     /**
      * Set the variables property: Variable in environment.
-     *
+     * 
      * @param variables the variables value to set.
      * @return the SsisEnvironment object itself.
      */
@@ -71,21 +87,27 @@ public final class SsisEnvironment extends SsisObjectMetadata {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisEnvironment withId(Long id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisEnvironment withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisEnvironment withDescription(String description) {
         super.withDescription(description);
@@ -94,14 +116,65 @@ public final class SsisEnvironment extends SsisObjectMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (variables() != null) {
             variables().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", id());
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeNumberField("folderId", this.folderId);
+        jsonWriter.writeArrayField("variables", this.variables, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisEnvironment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisEnvironment if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisEnvironment.
+     */
+    public static SsisEnvironment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisEnvironment deserializedSsisEnvironment = new SsisEnvironment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSsisEnvironment.withId(reader.getNullable(JsonReader::getLong));
+                } else if ("name".equals(fieldName)) {
+                    deserializedSsisEnvironment.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSsisEnvironment.withDescription(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSsisEnvironment.type = SsisObjectMetadataType.fromString(reader.getString());
+                } else if ("folderId".equals(fieldName)) {
+                    deserializedSsisEnvironment.folderId = reader.getNullable(JsonReader::getLong);
+                } else if ("variables".equals(fieldName)) {
+                    List<SsisVariable> variables = reader.readArray(reader1 -> SsisVariable.fromJson(reader1));
+                    deserializedSsisEnvironment.variables = variables;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisEnvironment;
+        });
     }
 }

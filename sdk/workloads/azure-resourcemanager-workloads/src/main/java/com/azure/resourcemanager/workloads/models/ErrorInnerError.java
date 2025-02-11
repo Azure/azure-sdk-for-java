@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Object containing more specific information than the current object about the error. */
+/**
+ * Object containing more specific information than the current object about the error.
+ */
 @Fluent
-public final class ErrorInnerError {
+public final class ErrorInnerError implements JsonSerializable<ErrorInnerError> {
     /*
      * Standard error object.
      */
-    @JsonProperty(value = "innerError")
     private Error innerError;
 
-    /** Creates an instance of ErrorInnerError class. */
+    /**
+     * Creates an instance of ErrorInnerError class.
+     */
     public ErrorInnerError() {
     }
 
     /**
      * Get the innerError property: Standard error object.
-     *
+     * 
      * @return the innerError value.
      */
     public Error innerError() {
@@ -31,7 +38,7 @@ public final class ErrorInnerError {
 
     /**
      * Set the innerError property: Standard error object.
-     *
+     * 
      * @param innerError the innerError value to set.
      * @return the ErrorInnerError object itself.
      */
@@ -42,12 +49,48 @@ public final class ErrorInnerError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerError() != null) {
             innerError().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("innerError", this.innerError);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorInnerError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorInnerError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorInnerError.
+     */
+    public static ErrorInnerError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorInnerError deserializedErrorInnerError = new ErrorInnerError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("innerError".equals(fieldName)) {
+                    deserializedErrorInnerError.innerError = Error.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorInnerError;
+        });
     }
 }

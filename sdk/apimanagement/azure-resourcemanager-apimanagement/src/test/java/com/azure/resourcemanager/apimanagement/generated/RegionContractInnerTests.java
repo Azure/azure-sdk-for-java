@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RegionContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegionContractInner model =
-            BinaryData
-                .fromString("{\"name\":\"plgtpvd\",\"isMasterRegion\":false,\"isDeleted\":true}")
+        RegionContractInner model
+            = BinaryData.fromString("{\"name\":\"plgtpvd\",\"isMasterRegion\":false,\"isDeleted\":true}")
                 .toObject(RegionContractInner.class);
         Assertions.assertEquals(false, model.isMasterRegion());
         Assertions.assertEquals(true, model.isDeleted());

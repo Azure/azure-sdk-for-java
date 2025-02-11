@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UserCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"firstName\":\"akx\",\"lastName\":\"nfczmnniixyxvq\",\"email\":\"nosjtgirnbgmgmd\",\"registrationDate\":\"2021-05-22T01:48:16Z\",\"groups\":[{\"displayName\":\"y\",\"description\":\"twmp\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"a\"},{\"displayName\":\"og\",\"description\":\"xwet\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"vlkpzwb\"},{\"displayName\":\"nrecchdidrm\",\"description\":\"kahmjedbiucvkhhw\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"eunxcqrrihufoi\"},{\"displayName\":\"ppiybxv\",\"description\":\"zuzpbgkzcs\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"kunhdimjuk\"}],\"state\":\"active\",\"note\":\"kaugpucdocfqplwg\",\"identities\":[{\"provider\":\"xwr\",\"id\":\"vzklkvbgikyjtka\"}]},\"id\":\"vlbishjvpzapt\",\"name\":\"oskaoizji\",\"type\":\"wfgcdiykkcxwn\"}],\"count\":104659426635185987,\"nextLink\":\"nvavitmdm\"}")
-                .toObject(UserCollection.class);
+        UserCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"firstName\":\"akx\",\"lastName\":\"nfczmnniixyxvq\",\"email\":\"nosjtgirnbgmgmd\",\"registrationDate\":\"2021-05-22T01:48:16Z\",\"groups\":[{\"displayName\":\"y\",\"description\":\"twmp\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"a\"},{\"displayName\":\"og\",\"description\":\"xwet\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"vlkpzwb\"},{\"displayName\":\"nrecchdidrm\",\"description\":\"kahmjedbiucvkhhw\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"eunxcqrrihufoi\"},{\"displayName\":\"ppiybxv\",\"description\":\"zuzpbgkzcs\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"kunhdimjuk\"}],\"state\":\"active\",\"note\":\"kaugpucdocfqplwg\",\"identities\":[{\"provider\":\"xwr\",\"id\":\"vzklkvbgikyjtka\"}]},\"id\":\"vlbishjvpzapt\",\"name\":\"oskaoizji\",\"type\":\"wfgcdiykkcxwn\"}],\"count\":104659426635185987,\"nextLink\":\"nvavitmdm\"}")
+            .toObject(UserCollection.class);
         Assertions.assertEquals("akx", model.value().get(0).firstName());
         Assertions.assertEquals("nfczmnniixyxvq", model.value().get(0).lastName());
         Assertions.assertEquals("nosjtgirnbgmgmd", model.value().get(0).email());
@@ -35,24 +33,17 @@ public final class UserCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserCollection model =
-            new UserCollection()
+        UserCollection model
+            = new UserCollection()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new UserContractInner()
-                                .withFirstName("akx")
-                                .withLastName("nfczmnniixyxvq")
-                                .withEmail("nosjtgirnbgmgmd")
-                                .withRegistrationDate(OffsetDateTime.parse("2021-05-22T01:48:16Z"))
-                                .withState(UserState.ACTIVE)
-                                .withNote("kaugpucdocfqplwg")
-                                .withIdentities(
-                                    Arrays
-                                        .asList(
-                                            new UserIdentityContractInner()
-                                                .withProvider("xwr")
-                                                .withId("vzklkvbgikyjtka")))))
+                    Arrays.asList(new UserContractInner().withFirstName("akx")
+                        .withLastName("nfczmnniixyxvq")
+                        .withEmail("nosjtgirnbgmgmd")
+                        .withRegistrationDate(OffsetDateTime.parse("2021-05-22T01:48:16Z"))
+                        .withState(UserState.ACTIVE)
+                        .withNote("kaugpucdocfqplwg")
+                        .withIdentities(Arrays
+                            .asList(new UserIdentityContractInner().withProvider("xwr").withId("vzklkvbgikyjtka")))))
                 .withCount(104659426635185987L)
                 .withNextLink("nvavitmdm");
         model = BinaryData.fromObject(model).toObject(UserCollection.class);

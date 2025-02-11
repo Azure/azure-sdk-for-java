@@ -307,7 +307,6 @@ public final class FtpReadSettings extends StoreReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

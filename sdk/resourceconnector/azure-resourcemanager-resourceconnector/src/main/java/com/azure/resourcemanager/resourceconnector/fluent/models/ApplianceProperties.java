@@ -5,57 +5,59 @@
 package com.azure.resourcemanager.resourceconnector.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourceconnector.models.AppliancePropertiesInfrastructureConfig;
 import com.azure.resourcemanager.resourceconnector.models.Distro;
 import com.azure.resourcemanager.resourceconnector.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties for an appliance. */
+/**
+ * Properties for an appliance.
+ */
 @Fluent
-public final class ApplianceProperties {
+public final class ApplianceProperties implements JsonSerializable<ApplianceProperties> {
     /*
      * Represents a supported Fabric/Infra. (AKSEdge etc...).
      */
-    @JsonProperty(value = "distro")
     private Distro distro;
 
     /*
      * Contains infrastructure information about the Appliance
      */
-    @JsonProperty(value = "infrastructureConfig")
     private AppliancePropertiesInfrastructureConfig infrastructureConfig;
 
     /*
      * The current deployment or provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Certificates pair used to download MSI certificate from HIS. Can only be set once.
      */
-    @JsonProperty(value = "publicKey")
     private String publicKey;
 
     /*
      * Appliance’s health and state of connection to on-prem
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
 
     /*
      * Version of the Appliance
      */
-    @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of ApplianceProperties class. */
+    /**
+     * Creates an instance of ApplianceProperties class.
+     */
     public ApplianceProperties() {
     }
 
     /**
      * Get the distro property: Represents a supported Fabric/Infra. (AKSEdge etc...).
-     *
+     * 
      * @return the distro value.
      */
     public Distro distro() {
@@ -64,7 +66,7 @@ public final class ApplianceProperties {
 
     /**
      * Set the distro property: Represents a supported Fabric/Infra. (AKSEdge etc...).
-     *
+     * 
      * @param distro the distro value to set.
      * @return the ApplianceProperties object itself.
      */
@@ -75,7 +77,7 @@ public final class ApplianceProperties {
 
     /**
      * Get the infrastructureConfig property: Contains infrastructure information about the Appliance.
-     *
+     * 
      * @return the infrastructureConfig value.
      */
     public AppliancePropertiesInfrastructureConfig infrastructureConfig() {
@@ -84,7 +86,7 @@ public final class ApplianceProperties {
 
     /**
      * Set the infrastructureConfig property: Contains infrastructure information about the Appliance.
-     *
+     * 
      * @param infrastructureConfig the infrastructureConfig value to set.
      * @return the ApplianceProperties object itself.
      */
@@ -96,7 +98,7 @@ public final class ApplianceProperties {
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -105,7 +107,7 @@ public final class ApplianceProperties {
 
     /**
      * Get the publicKey property: Certificates pair used to download MSI certificate from HIS. Can only be set once.
-     *
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -114,7 +116,7 @@ public final class ApplianceProperties {
 
     /**
      * Set the publicKey property: Certificates pair used to download MSI certificate from HIS. Can only be set once.
-     *
+     * 
      * @param publicKey the publicKey value to set.
      * @return the ApplianceProperties object itself.
      */
@@ -125,7 +127,7 @@ public final class ApplianceProperties {
 
     /**
      * Get the status property: Appliance’s health and state of connection to on-prem.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -134,7 +136,7 @@ public final class ApplianceProperties {
 
     /**
      * Get the version property: Version of the Appliance.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -143,7 +145,7 @@ public final class ApplianceProperties {
 
     /**
      * Set the version property: Version of the Appliance.
-     *
+     * 
      * @param version the version value to set.
      * @return the ApplianceProperties object itself.
      */
@@ -154,12 +156,62 @@ public final class ApplianceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (infrastructureConfig() != null) {
             infrastructureConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("distro", this.distro == null ? null : this.distro.toString());
+        jsonWriter.writeJsonField("infrastructureConfig", this.infrastructureConfig);
+        jsonWriter.writeStringField("publicKey", this.publicKey);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplianceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplianceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplianceProperties.
+     */
+    public static ApplianceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplianceProperties deserializedApplianceProperties = new ApplianceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("distro".equals(fieldName)) {
+                    deserializedApplianceProperties.distro = Distro.fromString(reader.getString());
+                } else if ("infrastructureConfig".equals(fieldName)) {
+                    deserializedApplianceProperties.infrastructureConfig
+                        = AppliancePropertiesInfrastructureConfig.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplianceProperties.provisioningState = reader.getString();
+                } else if ("publicKey".equals(fieldName)) {
+                    deserializedApplianceProperties.publicKey = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedApplianceProperties.status = Status.fromString(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedApplianceProperties.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplianceProperties;
+        });
     }
 }

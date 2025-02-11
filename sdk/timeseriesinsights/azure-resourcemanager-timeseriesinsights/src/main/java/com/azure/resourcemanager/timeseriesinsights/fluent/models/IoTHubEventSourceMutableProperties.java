@@ -5,27 +5,33 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.EventSourceMutableProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** An object that represents a set of mutable IoTHub event source resource properties. */
+/**
+ * An object that represents a set of mutable IoTHub event source resource properties.
+ */
 @Fluent
 public final class IoTHubEventSourceMutableProperties extends EventSourceMutableProperties {
     /*
      * The value of the shared access key that grants the Time Series Insights service read access to the iot hub. This
      * property is not shown in event source responses.
      */
-    @JsonProperty(value = "sharedAccessKey")
     private String sharedAccessKey;
 
-    /** Creates an instance of IoTHubEventSourceMutableProperties class. */
+    /**
+     * Creates an instance of IoTHubEventSourceMutableProperties class.
+     */
     public IoTHubEventSourceMutableProperties() {
     }
 
     /**
      * Get the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
      * read access to the iot hub. This property is not shown in event source responses.
-     *
+     * 
      * @return the sharedAccessKey value.
      */
     public String sharedAccessKey() {
@@ -35,7 +41,7 @@ public final class IoTHubEventSourceMutableProperties extends EventSourceMutable
     /**
      * Set the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
      * read access to the iot hub. This property is not shown in event source responses.
-     *
+     * 
      * @param sharedAccessKey the sharedAccessKey value to set.
      * @return the IoTHubEventSourceMutableProperties object itself.
      */
@@ -44,7 +50,9 @@ public final class IoTHubEventSourceMutableProperties extends EventSourceMutable
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IoTHubEventSourceMutableProperties withTimestampPropertyName(String timestampPropertyName) {
         super.withTimestampPropertyName(timestampPropertyName);
@@ -53,11 +61,50 @@ public final class IoTHubEventSourceMutableProperties extends EventSourceMutable
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timestampPropertyName", timestampPropertyName());
+        jsonWriter.writeStringField("sharedAccessKey", this.sharedAccessKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTHubEventSourceMutableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTHubEventSourceMutableProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IoTHubEventSourceMutableProperties.
+     */
+    public static IoTHubEventSourceMutableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTHubEventSourceMutableProperties deserializedIoTHubEventSourceMutableProperties
+                = new IoTHubEventSourceMutableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timestampPropertyName".equals(fieldName)) {
+                    deserializedIoTHubEventSourceMutableProperties.withTimestampPropertyName(reader.getString());
+                } else if ("sharedAccessKey".equals(fieldName)) {
+                    deserializedIoTHubEventSourceMutableProperties.sharedAccessKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTHubEventSourceMutableProperties;
+        });
     }
 }

@@ -95,22 +95,18 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
     }
 
     public Asset create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssets()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, assetName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssets()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, assetName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Asset create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssets()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, assetName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssets()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, assetName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -125,56 +121,47 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
     }
 
     public Asset apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssets()
-                .updateWithResponse(resourceGroupName, accountName, assetName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssets()
+            .updateWithResponse(resourceGroupName, accountName, assetName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Asset apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssets()
-                .updateWithResponse(resourceGroupName, accountName, assetName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssets()
+            .updateWithResponse(resourceGroupName, accountName, assetName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
     AssetImpl(AssetInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "mediaServices");
-        this.assetName = Utils.getValueFromIdByName(innerObject.id(), "assets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mediaServices");
+        this.assetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "assets");
     }
 
     public Asset refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssets()
-                .getWithResponse(resourceGroupName, accountName, assetName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssets()
+            .getWithResponse(resourceGroupName, accountName, assetName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Asset refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAssets()
-                .getWithResponse(resourceGroupName, accountName, assetName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAssets()
+            .getWithResponse(resourceGroupName, accountName, assetName, context)
+            .getValue();
         return this;
     }
 
     public Response<AssetContainerSas> listContainerSasWithResponse(ListContainerSasInput parameters, Context context) {
-        return serviceManager
-            .assets()
+        return serviceManager.assets()
             .listContainerSasWithResponse(resourceGroupName, accountName, assetName, parameters, context);
     }
 
@@ -191,8 +178,7 @@ public final class AssetImpl implements Asset, Asset.Definition, Asset.Update {
     }
 
     public Response<ListStreamingLocatorsResponse> listStreamingLocatorsWithResponse(Context context) {
-        return serviceManager
-            .assets()
+        return serviceManager.assets()
             .listStreamingLocatorsWithResponse(resourceGroupName, accountName, assetName, context);
     }
 

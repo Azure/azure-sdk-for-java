@@ -7,57 +7,73 @@ package com.azure.resourcemanager.mixedreality.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mixedreality.models.Identity;
 import com.azure.resourcemanager.mixedreality.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** RemoteRenderingAccount Response. */
+/**
+ * RemoteRenderingAccount Response.
+ */
 @Fluent
 public final class RemoteRenderingAccountInner extends Resource {
     /*
      * Property bag.
      */
-    @JsonProperty(value = "properties")
     private MixedRealityAccountProperties innerProperties;
 
     /*
      * The identity associated with this account
      */
-    @JsonProperty(value = "identity")
     private Identity identity;
 
     /*
      * The plan associated with this account
      */
-    @JsonProperty(value = "plan")
     private Identity plan;
 
     /*
      * The sku associated with this account
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * The kind of account, if supported
      */
-    @JsonProperty(value = "kind")
     private Sku kind;
 
     /*
      * System metadata for this account
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of RemoteRenderingAccountInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RemoteRenderingAccountInner class.
+     */
     public RemoteRenderingAccountInner() {
     }
 
     /**
      * Get the innerProperties property: Property bag.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MixedRealityAccountProperties innerProperties() {
@@ -66,7 +82,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Get the identity property: The identity associated with this account.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -75,7 +91,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Set the identity property: The identity associated with this account.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the RemoteRenderingAccountInner object itself.
      */
@@ -86,7 +102,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Get the plan property: The plan associated with this account.
-     *
+     * 
      * @return the plan value.
      */
     public Identity plan() {
@@ -95,7 +111,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Set the plan property: The plan associated with this account.
-     *
+     * 
      * @param plan the plan value to set.
      * @return the RemoteRenderingAccountInner object itself.
      */
@@ -106,7 +122,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Get the sku property: The sku associated with this account.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -115,7 +131,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Set the sku property: The sku associated with this account.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the RemoteRenderingAccountInner object itself.
      */
@@ -126,7 +142,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Get the kind property: The kind of account, if supported.
-     *
+     * 
      * @return the kind value.
      */
     public Sku kind() {
@@ -135,7 +151,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Set the kind property: The kind of account, if supported.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the RemoteRenderingAccountInner object itself.
      */
@@ -146,21 +162,55 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Get the systemData property: System metadata for this account.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RemoteRenderingAccountInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RemoteRenderingAccountInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -169,7 +219,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Get the storageAccountName property: The name of the storage account associated with this accountId.
-     *
+     * 
      * @return the storageAccountName value.
      */
     public String storageAccountName() {
@@ -178,7 +228,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Set the storageAccountName property: The name of the storage account associated with this accountId.
-     *
+     * 
      * @param storageAccountName the storageAccountName value to set.
      * @return the RemoteRenderingAccountInner object itself.
      */
@@ -192,7 +242,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Get the accountId property: unique id of certain account.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -201,7 +251,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Get the accountDomain property: Correspond domain name of certain Spatial Anchors Account.
-     *
+     * 
      * @return the accountDomain value.
      */
     public String accountDomain() {
@@ -210,7 +260,7 @@ public final class RemoteRenderingAccountInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -229,5 +279,70 @@ public final class RemoteRenderingAccountInner extends Resource {
         if (kind() != null) {
             kind().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("plan", this.plan);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemoteRenderingAccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemoteRenderingAccountInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RemoteRenderingAccountInner.
+     */
+    public static RemoteRenderingAccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemoteRenderingAccountInner deserializedRemoteRenderingAccountInner = new RemoteRenderingAccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRemoteRenderingAccountInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountInner.innerProperties
+                        = MixedRealityAccountProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountInner.identity = Identity.fromJson(reader);
+                } else if ("plan".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountInner.plan = Identity.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountInner.sku = Sku.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountInner.kind = Sku.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedRemoteRenderingAccountInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemoteRenderingAccountInner;
+        });
     }
 }

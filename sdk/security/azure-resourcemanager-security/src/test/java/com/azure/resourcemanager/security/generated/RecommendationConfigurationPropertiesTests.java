@@ -14,19 +14,19 @@ public final class RecommendationConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecommendationConfigurationProperties model = BinaryData
-            .fromString("{\"recommendationType\":\"IoT_InstallAgent\",\"name\":\"kois\",\"status\":\"Disabled\"}")
+            .fromString("{\"recommendationType\":\"IoT_Baseline\",\"name\":\"kallatmel\",\"status\":\"Enabled\"}")
             .toObject(RecommendationConfigurationProperties.class);
-        Assertions.assertEquals(RecommendationType.IO_T_INSTALL_AGENT, model.recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.DISABLED, model.status());
+        Assertions.assertEquals(RecommendationType.IO_T_BASELINE, model.recommendationType());
+        Assertions.assertEquals(RecommendationConfigStatus.ENABLED, model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecommendationConfigurationProperties model
-            = new RecommendationConfigurationProperties().withRecommendationType(RecommendationType.IO_T_INSTALL_AGENT)
-                .withStatus(RecommendationConfigStatus.DISABLED);
+            = new RecommendationConfigurationProperties().withRecommendationType(RecommendationType.IO_T_BASELINE)
+                .withStatus(RecommendationConfigStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(RecommendationConfigurationProperties.class);
-        Assertions.assertEquals(RecommendationType.IO_T_INSTALL_AGENT, model.recommendationType());
-        Assertions.assertEquals(RecommendationConfigStatus.DISABLED, model.status());
+        Assertions.assertEquals(RecommendationType.IO_T_BASELINE, model.recommendationType());
+        Assertions.assertEquals(RecommendationConfigStatus.ENABLED, model.status());
     }
 }

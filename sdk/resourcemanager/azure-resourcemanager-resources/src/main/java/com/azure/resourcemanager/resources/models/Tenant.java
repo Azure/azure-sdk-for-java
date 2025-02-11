@@ -14,6 +14,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 @Fluent
 public interface Tenant extends Indexable, HasInnerModel<TenantIdDescriptionInner> {
     /**
+     * Gets the UUID of the tenant.
+     *
      * @return the UUID of the tenant
      */
     String tenantId();

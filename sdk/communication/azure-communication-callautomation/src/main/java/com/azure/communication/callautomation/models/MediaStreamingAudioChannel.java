@@ -16,6 +16,15 @@ public final class MediaStreamingAudioChannel extends ExpandableStringEnum<Media
     public static final MediaStreamingAudioChannel UNMIXED = fromString("unmixed");
 
     /**
+     * Creates an instance of {@link MediaStreamingAudioChannel} with no string value.
+     *
+     * @deprecated Please use {@link #fromString(String)} to create an instance of MediaStreamingAudioChannel.
+     */
+    @Deprecated
+    public MediaStreamingAudioChannel() {
+    }
+
+    /**
      * Creates or finds a MediaStreamingAudioChannelType from its string representation.
      *
      * @param name a name to look for.
@@ -25,7 +34,10 @@ public final class MediaStreamingAudioChannel extends ExpandableStringEnum<Media
         return fromString(name, MediaStreamingAudioChannel.class);
     }
 
-    /** @return known MediaStreamingAudioChannelType values. */
+    /**
+     * Get the collection of MediaStreamingAudioChannelType values.
+     * @return known MediaStreamingAudioChannelType values.
+     */
     public static Collection<MediaStreamingAudioChannel> values() {
         return values(MediaStreamingAudioChannel.class);
     }

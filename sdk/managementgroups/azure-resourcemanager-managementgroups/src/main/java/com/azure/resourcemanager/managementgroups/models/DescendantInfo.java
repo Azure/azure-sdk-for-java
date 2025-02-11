@@ -6,13 +6,15 @@ package com.azure.resourcemanager.managementgroups.models;
 
 import com.azure.resourcemanager.managementgroups.fluent.models.DescendantInfoInner;
 
-/** An immutable client-side representation of DescendantInfo. */
+/**
+ * An immutable client-side representation of DescendantInfo.
+ */
 public interface DescendantInfo {
     /**
      * Gets the id property: The fully qualified ID for the descendant. For example,
      * /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000 or
      * /subscriptions/0000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the id value.
      */
     String id();
@@ -20,35 +22,35 @@ public interface DescendantInfo {
     /**
      * Gets the type property: The type of the resource. For example, Microsoft.Management/managementGroups or
      * /subscriptions.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the name property: The name of the descendant. For example, 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the displayName property: The friendly name of the management group.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the parent property: The ID of the parent management group.
-     *
+     * 
      * @return the parent value.
      */
     DescendantParentGroupInfo parent();
 
     /**
      * Gets the inner com.azure.resourcemanager.managementgroups.fluent.models.DescendantInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     DescendantInfoInner innerModel();

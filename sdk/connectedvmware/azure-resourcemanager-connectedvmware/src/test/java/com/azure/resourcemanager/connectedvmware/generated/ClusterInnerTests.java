@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"uuid\":\"ixuigdtopbobj\",\"vCenterId\":\"hm\",\"moRefId\":\"u\",\"inventoryItemId\":\"a\",\"moName\":\"rzayv\",\"statuses\":[{\"type\":\"vdfgiotk\",\"status\":\"utqxlngx\",\"reason\":\"fgugnxkrxdqmid\",\"message\":\"hzrvqd\",\"severity\":\"bhj\",\"lastUpdatedAt\":\"2021-09-14T02:51:19Z\"},{\"type\":\"ehoqfbowskan\",\"status\":\"tzlcuiywgqywgn\",\"reason\":\"vynhzgpphrcg\",\"message\":\"cocpecfvmmcoofsx\",\"severity\":\"evgbmqjq\",\"lastUpdatedAt\":\"2021-06-25T22:17:23Z\"}],\"customResourceName\":\"pmivkwlzu\",\"usedMemoryGB\":906513872152816709,\"totalMemoryGB\":7320882812024547422,\"usedCpuMHz\":5788835821113503178,\"totalCpuMHz\":5098195644099972430,\"datastoreIds\":[\"l\",\"bxetqgtzxdpn\",\"bqqwxrj\",\"eallnwsubisnj\"],\"networkIds\":[\"mngnzscxaqw\"],\"provisioningState\":\"Created\"},\"extendedLocation\":{\"type\":\"bonqvpkvlrxnjeas\",\"name\":\"pheoflokeyy\"},\"kind\":\"jbdlwtgrhpdjpju\",\"location\":\"asxazjpqyegualhb\",\"tags\":{\"jzzvdud\":\"e\",\"pwlbjnpg\":\"wdslfhotwmcy\"},\"id\":\"cftadeh\",\"name\":\"nltyfsoppusuesnz\",\"type\":\"dejbavo\"}")
-                .toObject(ClusterInner.class);
+        ClusterInner model = BinaryData.fromString(
+            "{\"properties\":{\"uuid\":\"ixuigdtopbobj\",\"vCenterId\":\"hm\",\"moRefId\":\"u\",\"inventoryItemId\":\"a\",\"moName\":\"rzayv\",\"statuses\":[{\"type\":\"vdfgiotk\",\"status\":\"utqxlngx\",\"reason\":\"fgugnxkrxdqmid\",\"message\":\"hzrvqd\",\"severity\":\"bhj\",\"lastUpdatedAt\":\"2021-09-14T02:51:19Z\"},{\"type\":\"ehoqfbowskan\",\"status\":\"tzlcuiywgqywgn\",\"reason\":\"vynhzgpphrcg\",\"message\":\"cocpecfvmmcoofsx\",\"severity\":\"evgbmqjq\",\"lastUpdatedAt\":\"2021-06-25T22:17:23Z\"}],\"customResourceName\":\"pmivkwlzu\",\"usedMemoryGB\":906513872152816709,\"totalMemoryGB\":7320882812024547422,\"usedCpuMHz\":5788835821113503178,\"totalCpuMHz\":5098195644099972430,\"datastoreIds\":[\"l\",\"bxetqgtzxdpn\",\"bqqwxrj\",\"eallnwsubisnj\"],\"networkIds\":[\"mngnzscxaqw\"],\"provisioningState\":\"Created\"},\"extendedLocation\":{\"type\":\"bonqvpkvlrxnjeas\",\"name\":\"pheoflokeyy\"},\"kind\":\"jbdlwtgrhpdjpju\",\"location\":\"asxazjpqyegualhb\",\"tags\":{\"jzzvdud\":\"e\",\"pwlbjnpg\":\"wdslfhotwmcy\"},\"id\":\"cftadeh\",\"name\":\"nltyfsoppusuesnz\",\"type\":\"dejbavo\"}")
+            .toObject(ClusterInner.class);
         Assertions.assertEquals("asxazjpqyegualhb", model.location());
         Assertions.assertEquals("e", model.tags().get("jzzvdud"));
         Assertions.assertEquals("bonqvpkvlrxnjeas", model.extendedLocation().type());
@@ -31,15 +29,13 @@ public final class ClusterInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterInner model =
-            new ClusterInner()
-                .withLocation("asxazjpqyegualhb")
-                .withTags(mapOf("jzzvdud", "e", "pwlbjnpg", "wdslfhotwmcy"))
-                .withExtendedLocation(new ExtendedLocation().withType("bonqvpkvlrxnjeas").withName("pheoflokeyy"))
-                .withKind("jbdlwtgrhpdjpju")
-                .withVCenterId("hm")
-                .withMoRefId("u")
-                .withInventoryItemId("a");
+        ClusterInner model = new ClusterInner().withLocation("asxazjpqyegualhb")
+            .withTags(mapOf("jzzvdud", "e", "pwlbjnpg", "wdslfhotwmcy"))
+            .withExtendedLocation(new ExtendedLocation().withType("bonqvpkvlrxnjeas").withName("pheoflokeyy"))
+            .withKind("jbdlwtgrhpdjpju")
+            .withVCenterId("hm")
+            .withMoRefId("u")
+            .withInventoryItemId("a");
         model = BinaryData.fromObject(model).toObject(ClusterInner.class);
         Assertions.assertEquals("asxazjpqyegualhb", model.location());
         Assertions.assertEquals("e", model.tags().get("jzzvdud"));

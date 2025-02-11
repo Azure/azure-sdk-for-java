@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.datalakestore.generated;
 
-/** Samples for FirewallRules ListByAccount. */
+/**
+ * Samples for FirewallRules ListByAccount.
+ */
 public final class FirewallRulesListByAccountSamples {
     /*
-     * x-ms-original-file: specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/FirewallRules_ListByAccount.json
+     * x-ms-original-file:
+     * specification/datalake-store/resource-manager/Microsoft.DataLakeStore/stable/2016-11-01/examples/
+     * FirewallRules_ListByAccount.json
      */
     /**
      * Sample code: Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
+     * 
      * @param manager Entry point to DataLakeStoreManager.
      */
     public static void listsTheDataLakeStoreFirewallRulesWithinTheSpecifiedDataLakeStoreAccount(

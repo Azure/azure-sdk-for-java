@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourcePools. */
+/**
+ * Resource collection API of ResourcePools.
+ */
 public interface ResourcePools {
     /**
      * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * 
+     * Implements resourcePool GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param context The context to associate with this operation.
@@ -23,14 +25,14 @@ public interface ResourcePools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return define the resourcePool along with {@link Response}.
      */
-    Response<ResourcePool> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourcePoolName, Context context);
+    Response<ResourcePool> getByResourceGroupWithResponse(String resourceGroupName, String resourcePoolName,
+        Context context);
 
     /**
      * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * 
+     * Implements resourcePool GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,9 +44,9 @@ public interface ResourcePools {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,9 +57,9 @@ public interface ResourcePools {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
      * @param force Whether force delete was specified.
@@ -70,9 +72,9 @@ public interface ResourcePools {
 
     /**
      * Implements GET resourcePools in a subscription.
-     *
-     * <p>List of resourcePools in a subscription.
-     *
+     * 
+     * List of resourcePools in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourcePools as paginated response with {@link PagedIterable}.
@@ -81,9 +83,9 @@ public interface ResourcePools {
 
     /**
      * Implements GET resourcePools in a subscription.
-     *
-     * <p>List of resourcePools in a subscription.
-     *
+     * 
+     * List of resourcePools in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -94,9 +96,9 @@ public interface ResourcePools {
 
     /**
      * Implements GET resourcePools in a resource group.
-     *
-     * <p>List of resourcePools in a resource group.
-     *
+     * 
+     * List of resourcePools in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,9 +109,9 @@ public interface ResourcePools {
 
     /**
      * Implements GET resourcePools in a resource group.
-     *
-     * <p>List of resourcePools in a resource group.
-     *
+     * 
+     * List of resourcePools in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,9 +123,9 @@ public interface ResourcePools {
 
     /**
      * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * 
+     * Implements resourcePool GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,9 +136,9 @@ public interface ResourcePools {
 
     /**
      * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
+     * 
+     * Implements resourcePool GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,9 +150,9 @@ public interface ResourcePools {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -160,9 +162,9 @@ public interface ResourcePools {
 
     /**
      * Deletes an resourcePool.
-     *
-     * <p>Implements resourcePool DELETE method.
-     *
+     * 
+     * Implements resourcePool DELETE method.
+     * 
      * @param id the resource ID.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -174,7 +176,7 @@ public interface ResourcePools {
 
     /**
      * Begins definition for a new ResourcePool resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ResourcePool definition.
      */

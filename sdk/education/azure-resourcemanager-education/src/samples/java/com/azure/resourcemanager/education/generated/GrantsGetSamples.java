@@ -4,31 +4,36 @@
 
 package com.azure.resourcemanager.education.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Grants Get. */
+/**
+ * Samples for Grants Get.
+ */
 public final class GrantsGetSamples {
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Grant.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/Grant.json
      */
     /**
      * Sample code: Grant.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void grant(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.grants().getWithResponse("{billingAccountName}", "{billingProfileName}", false, Context.NONE);
+        manager.grants()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", false, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/GrantIncludeAllocatedBudget.json
+     * x-ms-original-file:
+     * specification/education/resource-manager/Microsoft.Education/preview/2021-12-01-preview/examples/
+     * GrantIncludeAllocatedBudget.json
      */
     /**
      * Sample code: GrantIncludeAllocatedBudget.
-     *
+     * 
      * @param manager Entry point to EducationManager.
      */
     public static void grantIncludeAllocatedBudget(com.azure.resourcemanager.education.EducationManager manager) {
-        manager.grants().getWithResponse("{billingAccountName}", "{billingProfileName}", false, Context.NONE);
+        manager.grants()
+            .getWithResponse("{billingAccountName}", "{billingProfileName}", false, com.azure.core.util.Context.NONE);
     }
 }

@@ -21,7 +21,6 @@ import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
@@ -35,9 +34,13 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCertificateServiceVersion;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ConfidentialLedgerCertificateClient type. */
+/**
+ * Initializes a new instance of the ConfidentialLedgerCertificateClient type.
+ */
 public final class ConfidentialLedgerCertificateClientImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ConfidentialLedgerCertificateClientService service;
 
     /**
@@ -49,43 +52,49 @@ public final class ConfidentialLedgerCertificateClientImpl {
     /**
      * Gets The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for example
      * https://identity.confidential-ledger.core.azure.com.
-     *
+     * 
      * @return the certificateEndpoint value.
      */
     public String getCertificateEndpoint() {
         return this.certificateEndpoint;
     }
 
-    /** Service version. */
+    /**
+     * Service version.
+     */
     private final ConfidentialLedgerCertificateServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
-     *
+     * 
      * @return the serviceVersion value.
      */
     public ConfidentialLedgerCertificateServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
@@ -94,60 +103,47 @@ public final class ConfidentialLedgerCertificateClientImpl {
 
     /**
      * Initializes an instance of ConfidentialLedgerCertificateClient client.
-     *
+     * 
      * @param certificateEndpoint The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for
-     *     example https://identity.confidential-ledger.core.azure.com.
+     * example https://identity.confidential-ledger.core.azure.com.
      * @param serviceVersion Service version.
      */
-    public ConfidentialLedgerCertificateClientImpl(
-            String certificateEndpoint, ConfidentialLedgerCertificateServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                certificateEndpoint,
-                serviceVersion);
+    public ConfidentialLedgerCertificateClientImpl(String certificateEndpoint,
+        ConfidentialLedgerCertificateServiceVersion serviceVersion) {
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), certificateEndpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of ConfidentialLedgerCertificateClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param certificateEndpoint The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for
-     *     example https://identity.confidential-ledger.core.azure.com.
+     * example https://identity.confidential-ledger.core.azure.com.
      * @param serviceVersion Service version.
      */
-    public ConfidentialLedgerCertificateClientImpl(
-            HttpPipeline httpPipeline,
-            String certificateEndpoint,
-            ConfidentialLedgerCertificateServiceVersion serviceVersion) {
+    public ConfidentialLedgerCertificateClientImpl(HttpPipeline httpPipeline, String certificateEndpoint,
+        ConfidentialLedgerCertificateServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), certificateEndpoint, serviceVersion);
     }
 
     /**
      * Initializes an instance of ConfidentialLedgerCertificateClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param certificateEndpoint The certificate endpoint (or "Identity Service Endpoint" in the Azure portal), for
-     *     example https://identity.confidential-ledger.core.azure.com.
+     * example https://identity.confidential-ledger.core.azure.com.
      * @param serviceVersion Service version.
      */
-    public ConfidentialLedgerCertificateClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String certificateEndpoint,
-            ConfidentialLedgerCertificateServiceVersion serviceVersion) {
+    public ConfidentialLedgerCertificateClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        String certificateEndpoint, ConfidentialLedgerCertificateServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.certificateEndpoint = certificateEndpoint;
         this.serviceVersion = serviceVersion;
-        this.service =
-                RestProxy.create(
-                        ConfidentialLedgerCertificateClientService.class,
-                        this.httpPipeline,
-                        this.getSerializerAdapter());
+        this.service = RestProxy.create(ConfidentialLedgerCertificateClientService.class, this.httpPipeline,
+            this.getSerializerAdapter());
     }
 
     /**
@@ -156,40 +152,41 @@ public final class ConfidentialLedgerCertificateClientImpl {
      */
     @Host("{certificateEndpoint}")
     @ServiceInterface(name = "ConfidentialLedgerCe")
-    private interface ConfidentialLedgerCertificateClientService {
+    public interface ConfidentialLedgerCertificateClientService {
         @Get("/ledgerIdentity/{ledgerId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(
-                value = ClientAuthenticationException.class,
-                code = {401})
-        @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
-                value = ResourceModifiedException.class,
-                code = {409})
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getLedgerIdentity(
-                @HostParam("certificateEndpoint") String certificateEndpoint,
-                @QueryParam("api-version") String apiVersion,
-                @PathParam("ledgerId") String ledgerId,
-                @HeaderParam("Accept") String accept,
-                RequestOptions requestOptions,
-                Context context);
+        Mono<Response<BinaryData>> getLedgerIdentity(@HostParam("certificateEndpoint") String certificateEndpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("ledgerId") String ledgerId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
+
+        @Get("/ledgerIdentity/{ledgerId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getLedgerIdentitySync(@HostParam("certificateEndpoint") String certificateEndpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("ledgerId") String ledgerId,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
     }
 
     /**
      * Gets identity information for a Confidential Ledger instance.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     ledgerId: String (Optional)
      *     ledgerTlsCertificate: String (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param ledgerId Id of the Confidential Ledger instance to get information for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -197,70 +194,29 @@ public final class ConfidentialLedgerCertificateClientImpl {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return identity information for a Confidential Ledger instance along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(
-            String ledgerId, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(String ledgerId,
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getLedgerIdentity(
-                                this.getCertificateEndpoint(),
-                                this.getServiceVersion().getVersion(),
-                                ledgerId,
-                                accept,
-                                requestOptions,
-                                context));
+        return FluxUtil.withContext(context -> service.getLedgerIdentity(this.getCertificateEndpoint(),
+            this.getServiceVersion().getVersion(), ledgerId, accept, requestOptions, context));
     }
 
     /**
      * Gets identity information for a Confidential Ledger instance.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     ledgerId: String (Optional)
      *     ledgerTlsCertificate: String (Required)
      * }
-     * }</pre>
-     *
-     * @param ledgerId Id of the Confidential Ledger instance to get information for.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return identity information for a Confidential Ledger instance along with {@link Response} on successful
-     *     completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getLedgerIdentityWithResponseAsync(
-            String ledgerId, RequestOptions requestOptions, Context context) {
-        final String accept = "application/json";
-        return service.getLedgerIdentity(
-                this.getCertificateEndpoint(),
-                this.getServiceVersion().getVersion(),
-                ledgerId,
-                accept,
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Gets identity information for a Confidential Ledger instance.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     ledgerId: String (Optional)
-     *     ledgerTlsCertificate: String (Required)
      * }
-     * }</pre>
-     *
+     * </pre>
+     * 
      * @param ledgerId Id of the Confidential Ledger instance to get information for.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -271,6 +227,8 @@ public final class ConfidentialLedgerCertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLedgerIdentityWithResponse(String ledgerId, RequestOptions requestOptions) {
-        return getLedgerIdentityWithResponseAsync(ledgerId, requestOptions).block();
+        final String accept = "application/json";
+        return service.getLedgerIdentitySync(this.getCertificateEndpoint(), this.getServiceVersion().getVersion(),
+            ledgerId, accept, requestOptions, Context.NONE);
     }
 }

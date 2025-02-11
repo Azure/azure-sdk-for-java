@@ -6,69 +6,51 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicy;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyConfiguration;
+import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOption;
+import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyRestriction;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ContentKeyPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"policyId\":\"9cd0b286-5fef-4a50-9002-2f9b0662c9bf\",\"created\":\"2021-03-02T09:33:59Z\",\"lastModified\":\"2021-06-06T03:18:11Z\",\"description\":\"gguxhemlwyw\",\"options\":[{\"policyOptionId\":\"6a59dad0-4b2c-48dd-8d1a-f47158f95fd8\",\"name\":\"zgfbukklelssx\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}},{\"policyOptionId\":\"e9d19cab-b49d-496f-bdf1-09a9ca431899\",\"name\":\"c\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}]},\"id\":\"zujksrlsmdes\",\"name\":\"plpvm\",\"type\":\"cdoewbidyv\"}";
 
-        String responseStr =
-            "{\"properties\":{\"policyId\":\"958d59ca-95b5-4756-971c-acf18a5f34b3\",\"created\":\"2021-02-19T02:47:18Z\",\"lastModified\":\"2021-03-05T20:29:17Z\",\"description\":\"wjrmzvuporqzd\",\"options\":[]},\"id\":\"dzvkfvxcnqmxq\",\"name\":\"swokm\",\"type\":\"khlg\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        ContentKeyPolicy response = manager.contentKeyPolicies()
+            .define("sqowxwc")
+            .withExistingMediaService("awzovgkk", "muikjcjcaztbws")
+            .withDescription("vc")
+            .withOptions(Arrays.asList(
+                new ContentKeyPolicyOption().withName("k")
+                    .withConfiguration(new ContentKeyPolicyConfiguration())
+                    .withRestriction(new ContentKeyPolicyRestriction()),
+                new ContentKeyPolicyOption().withName("ejyfdvlvhbwrnfx")
+                    .withConfiguration(new ContentKeyPolicyConfiguration())
+                    .withRestriction(new ContentKeyPolicyRestriction()),
+                new ContentKeyPolicyOption().withName("dpqthehn")
+                    .withConfiguration(new ContentKeyPolicyConfiguration())
+                    .withRestriction(new ContentKeyPolicyRestriction())))
+            .create();
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        ContentKeyPolicy response =
-            manager
-                .contentKeyPolicies()
-                .define("nkvxlxpaglqi")
-                .withExistingMediaService("vczkcnyxrxmunjd", "vg")
-                .withDescription("pzvuqdflvo")
-                .withOptions(Arrays.asList())
-                .create();
-
-        Assertions.assertEquals("wjrmzvuporqzd", response.description());
+        Assertions.assertEquals("gguxhemlwyw", response.description());
+        Assertions.assertEquals("zgfbukklelssx", response.options().get(0).name());
     }
 }

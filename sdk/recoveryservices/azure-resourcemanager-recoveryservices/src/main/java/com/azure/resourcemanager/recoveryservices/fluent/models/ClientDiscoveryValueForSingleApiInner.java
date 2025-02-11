@@ -5,37 +5,38 @@
 package com.azure.resourcemanager.recoveryservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryDisplay;
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryForProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Available operation details.
  */
 @Fluent
-public final class ClientDiscoveryValueForSingleApiInner {
+public final class ClientDiscoveryValueForSingleApiInner
+    implements JsonSerializable<ClientDiscoveryValueForSingleApiInner> {
     /*
      * Name of the Operation.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Contains the localized display information for this particular operation
      */
-    @JsonProperty(value = "display")
     private ClientDiscoveryDisplay display;
 
     /*
      * The intended executor of the operation;governs the display of the operation in the RBAC UX and the audit logs UX
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
     /*
      * ShoeBox properties for the given operation.
      */
-    @JsonProperty(value = "properties")
     private ClientDiscoveryForProperties properties;
 
     /**
@@ -138,5 +139,52 @@ public final class ClientDiscoveryValueForSingleApiInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("origin", this.origin);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientDiscoveryValueForSingleApiInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientDiscoveryValueForSingleApiInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientDiscoveryValueForSingleApiInner.
+     */
+    public static ClientDiscoveryValueForSingleApiInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientDiscoveryValueForSingleApiInner deserializedClientDiscoveryValueForSingleApiInner
+                = new ClientDiscoveryValueForSingleApiInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedClientDiscoveryValueForSingleApiInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedClientDiscoveryValueForSingleApiInner.display = ClientDiscoveryDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedClientDiscoveryValueForSingleApiInner.origin = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClientDiscoveryValueForSingleApiInner.properties
+                        = ClientDiscoveryForProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientDiscoveryValueForSingleApiInner;
+        });
     }
 }

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions;
 public final class ProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProfileProperties model = BinaryData.fromString("{\"resourceState\":\"Creating\",\"enabledState\":\"Enabled\"}")
+        ProfileProperties model = BinaryData.fromString("{\"resourceState\":\"Enabled\",\"enabledState\":\"Enabled\"}")
             .toObject(ProfileProperties.class);
         Assertions.assertEquals(State.ENABLED, model.enabledState());
     }

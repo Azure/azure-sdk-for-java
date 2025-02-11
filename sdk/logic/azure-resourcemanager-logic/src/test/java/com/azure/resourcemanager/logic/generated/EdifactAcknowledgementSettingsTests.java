@@ -11,50 +11,47 @@ import org.junit.jupiter.api.Assertions;
 public final class EdifactAcknowledgementSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EdifactAcknowledgementSettings model =
-            BinaryData
-                .fromString(
-                    "{\"needTechnicalAcknowledgement\":false,\"batchTechnicalAcknowledgements\":false,\"needFunctionalAcknowledgement\":true,\"batchFunctionalAcknowledgements\":true,\"needLoopForValidMessages\":true,\"sendSynchronousAcknowledgement\":false,\"acknowledgementControlNumberPrefix\":\"wmn\",\"acknowledgementControlNumberSuffix\":\"ttijfybvpoekrs\",\"acknowledgementControlNumberLowerBound\":1694137236,\"acknowledgementControlNumberUpperBound\":968704736,\"rolloverAcknowledgementControlNumber\":false}")
-                .toObject(EdifactAcknowledgementSettings.class);
-        Assertions.assertEquals(false, model.needTechnicalAcknowledgement());
-        Assertions.assertEquals(false, model.batchTechnicalAcknowledgements());
+        EdifactAcknowledgementSettings model = BinaryData.fromString(
+            "{\"needTechnicalAcknowledgement\":true,\"batchTechnicalAcknowledgements\":true,\"needFunctionalAcknowledgement\":true,\"batchFunctionalAcknowledgements\":false,\"needLoopForValidMessages\":false,\"sendSynchronousAcknowledgement\":false,\"acknowledgementControlNumberPrefix\":\"w\",\"acknowledgementControlNumberSuffix\":\"kjexfdeqvhp\",\"acknowledgementControlNumberLowerBound\":1267268353,\"acknowledgementControlNumberUpperBound\":1297569440,\"rolloverAcknowledgementControlNumber\":true}")
+            .toObject(EdifactAcknowledgementSettings.class);
+        Assertions.assertEquals(true, model.needTechnicalAcknowledgement());
+        Assertions.assertEquals(true, model.batchTechnicalAcknowledgements());
         Assertions.assertEquals(true, model.needFunctionalAcknowledgement());
-        Assertions.assertEquals(true, model.batchFunctionalAcknowledgements());
-        Assertions.assertEquals(true, model.needLoopForValidMessages());
+        Assertions.assertEquals(false, model.batchFunctionalAcknowledgements());
+        Assertions.assertEquals(false, model.needLoopForValidMessages());
         Assertions.assertEquals(false, model.sendSynchronousAcknowledgement());
-        Assertions.assertEquals("wmn", model.acknowledgementControlNumberPrefix());
-        Assertions.assertEquals("ttijfybvpoekrs", model.acknowledgementControlNumberSuffix());
-        Assertions.assertEquals(1694137236, model.acknowledgementControlNumberLowerBound());
-        Assertions.assertEquals(968704736, model.acknowledgementControlNumberUpperBound());
-        Assertions.assertEquals(false, model.rolloverAcknowledgementControlNumber());
+        Assertions.assertEquals("w", model.acknowledgementControlNumberPrefix());
+        Assertions.assertEquals("kjexfdeqvhp", model.acknowledgementControlNumberSuffix());
+        Assertions.assertEquals(1267268353, model.acknowledgementControlNumberLowerBound());
+        Assertions.assertEquals(1297569440, model.acknowledgementControlNumberUpperBound());
+        Assertions.assertEquals(true, model.rolloverAcknowledgementControlNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EdifactAcknowledgementSettings model =
-            new EdifactAcknowledgementSettings()
-                .withNeedTechnicalAcknowledgement(false)
-                .withBatchTechnicalAcknowledgements(false)
+        EdifactAcknowledgementSettings model
+            = new EdifactAcknowledgementSettings().withNeedTechnicalAcknowledgement(true)
+                .withBatchTechnicalAcknowledgements(true)
                 .withNeedFunctionalAcknowledgement(true)
-                .withBatchFunctionalAcknowledgements(true)
-                .withNeedLoopForValidMessages(true)
+                .withBatchFunctionalAcknowledgements(false)
+                .withNeedLoopForValidMessages(false)
                 .withSendSynchronousAcknowledgement(false)
-                .withAcknowledgementControlNumberPrefix("wmn")
-                .withAcknowledgementControlNumberSuffix("ttijfybvpoekrs")
-                .withAcknowledgementControlNumberLowerBound(1694137236)
-                .withAcknowledgementControlNumberUpperBound(968704736)
-                .withRolloverAcknowledgementControlNumber(false);
+                .withAcknowledgementControlNumberPrefix("w")
+                .withAcknowledgementControlNumberSuffix("kjexfdeqvhp")
+                .withAcknowledgementControlNumberLowerBound(1267268353)
+                .withAcknowledgementControlNumberUpperBound(1297569440)
+                .withRolloverAcknowledgementControlNumber(true);
         model = BinaryData.fromObject(model).toObject(EdifactAcknowledgementSettings.class);
-        Assertions.assertEquals(false, model.needTechnicalAcknowledgement());
-        Assertions.assertEquals(false, model.batchTechnicalAcknowledgements());
+        Assertions.assertEquals(true, model.needTechnicalAcknowledgement());
+        Assertions.assertEquals(true, model.batchTechnicalAcknowledgements());
         Assertions.assertEquals(true, model.needFunctionalAcknowledgement());
-        Assertions.assertEquals(true, model.batchFunctionalAcknowledgements());
-        Assertions.assertEquals(true, model.needLoopForValidMessages());
+        Assertions.assertEquals(false, model.batchFunctionalAcknowledgements());
+        Assertions.assertEquals(false, model.needLoopForValidMessages());
         Assertions.assertEquals(false, model.sendSynchronousAcknowledgement());
-        Assertions.assertEquals("wmn", model.acknowledgementControlNumberPrefix());
-        Assertions.assertEquals("ttijfybvpoekrs", model.acknowledgementControlNumberSuffix());
-        Assertions.assertEquals(1694137236, model.acknowledgementControlNumberLowerBound());
-        Assertions.assertEquals(968704736, model.acknowledgementControlNumberUpperBound());
-        Assertions.assertEquals(false, model.rolloverAcknowledgementControlNumber());
+        Assertions.assertEquals("w", model.acknowledgementControlNumberPrefix());
+        Assertions.assertEquals("kjexfdeqvhp", model.acknowledgementControlNumberSuffix());
+        Assertions.assertEquals(1267268353, model.acknowledgementControlNumberLowerBound());
+        Assertions.assertEquals(1297569440, model.acknowledgementControlNumberUpperBound());
+        Assertions.assertEquals(true, model.rolloverAcknowledgementControlNumber());
     }
 }

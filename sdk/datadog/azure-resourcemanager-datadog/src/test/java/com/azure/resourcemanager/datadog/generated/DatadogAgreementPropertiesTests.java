@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatadogAgreementPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatadogAgreementProperties model =
-            BinaryData
-                .fromString(
-                    "{\"publisher\":\"b\",\"product\":\"rkxvdum\",\"plan\":\"rtfw\",\"licenseTextLink\":\"k\",\"privacyPolicyLink\":\"audccsnhs\",\"retrieveDatetime\":\"2021-10-29T04:44:12Z\",\"signature\":\"ejhkry\",\"accepted\":true}")
-                .toObject(DatadogAgreementProperties.class);
+        DatadogAgreementProperties model = BinaryData.fromString(
+            "{\"publisher\":\"b\",\"product\":\"rkxvdum\",\"plan\":\"rtfw\",\"licenseTextLink\":\"k\",\"privacyPolicyLink\":\"audccsnhs\",\"retrieveDatetime\":\"2021-10-29T04:44:12Z\",\"signature\":\"ejhkry\",\"accepted\":true}")
+            .toObject(DatadogAgreementProperties.class);
         Assertions.assertEquals("b", model.publisher());
         Assertions.assertEquals("rkxvdum", model.product());
         Assertions.assertEquals("rtfw", model.plan());
@@ -29,16 +27,14 @@ public final class DatadogAgreementPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatadogAgreementProperties model =
-            new DatadogAgreementProperties()
-                .withPublisher("b")
-                .withProduct("rkxvdum")
-                .withPlan("rtfw")
-                .withLicenseTextLink("k")
-                .withPrivacyPolicyLink("audccsnhs")
-                .withRetrieveDatetime(OffsetDateTime.parse("2021-10-29T04:44:12Z"))
-                .withSignature("ejhkry")
-                .withAccepted(true);
+        DatadogAgreementProperties model = new DatadogAgreementProperties().withPublisher("b")
+            .withProduct("rkxvdum")
+            .withPlan("rtfw")
+            .withLicenseTextLink("k")
+            .withPrivacyPolicyLink("audccsnhs")
+            .withRetrieveDatetime(OffsetDateTime.parse("2021-10-29T04:44:12Z"))
+            .withSignature("ejhkry")
+            .withAccepted(true);
         model = BinaryData.fromObject(model).toObject(DatadogAgreementProperties.class);
         Assertions.assertEquals("b", model.publisher());
         Assertions.assertEquals("rkxvdum", model.product());

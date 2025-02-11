@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Advisors. */
+/**
+ * Resource collection API of Advisors.
+ */
 public interface Advisors {
     /**
      * Get a recommendation action advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -26,7 +28,7 @@ public interface Advisors {
 
     /**
      * Get a recommendation action advisor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param advisorName The advisor name for recommendation action.
@@ -39,7 +41,7 @@ public interface Advisors {
 
     /**
      * List recommendation action advisors.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,7 +53,7 @@ public interface Advisors {
 
     /**
      * List recommendation action advisors.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.

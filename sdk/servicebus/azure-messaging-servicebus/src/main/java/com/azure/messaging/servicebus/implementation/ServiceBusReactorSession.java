@@ -47,8 +47,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     private static final Symbol LINK_TIMEOUT_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
     private static final Symbol ENTITY_TYPE_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":entity-type");
-    private static final Symbol LINK_TRANSFER_DESTINATION_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR
-        + ":transfer-destination-address");
+    private static final Symbol LINK_TRANSFER_DESTINATION_PROPERTY
+        = Symbol.getSymbol(AmqpConstants.VENDOR + ":transfer-destination-address");
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReactorSession.class);
     private final AmqpRetryPolicy retryPolicy;
@@ -92,8 +92,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
 
     @Override
     public Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,
-            MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
-            String clientIdentifier) {
+        MessagingEntityType entityType, Duration timeout, AmqpRetryPolicy retry, ServiceBusReceiveMode receiveMode,
+        String clientIdentifier) {
         final Map<Symbol, Object> filter = new HashMap<>();
 
         return createConsumer(linkName, entityPath, entityType, timeout, retry, receiveMode, filter, clientIdentifier);
@@ -111,8 +111,8 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, String transferEntityPath, String clientIdentifier) {
+    public Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
+        String transferEntityPath, String clientIdentifier) {
         Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         Objects.requireNonNull(retry, "'retry' cannot be null.");
@@ -131,8 +131,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 .addKeyValue("transferEntityPath", transferEntityPath)
                 .log("Get or create sender link.");
 
-            final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier,
-                transferEntityPath);
+            final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, transferEntityPath);
 
             return tokenManager.authorize()
                 .doFinally(signalType -> tokenManager.close())
@@ -153,11 +152,11 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     }
 
     @Override
-    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, Map<Symbol, Object> linkProperties) {
+    protected Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry,
+        Map<Symbol, Object> linkProperties) {
         if (distributedTransactionsSupport) {
-            return getOrCreateTransactionCoordinator().flatMap(coordinator -> super.createProducer(linkName, entityPath,
-                timeout, retry, linkProperties));
+            return getOrCreateTransactionCoordinator()
+                .flatMap(coordinator -> super.createProducer(linkName, entityPath, timeout, retry, linkProperties));
         } else {
             return super.createProducer(linkName, entityPath, timeout, retry, linkProperties);
         }
@@ -189,11 +188,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 receiverSettleMode = ReceiverSettleMode.SECOND;
                 deliverySettleMode = DeliverySettleMode.SETTLE_VIA_DISPOSITION;
                 break;
+
             case RECEIVE_AND_DELETE:
                 senderSettleMode = SenderSettleMode.SETTLED;
                 receiverSettleMode = ReceiverSettleMode.FIRST;
                 deliverySettleMode = DeliverySettleMode.ACCEPT_AND_SETTLE_ON_DELIVERY;
                 break;
+
             default:
                 return Mono.error(new RuntimeException("ReceiveMode is not supported: " + receiveMode));
         }
@@ -206,13 +207,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         }
 
         if (distributedTransactionsSupport) {
-            return getOrCreateTransactionCoordinator().flatMap(transactionCoordinator -> super.createConsumer(linkName,
-                entityPath, timeout, retry, filter, linkProperties, null, senderSettleMode,
-                receiverSettleMode, consumerFactory)
-                .cast(ServiceBusReceiveLink.class));
+            return getOrCreateTransactionCoordinator()
+                .flatMap(transactionCoordinator -> super.createConsumer(linkName, entityPath, timeout, retry, filter,
+                    linkProperties, null, senderSettleMode, receiverSettleMode, consumerFactory)
+                        .cast(ServiceBusReceiveLink.class));
         } else {
-            return super.createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties,
-                null, senderSettleMode, receiverSettleMode, consumerFactory).cast(ServiceBusReceiveLink.class);
+            return super.createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties, null,
+                senderSettleMode, receiverSettleMode, consumerFactory).cast(ServiceBusReceiveLink.class);
         }
     }
 }

@@ -13,41 +13,37 @@ import org.junit.jupiter.api.Assertions;
 public final class LibraryListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LibraryListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"name\":\"fwyfwlwxjwet\",\"path\":\"sihclafzvaylp\",\"containerName\":\"sqqw\",\"uploadedTimestamp\":\"2021-10-08T01:02:03Z\",\"type\":\"w\",\"provisioningStatus\":\"chcxwaxfewzj\",\"creatorId\":\"exfdeqvhpsylk\"},\"etag\":\"hkbffmbm\",\"id\":\"zjrgyww\",\"name\":\"gjxsnptfu\",\"type\":\"gicgaaoepttaq\"},{\"properties\":{\"name\":\"dewemxswv\",\"path\":\"unzzjgehk\",\"containerName\":\"imrt\",\"uploadedTimestamp\":\"2021-10-31T23:30:22Z\",\"type\":\"fqyinljqepqw\",\"provisioningStatus\":\"xmonstshi\",\"creatorId\":\"gvelfc\"},\"etag\":\"uccbirdsvuw\",\"id\":\"o\",\"name\":\"iegstm\",\"type\":\"inwjizcilngh\"}],\"nextLink\":\"h\"}")
-                .toObject(LibraryListResponse.class);
-        Assertions.assertEquals("fwyfwlwxjwet", model.value().get(0).namePropertiesName());
-        Assertions.assertEquals("sihclafzvaylp", model.value().get(0).path());
-        Assertions.assertEquals("sqqw", model.value().get(0).containerName());
-        Assertions.assertEquals("w", model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("h", model.nextLink());
+        LibraryListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"name\":\"jawgqwg\",\"path\":\"ni\",\"containerName\":\"x\",\"uploadedTimestamp\":\"2021-09-13T09:37:01Z\",\"type\":\"y\",\"provisioningStatus\":\"klwndnhjdauwhv\",\"creatorId\":\"wzbtdhxu\"},\"etag\":\"nbmpowuwprzq\",\"id\":\"veual\",\"name\":\"pjmkhfxobbc\",\"type\":\"wsrtjriplrbpbe\"},{\"properties\":{\"name\":\"ghfg\",\"path\":\"c\",\"containerName\":\"xzvlvqhjkbegib\",\"uploadedTimestamp\":\"2021-07-17T08:56:43Z\",\"type\":\"iebwwaloayqcgwrt\",\"provisioningStatus\":\"uzgwyzmhtx\",\"creatorId\":\"gmtsavjcbpwxqpsr\"},\"etag\":\"ftguv\",\"id\":\"iuhprwmdyvxqta\",\"name\":\"riwwroy\",\"type\":\"bexrmcq\"},{\"properties\":{\"name\":\"ycnojvknmefqsg\",\"path\":\"ah\",\"containerName\":\"jyzhpvgq\",\"uploadedTimestamp\":\"2021-04-06T16:15:02Z\",\"type\":\"vxdjzlmwlxkvugf\",\"provisioningStatus\":\"ovawjvzunlu\",\"creatorId\":\"nnprn\"},\"etag\":\"peilpjzuaejxdu\",\"id\":\"tskzbbtdzumveek\",\"name\":\"pwo\",\"type\":\"uh\"}],\"nextLink\":\"p\"}")
+            .toObject(LibraryListResponse.class);
+        Assertions.assertEquals("jawgqwg", model.value().get(0).namePropertiesName());
+        Assertions.assertEquals("ni", model.value().get(0).path());
+        Assertions.assertEquals("x", model.value().get(0).containerName());
+        Assertions.assertEquals("y", model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("p", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LibraryListResponse model =
-            new LibraryListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LibraryResourceInner()
-                                .withNamePropertiesName("fwyfwlwxjwet")
-                                .withPath("sihclafzvaylp")
-                                .withContainerName("sqqw")
-                                .withTypePropertiesType("w"),
-                            new LibraryResourceInner()
-                                .withNamePropertiesName("dewemxswv")
-                                .withPath("unzzjgehk")
-                                .withContainerName("imrt")
-                                .withTypePropertiesType("fqyinljqepqw")))
-                .withNextLink("h");
+        LibraryListResponse model = new LibraryListResponse().withValue(Arrays.asList(
+            new LibraryResourceInner().withNamePropertiesName("jawgqwg")
+                .withPath("ni")
+                .withContainerName("x")
+                .withTypePropertiesType("y"),
+            new LibraryResourceInner().withNamePropertiesName("ghfg")
+                .withPath("c")
+                .withContainerName("xzvlvqhjkbegib")
+                .withTypePropertiesType("iebwwaloayqcgwrt"),
+            new LibraryResourceInner().withNamePropertiesName("ycnojvknmefqsg")
+                .withPath("ah")
+                .withContainerName("jyzhpvgq")
+                .withTypePropertiesType("vxdjzlmwlxkvugf")))
+            .withNextLink("p");
         model = BinaryData.fromObject(model).toObject(LibraryListResponse.class);
-        Assertions.assertEquals("fwyfwlwxjwet", model.value().get(0).namePropertiesName());
-        Assertions.assertEquals("sihclafzvaylp", model.value().get(0).path());
-        Assertions.assertEquals("sqqw", model.value().get(0).containerName());
-        Assertions.assertEquals("w", model.value().get(0).typePropertiesType());
-        Assertions.assertEquals("h", model.nextLink());
+        Assertions.assertEquals("jawgqwg", model.value().get(0).namePropertiesName());
+        Assertions.assertEquals("ni", model.value().get(0).path());
+        Assertions.assertEquals("x", model.value().get(0).containerName());
+        Assertions.assertEquals("y", model.value().get(0).typePropertiesType());
+        Assertions.assertEquals("p", model.nextLink());
     }
 }

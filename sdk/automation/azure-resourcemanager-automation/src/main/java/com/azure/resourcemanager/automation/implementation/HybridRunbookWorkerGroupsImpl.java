@@ -21,28 +21,38 @@ public final class HybridRunbookWorkerGroupsImpl implements HybridRunbookWorkerG
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public HybridRunbookWorkerGroupsImpl(
-        HybridRunbookWorkerGroupsClient innerClient,
+    public HybridRunbookWorkerGroupsImpl(HybridRunbookWorkerGroupsClient innerClient,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String hybridRunbookWorkerGroupName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, context);
+    public Response<HybridRunbookWorkerGroup> getWithResponse(String resourceGroupName, String automationAccountName,
+        String hybridRunbookWorkerGroupName, Context context) {
+        Response<HybridRunbookWorkerGroupInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HybridRunbookWorkerGroupImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public HybridRunbookWorkerGroup get(
-        String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName) {
-        HybridRunbookWorkerGroupInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName);
+    public HybridRunbookWorkerGroup get(String resourceGroupName, String automationAccountName,
+        String hybridRunbookWorkerGroupName) {
+        HybridRunbookWorkerGroupInner inner
+            = this.serviceClient().get(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName);
         if (inner != null) {
             return new HybridRunbookWorkerGroupImpl(inner, this.manager());
         } else {
@@ -50,64 +60,36 @@ public final class HybridRunbookWorkerGroupsImpl implements HybridRunbookWorkerG
         }
     }
 
-    public Response<HybridRunbookWorkerGroup> getWithResponse(
-        String resourceGroupName, String automationAccountName, String hybridRunbookWorkerGroupName, Context context) {
-        Response<HybridRunbookWorkerGroupInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new HybridRunbookWorkerGroupImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<HybridRunbookWorkerGroup> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
+        PagedIterable<HybridRunbookWorkerGroupInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HybridRunbookWorkerGroupImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<HybridRunbookWorkerGroup> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
-        PagedIterable<HybridRunbookWorkerGroupInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new HybridRunbookWorkerGroupImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<HybridRunbookWorkerGroup> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
-        PagedIterable<HybridRunbookWorkerGroupInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new HybridRunbookWorkerGroupImpl(inner1, this.manager()));
+    public PagedIterable<HybridRunbookWorkerGroup> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, Context context) {
+        PagedIterable<HybridRunbookWorkerGroupInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HybridRunbookWorkerGroupImpl(inner1, this.manager()));
     }
 
     public HybridRunbookWorkerGroup getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String hybridRunbookWorkerGroupName = Utils.getValueFromIdByName(id, "hybridRunbookWorkerGroups");
+        String hybridRunbookWorkerGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "hybridRunbookWorkerGroups");
         if (hybridRunbookWorkerGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridRunbookWorkerGroups'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'hybridRunbookWorkerGroups'.", id)));
         }
         return this
             .getWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, Context.NONE)
@@ -115,94 +97,61 @@ public final class HybridRunbookWorkerGroupsImpl implements HybridRunbookWorkerG
     }
 
     public Response<HybridRunbookWorkerGroup> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String hybridRunbookWorkerGroupName = Utils.getValueFromIdByName(id, "hybridRunbookWorkerGroups");
+        String hybridRunbookWorkerGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "hybridRunbookWorkerGroups");
         if (hybridRunbookWorkerGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridRunbookWorkerGroups'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'hybridRunbookWorkerGroups'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String hybridRunbookWorkerGroupName = Utils.getValueFromIdByName(id, "hybridRunbookWorkerGroups");
+        String hybridRunbookWorkerGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "hybridRunbookWorkerGroups");
         if (hybridRunbookWorkerGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridRunbookWorkerGroups'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'hybridRunbookWorkerGroups'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String hybridRunbookWorkerGroupName = Utils.getValueFromIdByName(id, "hybridRunbookWorkerGroups");
+        String hybridRunbookWorkerGroupName
+            = ResourceManagerUtils.getValueFromIdByName(id, "hybridRunbookWorkerGroups");
         if (hybridRunbookWorkerGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'hybridRunbookWorkerGroups'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'hybridRunbookWorkerGroups'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, context);
     }

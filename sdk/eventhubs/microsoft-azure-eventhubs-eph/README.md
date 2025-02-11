@@ -11,4 +11,4 @@ not present in that lower layer. See the [README for Azure Event Hubs Client for
 include Event Processor Host in your project. See the [overview](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/microsoft-azure-eventhubs-eph/Overview.md) for details of the functionality
 that Event Processor Host offers and how to use it.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fmicrosoft-azure-eventhubs-eph%2FReadme.png)
+

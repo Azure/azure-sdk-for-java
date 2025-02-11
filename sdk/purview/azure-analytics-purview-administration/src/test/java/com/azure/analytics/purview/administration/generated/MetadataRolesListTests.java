@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.administration.generated;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -18,13 +19,15 @@ public final class MetadataRolesListTests extends PurviewMetadataClientTestBase 
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = metadataRolesClient.list(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                "8e58266a-de42-40d5-b3c4-c6a7e159cfba",
-                response.iterableByPage().iterator().next().getHeaders().get("x-ms-request-id").getValue());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"data-source-administrator\",\"type\":\"Microsoft.Purview/role\",\"id\":\"purviewmetadatarole_builtin_data-source-administrator\",\"properties\":{\"cnfCondition\":[[{\"attributeName\":\"request.azure.dataAction\",\"attributeValueIncludedIn\":[\"Microsoft.Purview/accounts/scan/read\",\"Microsoft.Purview/accounts/scan/write\",\"Microsoft.Purview/accounts/collection/read\"]}]],\"friendlyName\":\"Data Source Administrator\",\"provisioningState\":\"Provisioned\",\"roleType\":\"BuiltIn\",\"version\":1}}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+        Assertions.assertEquals("8e58266a-de42-40d5-b3c4-c6a7e159cfba",
+            response.iterableByPage()
+                .iterator()
+                .next()
+                .getHeaders()
+                .get(HttpHeaderName.fromString("x-ms-request-id"))
+                .getValue());
+        Assertions.assertEquals(BinaryData.fromString(
+            "{\"name\":\"data-source-administrator\",\"type\":\"Microsoft.Purview/role\",\"id\":\"purviewmetadatarole_builtin_data-source-administrator\",\"properties\":{\"cnfCondition\":[[{\"attributeName\":\"request.azure.dataAction\",\"attributeValueIncludedIn\":[\"Microsoft.Purview/accounts/scan/read\",\"Microsoft.Purview/accounts/scan/write\",\"Microsoft.Purview/accounts/collection/read\"]}]],\"friendlyName\":\"Data Source Administrator\",\"provisioningState\":\"Provisioned\",\"roleType\":\"BuiltIn\",\"version\":1}}")
+            .toObject(Object.class), response.iterator().next().toObject(Object.class));
     }
 }

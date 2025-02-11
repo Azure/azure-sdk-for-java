@@ -5,21 +5,80 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The authentication info when authType is systemAssignedIdentity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authType")
-@JsonTypeName("systemAssignedIdentity")
+/**
+ * The authentication info when authType is systemAssignedIdentity.
+ */
 @Immutable
 public final class SystemAssignedIdentityAuthInfo extends AuthInfoBase {
+    /*
+     * The authentication type.
+     */
+    private AuthType authType = AuthType.SYSTEM_ASSIGNED_IDENTITY;
+
+    /**
+     * Creates an instance of SystemAssignedIdentityAuthInfo class.
+     */
+    public SystemAssignedIdentityAuthInfo() {
+    }
+
+    /**
+     * Get the authType property: The authentication type.
+     * 
+     * @return the authType value.
+     */
+    @Override
+    public AuthType authType() {
+        return this.authType;
+    }
+
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authType", this.authType == null ? null : this.authType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SystemAssignedIdentityAuthInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SystemAssignedIdentityAuthInfo if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SystemAssignedIdentityAuthInfo.
+     */
+    public static SystemAssignedIdentityAuthInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SystemAssignedIdentityAuthInfo deserializedSystemAssignedIdentityAuthInfo
+                = new SystemAssignedIdentityAuthInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authType".equals(fieldName)) {
+                    deserializedSystemAssignedIdentityAuthInfo.authType = AuthType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSystemAssignedIdentityAuthInfo;
+        });
     }
 }

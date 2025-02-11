@@ -13,7 +13,8 @@ import java.util.Map;
  */
 public final class PoliciesUpdateSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyPatch.json
+     * x-ms-original-file:
+     * specification/frontdoor/resource-manager/Microsoft.Network/stable/2024-02-01/examples/WafPolicyPatch.json
      */
     /**
      * Sample code: Patches specific policy.

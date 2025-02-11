@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LengthHeightUnit. */
+/**
+ * Unit for the dimensions of length, height and width.
+ */
 public final class LengthHeightUnit extends ExpandableStringEnum<LengthHeightUnit> {
-    /** Static value IN for LengthHeightUnit. */
+    /**
+     * Static value IN for LengthHeightUnit.
+     */
     public static final LengthHeightUnit IN = fromString("IN");
 
-    /** Static value CM for LengthHeightUnit. */
+    /**
+     * Static value CM for LengthHeightUnit.
+     */
     public static final LengthHeightUnit CM = fromString("CM");
 
     /**
+     * Creates a new instance of LengthHeightUnit value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LengthHeightUnit() {
+    }
+
+    /**
      * Creates or finds a LengthHeightUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LengthHeightUnit.
      */
-    @JsonCreator
     public static LengthHeightUnit fromString(String name) {
         return fromString(name, LengthHeightUnit.class);
     }
 
-    /** @return known LengthHeightUnit values. */
+    /**
+     * Gets known LengthHeightUnit values.
+     * 
+     * @return known LengthHeightUnit values.
+     */
     public static Collection<LengthHeightUnit> values() {
         return values(LengthHeightUnit.class);
     }

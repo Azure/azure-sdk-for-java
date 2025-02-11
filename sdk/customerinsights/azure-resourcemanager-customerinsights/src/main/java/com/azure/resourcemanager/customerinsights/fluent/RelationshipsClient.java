@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.models.RelationshipResourceFormatInner;
 
-/** An instance of this class provides access to all the operations defined in RelationshipsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RelationshipsClient.
+ */
 public interface RelationshipsClient {
     /**
      * Creates a relationship or updates an existing relationship within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the Relationship.
@@ -33,7 +35,7 @@ public interface RelationshipsClient {
 
     /**
      * Creates a relationship or updates an existing relationship within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the Relationship.
@@ -46,15 +48,12 @@ public interface RelationshipsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RelationshipResourceFormatInner>, RelationshipResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String relationshipName,
-        RelationshipResourceFormatInner parameters,
+        String resourceGroupName, String hubName, String relationshipName, RelationshipResourceFormatInner parameters,
         Context context);
 
     /**
      * Creates a relationship or updates an existing relationship within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the Relationship.
@@ -65,12 +64,12 @@ public interface RelationshipsClient {
      * @return the relationship resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RelationshipResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String relationshipName, RelationshipResourceFormatInner parameters);
+    RelationshipResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String relationshipName,
+        RelationshipResourceFormatInner parameters);
 
     /**
      * Creates a relationship or updates an existing relationship within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the Relationship.
@@ -82,16 +81,12 @@ public interface RelationshipsClient {
      * @return the relationship resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RelationshipResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String relationshipName,
-        RelationshipResourceFormatInner parameters,
-        Context context);
+    RelationshipResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String relationshipName,
+        RelationshipResourceFormatInner parameters, Context context);
 
     /**
      * Gets information about the specified relationship.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
@@ -102,12 +97,12 @@ public interface RelationshipsClient {
      * @return information about the specified relationship along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RelationshipResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String relationshipName, Context context);
+    Response<RelationshipResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String relationshipName, Context context);
 
     /**
      * Gets information about the specified relationship.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
@@ -121,7 +116,7 @@ public interface RelationshipsClient {
 
     /**
      * Deletes a relationship within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
@@ -135,7 +130,7 @@ public interface RelationshipsClient {
 
     /**
      * Deletes a relationship within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
@@ -146,12 +141,12 @@ public interface RelationshipsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String relationshipName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String relationshipName,
+        Context context);
 
     /**
      * Deletes a relationship within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
@@ -164,7 +159,7 @@ public interface RelationshipsClient {
 
     /**
      * Deletes a relationship within a hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param relationshipName The name of the relationship.
@@ -178,7 +173,7 @@ public interface RelationshipsClient {
 
     /**
      * Gets all relationships in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +186,7 @@ public interface RelationshipsClient {
 
     /**
      * Gets all relationships in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.

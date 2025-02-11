@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The license type. */
+/**
+ * The license type.
+ */
 public final class ContentKeyPolicyPlayReadyLicenseType
     extends ExpandableStringEnum<ContentKeyPolicyPlayReadyLicenseType> {
-    /** Static value Unknown for ContentKeyPolicyPlayReadyLicenseType. */
+    /**
+     * Static value Unknown for ContentKeyPolicyPlayReadyLicenseType.
+     */
     public static final ContentKeyPolicyPlayReadyLicenseType UNKNOWN = fromString("Unknown");
 
-    /** Static value NonPersistent for ContentKeyPolicyPlayReadyLicenseType. */
+    /**
+     * Static value NonPersistent for ContentKeyPolicyPlayReadyLicenseType.
+     */
     public static final ContentKeyPolicyPlayReadyLicenseType NON_PERSISTENT = fromString("NonPersistent");
 
-    /** Static value Persistent for ContentKeyPolicyPlayReadyLicenseType. */
+    /**
+     * Static value Persistent for ContentKeyPolicyPlayReadyLicenseType.
+     */
     public static final ContentKeyPolicyPlayReadyLicenseType PERSISTENT = fromString("Persistent");
 
     /**
      * Creates a new instance of ContentKeyPolicyPlayReadyLicenseType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,18 +38,17 @@ public final class ContentKeyPolicyPlayReadyLicenseType
 
     /**
      * Creates or finds a ContentKeyPolicyPlayReadyLicenseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContentKeyPolicyPlayReadyLicenseType.
      */
-    @JsonCreator
     public static ContentKeyPolicyPlayReadyLicenseType fromString(String name) {
         return fromString(name, ContentKeyPolicyPlayReadyLicenseType.class);
     }
 
     /**
      * Gets known ContentKeyPolicyPlayReadyLicenseType values.
-     *
+     * 
      * @return known ContentKeyPolicyPlayReadyLicenseType values.
      */
     public static Collection<ContentKeyPolicyPlayReadyLicenseType> values() {

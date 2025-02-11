@@ -17,6 +17,14 @@ public class BlobContainerCreateOptions {
     PublicAccessType publicAccessType;
 
     /**
+     * Creates a new instance of {@link BlobContainerCreateOptions}.
+     */
+    public BlobContainerCreateOptions() {
+    }
+
+    /**
+     * Gets the metadata to associate with the blob.
+     *
      * @return The metadata to associate with the blob.
      */
     public Map<String, String> getMetadata() {
@@ -24,6 +32,8 @@ public class BlobContainerCreateOptions {
     }
 
     /**
+     * Sets the metadata to associate with the blob.
+     *
      * @param metadata The metadata to associate with the blob.
      * @return The updated options
      */
@@ -33,6 +43,8 @@ public class BlobContainerCreateOptions {
     }
 
     /**
+     * Gets the public access type associated with the blob.
+     *
      * @return The public access type associated with the blob.
      */
     public PublicAccessType getPublicAccessType() {
@@ -40,6 +52,8 @@ public class BlobContainerCreateOptions {
     }
 
     /**
+     * Sets the public access type to associate with the blob.
+     *
      * @param accessType The public access type to associate with the blob.
      * @return The updated options.
      */

@@ -17,8 +17,8 @@ public class ModelTests extends PersonalizerTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
     public final void modelTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
-        PersonalizerAdministrationClient client = getAdministrationClientBuilder(httpClient, serviceVersion, true)
-            .buildClient();
+        PersonalizerAdministrationClient client
+            = getAdministrationClientBuilder(httpClient, serviceVersion, true).buildClient();
         exportModel(false, client);
         exportModel(true, client);
         getModelProperties(client);
@@ -28,8 +28,8 @@ public class ModelTests extends PersonalizerTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.personalizer.TestUtils#getTestParameters")
     public final void exportImportModelTest(HttpClient httpClient, PersonalizerServiceVersion serviceVersion) {
-        PersonalizerAdministrationClient client = getAdministrationClientBuilder(httpClient, serviceVersion, true)
-            .buildClient();
+        PersonalizerAdministrationClient client
+            = getAdministrationClientBuilder(httpClient, serviceVersion, true).buildClient();
         BinaryData model = exportModel(true, client);
         importSignedModel(model, client);
     }
@@ -41,7 +41,6 @@ public class ModelTests extends PersonalizerTestBase {
     private void importSignedModel(BinaryData modelBody, PersonalizerAdministrationClient client) {
         client.importModel(modelBody);
     }
-
 
     private void resetModel(PersonalizerAdministrationClient client) {
         client.resetModel();

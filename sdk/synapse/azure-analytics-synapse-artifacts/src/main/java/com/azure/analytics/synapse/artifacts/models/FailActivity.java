@@ -27,12 +27,14 @@ public class FailActivity extends ControlActivity {
     private String type = "Fail";
 
     /*
-     * The error message that surfaced in the Fail activity. It can be dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
+     * The error message that surfaced in the Fail activity. It can be dynamic content that's evaluated to a non
+     * empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
     private Object message;
 
     /*
-     * The error code that categorizes the error type of the Fail activity. It can be dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
+     * The error code that categorizes the error type of the Fail activity. It can be dynamic content that's evaluated
+     * to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
     private Object errorCode;
 

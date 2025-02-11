@@ -137,8 +137,7 @@ public final class AzureBlobFileAttributes implements BasicFileAttributes {
         that accepts a string argument for the name of the property. Returning them individually would mean we have to
         support setting them individually as well, which is not possible due to service constraints.
          */
-        return new BlobHttpHeaders()
-            .setContentType(this.properties.getContentType())
+        return new BlobHttpHeaders().setContentType(this.properties.getContentType())
             .setContentLanguage(this.properties.getContentLanguage())
             .setContentMd5(this.properties.getContentMd5())
             .setContentDisposition(this.properties.getContentDisposition())

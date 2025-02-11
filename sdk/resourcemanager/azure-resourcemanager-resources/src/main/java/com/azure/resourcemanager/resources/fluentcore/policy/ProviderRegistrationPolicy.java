@@ -63,6 +63,8 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
     }
 
     /**
+     * Gets the providers endpoint contained in policy.
+     *
      * @return the providers endpoint contained in policy
      */
     public Providers getProviders() {
@@ -78,80 +80,74 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
         if (providers == null) {
             return next.process();
         }
-        return next.clone().process().flatMap(
-            response -> {
-                if (!isResponseSuccessful(response)) {
-                    HttpResponse bufferedResponse = response.buffer();
-                    return FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody()).flatMap(
-                        body -> {
-                            String bodyStr = new String(body, StandardCharsets.UTF_8);
+        return next.clone().process().flatMap(response -> {
+            if (!isResponseSuccessful(response)) {
+                HttpResponse bufferedResponse = response.buffer();
+                return FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody()).flatMap(body -> {
+                    String bodyStr = new String(body, StandardCharsets.UTF_8);
 
-                            SerializerAdapter jacksonAdapter =
-                                SerializerFactory.createDefaultManagementSerializerAdapter();
-                            ManagementError managementError;
-                            try {
-                                managementError = jacksonAdapter.deserialize(
-                                    bodyStr, ManagementError.class, SerializerEncoding.JSON);
-                            } catch (IOException e) {
+                    SerializerAdapter jacksonAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
+                    ManagementError managementError;
+                    try {
+                        managementError
+                            = jacksonAdapter.deserialize(bodyStr, ManagementError.class, SerializerEncoding.JSON);
+                    } catch (IOException e) {
+                        return Mono.just(bufferedResponse);
+                    }
+
+                    if (managementError != null
+                        && MISSING_SUBSCRIPTION_REGISTRATION.equals(managementError.getCode())) {
+
+                        String resourceNamespace = null;
+
+                        if (managementError.getDetails() != null) {
+                            // find in details.target
+                            resourceNamespace = managementError.getDetails()
+                                .stream()
+                                .filter(
+                                    d -> MISSING_SUBSCRIPTION_REGISTRATION.equals(d.getCode()) && d.getTarget() != null)
+                                .map(ManagementError::getTarget)
+                                .findFirst()
+                                .orElse(null);
+                        }
+                        if (resourceNamespace == null) {
+                            // find in message
+                            Pattern providerPattern = Pattern.compile(".*'(.*)'");
+                            Matcher providerMatcher = providerPattern.matcher(managementError.getMessage());
+                            if (!providerMatcher.find()) {
                                 return Mono.just(bufferedResponse);
                             }
-
-                            if (managementError != null
-                                && MISSING_SUBSCRIPTION_REGISTRATION.equals(managementError.getCode())) {
-
-                                String resourceNamespace = null;
-
-                                if (managementError.getDetails() != null) {
-                                    // find in details.target
-                                    resourceNamespace = managementError.getDetails().stream()
-                                        .filter(d -> MISSING_SUBSCRIPTION_REGISTRATION.equals(d.getCode())
-                                            && d.getTarget() != null)
-                                        .map(ManagementError::getTarget)
-                                        .findFirst().orElse(null);
-                                }
-                                if (resourceNamespace == null) {
-                                    // find in message
-                                    Pattern providerPattern = Pattern.compile(".*'(.*)'");
-                                    Matcher providerMatcher = providerPattern.matcher(managementError.getMessage());
-                                    if (!providerMatcher.find()) {
-                                        return Mono.just(bufferedResponse);
-                                    }
-                                    resourceNamespace = providerMatcher.group(1);
-                                }
-
-                                // Retry after registration
-                                return registerProviderUntilSuccess(resourceNamespace)
-                                    // in case error, return the response before registering resource provider
-                                    // if not error, this will be ignored
-                                    .then(Mono.just(bufferedResponse))
-                                    .onErrorReturn(bufferedResponse)
-                                    .then(next.clone().process());
-                            }
-                            return Mono.just(bufferedResponse);
+                            resourceNamespace = providerMatcher.group(1);
                         }
-                    );
-                }
-                return Mono.just(response);
+
+                        // Retry after registration
+                        return registerProviderUntilSuccess(resourceNamespace)
+                            // in case error, return the response before registering resource provider
+                            // if not error, this will be ignored
+                            .then(Mono.just(bufferedResponse))
+                            .onErrorReturn(bufferedResponse)
+                            .then(next.clone().process());
+                    }
+                    return Mono.just(bufferedResponse);
+                });
             }
-        );
+            return Mono.just(response);
+        });
     }
 
     private Mono<Void> registerProviderUntilSuccess(String namespace) {
-        return providers.registerAsync(namespace)
-            .flatMap(
-                provider -> {
-                    if (isProviderRegistered(provider)) {
-                        return Mono.empty();
-                    }
-                    return providers.getByNameAsync(namespace)
-                        .flatMap(this::checkProviderRegistered)
-                        .retryWhen(Retry
-                            // 30 * 10sec
-                            .fixedDelay(30,
-                                ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
-                            .filter(ProviderUnregisteredException.class::isInstance));
-                }
-            );
+        return providers.registerAsync(namespace).flatMap(provider -> {
+            if (isProviderRegistered(provider)) {
+                return Mono.empty();
+            }
+            return providers.getByNameAsync(namespace)
+                .flatMap(this::checkProviderRegistered)
+                .retryWhen(Retry
+                    // 30 * 10sec
+                    .fixedDelay(30,
+                        ResourceManagerUtils.InternalRuntimeContext.getDelayDuration(Duration.ofSeconds(10)))
+                    .filter(ProviderUnregisteredException.class::isInstance));
+        });
     }
 
     private Mono<Void> checkProviderRegistered(Provider provider) throws ProviderUnregisteredException {

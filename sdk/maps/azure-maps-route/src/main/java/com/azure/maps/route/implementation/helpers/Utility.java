@@ -70,11 +70,10 @@ public class Utility {
      * @param response
      * @return
      */
-    public static SimpleResponse<RouteMatrixResult> createRouteMatrixResponse(
-        Response<RouteMatrixResultPrivate> response) {
-        RouteMatrixResult result = response.getValue() != null
-            ? Utility.toRouteMatrixResult(response.getValue())
-            : null;
+    public static SimpleResponse<RouteMatrixResult>
+        createRouteMatrixResponse(Response<RouteMatrixResultPrivate> response) {
+        RouteMatrixResult result
+            = response.getValue() != null ? Utility.toRouteMatrixResult(response.getValue()) : null;
 
         return new SimpleResponse<>(response, result);
     }
@@ -138,8 +137,8 @@ public class Utility {
      *
      * return private parameters
      */
-    public static RouteDirectionParametersPrivate toRouteDirectionParametersPrivate(
-        RouteDirectionsParameters parameters) {
+    public static RouteDirectionParametersPrivate
+        toRouteDirectionParametersPrivate(RouteDirectionsParameters parameters) {
         RouteDirectionParametersPrivate privateParams = new RouteDirectionParametersPrivate();
 
         // set allowVignette
@@ -199,12 +198,12 @@ public class Utility {
      * @param response
      * @return
      */
-    public static SimpleResponse<RouteDirectionsBatchResult> createRouteDirectionsResponse(
-        Response<RouteDirectionsBatchResultPrivate> response) {
-        RouteDirectionsBatchResult result = response.getValue() != null ? Utility.toRouteDirectionsBatchResult(
-            response.getValue()) : null;
-        SimpleResponse<RouteDirectionsBatchResult> simpleResponse = new SimpleResponse<>(response.getRequest(),
-            response.getStatusCode(), response.getHeaders(), result);
+    public static SimpleResponse<RouteDirectionsBatchResult>
+        createRouteDirectionsResponse(Response<RouteDirectionsBatchResultPrivate> response) {
+        RouteDirectionsBatchResult result
+            = response.getValue() != null ? Utility.toRouteDirectionsBatchResult(response.getValue()) : null;
+        SimpleResponse<RouteDirectionsBatchResult> simpleResponse
+            = new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
 
         return simpleResponse;
     }
@@ -215,8 +214,8 @@ public class Utility {
      * @param privateResult
      * @return a public instance of {@link RouteDirectionsBatchResult}
      */
-    private static RouteDirectionsBatchResult toRouteDirectionsBatchResult(
-        RouteDirectionsBatchResultPrivate privateResult) {
+    private static RouteDirectionsBatchResult
+        toRouteDirectionsBatchResult(RouteDirectionsBatchResultPrivate privateResult) {
         RouteDirectionsBatchResult routeDirections = new RouteDirectionsBatchResult();
         RouteDirectionsBatchResultPropertiesHelper.setFromRouteDirectionsBatchResultPrivate(routeDirections,
             privateResult);
@@ -244,7 +243,8 @@ public class Utility {
         processQueryParameter(urlBuilder, "instructionsType", options.getInstructionsType());
         processQueryParameter(urlBuilder, "language", options.getLanguage());
         processQueryParameter(urlBuilder, "computeBestOrder", options.getComputeBestWaypointOrder());
-        processQueryParameter(urlBuilder, "routeRepresentationForBestOrder", options.getRouteRepresentationForBestOrder());
+        processQueryParameter(urlBuilder, "routeRepresentationForBestOrder",
+            options.getRouteRepresentationForBestOrder());
         processQueryParameter(urlBuilder, "computeTravelTimeFor", options.getComputeTravelTime());
         processQueryParameter(urlBuilder, "vehicleHeading", options.getVehicleHeading());
         processQueryParameter(urlBuilder, "report", options.getReport());

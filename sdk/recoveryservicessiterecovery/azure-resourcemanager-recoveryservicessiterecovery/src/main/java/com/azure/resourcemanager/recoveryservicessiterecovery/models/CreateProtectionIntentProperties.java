@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Create protection intent input properties.
  */
 @Fluent
-public final class CreateProtectionIntentProperties {
+public final class CreateProtectionIntentProperties implements JsonSerializable<CreateProtectionIntentProperties> {
     /*
      * The ReplicationProviderInput. For A2A provider, it will be A2ACreateProtectionIntentInput object.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private CreateProtectionIntentProviderSpecificDetails providerSpecificDetails;
 
     /**
@@ -56,5 +59,43 @@ public final class CreateProtectionIntentProperties {
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateProtectionIntentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateProtectionIntentProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreateProtectionIntentProperties.
+     */
+    public static CreateProtectionIntentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateProtectionIntentProperties deserializedCreateProtectionIntentProperties
+                = new CreateProtectionIntentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedCreateProtectionIntentProperties.providerSpecificDetails
+                        = CreateProtectionIntentProviderSpecificDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateProtectionIntentProperties;
+        });
     }
 }

@@ -16,9 +16,7 @@ public final class ListBlobsOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ListBlobsOptions.class);
 
     private BlobListDetails details;
-
     private String prefix;
-
     private Integer maxResultsPerPage;
 
     /**
@@ -29,6 +27,8 @@ public final class ListBlobsOptions {
     }
 
     /**
+     * Gets the details for listing specific blobs.
+     *
      * @return the details for listing specific blobs
      */
     public BlobListDetails getDetails() {
@@ -36,6 +36,8 @@ public final class ListBlobsOptions {
     }
 
     /**
+     * Sets the details for listing specific blobs.
+     *
      * @param details The details for listing specific blobs
      * @return the updated ListBlobsOptions object
      */

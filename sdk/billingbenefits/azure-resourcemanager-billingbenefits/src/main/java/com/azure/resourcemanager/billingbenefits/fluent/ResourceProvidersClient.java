@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.billingbenefits.fluent.models.SavingsPlanValidateResponseInner;
 import com.azure.resourcemanager.billingbenefits.models.SavingsPlanPurchaseValidateRequest;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Validate savings plan purchase.
-     *
+     * 
      * @param body Request body for validating the purchase of a savings plan.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,12 +26,12 @@ public interface ResourceProvidersClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SavingsPlanValidateResponseInner> validatePurchaseWithResponse(
-        SavingsPlanPurchaseValidateRequest body, Context context);
+    Response<SavingsPlanValidateResponseInner> validatePurchaseWithResponse(SavingsPlanPurchaseValidateRequest body,
+        Context context);
 
     /**
      * Validate savings plan purchase.
-     *
+     * 
      * @param body Request body for validating the purchase of a savings plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

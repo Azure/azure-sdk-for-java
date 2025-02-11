@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Subnet information as returned by the Microsoft.Network API. */
+/**
+ * Subnet information as returned by the Microsoft.Network API.
+ */
 @Fluent
-public final class ExternalSubnet {
+public final class ExternalSubnet implements JsonSerializable<ExternalSubnet> {
     /*
      * Gets or sets the identifier.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Gets or sets the name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of ExternalSubnet class. */
+    /**
+     * Creates an instance of ExternalSubnet class.
+     */
     public ExternalSubnet() {
     }
 
     /**
      * Get the id property: Gets or sets the identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +43,7 @@ public final class ExternalSubnet {
 
     /**
      * Set the id property: Gets or sets the identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the ExternalSubnet object itself.
      */
@@ -48,7 +54,7 @@ public final class ExternalSubnet {
 
     /**
      * Get the name property: Gets or sets the name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +63,7 @@ public final class ExternalSubnet {
 
     /**
      * Set the name property: Gets or sets the name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ExternalSubnet object itself.
      */
@@ -68,9 +74,48 @@ public final class ExternalSubnet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExternalSubnet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExternalSubnet if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExternalSubnet.
+     */
+    public static ExternalSubnet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExternalSubnet deserializedExternalSubnet = new ExternalSubnet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExternalSubnet.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedExternalSubnet.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExternalSubnet;
+        });
     }
 }

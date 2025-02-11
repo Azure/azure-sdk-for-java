@@ -19,8 +19,7 @@ public final class ApiManagementSkusImpl implements ApiManagementSkus {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ApiManagementSkusImpl(
-        ApiManagementSkusClient innerClient,
+    public ApiManagementSkusImpl(ApiManagementSkusClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class ApiManagementSkusImpl implements ApiManagementSkus {
 
     public PagedIterable<ApiManagementSku> list() {
         PagedIterable<ApiManagementSkuInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ApiManagementSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiManagementSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApiManagementSku> list(Context context) {
         PagedIterable<ApiManagementSkuInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ApiManagementSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiManagementSkuImpl(inner1, this.manager()));
     }
 
     private ApiManagementSkusClient serviceClient() {

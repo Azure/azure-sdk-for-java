@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectivityStatusContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectivityStatusContract model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"c\",\"status\":\"initializing\",\"error\":\"yw\",\"lastUpdated\":\"2021-08-22T10:33:01Z\",\"lastStatusChange\":\"2021-10-25T23:23:53Z\",\"resourceType\":\"zkvemy\",\"isOptional\":true}")
-                .toObject(ConnectivityStatusContract.class);
+        ConnectivityStatusContract model = BinaryData.fromString(
+            "{\"name\":\"c\",\"status\":\"initializing\",\"error\":\"yw\",\"lastUpdated\":\"2021-08-22T10:33:01Z\",\"lastStatusChange\":\"2021-10-25T23:23:53Z\",\"resourceType\":\"zkvemy\",\"isOptional\":true}")
+            .toObject(ConnectivityStatusContract.class);
         Assertions.assertEquals("c", model.name());
         Assertions.assertEquals(ConnectivityStatusType.INITIALIZING, model.status());
         Assertions.assertEquals("yw", model.error());
@@ -29,15 +27,13 @@ public final class ConnectivityStatusContractTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectivityStatusContract model =
-            new ConnectivityStatusContract()
-                .withName("c")
-                .withStatus(ConnectivityStatusType.INITIALIZING)
-                .withError("yw")
-                .withLastUpdated(OffsetDateTime.parse("2021-08-22T10:33:01Z"))
-                .withLastStatusChange(OffsetDateTime.parse("2021-10-25T23:23:53Z"))
-                .withResourceType("zkvemy")
-                .withIsOptional(true);
+        ConnectivityStatusContract model = new ConnectivityStatusContract().withName("c")
+            .withStatus(ConnectivityStatusType.INITIALIZING)
+            .withError("yw")
+            .withLastUpdated(OffsetDateTime.parse("2021-08-22T10:33:01Z"))
+            .withLastStatusChange(OffsetDateTime.parse("2021-10-25T23:23:53Z"))
+            .withResourceType("zkvemy")
+            .withIsOptional(true);
         model = BinaryData.fromObject(model).toObject(ConnectivityStatusContract.class);
         Assertions.assertEquals("c", model.name());
         Assertions.assertEquals(ConnectivityStatusType.INITIALIZING, model.status());

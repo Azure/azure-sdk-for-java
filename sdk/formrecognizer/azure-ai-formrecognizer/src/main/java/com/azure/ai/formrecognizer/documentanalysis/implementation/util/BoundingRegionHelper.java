@@ -22,6 +22,7 @@ public final class BoundingRegionHelper {
      */
     public interface BoundingRegionAccessor {
         void setPageNumber(BoundingRegion boundingRegion, int pageNumber);
+
         void setBoundingPolygon(BoundingRegion boundingRegion, List<Point> boundingPolygon);
     }
 

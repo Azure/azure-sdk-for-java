@@ -14,13 +14,15 @@ import com.azure.core.util.IterableStream;
 public final class SentenceOpinionPropertiesHelper {
     private static SentenceOpinionAccessor accessor;
 
-    private SentenceOpinionPropertiesHelper() { }
+    private SentenceOpinionPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link SentenceOpinion} instance.
      */
     public interface SentenceOpinionAccessor {
         void setTarget(SentenceOpinion sentenceOpinion, TargetSentiment target);
+
         void setAssessments(SentenceOpinion sentenceOpinion, IterableStream<AssessmentSentiment> assessments);
     }
 
@@ -37,7 +39,8 @@ public final class SentenceOpinionPropertiesHelper {
         accessor.setTarget(sentenceOpinion, target);
     }
 
-    public static void setAssessments(SentenceOpinion sentenceOpinion, IterableStream<AssessmentSentiment> assessments) {
+    public static void setAssessments(SentenceOpinion sentenceOpinion,
+        IterableStream<AssessmentSentiment> assessments) {
         accessor.setAssessments(sentenceOpinion, assessments);
     }
 }

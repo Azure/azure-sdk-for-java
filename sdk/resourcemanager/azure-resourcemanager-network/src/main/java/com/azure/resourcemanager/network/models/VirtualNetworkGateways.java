@@ -17,13 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 /** Entry point to virtual network gateways management API in Azure. */
 @Fluent
 public interface VirtualNetworkGateways
-    extends SupportsCreating<VirtualNetworkGateway.DefinitionStages.Blank>,
-        SupportsListing<VirtualNetworkGateway>,
-        SupportsListingByResourceGroup<VirtualNetworkGateway>,
-        SupportsGettingByResourceGroup<VirtualNetworkGateway>,
-        SupportsGettingById<VirtualNetworkGateway>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<VirtualNetworkGateway>,
-        HasManager<NetworkManager> {
+    extends SupportsCreating<VirtualNetworkGateway.DefinitionStages.Blank>, SupportsListing<VirtualNetworkGateway>,
+    SupportsListingByResourceGroup<VirtualNetworkGateway>, SupportsGettingByResourceGroup<VirtualNetworkGateway>,
+    SupportsGettingById<VirtualNetworkGateway>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<VirtualNetworkGateway>, HasManager<NetworkManager> {
 }

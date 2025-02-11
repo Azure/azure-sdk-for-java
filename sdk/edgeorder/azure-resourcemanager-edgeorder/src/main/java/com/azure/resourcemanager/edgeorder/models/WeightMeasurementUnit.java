@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WeightMeasurementUnit. */
+/**
+ * Unit for the dimensions of weight.
+ */
 public final class WeightMeasurementUnit extends ExpandableStringEnum<WeightMeasurementUnit> {
-    /** Static value LBS for WeightMeasurementUnit. */
+    /**
+     * Static value LBS for WeightMeasurementUnit.
+     */
     public static final WeightMeasurementUnit LBS = fromString("LBS");
 
-    /** Static value KGS for WeightMeasurementUnit. */
+    /**
+     * Static value KGS for WeightMeasurementUnit.
+     */
     public static final WeightMeasurementUnit KGS = fromString("KGS");
 
     /**
+     * Creates a new instance of WeightMeasurementUnit value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WeightMeasurementUnit() {
+    }
+
+    /**
      * Creates or finds a WeightMeasurementUnit from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WeightMeasurementUnit.
      */
-    @JsonCreator
     public static WeightMeasurementUnit fromString(String name) {
         return fromString(name, WeightMeasurementUnit.class);
     }
 
-    /** @return known WeightMeasurementUnit values. */
+    /**
+     * Gets known WeightMeasurementUnit values.
+     * 
+     * @return known WeightMeasurementUnit values.
+     */
     public static Collection<WeightMeasurementUnit> values() {
         return values(WeightMeasurementUnit.class);
     }

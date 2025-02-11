@@ -33,7 +33,8 @@ public final class Office365Source extends CopySource {
     private Object userScopeFilterUri;
 
     /*
-     * The Column to apply the <paramref name="StartTime"/> and <paramref name="EndTime"/>. Type: string (or Expression with resultType string).
+     * The Column to apply the <paramref name="StartTime"/> and <paramref name="EndTime"/>. Type: string (or Expression
+     * with resultType string).
      */
     private Object dateFilterColumn;
 
@@ -48,7 +49,8 @@ public final class Office365Source extends CopySource {
     private Object endTime;
 
     /*
-     * The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType array of objects). itemType: OutputColumn.  Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
+     * The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType array
+     * of objects). itemType: OutputColumn. Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
      */
     private Object outputColumns;
 

@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The runbook property associated with the entity. */
+/**
+ * The runbook property associated with the entity.
+ */
 @Fluent
-public final class RunbookAssociationProperty {
+public final class RunbookAssociationProperty implements JsonSerializable<RunbookAssociationProperty> {
     /*
      * Gets or sets the name of the runbook.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
+     * Creates an instance of RunbookAssociationProperty class.
+     */
+    public RunbookAssociationProperty() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the runbook.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -27,7 +38,7 @@ public final class RunbookAssociationProperty {
 
     /**
      * Set the name property: Gets or sets the name of the runbook.
-     *
+     * 
      * @param name the name value to set.
      * @return the RunbookAssociationProperty object itself.
      */
@@ -38,9 +49,45 @@ public final class RunbookAssociationProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunbookAssociationProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunbookAssociationProperty if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RunbookAssociationProperty.
+     */
+    public static RunbookAssociationProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunbookAssociationProperty deserializedRunbookAssociationProperty = new RunbookAssociationProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRunbookAssociationProperty.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunbookAssociationProperty;
+        });
     }
 }

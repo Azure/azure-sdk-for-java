@@ -22,51 +22,48 @@ public final class LabPlansImpl implements LabPlans {
 
     private final com.azure.resourcemanager.labservices.LabServicesManager serviceManager;
 
-    public LabPlansImpl(
-        LabPlansClient innerClient, com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
+    public LabPlansImpl(LabPlansClient innerClient,
+        com.azure.resourcemanager.labservices.LabServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<LabPlan> list() {
         PagedIterable<LabPlanInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new LabPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabPlanImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LabPlan> list(String filter, Context context) {
         PagedIterable<LabPlanInner> inner = this.serviceClient().list(filter, context);
-        return Utils.mapPage(inner, inner1 -> new LabPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabPlanImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LabPlan> listByResourceGroup(String resourceGroupName) {
         PagedIterable<LabPlanInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new LabPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabPlanImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LabPlan> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<LabPlanInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new LabPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LabPlanImpl(inner1, this.manager()));
+    }
+
+    public Response<LabPlan> getByResourceGroupWithResponse(String resourceGroupName, String labPlanName,
+        Context context) {
+        Response<LabPlanInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, labPlanName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LabPlanImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public LabPlan getByResourceGroup(String resourceGroupName, String labPlanName) {
         LabPlanInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, labPlanName);
         if (inner != null) {
             return new LabPlanImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<LabPlan> getByResourceGroupWithResponse(
-        String resourceGroupName, String labPlanName, Context context) {
-        Response<LabPlanInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, labPlanName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new LabPlanImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -89,77 +86,57 @@ public final class LabPlansImpl implements LabPlans {
     }
 
     public LabPlan getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labPlanName = Utils.getValueFromIdByName(id, "labPlans");
+        String labPlanName = ResourceManagerUtils.getValueFromIdByName(id, "labPlans");
         if (labPlanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, labPlanName, Context.NONE).getValue();
     }
 
     public Response<LabPlan> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labPlanName = Utils.getValueFromIdByName(id, "labPlans");
+        String labPlanName = ResourceManagerUtils.getValueFromIdByName(id, "labPlans");
         if (labPlanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, labPlanName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labPlanName = Utils.getValueFromIdByName(id, "labPlans");
+        String labPlanName = ResourceManagerUtils.getValueFromIdByName(id, "labPlans");
         if (labPlanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
         }
         this.delete(resourceGroupName, labPlanName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String labPlanName = Utils.getValueFromIdByName(id, "labPlans");
+        String labPlanName = ResourceManagerUtils.getValueFromIdByName(id, "labPlans");
         if (labPlanName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'labPlans'.", id)));
         }
         this.delete(resourceGroupName, labPlanName, context);
     }

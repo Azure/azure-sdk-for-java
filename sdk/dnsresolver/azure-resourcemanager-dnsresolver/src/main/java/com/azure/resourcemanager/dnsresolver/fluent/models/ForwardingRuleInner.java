@@ -8,37 +8,60 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.models.ForwardingRuleState;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
 import com.azure.resourcemanager.dnsresolver.models.TargetDnsServer;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Describes a forwarding rule within a DNS forwarding ruleset. */
+/**
+ * Describes a forwarding rule within a DNS forwarding ruleset.
+ */
 @Fluent
 public final class ForwardingRuleInner extends ProxyResource {
     /*
      * ETag of the forwarding rule.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Properties of the forwarding rule.
      */
-    @JsonProperty(value = "properties", required = true)
     private ForwardingRuleProperties innerProperties = new ForwardingRuleProperties();
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ForwardingRuleInner class.
+     */
+    public ForwardingRuleInner() {
+    }
 
     /**
      * Get the etag property: ETag of the forwarding rule.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -47,7 +70,7 @@ public final class ForwardingRuleInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Properties of the forwarding rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ForwardingRuleProperties innerProperties() {
@@ -56,7 +79,7 @@ public final class ForwardingRuleInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -64,8 +87,38 @@ public final class ForwardingRuleInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the domainName property: The domain name for the forwarding rule.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -74,7 +127,7 @@ public final class ForwardingRuleInner extends ProxyResource {
 
     /**
      * Set the domainName property: The domain name for the forwarding rule.
-     *
+     * 
      * @param domainName the domainName value to set.
      * @return the ForwardingRuleInner object itself.
      */
@@ -88,7 +141,7 @@ public final class ForwardingRuleInner extends ProxyResource {
 
     /**
      * Get the targetDnsServers property: DNS servers to forward the DNS query to.
-     *
+     * 
      * @return the targetDnsServers value.
      */
     public List<TargetDnsServer> targetDnsServers() {
@@ -97,7 +150,7 @@ public final class ForwardingRuleInner extends ProxyResource {
 
     /**
      * Set the targetDnsServers property: DNS servers to forward the DNS query to.
-     *
+     * 
      * @param targetDnsServers the targetDnsServers value to set.
      * @return the ForwardingRuleInner object itself.
      */
@@ -111,7 +164,7 @@ public final class ForwardingRuleInner extends ProxyResource {
 
     /**
      * Get the metadata property: Metadata attached to the forwarding rule.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -120,7 +173,7 @@ public final class ForwardingRuleInner extends ProxyResource {
 
     /**
      * Set the metadata property: Metadata attached to the forwarding rule.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the ForwardingRuleInner object itself.
      */
@@ -134,7 +187,7 @@ public final class ForwardingRuleInner extends ProxyResource {
 
     /**
      * Get the forwardingRuleState property: The state of forwarding rule.
-     *
+     * 
      * @return the forwardingRuleState value.
      */
     public ForwardingRuleState forwardingRuleState() {
@@ -143,7 +196,7 @@ public final class ForwardingRuleInner extends ProxyResource {
 
     /**
      * Set the forwardingRuleState property: The state of forwarding rule.
-     *
+     * 
      * @param forwardingRuleState the forwardingRuleState value to set.
      * @return the ForwardingRuleInner object itself.
      */
@@ -158,7 +211,7 @@ public final class ForwardingRuleInner extends ProxyResource {
     /**
      * Get the provisioningState property: The current provisioning state of the forwarding rule. This is a read-only
      * property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -167,19 +220,65 @@ public final class ForwardingRuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ForwardingRuleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ForwardingRuleInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ForwardingRuleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForwardingRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForwardingRuleInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ForwardingRuleInner.
+     */
+    public static ForwardingRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForwardingRuleInner deserializedForwardingRuleInner = new ForwardingRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedForwardingRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedForwardingRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedForwardingRuleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedForwardingRuleInner.innerProperties = ForwardingRuleProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedForwardingRuleInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedForwardingRuleInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForwardingRuleInner;
+        });
+    }
 }

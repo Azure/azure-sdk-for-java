@@ -5,9 +5,13 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.SharedAccessSignatureAuthorizationRuleInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,84 +19,77 @@ import java.util.List;
  * generated properties such as hostname and idScope.
  */
 @Fluent
-public final class IotDpsPropertiesDescription {
+public final class IotDpsPropertiesDescription implements JsonSerializable<IotDpsPropertiesDescription> {
     /*
      * Current state of the provisioning service.
      */
-    @JsonProperty(value = "state")
     private State state;
 
     /*
      * Whether requests from Public Network are allowed
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * The IP filter rules.
      */
-    @JsonProperty(value = "ipFilterRules")
     private List<IpFilterRule> ipFilterRules;
 
     /*
      * Private endpoint connections created on this IotHub
      */
-    @JsonProperty(value = "privateEndpointConnections")
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
     /*
      * The ARM provisioning state of the provisioning service.
      */
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /*
      * List of IoT hubs associated with this provisioning service.
      */
-    @JsonProperty(value = "iotHubs")
     private List<IotHubDefinitionDescription> iotHubs;
 
     /*
      * Allocation policy to be used by this provisioning service.
      */
-    @JsonProperty(value = "allocationPolicy")
     private AllocationPolicy allocationPolicy;
 
     /*
      * Service endpoint for provisioning service.
      */
-    @JsonProperty(value = "serviceOperationsHostName", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceOperationsHostname;
 
     /*
      * Device endpoint for this provisioning service.
      */
-    @JsonProperty(value = "deviceProvisioningHostName", access = JsonProperty.Access.WRITE_ONLY)
     private String deviceProvisioningHostname;
 
     /*
      * Unique identifier of this provisioning service.
      */
-    @JsonProperty(value = "idScope", access = JsonProperty.Access.WRITE_ONLY)
     private String idScope;
 
     /*
      * List of authorization keys for a provisioning service.
      */
-    @JsonProperty(value = "authorizationPolicies")
     private List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies;
 
     /*
      * Optional.
-     * Indicates if the DPS instance has Data Residency enabled, removing the
-     * cross geo-pair disaster recovery.
+     * Indicates if the DPS instance has Data Residency enabled, removing the cross geo-pair disaster recovery.
      */
-    @JsonProperty(value = "enableDataResidency")
     private Boolean enableDataResidency;
 
     /**
+     * Creates an instance of IotDpsPropertiesDescription class.
+     */
+    public IotDpsPropertiesDescription() {
+    }
+
+    /**
      * Get the state property: Current state of the provisioning service.
-     *
+     * 
      * @return the state value.
      */
     public State state() {
@@ -101,7 +98,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Set the state property: Current state of the provisioning service.
-     *
+     * 
      * @param state the state value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
@@ -112,7 +109,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Get the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -121,7 +118,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Set the publicNetworkAccess property: Whether requests from Public Network are allowed.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
@@ -132,7 +129,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Get the ipFilterRules property: The IP filter rules.
-     *
+     * 
      * @return the ipFilterRules value.
      */
     public List<IpFilterRule> ipFilterRules() {
@@ -141,7 +138,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Set the ipFilterRules property: The IP filter rules.
-     *
+     * 
      * @param ipFilterRules the ipFilterRules value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
@@ -152,7 +149,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Get the privateEndpointConnections property: Private endpoint connections created on this IotHub.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -161,19 +158,19 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Set the privateEndpointConnections property: Private endpoint connections created on this IotHub.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
-    public IotDpsPropertiesDescription withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public IotDpsPropertiesDescription
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
 
     /**
      * Get the provisioningState property: The ARM provisioning state of the provisioning service.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -182,7 +179,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Set the provisioningState property: The ARM provisioning state of the provisioning service.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
@@ -193,7 +190,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Get the iotHubs property: List of IoT hubs associated with this provisioning service.
-     *
+     * 
      * @return the iotHubs value.
      */
     public List<IotHubDefinitionDescription> iotHubs() {
@@ -202,7 +199,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Set the iotHubs property: List of IoT hubs associated with this provisioning service.
-     *
+     * 
      * @param iotHubs the iotHubs value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
@@ -213,7 +210,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Get the allocationPolicy property: Allocation policy to be used by this provisioning service.
-     *
+     * 
      * @return the allocationPolicy value.
      */
     public AllocationPolicy allocationPolicy() {
@@ -222,7 +219,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Set the allocationPolicy property: Allocation policy to be used by this provisioning service.
-     *
+     * 
      * @param allocationPolicy the allocationPolicy value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
@@ -233,7 +230,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Get the serviceOperationsHostname property: Service endpoint for provisioning service.
-     *
+     * 
      * @return the serviceOperationsHostname value.
      */
     public String serviceOperationsHostname() {
@@ -242,7 +239,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Get the deviceProvisioningHostname property: Device endpoint for this provisioning service.
-     *
+     * 
      * @return the deviceProvisioningHostname value.
      */
     public String deviceProvisioningHostname() {
@@ -251,7 +248,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Get the idScope property: Unique identifier of this provisioning service.
-     *
+     * 
      * @return the idScope value.
      */
     public String idScope() {
@@ -260,7 +257,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Get the authorizationPolicies property: List of authorization keys for a provisioning service.
-     *
+     * 
      * @return the authorizationPolicies value.
      */
     public List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies() {
@@ -269,20 +266,20 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Set the authorizationPolicies property: List of authorization keys for a provisioning service.
-     *
+     * 
      * @param authorizationPolicies the authorizationPolicies value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
-    public IotDpsPropertiesDescription withAuthorizationPolicies(
-        List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies) {
+    public IotDpsPropertiesDescription
+        withAuthorizationPolicies(List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies) {
         this.authorizationPolicies = authorizationPolicies;
         return this;
     }
 
     /**
-     * Get the enableDataResidency property: Optional. Indicates if the DPS instance has Data Residency enabled,
-     * removing the cross geo-pair disaster recovery.
-     *
+     * Get the enableDataResidency property: Optional.
+     * Indicates if the DPS instance has Data Residency enabled, removing the cross geo-pair disaster recovery.
+     * 
      * @return the enableDataResidency value.
      */
     public Boolean enableDataResidency() {
@@ -290,9 +287,9 @@ public final class IotDpsPropertiesDescription {
     }
 
     /**
-     * Set the enableDataResidency property: Optional. Indicates if the DPS instance has Data Residency enabled,
-     * removing the cross geo-pair disaster recovery.
-     *
+     * Set the enableDataResidency property: Optional.
+     * Indicates if the DPS instance has Data Residency enabled, removing the cross geo-pair disaster recovery.
+     * 
      * @param enableDataResidency the enableDataResidency value to set.
      * @return the IotDpsPropertiesDescription object itself.
      */
@@ -303,7 +300,7 @@ public final class IotDpsPropertiesDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -319,5 +316,85 @@ public final class IotDpsPropertiesDescription {
         if (authorizationPolicies() != null) {
             authorizationPolicies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeArrayField("ipFilterRules", this.ipFilterRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        jsonWriter.writeArrayField("iotHubs", this.iotHubs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("allocationPolicy",
+            this.allocationPolicy == null ? null : this.allocationPolicy.toString());
+        jsonWriter.writeArrayField("authorizationPolicies", this.authorizationPolicies,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableDataResidency", this.enableDataResidency);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotDpsPropertiesDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotDpsPropertiesDescription if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotDpsPropertiesDescription.
+     */
+    public static IotDpsPropertiesDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotDpsPropertiesDescription deserializedIotDpsPropertiesDescription = new IotDpsPropertiesDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedIotDpsPropertiesDescription.state = State.fromString(reader.getString());
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedIotDpsPropertiesDescription.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("ipFilterRules".equals(fieldName)) {
+                    List<IpFilterRule> ipFilterRules = reader.readArray(reader1 -> IpFilterRule.fromJson(reader1));
+                    deserializedIotDpsPropertiesDescription.ipFilterRules = ipFilterRules;
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<PrivateEndpointConnectionInner> privateEndpointConnections
+                        = reader.readArray(reader1 -> PrivateEndpointConnectionInner.fromJson(reader1));
+                    deserializedIotDpsPropertiesDescription.privateEndpointConnections = privateEndpointConnections;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedIotDpsPropertiesDescription.provisioningState = reader.getString();
+                } else if ("iotHubs".equals(fieldName)) {
+                    List<IotHubDefinitionDescription> iotHubs
+                        = reader.readArray(reader1 -> IotHubDefinitionDescription.fromJson(reader1));
+                    deserializedIotDpsPropertiesDescription.iotHubs = iotHubs;
+                } else if ("allocationPolicy".equals(fieldName)) {
+                    deserializedIotDpsPropertiesDescription.allocationPolicy
+                        = AllocationPolicy.fromString(reader.getString());
+                } else if ("serviceOperationsHostName".equals(fieldName)) {
+                    deserializedIotDpsPropertiesDescription.serviceOperationsHostname = reader.getString();
+                } else if ("deviceProvisioningHostName".equals(fieldName)) {
+                    deserializedIotDpsPropertiesDescription.deviceProvisioningHostname = reader.getString();
+                } else if ("idScope".equals(fieldName)) {
+                    deserializedIotDpsPropertiesDescription.idScope = reader.getString();
+                } else if ("authorizationPolicies".equals(fieldName)) {
+                    List<SharedAccessSignatureAuthorizationRuleInner> authorizationPolicies
+                        = reader.readArray(reader1 -> SharedAccessSignatureAuthorizationRuleInner.fromJson(reader1));
+                    deserializedIotDpsPropertiesDescription.authorizationPolicies = authorizationPolicies;
+                } else if ("enableDataResidency".equals(fieldName)) {
+                    deserializedIotDpsPropertiesDescription.enableDataResidency
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotDpsPropertiesDescription;
+        });
     }
 }

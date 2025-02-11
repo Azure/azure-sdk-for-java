@@ -18,8 +18,9 @@ public final class InMageRcmFailbackProtectedDiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmFailbackProtectedDiskDetails model = new InMageRcmFailbackProtectedDiskDetails()
-            .withIrDetails(new InMageRcmFailbackSyncDetails()).withResyncDetails(new InMageRcmFailbackSyncDetails());
+        InMageRcmFailbackProtectedDiskDetails model
+            = new InMageRcmFailbackProtectedDiskDetails().withIrDetails(new InMageRcmFailbackSyncDetails())
+                .withResyncDetails(new InMageRcmFailbackSyncDetails());
         model = BinaryData.fromObject(model).toObject(InMageRcmFailbackProtectedDiskDetails.class);
     }
 }

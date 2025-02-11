@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkSecurityPerimeterConfigurationInner;
+import com.azure.resourcemanager.hybridcompute.fluent.models.NetworkSecurityPerimeterConfigurationReconcileResultInner;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -90,11 +91,11 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of result of network security perimeter configurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReconcileForPrivateLinkScope(String resourceGroupName, String scopeName,
-        String perimeterName);
+    SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationReconcileResultInner>, NetworkSecurityPerimeterConfigurationReconcileResultInner>
+        beginReconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName);
 
     /**
      * Forces the network security perimeter configuration to refresh for a private link scope.
@@ -107,11 +108,12 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of result of network security perimeter configurations.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginReconcileForPrivateLinkScope(String resourceGroupName, String scopeName,
-        String perimeterName, Context context);
+    SyncPoller<PollResult<NetworkSecurityPerimeterConfigurationReconcileResultInner>, NetworkSecurityPerimeterConfigurationReconcileResultInner>
+        beginReconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName,
+            Context context);
 
     /**
      * Forces the network security perimeter configuration to refresh for a private link scope.
@@ -123,9 +125,11 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of network security perimeter configurations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName);
+    NetworkSecurityPerimeterConfigurationReconcileResultInner reconcileForPrivateLinkScope(String resourceGroupName,
+        String scopeName, String perimeterName);
 
     /**
      * Forces the network security perimeter configuration to refresh for a private link scope.
@@ -138,8 +142,9 @@ public interface NetworkSecurityPerimeterConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of network security perimeter configurations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void reconcileForPrivateLinkScope(String resourceGroupName, String scopeName, String perimeterName,
-        Context context);
+    NetworkSecurityPerimeterConfigurationReconcileResultInner reconcileForPrivateLinkScope(String resourceGroupName,
+        String scopeName, String perimeterName, Context context);
 }

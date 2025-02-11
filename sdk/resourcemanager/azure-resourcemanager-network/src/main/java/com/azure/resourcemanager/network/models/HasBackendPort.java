@@ -7,7 +7,11 @@ import com.azure.core.annotation.Fluent;
 /** An interface representing a model's ability to reference a backend port. */
 @Fluent
 public interface HasBackendPort {
-    /** @return the backend port number the network traffic is sent to */
+    /**
+     * Gets the backend port number the network traffic is sent to.
+     *
+     * @return the backend port number the network traffic is sent to
+     */
     int backendPort();
 
     /** Grouping of definition stages involving specifying a backend port. */

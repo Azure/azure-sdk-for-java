@@ -34,12 +34,15 @@ public class WebActivity extends ExecutionActivity {
     private Object url;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to set the language and type on a request: "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
+     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
+     * resultType string).
      */
     private Object headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET method Type: string (or Expression with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
+     * method Type: string (or Expression with resultType string).
      */
     private Object body;
 

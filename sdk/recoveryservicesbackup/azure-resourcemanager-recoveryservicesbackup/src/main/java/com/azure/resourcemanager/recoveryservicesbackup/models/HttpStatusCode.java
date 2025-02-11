@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * HTTP Status Code of the operation.
  */
@@ -261,7 +258,6 @@ public enum HttpStatusCode {
      * @param value the serialized value to parse.
      * @return the parsed HttpStatusCode object, or null if unable to parse.
      */
-    @JsonCreator
     public static HttpStatusCode fromString(String value) {
         if (value == null) {
             return null;
@@ -278,7 +274,6 @@ public enum HttpStatusCode {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

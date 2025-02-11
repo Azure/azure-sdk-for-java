@@ -30,8 +30,10 @@ public class TypeSerializationTests {
         String metricAlertInnerJson = adapter.serialize(metricAlertInner, SerializerEncoding.JSON);
         checkOdatatypeJson(metricAlertInnerJson);
 
-        MetricAlertResourceInner metricAlertInner2 = adapter.deserialize(metricAlertInnerJson, MetricAlertResourceInner.class, SerializerEncoding.JSON);
-        Assertions.assertTrue(metricAlertInner2.criteria() instanceof MetricAlertMultipleResourceMultipleMetricCriteria);
+        MetricAlertResourceInner metricAlertInner2
+            = adapter.deserialize(metricAlertInnerJson, MetricAlertResourceInner.class, SerializerEncoding.JSON);
+        Assertions
+            .assertTrue(metricAlertInner2.criteria() instanceof MetricAlertMultipleResourceMultipleMetricCriteria);
 
         AlertRuleResourceInner alertRuleInner = new AlertRuleResourceInner();
         alertRuleInner.withActions(Arrays.asList(new RuleEmailAction()));
@@ -39,10 +41,10 @@ public class TypeSerializationTests {
         String alertRuleInnerJson = adapter.serialize(alertRuleInner, SerializerEncoding.JSON);
         checkOdatatypeJson(alertRuleInnerJson);
 
-//        LogSearchRuleResourceInner logSearchRuleInner = new LogSearchRuleResourceInner();
-//        logSearchRuleInner.withAction(new AlertingAction());
-//        String logSearchRuleInnerJson = adapter.serialize(logSearchRuleInner, SerializerEncoding.JSON);
-//        checkOdatatypeJson(logSearchRuleInnerJson);
+        //        LogSearchRuleResourceInner logSearchRuleInner = new LogSearchRuleResourceInner();
+        //        logSearchRuleInner.withAction(new AlertingAction());
+        //        String logSearchRuleInnerJson = adapter.serialize(logSearchRuleInner, SerializerEncoding.JSON);
+        //        checkOdatatypeJson(logSearchRuleInnerJson);
     }
 
     private void checkOdatatypeJson(String json) {

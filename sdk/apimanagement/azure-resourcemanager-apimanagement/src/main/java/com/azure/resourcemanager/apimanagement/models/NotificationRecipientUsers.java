@@ -7,11 +7,13 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of NotificationRecipientUsers. */
+/**
+ * Resource collection API of NotificationRecipientUsers.
+ */
 public interface NotificationRecipientUsers {
     /**
      * Gets the list of the Notification Recipient User subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -21,12 +23,12 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the Notification Recipient User subscribed to the notification along with {@link Response}.
      */
-    Response<RecipientUserCollection> listByNotificationWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
+    Response<RecipientUserCollection> listByNotificationWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, Context context);
 
     /**
      * Gets the list of the Notification Recipient User subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -35,12 +37,12 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the Notification Recipient User subscribed to the notification.
      */
-    RecipientUserCollection listByNotification(
-        String resourceGroupName, String serviceName, NotificationName notificationName);
+    RecipientUserCollection listByNotification(String resourceGroupName, String serviceName,
+        NotificationName notificationName);
 
     /**
      * Determine if the Notification Recipient User is subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -51,16 +53,12 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists along with {@link Response}.
      */
-    Response<Boolean> checkEntityExistsWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String userId,
-        Context context);
+    Response<Boolean> checkEntityExistsWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String userId, Context context);
 
     /**
      * Determine if the Notification Recipient User is subscribed to the notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -70,12 +68,12 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
-    boolean checkEntityExists(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String userId);
+    boolean checkEntityExists(String resourceGroupName, String serviceName, NotificationName notificationName,
+        String userId);
 
     /**
      * Adds the API Management User to the list of Recipients for the Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -86,16 +84,12 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recipient User details along with {@link Response}.
      */
-    Response<RecipientUserContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String userId,
-        Context context);
+    Response<RecipientUserContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String userId, Context context);
 
     /**
      * Adds the API Management User to the list of Recipients for the Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -105,12 +99,12 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recipient User details.
      */
-    RecipientUserContract createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String userId);
+    RecipientUserContract createOrUpdate(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String userId);
 
     /**
      * Removes the API Management user from the list of Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.
@@ -121,16 +115,12 @@ public interface NotificationRecipientUsers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        NotificationName notificationName,
-        String userId,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, NotificationName notificationName,
+        String userId, Context context);
 
     /**
      * Removes the API Management user from the list of Notification.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param notificationName Notification Name Identifier.

@@ -12,7 +12,7 @@ import java.util.Collection;
  */
 public final class ActionType extends ExpandableStringEnum<ActionType> {
     /**
-     * Static value Internal for ActionType.
+     * Actions are for internal-only APIs.
      */
     public static final ActionType INTERNAL = fromString("Internal");
 

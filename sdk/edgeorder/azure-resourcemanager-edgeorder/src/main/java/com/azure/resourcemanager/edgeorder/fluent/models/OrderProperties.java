@@ -5,38 +5,43 @@
 package com.azure.resourcemanager.edgeorder.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.models.StageDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents order details. */
+/**
+ * Represents order details.
+ */
 @Immutable
-public final class OrderProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrderProperties.class);
-
+public final class OrderProperties implements JsonSerializable<OrderProperties> {
     /*
      * List of order item ARM Ids which are part of an order.
      */
-    @JsonProperty(value = "orderItemIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> orderItemIds;
 
     /*
      * Order current status.
      */
-    @JsonProperty(value = "currentStage", access = JsonProperty.Access.WRITE_ONLY)
     private StageDetails currentStage;
 
     /*
      * Order status history.
      */
-    @JsonProperty(value = "orderStageHistory", access = JsonProperty.Access.WRITE_ONLY)
     private List<StageDetails> orderStageHistory;
 
     /**
+     * Creates an instance of OrderProperties class.
+     */
+    public OrderProperties() {
+    }
+
+    /**
      * Get the orderItemIds property: List of order item ARM Ids which are part of an order.
-     *
+     * 
      * @return the orderItemIds value.
      */
     public List<String> orderItemIds() {
@@ -45,7 +50,7 @@ public final class OrderProperties {
 
     /**
      * Get the currentStage property: Order current status.
-     *
+     * 
      * @return the currentStage value.
      */
     public StageDetails currentStage() {
@@ -54,7 +59,7 @@ public final class OrderProperties {
 
     /**
      * Get the orderStageHistory property: Order status history.
-     *
+     * 
      * @return the orderStageHistory value.
      */
     public List<StageDetails> orderStageHistory() {
@@ -63,7 +68,7 @@ public final class OrderProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -73,5 +78,46 @@ public final class OrderProperties {
         if (orderStageHistory() != null) {
             orderStageHistory().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OrderProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OrderProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OrderProperties.
+     */
+    public static OrderProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OrderProperties deserializedOrderProperties = new OrderProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("orderItemIds".equals(fieldName)) {
+                    List<String> orderItemIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedOrderProperties.orderItemIds = orderItemIds;
+                } else if ("currentStage".equals(fieldName)) {
+                    deserializedOrderProperties.currentStage = StageDetails.fromJson(reader);
+                } else if ("orderStageHistory".equals(fieldName)) {
+                    List<StageDetails> orderStageHistory = reader.readArray(reader1 -> StageDetails.fromJson(reader1));
+                    deserializedOrderProperties.orderStageHistory = orderStageHistory;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOrderProperties;
+        });
     }
 }

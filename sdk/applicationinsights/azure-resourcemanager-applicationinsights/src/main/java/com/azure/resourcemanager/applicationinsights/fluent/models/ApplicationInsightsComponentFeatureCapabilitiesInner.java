@@ -5,114 +5,107 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An Application Insights component feature capabilities. */
+/**
+ * An Application Insights component feature capabilities.
+ */
 @Immutable
-public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
+public final class ApplicationInsightsComponentFeatureCapabilitiesInner
+    implements JsonSerializable<ApplicationInsightsComponentFeatureCapabilitiesInner> {
     /*
      * Whether allow to use continuous export feature.
      */
-    @JsonProperty(value = "SupportExportData", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean supportExportData;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "BurstThrottlePolicy", access = JsonProperty.Access.WRITE_ONLY)
     private String burstThrottlePolicy;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "MetadataClass", access = JsonProperty.Access.WRITE_ONLY)
     private String metadataClass;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "LiveStreamMetrics", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean liveStreamMetrics;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "ApplicationMap", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean applicationMap;
 
     /*
      * Whether allow to use work item integration feature.
      */
-    @JsonProperty(value = "WorkItemIntegration", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean workItemIntegration;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "PowerBIIntegration", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean powerBIIntegration;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "OpenSchema", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean openSchema;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "ProactiveDetection", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean proactiveDetection;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "AnalyticsIntegration", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean analyticsIntegration;
 
     /*
      * Whether allow to use multiple steps web test feature.
      */
-    @JsonProperty(value = "MultipleStepWebTest", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean multipleStepWebTest;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "ApiAccessLevel", access = JsonProperty.Access.WRITE_ONLY)
     private String apiAccessLevel;
 
     /*
      * The application insights component used tracking type.
      */
-    @JsonProperty(value = "TrackingType", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingType;
 
     /*
      * Daily data volume cap in GB.
      */
-    @JsonProperty(value = "DailyCap", access = JsonProperty.Access.WRITE_ONLY)
     private Float dailyCap;
 
     /*
      * Daily data volume cap UTC reset hour.
      */
-    @JsonProperty(value = "DailyCapResetTime", access = JsonProperty.Access.WRITE_ONLY)
     private Float dailyCapResetTime;
 
     /*
      * Reserved, not used now.
      */
-    @JsonProperty(value = "ThrottleRate", access = JsonProperty.Access.WRITE_ONLY)
     private Float throttleRate;
 
-    /** Creates an instance of ApplicationInsightsComponentFeatureCapabilitiesInner class. */
+    /**
+     * Creates an instance of ApplicationInsightsComponentFeatureCapabilitiesInner class.
+     */
     public ApplicationInsightsComponentFeatureCapabilitiesInner() {
     }
 
     /**
      * Get the supportExportData property: Whether allow to use continuous export feature.
-     *
+     * 
      * @return the supportExportData value.
      */
     public Boolean supportExportData() {
@@ -121,7 +114,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the burstThrottlePolicy property: Reserved, not used now.
-     *
+     * 
      * @return the burstThrottlePolicy value.
      */
     public String burstThrottlePolicy() {
@@ -130,7 +123,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the metadataClass property: Reserved, not used now.
-     *
+     * 
      * @return the metadataClass value.
      */
     public String metadataClass() {
@@ -139,7 +132,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the liveStreamMetrics property: Reserved, not used now.
-     *
+     * 
      * @return the liveStreamMetrics value.
      */
     public Boolean liveStreamMetrics() {
@@ -148,7 +141,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the applicationMap property: Reserved, not used now.
-     *
+     * 
      * @return the applicationMap value.
      */
     public Boolean applicationMap() {
@@ -157,7 +150,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the workItemIntegration property: Whether allow to use work item integration feature.
-     *
+     * 
      * @return the workItemIntegration value.
      */
     public Boolean workItemIntegration() {
@@ -166,7 +159,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the powerBIIntegration property: Reserved, not used now.
-     *
+     * 
      * @return the powerBIIntegration value.
      */
     public Boolean powerBIIntegration() {
@@ -175,7 +168,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the openSchema property: Reserved, not used now.
-     *
+     * 
      * @return the openSchema value.
      */
     public Boolean openSchema() {
@@ -184,7 +177,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the proactiveDetection property: Reserved, not used now.
-     *
+     * 
      * @return the proactiveDetection value.
      */
     public Boolean proactiveDetection() {
@@ -193,7 +186,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the analyticsIntegration property: Reserved, not used now.
-     *
+     * 
      * @return the analyticsIntegration value.
      */
     public Boolean analyticsIntegration() {
@@ -202,7 +195,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the multipleStepWebTest property: Whether allow to use multiple steps web test feature.
-     *
+     * 
      * @return the multipleStepWebTest value.
      */
     public Boolean multipleStepWebTest() {
@@ -211,7 +204,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the apiAccessLevel property: Reserved, not used now.
-     *
+     * 
      * @return the apiAccessLevel value.
      */
     public String apiAccessLevel() {
@@ -220,7 +213,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the trackingType property: The application insights component used tracking type.
-     *
+     * 
      * @return the trackingType value.
      */
     public String trackingType() {
@@ -229,7 +222,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the dailyCap property: Daily data volume cap in GB.
-     *
+     * 
      * @return the dailyCap value.
      */
     public Float dailyCap() {
@@ -238,7 +231,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the dailyCapResetTime property: Daily data volume cap UTC reset hour.
-     *
+     * 
      * @return the dailyCapResetTime value.
      */
     public Float dailyCapResetTime() {
@@ -247,7 +240,7 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Get the throttleRate property: Reserved, not used now.
-     *
+     * 
      * @return the throttleRate value.
      */
     public Float throttleRate() {
@@ -256,9 +249,90 @@ public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationInsightsComponentFeatureCapabilitiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationInsightsComponentFeatureCapabilitiesInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationInsightsComponentFeatureCapabilitiesInner.
+     */
+    public static ApplicationInsightsComponentFeatureCapabilitiesInner fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationInsightsComponentFeatureCapabilitiesInner deserializedApplicationInsightsComponentFeatureCapabilitiesInner
+                = new ApplicationInsightsComponentFeatureCapabilitiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("SupportExportData".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.supportExportData
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("BurstThrottlePolicy".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.burstThrottlePolicy
+                        = reader.getString();
+                } else if ("MetadataClass".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.metadataClass = reader.getString();
+                } else if ("LiveStreamMetrics".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.liveStreamMetrics
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ApplicationMap".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.applicationMap
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("WorkItemIntegration".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.workItemIntegration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("PowerBIIntegration".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.powerBIIntegration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("OpenSchema".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.openSchema
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ProactiveDetection".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.proactiveDetection
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("AnalyticsIntegration".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.analyticsIntegration
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("MultipleStepWebTest".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.multipleStepWebTest
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ApiAccessLevel".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.apiAccessLevel
+                        = reader.getString();
+                } else if ("TrackingType".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.trackingType = reader.getString();
+                } else if ("DailyCap".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.dailyCap
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("DailyCapResetTime".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.dailyCapResetTime
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("ThrottleRate".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentFeatureCapabilitiesInner.throttleRate
+                        = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationInsightsComponentFeatureCapabilitiesInner;
+        });
     }
 }

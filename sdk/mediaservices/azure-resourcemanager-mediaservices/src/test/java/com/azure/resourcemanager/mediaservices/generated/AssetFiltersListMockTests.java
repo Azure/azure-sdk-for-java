@@ -6,74 +6,51 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
 import com.azure.resourcemanager.mediaservices.models.AssetFilter;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyCompareOperation;
+import com.azure.resourcemanager.mediaservices.models.FilterTrackPropertyType;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AssetFiltersListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":41375191452971631,\"endTimestamp\":1396768650771014756,\"presentationWindowDuration\":8770644881184441492,\"liveBackoffDuration\":8259010476237708124,\"timescale\":1410639763704832237,\"forceEndTimestamp\":false},\"firstQuality\":{\"bitrate\":1138832682},\"tracks\":[{\"trackSelections\":[{\"property\":\"Language\",\"value\":\"wuninv\",\"operation\":\"Equal\"}]},{\"trackSelections\":[{\"property\":\"Type\",\"value\":\"h\",\"operation\":\"NotEqual\"},{\"property\":\"FourCC\",\"value\":\"tvq\",\"operation\":\"NotEqual\"}]}]},\"id\":\"qct\",\"name\":\"xxdtddmflh\",\"type\":\"ytxzvtznapxbanno\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":1386545897996056143,\"endTimestamp\":602580373107184466,\"presentationWindowDuration\":3109060414746528388,\"liveBackoffDuration\":2813086357064357787,\"timescale\":4216715341648313500,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":247999147},\"tracks\":[]},\"id\":\"bcuiiz\",\"name\":\"ktwfa\",\"type\":\"snvpdibmi\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<AssetFilter> response = manager.assetFilters()
+            .list("ugwbsreurfqkf", "arenlvhhtklnvnaf", "vkyfedevjbosl", com.azure.core.util.Context.NONE);
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<AssetFilter> response =
-            manager.assetFilters().list("igkxkbsazga", "gacyrcmjdmspo", "apvu", com.azure.core.util.Context.NONE);
-
-        Assertions
-            .assertEquals(1386545897996056143L, response.iterator().next().presentationTimeRange().startTimestamp());
-        Assertions.assertEquals(602580373107184466L, response.iterator().next().presentationTimeRange().endTimestamp());
-        Assertions
-            .assertEquals(
-                3109060414746528388L, response.iterator().next().presentationTimeRange().presentationWindowDuration());
-        Assertions
-            .assertEquals(
-                2813086357064357787L, response.iterator().next().presentationTimeRange().liveBackoffDuration());
-        Assertions.assertEquals(4216715341648313500L, response.iterator().next().presentationTimeRange().timescale());
-        Assertions.assertEquals(true, response.iterator().next().presentationTimeRange().forceEndTimestamp());
-        Assertions.assertEquals(247999147, response.iterator().next().firstQuality().bitrate());
+        Assertions.assertEquals(41375191452971631L,
+            response.iterator().next().presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(1396768650771014756L,
+            response.iterator().next().presentationTimeRange().endTimestamp());
+        Assertions.assertEquals(8770644881184441492L,
+            response.iterator().next().presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(8259010476237708124L,
+            response.iterator().next().presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(1410639763704832237L, response.iterator().next().presentationTimeRange().timescale());
+        Assertions.assertEquals(false, response.iterator().next().presentationTimeRange().forceEndTimestamp());
+        Assertions.assertEquals(1138832682, response.iterator().next().firstQuality().bitrate());
+        Assertions.assertEquals(FilterTrackPropertyType.LANGUAGE,
+            response.iterator().next().tracks().get(0).trackSelections().get(0).property());
+        Assertions.assertEquals("wuninv", response.iterator().next().tracks().get(0).trackSelections().get(0).value());
+        Assertions.assertEquals(FilterTrackPropertyCompareOperation.EQUAL,
+            response.iterator().next().tracks().get(0).trackSelections().get(0).operation());
     }
 }

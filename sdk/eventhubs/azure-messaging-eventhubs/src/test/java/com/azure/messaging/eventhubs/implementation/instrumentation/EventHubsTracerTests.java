@@ -67,14 +67,18 @@ public class EventHubsTracerTests {
         RuntimeException runtimeException = new RuntimeException("foo");
         AmqpException amqpNoCauseNoCondition = new AmqpException(false, "foo", null, null);
         AmqpException amqpNoCauseCondition = new AmqpException(false, AmqpErrorCondition.NOT_FOUND, "foo", null);
-        AmqpException amqpNoCauseConditionMessage = new AmqpException(false, AmqpErrorCondition.TIMEOUT_ERROR, "test", null);
-        AmqpException amqpCauseCondition = new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, runtimeException, null);
-        return Stream.of(
-            Arguments.of(runtimeException, runtimeException, RuntimeException.class.getName()),
+        AmqpException amqpNoCauseConditionMessage
+            = new AmqpException(false, AmqpErrorCondition.TIMEOUT_ERROR, "test", null);
+        AmqpException amqpCauseCondition
+            = new AmqpException(false, AmqpErrorCondition.SERVER_BUSY_ERROR, null, runtimeException, null);
+        return Stream.of(Arguments.of(runtimeException, runtimeException, RuntimeException.class.getName()),
             Arguments.of(Exceptions.propagate(runtimeException), runtimeException, RuntimeException.class.getName()),
             Arguments.of(amqpNoCauseNoCondition, amqpNoCauseNoCondition, AmqpException.class.getName()),
-            Arguments.of(amqpNoCauseCondition, amqpNoCauseCondition, amqpNoCauseCondition.getErrorCondition().getErrorCondition()),
-            Arguments.of(amqpNoCauseConditionMessage, amqpNoCauseConditionMessage, amqpNoCauseConditionMessage.getErrorCondition().getErrorCondition()),
-            Arguments.of(amqpCauseCondition, runtimeException, amqpCauseCondition.getErrorCondition().getErrorCondition()));
+            Arguments.of(amqpNoCauseCondition, amqpNoCauseCondition,
+                amqpNoCauseCondition.getErrorCondition().getErrorCondition()),
+            Arguments.of(amqpNoCauseConditionMessage, amqpNoCauseConditionMessage,
+                amqpNoCauseConditionMessage.getErrorCondition().getErrorCondition()),
+            Arguments.of(amqpCauseCondition, runtimeException,
+                amqpCauseCondition.getErrorCondition().getErrorCondition()));
     }
 }

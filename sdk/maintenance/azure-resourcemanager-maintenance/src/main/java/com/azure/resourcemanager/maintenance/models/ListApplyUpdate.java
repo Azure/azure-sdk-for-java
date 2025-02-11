@@ -5,19 +5,22 @@
 package com.azure.resourcemanager.maintenance.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Response for ApplyUpdate list.
  */
 @Fluent
-public final class ListApplyUpdate {
+public final class ListApplyUpdate implements JsonSerializable<ListApplyUpdate> {
     /*
      * The list of apply updates
      */
-    @JsonProperty(value = "value")
     private List<ApplyUpdateInner> value;
 
     /**
@@ -55,5 +58,42 @@ public final class ListApplyUpdate {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListApplyUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListApplyUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListApplyUpdate.
+     */
+    public static ListApplyUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListApplyUpdate deserializedListApplyUpdate = new ListApplyUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ApplyUpdateInner> value = reader.readArray(reader1 -> ApplyUpdateInner.fromJson(reader1));
+                    deserializedListApplyUpdate.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListApplyUpdate;
+        });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class BackendEnabledState extends ExpandableStringEnum<BackendEnabl
      * @param name a name to look for.
      * @return the corresponding BackendEnabledState.
      */
-    @JsonCreator
     public static BackendEnabledState fromString(String name) {
         return fromString(name, BackendEnabledState.class);
     }

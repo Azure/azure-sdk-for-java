@@ -8,20 +8,19 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.networkfunction.models.DestinationType;
 import com.azure.resourcemanager.networkfunction.models.EmissionPolicyDestination;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EmissionPolicyDestinationTests {
-    @Test
-    public void testDeserialize() {
-        EmissionPolicyDestination model =
-            BinaryData.fromString("{\"destinationType\":\"AzureMonitor\"}").toObject(EmissionPolicyDestination.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EmissionPolicyDestination model
+            = BinaryData.fromString("{\"destinationType\":\"AzureMonitor\"}").toObject(EmissionPolicyDestination.class);
         Assertions.assertEquals(DestinationType.AZURE_MONITOR, model.destinationType());
     }
 
-    @Test
-    public void testSerialize() {
-        EmissionPolicyDestination model =
-            new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EmissionPolicyDestination model
+            = new EmissionPolicyDestination().withDestinationType(DestinationType.AZURE_MONITOR);
         model = BinaryData.fromObject(model).toObject(EmissionPolicyDestination.class);
         Assertions.assertEquals(DestinationType.AZURE_MONITOR, model.destinationType());
     }

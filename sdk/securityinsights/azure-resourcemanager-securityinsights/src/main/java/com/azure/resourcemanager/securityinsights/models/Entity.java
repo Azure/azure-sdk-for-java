@@ -4,43 +4,224 @@
 
 package com.azure.resourcemanager.securityinsights.models;
 
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An immutable client-side representation of Entity. */
-public interface Entity {
-    /**
-     * Gets the id property: Fully qualified resource Id for the resource.
-     *
-     * @return the id value.
+/**
+ * Specific entity.
+ */
+@Immutable
+public class Entity extends ProxyResource {
+    /*
+     * The kind of the entity.
      */
-    String id();
+    private EntityKindEnum kind = EntityKindEnum.fromString("Entity");
 
-    /**
-     * Gets the name property: The name of the resource.
-     *
-     * @return the name value.
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    String name();
+    private SystemData systemData;
 
-    /**
-     * Gets the type property: The type of the resource.
-     *
-     * @return the type value.
+    /*
+     * The type of the resource.
      */
-    String type();
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * Creates an instance of Entity class.
+     */
+    public Entity() {
+    }
+
+    /**
+     * Get the kind property: The kind of the entity.
+     * 
+     * @return the kind value.
+     */
+    public EntityKindEnum kind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
      * @return the systemData value.
      */
-    SystemData systemData();
+    public SystemData systemData() {
+        return this.systemData;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.EntityInner object.
-     *
-     * @return the inner object.
+     * Set the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @param systemData the systemData value to set.
+     * @return the Entity object itself.
      */
-    EntityInner innerModel();
+    Entity withSystemData(SystemData systemData) {
+        this.systemData = systemData;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Entity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Entity if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Entity.
+     */
+    public static Entity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("SecurityAlert".equals(discriminatorValue)) {
+                    return SecurityAlert.fromJson(readerToUse.reset());
+                } else if ("Bookmark".equals(discriminatorValue)) {
+                    return HuntingBookmark.fromJson(readerToUse.reset());
+                } else if ("Account".equals(discriminatorValue)) {
+                    return AccountEntity.fromJson(readerToUse.reset());
+                } else if ("AzureResource".equals(discriminatorValue)) {
+                    return AzureResourceEntity.fromJson(readerToUse.reset());
+                } else if ("CloudApplication".equals(discriminatorValue)) {
+                    return CloudApplicationEntity.fromJson(readerToUse.reset());
+                } else if ("DnsResolution".equals(discriminatorValue)) {
+                    return DnsEntity.fromJson(readerToUse.reset());
+                } else if ("File".equals(discriminatorValue)) {
+                    return FileEntity.fromJson(readerToUse.reset());
+                } else if ("FileHash".equals(discriminatorValue)) {
+                    return FileHashEntity.fromJson(readerToUse.reset());
+                } else if ("Host".equals(discriminatorValue)) {
+                    return HostEntity.fromJson(readerToUse.reset());
+                } else if ("IoTDevice".equals(discriminatorValue)) {
+                    return IoTDeviceEntity.fromJson(readerToUse.reset());
+                } else if ("Ip".equals(discriminatorValue)) {
+                    return IpEntity.fromJson(readerToUse.reset());
+                } else if ("Mailbox".equals(discriminatorValue)) {
+                    return MailboxEntity.fromJson(readerToUse.reset());
+                } else if ("MailCluster".equals(discriminatorValue)) {
+                    return MailClusterEntity.fromJson(readerToUse.reset());
+                } else if ("MailMessage".equals(discriminatorValue)) {
+                    return MailMessageEntity.fromJson(readerToUse.reset());
+                } else if ("Malware".equals(discriminatorValue)) {
+                    return MalwareEntity.fromJson(readerToUse.reset());
+                } else if ("Process".equals(discriminatorValue)) {
+                    return ProcessEntity.fromJson(readerToUse.reset());
+                } else if ("RegistryKey".equals(discriminatorValue)) {
+                    return RegistryKeyEntity.fromJson(readerToUse.reset());
+                } else if ("RegistryValue".equals(discriminatorValue)) {
+                    return RegistryValueEntity.fromJson(readerToUse.reset());
+                } else if ("SecurityGroup".equals(discriminatorValue)) {
+                    return SecurityGroupEntity.fromJson(readerToUse.reset());
+                } else if ("SubmissionMail".equals(discriminatorValue)) {
+                    return SubmissionMailEntity.fromJson(readerToUse.reset());
+                } else if ("Url".equals(discriminatorValue)) {
+                    return UrlEntity.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Entity fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Entity deserializedEntity = new Entity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEntity.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEntity.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEntity.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEntity.kind = EntityKindEnum.fromString(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEntity.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEntity;
+        });
+    }
 }

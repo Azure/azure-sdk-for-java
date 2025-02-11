@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.fluent.models.LabServicesSkuInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Paged list of lab services skus. */
+/**
+ * Paged list of lab services skus.
+ */
 @Immutable
-public final class PagedLabServicesSkus {
+public final class PagedLabServicesSkus implements JsonSerializable<PagedLabServicesSkus> {
     /*
      * The array page of sku results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<LabServicesSkuInner> value;
 
     /*
      * The link to get the next page of sku results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of PagedLabServicesSkus class.
+     */
+    public PagedLabServicesSkus() {
+    }
+
+    /**
      * Get the value property: The array page of sku results.
-     *
+     * 
      * @return the value value.
      */
     public List<LabServicesSkuInner> value() {
@@ -35,7 +45,7 @@ public final class PagedLabServicesSkus {
 
     /**
      * Get the nextLink property: The link to get the next page of sku results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -44,12 +54,51 @@ public final class PagedLabServicesSkus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PagedLabServicesSkus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PagedLabServicesSkus if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PagedLabServicesSkus.
+     */
+    public static PagedLabServicesSkus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PagedLabServicesSkus deserializedPagedLabServicesSkus = new PagedLabServicesSkus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<LabServicesSkuInner> value
+                        = reader.readArray(reader1 -> LabServicesSkuInner.fromJson(reader1));
+                    deserializedPagedLabServicesSkus.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPagedLabServicesSkus.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPagedLabServicesSkus;
+        });
     }
 }

@@ -20,12 +20,12 @@ import java.util.Map;
 public class VirtualMachineScaleSetExtensionImpl
     extends ChildResourceImpl<VirtualMachineScaleSetExtensionInner, VirtualMachineScaleSetImpl, VirtualMachineScaleSet>
     implements VirtualMachineScaleSetExtension,
-        VirtualMachineScaleSetExtension.Definition<VirtualMachineScaleSet.DefinitionStages.WithCreate>,
-        VirtualMachineScaleSetExtension.UpdateDefinition<VirtualMachineScaleSet.UpdateStages.WithApply>,
-        VirtualMachineScaleSetExtension.Update {
+    VirtualMachineScaleSetExtension.Definition<VirtualMachineScaleSet.DefinitionStages.WithCreate>,
+    VirtualMachineScaleSetExtension.UpdateDefinition<VirtualMachineScaleSet.UpdateStages.WithApply>,
+    VirtualMachineScaleSetExtension.Update {
 
-    protected VirtualMachineScaleSetExtensionImpl(
-        VirtualMachineScaleSetExtensionInner inner, VirtualMachineScaleSetImpl parent) {
+    protected VirtualMachineScaleSetExtensionImpl(VirtualMachineScaleSetExtensionInner inner,
+        VirtualMachineScaleSetImpl parent) {
         super(inner, parent);
     }
 
@@ -97,8 +97,7 @@ public class VirtualMachineScaleSetExtensionImpl
 
     @Override
     public VirtualMachineScaleSetExtensionImpl withImage(VirtualMachineExtensionImage image) {
-        this
-            .innerModel()
+        this.innerModel()
             .withPublisher(image.publisherName())
             .withTypePropertiesType(image.typeName())
             .withTypeHandlerVersion(image.versionName());

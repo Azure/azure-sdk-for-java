@@ -155,7 +155,6 @@ public final class SapCloudForCustomerSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

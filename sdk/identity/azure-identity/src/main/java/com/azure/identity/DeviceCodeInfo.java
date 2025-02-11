@@ -30,7 +30,7 @@ public class DeviceCodeInfo {
      * @param message message which should be displayed to the user
      */
     public DeviceCodeInfo(String userCode, String deviceCode, String verificationUrl, OffsetDateTime expiresOn,
-                          String message) {
+        String message) {
         this.userCode = userCode;
         this.deviceCode = deviceCode;
         this.verificationUrl = verificationUrl;

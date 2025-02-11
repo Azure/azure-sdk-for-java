@@ -6,73 +6,63 @@ package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager;
+import com.azure.resourcemanager.vmwarecloudsimple.models.DiskIndependenceMode;
+import com.azure.resourcemanager.vmwarecloudsimple.models.GuestOsnicCustomizationAllocation;
+import com.azure.resourcemanager.vmwarecloudsimple.models.NicType;
 import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualMachineTemplate;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class VirtualMachineTemplatesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"id\":\"qccydrtceukdq\",\"location\":\"yihztgeqmg\",\"name\":\"gwldo\",\"properties\":{\"amountOfRam\":453011770,\"controllers\":[{\"id\":\"ecfehuwa\",\"name\":\"guh\",\"subType\":\"qllizstac\",\"type\":\"vhrweftkwqejpmv\"},{\"id\":\"ehaepwamcxtc\",\"name\":\"upeuknijduyye\",\"subType\":\"ydjfb\",\"type\":\"yv\"}],\"description\":\"ulrtywikdmh\",\"disks\":[{\"controllerId\":\"uflgbhgauacdixm\",\"independenceMode\":\"persistent\",\"totalSize\":79202020,\"virtualDiskId\":\"sryjqgdkfno\",\"virtualDiskName\":\"eoqbvjhvefgwbmqj\"},{\"controllerId\":\"hntasfaymx\",\"independenceMode\":\"independent_persistent\",\"totalSize\":2018726025,\"virtualDiskId\":\"zealbmqkyo\",\"virtualDiskName\":\"yvfkmbts\"}],\"exposeToGuestVM\":false,\"guestOS\":\"sgxjc\",\"guestOSType\":\"zrrscub\",\"nics\":[{\"customization\":{\"allocation\":\"static\",\"dnsServers\":[\"qwodiffjx\"],\"gateway\":[\"mmuabwi\",\"vjogjonmcyefo\",\"zbamwine\"],\"ipAddress\":\"vfkakpold\",\"mask\":\"evboclzhzjknyuxg\",\"primaryWinsServer\":\"txpnrupza\",\"secondaryWinsServer\":\"rdixt\"},\"ipAddresses\":[\"ids\",\"yskbruff\"],\"macAddress\":\"lukkutvlxhrpqhvm\",\"network\":{\"assignable\":false,\"id\":\"ouq\",\"location\":\"bhbcdszir\",\"name\":\"an\",\"properties\":{},\"type\":\"pmbltoormkfql\"},\"nicType\":\"VMXNET2\",\"powerOnBoot\":true,\"virtualNicId\":\"kalsygaolnjp\",\"virtualNicName\":\"bmjk\"}],\"numberOfCores\":1129063200,\"path\":\"gsjjxxahmrna\",\"privateCloudId\":\"zyqegxyiv\",\"vSphereNetworks\":[\"bmh\"],\"vSphereTags\":[\"ijkgqxnhm\",\"keznjaujvaa\",\"nggiycwkdtaa\",\"xw\"],\"vmwaretools\":\"ka\"},\"type\":\"rrqmbzmqk\"}";
 
-        String responseStr =
-            "{\"id\":\"jy\",\"location\":\"hcuplc\",\"name\":\"cwkhihi\",\"properties\":{\"amountOfRam\":1075361134,\"controllers\":[],\"description\":\"tzbsrgnowcjhf\",\"disks\":[],\"exposeToGuestVM\":false,\"guestOS\":\"ctxmwoteyowcluq\",\"guestOSType\":\"ekqvgqouwif\",\"nics\":[],\"numberOfCores\":2138096082,\"path\":\"ivqikfxcvhr\",\"privateCloudId\":\"sphuagrttikteus\",\"vSphereNetworks\":[\"kvyklxubyjaffmm\",\"bl\"],\"vSphereTags\":[\"u\",\"bgq\"],\"vmwaretools\":\"rtalmet\"},\"type\":\"wgdsl\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        VMwareCloudSimpleManager manager = VMwareCloudSimpleManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        VirtualMachineTemplate response = manager.virtualMachineTemplates()
+            .getWithResponse("lt", "sjuscvsfxigctmg", "uupb", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        VMwareCloudSimpleManager manager =
-            VMwareCloudSimpleManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        VirtualMachineTemplate response =
-            manager
-                .virtualMachineTemplates()
-                .getWithResponse("ysownbtgkbug", "jqctojcmisofie", "pe", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("hcuplc", response.location());
-        Assertions.assertEquals(1075361134, response.amountOfRam());
-        Assertions.assertEquals("tzbsrgnowcjhf", response.description());
+        Assertions.assertEquals("yihztgeqmg", response.location());
+        Assertions.assertEquals(453011770, response.amountOfRam());
+        Assertions.assertEquals("ulrtywikdmh", response.description());
+        Assertions.assertEquals("uflgbhgauacdixm", response.disks().get(0).controllerId());
+        Assertions.assertEquals(DiskIndependenceMode.PERSISTENT, response.disks().get(0).independenceMode());
+        Assertions.assertEquals(79202020, response.disks().get(0).totalSize());
+        Assertions.assertEquals("sryjqgdkfno", response.disks().get(0).virtualDiskId());
         Assertions.assertEquals(false, response.exposeToGuestVM());
-        Assertions.assertEquals(2138096082, response.numberOfCores());
-        Assertions.assertEquals("ivqikfxcvhr", response.path());
-        Assertions.assertEquals("sphuagrttikteus", response.privateCloudId());
-        Assertions.assertEquals("kvyklxubyjaffmm", response.vSphereNetworks().get(0));
-        Assertions.assertEquals("u", response.vSphereTags().get(0));
+        Assertions.assertEquals(GuestOsnicCustomizationAllocation.STATIC,
+            response.nics().get(0).customization().allocation());
+        Assertions.assertEquals("qwodiffjx", response.nics().get(0).customization().dnsServers().get(0));
+        Assertions.assertEquals("mmuabwi", response.nics().get(0).customization().gateway().get(0));
+        Assertions.assertEquals("vfkakpold", response.nics().get(0).customization().ipAddress());
+        Assertions.assertEquals("evboclzhzjknyuxg", response.nics().get(0).customization().mask());
+        Assertions.assertEquals("txpnrupza", response.nics().get(0).customization().primaryWinsServer());
+        Assertions.assertEquals("rdixt", response.nics().get(0).customization().secondaryWinsServer());
+        Assertions.assertEquals("ids", response.nics().get(0).ipAddresses().get(0));
+        Assertions.assertEquals("lukkutvlxhrpqhvm", response.nics().get(0).macAddress());
+        Assertions.assertEquals("ouq", response.nics().get(0).network().id());
+        Assertions.assertEquals(NicType.VMXNET2, response.nics().get(0).nicType());
+        Assertions.assertEquals(true, response.nics().get(0).powerOnBoot());
+        Assertions.assertEquals("kalsygaolnjp", response.nics().get(0).virtualNicId());
+        Assertions.assertEquals(1129063200, response.numberOfCores());
+        Assertions.assertEquals("gsjjxxahmrna", response.path());
+        Assertions.assertEquals("zyqegxyiv", response.privateCloudId());
+        Assertions.assertEquals("bmh", response.vSphereNetworks().get(0));
+        Assertions.assertEquals("ijkgqxnhm", response.vSphereTags().get(0));
     }
 }

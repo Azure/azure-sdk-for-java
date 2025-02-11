@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import java.time.Duration;
 
-/** Resource collection API of Reports. */
+/**
+ * Resource collection API of Reports.
+ */
 public interface Reports {
     /**
      * Lists report records by API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter The filter to apply on the operation.
@@ -25,7 +27,7 @@ public interface Reports {
 
     /**
      * Lists report records by API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter The filter to apply on the operation.
@@ -38,32 +40,25 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listByApi(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by User.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| userId | select, filter | eq | |
-     *     &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId
-     *     | filter | eq | | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | |
-     *     &lt;/br&gt;| callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select, orderBy | | |
-     *     &lt;/br&gt;| callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy | | |
-     *     &lt;/br&gt;| callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | |
-     *     &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg
-     *     | select, orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | |
-     *     &lt;/br&gt;| serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;|
-     *     serviceTimeMax | select | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| userId | select, filter | eq | | &lt;/br&gt;|
+     * apiRegion | filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq |
+     * | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;| callCountSuccess |
+     * select, orderBy | | | &lt;/br&gt;| callCountBlocked | select, orderBy | | | &lt;/br&gt;| callCountFailed |
+     * select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy | | | &lt;/br&gt;| callCountTotal | select,
+     * orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;| cacheHitsCount | select | | |
+     * &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select, orderBy | | | &lt;/br&gt;|
+     * apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;| serviceTimeAvg | select | | |
+     * &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | | | &lt;/br&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -73,21 +68,20 @@ public interface Reports {
 
     /**
      * Lists report records by User.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| userId | select, filter | eq | |
-     *     &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId
-     *     | filter | eq | | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | |
-     *     &lt;/br&gt;| callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select, orderBy | | |
-     *     &lt;/br&gt;| callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy | | |
-     *     &lt;/br&gt;| callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | |
-     *     &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg
-     *     | select, orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | |
-     *     &lt;/br&gt;| serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;|
-     *     serviceTimeMax | select | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| userId | select, filter | eq | | &lt;/br&gt;|
+     * apiRegion | filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq |
+     * | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;| callCountSuccess |
+     * select, orderBy | | | &lt;/br&gt;| callCountBlocked | select, orderBy | | | &lt;/br&gt;| callCountFailed |
+     * select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy | | | &lt;/br&gt;| callCountTotal | select,
+     * orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;| cacheHitsCount | select | | |
+     * &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select, orderBy | | | &lt;/br&gt;|
+     * apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;| serviceTimeAvg | select | | |
+     * &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | | | &lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param orderby OData order by query option.
@@ -97,32 +91,25 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByUser(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listByUser(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by API Operations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;|
-     *     userId | filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq |
-     *     | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | select, filter | eq | | &lt;/br&gt;|
-     *     callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select, orderBy | | | &lt;/br&gt;|
-     *     callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy | | | &lt;/br&gt;|
-     *     callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;|
-     *     cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select,
-     *     orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;|
-     *     serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select
-     *     | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId |
+     * filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq | |
+     * &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | select, filter | eq | | &lt;/br&gt;|
+     * callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select, orderBy | | | &lt;/br&gt;|
+     * callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy | | | &lt;/br&gt;|
+     * callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;| cacheHitsCount
+     * | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select, orderBy | | |
+     * &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;| serviceTimeAvg |
+     * select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | | | &lt;/br&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -132,21 +119,20 @@ public interface Reports {
 
     /**
      * Lists report records by API Operations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;|
-     *     userId | filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq |
-     *     | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | select, filter | eq | | &lt;/br&gt;|
-     *     callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select, orderBy | | | &lt;/br&gt;|
-     *     callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy | | | &lt;/br&gt;|
-     *     callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;|
-     *     cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select,
-     *     orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;|
-     *     serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select
-     *     | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId |
+     * filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq | |
+     * &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | select, filter | eq | | &lt;/br&gt;|
+     * callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select, orderBy | | | &lt;/br&gt;|
+     * callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy | | | &lt;/br&gt;|
+     * callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;| cacheHitsCount
+     * | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select, orderBy | | |
+     * &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;| serviceTimeAvg |
+     * select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | | | &lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param orderby OData order by query option.
@@ -156,31 +142,25 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByOperation(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listByOperation(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;|
-     *     userId | filter | eq | | &lt;/br&gt;| productId | select, filter | eq | | &lt;/br&gt;| subscriptionId |
-     *     filter | eq | | &lt;/br&gt;| callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select,
-     *     orderBy | | | &lt;/br&gt;| callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select,
-     *     orderBy | | | &lt;/br&gt;| callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy |
-     *     | | &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;|
-     *     apiTimeAvg | select, orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select |
-     *     | | &lt;/br&gt;| serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;|
-     *     serviceTimeMax | select | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId |
+     * filter | eq | | &lt;/br&gt;| productId | select, filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq | |
+     * &lt;/br&gt;| callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select, orderBy | | |
+     * &lt;/br&gt;| callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy | | |
+     * &lt;/br&gt;| callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;|
+     * cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select,
+     * orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;|
+     * serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | |
+     * | &lt;/br&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -190,20 +170,20 @@ public interface Reports {
 
     /**
      * Lists report records by Product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;|
-     *     userId | filter | eq | | &lt;/br&gt;| productId | select, filter | eq | | &lt;/br&gt;| subscriptionId |
-     *     filter | eq | | &lt;/br&gt;| callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select,
-     *     orderBy | | | &lt;/br&gt;| callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select,
-     *     orderBy | | | &lt;/br&gt;| callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy |
-     *     | | &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;|
-     *     apiTimeAvg | select, orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select |
-     *     | | &lt;/br&gt;| serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;|
-     *     serviceTimeMax | select | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId |
+     * filter | eq | | &lt;/br&gt;| productId | select, filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq | |
+     * &lt;/br&gt;| callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select, orderBy | | |
+     * &lt;/br&gt;| callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy | | |
+     * &lt;/br&gt;| callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;|
+     * cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select,
+     * orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;|
+     * serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | |
+     * | &lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param orderby OData order by query option.
@@ -213,31 +193,25 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listByProduct(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by geography.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| country | select | | | &lt;/br&gt;| region | select | | | &lt;/br&gt;| zip | select | | |
-     *     &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId | filter | eq | | &lt;/br&gt;| productId |
-     *     filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq | | &lt;/br&gt;| apiId | filter | eq | |
-     *     &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;| callCountSuccess | select | | | &lt;/br&gt;|
-     *     callCountBlocked | select | | | &lt;/br&gt;| callCountFailed | select | | | &lt;/br&gt;| callCountOther |
-     *     select | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;| cacheHitsCount | select | | |
-     *     &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select | | | &lt;/br&gt;| apiTimeMin |
-     *     select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;| serviceTimeAvg | select | | | &lt;/br&gt;|
-     *     serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| country | select | | | &lt;/br&gt;| region | select | | | &lt;/br&gt;| zip | select | | |
+     * &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId | filter | eq | | &lt;/br&gt;| productId | filter |
+     * eq | | &lt;/br&gt;| subscriptionId | filter | eq | | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;|
+     * operationId | filter | eq | | &lt;/br&gt;| callCountSuccess | select | | | &lt;/br&gt;| callCountBlocked | select
+     * | | | &lt;/br&gt;| callCountFailed | select | | | &lt;/br&gt;| callCountOther | select | | | &lt;/br&gt;|
+     * bandwidth | select, orderBy | | | &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select
+     * | | | &lt;/br&gt;| apiTimeAvg | select | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax |
+     * select | | | &lt;/br&gt;| serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;|
+     * serviceTimeMax | select | | | &lt;/br&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -247,20 +221,20 @@ public interface Reports {
 
     /**
      * Lists report records by geography.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| country | select | | | &lt;/br&gt;| region | select | | | &lt;/br&gt;| zip | select | | |
-     *     &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId | filter | eq | | &lt;/br&gt;| productId |
-     *     filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq | | &lt;/br&gt;| apiId | filter | eq | |
-     *     &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;| callCountSuccess | select | | | &lt;/br&gt;|
-     *     callCountBlocked | select | | | &lt;/br&gt;| callCountFailed | select | | | &lt;/br&gt;| callCountOther |
-     *     select | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;| cacheHitsCount | select | | |
-     *     &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select | | | &lt;/br&gt;| apiTimeMin |
-     *     select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;| serviceTimeAvg | select | | | &lt;/br&gt;|
-     *     serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| country | select | | | &lt;/br&gt;| region | select | | | &lt;/br&gt;| zip | select | | |
+     * &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId | filter | eq | | &lt;/br&gt;| productId | filter |
+     * eq | | &lt;/br&gt;| subscriptionId | filter | eq | | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;|
+     * operationId | filter | eq | | &lt;/br&gt;| callCountSuccess | select | | | &lt;/br&gt;| callCountBlocked | select
+     * | | | &lt;/br&gt;| callCountFailed | select | | | &lt;/br&gt;| callCountOther | select | | | &lt;/br&gt;|
+     * bandwidth | select, orderBy | | | &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select
+     * | | | &lt;/br&gt;| apiTimeAvg | select | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax |
+     * select | | | &lt;/br&gt;| serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;|
+     * serviceTimeMax | select | | | &lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -269,25 +243,25 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByGeo(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<ReportRecordContract> listByGeo(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Lists report records by subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;|
-     *     userId | select, filter | eq | | &lt;/br&gt;| productId | select, filter | eq | | &lt;/br&gt;| subscriptionId
-     *     | select, filter | eq | | &lt;/br&gt;| callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked
-     *     | select, orderBy | | | &lt;/br&gt;| callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther |
-     *     select, orderBy | | | &lt;/br&gt;| callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select,
-     *     orderBy | | | &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | |
-     *     &lt;/br&gt;| apiTimeAvg | select, orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;|
-     *     apiTimeMax | select | | | &lt;/br&gt;| serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | |
-     *     | &lt;/br&gt;| serviceTimeMax | select | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId |
+     * select, filter | eq | | &lt;/br&gt;| productId | select, filter | eq | | &lt;/br&gt;| subscriptionId | select,
+     * filter | eq | | &lt;/br&gt;| callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select,
+     * orderBy | | | &lt;/br&gt;| callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy
+     * | | | &lt;/br&gt;| callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | |
+     * &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg |
+     * select, orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;|
+     * serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | |
+     * | &lt;/br&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -297,20 +271,20 @@ public interface Reports {
 
     /**
      * Lists report records by subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;|
-     *     userId | select, filter | eq | | &lt;/br&gt;| productId | select, filter | eq | | &lt;/br&gt;| subscriptionId
-     *     | select, filter | eq | | &lt;/br&gt;| callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked
-     *     | select, orderBy | | | &lt;/br&gt;| callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther |
-     *     select, orderBy | | | &lt;/br&gt;| callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select,
-     *     orderBy | | | &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | |
-     *     &lt;/br&gt;| apiTimeAvg | select, orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;|
-     *     apiTimeMax | select | | | &lt;/br&gt;| serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | |
-     *     | &lt;/br&gt;| serviceTimeMax | select | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| displayName | select, orderBy | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId |
+     * select, filter | eq | | &lt;/br&gt;| productId | select, filter | eq | | &lt;/br&gt;| subscriptionId | select,
+     * filter | eq | | &lt;/br&gt;| callCountSuccess | select, orderBy | | | &lt;/br&gt;| callCountBlocked | select,
+     * orderBy | | | &lt;/br&gt;| callCountFailed | select, orderBy | | | &lt;/br&gt;| callCountOther | select, orderBy
+     * | | | &lt;/br&gt;| callCountTotal | select, orderBy | | | &lt;/br&gt;| bandwidth | select, orderBy | | |
+     * &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg |
+     * select, orderBy | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;|
+     * serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | |
+     * | &lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param orderby OData order by query option.
@@ -320,61 +294,53 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listBySubscription(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listBySubscription(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by Time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter, select
-     *     | ge, le | | &lt;/br&gt;| interval | select | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;|
-     *     userId | filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq |
-     *     | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;|
-     *     callCountSuccess | select | | | &lt;/br&gt;| callCountBlocked | select | | | &lt;/br&gt;| callCountFailed |
-     *     select | | | &lt;/br&gt;| callCountOther | select | | | &lt;/br&gt;| bandwidth | select, orderBy | | |
-     *     &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg
-     *     | select | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;|
-     *     serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select
-     *     | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter, select |
+     * ge, le | | &lt;/br&gt;| interval | select | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId |
+     * filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq | |
+     * &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;| callCountSuccess |
+     * select | | | &lt;/br&gt;| callCountBlocked | select | | | &lt;/br&gt;| callCountFailed | select | | |
+     * &lt;/br&gt;| callCountOther | select | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;|
+     * cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select | | |
+     * &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;| serviceTimeAvg |
+     * select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | | | &lt;/br&gt;.
      * @param interval By time interval. Interval must be multiple of 15 minutes and may not be zero. The value should
-     *     be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert
-     *     TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds)).
+     * be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan
+     * to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds)).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByTime(
-        String resourceGroupName, String serviceName, String filter, Duration interval);
+    PagedIterable<ReportRecordContract> listByTime(String resourceGroupName, String serviceName, String filter,
+        Duration interval);
 
     /**
      * Lists report records by Time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter, select
-     *     | ge, le | | &lt;/br&gt;| interval | select | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;|
-     *     userId | filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq |
-     *     | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;|
-     *     callCountSuccess | select | | | &lt;/br&gt;| callCountBlocked | select | | | &lt;/br&gt;| callCountFailed |
-     *     select | | | &lt;/br&gt;| callCountOther | select | | | &lt;/br&gt;| bandwidth | select, orderBy | | |
-     *     &lt;/br&gt;| cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg
-     *     | select | | | &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;|
-     *     serviceTimeAvg | select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select
-     *     | | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter, select |
+     * ge, le | | &lt;/br&gt;| interval | select | | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| userId |
+     * filter | eq | | &lt;/br&gt;| productId | filter | eq | | &lt;/br&gt;| subscriptionId | filter | eq | |
+     * &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;| callCountSuccess |
+     * select | | | &lt;/br&gt;| callCountBlocked | select | | | &lt;/br&gt;| callCountFailed | select | | |
+     * &lt;/br&gt;| callCountOther | select | | | &lt;/br&gt;| bandwidth | select, orderBy | | | &lt;/br&gt;|
+     * cacheHitsCount | select | | | &lt;/br&gt;| cacheMissCount | select | | | &lt;/br&gt;| apiTimeAvg | select | | |
+     * &lt;/br&gt;| apiTimeMin | select | | | &lt;/br&gt;| apiTimeMax | select | | | &lt;/br&gt;| serviceTimeAvg |
+     * select | | | &lt;/br&gt;| serviceTimeMin | select | | | &lt;/br&gt;| serviceTimeMax | select | | | &lt;/br&gt;.
      * @param interval By time interval. Interval must be multiple of 15 minutes and may not be zero. The value should
-     *     be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert
-     *     TimeSpan to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds)).
+     * be in ISO 8601 format (http://en.wikipedia.org/wiki/ISO_8601#Durations).This code can be used to convert TimeSpan
+     * to a valid interval string: XmlConvert.ToString(new TimeSpan(hours, minutes, seconds)).
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param orderby OData order by query option.
@@ -384,44 +350,37 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ReportRecordContract> listByTime(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Duration interval,
-        Integer top,
-        Integer skip,
-        String orderby,
-        Context context);
+    PagedIterable<ReportRecordContract> listByTime(String resourceGroupName, String serviceName, String filter,
+        Duration interval, Integer top, Integer skip, String orderby, Context context);
 
     /**
      * Lists report records by Request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;| productId |
-     *     filter | eq | | &lt;/br&gt;| userId | filter | eq | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;|
-     *     subscriptionId | filter | eq | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;| productId | filter |
+     * eq | | &lt;/br&gt;| userId | filter | eq | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| subscriptionId
+     * | filter | eq | | &lt;/br&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RequestReportRecordContract> listByRequest(
-        String resourceGroupName, String serviceName, String filter);
+    PagedIterable<RequestReportRecordContract> listByRequest(String resourceGroupName, String serviceName,
+        String filter);
 
     /**
      * Lists report records by Request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le
-     *     | | &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;| productId |
-     *     filter | eq | | &lt;/br&gt;| userId | filter | eq | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;|
-     *     subscriptionId | filter | eq | | &lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| timestamp | filter | ge, le | |
+     * &lt;/br&gt;| apiId | filter | eq | | &lt;/br&gt;| operationId | filter | eq | | &lt;/br&gt;| productId | filter |
+     * eq | | &lt;/br&gt;| userId | filter | eq | | &lt;/br&gt;| apiRegion | filter | eq | | &lt;/br&gt;| subscriptionId
+     * | filter | eq | | &lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -430,6 +389,6 @@ public interface Reports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Report records list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RequestReportRecordContract> listByRequest(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<RequestReportRecordContract> listByRequest(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context);
 }

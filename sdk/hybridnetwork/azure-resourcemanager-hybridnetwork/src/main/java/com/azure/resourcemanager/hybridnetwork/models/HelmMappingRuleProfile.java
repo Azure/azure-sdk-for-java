@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Helm mapping rule profile.
  */
 @Fluent
-public final class HelmMappingRuleProfile {
+public final class HelmMappingRuleProfile implements JsonSerializable<HelmMappingRuleProfile> {
     /*
      * Helm release namespace.
      */
-    @JsonProperty(value = "releaseNamespace")
     private String releaseNamespace;
 
     /*
      * Helm release name.
      */
-    @JsonProperty(value = "releaseName")
     private String releaseName;
 
     /*
      * Helm package version.
      */
-    @JsonProperty(value = "helmPackageVersion")
     private String helmPackageVersion;
 
     /*
      * Helm release values.
      */
-    @JsonProperty(value = "values")
     private String values;
 
     /*
      * The helm deployment options
      */
-    @JsonProperty(value = "options")
     private HelmMappingRuleProfileOptions options;
 
     /**
@@ -157,5 +156,53 @@ public final class HelmMappingRuleProfile {
         if (options() != null) {
             options().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("releaseNamespace", this.releaseNamespace);
+        jsonWriter.writeStringField("releaseName", this.releaseName);
+        jsonWriter.writeStringField("helmPackageVersion", this.helmPackageVersion);
+        jsonWriter.writeStringField("values", this.values);
+        jsonWriter.writeJsonField("options", this.options);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HelmMappingRuleProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HelmMappingRuleProfile if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HelmMappingRuleProfile.
+     */
+    public static HelmMappingRuleProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HelmMappingRuleProfile deserializedHelmMappingRuleProfile = new HelmMappingRuleProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("releaseNamespace".equals(fieldName)) {
+                    deserializedHelmMappingRuleProfile.releaseNamespace = reader.getString();
+                } else if ("releaseName".equals(fieldName)) {
+                    deserializedHelmMappingRuleProfile.releaseName = reader.getString();
+                } else if ("helmPackageVersion".equals(fieldName)) {
+                    deserializedHelmMappingRuleProfile.helmPackageVersion = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    deserializedHelmMappingRuleProfile.values = reader.getString();
+                } else if ("options".equals(fieldName)) {
+                    deserializedHelmMappingRuleProfile.options = HelmMappingRuleProfileOptions.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHelmMappingRuleProfile;
+        });
     }
 }

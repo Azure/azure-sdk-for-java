@@ -5,56 +5,53 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * class to define the summary of the health error details.
  */
 @Fluent
-public final class HealthErrorSummary {
+public final class HealthErrorSummary implements JsonSerializable<HealthErrorSummary> {
     /*
      * The code of the health error.
      */
-    @JsonProperty(value = "summaryCode")
     private String summaryCode;
 
     /*
      * The category of the health error.
      */
-    @JsonProperty(value = "category")
     private HealthErrorCategory category;
 
     /*
      * Severity of error.
      */
-    @JsonProperty(value = "severity")
     private Severity severity;
 
     /*
      * The summary message of the health error.
      */
-    @JsonProperty(value = "summaryMessage")
     private String summaryMessage;
 
     /*
      * The type of affected ARM resource.
      */
-    @JsonProperty(value = "affectedResourceType")
     private String affectedResourceType;
 
     /*
-     * The sub type of any subcomponent within the ARM resource that this might be applicable. Value remains null if
-     * not applicable.
+     * The sub type of any subcomponent within the ARM resource that this might be applicable. Value remains null if not
+     * applicable.
      */
-    @JsonProperty(value = "affectedResourceSubtype")
     private String affectedResourceSubtype;
 
     /*
      * The list of affected resource correlation Ids. This can be used to uniquely identify the count of items affected
      * by a specific category and severity as well as count of item affected by an specific issue.
      */
-    @JsonProperty(value = "affectedResourceCorrelationIds")
     private List<String> affectedResourceCorrelationIds;
 
     /**
@@ -215,5 +212,61 @@ public final class HealthErrorSummary {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("summaryCode", this.summaryCode);
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("summaryMessage", this.summaryMessage);
+        jsonWriter.writeStringField("affectedResourceType", this.affectedResourceType);
+        jsonWriter.writeStringField("affectedResourceSubtype", this.affectedResourceSubtype);
+        jsonWriter.writeArrayField("affectedResourceCorrelationIds", this.affectedResourceCorrelationIds,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthErrorSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthErrorSummary if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthErrorSummary.
+     */
+    public static HealthErrorSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthErrorSummary deserializedHealthErrorSummary = new HealthErrorSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("summaryCode".equals(fieldName)) {
+                    deserializedHealthErrorSummary.summaryCode = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedHealthErrorSummary.category = HealthErrorCategory.fromString(reader.getString());
+                } else if ("severity".equals(fieldName)) {
+                    deserializedHealthErrorSummary.severity = Severity.fromString(reader.getString());
+                } else if ("summaryMessage".equals(fieldName)) {
+                    deserializedHealthErrorSummary.summaryMessage = reader.getString();
+                } else if ("affectedResourceType".equals(fieldName)) {
+                    deserializedHealthErrorSummary.affectedResourceType = reader.getString();
+                } else if ("affectedResourceSubtype".equals(fieldName)) {
+                    deserializedHealthErrorSummary.affectedResourceSubtype = reader.getString();
+                } else if ("affectedResourceCorrelationIds".equals(fieldName)) {
+                    List<String> affectedResourceCorrelationIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHealthErrorSummary.affectedResourceCorrelationIds = affectedResourceCorrelationIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthErrorSummary;
+        });
     }
 }

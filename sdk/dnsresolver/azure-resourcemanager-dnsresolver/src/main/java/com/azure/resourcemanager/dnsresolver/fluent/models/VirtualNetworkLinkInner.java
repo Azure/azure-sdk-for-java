@@ -9,34 +9,57 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dnsresolver.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Describes a virtual network link. */
+/**
+ * Describes a virtual network link.
+ */
 @Fluent
 public final class VirtualNetworkLinkInner extends ProxyResource {
     /*
      * ETag of the virtual network link.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Properties of the virtual network link.
      */
-    @JsonProperty(value = "properties", required = true)
     private VirtualNetworkLinkProperties innerProperties = new VirtualNetworkLinkProperties();
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VirtualNetworkLinkInner class.
+     */
+    public VirtualNetworkLinkInner() {
+    }
 
     /**
      * Get the etag property: ETag of the virtual network link.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -45,7 +68,7 @@ public final class VirtualNetworkLinkInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: Properties of the virtual network link.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkLinkProperties innerProperties() {
@@ -54,7 +77,7 @@ public final class VirtualNetworkLinkInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -62,8 +85,38 @@ public final class VirtualNetworkLinkInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the virtualNetwork property: The reference to the virtual network. This cannot be changed after creation.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -72,7 +125,7 @@ public final class VirtualNetworkLinkInner extends ProxyResource {
 
     /**
      * Set the virtualNetwork property: The reference to the virtual network. This cannot be changed after creation.
-     *
+     * 
      * @param virtualNetwork the virtualNetwork value to set.
      * @return the VirtualNetworkLinkInner object itself.
      */
@@ -86,7 +139,7 @@ public final class VirtualNetworkLinkInner extends ProxyResource {
 
     /**
      * Get the metadata property: Metadata attached to the virtual network link.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -95,7 +148,7 @@ public final class VirtualNetworkLinkInner extends ProxyResource {
 
     /**
      * Set the metadata property: Metadata attached to the virtual network link.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the VirtualNetworkLinkInner object itself.
      */
@@ -110,7 +163,7 @@ public final class VirtualNetworkLinkInner extends ProxyResource {
     /**
      * Get the provisioningState property: The current provisioning state of the virtual network link. This is a
      * read-only property and any attempt to set this value will be ignored.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -119,19 +172,65 @@ public final class VirtualNetworkLinkInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VirtualNetworkLinkInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model VirtualNetworkLinkInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkLinkInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkLinkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkLinkInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkLinkInner.
+     */
+    public static VirtualNetworkLinkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkLinkInner deserializedVirtualNetworkLinkInner = new VirtualNetworkLinkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.innerProperties = VirtualNetworkLinkProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVirtualNetworkLinkInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkLinkInner;
+        });
+    }
 }

@@ -5,100 +5,106 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Datacenter address for given storage location. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "datacenterAddressType")
-@JsonTypeName("DatacenterAddressLocation")
+/**
+ * Datacenter address for given storage location.
+ */
 @Immutable
 public final class DatacenterAddressLocationResponse extends DatacenterAddressResponse {
     /*
+     * Data center address type
+     */
+    private DatacenterAddressType datacenterAddressType = DatacenterAddressType.DATACENTER_ADDRESS_LOCATION;
+
+    /*
      * Contact person name
      */
-    @JsonProperty(value = "contactPersonName", access = JsonProperty.Access.WRITE_ONLY)
     private String contactPersonName;
 
     /*
      * Company name
      */
-    @JsonProperty(value = "company", access = JsonProperty.Access.WRITE_ONLY)
     private String company;
 
     /*
      * Street address line 1
      */
-    @JsonProperty(value = "street1", access = JsonProperty.Access.WRITE_ONLY)
     private String street1;
 
     /*
      * Street address line 2
      */
-    @JsonProperty(value = "street2", access = JsonProperty.Access.WRITE_ONLY)
     private String street2;
 
     /*
      * Street address line 3
      */
-    @JsonProperty(value = "street3", access = JsonProperty.Access.WRITE_ONLY)
     private String street3;
 
     /*
      * City name
      */
-    @JsonProperty(value = "city", access = JsonProperty.Access.WRITE_ONLY)
     private String city;
 
     /*
      * name of the state
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /*
      * Zip code
      */
-    @JsonProperty(value = "zip", access = JsonProperty.Access.WRITE_ONLY)
     private String zip;
 
     /*
      * name of the country
      */
-    @JsonProperty(value = "country", access = JsonProperty.Access.WRITE_ONLY)
     private String country;
 
     /*
      * Phone number
      */
-    @JsonProperty(value = "phone", access = JsonProperty.Access.WRITE_ONLY)
     private String phone;
 
     /*
      * Phone extension
      */
-    @JsonProperty(value = "phoneExtension", access = JsonProperty.Access.WRITE_ONLY)
     private String phoneExtension;
 
     /*
      * Address type
      */
-    @JsonProperty(value = "addressType", access = JsonProperty.Access.WRITE_ONLY)
     private String addressType;
 
     /*
      * Special instruction for shipping
      */
-    @JsonProperty(value = "additionalShippingInformation", access = JsonProperty.Access.WRITE_ONLY)
     private String additionalShippingInformation;
 
-    /** Creates an instance of DatacenterAddressLocationResponse class. */
+    /**
+     * Creates an instance of DatacenterAddressLocationResponse class.
+     */
     public DatacenterAddressLocationResponse() {
     }
 
     /**
+     * Get the datacenterAddressType property: Data center address type.
+     * 
+     * @return the datacenterAddressType value.
+     */
+    @Override
+    public DatacenterAddressType datacenterAddressType() {
+        return this.datacenterAddressType;
+    }
+
+    /**
      * Get the contactPersonName property: Contact person name.
-     *
+     * 
      * @return the contactPersonName value.
      */
     public String contactPersonName() {
@@ -107,7 +113,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the company property: Company name.
-     *
+     * 
      * @return the company value.
      */
     public String company() {
@@ -116,7 +122,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the street1 property: Street address line 1.
-     *
+     * 
      * @return the street1 value.
      */
     public String street1() {
@@ -125,7 +131,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the street2 property: Street address line 2.
-     *
+     * 
      * @return the street2 value.
      */
     public String street2() {
@@ -134,7 +140,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the street3 property: Street address line 3.
-     *
+     * 
      * @return the street3 value.
      */
     public String street3() {
@@ -143,7 +149,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the city property: City name.
-     *
+     * 
      * @return the city value.
      */
     public String city() {
@@ -152,7 +158,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the state property: name of the state.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -161,7 +167,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the zip property: Zip code.
-     *
+     * 
      * @return the zip value.
      */
     public String zip() {
@@ -170,7 +176,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the country property: name of the country.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -179,7 +185,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the phone property: Phone number.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -188,7 +194,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the phoneExtension property: Phone extension.
-     *
+     * 
      * @return the phoneExtension value.
      */
     public String phoneExtension() {
@@ -197,7 +203,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the addressType property: Address type.
-     *
+     * 
      * @return the addressType value.
      */
     public String addressType() {
@@ -206,7 +212,7 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Get the additionalShippingInformation property: Special instruction for shipping.
-     *
+     * 
      * @return the additionalShippingInformation value.
      */
     public String additionalShippingInformation() {
@@ -215,11 +221,81 @@ public final class DatacenterAddressLocationResponse extends DatacenterAddressRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("datacenterAddressType",
+            this.datacenterAddressType == null ? null : this.datacenterAddressType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatacenterAddressLocationResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatacenterAddressLocationResponse if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatacenterAddressLocationResponse.
+     */
+    public static DatacenterAddressLocationResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatacenterAddressLocationResponse deserializedDatacenterAddressLocationResponse
+                = new DatacenterAddressLocationResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supportedCarriersForReturnShipment".equals(fieldName)) {
+                    List<String> supportedCarriersForReturnShipment = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDatacenterAddressLocationResponse
+                        .withSupportedCarriersForReturnShipment(supportedCarriersForReturnShipment);
+                } else if ("dataCenterAzureLocation".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.withDataCenterAzureLocation(reader.getString());
+                } else if ("datacenterAddressType".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.datacenterAddressType
+                        = DatacenterAddressType.fromString(reader.getString());
+                } else if ("contactPersonName".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.contactPersonName = reader.getString();
+                } else if ("company".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.company = reader.getString();
+                } else if ("street1".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.street1 = reader.getString();
+                } else if ("street2".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.street2 = reader.getString();
+                } else if ("street3".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.street3 = reader.getString();
+                } else if ("city".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.city = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.state = reader.getString();
+                } else if ("zip".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.zip = reader.getString();
+                } else if ("country".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.country = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.phone = reader.getString();
+                } else if ("phoneExtension".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.phoneExtension = reader.getString();
+                } else if ("addressType".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.addressType = reader.getString();
+                } else if ("additionalShippingInformation".equals(fieldName)) {
+                    deserializedDatacenterAddressLocationResponse.additionalShippingInformation = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatacenterAddressLocationResponse;
+        });
     }
 }

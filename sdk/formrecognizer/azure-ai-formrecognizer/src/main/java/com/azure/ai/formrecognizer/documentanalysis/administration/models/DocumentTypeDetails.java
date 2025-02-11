@@ -113,12 +113,14 @@ public final class DocumentTypeDetails {
             }
 
             @Override
-            public void setFieldSchema(DocumentTypeDetails documentTypeDetails, Map<String, DocumentFieldSchema> fieldSchema) {
+            public void setFieldSchema(DocumentTypeDetails documentTypeDetails,
+                Map<String, DocumentFieldSchema> fieldSchema) {
                 documentTypeDetails.setFieldSchema(fieldSchema);
             }
 
             @Override
-            public void setFieldConfidence(DocumentTypeDetails documentTypeDetails, Map<String, Float> fieldConfidence) {
+            public void setFieldConfidence(DocumentTypeDetails documentTypeDetails,
+                Map<String, Float> fieldConfidence) {
                 documentTypeDetails.setFieldConfidence(fieldConfidence);
             }
 

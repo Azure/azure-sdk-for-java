@@ -6,35 +6,35 @@ package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * UE Session Info for 4G.
  */
 @Fluent
-public final class UeSessionInfo4G {
+public final class UeSessionInfo4G implements JsonSerializable<UeSessionInfo4G> {
     /*
      * EPS bearer identifier
      */
-    @JsonProperty(value = "ebi", required = true)
     private int ebi;
 
     /*
      * Access point name
      */
-    @JsonProperty(value = "apn", required = true)
     private String apn;
 
     /*
      * UE IP address
      */
-    @JsonProperty(value = "ueIpAddress", required = true)
     private UeIpAddress ueIpAddress;
 
     /*
      * Packet Data Network Type
      */
-    @JsonProperty(value = "pdnType", required = true)
     private PdnType pdnType;
 
     /**
@@ -146,4 +146,50 @@ public final class UeSessionInfo4G {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UeSessionInfo4G.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("ebi", this.ebi);
+        jsonWriter.writeStringField("apn", this.apn);
+        jsonWriter.writeJsonField("ueIpAddress", this.ueIpAddress);
+        jsonWriter.writeStringField("pdnType", this.pdnType == null ? null : this.pdnType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UeSessionInfo4G from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UeSessionInfo4G if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UeSessionInfo4G.
+     */
+    public static UeSessionInfo4G fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UeSessionInfo4G deserializedUeSessionInfo4G = new UeSessionInfo4G();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ebi".equals(fieldName)) {
+                    deserializedUeSessionInfo4G.ebi = reader.getInt();
+                } else if ("apn".equals(fieldName)) {
+                    deserializedUeSessionInfo4G.apn = reader.getString();
+                } else if ("ueIpAddress".equals(fieldName)) {
+                    deserializedUeSessionInfo4G.ueIpAddress = UeIpAddress.fromJson(reader);
+                } else if ("pdnType".equals(fieldName)) {
+                    deserializedUeSessionInfo4G.pdnType = PdnType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUeSessionInfo4G;
+        });
+    }
 }

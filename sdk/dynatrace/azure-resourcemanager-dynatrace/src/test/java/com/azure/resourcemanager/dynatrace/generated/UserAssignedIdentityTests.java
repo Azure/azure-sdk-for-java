@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UserAssignedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserAssignedIdentity model =
-            BinaryData
-                .fromString("{\"clientId\":\"fsinzgvfcjrwzoxx\",\"principalId\":\"tfell\"}")
+        UserAssignedIdentity model
+            = BinaryData.fromString("{\"clientId\":\"fsinzgvfcjrwzoxx\",\"principalId\":\"tfell\"}")
                 .toObject(UserAssignedIdentity.class);
         Assertions.assertEquals("fsinzgvfcjrwzoxx", model.clientId());
         Assertions.assertEquals("tfell", model.principalId());
@@ -21,8 +20,8 @@ public final class UserAssignedIdentityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserAssignedIdentity model =
-            new UserAssignedIdentity().withClientId("fsinzgvfcjrwzoxx").withPrincipalId("tfell");
+        UserAssignedIdentity model
+            = new UserAssignedIdentity().withClientId("fsinzgvfcjrwzoxx").withPrincipalId("tfell");
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
         Assertions.assertEquals("fsinzgvfcjrwzoxx", model.clientId());
         Assertions.assertEquals("tfell", model.principalId());

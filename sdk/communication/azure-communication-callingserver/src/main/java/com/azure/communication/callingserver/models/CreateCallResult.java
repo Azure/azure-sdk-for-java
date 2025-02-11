@@ -18,7 +18,8 @@ public class CreateCallResult extends CallResult {
      * @param callConnection The callConnection
      * @param callConnectionAsync The callConnectionAsync
      */
-    public CreateCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection, CallConnectionAsync callConnectionAsync) {
+    public CreateCallResult(CallConnectionProperties callConnectionProperties, CallConnection callConnection,
+        CallConnectionAsync callConnectionAsync) {
         super(callConnectionProperties, callConnection, callConnectionAsync);
     }
 }

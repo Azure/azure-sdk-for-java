@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Sampling settings for Diagnostic. */
+/**
+ * Sampling settings for Diagnostic.
+ */
 @Fluent
-public final class SamplingSettings {
+public final class SamplingSettings implements JsonSerializable<SamplingSettings> {
     /*
      * Sampling type.
      */
-    @JsonProperty(value = "samplingType")
     private SamplingType samplingType;
 
     /*
      * Rate of sampling for fixed-rate sampling.
      */
-    @JsonProperty(value = "percentage")
     private Double percentage;
 
-    /** Creates an instance of SamplingSettings class. */
+    /**
+     * Creates an instance of SamplingSettings class.
+     */
     public SamplingSettings() {
     }
 
     /**
      * Get the samplingType property: Sampling type.
-     *
+     * 
      * @return the samplingType value.
      */
     public SamplingType samplingType() {
@@ -37,7 +43,7 @@ public final class SamplingSettings {
 
     /**
      * Set the samplingType property: Sampling type.
-     *
+     * 
      * @param samplingType the samplingType value to set.
      * @return the SamplingSettings object itself.
      */
@@ -48,7 +54,7 @@ public final class SamplingSettings {
 
     /**
      * Get the percentage property: Rate of sampling for fixed-rate sampling.
-     *
+     * 
      * @return the percentage value.
      */
     public Double percentage() {
@@ -57,7 +63,7 @@ public final class SamplingSettings {
 
     /**
      * Set the percentage property: Rate of sampling for fixed-rate sampling.
-     *
+     * 
      * @param percentage the percentage value to set.
      * @return the SamplingSettings object itself.
      */
@@ -68,9 +74,48 @@ public final class SamplingSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("samplingType", this.samplingType == null ? null : this.samplingType.toString());
+        jsonWriter.writeNumberField("percentage", this.percentage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SamplingSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SamplingSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SamplingSettings.
+     */
+    public static SamplingSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SamplingSettings deserializedSamplingSettings = new SamplingSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("samplingType".equals(fieldName)) {
+                    deserializedSamplingSettings.samplingType = SamplingType.fromString(reader.getString());
+                } else if ("percentage".equals(fieldName)) {
+                    deserializedSamplingSettings.percentage = reader.getNullable(JsonReader::getDouble);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSamplingSettings;
+        });
     }
 }

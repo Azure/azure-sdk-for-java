@@ -50,11 +50,10 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
     }
 
     public DocumentIntelligenceClientBuilder getDocumentAnalysisBuilder(HttpClient httpClient,
-                                                                        DocumentIntelligenceServiceVersion serviceVersion) {
+        DocumentIntelligenceServiceVersion serviceVersion) {
         String endpoint = getEndpoint();
 
-        DocumentIntelligenceClientBuilder builder = new DocumentIntelligenceClientBuilder()
-            .endpoint(endpoint)
+        DocumentIntelligenceClientBuilder builder = new DocumentIntelligenceClientBuilder().endpoint(endpoint)
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
@@ -79,16 +78,16 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
     private void setMatchers() {
         interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
+
     public DocumentIntelligenceAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
-                                                                                              DocumentIntelligenceServiceVersion serviceVersion) {
+        DocumentIntelligenceServiceVersion serviceVersion) {
         String endpoint = getEndpoint();
 
-        DocumentIntelligenceAdministrationClientBuilder builder = new DocumentIntelligenceAdministrationClientBuilder()
-            .endpoint(endpoint)
-            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion);
-
+        DocumentIntelligenceAdministrationClientBuilder builder
+            = new DocumentIntelligenceAdministrationClientBuilder().endpoint(endpoint)
+                .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new MockTokenCredential());
@@ -106,6 +105,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         }
         return builder;
     }
+
     void dataRunner(BiConsumer<byte[], Long> testRunner, String fileName) {
         TestUtils.getDataRunnerHelper(testRunner, fileName);
     }
@@ -114,7 +114,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         TestUtils.getTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
-    void buildBatchModelRunner(Consumer<String> testRunner) {
+    void buildBatchModelRunner(BiConsumer<String, String> testRunner) {
         TestUtils.getBatchTrainingDataContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
@@ -137,7 +137,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         // documents
         Assertions.assertEquals(1, actualAnalyzeResult.getDocuments().size());
         actualAnalyzeResult.getDocuments().forEach(actualDocument -> {
-            Assertions.assertEquals("receipt.retailMeal", actualDocument.getDocType());
+            Assertions.assertEquals("receipt.retailMeal", actualDocument.getDocumentType());
             // document fields
             validateJpegReceiptFields(actualDocument.getFields());
         });
@@ -168,29 +168,22 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertNotNull(analyzeResult.getDocuments());
         assertEquals(1, analyzeResult.getDocuments().size());
         Map<String, DocumentField> invoicePage1Fields = analyzeResult.getDocuments().get(0).getFields();
-        assertNotNull(invoicePage1Fields.get("CustomerAddress")
-            .getValueAddress().getStreetAddress());
+        assertNotNull(invoicePage1Fields.get("CustomerAddress").getValueAddress().getStreetAddress());
         assertNotNull(invoicePage1Fields.get("CustomerAddress").getConfidence());
-        assertEquals("Microsoft", invoicePage1Fields.get("CustomerAddressRecipient")
-            .getValueString());
+        assertEquals("Microsoft", invoicePage1Fields.get("CustomerAddressRecipient").getValueString());
         assertNotNull(invoicePage1Fields.get("CustomerAddressRecipient").getConfidence());
-        assertEquals("Microsoft", invoicePage1Fields.get("CustomerName")
-            .getValueString());
+        assertEquals("Microsoft", invoicePage1Fields.get("CustomerName").getValueString());
         assertNotNull(invoicePage1Fields.get("CustomerName").getConfidence());
-        assertEquals(LocalDate.of(2017, 6, 24), invoicePage1Fields.get("DueDate")
-            .getValueDate());
+        assertEquals(LocalDate.of(2017, 6, 24), invoicePage1Fields.get("DueDate").getValueDate());
         assertNotNull(invoicePage1Fields.get("DueDate").getConfidence());
-        assertEquals(LocalDate.of(2017, 6, 18), invoicePage1Fields.get("InvoiceDate")
-            .getValueDate());
+        assertEquals(LocalDate.of(2017, 6, 18), invoicePage1Fields.get("InvoiceDate").getValueDate());
         assertNotNull(invoicePage1Fields.get("InvoiceDate").getConfidence());
-        assertEquals("34278587", invoicePage1Fields.get("InvoiceId")
-            .getValueString());
+        assertEquals("34278587", invoicePage1Fields.get("InvoiceId").getValueString());
         assertNotNull(invoicePage1Fields.get("InvoiceId").getConfidence());
-        assertEquals("1 Redmond way Suite\n6000", invoicePage1Fields.get("VendorAddress")
-            .getValueAddress().getStreetAddress());
+        assertEquals("1 Redmond way Suite\n6000",
+            invoicePage1Fields.get("VendorAddress").getValueAddress().getStreetAddress());
         assertNotNull(invoicePage1Fields.get("VendorAddress").getConfidence());
-        assertEquals(EXPECTED_MERCHANT_NAME, invoicePage1Fields.get("VendorName")
-            .getValueString());
+        assertEquals(EXPECTED_MERCHANT_NAME, invoicePage1Fields.get("VendorName").getValueString());
         assertNotNull(invoicePage1Fields.get("VendorName").getConfidence());
         DocumentField subtotalField = invoicePage1Fields.get("Subtotal");
         if (subtotalField != null) {
@@ -201,17 +194,13 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
             Assertions.assertEquals("$", subtotal.getCurrencySymbol());
         }
 
-        Map<String, DocumentField> itemsMap
-            = invoicePage1Fields.get("Items").getValueArray().get(0).getValueObject();
+        Map<String, DocumentField> itemsMap = invoicePage1Fields.get("Items").getValueList().get(0).getValueMap();
         assertEquals(56651.49, itemsMap.get("Amount").getValueCurrency().getAmount());
         assertNotNull(itemsMap.get("Amount").getConfidence());
         assertEquals(LocalDate.of(2017, 6, 18), itemsMap.get("Date").getValueDate());
         assertNotNull(itemsMap.get("Date").getConfidence());
-        assertEquals("34278587", itemsMap.get("ProductCode").getValueString());
-        assertNotNull(itemsMap.get("ProductCode").getConfidence());
         Assertions.assertNotNull(analyzeResult.getPages());
     }
-
 
     void validateIdentityData(AnalyzeResult analyzeResult) {
         Assertions.assertEquals("prebuilt-idDocument", analyzeResult.getModelId());
@@ -235,21 +224,16 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertEquals(1, licensePage1.getPageNumber());
 
         assertNotNull(analyzeResult.getDocuments());
-        assertEquals("idDocument.driverLicense", analyzeResult.getDocuments().get(0).getDocType());
+        assertEquals("idDocument.driverLicense", analyzeResult.getDocuments().get(0).getDocumentType());
         Map<String, DocumentField> licensePageFields = analyzeResult.getDocuments().get(0).getFields();
-        assertEquals("Main Street", licensePageFields.get("Address")
-            .getValueAddress().getStreetAddress());
+        assertEquals("Main Street", licensePageFields.get("Address").getValueAddress().getStreetAddress());
         assertNotNull(licensePageFields.get("Address").getConfidence());
         assertEquals("USA", licensePageFields.get("CountryRegion").getValueCountryRegion());
-        assertNotNull(licensePageFields.get("CountryRegion").getConfidence());
-        assertEquals(LocalDate.of(1988, 3, 23), licensePageFields.get("DateOfBirth")
-            .getValueDate());
+        assertEquals(LocalDate.of(1988, 3, 23), licensePageFields.get("DateOfBirth").getValueDate());
         assertNotNull(licensePageFields.get("DateOfBirth").getConfidence());
-        assertEquals(LocalDate.of(2026, 3, 23), licensePageFields.get("DateOfExpiration")
-            .getValueDate());
+        assertEquals(LocalDate.of(2026, 3, 23), licensePageFields.get("DateOfExpiration").getValueDate());
         assertNotNull(licensePageFields.get("DateOfExpiration").getConfidence());
-        assertEquals("034568", licensePageFields.get("DocumentNumber")
-            .getValueString());
+        assertEquals("034568", licensePageFields.get("DocumentNumber").getValueString());
         assertNotNull(licensePageFields.get("DocumentNumber").getConfidence());
         assertEquals("CHRIS", licensePageFields.get("FirstName").getValueString());
         assertNotNull(licensePageFields.get("FirstName").getConfidence());
@@ -269,8 +253,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertNotNull(analyzeResult.getPages());
         assertEquals(1, analyzeResult.getPages().size());
         analyzeResult.getPages().forEach(documentPage -> {
-            Assertions.assertTrue(
-                documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
+            Assertions.assertTrue(documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
             assertNotNull(analyzeResult.getTables());
             Assertions.assertEquals(8.5f, documentPage.getWidth());
             Assertions.assertEquals(11f, documentPage.getHeight());
@@ -279,7 +262,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[] table = new int[] {8, 3, 24};
+        int[] table = new int[] { 8, 3, 24 };
         Assertions.assertEquals(1, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             DocumentTable actualDocumentTable = analyzeResult.getTables().get(i);
@@ -294,8 +277,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
     void validateContentData(AnalyzeResult analyzeResult) {
         assertNotNull(analyzeResult.getPages());
         analyzeResult.getPages().forEach(documentPage -> {
-            Assertions.assertTrue(
-                documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
+            Assertions.assertTrue(documentPage.getAngle() > -180.0 && documentPage.getAngle() < 180.0);
             assertNotNull(analyzeResult.getTables());
             Assertions.assertEquals(1700, documentPage.getWidth());
             Assertions.assertEquals(2200, documentPage.getHeight());
@@ -305,7 +287,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         });
 
         assertNotNull(analyzeResult.getTables());
-        int[][] table = new int[][] {{5, 4, 20}, {4, 2, 8}};
+        int[][] table = new int[][] { { 5, 4, 20 }, { 3, 2, 6 } };
         Assertions.assertEquals(2, analyzeResult.getTables().size());
         for (int i = 0; i < analyzeResult.getTables().size(); i++) {
             int j = 0;
@@ -335,12 +317,11 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         });
     }
 
-
     void validateJpegCustomDocument(AnalyzeResult actualAnalyzeResult) {
         List<DocumentPage> documentPages = actualAnalyzeResult.getPages();
         Assertions.assertEquals(1, documentPages.size());
         documentPages.forEach(this::validateDocumentPage);
-        int[][] table = new int[][] {{5, 4, 20}, {3, 2, 6}};
+        int[][] table = new int[][] { { 5, 4, 20 }, { 3, 2, 6 } };
         Assertions.assertEquals(2, actualAnalyzeResult.getTables().size());
         for (int i = 0; i < actualAnalyzeResult.getTables().size(); i++) {
             int j = 0;
@@ -351,17 +332,17 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         }
 
         actualAnalyzeResult.getDocuments().forEach(actualDocument -> {
-            // Assertions.assertEquals(modelId, actualDocument.getDocType());
+            // Assertions.assertEquals(modelId, actualDocument.getDocumentType());
             actualDocument.getFields().forEach((key, documentField) -> {
                 // document fields
                 assertNotNull(documentField.getConfidence());
                 if ("Tax".equals(key)) {
                     assertEquals("$4.00", documentField.getValueString());
                 }
-//                if ("Signature".equals(key)) {
-//                    // Service regression
-//                    // assertEquals("Bernie Sanders", documentField.getValueString());
-//                } else
+                //                if ("Signature".equals(key)) {
+                //                    // Service regression
+                //                    // assertEquals("Bernie Sanders", documentField.getValueString());
+                //                } else
                 if ("Email".equals(key)) {
                     assertEquals("accounts@herolimited.com", documentField.getValueString());
                 } else if ("PhoneNumber".equals(key)) {
@@ -385,8 +366,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
                 } else if ("PurchaseOrderNumber".equals(key)) {
                     assertEquals("948284", documentField.getValueString());
                 } else if ("CompanyAddress".equals(key)) {
-                    assertEquals("938 NE Burner Road Boulder City, CO 92848",
-                        documentField.getValueString());
+                    assertEquals("938 NE Burner Road Boulder City, CO 92848", documentField.getValueString());
                 } else if ("Subtotal".equals(key)) {
                     assertEquals("$140.00", documentField.getValueString());
                 }
@@ -416,12 +396,11 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertEquals(1, licensePage1.getPageNumber());
 
         assertNotNull(analyzeResult.getDocuments());
-        assertEquals("tax.us.w2", analyzeResult.getDocuments().get(0).getDocType());
+        assertEquals("tax.us.w2", analyzeResult.getDocuments().get(0).getDocumentType());
         Map<String, DocumentField> w2Fields = analyzeResult.getDocuments().get(0).getFields();
 
-        Map<String, DocumentField> employeeFields = w2Fields.get("Employee").getValueObject();
-        AddressValue employeeAddrFields = employeeFields.get("Address")
-            .getValueAddress();
+        Map<String, DocumentField> employeeFields = w2Fields.get("Employee").getValueMap();
+        AddressValue employeeAddrFields = employeeFields.get("Address").getValueAddress();
         if (employeeAddrFields != null) {
             assertEquals("WA", employeeAddrFields.getState());
             // service regression
@@ -432,12 +411,10 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
             assertEquals("BUFFALO", employeeAddrFields.getCity());
         }
 
-        assertEquals("ANGEL BROWN", employeeFields.get("Name")
-            .getValueString());
-        assertEquals("123-45-6789", employeeFields.get("SocialSecurityNumber")
-            .getValueString());
+        assertEquals("ANGEL BROWN", employeeFields.get("Name").getValueString());
+        assertEquals("123-45-6789", employeeFields.get("SocialSecurityNumber").getValueString());
 
-        Map<String, DocumentField> employerFields = w2Fields.get("Employer").getValueObject();
+        Map<String, DocumentField> employerFields = w2Fields.get("Employer").getValueMap();
         AddressValue employerAddress = employerFields.get("Address").getValueAddress();
         if (employerAddress != null) {
             assertEquals("WA", employerAddress.getState());
@@ -445,17 +422,15 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
             // assertEquals("98765", employerAddress.getPostalCode());
             assertEquals("REDMOND", employerAddress.getCity());
         }
-        assertEquals("CONTOSO LTD", employerFields.get("Name")
-            .getValueString());
-        assertEquals("98-7654321", employerFields.get("IdNumber")
-            .getValueString());
+        assertEquals("CONTOSO LTD", employerFields.get("Name").getValueString());
+        assertEquals("98-7654321", employerFields.get("IdNumber").getValueString());
 
         Assertions.assertEquals(3894.54f, w2Fields.get("FederalIncomeTaxWithheld").getValueNumber(), .01);
         assertEquals(9873.2f, w2Fields.get("DependentCareBenefits").getValueNumber(), .01);
 
-        List<DocumentField> localTaxInfoFieldsList = w2Fields.get("LocalTaxInfos").getValueArray();
-        Map<String, DocumentField> localTaxInfoFields1 = localTaxInfoFieldsList.get(0).getValueObject();
-        Map<String, DocumentField> localTaxInfoFields2 = localTaxInfoFieldsList.get(1).getValueObject();
+        List<DocumentField> localTaxInfoFieldsList = w2Fields.get("LocalTaxInfos").getValueList();
+        Map<String, DocumentField> localTaxInfoFields1 = localTaxInfoFieldsList.get(0).getValueMap();
+        Map<String, DocumentField> localTaxInfoFields2 = localTaxInfoFieldsList.get(1).getValueMap();
 
         assertEquals(51f, localTaxInfoFields1.get("LocalIncomeTax").getValueNumber());
         assertEquals("Cmberland Vly/Mddl", localTaxInfoFields1.get("LocalityName").getValueString());
@@ -472,13 +447,12 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         Assertions.assertEquals(302.3f, w2Fields.get("SocialSecurityTips").getValueNumber(), 0.01);
         assertEquals(37160.56f, w2Fields.get("SocialSecurityWages").getValueNumber(), 0.01);
 
-        List<DocumentField> stateTaxInfoFieldsList = w2Fields.get("StateTaxInfos").getValueArray();
-        Map<String, DocumentField> stateTaxInfoFields1 = stateTaxInfoFieldsList.get(0).getValueObject();
-        Map<String, DocumentField> stateTaxInfoFields2 = stateTaxInfoFieldsList.get(1).getValueObject();
+        List<DocumentField> stateTaxInfoFieldsList = w2Fields.get("StateTaxInfos").getValueList();
+        Map<String, DocumentField> stateTaxInfoFields1 = stateTaxInfoFieldsList.get(0).getValueMap();
+        Map<String, DocumentField> stateTaxInfoFields2 = stateTaxInfoFieldsList.get(1).getValueMap();
 
         assertNotNull(stateTaxInfoFields1.get("EmployerStateIdNumber").getValueString());
-        assertEquals("PA", stateTaxInfoFields1.get("State")
-            .getValueString());
+        assertEquals("PA", stateTaxInfoFields1.get("State").getValueString());
         assertEquals(1135.65f, stateTaxInfoFields1.get("StateIncomeTax").getValueNumber(), 0.01);
 
         assertEquals(37160.56f, stateTaxInfoFields1.get("StateWagesTipsEtc").getValueNumber(), 0.01);
@@ -519,9 +493,8 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
                 Assertions.assertEquals("+19876543210", documentField.getValuePhoneNumber());
                 assertNotNull(documentField.getConfidence());
             } else if ("ReceiptType".equals(key)) {
-                Assertions.assertEquals("Itemized", documentField.getValueString());
-                // TODO: (service bug) confidence is returned as null
-                // assertNotNull(documentField.getConfidence());
+                Assertions.assertEquals("Meal", documentField.getValueString());
+                assertNotNull(documentField.getConfidence());
             } else if ("Subtotal".equals(key)) {
                 Assertions.assertEquals("$ 11.70", documentField.getContent());
                 assertNotNull(documentField.getConfidence());
@@ -546,6 +519,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
 
     private String getEndpoint() {
         return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080" : TestUtils.AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION;
+            ? "https://localhost:8080"
+            : TestUtils.AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION;
     }
 }

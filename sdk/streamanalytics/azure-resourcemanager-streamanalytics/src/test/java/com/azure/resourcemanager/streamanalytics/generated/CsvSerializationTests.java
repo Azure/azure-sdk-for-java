@@ -13,17 +13,18 @@ public final class CsvSerializationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CsvSerialization model = BinaryData
-            .fromString("{\"type\":\"Csv\",\"properties\":{\"fieldDelimiter\":\"jhxbld\",\"encoding\":\"UTF8\"}}")
+            .fromString(
+                "{\"type\":\"Csv\",\"properties\":{\"fieldDelimiter\":\"bxwyjsflhhcaa\",\"encoding\":\"UTF8\"}}")
             .toObject(CsvSerialization.class);
-        Assertions.assertEquals("jhxbld", model.fieldDelimiter());
+        Assertions.assertEquals("bxwyjsflhhcaa", model.fieldDelimiter());
         Assertions.assertEquals(Encoding.UTF8, model.encoding());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CsvSerialization model = new CsvSerialization().withFieldDelimiter("jhxbld").withEncoding(Encoding.UTF8);
+        CsvSerialization model = new CsvSerialization().withFieldDelimiter("bxwyjsflhhcaa").withEncoding(Encoding.UTF8);
         model = BinaryData.fromObject(model).toObject(CsvSerialization.class);
-        Assertions.assertEquals("jhxbld", model.fieldDelimiter());
+        Assertions.assertEquals("bxwyjsflhhcaa", model.fieldDelimiter());
         Assertions.assertEquals(Encoding.UTF8, model.encoding());
     }
 }

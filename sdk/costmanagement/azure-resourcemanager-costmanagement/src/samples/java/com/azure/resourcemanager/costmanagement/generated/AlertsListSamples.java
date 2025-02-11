@@ -4,114 +4,120 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for Alerts List. */
+/**
+ * Samples for Alerts List.
+ */
 public final class AlertsListSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionAlerts.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * SubscriptionAlerts.json
      */
     /**
      * Sample code: SubscriptionAlerts.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void subscriptionAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .alerts()
+        manager.alerts()
             .listWithResponse("subscriptions/00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingProfileAlerts.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * BillingProfileAlerts.json
      */
     /**
      * Sample code: BillingProfileAlerts.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void billingProfileAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .alerts()
-            .listWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+        manager.alerts()
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupAlerts.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * ResourceGroupAlerts.json
      */
     /**
      * Sample code: ResourceGroupAlerts.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void resourceGroupAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .alerts()
+        manager.alerts()
             .listWithResponse(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/ScreenSharingTest-peer",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentAlerts.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * DepartmentAlerts.json
      */
     /**
      * Sample code: DepartmentAlerts.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void departmentAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .alerts()
-            .listWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/departments/123",
+        manager.alerts()
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789/departments/123",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/InvoiceSectionAlerts.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * InvoiceSectionAlerts.json
      */
     /**
      * Sample code: InvoiceSectionAlerts.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void invoiceSectionAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .alerts()
+        manager.alerts()
             .listWithResponse(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountAlerts.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * BillingAccountAlerts.json
      */
     /**
      * Sample code: BillingAccountAlerts.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void billingAccountAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .alerts()
-            .listWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789", com.azure.core.util.Context.NONE);
+        manager.alerts()
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountAlerts.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * EnrollmentAccountAlerts.json
      */
     /**
      * Sample code: EnrollmentAccountAlerts.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void enrollmentAccountAlerts(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .alerts()
-            .listWithResponse(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/enrollmentAccounts/456",
+        manager.alerts()
+            .listWithResponse("providers/Microsoft.Billing/billingAccounts/12345:6789/enrollmentAccounts/456",
                 com.azure.core.util.Context.NONE);
     }
 }

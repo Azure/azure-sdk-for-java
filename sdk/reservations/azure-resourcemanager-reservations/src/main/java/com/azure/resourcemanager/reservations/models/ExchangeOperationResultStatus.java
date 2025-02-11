@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of the operation. */
+/**
+ * Status of the operation.
+ */
 public final class ExchangeOperationResultStatus extends ExpandableStringEnum<ExchangeOperationResultStatus> {
-    /** Static value Succeeded for ExchangeOperationResultStatus. */
+    /**
+     * Static value Succeeded for ExchangeOperationResultStatus.
+     */
     public static final ExchangeOperationResultStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ExchangeOperationResultStatus. */
+    /**
+     * Static value Failed for ExchangeOperationResultStatus.
+     */
     public static final ExchangeOperationResultStatus FAILED = fromString("Failed");
 
-    /** Static value Cancelled for ExchangeOperationResultStatus. */
+    /**
+     * Static value Cancelled for ExchangeOperationResultStatus.
+     */
     public static final ExchangeOperationResultStatus CANCELLED = fromString("Cancelled");
 
-    /** Static value PendingRefunds for ExchangeOperationResultStatus. */
+    /**
+     * Static value PendingRefunds for ExchangeOperationResultStatus.
+     */
     public static final ExchangeOperationResultStatus PENDING_REFUNDS = fromString("PendingRefunds");
 
-    /** Static value PendingPurchases for ExchangeOperationResultStatus. */
+    /**
+     * Static value PendingPurchases for ExchangeOperationResultStatus.
+     */
     public static final ExchangeOperationResultStatus PENDING_PURCHASES = fromString("PendingPurchases");
 
     /**
      * Creates a new instance of ExchangeOperationResultStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class ExchangeOperationResultStatus extends ExpandableStringEnum<Ex
 
     /**
      * Creates or finds a ExchangeOperationResultStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExchangeOperationResultStatus.
      */
-    @JsonCreator
     public static ExchangeOperationResultStatus fromString(String name) {
         return fromString(name, ExchangeOperationResultStatus.class);
     }
 
     /**
      * Gets known ExchangeOperationResultStatus values.
-     *
+     * 
      * @return known ExchangeOperationResultStatus values.
      */
     public static Collection<ExchangeOperationResultStatus> values() {

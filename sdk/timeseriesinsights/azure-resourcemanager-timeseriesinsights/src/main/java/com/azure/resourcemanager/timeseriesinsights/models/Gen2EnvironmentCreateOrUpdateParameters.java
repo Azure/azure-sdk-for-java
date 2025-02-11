@@ -6,52 +6,75 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.Gen2EnvironmentCreationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Parameters supplied to the Create or Update Environment operation for a Gen2 environment. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Gen2")
+/**
+ * Parameters supplied to the Create or Update Environment operation for a Gen2 environment.
+ */
 @Fluent
 public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCreateOrUpdateParameters {
     /*
+     * The kind of the environment.
+     */
+    private EnvironmentKind kind = EnvironmentKind.GEN2;
+
+    /*
      * Properties used to create a Gen2 environment.
      */
-    @JsonProperty(value = "properties", required = true)
     private Gen2EnvironmentCreationProperties innerProperties = new Gen2EnvironmentCreationProperties();
 
-    /** Creates an instance of Gen2EnvironmentCreateOrUpdateParameters class. */
+    /**
+     * Creates an instance of Gen2EnvironmentCreateOrUpdateParameters class.
+     */
     public Gen2EnvironmentCreateOrUpdateParameters() {
     }
 
     /**
+     * Get the kind property: The kind of the environment.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EnvironmentKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: Properties used to create a Gen2 environment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private Gen2EnvironmentCreationProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Gen2EnvironmentCreateOrUpdateParameters withSku(Sku sku) {
         super.withSku(sku);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Gen2EnvironmentCreateOrUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Gen2EnvironmentCreateOrUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -61,7 +84,7 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
     /**
      * Get the timeSeriesIdProperties property: The list of event properties which will be used to define the
      * environment's time series id.
-     *
+     * 
      * @return the timeSeriesIdProperties value.
      */
     public List<TimeSeriesIdProperty> timeSeriesIdProperties() {
@@ -71,12 +94,12 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
     /**
      * Set the timeSeriesIdProperties property: The list of event properties which will be used to define the
      * environment's time series id.
-     *
+     * 
      * @param timeSeriesIdProperties the timeSeriesIdProperties value to set.
      * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
      */
-    public Gen2EnvironmentCreateOrUpdateParameters withTimeSeriesIdProperties(
-        List<TimeSeriesIdProperty> timeSeriesIdProperties) {
+    public Gen2EnvironmentCreateOrUpdateParameters
+        withTimeSeriesIdProperties(List<TimeSeriesIdProperty> timeSeriesIdProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen2EnvironmentCreationProperties();
         }
@@ -88,7 +111,7 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
      * Get the storageConfiguration property: The storage configuration provides the connection details that allows the
      * Time Series Insights service to connect to the customer storage account that is used to store the environment's
      * data.
-     *
+     * 
      * @return the storageConfiguration value.
      */
     public Gen2StorageConfigurationInput storageConfiguration() {
@@ -99,12 +122,12 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
      * Set the storageConfiguration property: The storage configuration provides the connection details that allows the
      * Time Series Insights service to connect to the customer storage account that is used to store the environment's
      * data.
-     *
+     * 
      * @param storageConfiguration the storageConfiguration value to set.
      * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
      */
-    public Gen2EnvironmentCreateOrUpdateParameters withStorageConfiguration(
-        Gen2StorageConfigurationInput storageConfiguration) {
+    public Gen2EnvironmentCreateOrUpdateParameters
+        withStorageConfiguration(Gen2StorageConfigurationInput storageConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen2EnvironmentCreationProperties();
         }
@@ -115,7 +138,7 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
     /**
      * Get the warmStoreConfiguration property: The warm store configuration provides the details to create a warm store
      * cache that will retain a copy of the environment's data available for faster query.
-     *
+     * 
      * @return the warmStoreConfiguration value.
      */
     public WarmStoreConfigurationProperties warmStoreConfiguration() {
@@ -125,12 +148,12 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
     /**
      * Set the warmStoreConfiguration property: The warm store configuration provides the details to create a warm store
      * cache that will retain a copy of the environment's data available for faster query.
-     *
+     * 
      * @param warmStoreConfiguration the warmStoreConfiguration value to set.
      * @return the Gen2EnvironmentCreateOrUpdateParameters object itself.
      */
-    public Gen2EnvironmentCreateOrUpdateParameters withWarmStoreConfiguration(
-        WarmStoreConfigurationProperties warmStoreConfiguration) {
+    public Gen2EnvironmentCreateOrUpdateParameters
+        withWarmStoreConfiguration(WarmStoreConfigurationProperties warmStoreConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new Gen2EnvironmentCreationProperties();
         }
@@ -140,21 +163,84 @@ public final class Gen2EnvironmentCreateOrUpdateParameters extends EnvironmentCr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model Gen2EnvironmentCreateOrUpdateParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model Gen2EnvironmentCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
+        }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model Gen2EnvironmentCreateOrUpdateParameters"));
+        }
+        if (sku() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sku in model Gen2EnvironmentCreateOrUpdateParameters"));
+        } else {
+            sku().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Gen2EnvironmentCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeJsonField("sku", sku());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Gen2EnvironmentCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Gen2EnvironmentCreateOrUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Gen2EnvironmentCreateOrUpdateParameters.
+     */
+    public static Gen2EnvironmentCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Gen2EnvironmentCreateOrUpdateParameters deserializedGen2EnvironmentCreateOrUpdateParameters
+                = new Gen2EnvironmentCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedGen2EnvironmentCreateOrUpdateParameters.withLocation(reader.getString());
+                } else if ("sku".equals(fieldName)) {
+                    deserializedGen2EnvironmentCreateOrUpdateParameters.withSku(Sku.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGen2EnvironmentCreateOrUpdateParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGen2EnvironmentCreateOrUpdateParameters.innerProperties
+                        = Gen2EnvironmentCreationProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedGen2EnvironmentCreateOrUpdateParameters.kind
+                        = EnvironmentKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGen2EnvironmentCreateOrUpdateParameters;
+        });
+    }
 }

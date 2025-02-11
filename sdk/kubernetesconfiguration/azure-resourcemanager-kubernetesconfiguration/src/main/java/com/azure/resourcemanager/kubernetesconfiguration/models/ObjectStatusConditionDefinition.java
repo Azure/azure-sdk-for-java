@@ -5,49 +5,54 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Status condition of Kubernetes object. */
+/**
+ * Status condition of Kubernetes object.
+ */
 @Fluent
-public final class ObjectStatusConditionDefinition {
+public final class ObjectStatusConditionDefinition implements JsonSerializable<ObjectStatusConditionDefinition> {
     /*
      * Last time this status condition has changed
      */
-    @JsonProperty(value = "lastTransitionTime")
     private OffsetDateTime lastTransitionTime;
 
     /*
      * A more verbose description of the object status condition
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Reason for the specified status condition type status
      */
-    @JsonProperty(value = "reason")
     private String reason;
 
     /*
      * Status of the Kubernetes object condition type
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * Object status condition type for this object
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of ObjectStatusConditionDefinition class. */
+    /**
+     * Creates an instance of ObjectStatusConditionDefinition class.
+     */
     public ObjectStatusConditionDefinition() {
     }
 
     /**
      * Get the lastTransitionTime property: Last time this status condition has changed.
-     *
+     * 
      * @return the lastTransitionTime value.
      */
     public OffsetDateTime lastTransitionTime() {
@@ -56,7 +61,7 @@ public final class ObjectStatusConditionDefinition {
 
     /**
      * Set the lastTransitionTime property: Last time this status condition has changed.
-     *
+     * 
      * @param lastTransitionTime the lastTransitionTime value to set.
      * @return the ObjectStatusConditionDefinition object itself.
      */
@@ -67,7 +72,7 @@ public final class ObjectStatusConditionDefinition {
 
     /**
      * Get the message property: A more verbose description of the object status condition.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -76,7 +81,7 @@ public final class ObjectStatusConditionDefinition {
 
     /**
      * Set the message property: A more verbose description of the object status condition.
-     *
+     * 
      * @param message the message value to set.
      * @return the ObjectStatusConditionDefinition object itself.
      */
@@ -87,7 +92,7 @@ public final class ObjectStatusConditionDefinition {
 
     /**
      * Get the reason property: Reason for the specified status condition type status.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -96,7 +101,7 @@ public final class ObjectStatusConditionDefinition {
 
     /**
      * Set the reason property: Reason for the specified status condition type status.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the ObjectStatusConditionDefinition object itself.
      */
@@ -107,7 +112,7 @@ public final class ObjectStatusConditionDefinition {
 
     /**
      * Get the status property: Status of the Kubernetes object condition type.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -116,7 +121,7 @@ public final class ObjectStatusConditionDefinition {
 
     /**
      * Set the status property: Status of the Kubernetes object condition type.
-     *
+     * 
      * @param status the status value to set.
      * @return the ObjectStatusConditionDefinition object itself.
      */
@@ -127,7 +132,7 @@ public final class ObjectStatusConditionDefinition {
 
     /**
      * Get the type property: Object status condition type for this object.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -136,7 +141,7 @@ public final class ObjectStatusConditionDefinition {
 
     /**
      * Set the type property: Object status condition type for this object.
-     *
+     * 
      * @param type the type value to set.
      * @return the ObjectStatusConditionDefinition object itself.
      */
@@ -147,9 +152,62 @@ public final class ObjectStatusConditionDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("lastTransitionTime",
+            this.lastTransitionTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastTransitionTime));
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("reason", this.reason);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ObjectStatusConditionDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ObjectStatusConditionDefinition if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ObjectStatusConditionDefinition.
+     */
+    public static ObjectStatusConditionDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ObjectStatusConditionDefinition deserializedObjectStatusConditionDefinition
+                = new ObjectStatusConditionDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("lastTransitionTime".equals(fieldName)) {
+                    deserializedObjectStatusConditionDefinition.lastTransitionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("message".equals(fieldName)) {
+                    deserializedObjectStatusConditionDefinition.message = reader.getString();
+                } else if ("reason".equals(fieldName)) {
+                    deserializedObjectStatusConditionDefinition.reason = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedObjectStatusConditionDefinition.status = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedObjectStatusConditionDefinition.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedObjectStatusConditionDefinition;
+        });
     }
 }

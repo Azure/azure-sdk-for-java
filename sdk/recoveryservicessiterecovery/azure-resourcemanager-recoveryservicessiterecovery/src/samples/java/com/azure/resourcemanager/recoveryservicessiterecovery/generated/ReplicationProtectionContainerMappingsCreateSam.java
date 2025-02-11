@@ -23,7 +23,8 @@ public final class ReplicationProtectionContainerMappingsCreateSam {
      */
     public static void createProtectionContainerMapping(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationProtectionContainerMappings().define("cloud1protectionprofile1")
+        manager.replicationProtectionContainerMappings()
+            .define("cloud1protectionprofile1")
             .withExistingReplicationProtectionContainer("vault1", "resourceGroupPS1", "cloud1",
                 "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179")
             .withProperties(new CreateProtectionContainerMappingInputProperties()

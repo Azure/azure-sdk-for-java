@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.elastic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Elastic Resource Properties. */
+/**
+ * Elastic Resource Properties.
+ */
 @Fluent
-public final class ElasticProperties {
+public final class ElasticProperties implements JsonSerializable<ElasticProperties> {
     /*
      * Details of the user's elastic account.
      */
-    @JsonProperty(value = "elasticCloudUser")
     private ElasticCloudUser elasticCloudUser;
 
     /*
      * Details of the elastic cloud deployment.
      */
-    @JsonProperty(value = "elasticCloudDeployment")
     private ElasticCloudDeployment elasticCloudDeployment;
 
-    /** Creates an instance of ElasticProperties class. */
+    /**
+     * Creates an instance of ElasticProperties class.
+     */
     public ElasticProperties() {
     }
 
     /**
      * Get the elasticCloudUser property: Details of the user's elastic account.
-     *
+     * 
      * @return the elasticCloudUser value.
      */
     public ElasticCloudUser elasticCloudUser() {
@@ -37,7 +43,7 @@ public final class ElasticProperties {
 
     /**
      * Set the elasticCloudUser property: Details of the user's elastic account.
-     *
+     * 
      * @param elasticCloudUser the elasticCloudUser value to set.
      * @return the ElasticProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class ElasticProperties {
 
     /**
      * Get the elasticCloudDeployment property: Details of the elastic cloud deployment.
-     *
+     * 
      * @return the elasticCloudDeployment value.
      */
     public ElasticCloudDeployment elasticCloudDeployment() {
@@ -57,7 +63,7 @@ public final class ElasticProperties {
 
     /**
      * Set the elasticCloudDeployment property: Details of the elastic cloud deployment.
-     *
+     * 
      * @param elasticCloudDeployment the elasticCloudDeployment value to set.
      * @return the ElasticProperties object itself.
      */
@@ -68,7 +74,7 @@ public final class ElasticProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -78,5 +84,44 @@ public final class ElasticProperties {
         if (elasticCloudDeployment() != null) {
             elasticCloudDeployment().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("elasticCloudUser", this.elasticCloudUser);
+        jsonWriter.writeJsonField("elasticCloudDeployment", this.elasticCloudDeployment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ElasticProperties.
+     */
+    public static ElasticProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ElasticProperties deserializedElasticProperties = new ElasticProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("elasticCloudUser".equals(fieldName)) {
+                    deserializedElasticProperties.elasticCloudUser = ElasticCloudUser.fromJson(reader);
+                } else if ("elasticCloudDeployment".equals(fieldName)) {
+                    deserializedElasticProperties.elasticCloudDeployment = ElasticCloudDeployment.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedElasticProperties;
+        });
     }
 }

@@ -27,7 +27,8 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
     private GeoReplicationStatus status;
 
     /*
-     * A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for read operations at the secondary. Primary writes after this point in time may or may not be available for reads.
+     * A GMT date/time value, to the second. All primary writes preceding this value are guaranteed to be available for
+     * read operations at the secondary. Primary writes after this point in time may or may not be available for reads.
      */
     private DateTimeRfc1123 lastSyncTime;
 
@@ -108,7 +109,6 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of GeoReplication if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the GeoReplication.
      */
     public static GeoReplication fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -123,7 +123,6 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of GeoReplication if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the GeoReplication.
      */
     public static GeoReplication fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

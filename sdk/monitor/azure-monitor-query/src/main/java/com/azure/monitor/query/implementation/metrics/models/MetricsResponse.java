@@ -5,11 +5,11 @@
 package com.azure.monitor.query.implementation.metrics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.monitor.query.implementation.metrics.implementation.CoreToCodegenBridgeUtils;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
     private final String timespan;
 
     /*
-     * The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special
-     * case for 'FULL' value that returns single datapoint for entire time span requested (*Examples: PT15M, PT1H, P1D,
+     * The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special case
+     * for 'FULL' value that returns single datapoint for entire time span requested (*Examples: PT15M, PT1H, P1D,
      * FULL*).
      * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * This is not present if a metadata request was made.
@@ -98,9 +98,9 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
     }
 
     /**
-     * Get the interval property: The interval (window size) for which the metric data was returned in ISO 8601
-     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
-     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
+     * Get the interval property: The interval (window size) for which the metric data was returned in ISO 8601 duration
+     * format with a special case for 'FULL' value that returns single datapoint for entire time span requested
+     * (*Examples: PT15M, PT1H, P1D, FULL*).
      * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * This is not present if a metadata request was made.
      * 
@@ -111,9 +111,9 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
     }
 
     /**
-     * Set the interval property: The interval (window size) for which the metric data was returned in ISO 8601
-     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
-     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
+     * Set the interval property: The interval (window size) for which the metric data was returned in ISO 8601 duration
+     * format with a special case for 'FULL' value that returns single datapoint for entire time span requested
+     * (*Examples: PT15M, PT1H, P1D, FULL*).
      * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * This is not present if a metadata request was made.
      * 
@@ -174,13 +174,16 @@ public final class MetricsResponse implements JsonSerializable<MetricsResponse> 
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("timespan", this.timespan);
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeNumberField("cost", this.cost);
-        jsonWriter.writeStringField("interval", CoreToCodegenBridgeUtils.durationToStringWithDays(this.interval));
+        jsonWriter.writeStringField("interval", CoreUtils.durationToStringWithDays(this.interval));
         jsonWriter.writeStringField("namespace", this.namespace);
         jsonWriter.writeStringField("resourceregion", this.resourceregion);
         return jsonWriter.writeEndObject();

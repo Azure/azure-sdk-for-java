@@ -32,22 +32,28 @@ import com.azure.resourcemanager.peering.models.PeeringLocationsDirectPeeringTyp
 import com.azure.resourcemanager.peering.models.PeeringLocationsKind;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PeeringLocationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PeeringLocationsClient.
+ */
 public final class PeeringLocationsClientImpl implements PeeringLocationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PeeringLocationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PeeringManagementClientImpl client;
 
     /**
      * Initializes an instance of PeeringLocationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PeeringLocationsClientImpl(PeeringManagementClientImpl client) {
-        this.service =
-            RestProxy.create(PeeringLocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(PeeringLocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,87 +64,62 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
     @Host("{$host}")
     @ServiceInterface(name = "PeeringManagementCli")
     public interface PeeringLocationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Peering/peeringLocations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PeeringLocationListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PeeringLocationListResult>> list(@HostParam("$host") String endpoint,
             @QueryParam("kind") PeeringLocationsKind kind,
             @QueryParam("directPeeringType") PeeringLocationsDirectPeeringType directPeeringType,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PeeringLocationListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the available peering locations for the specified kind of peering.
-     *
+     * 
      * @param kind The kind of the peering.
      * @param directPeeringType The type of direct peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering locations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PeeringLocationInner>> listSinglePageAsync(
-        PeeringLocationsKind kind, PeeringLocationsDirectPeeringType directPeeringType) {
+    private Mono<PagedResponse<PeeringLocationInner>> listSinglePageAsync(PeeringLocationsKind kind,
+        PeeringLocationsDirectPeeringType directPeeringType) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (kind == null) {
             return Mono.error(new IllegalArgumentException("Parameter kind is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            kind,
-                            directPeeringType,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<PeeringLocationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), kind, directPeeringType,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<PeeringLocationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the available peering locations for the specified kind of peering.
-     *
+     * 
      * @param kind The kind of the peering.
      * @param directPeeringType The type of direct peering.
      * @param context The context to associate with this operation.
@@ -146,51 +127,34 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering locations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PeeringLocationInner>> listSinglePageAsync(
-        PeeringLocationsKind kind, PeeringLocationsDirectPeeringType directPeeringType, Context context) {
+    private Mono<PagedResponse<PeeringLocationInner>> listSinglePageAsync(PeeringLocationsKind kind,
+        PeeringLocationsDirectPeeringType directPeeringType, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (kind == null) {
             return Mono.error(new IllegalArgumentException("Parameter kind is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                kind,
-                directPeeringType,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), kind, directPeeringType, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the available peering locations for the specified kind of peering.
-     *
+     * 
      * @param kind The kind of the peering.
      * @param directPeeringType The type of direct peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,15 +163,15 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @return the paginated list of peering locations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PeeringLocationInner> listAsync(
-        PeeringLocationsKind kind, PeeringLocationsDirectPeeringType directPeeringType) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(kind, directPeeringType), nextLink -> listNextSinglePageAsync(nextLink));
+    private PagedFlux<PeeringLocationInner> listAsync(PeeringLocationsKind kind,
+        PeeringLocationsDirectPeeringType directPeeringType) {
+        return new PagedFlux<>(() -> listSinglePageAsync(kind, directPeeringType),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the available peering locations for the specified kind of peering.
-     *
+     * 
      * @param kind The kind of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -217,13 +181,13 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PeeringLocationInner> listAsync(PeeringLocationsKind kind) {
         final PeeringLocationsDirectPeeringType directPeeringType = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(kind, directPeeringType), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(kind, directPeeringType),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the available peering locations for the specified kind of peering.
-     *
+     * 
      * @param kind The kind of the peering.
      * @param directPeeringType The type of direct peering.
      * @param context The context to associate with this operation.
@@ -233,16 +197,15 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @return the paginated list of peering locations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PeeringLocationInner> listAsync(
-        PeeringLocationsKind kind, PeeringLocationsDirectPeeringType directPeeringType, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(kind, directPeeringType, context),
+    private PagedFlux<PeeringLocationInner> listAsync(PeeringLocationsKind kind,
+        PeeringLocationsDirectPeeringType directPeeringType, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(kind, directPeeringType, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the available peering locations for the specified kind of peering.
-     *
+     * 
      * @param kind The kind of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -257,7 +220,7 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
 
     /**
      * Lists all of the available peering locations for the specified kind of peering.
-     *
+     * 
      * @param kind The kind of the peering.
      * @param directPeeringType The type of direct peering.
      * @param context The context to associate with this operation.
@@ -267,21 +230,20 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
      * @return the paginated list of peering locations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PeeringLocationInner> list(
-        PeeringLocationsKind kind, PeeringLocationsDirectPeeringType directPeeringType, Context context) {
+    public PagedIterable<PeeringLocationInner> list(PeeringLocationsKind kind,
+        PeeringLocationsDirectPeeringType directPeeringType, Context context) {
         return new PagedIterable<>(listAsync(kind, directPeeringType, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering locations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringLocationInner>> listNextSinglePageAsync(String nextLink) {
@@ -289,37 +251,26 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PeeringLocationInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<PeeringLocationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of peering locations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PeeringLocationInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -327,23 +278,13 @@ public final class PeeringLocationsClientImpl implements PeeringLocationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

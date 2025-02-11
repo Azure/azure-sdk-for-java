@@ -30,8 +30,8 @@ public final class ServersRestartMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.servers()
-            .restart("lkvn", "jlrigjkskyrioovz",
-                new RestartParameter().withRestartWithFailover(false).withFailoverMode(FailoverMode.FORCED_SWITCHOVER),
+            .restart("kelvidizozsdb", "cxjmonfdgnwncyp",
+                new RestartParameter().withRestartWithFailover(false).withFailoverMode(FailoverMode.PLANNED_FAILOVER),
                 com.azure.core.util.Context.NONE);
 
     }

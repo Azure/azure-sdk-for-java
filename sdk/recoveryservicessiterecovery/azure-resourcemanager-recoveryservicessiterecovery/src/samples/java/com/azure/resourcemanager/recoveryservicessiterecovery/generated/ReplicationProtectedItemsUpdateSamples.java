@@ -32,16 +32,20 @@ public final class ReplicationProtectedItemsUpdateSamples {
             .getWithResponse("vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "f8491e4f-817a-40dd-a90c-af773978c75b", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withProperties(new UpdateReplicationProtectedItemInputProperties()
-            .withRecoveryAzureVMName("vm1").withRecoveryAzureVMSize("Basic_A0")
-            .withSelectedRecoveryAzureNetworkId(
-                "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai")
-            .withVmNics(Arrays.asList(new VMNicInputDetails().withNicId(
-                "TWljcm9zb2Z0OkY4NDkxRTRGLTgxN0EtNDBERC1BOTBDLUFGNzczOTc4Qzc1Qlw3NjAwMzMxRS03NDk4LTQ0QTQtQjdDNy0xQjY1NkJDREQ1MkQ=")
-                .withIpConfigs(Arrays.asList(new IpConfigInputDetails().withIpConfigName("ipconfig1")
-                    .withIsPrimary(true).withRecoverySubnetName("subnet1").withRecoveryStaticIpAddress("10.0.2.46")))
-                .withSelectionType("SelectedByUser")))
-            .withLicenseType(LicenseType.WINDOWS_SERVER)
-            .withProviderSpecificDetails(new HyperVReplicaAzureUpdateReplicationProtectedItemInput())).apply();
+        resource.update()
+            .withProperties(new UpdateReplicationProtectedItemInputProperties().withRecoveryAzureVMName("vm1")
+                .withRecoveryAzureVMSize("Basic_A0")
+                .withSelectedRecoveryAzureNetworkId(
+                    "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai")
+                .withVmNics(Arrays.asList(new VMNicInputDetails().withNicId(
+                    "TWljcm9zb2Z0OkY4NDkxRTRGLTgxN0EtNDBERC1BOTBDLUFGNzczOTc4Qzc1Qlw3NjAwMzMxRS03NDk4LTQ0QTQtQjdDNy0xQjY1NkJDREQ1MkQ=")
+                    .withIpConfigs(Arrays.asList(new IpConfigInputDetails().withIpConfigName("ipconfig1")
+                        .withIsPrimary(true)
+                        .withRecoverySubnetName("subnet1")
+                        .withRecoveryStaticIpAddress("10.0.2.46")))
+                    .withSelectionType("SelectedByUser")))
+                .withLicenseType(LicenseType.WINDOWS_SERVER)
+                .withProviderSpecificDetails(new HyperVReplicaAzureUpdateReplicationProtectedItemInput()))
+            .apply();
     }
 }

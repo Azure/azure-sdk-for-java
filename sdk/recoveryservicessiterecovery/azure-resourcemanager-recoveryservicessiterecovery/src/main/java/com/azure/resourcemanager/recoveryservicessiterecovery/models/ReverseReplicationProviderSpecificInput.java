@@ -5,32 +5,36 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Provider specific reverse replication input.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "instanceType",
-    defaultImpl = ReverseReplicationProviderSpecificInput.class)
-@JsonTypeName("ReverseReplicationProviderSpecificInput")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "A2A", value = A2AReprotectInput.class),
-    @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzureReprotectInput.class),
-    @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2ReprotectInput.class),
-    @JsonSubTypes.Type(name = "InMageRcmFailback", value = InMageRcmFailbackReprotectInput.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmReprotectInput.class),
-    @JsonSubTypes.Type(name = "InMage", value = InMageReprotectInput.class) })
 @Immutable
-public class ReverseReplicationProviderSpecificInput {
+public class ReverseReplicationProviderSpecificInput
+    implements JsonSerializable<ReverseReplicationProviderSpecificInput> {
+    /*
+     * The class type.
+     */
+    private String instanceType = "ReverseReplicationProviderSpecificInput";
+
     /**
      * Creates an instance of ReverseReplicationProviderSpecificInput class.
      */
     public ReverseReplicationProviderSpecificInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -39,5 +43,78 @@ public class ReverseReplicationProviderSpecificInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReverseReplicationProviderSpecificInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReverseReplicationProviderSpecificInput if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReverseReplicationProviderSpecificInput.
+     */
+    public static ReverseReplicationProviderSpecificInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("instanceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("A2A".equals(discriminatorValue)) {
+                    return A2AReprotectInput.fromJson(readerToUse.reset());
+                } else if ("HyperVReplicaAzure".equals(discriminatorValue)) {
+                    return HyperVReplicaAzureReprotectInput.fromJson(readerToUse.reset());
+                } else if ("InMageAzureV2".equals(discriminatorValue)) {
+                    return InMageAzureV2ReprotectInput.fromJson(readerToUse.reset());
+                } else if ("InMageRcmFailback".equals(discriminatorValue)) {
+                    return InMageRcmFailbackReprotectInput.fromJson(readerToUse.reset());
+                } else if ("InMageRcm".equals(discriminatorValue)) {
+                    return InMageRcmReprotectInput.fromJson(readerToUse.reset());
+                } else if ("InMage".equals(discriminatorValue)) {
+                    return InMageReprotectInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ReverseReplicationProviderSpecificInput fromJsonKnownDiscriminator(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReverseReplicationProviderSpecificInput deserializedReverseReplicationProviderSpecificInput
+                = new ReverseReplicationProviderSpecificInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedReverseReplicationProviderSpecificInput.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReverseReplicationProviderSpecificInput;
+        });
     }
 }

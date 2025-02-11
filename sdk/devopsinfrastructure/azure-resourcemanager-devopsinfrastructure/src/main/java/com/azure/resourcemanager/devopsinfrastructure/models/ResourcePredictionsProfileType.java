@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class ResourcePredictionsProfileType extends ExpandableStringEnum<ResourcePredictionsProfileType> {
     /**
-     * Static value Manual for ResourcePredictionsProfileType.
+     * Customer provides the stand-by agent scheme.
      */
     public static final ResourcePredictionsProfileType MANUAL = fromString("Manual");
 
     /**
-     * Static value Automatic for ResourcePredictionsProfileType.
+     * The stand-by agent scheme is determined based on historical demand.
      */
     public static final ResourcePredictionsProfileType AUTOMATIC = fromString("Automatic");
 

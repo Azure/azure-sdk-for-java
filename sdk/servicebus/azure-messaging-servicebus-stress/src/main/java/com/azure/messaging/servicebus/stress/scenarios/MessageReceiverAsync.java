@@ -18,17 +18,12 @@ public class MessageReceiverAsync extends ServiceBusScenario {
     public void run() {
         ServiceBusReceiverAsyncClient client = toClose(getReceiverBuilder(options, false).buildAsyncClient());
 
-        client.receiveMessages()
-            .flatMap(message -> client.complete(message)
-                .onErrorResume(ex -> {
-                    telemetryHelper.recordError(ex, "complete");
-                    return Mono.empty();
-                }))
-            .take(options.getTestDuration())
-            .onErrorResume(error -> {
-                telemetryHelper.recordError(error, "receiveMessages");
-                return Mono.empty();
-            })
-            .blockLast();
+        client.receiveMessages().flatMap(message -> client.complete(message).onErrorResume(ex -> {
+            telemetryHelper.recordError(ex, "complete");
+            return Mono.empty();
+        })).take(options.getTestDuration()).onErrorResume(error -> {
+            telemetryHelper.recordError(error, "receiveMessages");
+            return Mono.empty();
+        }).blockLast();
     }
 }

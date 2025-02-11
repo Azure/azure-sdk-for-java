@@ -102,7 +102,8 @@ public class FilesSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantTextFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+    public void assistantTextFileOperationsWithResponse(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
         uploadAssistantTextFileRunner((fileDetails, filePurpose) -> {
             // Upload file
@@ -134,7 +135,8 @@ public class FilesSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void assistantImageFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+    public void assistantImageFileOperationsWithResponse(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
         uploadAssistantImageFileRunner((fileDetails, filePurpose) -> {
             // Upload file
@@ -167,7 +169,8 @@ public class FilesSyncTests extends AssistantsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.assistants.TestUtils#getTestParameters")
-    public void fineTuningJsonFileOperationsWithResponse(HttpClient httpClient, AssistantsServiceVersion serviceVersion) {
+    public void fineTuningJsonFileOperationsWithResponse(HttpClient httpClient,
+        AssistantsServiceVersion serviceVersion) {
         client = getAssistantsClient(httpClient);
         uploadFineTuningJsonFileRunner((fileDetails, filePurpose) -> {
             // Upload file

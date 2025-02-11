@@ -221,7 +221,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
         try (HttpResponse response = pipeline.sendSync(request, Context.NONE)) {
 
-            assertEquals(response.getStatusCode(), 200);
+            assertEquals(200, response.getStatusCode());
 
             assertEquals(200, response.getStatusCode());
             RecordedTestProxyData recordedTestProxyData = readDataFromFile();
@@ -288,7 +288,7 @@ public class TestProxyTests extends TestProxyTestBase {
         assertTrue(record.getResponse().get("primaryKey").contains("<PrimaryKey>REDACTED</PrimaryKey>"));
 
         // custom body regex
-        assertEquals(record.getResponse().get("TableName"), REDACTED);
+        assertEquals(REDACTED, record.getResponse().get("TableName"));
     }
 
     @Test
@@ -314,7 +314,7 @@ public class TestProxyTests extends TestProxyTestBase {
         RecordedTestProxyData recordedTestProxyData = readDataFromFile();
         RecordedTestProxyData.TestProxyDataRecord record = recordedTestProxyData.getTestProxyDataRecords().get(0);
 
-        assertEquals(record.getRequestBody(), "first_value=value&client_secret=REDACTED&other=value&is=cool");
+        assertEquals("first_value=value&client_secret=REDACTED&other=value&is=cool", record.getRequestBody());
 
     }
 

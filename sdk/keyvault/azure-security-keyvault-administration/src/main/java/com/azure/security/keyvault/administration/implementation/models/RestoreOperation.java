@@ -189,6 +189,9 @@ public final class RestoreOperation implements JsonSerializable<RestoreOperation
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

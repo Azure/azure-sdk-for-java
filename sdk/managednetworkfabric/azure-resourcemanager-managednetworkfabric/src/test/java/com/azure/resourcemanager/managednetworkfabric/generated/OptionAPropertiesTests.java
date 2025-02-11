@@ -12,32 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class OptionAPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OptionAProperties model =
-            BinaryData
-                .fromString(
-                    "{\"mtu\":341229695,\"vlanId\":1997920691,\"peerASN\":5808363193481084491,\"bfdConfiguration\":{\"administrativeState\":\"Disabled\",\"intervalInMilliSeconds\":946572249,\"multiplier\":716093008}}")
-                .toObject(OptionAProperties.class);
-        Assertions.assertEquals(341229695, model.mtu());
-        Assertions.assertEquals(1997920691, model.vlanId());
-        Assertions.assertEquals(5808363193481084491L, model.peerAsn());
-        Assertions.assertEquals(946572249, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(716093008, model.bfdConfiguration().multiplier());
+        OptionAProperties model = BinaryData.fromString(
+            "{\"mtu\":387260273,\"vlanId\":1121842631,\"peerASN\":3961448692771285787,\"bfdConfiguration\":{\"administrativeState\":\"RMA\",\"intervalInMilliSeconds\":113330919,\"multiplier\":1820596748}}")
+            .toObject(OptionAProperties.class);
+        Assertions.assertEquals(387260273, model.mtu());
+        Assertions.assertEquals(1121842631, model.vlanId());
+        Assertions.assertEquals(3961448692771285787L, model.peerAsn());
+        Assertions.assertEquals(113330919, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1820596748, model.bfdConfiguration().multiplier());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OptionAProperties model =
-            new OptionAProperties()
-                .withMtu(341229695)
-                .withVlanId(1997920691)
-                .withPeerAsn(5808363193481084491L)
-                .withBfdConfiguration(
-                    new BfdConfiguration().withIntervalInMilliSeconds(946572249).withMultiplier(716093008));
+        OptionAProperties model = new OptionAProperties().withMtu(387260273)
+            .withVlanId(1121842631)
+            .withPeerAsn(3961448692771285787L)
+            .withBfdConfiguration(
+                new BfdConfiguration().withIntervalInMilliSeconds(113330919).withMultiplier(1820596748));
         model = BinaryData.fromObject(model).toObject(OptionAProperties.class);
-        Assertions.assertEquals(341229695, model.mtu());
-        Assertions.assertEquals(1997920691, model.vlanId());
-        Assertions.assertEquals(5808363193481084491L, model.peerAsn());
-        Assertions.assertEquals(946572249, model.bfdConfiguration().intervalInMilliSeconds());
-        Assertions.assertEquals(716093008, model.bfdConfiguration().multiplier());
+        Assertions.assertEquals(387260273, model.mtu());
+        Assertions.assertEquals(1121842631, model.vlanId());
+        Assertions.assertEquals(3961448692771285787L, model.peerAsn());
+        Assertions.assertEquals(113330919, model.bfdConfiguration().intervalInMilliSeconds());
+        Assertions.assertEquals(1820596748, model.bfdConfiguration().multiplier());
     }
 }

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iothub.fluent.models.JobResponseInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The JSON-serialized array of JobResponse objects with a next link. */
+/**
+ * The JSON-serialized array of JobResponse objects with a next link.
+ */
 @Fluent
-public final class JobResponseListResult {
+public final class JobResponseListResult implements JsonSerializable<JobResponseListResult> {
     /*
      * The array of JobResponse objects.
      */
-    @JsonProperty(value = "value")
     private List<JobResponseInner> value;
 
     /*
      * The next link.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of JobResponseListResult class. */
+    /**
+     * Creates an instance of JobResponseListResult class.
+     */
     public JobResponseListResult() {
     }
 
     /**
      * Get the value property: The array of JobResponse objects.
-     *
+     * 
      * @return the value value.
      */
     public List<JobResponseInner> value() {
@@ -39,7 +45,7 @@ public final class JobResponseListResult {
 
     /**
      * Set the value property: The array of JobResponse objects.
-     *
+     * 
      * @param value the value value to set.
      * @return the JobResponseListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class JobResponseListResult {
 
     /**
      * Get the nextLink property: The next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,12 +65,51 @@ public final class JobResponseListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobResponseListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobResponseListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobResponseListResult.
+     */
+    public static JobResponseListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobResponseListResult deserializedJobResponseListResult = new JobResponseListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<JobResponseInner> value = reader.readArray(reader1 -> JobResponseInner.fromJson(reader1));
+                    deserializedJobResponseListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedJobResponseListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobResponseListResult;
+        });
     }
 }

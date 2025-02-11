@@ -21,7 +21,7 @@ public final class ExternalSecuritySolutionsListByHomeRegionMockTests {
     @Test
     public void testListByHomeRegion() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"ngsfm\",\"id\":\"wdxqupymlhkl\",\"name\":\"njqzmq\",\"type\":\"nhitrnwqgqrbth\"}]}";
+            = "{\"value\":[{\"kind\":\"ExternalSecuritySolution\",\"location\":\"kgjiiytssikizbc\",\"id\":\"fqb\",\"name\":\"ntnrgmqsorh\",\"type\":\"ekxgn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class ExternalSecuritySolutionsListByHomeRegionMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ExternalSecuritySolution> response
-            = manager.externalSecuritySolutions().listByHomeRegion("olhve", com.azure.core.util.Context.NONE);
+            = manager.externalSecuritySolutions().listByHomeRegion("gjco", com.azure.core.util.Context.NONE);
 
     }
 }

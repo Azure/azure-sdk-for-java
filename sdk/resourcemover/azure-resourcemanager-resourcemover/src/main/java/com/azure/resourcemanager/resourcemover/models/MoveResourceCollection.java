@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.resourcemover.fluent.models.MoveResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the collection of move resources. */
+/**
+ * Defines the collection of move resources.
+ */
 @Fluent
-public final class MoveResourceCollection {
+public final class MoveResourceCollection implements JsonSerializable<MoveResourceCollection> {
     /*
      * Gets the list of move resources.
      */
-    @JsonProperty(value = "value")
     private List<MoveResourceInner> value;
 
     /*
-     * Gets the value of  next link.
+     * Gets the value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * Gets or sets the list of summary items and the field on which summary is done.
      */
-    @JsonProperty(value = "summaryCollection")
     private SummaryCollection summaryCollection;
 
     /*
      * Gets the total count.
      */
-    @JsonProperty(value = "totalCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long totalCount;
 
-    /** Creates an instance of MoveResourceCollection class. */
+    /**
+     * Creates an instance of MoveResourceCollection class.
+     */
     public MoveResourceCollection() {
     }
 
     /**
      * Get the value property: Gets the list of move resources.
-     *
+     * 
      * @return the value value.
      */
     public List<MoveResourceInner> value() {
@@ -51,7 +55,7 @@ public final class MoveResourceCollection {
 
     /**
      * Set the value property: Gets the list of move resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the MoveResourceCollection object itself.
      */
@@ -62,7 +66,7 @@ public final class MoveResourceCollection {
 
     /**
      * Get the nextLink property: Gets the value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -71,7 +75,7 @@ public final class MoveResourceCollection {
 
     /**
      * Set the nextLink property: Gets the value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the MoveResourceCollection object itself.
      */
@@ -83,7 +87,7 @@ public final class MoveResourceCollection {
     /**
      * Get the summaryCollection property: Gets or sets the list of summary items and the field on which summary is
      * done.
-     *
+     * 
      * @return the summaryCollection value.
      */
     public SummaryCollection summaryCollection() {
@@ -93,7 +97,7 @@ public final class MoveResourceCollection {
     /**
      * Set the summaryCollection property: Gets or sets the list of summary items and the field on which summary is
      * done.
-     *
+     * 
      * @param summaryCollection the summaryCollection value to set.
      * @return the MoveResourceCollection object itself.
      */
@@ -104,7 +108,7 @@ public final class MoveResourceCollection {
 
     /**
      * Get the totalCount property: Gets the total count.
-     *
+     * 
      * @return the totalCount value.
      */
     public Long totalCount() {
@@ -113,7 +117,7 @@ public final class MoveResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -123,5 +127,50 @@ public final class MoveResourceCollection {
         if (summaryCollection() != null) {
             summaryCollection().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeJsonField("summaryCollection", this.summaryCollection);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MoveResourceCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MoveResourceCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MoveResourceCollection.
+     */
+    public static MoveResourceCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MoveResourceCollection deserializedMoveResourceCollection = new MoveResourceCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<MoveResourceInner> value = reader.readArray(reader1 -> MoveResourceInner.fromJson(reader1));
+                    deserializedMoveResourceCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedMoveResourceCollection.nextLink = reader.getString();
+                } else if ("summaryCollection".equals(fieldName)) {
+                    deserializedMoveResourceCollection.summaryCollection = SummaryCollection.fromJson(reader);
+                } else if ("totalCount".equals(fieldName)) {
+                    deserializedMoveResourceCollection.totalCount = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMoveResourceCollection;
+        });
     }
 }

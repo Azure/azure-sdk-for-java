@@ -5,51 +5,49 @@
 package com.azure.resourcemanager.migrationdiscoverysap.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Defines the SAP Instance properties.
  */
 @Immutable
-public final class SapInstanceProperties {
+public final class SapInstanceProperties implements JsonSerializable<SapInstanceProperties> {
     /*
      * This is the SID of SAP System. Keeping this not equal to ID as different landscapes can have repeated System SID
      * IDs.
      */
-    @JsonProperty(value = "systemSid", access = JsonProperty.Access.WRITE_ONLY)
     private String systemSid;
 
     /*
      * The Environment; PRD, QA, DEV, etc to which SAP system belongs to. Select from the list of available dropdown
      * values.
      */
-    @JsonProperty(value = "environment", access = JsonProperty.Access.WRITE_ONLY)
     private SapInstanceEnvironment environment;
 
     /*
-     * This is the SID of the production system in a landscape. An SAP system could itself be a production SID or a
-     * part of a landscape with a different Production SID. This field can be used to relate non-prod SIDs, other
-     * components, SID (WEBDISP) to the prod SID. Enter the value of Production SID.
+     * This is the SID of the production system in a landscape. An SAP system could itself be a production SID or a part
+     * of a landscape with a different Production SID. This field can be used to relate non-prod SIDs, other components,
+     * SID (WEBDISP) to the prod SID. Enter the value of Production SID.
      */
-    @JsonProperty(value = "landscapeSid", access = JsonProperty.Access.WRITE_ONLY)
     private String landscapeSid;
 
     /*
      * Enter a business function/department identifier to group multiple SIDs.
      */
-    @JsonProperty(value = "application", access = JsonProperty.Access.WRITE_ONLY)
     private String application;
 
     /*
      * Defines the provisioning states.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Defines the errors related to SAP Instance resource.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private SapMigrateError errors;
 
     /**
@@ -125,5 +123,52 @@ public final class SapInstanceProperties {
         if (errors() != null) {
             errors().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapInstanceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapInstanceProperties.
+     */
+    public static SapInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapInstanceProperties deserializedSapInstanceProperties = new SapInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("systemSid".equals(fieldName)) {
+                    deserializedSapInstanceProperties.systemSid = reader.getString();
+                } else if ("environment".equals(fieldName)) {
+                    deserializedSapInstanceProperties.environment
+                        = SapInstanceEnvironment.fromString(reader.getString());
+                } else if ("landscapeSid".equals(fieldName)) {
+                    deserializedSapInstanceProperties.landscapeSid = reader.getString();
+                } else if ("application".equals(fieldName)) {
+                    deserializedSapInstanceProperties.application = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSapInstanceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    deserializedSapInstanceProperties.errors = SapMigrateError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapInstanceProperties;
+        });
     }
 }

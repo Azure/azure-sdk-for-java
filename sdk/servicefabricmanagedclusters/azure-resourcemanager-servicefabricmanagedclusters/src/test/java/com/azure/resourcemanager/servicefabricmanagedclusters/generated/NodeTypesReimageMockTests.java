@@ -31,9 +31,8 @@ public final class NodeTypesReimageMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.nodeTypes()
-            .reimage("nnawtqabpxuckpgg", "oweyirdhlis", "gwflq",
-                new NodeTypeActionParameters()
-                    .withNodes(Arrays.asList("izruwnpqxpxiwfc", "gjsaasiixtm", "zjvkviirhgfgrws", "pgratzvzbglbyvi"))
+            .reimage("kwr", "snkq", "hsyrqunj",
+                new NodeTypeActionParameters().withNodes(Arrays.asList("enx", "ulkpakd"))
                     .withForce(true)
                     .withUpdateType(UpdateType.DEFAULT),
                 com.azure.core.util.Context.NONE);

@@ -6,44 +6,48 @@ package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OnboardingStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of dedicated cloud service. */
+/**
+ * Properties of dedicated cloud service.
+ */
 @Fluent
-public final class DedicatedCloudServiceProperties {
+public final class DedicatedCloudServiceProperties implements JsonSerializable<DedicatedCloudServiceProperties> {
     /*
      * gateway Subnet for the account. It will collect the subnet address and always treat it as /28
      */
-    @JsonProperty(value = "gatewaySubnet", required = true)
     private String gatewaySubnet;
 
     /*
      * indicates whether account onboarded or not in a given region
      */
-    @JsonProperty(value = "isAccountOnboarded", access = JsonProperty.Access.WRITE_ONLY)
     private OnboardingStatus isAccountOnboarded;
 
     /*
      * total nodes purchased
      */
-    @JsonProperty(value = "nodes", access = JsonProperty.Access.WRITE_ONLY)
     private Integer nodes;
 
     /*
      * link to a service management web portal
      */
-    @JsonProperty(value = "serviceURL", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceUrl;
 
-    /** Creates an instance of DedicatedCloudServiceProperties class. */
+    /**
+     * Creates an instance of DedicatedCloudServiceProperties class.
+     */
     public DedicatedCloudServiceProperties() {
     }
 
     /**
      * Get the gatewaySubnet property: gateway Subnet for the account. It will collect the subnet address and always
      * treat it as /28.
-     *
+     * 
      * @return the gatewaySubnet value.
      */
     public String gatewaySubnet() {
@@ -53,7 +57,7 @@ public final class DedicatedCloudServiceProperties {
     /**
      * Set the gatewaySubnet property: gateway Subnet for the account. It will collect the subnet address and always
      * treat it as /28.
-     *
+     * 
      * @param gatewaySubnet the gatewaySubnet value to set.
      * @return the DedicatedCloudServiceProperties object itself.
      */
@@ -64,7 +68,7 @@ public final class DedicatedCloudServiceProperties {
 
     /**
      * Get the isAccountOnboarded property: indicates whether account onboarded or not in a given region.
-     *
+     * 
      * @return the isAccountOnboarded value.
      */
     public OnboardingStatus isAccountOnboarded() {
@@ -73,7 +77,7 @@ public final class DedicatedCloudServiceProperties {
 
     /**
      * Get the nodes property: total nodes purchased.
-     *
+     * 
      * @return the nodes value.
      */
     public Integer nodes() {
@@ -82,7 +86,7 @@ public final class DedicatedCloudServiceProperties {
 
     /**
      * Get the serviceUrl property: link to a service management web portal.
-     *
+     * 
      * @return the serviceUrl value.
      */
     public String serviceUrl() {
@@ -91,17 +95,61 @@ public final class DedicatedCloudServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (gatewaySubnet() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property gatewaySubnet in model DedicatedCloudServiceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property gatewaySubnet in model DedicatedCloudServiceProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DedicatedCloudServiceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("gatewaySubnet", this.gatewaySubnet);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedCloudServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedCloudServiceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DedicatedCloudServiceProperties.
+     */
+    public static DedicatedCloudServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedCloudServiceProperties deserializedDedicatedCloudServiceProperties
+                = new DedicatedCloudServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gatewaySubnet".equals(fieldName)) {
+                    deserializedDedicatedCloudServiceProperties.gatewaySubnet = reader.getString();
+                } else if ("isAccountOnboarded".equals(fieldName)) {
+                    deserializedDedicatedCloudServiceProperties.isAccountOnboarded
+                        = OnboardingStatus.fromString(reader.getString());
+                } else if ("nodes".equals(fieldName)) {
+                    deserializedDedicatedCloudServiceProperties.nodes = reader.getNullable(JsonReader::getInt);
+                } else if ("serviceURL".equals(fieldName)) {
+                    deserializedDedicatedCloudServiceProperties.serviceUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedCloudServiceProperties;
+        });
+    }
 }

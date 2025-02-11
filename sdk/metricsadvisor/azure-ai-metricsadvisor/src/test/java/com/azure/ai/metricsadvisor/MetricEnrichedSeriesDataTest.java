@@ -24,17 +24,13 @@ public final class MetricEnrichedSeriesDataTest extends MetricEnrichedSeriesData
         MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         PagedIterable<MetricEnrichedSeriesData> enrichedDataIterable
-            = client.listMetricEnrichedSeriesData(
-            GetEnrichedSeriesDataInput.INSTANCE.detectionConfigurationId,
-            GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(),
-            GetEnrichedSeriesDataInput.INSTANCE.startTime,
-            GetEnrichedSeriesDataInput.INSTANCE.endTime);
+            = client.listMetricEnrichedSeriesData(GetEnrichedSeriesDataInput.INSTANCE.detectionConfigurationId,
+                GetEnrichedSeriesDataInput.INSTANCE.getSeriesKeys(), GetEnrichedSeriesDataInput.INSTANCE.startTime,
+                GetEnrichedSeriesDataInput.INSTANCE.endTime);
 
         Assertions.assertNotNull(enrichedDataIterable);
 
-        List<MetricEnrichedSeriesData> enrichedDataList = enrichedDataIterable
-            .stream()
-            .collect(Collectors.toList());
+        List<MetricEnrichedSeriesData> enrichedDataList = enrichedDataIterable.stream().collect(Collectors.toList());
 
         // We asked for one series so there should be only one set of data.
         Assertions.assertEquals(1, enrichedDataList.size());

@@ -19,12 +19,8 @@ import reactor.core.publisher.Mono;
 /** Entry point for diagnostic settings management API. */
 @Fluent
 public interface DiagnosticSettings
-    extends SupportsCreating<DiagnosticSetting.DefinitionStages.Blank>,
-        SupportsBatchCreation<DiagnosticSetting>,
-        SupportsGettingById<DiagnosticSetting>,
-        SupportsDeletingById,
-        SupportsBatchDeletion,
-        HasManager<MonitorManager> {
+    extends SupportsCreating<DiagnosticSetting.DefinitionStages.Blank>, SupportsBatchCreation<DiagnosticSetting>,
+    SupportsGettingById<DiagnosticSetting>, SupportsDeletingById, SupportsBatchDeletion, HasManager<MonitorManager> {
 
     /**
      * Lists all the Diagnostic Settings categories for Log and Metric Settings for a specific resource.

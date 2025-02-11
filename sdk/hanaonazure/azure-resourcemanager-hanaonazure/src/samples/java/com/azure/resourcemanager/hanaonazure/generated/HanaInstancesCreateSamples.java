@@ -11,32 +11,35 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for HanaInstances Create. */
+/**
+ * Samples for HanaInstances Create.
+ */
 public final class HanaInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/HanaInstances_Create.json
+     * x-ms-original-file:
+     * specification/hanaonazure/resource-manager/Microsoft.HanaOnAzure/preview/2017-11-03-preview/examples/
+     * HanaInstances_Create.json
      */
     /**
      * Sample code: Create a HANA instance.
-     *
+     * 
      * @param manager Entry point to HanaManager.
      */
     public static void createAHANAInstance(com.azure.resourcemanager.hanaonazure.HanaManager manager) {
-        manager
-            .hanaInstances()
+        manager.hanaInstances()
             .define("myHanaInstance")
             .withRegion("westus")
             .withExistingResourceGroup("myResourceGroup")
-            .withTags(mapOf("key", "value"))
+            .withTags(mapOf("key", "fakeTokenPlaceholder"))
             .withOsProfile(new OSProfile().withComputerName("myComputerName").withSshPublicKey("fakeTokenPlaceholder"))
-            .withNetworkProfile(
-                new NetworkProfile()
-                    .withNetworkInterfaces(Arrays.asList(new IpAddress().withIpAddress("100.100.100.100"))))
+            .withNetworkProfile(new NetworkProfile()
+                .withNetworkInterfaces(Arrays.asList(new IpAddress().withIpAddress("100.100.100.100"))))
             .withPartnerNodeId(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.HanaOnAzure/hanaInstances/myHanaInstance2")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Request from client to check resource name availability. */
 @Fluent
 public final class NameAvailabilityRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityRequest.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NameAvailabilityRequest.class);
 
     /*
      * Resource name to verify.
@@ -73,9 +74,8 @@ public final class NameAvailabilityRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model NameAvailabilityRequest"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model NameAvailabilityRequest"));
         }
     }
 }

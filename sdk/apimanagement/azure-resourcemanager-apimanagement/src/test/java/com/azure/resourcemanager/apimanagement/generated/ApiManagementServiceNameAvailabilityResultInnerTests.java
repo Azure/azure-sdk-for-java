@@ -12,17 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiManagementServiceNameAvailabilityResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementServiceNameAvailabilityResultInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":true,\"message\":\"ap\",\"reason\":\"Invalid\"}")
+        ApiManagementServiceNameAvailabilityResultInner model
+            = BinaryData.fromString("{\"nameAvailable\":true,\"message\":\"ap\",\"reason\":\"Invalid\"}")
                 .toObject(ApiManagementServiceNameAvailabilityResultInner.class);
         Assertions.assertEquals(NameAvailabilityReason.INVALID, model.reason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiManagementServiceNameAvailabilityResultInner model =
-            new ApiManagementServiceNameAvailabilityResultInner().withReason(NameAvailabilityReason.INVALID);
+        ApiManagementServiceNameAvailabilityResultInner model
+            = new ApiManagementServiceNameAvailabilityResultInner().withReason(NameAvailabilityReason.INVALID);
         model = BinaryData.fromObject(model).toObject(ApiManagementServiceNameAvailabilityResultInner.class);
         Assertions.assertEquals(NameAvailabilityReason.INVALID, model.reason());
     }

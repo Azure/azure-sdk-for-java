@@ -7,40 +7,57 @@ package com.azure.security.keyvault.keys.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** JSON web key operations. For more information, see JsonWebKeyOperation. */
+/**
+ * JSON web key operations. For more information, see JsonWebKeyOperation.
+ */
 public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
-    /** Static value encrypt for KeyOperation. */
+    /**
+     * Static value encrypt for KeyOperation.
+     */
     public static final KeyOperation ENCRYPT = fromString("encrypt");
 
-    /** Static value decrypt for KeyOperation. */
+    /**
+     * Static value decrypt for KeyOperation.
+     */
     public static final KeyOperation DECRYPT = fromString("decrypt");
 
-    /** Static value sign for KeyOperation. */
+    /**
+     * Static value sign for KeyOperation.
+     */
     public static final KeyOperation SIGN = fromString("sign");
 
-    /** Static value verify for KeyOperation. */
+    /**
+     * Static value verify for KeyOperation.
+     */
     public static final KeyOperation VERIFY = fromString("verify");
 
-    /** Static value wrapKey for KeyOperation. */
+    /**
+     * Static value wrapKey for KeyOperation.
+     */
     public static final KeyOperation WRAP_KEY = fromString("wrapKey");
 
-    /** Static value unwrapKey for KeyOperation. */
+    /**
+     * Static value unwrapKey for KeyOperation.
+     */
     public static final KeyOperation UNWRAP_KEY = fromString("unwrapKey");
 
-    /** Static value import for KeyOperation. */
+    /**
+     * Static value import for KeyOperation.
+     */
     public static final KeyOperation IMPORT = fromString("import");
 
     /**
      * Creates a new instance of KeyOperation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyOperation() {}
+    public KeyOperation() {
+    }
 
     /**
      * Creates or finds a KeyOperation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KeyOperation.
      */
@@ -50,7 +67,7 @@ public final class KeyOperation extends ExpandableStringEnum<KeyOperation> {
 
     /**
      * Gets known KeyOperation values.
-     *
+     * 
      * @return known KeyOperation values.
      */
     public static Collection<KeyOperation> values() {

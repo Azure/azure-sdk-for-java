@@ -20,8 +20,8 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -29,10 +29,7 @@ public final class OperationsImpl implements Operations {
     public Response<OperationsListResults> listWithResponse(Context context) {
         Response<OperationsListResultsInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationsListResultsImpl(inner.getValue(), this.manager()));
         } else {
             return null;

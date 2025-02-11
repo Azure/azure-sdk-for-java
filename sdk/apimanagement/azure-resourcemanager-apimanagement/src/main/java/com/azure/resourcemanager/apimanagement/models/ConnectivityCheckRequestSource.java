@@ -6,30 +6,36 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definitions about the connectivity check origin. */
+/**
+ * Definitions about the connectivity check origin.
+ */
 @Fluent
-public final class ConnectivityCheckRequestSource {
+public final class ConnectivityCheckRequestSource implements JsonSerializable<ConnectivityCheckRequestSource> {
     /*
      * The API Management service region from where to start the connectivity check operation.
      */
-    @JsonProperty(value = "region", required = true)
     private String region;
 
     /*
      * The particular VMSS instance from which to fire the request.
      */
-    @JsonProperty(value = "instance")
     private Long instance;
 
-    /** Creates an instance of ConnectivityCheckRequestSource class. */
+    /**
+     * Creates an instance of ConnectivityCheckRequestSource class.
+     */
     public ConnectivityCheckRequestSource() {
     }
 
     /**
      * Get the region property: The API Management service region from where to start the connectivity check operation.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -38,7 +44,7 @@ public final class ConnectivityCheckRequestSource {
 
     /**
      * Set the region property: The API Management service region from where to start the connectivity check operation.
-     *
+     * 
      * @param region the region value to set.
      * @return the ConnectivityCheckRequestSource object itself.
      */
@@ -49,7 +55,7 @@ public final class ConnectivityCheckRequestSource {
 
     /**
      * Get the instance property: The particular VMSS instance from which to fire the request.
-     *
+     * 
      * @return the instance value.
      */
     public Long instance() {
@@ -58,7 +64,7 @@ public final class ConnectivityCheckRequestSource {
 
     /**
      * Set the instance property: The particular VMSS instance from which to fire the request.
-     *
+     * 
      * @param instance the instance value to set.
      * @return the ConnectivityCheckRequestSource object itself.
      */
@@ -69,17 +75,57 @@ public final class ConnectivityCheckRequestSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (region() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property region in model ConnectivityCheckRequestSource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property region in model ConnectivityCheckRequestSource"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectivityCheckRequestSource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeNumberField("instance", this.instance);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityCheckRequestSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityCheckRequestSource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectivityCheckRequestSource.
+     */
+    public static ConnectivityCheckRequestSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityCheckRequestSource deserializedConnectivityCheckRequestSource
+                = new ConnectivityCheckRequestSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("region".equals(fieldName)) {
+                    deserializedConnectivityCheckRequestSource.region = reader.getString();
+                } else if ("instance".equals(fieldName)) {
+                    deserializedConnectivityCheckRequestSource.instance = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityCheckRequestSource;
+        });
+    }
 }

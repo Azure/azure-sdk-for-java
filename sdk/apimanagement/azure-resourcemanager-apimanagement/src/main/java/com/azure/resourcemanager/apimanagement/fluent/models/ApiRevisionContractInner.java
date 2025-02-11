@@ -5,69 +5,70 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Summary of revision metadata. */
+/**
+ * Summary of revision metadata.
+ */
 @Immutable
-public final class ApiRevisionContractInner {
+public final class ApiRevisionContractInner implements JsonSerializable<ApiRevisionContractInner> {
     /*
      * Identifier of the API Revision.
      */
-    @JsonProperty(value = "apiId", access = JsonProperty.Access.WRITE_ONLY)
     private String apiId;
 
     /*
      * Revision number of API.
      */
-    @JsonProperty(value = "apiRevision", access = JsonProperty.Access.WRITE_ONLY)
     private String apiRevision;
 
     /*
      * The time the API Revision was created. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as
      * specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;
 
     /*
      * The time the API Revision were updated. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as
      * specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "updatedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedDateTime;
 
     /*
      * Description of the API Revision.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Gateway URL for accessing the non-current API Revision.
      */
-    @JsonProperty(value = "privateUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String privateUrl;
 
     /*
      * Indicates if API revision is the current api revision.
      */
-    @JsonProperty(value = "isOnline", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isOnline;
 
     /*
      * Indicates if API revision is accessible via the gateway.
      */
-    @JsonProperty(value = "isCurrent", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isCurrent;
 
-    /** Creates an instance of ApiRevisionContractInner class. */
+    /**
+     * Creates an instance of ApiRevisionContractInner class.
+     */
     public ApiRevisionContractInner() {
     }
 
     /**
      * Get the apiId property: Identifier of the API Revision.
-     *
+     * 
      * @return the apiId value.
      */
     public String apiId() {
@@ -76,7 +77,7 @@ public final class ApiRevisionContractInner {
 
     /**
      * Get the apiRevision property: Revision number of API.
-     *
+     * 
      * @return the apiRevision value.
      */
     public String apiRevision() {
@@ -86,7 +87,7 @@ public final class ApiRevisionContractInner {
     /**
      * Get the createdDateTime property: The time the API Revision was created. The date conforms to the following
      * format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -96,7 +97,7 @@ public final class ApiRevisionContractInner {
     /**
      * Get the updatedDateTime property: The time the API Revision were updated. The date conforms to the following
      * format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the updatedDateTime value.
      */
     public OffsetDateTime updatedDateTime() {
@@ -105,7 +106,7 @@ public final class ApiRevisionContractInner {
 
     /**
      * Get the description property: Description of the API Revision.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -114,7 +115,7 @@ public final class ApiRevisionContractInner {
 
     /**
      * Get the privateUrl property: Gateway URL for accessing the non-current API Revision.
-     *
+     * 
      * @return the privateUrl value.
      */
     public String privateUrl() {
@@ -123,7 +124,7 @@ public final class ApiRevisionContractInner {
 
     /**
      * Get the isOnline property: Indicates if API revision is the current api revision.
-     *
+     * 
      * @return the isOnline value.
      */
     public Boolean isOnline() {
@@ -132,7 +133,7 @@ public final class ApiRevisionContractInner {
 
     /**
      * Get the isCurrent property: Indicates if API revision is accessible via the gateway.
-     *
+     * 
      * @return the isCurrent value.
      */
     public Boolean isCurrent() {
@@ -141,9 +142,60 @@ public final class ApiRevisionContractInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiRevisionContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiRevisionContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiRevisionContractInner.
+     */
+    public static ApiRevisionContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiRevisionContractInner deserializedApiRevisionContractInner = new ApiRevisionContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiId".equals(fieldName)) {
+                    deserializedApiRevisionContractInner.apiId = reader.getString();
+                } else if ("apiRevision".equals(fieldName)) {
+                    deserializedApiRevisionContractInner.apiRevision = reader.getString();
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedApiRevisionContractInner.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedDateTime".equals(fieldName)) {
+                    deserializedApiRevisionContractInner.updatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedApiRevisionContractInner.description = reader.getString();
+                } else if ("privateUrl".equals(fieldName)) {
+                    deserializedApiRevisionContractInner.privateUrl = reader.getString();
+                } else if ("isOnline".equals(fieldName)) {
+                    deserializedApiRevisionContractInner.isOnline = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isCurrent".equals(fieldName)) {
+                    deserializedApiRevisionContractInner.isCurrent = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiRevisionContractInner;
+        });
     }
 }

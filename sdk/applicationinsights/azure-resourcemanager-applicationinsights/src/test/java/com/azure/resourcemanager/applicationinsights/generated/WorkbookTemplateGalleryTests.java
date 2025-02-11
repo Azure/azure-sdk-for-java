@@ -11,32 +11,28 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkbookTemplateGalleryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkbookTemplateGallery model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ah\",\"category\":\"jyzhpvgq\",\"type\":\"j\",\"order\":391970506,\"resourceType\":\"jzlmw\"}")
-                .toObject(WorkbookTemplateGallery.class);
-        Assertions.assertEquals("ah", model.name());
-        Assertions.assertEquals("jyzhpvgq", model.category());
-        Assertions.assertEquals("j", model.type());
-        Assertions.assertEquals(391970506, model.order());
-        Assertions.assertEquals("jzlmw", model.resourceType());
+        WorkbookTemplateGallery model = BinaryData.fromString(
+            "{\"name\":\"kpzksmondjmq\",\"category\":\"vypomgkopkwho\",\"type\":\"pajqgxysm\",\"order\":1907336189,\"resourceType\":\"qfqvmkc\"}")
+            .toObject(WorkbookTemplateGallery.class);
+        Assertions.assertEquals("kpzksmondjmq", model.name());
+        Assertions.assertEquals("vypomgkopkwho", model.category());
+        Assertions.assertEquals("pajqgxysm", model.type());
+        Assertions.assertEquals(1907336189, model.order());
+        Assertions.assertEquals("qfqvmkc", model.resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookTemplateGallery model =
-            new WorkbookTemplateGallery()
-                .withName("ah")
-                .withCategory("jyzhpvgq")
-                .withType("j")
-                .withOrder(391970506)
-                .withResourceType("jzlmw");
+        WorkbookTemplateGallery model = new WorkbookTemplateGallery().withName("kpzksmondjmq")
+            .withCategory("vypomgkopkwho")
+            .withType("pajqgxysm")
+            .withOrder(1907336189)
+            .withResourceType("qfqvmkc");
         model = BinaryData.fromObject(model).toObject(WorkbookTemplateGallery.class);
-        Assertions.assertEquals("ah", model.name());
-        Assertions.assertEquals("jyzhpvgq", model.category());
-        Assertions.assertEquals("j", model.type());
-        Assertions.assertEquals(391970506, model.order());
-        Assertions.assertEquals("jzlmw", model.resourceType());
+        Assertions.assertEquals("kpzksmondjmq", model.name());
+        Assertions.assertEquals("vypomgkopkwho", model.category());
+        Assertions.assertEquals("pajqgxysm", model.type());
+        Assertions.assertEquals(1907336189, model.order());
+        Assertions.assertEquals("qfqvmkc", model.resourceType());
     }
 }

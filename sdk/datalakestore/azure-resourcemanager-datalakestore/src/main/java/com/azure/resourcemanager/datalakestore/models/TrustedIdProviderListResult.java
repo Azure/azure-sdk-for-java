@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakestore.fluent.models.TrustedIdProviderInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Data Lake Store trusted identity provider list information. */
+/**
+ * Data Lake Store trusted identity provider list information.
+ */
 @Immutable
-public final class TrustedIdProviderListResult {
+public final class TrustedIdProviderListResult implements JsonSerializable<TrustedIdProviderListResult> {
     /*
      * The results of the list operation.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<TrustedIdProviderInner> value;
 
     /*
      * The link (url) to the next page of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of TrustedIdProviderListResult class. */
+    /**
+     * Creates an instance of TrustedIdProviderListResult class.
+     */
     public TrustedIdProviderListResult() {
     }
 
     /**
      * Get the value property: The results of the list operation.
-     *
+     * 
      * @return the value value.
      */
     public List<TrustedIdProviderInner> value() {
@@ -39,7 +45,7 @@ public final class TrustedIdProviderListResult {
 
     /**
      * Get the nextLink property: The link (url) to the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,12 +54,51 @@ public final class TrustedIdProviderListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrustedIdProviderListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrustedIdProviderListResult if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrustedIdProviderListResult.
+     */
+    public static TrustedIdProviderListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrustedIdProviderListResult deserializedTrustedIdProviderListResult = new TrustedIdProviderListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<TrustedIdProviderInner> value
+                        = reader.readArray(reader1 -> TrustedIdProviderInner.fromJson(reader1));
+                    deserializedTrustedIdProviderListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedTrustedIdProviderListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrustedIdProviderListResult;
+        });
     }
 }

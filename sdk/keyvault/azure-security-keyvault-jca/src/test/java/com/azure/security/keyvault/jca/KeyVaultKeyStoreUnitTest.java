@@ -20,8 +20,7 @@ public class KeyVaultKeyStoreUnitTest {
     /**
      * Stores the CER test certificate (which is valid til 2120).
      */
-    private static final String TEST_CERTIFICATE
-        = "MIIDeDCCAmCgAwIBAgIQGghBu97rQJKNnUHPWU7xjDANBgkqhkiG9w0BAQsFADAk"
+    private static final String TEST_CERTIFICATE = "MIIDeDCCAmCgAwIBAgIQGghBu97rQJKNnUHPWU7xjDANBgkqhkiG9w0BAQsFADAk"
         + "MSIwIAYDVQQDExlodW5kcmVkLXllYXJzLmV4YW1wbGUuY29tMCAXDTIwMDkwMjE3"
         + "NDUyNFoYDzIxMjAwOTAyMTc1NTI0WjAkMSIwIAYDVQQDExlodW5kcmVkLXllYXJz"
         + "LmV4YW1wbGUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuU14"
@@ -82,8 +81,8 @@ public class KeyVaultKeyStoreUnitTest {
         try {
             byte[] certificateBytes = Base64.getDecoder().decode(TEST_CERTIFICATE);
             CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-            certificate =
-                (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(certificateBytes));
+            certificate
+                = (X509Certificate) certificateFactory.generateCertificate(new ByteArrayInputStream(certificateBytes));
         } catch (CertificateException e) {
             throw new ProviderException(e);
         }

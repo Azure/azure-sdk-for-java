@@ -27,9 +27,13 @@ public final class InMageRcmNicDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmNicDetails model = new InMageRcmNicDetails().withIsPrimaryNic("c").withIsSelectedForFailover("rsvloy")
-            .withTargetIpAddress("dbgsosc").withTargetIpAddressType(EthernetAddressType.STATIC)
-            .withTargetSubnetName("zfvbennmfkbpj").withTestSubnetName("tekwwnthropm").withTestIpAddress("d")
+        InMageRcmNicDetails model = new InMageRcmNicDetails().withIsPrimaryNic("c")
+            .withIsSelectedForFailover("rsvloy")
+            .withTargetIpAddress("dbgsosc")
+            .withTargetIpAddressType(EthernetAddressType.STATIC)
+            .withTargetSubnetName("zfvbennmfkbpj")
+            .withTestSubnetName("tekwwnthropm")
+            .withTestIpAddress("d")
             .withTestIpAddressType(EthernetAddressType.DYNAMIC);
         model = BinaryData.fromObject(model).toObject(InMageRcmNicDetails.class);
         Assertions.assertEquals("c", model.isPrimaryNic());

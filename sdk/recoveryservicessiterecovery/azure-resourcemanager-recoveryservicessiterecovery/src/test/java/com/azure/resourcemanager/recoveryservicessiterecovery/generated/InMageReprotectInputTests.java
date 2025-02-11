@@ -34,7 +34,9 @@ public final class InMageReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageReprotectInput model = new InMageReprotectInput().withMasterTargetId("ujjgnfgrzxbarc")
-            .withProcessServerId("paefzqsy").withRetentionDrive("jwenjcytesmf").withRunAsAccountId("r")
+            .withProcessServerId("paefzqsy")
+            .withRetentionDrive("jwenjcytesmf")
+            .withRunAsAccountId("r")
             .withDatastoreName("odqhuauzmzivrt")
             .withDiskExclusionInput(new InMageDiskExclusionInput().withVolumeOptions(Arrays.asList(
                 new InMageVolumeExclusionOptions().withVolumeLabel("ezvhj").withOnlyExcludeIfSingleVolume("xdyyrud"),
@@ -43,7 +45,8 @@ public final class InMageReprotectInputTests {
                 new InMageVolumeExclusionOptions().withVolumeLabel("ija").withOnlyExcludeIfSingleVolume("ndmuvardlmz")))
                 .withDiskSignatureOptions(
                     Arrays.asList(new InMageDiskSignatureExclusionOptions().withDiskSignature("r"))))
-            .withProfileId("muhcuhtuzl").withDisksToInclude(Arrays.asList("yo", "garp", "ctwrapcz", "ojqyvzes"));
+            .withProfileId("muhcuhtuzl")
+            .withDisksToInclude(Arrays.asList("yo", "garp", "ctwrapcz", "ojqyvzes"));
         model = BinaryData.fromObject(model).toObject(InMageReprotectInput.class);
         Assertions.assertEquals("ujjgnfgrzxbarc", model.masterTargetId());
         Assertions.assertEquals("paefzqsy", model.processServerId());

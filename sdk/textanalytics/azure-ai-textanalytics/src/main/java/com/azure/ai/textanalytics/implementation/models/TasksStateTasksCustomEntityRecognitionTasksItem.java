@@ -59,14 +59,15 @@ public final class TasksStateTasksCustomEntityRecognitionTasksItem extends TaskS
      */
     public static TasksStateTasksCustomEntityRecognitionTasksItem fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            TasksStateTasksCustomEntityRecognitionTasksItem deserializedTasksStateTasksCustomEntityRecognitionTasksItem =
-                    new TasksStateTasksCustomEntityRecognitionTasksItem();
+            TasksStateTasksCustomEntityRecognitionTasksItem deserializedTasksStateTasksCustomEntityRecognitionTasksItem
+                = new TasksStateTasksCustomEntityRecognitionTasksItem();
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("results".equals(fieldName)) {
-                    deserializedTasksStateTasksCustomEntityRecognitionTasksItem.results = CustomEntitiesResult.fromJson(reader);
+                    deserializedTasksStateTasksCustomEntityRecognitionTasksItem.results
+                        = CustomEntitiesResult.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

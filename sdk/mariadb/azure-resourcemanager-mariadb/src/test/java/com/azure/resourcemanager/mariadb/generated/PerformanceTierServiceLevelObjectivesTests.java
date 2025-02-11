@@ -11,41 +11,37 @@ import org.junit.jupiter.api.Assertions;
 public final class PerformanceTierServiceLevelObjectivesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PerformanceTierServiceLevelObjectives model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"kacspkw\",\"edition\":\"zdobpxjmflbvvnch\",\"vCore\":812677705,\"hardwareGeneration\":\"iwwzjuqk\",\"maxBackupRetentionDays\":330822059,\"minBackupRetentionDays\":1877680716,\"maxStorageMB\":1410521625,\"minStorageMB\":481973669}")
-                .toObject(PerformanceTierServiceLevelObjectives.class);
-        Assertions.assertEquals("kacspkw", model.id());
-        Assertions.assertEquals("zdobpxjmflbvvnch", model.edition());
-        Assertions.assertEquals(812677705, model.vCore());
-        Assertions.assertEquals("iwwzjuqk", model.hardwareGeneration());
-        Assertions.assertEquals(330822059, model.maxBackupRetentionDays());
-        Assertions.assertEquals(1877680716, model.minBackupRetentionDays());
-        Assertions.assertEquals(1410521625, model.maxStorageMB());
-        Assertions.assertEquals(481973669, model.minStorageMB());
+        PerformanceTierServiceLevelObjectives model = BinaryData.fromString(
+            "{\"id\":\"mddystkiiux\",\"edition\":\"yudxorrqnbp\",\"vCore\":999035629,\"hardwareGeneration\":\"yifqrvkdvjsllrmv\",\"maxBackupRetentionDays\":146352395,\"minBackupRetentionDays\":1391003633,\"maxStorageMB\":1829419035,\"minStorageMB\":207833423}")
+            .toObject(PerformanceTierServiceLevelObjectives.class);
+        Assertions.assertEquals("mddystkiiux", model.id());
+        Assertions.assertEquals("yudxorrqnbp", model.edition());
+        Assertions.assertEquals(999035629, model.vCore());
+        Assertions.assertEquals("yifqrvkdvjsllrmv", model.hardwareGeneration());
+        Assertions.assertEquals(146352395, model.maxBackupRetentionDays());
+        Assertions.assertEquals(1391003633, model.minBackupRetentionDays());
+        Assertions.assertEquals(1829419035, model.maxStorageMB());
+        Assertions.assertEquals(207833423, model.minStorageMB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PerformanceTierServiceLevelObjectives model =
-            new PerformanceTierServiceLevelObjectives()
-                .withId("kacspkw")
-                .withEdition("zdobpxjmflbvvnch")
-                .withVCore(812677705)
-                .withHardwareGeneration("iwwzjuqk")
-                .withMaxBackupRetentionDays(330822059)
-                .withMinBackupRetentionDays(1877680716)
-                .withMaxStorageMB(1410521625)
-                .withMinStorageMB(481973669);
+        PerformanceTierServiceLevelObjectives model = new PerformanceTierServiceLevelObjectives().withId("mddystkiiux")
+            .withEdition("yudxorrqnbp")
+            .withVCore(999035629)
+            .withHardwareGeneration("yifqrvkdvjsllrmv")
+            .withMaxBackupRetentionDays(146352395)
+            .withMinBackupRetentionDays(1391003633)
+            .withMaxStorageMB(1829419035)
+            .withMinStorageMB(207833423);
         model = BinaryData.fromObject(model).toObject(PerformanceTierServiceLevelObjectives.class);
-        Assertions.assertEquals("kacspkw", model.id());
-        Assertions.assertEquals("zdobpxjmflbvvnch", model.edition());
-        Assertions.assertEquals(812677705, model.vCore());
-        Assertions.assertEquals("iwwzjuqk", model.hardwareGeneration());
-        Assertions.assertEquals(330822059, model.maxBackupRetentionDays());
-        Assertions.assertEquals(1877680716, model.minBackupRetentionDays());
-        Assertions.assertEquals(1410521625, model.maxStorageMB());
-        Assertions.assertEquals(481973669, model.minStorageMB());
+        Assertions.assertEquals("mddystkiiux", model.id());
+        Assertions.assertEquals("yudxorrqnbp", model.edition());
+        Assertions.assertEquals(999035629, model.vCore());
+        Assertions.assertEquals("yifqrvkdvjsllrmv", model.hardwareGeneration());
+        Assertions.assertEquals(146352395, model.maxBackupRetentionDays());
+        Assertions.assertEquals(1391003633, model.minBackupRetentionDays());
+        Assertions.assertEquals(1829419035, model.maxStorageMB());
+        Assertions.assertEquals(207833423, model.minStorageMB());
     }
 }

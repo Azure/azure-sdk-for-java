@@ -5,69 +5,69 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.models.Amount;
 import com.azure.resourcemanager.consumption.models.CreditBalanceSummary;
 import com.azure.resourcemanager.consumption.models.Reseller;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of the credit summary. */
+/**
+ * The properties of the credit summary.
+ */
 @Immutable
-public final class CreditSummaryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreditSummaryProperties.class);
-
+public final class CreditSummaryProperties implements JsonSerializable<CreditSummaryProperties> {
     /*
      * Summary of balances associated with this credit summary.
      */
-    @JsonProperty(value = "balanceSummary", access = JsonProperty.Access.WRITE_ONLY)
     private CreditBalanceSummary balanceSummary;
 
     /*
      * Pending credit adjustments.
      */
-    @JsonProperty(value = "pendingCreditAdjustments", access = JsonProperty.Access.WRITE_ONLY)
     private Amount pendingCreditAdjustments;
 
     /*
      * Expired credit.
      */
-    @JsonProperty(value = "expiredCredit", access = JsonProperty.Access.WRITE_ONLY)
     private Amount expiredCredit;
 
     /*
      * Pending eligible charges.
      */
-    @JsonProperty(value = "pendingEligibleCharges", access = JsonProperty.Access.WRITE_ONLY)
     private Amount pendingEligibleCharges;
 
     /*
      * The credit currency.
      */
-    @JsonProperty(value = "creditCurrency", access = JsonProperty.Access.WRITE_ONLY)
     private String creditCurrency;
 
     /*
      * The billing currency.
      */
-    @JsonProperty(value = "billingCurrency", access = JsonProperty.Access.WRITE_ONLY)
     private String billingCurrency;
 
     /*
      * Credit's reseller.
      */
-    @JsonProperty(value = "reseller", access = JsonProperty.Access.WRITE_ONLY)
     private Reseller reseller;
 
     /*
      * The eTag for the resource.
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
+     * Creates an instance of CreditSummaryProperties class.
+     */
+    public CreditSummaryProperties() {
+    }
+
+    /**
      * Get the balanceSummary property: Summary of balances associated with this credit summary.
-     *
+     * 
      * @return the balanceSummary value.
      */
     public CreditBalanceSummary balanceSummary() {
@@ -76,7 +76,7 @@ public final class CreditSummaryProperties {
 
     /**
      * Get the pendingCreditAdjustments property: Pending credit adjustments.
-     *
+     * 
      * @return the pendingCreditAdjustments value.
      */
     public Amount pendingCreditAdjustments() {
@@ -85,7 +85,7 @@ public final class CreditSummaryProperties {
 
     /**
      * Get the expiredCredit property: Expired credit.
-     *
+     * 
      * @return the expiredCredit value.
      */
     public Amount expiredCredit() {
@@ -94,7 +94,7 @@ public final class CreditSummaryProperties {
 
     /**
      * Get the pendingEligibleCharges property: Pending eligible charges.
-     *
+     * 
      * @return the pendingEligibleCharges value.
      */
     public Amount pendingEligibleCharges() {
@@ -103,7 +103,7 @@ public final class CreditSummaryProperties {
 
     /**
      * Get the creditCurrency property: The credit currency.
-     *
+     * 
      * @return the creditCurrency value.
      */
     public String creditCurrency() {
@@ -112,7 +112,7 @@ public final class CreditSummaryProperties {
 
     /**
      * Get the billingCurrency property: The billing currency.
-     *
+     * 
      * @return the billingCurrency value.
      */
     public String billingCurrency() {
@@ -121,7 +121,7 @@ public final class CreditSummaryProperties {
 
     /**
      * Get the reseller property: Credit's reseller.
-     *
+     * 
      * @return the reseller value.
      */
     public Reseller reseller() {
@@ -130,7 +130,7 @@ public final class CreditSummaryProperties {
 
     /**
      * Get the etag property: The eTag for the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -139,7 +139,7 @@ public final class CreditSummaryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -158,5 +158,54 @@ public final class CreditSummaryProperties {
         if (reseller() != null) {
             reseller().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreditSummaryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreditSummaryProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CreditSummaryProperties.
+     */
+    public static CreditSummaryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreditSummaryProperties deserializedCreditSummaryProperties = new CreditSummaryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("balanceSummary".equals(fieldName)) {
+                    deserializedCreditSummaryProperties.balanceSummary = CreditBalanceSummary.fromJson(reader);
+                } else if ("pendingCreditAdjustments".equals(fieldName)) {
+                    deserializedCreditSummaryProperties.pendingCreditAdjustments = Amount.fromJson(reader);
+                } else if ("expiredCredit".equals(fieldName)) {
+                    deserializedCreditSummaryProperties.expiredCredit = Amount.fromJson(reader);
+                } else if ("pendingEligibleCharges".equals(fieldName)) {
+                    deserializedCreditSummaryProperties.pendingEligibleCharges = Amount.fromJson(reader);
+                } else if ("creditCurrency".equals(fieldName)) {
+                    deserializedCreditSummaryProperties.creditCurrency = reader.getString();
+                } else if ("billingCurrency".equals(fieldName)) {
+                    deserializedCreditSummaryProperties.billingCurrency = reader.getString();
+                } else if ("reseller".equals(fieldName)) {
+                    deserializedCreditSummaryProperties.reseller = Reseller.fromJson(reader);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedCreditSummaryProperties.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreditSummaryProperties;
+        });
     }
 }

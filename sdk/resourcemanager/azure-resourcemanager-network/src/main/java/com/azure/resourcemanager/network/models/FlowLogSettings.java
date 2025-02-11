@@ -14,11 +14,8 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
  * Client-side representation of the configuration of flow log, associated with network watcher and an Azure resource.
  */
 @Fluent
-public interface FlowLogSettings
-    extends HasParent<NetworkWatcher>,
-        HasInnerModel<FlowLogInformationInner>,
-        Updatable<FlowLogSettings.Update>,
-        Refreshable<FlowLogSettings> {
+public interface FlowLogSettings extends HasParent<NetworkWatcher>, HasInnerModel<FlowLogInformationInner>,
+    Updatable<FlowLogSettings.Update>, Refreshable<FlowLogSettings> {
     /**
      * Get the ID of the resource to configure for flow logging.
      *
@@ -26,19 +23,39 @@ public interface FlowLogSettings
      */
     String targetResourceId();
 
-    /** @return the id of the storage account used to store the flow log */
+    /**
+     * Gets the id of the storage account used to store the flow log.
+     *
+     * @return the id of the storage account used to store the flow log
+     */
     String storageId();
 
-    /** @return true if logging is enabled, false otherwise */
+    /**
+     * Checks whether logging is enabled.
+     *
+     * @return true if logging is enabled, false otherwise
+     */
     boolean enabled();
 
-    /** @return true if retention policy enabled, false otherwise */
+    /**
+     * Checks whether retention policy is enabled.
+     *
+     * @return true if retention policy enabled, false otherwise
+     */
     boolean isRetentionEnabled();
 
-    /** @return the number of days to retain flow log records */
+    /**
+     * Gets the number of days to retain flow log records.
+     *
+     * @return the number of days to retain flow log records
+     */
     int retentionDays();
 
-    /** @return network security group id these flow log settings apply to */
+    /**
+     * Gets network security group id these flow log settings apply to.
+     *
+     * @return network security group id these flow log settings apply to
+     */
     String networkSecurityGroupId();
 
     /** Grouping of flow log information update stages. */
@@ -102,10 +119,7 @@ public interface FlowLogSettings
      *
      * <p>Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update
-        extends Appliable<FlowLogSettings>,
-            UpdateStages.WithEnabled,
-            UpdateStages.WithStorageAccount,
-            UpdateStages.WithRetentionPolicy {
+    interface Update extends Appliable<FlowLogSettings>, UpdateStages.WithEnabled, UpdateStages.WithStorageAccount,
+        UpdateStages.WithRetentionPolicy {
     }
 }

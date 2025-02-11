@@ -12,7 +12,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** Manifest attributes. */
+/**
+ * Manifest attributes.
+ */
 @Fluent
 public final class AcrManifests implements JsonSerializable<AcrManifests> {
     /*
@@ -35,13 +37,16 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
      */
     private String link;
 
-    /** Creates an instance of AcrManifests class. */
-    public AcrManifests() {}
+    /**
+     * Creates an instance of AcrManifests class.
+     */
+    public AcrManifests() {
+    }
 
     /**
      * Get the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
-     *
+     * 
      * @return the registryLoginServer value.
      */
     public String getRegistryLoginServer() {
@@ -51,7 +56,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
     /**
      * Set the registryLoginServer property: Registry login server name. This is likely to be similar to
      * {registry-name}.azurecr.io.
-     *
+     * 
      * @param registryLoginServer the registryLoginServer value to set.
      * @return the AcrManifests object itself.
      */
@@ -62,7 +67,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
 
     /**
      * Get the repository property: Image name.
-     *
+     * 
      * @return the repository value.
      */
     public String getRepository() {
@@ -71,7 +76,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
 
     /**
      * Set the repository property: Image name.
-     *
+     * 
      * @param repository the repository value to set.
      * @return the AcrManifests object itself.
      */
@@ -82,7 +87,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
 
     /**
      * Get the manifests property: List of manifests.
-     *
+     * 
      * @return the manifests value.
      */
     public List<ManifestAttributesBase> getManifests() {
@@ -91,7 +96,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
 
     /**
      * Set the manifests property: List of manifests.
-     *
+     * 
      * @param manifests the manifests value to set.
      * @return the AcrManifests object itself.
      */
@@ -102,7 +107,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
 
     /**
      * Get the link property: The link property.
-     *
+     * 
      * @return the link value.
      */
     public String getLink() {
@@ -111,7 +116,7 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
 
     /**
      * Set the link property: The link property.
-     *
+     * 
      * @param link the link value to set.
      * @return the AcrManifests object itself.
      */
@@ -120,6 +125,9 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -132,36 +140,35 @@ public final class AcrManifests implements JsonSerializable<AcrManifests> {
 
     /**
      * Reads an instance of AcrManifests from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcrManifests if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcrManifests.
      */
     public static AcrManifests fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AcrManifests deserializedAcrManifests = new AcrManifests();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            AcrManifests deserializedAcrManifests = new AcrManifests();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("registry".equals(fieldName)) {
-                            deserializedAcrManifests.registryLoginServer = reader.getString();
-                        } else if ("imageName".equals(fieldName)) {
-                            deserializedAcrManifests.repository = reader.getString();
-                        } else if ("manifests".equals(fieldName)) {
-                            List<ManifestAttributesBase> manifests =
-                                    reader.readArray(reader1 -> ManifestAttributesBase.fromJson(reader1));
-                            deserializedAcrManifests.manifests = manifests;
-                        } else if ("link".equals(fieldName)) {
-                            deserializedAcrManifests.link = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("registry".equals(fieldName)) {
+                    deserializedAcrManifests.registryLoginServer = reader.getString();
+                } else if ("imageName".equals(fieldName)) {
+                    deserializedAcrManifests.repository = reader.getString();
+                } else if ("manifests".equals(fieldName)) {
+                    List<ManifestAttributesBase> manifests
+                        = reader.readArray(reader1 -> ManifestAttributesBase.fromJson(reader1));
+                    deserializedAcrManifests.manifests = manifests;
+                } else if ("link".equals(fieldName)) {
+                    deserializedAcrManifests.link = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAcrManifests;
-                });
+            return deserializedAcrManifests;
+        });
     }
 }

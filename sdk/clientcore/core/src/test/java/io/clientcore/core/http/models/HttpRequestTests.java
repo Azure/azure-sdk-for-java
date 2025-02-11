@@ -36,8 +36,8 @@ public class HttpRequestTests {
     @Test
     public void constructorWithHeaders() {
         final HttpHeaders headers = new HttpHeaders();
-        final HttpRequest request = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri"))
-            .setHeaders(headers);
+        final HttpRequest request
+            = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri")).setHeaders(headers);
 
         assertEquals(HttpMethod.POST, request.getHttpMethod());
         assertEquals(URI.create("http://request.uri"), request.getUri());
@@ -106,12 +106,10 @@ public class HttpRequestTests {
     private static Stream<Arguments> getBinaryDataBodyVariants() {
         return Stream.of(
             // body, expectedContentLength
-            Arguments.of(null, null),
-            Arguments.of(BinaryData.fromString(BODY), BODY_LENGTH),
+            Arguments.of(null, null), Arguments.of(BinaryData.fromString(BODY), BODY_LENGTH),
             Arguments.of(BinaryData.fromBytes(BODY_BYTES), BODY_LENGTH),
             Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(BODY_BYTES)), null),
-            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(BODY_BYTES), BODY_LENGTH), BODY_LENGTH)
-        );
+            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(BODY_BYTES), BODY_LENGTH), BODY_LENGTH));
     }
 
     private Long getContentLength(HttpRequest request) {

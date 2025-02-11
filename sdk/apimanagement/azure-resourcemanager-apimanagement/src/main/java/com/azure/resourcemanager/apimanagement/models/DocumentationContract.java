@@ -7,73 +7,83 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.DocumentationContractInner;
 
-/** An immutable client-side representation of DocumentationContract. */
+/**
+ * An immutable client-side representation of DocumentationContract.
+ */
 public interface DocumentationContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the title property: documentation title.
-     *
+     * 
      * @return the title value.
      */
     String title();
 
     /**
      * Gets the content property: Markdown documentation content.
-     *
+     * 
      * @return the content value.
      */
     String content();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.DocumentationContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     DocumentationContractInner innerModel();
 
-    /** The entirety of the DocumentationContract definition. */
+    /**
+     * The entirety of the DocumentationContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The DocumentationContract definition stages. */
+    /**
+     * The DocumentationContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DocumentationContract definition. */
+        /**
+         * The first stage of the DocumentationContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the DocumentationContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the DocumentationContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -89,50 +99,56 @@ public interface DocumentationContract {
             extends DefinitionStages.WithTitle, DefinitionStages.WithContent, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DocumentationContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             DocumentationContract create(Context context);
         }
 
-        /** The stage of the DocumentationContract definition allowing to specify title. */
+        /**
+         * The stage of the DocumentationContract definition allowing to specify title.
+         */
         interface WithTitle {
             /**
              * Specifies the title property: documentation title..
-             *
+             * 
              * @param title documentation title.
              * @return the next definition stage.
              */
             WithCreate withTitle(String title);
         }
 
-        /** The stage of the DocumentationContract definition allowing to specify content. */
+        /**
+         * The stage of the DocumentationContract definition allowing to specify content.
+         */
         interface WithContent {
             /**
              * Specifies the content property: Markdown documentation content..
-             *
+             * 
              * @param content Markdown documentation content.
              * @return the next definition stage.
              */
             WithCreate withContent(String content);
         }
 
-        /** The stage of the DocumentationContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the DocumentationContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -141,61 +157,71 @@ public interface DocumentationContract {
 
     /**
      * Begins update for the DocumentationContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     DocumentationContract.Update update();
 
-    /** The template for DocumentationContract update. */
+    /**
+     * The template for DocumentationContract update.
+     */
     interface Update extends UpdateStages.WithTitle, UpdateStages.WithContent, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         DocumentationContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         DocumentationContract apply(Context context);
     }
 
-    /** The DocumentationContract update stages. */
+    /**
+     * The DocumentationContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the DocumentationContract update allowing to specify title. */
+        /**
+         * The stage of the DocumentationContract update allowing to specify title.
+         */
         interface WithTitle {
             /**
              * Specifies the title property: documentation title..
-             *
+             * 
              * @param title documentation title.
              * @return the next definition stage.
              */
             Update withTitle(String title);
         }
 
-        /** The stage of the DocumentationContract update allowing to specify content. */
+        /**
+         * The stage of the DocumentationContract update allowing to specify content.
+         */
         interface WithContent {
             /**
              * Specifies the content property: Markdown documentation content..
-             *
+             * 
              * @param content Markdown documentation content.
              * @return the next definition stage.
              */
             Update withContent(String content);
         }
 
-        /** The stage of the DocumentationContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the DocumentationContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -204,14 +230,14 @@ public interface DocumentationContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DocumentationContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

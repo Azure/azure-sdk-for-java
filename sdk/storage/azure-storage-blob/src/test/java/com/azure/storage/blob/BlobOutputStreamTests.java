@@ -126,8 +126,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         String endpoint = "https://account.blob.core.windows.net/";
         byte[] data = getRandomByteArray(10 * Constants.MB);
         HttpClient httpClient = httpRequest -> Mono.error(exception);
-        BlockBlobClient blockBlobClient = new SpecializedBlobClientBuilder()
-            .endpoint(endpoint)
+        BlockBlobClient blockBlobClient = new SpecializedBlobClientBuilder().endpoint(endpoint)
             .containerName("container")
             .blobName("blob")
             .retryOptions(new RetryOptions(new FixedDelayOptions(0, Duration.ofMillis(1))))
@@ -146,8 +145,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
     }
 
     private static Stream<Arguments> blockBlobOutputStreamErrorSupplier() {
-        return Stream.of(
-            Arguments.of(new BlobStorageException(null, null, null), BlobStorageException.class),
+        return Stream.of(Arguments.of(new BlobStorageException(null, null, null), BlobStorageException.class),
             Arguments.of(new IllegalArgumentException(), IllegalArgumentException.class),
             Arguments.of(new IOException(), IOException.class));
     }
@@ -176,9 +174,8 @@ public class BlobOutputStreamTests extends BlobTestBase {
         PageBlobClient pageBlobClient = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         pageBlobClient.create(data.length);
 
-
-        BlobOutputStream outputStream = pageBlobClient.getBlobOutputStream(new PageRange().setStart(0)
-            .setEnd(16 * Constants.MB - 1));
+        BlobOutputStream outputStream
+            = pageBlobClient.getBlobOutputStream(new PageRange().setStart(0).setEnd(16 * Constants.MB - 1));
         outputStream.write(data);
         outputStream.close();
 

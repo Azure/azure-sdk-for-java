@@ -13,11 +13,13 @@ import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountAgreement
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlInner;
 import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 
-/** An instance of this class provides access to all the operations defined in IntegrationAccountAgreementsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationAccountAgreementsClient.
+ */
 public interface IntegrationAccountAgreementsClient {
     /**
      * Gets a list of integration account agreements.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface IntegrationAccountAgreementsClient {
 
     /**
      * Gets a list of integration account agreements.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param top The number of items to be included in the result.
@@ -42,12 +44,12 @@ public interface IntegrationAccountAgreementsClient {
      * @return a list of integration account agreements as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IntegrationAccountAgreementInner> list(
-        String resourceGroupName, String integrationAccountName, Integer top, String filter, Context context);
+    PagedIterable<IntegrationAccountAgreementInner> list(String resourceGroupName, String integrationAccountName,
+        Integer top, String filter, Context context);
 
     /**
      * Gets an integration account agreement.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
@@ -58,12 +60,12 @@ public interface IntegrationAccountAgreementsClient {
      * @return an integration account agreement along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountAgreementInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String agreementName, Context context);
+    Response<IntegrationAccountAgreementInner> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String agreementName, Context context);
 
     /**
      * Gets an integration account agreement.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
@@ -77,7 +79,7 @@ public interface IntegrationAccountAgreementsClient {
 
     /**
      * Creates or updates an integration account agreement.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
@@ -89,16 +91,13 @@ public interface IntegrationAccountAgreementsClient {
      * @return the integration account agreement along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationAccountAgreementInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String agreementName,
-        IntegrationAccountAgreementInner agreement,
+    Response<IntegrationAccountAgreementInner> createOrUpdateWithResponse(String resourceGroupName,
+        String integrationAccountName, String agreementName, IntegrationAccountAgreementInner agreement,
         Context context);
 
     /**
      * Creates or updates an integration account agreement.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
@@ -109,15 +108,12 @@ public interface IntegrationAccountAgreementsClient {
      * @return the integration account agreement.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationAccountAgreementInner createOrUpdate(
-        String resourceGroupName,
-        String integrationAccountName,
-        String agreementName,
-        IntegrationAccountAgreementInner agreement);
+    IntegrationAccountAgreementInner createOrUpdate(String resourceGroupName, String integrationAccountName,
+        String agreementName, IntegrationAccountAgreementInner agreement);
 
     /**
      * Deletes an integration account agreement.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
@@ -128,12 +124,12 @@ public interface IntegrationAccountAgreementsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String agreementName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName, String agreementName,
+        Context context);
 
     /**
      * Deletes an integration account agreement.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
@@ -146,11 +142,11 @@ public interface IntegrationAccountAgreementsClient {
 
     /**
      * Get the content callback url.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
-     * @param listContentCallbackUrl The callback url parameters.
+     * @param listContentCallbackUrl The listContentCallbackUrl parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,29 +154,23 @@ public interface IntegrationAccountAgreementsClient {
      * @return the content callback url along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String agreementName,
-        GetCallbackUrlParameters listContentCallbackUrl,
+    Response<WorkflowTriggerCallbackUrlInner> listContentCallbackUrlWithResponse(String resourceGroupName,
+        String integrationAccountName, String agreementName, GetCallbackUrlParameters listContentCallbackUrl,
         Context context);
 
     /**
      * Get the content callback url.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param agreementName The integration account agreement name.
-     * @param listContentCallbackUrl The callback url parameters.
+     * @param listContentCallbackUrl The listContentCallbackUrl parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the content callback url.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowTriggerCallbackUrlInner listContentCallbackUrl(
-        String resourceGroupName,
-        String integrationAccountName,
-        String agreementName,
-        GetCallbackUrlParameters listContentCallbackUrl);
+    WorkflowTriggerCallbackUrlInner listContentCallbackUrl(String resourceGroupName, String integrationAccountName,
+        String agreementName, GetCallbackUrlParameters listContentCallbackUrl);
 }

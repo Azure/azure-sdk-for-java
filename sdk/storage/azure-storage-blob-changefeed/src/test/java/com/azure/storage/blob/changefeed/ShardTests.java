@@ -66,15 +66,18 @@ public class ShardTests {
         mockChunk2 = mock(Chunk.class);
 
         Supplier<Mono<PagedResponse<BlobItem>>> chunkSupplier = () -> Mono.just(new PagedResponseBase<>(null, 200, null,
-            Arrays.asList(new BlobItem().setName(CHUNK_PATH0).setProperties(new BlobItemProperties().setContentLength(Long.MAX_VALUE)),
-                new BlobItem().setName(CHUNK_PATH1).setProperties(new BlobItemProperties().setContentLength(Long.MAX_VALUE)),
-                new BlobItem().setName(CHUNK_PATH2).setProperties(new BlobItemProperties().setContentLength(Long.MAX_VALUE))),
+            Arrays.asList(
+                new BlobItem().setName(CHUNK_PATH0)
+                    .setProperties(new BlobItemProperties().setContentLength(Long.MAX_VALUE)),
+                new BlobItem().setName(CHUNK_PATH1)
+                    .setProperties(new BlobItemProperties().setContentLength(Long.MAX_VALUE)),
+                new BlobItem().setName(CHUNK_PATH2)
+                    .setProperties(new BlobItemProperties().setContentLength(Long.MAX_VALUE))),
             null, null));
 
         PagedFlux<BlobItem> mockPagedFlux = new PagedFlux<>(chunkSupplier);
 
-        segmentCursor = new ChangefeedCursor(URL_HOST, END_TIME)
-            .toSegmentCursor(SEGMENT_PATH, null)
+        segmentCursor = new ChangefeedCursor(URL_HOST, END_TIME).toSegmentCursor(SEGMENT_PATH, null)
             .toShardCursor(CURRENT_SHARD_PATH0);
 
         when(mockContainer.listBlobs(any(ListBlobsOptions.class))).thenReturn(mockPagedFlux);
@@ -141,7 +144,9 @@ public class ShardTests {
                 .assertNext(tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), CHUNK_PATH1, 1234, 1))
                 .assertNext(tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), CHUNK_PATH1, 1234, 2));
         }
-        if (Objects.equals(chunkPath, CHUNK_PATH0) || Objects.equals(chunkPath, CHUNK_PATH1) || Objects.equals(chunkPath, CHUNK_PATH2)) {
+        if (Objects.equals(chunkPath, CHUNK_PATH0)
+            || Objects.equals(chunkPath, CHUNK_PATH1)
+            || Objects.equals(chunkPath, CHUNK_PATH2)) {
             sv = sv.assertNext(tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), CHUNK_PATH2, 1234, 0))
                 .assertNext(tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), CHUNK_PATH2, 1234, 1))
                 .assertNext(tuple2 -> verifyWrapper(tuple2.getT2(), tuple2.getT1(), CHUNK_PATH2, 1234, 2));
@@ -173,11 +178,8 @@ public class ShardTests {
 
     private static Stream<Arguments> getEventsCursorSupplier() {
         // chunkPath | blockOffset | eventIndex
-        return Stream.of(
-            Arguments.of(CHUNK_PATH0, 1234, 10),
-            Arguments.of(CHUNK_PATH1, 5678, 5),
-            Arguments.of(CHUNK_PATH2, 435, 9)
-        );
+        return Stream.of(Arguments.of(CHUNK_PATH0, 1234, 10), Arguments.of(CHUNK_PATH1, 5678, 5),
+            Arguments.of(CHUNK_PATH2, 435, 9));
     }
 
     private static void verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, String chunkPath,
@@ -190,9 +192,12 @@ public class ShardTests {
         assertEquals(1, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().size());
 
         /* Make sure the cursor associated with the event is also correct. */
-        assertEquals(chunkPath, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath());
-        assertEquals(blockOffset, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset());
-        assertEquals(blockIndex, wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex());
+        assertEquals(chunkPath,
+            wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getCurrentChunkPath());
+        assertEquals(blockOffset,
+            wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getBlockOffset());
+        assertEquals(blockIndex,
+            wrapper.getCursor().getCurrentSegmentCursor().getShardCursors().get(0).getEventIndex());
 
         /* Make sure the event in the wrapper is what was expected. */
         assertEquals(MockedChangefeedResources.getMockBlobChangefeedEvent((int) (index % 3)), wrapper.getEvent());

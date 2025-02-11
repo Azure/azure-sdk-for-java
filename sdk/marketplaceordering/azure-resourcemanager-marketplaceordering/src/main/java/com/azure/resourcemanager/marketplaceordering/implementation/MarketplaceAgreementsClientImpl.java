@@ -26,27 +26,33 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.marketplaceordering.fluent.MarketplaceAgreementsClient;
 import com.azure.resourcemanager.marketplaceordering.fluent.models.AgreementTermsInner;
+import com.azure.resourcemanager.marketplaceordering.fluent.models.OldAgreementTermsInner;
+import com.azure.resourcemanager.marketplaceordering.fluent.models.OldAgreementTermsListInner;
 import com.azure.resourcemanager.marketplaceordering.models.OfferType;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MarketplaceAgreementsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MarketplaceAgreementsClient.
+ */
 public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreementsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MarketplaceAgreementsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MarketplaceOrderingAgreementsImpl client;
 
     /**
      * Initializes an instance of MarketplaceAgreementsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MarketplaceAgreementsClientImpl(MarketplaceOrderingAgreementsImpl client) {
-        this.service =
-            RestProxy
-                .create(MarketplaceAgreementsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(MarketplaceAgreementsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,105 +62,67 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      */
     @Host("{$host}")
     @ServiceInterface(name = "MarketplaceOrderingA")
-    private interface MarketplaceAgreementsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/offerTypes/{offerType}/publishers"
-                + "/{publisherId}/offers/{offerId}/plans/{planId}/agreements/current")
-        @ExpectedResponses({200})
+    public interface MarketplaceAgreementsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/offerTypes/{offerType}/publishers/{publisherId}/offers/{offerId}/plans/{planId}/agreements/current")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgreementTermsInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("offerType") OfferType offerType,
-            @PathParam("publisherId") String publisherId,
-            @PathParam("offerId") String offerId,
-            @PathParam("planId") String planId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<AgreementTermsInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("offerType") OfferType offerType, @PathParam("publisherId") String publisherId,
+            @PathParam("offerId") String offerId, @PathParam("planId") String planId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/offerTypes/{offerType}/publishers/{publisherId}/offers/{offerId}/plans/{planId}/agreements/current")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AgreementTermsInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("offerType") OfferType offerType,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("publisherId") String publisherId,
+            @PathParam("offerId") String offerId, @PathParam("planId") String planId,
+            @BodyParam("application/json") AgreementTermsInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/offerTypes/{offerType}/publishers"
-                + "/{publisherId}/offers/{offerId}/plans/{planId}/agreements/current")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers/{offerId}/plans/{planId}/sign")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgreementTermsInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("offerType") OfferType offerType,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("publisherId") String publisherId,
-            @PathParam("offerId") String offerId,
-            @PathParam("planId") String planId,
-            @BodyParam("application/json") AgreementTermsInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OldAgreementTermsInner>> sign(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("publisherId") String publisherId, @PathParam("offerId") String offerId,
+            @PathParam("planId") String planId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers"
-                + "/{offerId}/plans/{planId}/sign")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers/{offerId}/plans/{planId}/cancel")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgreementTermsInner>> sign(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("publisherId") String publisherId,
-            @PathParam("offerId") String offerId,
-            @PathParam("planId") String planId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OldAgreementTermsInner>> cancel(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("publisherId") String publisherId, @PathParam("offerId") String offerId,
+            @PathParam("planId") String planId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers"
-                + "/{offerId}/plans/{planId}/cancel")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers/{offerId}/plans/{planId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgreementTermsInner>> cancel(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("publisherId") String publisherId,
-            @PathParam("offerId") String offerId,
-            @PathParam("planId") String planId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OldAgreementTermsInner>> getAgreement(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("publisherId") String publisherId, @PathParam("offerId") String offerId,
+            @PathParam("planId") String planId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements/{publisherId}/offers"
-                + "/{offerId}/plans/{planId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AgreementTermsInner>> getAgreement(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("publisherId") String publisherId,
-            @PathParam("offerId") String offerId,
-            @PathParam("planId") String planId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.MarketplaceOrdering/agreements")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<AgreementTermsInner>>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<OldAgreementTermsListInner>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get marketplace terms.
-     *
+     * 
      * @param offerType Offer Type, currently only virtualmachine type is supported.
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
@@ -165,19 +133,15 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return marketplace terms along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgreementTermsInner>> getWithResponseAsync(
-        OfferType offerType, String publisherId, String offerId, String planId) {
+    private Mono<Response<AgreementTermsInner>> getWithResponseAsync(OfferType offerType, String publisherId,
+        String offerId, String planId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (offerType == null) {
             return Mono.error(new IllegalArgumentException("Parameter offerType is required and cannot be null."));
@@ -193,25 +157,14 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            offerType,
-                            publisherId,
-                            offerId,
-                            planId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), offerType, publisherId, offerId, planId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get marketplace terms.
-     *
+     * 
      * @param offerType Offer Type, currently only virtualmachine type is supported.
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
@@ -223,19 +176,15 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return marketplace terms along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgreementTermsInner>> getWithResponseAsync(
-        OfferType offerType, String publisherId, String offerId, String planId, Context context) {
+    private Mono<Response<AgreementTermsInner>> getWithResponseAsync(OfferType offerType, String publisherId,
+        String offerId, String planId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (offerType == null) {
             return Mono.error(new IllegalArgumentException("Parameter offerType is required and cannot be null."));
@@ -251,22 +200,13 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                offerType,
-                publisherId,
-                offerId,
-                planId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            offerType, publisherId, offerId, planId, accept, context);
     }
 
     /**
      * Get marketplace terms.
-     *
+     * 
      * @param offerType Offer Type, currently only virtualmachine type is supported.
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
@@ -279,36 +219,12 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AgreementTermsInner> getAsync(OfferType offerType, String publisherId, String offerId, String planId) {
         return getWithResponseAsync(offerType, publisherId, offerId, planId)
-            .flatMap(
-                (Response<AgreementTermsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get marketplace terms.
-     *
-     * @param offerType Offer Type, currently only virtualmachine type is supported.
-     * @param publisherId Publisher identifier string of image being deployed.
-     * @param offerId Offer identifier string of image being deployed.
-     * @param planId Plan identifier string of image being deployed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace terms.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgreementTermsInner get(OfferType offerType, String publisherId, String offerId, String planId) {
-        return getAsync(offerType, publisherId, offerId, planId).block();
-    }
-
-    /**
-     * Get marketplace terms.
-     *
+     * 
      * @param offerType Offer Type, currently only virtualmachine type is supported.
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
@@ -320,14 +236,31 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return marketplace terms along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgreementTermsInner> getWithResponse(
-        OfferType offerType, String publisherId, String offerId, String planId, Context context) {
+    public Response<AgreementTermsInner> getWithResponse(OfferType offerType, String publisherId, String offerId,
+        String planId, Context context) {
         return getWithResponseAsync(offerType, publisherId, offerId, planId, context).block();
     }
 
     /**
+     * Get marketplace terms.
+     * 
+     * @param offerType Offer Type, currently only virtualmachine type is supported.
+     * @param publisherId Publisher identifier string of image being deployed.
+     * @param offerId Offer identifier string of image being deployed.
+     * @param planId Plan identifier string of image being deployed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return marketplace terms.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgreementTermsInner get(OfferType offerType, String publisherId, String offerId, String planId) {
+        return getWithResponse(offerType, publisherId, offerId, planId, Context.NONE).getValue();
+    }
+
+    /**
      * Save marketplace terms.
-     *
+     * 
      * @param offerType Offer Type, currently only virtualmachine type is supported.
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
@@ -337,25 +270,21 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgreementTermsInner>> createWithResponseAsync(
-        OfferType offerType, String publisherId, String offerId, String planId, AgreementTermsInner parameters) {
+    private Mono<Response<AgreementTermsInner>> createWithResponseAsync(OfferType offerType, String publisherId,
+        String offerId, String planId, AgreementTermsInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (offerType == null) {
             return Mono.error(new IllegalArgumentException("Parameter offerType is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (publisherId == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherId is required and cannot be null."));
@@ -373,26 +302,14 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            offerType,
-                            this.client.getSubscriptionId(),
-                            publisherId,
-                            offerId,
-                            planId,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), offerType,
+                this.client.getSubscriptionId(), publisherId, offerId, planId, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Save marketplace terms.
-     *
+     * 
      * @param offerType Offer Type, currently only virtualmachine type is supported.
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
@@ -403,30 +320,21 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgreementTermsInner>> createWithResponseAsync(
-        OfferType offerType,
-        String publisherId,
-        String offerId,
-        String planId,
-        AgreementTermsInner parameters,
-        Context context) {
+    private Mono<Response<AgreementTermsInner>> createWithResponseAsync(OfferType offerType, String publisherId,
+        String offerId, String planId, AgreementTermsInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (offerType == null) {
             return Mono.error(new IllegalArgumentException("Parameter offerType is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (publisherId == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherId is required and cannot be null."));
@@ -444,23 +352,13 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                offerType,
-                this.client.getSubscriptionId(),
-                publisherId,
-                offerId,
-                planId,
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), offerType,
+            this.client.getSubscriptionId(), publisherId, offerId, planId, parameters, accept, context);
     }
 
     /**
      * Save marketplace terms.
-     *
+     * 
      * @param offerType Offer Type, currently only virtualmachine type is supported.
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
@@ -472,41 +370,15 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return terms properties for provided Publisher/Offer/Plan tuple on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgreementTermsInner> createAsync(
-        OfferType offerType, String publisherId, String offerId, String planId, AgreementTermsInner parameters) {
+    private Mono<AgreementTermsInner> createAsync(OfferType offerType, String publisherId, String offerId,
+        String planId, AgreementTermsInner parameters) {
         return createWithResponseAsync(offerType, publisherId, offerId, planId, parameters)
-            .flatMap(
-                (Response<AgreementTermsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Save marketplace terms.
-     *
-     * @param offerType Offer Type, currently only virtualmachine type is supported.
-     * @param publisherId Publisher identifier string of image being deployed.
-     * @param offerId Offer identifier string of image being deployed.
-     * @param planId Plan identifier string of image being deployed.
-     * @param parameters Parameters supplied to the Create Marketplace Terms operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return terms properties for provided Publisher/Offer/Plan tuple.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgreementTermsInner create(
-        OfferType offerType, String publisherId, String offerId, String planId, AgreementTermsInner parameters) {
-        return createAsync(offerType, publisherId, offerId, planId, parameters).block();
-    }
-
-    /**
-     * Save marketplace terms.
-     *
+     * 
      * @param offerType Offer Type, currently only virtualmachine type is supported.
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
@@ -519,19 +391,33 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgreementTermsInner> createWithResponse(
-        OfferType offerType,
-        String publisherId,
-        String offerId,
-        String planId,
-        AgreementTermsInner parameters,
-        Context context) {
+    public Response<AgreementTermsInner> createWithResponse(OfferType offerType, String publisherId, String offerId,
+        String planId, AgreementTermsInner parameters, Context context) {
         return createWithResponseAsync(offerType, publisherId, offerId, planId, parameters, context).block();
     }
 
     /**
+     * Save marketplace terms.
+     * 
+     * @param offerType Offer Type, currently only virtualmachine type is supported.
+     * @param publisherId Publisher identifier string of image being deployed.
+     * @param offerId Offer identifier string of image being deployed.
+     * @param planId Plan identifier string of image being deployed.
+     * @param parameters Parameters supplied to the Create Marketplace Terms operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return terms properties for provided Publisher/Offer/Plan tuple.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AgreementTermsInner create(OfferType offerType, String publisherId, String offerId, String planId,
+        AgreementTermsInner parameters) {
+        return createWithResponse(offerType, publisherId, offerId, planId, parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Sign marketplace terms.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -539,22 +425,18 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgreementTermsInner>> signWithResponseAsync(
-        String publisherId, String offerId, String planId) {
+    private Mono<Response<OldAgreementTermsInner>> signWithResponseAsync(String publisherId, String offerId,
+        String planId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (publisherId == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherId is required and cannot be null."));
@@ -567,24 +449,14 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .sign(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            publisherId,
-                            offerId,
-                            planId,
-                            accept,
-                            context))
+            .withContext(context -> service.sign(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), publisherId, offerId, planId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Sign marketplace terms.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -593,22 +465,18 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgreementTermsInner>> signWithResponseAsync(
-        String publisherId, String offerId, String planId, Context context) {
+    private Mono<Response<OldAgreementTermsInner>> signWithResponseAsync(String publisherId, String offerId,
+        String planId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (publisherId == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherId is required and cannot be null."));
@@ -621,21 +489,13 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .sign(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                publisherId,
-                offerId,
-                planId,
-                accept,
-                context);
+        return service.sign(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            publisherId, offerId, planId, accept, context);
     }
 
     /**
      * Sign marketplace terms.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -645,37 +505,13 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return terms properties for provided Publisher/Offer/Plan tuple on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgreementTermsInner> signAsync(String publisherId, String offerId, String planId) {
-        return signWithResponseAsync(publisherId, offerId, planId)
-            .flatMap(
-                (Response<AgreementTermsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<OldAgreementTermsInner> signAsync(String publisherId, String offerId, String planId) {
+        return signWithResponseAsync(publisherId, offerId, planId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Sign marketplace terms.
-     *
-     * @param publisherId Publisher identifier string of image being deployed.
-     * @param offerId Offer identifier string of image being deployed.
-     * @param planId Plan identifier string of image being deployed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return terms properties for provided Publisher/Offer/Plan tuple.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgreementTermsInner sign(String publisherId, String offerId, String planId) {
-        return signAsync(publisherId, offerId, planId).block();
-    }
-
-    /**
-     * Sign marketplace terms.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -686,14 +522,30 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgreementTermsInner> signWithResponse(
-        String publisherId, String offerId, String planId, Context context) {
+    public Response<OldAgreementTermsInner> signWithResponse(String publisherId, String offerId, String planId,
+        Context context) {
         return signWithResponseAsync(publisherId, offerId, planId, context).block();
     }
 
     /**
+     * Sign marketplace terms.
+     * 
+     * @param publisherId Publisher identifier string of image being deployed.
+     * @param offerId Offer identifier string of image being deployed.
+     * @param planId Plan identifier string of image being deployed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return terms properties for provided Publisher/Offer/Plan tuple.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OldAgreementTermsInner sign(String publisherId, String offerId, String planId) {
+        return signWithResponse(publisherId, offerId, planId, Context.NONE).getValue();
+    }
+
+    /**
      * Cancel marketplace terms.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -701,22 +553,18 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgreementTermsInner>> cancelWithResponseAsync(
-        String publisherId, String offerId, String planId) {
+    private Mono<Response<OldAgreementTermsInner>> cancelWithResponseAsync(String publisherId, String offerId,
+        String planId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (publisherId == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherId is required and cannot be null."));
@@ -729,24 +577,14 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancel(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            publisherId,
-                            offerId,
-                            planId,
-                            accept,
-                            context))
+            .withContext(context -> service.cancel(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), publisherId, offerId, planId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cancel marketplace terms.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -755,22 +593,18 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgreementTermsInner>> cancelWithResponseAsync(
-        String publisherId, String offerId, String planId, Context context) {
+    private Mono<Response<OldAgreementTermsInner>> cancelWithResponseAsync(String publisherId, String offerId,
+        String planId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (publisherId == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherId is required and cannot be null."));
@@ -783,21 +617,13 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancel(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                publisherId,
-                offerId,
-                planId,
-                accept,
-                context);
+        return service.cancel(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            publisherId, offerId, planId, accept, context);
     }
 
     /**
      * Cancel marketplace terms.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -807,37 +633,13 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return terms properties for provided Publisher/Offer/Plan tuple on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgreementTermsInner> cancelAsync(String publisherId, String offerId, String planId) {
-        return cancelWithResponseAsync(publisherId, offerId, planId)
-            .flatMap(
-                (Response<AgreementTermsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<OldAgreementTermsInner> cancelAsync(String publisherId, String offerId, String planId) {
+        return cancelWithResponseAsync(publisherId, offerId, planId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Cancel marketplace terms.
-     *
-     * @param publisherId Publisher identifier string of image being deployed.
-     * @param offerId Offer identifier string of image being deployed.
-     * @param planId Plan identifier string of image being deployed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return terms properties for provided Publisher/Offer/Plan tuple.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgreementTermsInner cancel(String publisherId, String offerId, String planId) {
-        return cancelAsync(publisherId, offerId, planId).block();
-    }
-
-    /**
-     * Cancel marketplace terms.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -848,14 +650,30 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return terms properties for provided Publisher/Offer/Plan tuple along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgreementTermsInner> cancelWithResponse(
-        String publisherId, String offerId, String planId, Context context) {
+    public Response<OldAgreementTermsInner> cancelWithResponse(String publisherId, String offerId, String planId,
+        Context context) {
         return cancelWithResponseAsync(publisherId, offerId, planId, context).block();
     }
 
     /**
+     * Cancel marketplace terms.
+     * 
+     * @param publisherId Publisher identifier string of image being deployed.
+     * @param offerId Offer identifier string of image being deployed.
+     * @param planId Plan identifier string of image being deployed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return terms properties for provided Publisher/Offer/Plan tuple.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OldAgreementTermsInner cancel(String publisherId, String offerId, String planId) {
+        return cancelWithResponse(publisherId, offerId, planId, Context.NONE).getValue();
+    }
+
+    /**
      * Get marketplace agreement.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -865,19 +683,15 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return marketplace agreement along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgreementTermsInner>> getAgreementWithResponseAsync(
-        String publisherId, String offerId, String planId) {
+    private Mono<Response<OldAgreementTermsInner>> getAgreementWithResponseAsync(String publisherId, String offerId,
+        String planId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (publisherId == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherId is required and cannot be null."));
@@ -890,24 +704,14 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getAgreement(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            publisherId,
-                            offerId,
-                            planId,
-                            accept,
-                            context))
+            .withContext(context -> service.getAgreement(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), publisherId, offerId, planId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get marketplace agreement.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -918,19 +722,15 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return marketplace agreement along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AgreementTermsInner>> getAgreementWithResponseAsync(
-        String publisherId, String offerId, String planId, Context context) {
+    private Mono<Response<OldAgreementTermsInner>> getAgreementWithResponseAsync(String publisherId, String offerId,
+        String planId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (publisherId == null) {
             return Mono.error(new IllegalArgumentException("Parameter publisherId is required and cannot be null."));
@@ -943,21 +743,13 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getAgreement(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                publisherId,
-                offerId,
-                planId,
-                accept,
-                context);
+        return service.getAgreement(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), publisherId, offerId, planId, accept, context);
     }
 
     /**
      * Get marketplace agreement.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -967,37 +759,14 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return marketplace agreement on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AgreementTermsInner> getAgreementAsync(String publisherId, String offerId, String planId) {
+    private Mono<OldAgreementTermsInner> getAgreementAsync(String publisherId, String offerId, String planId) {
         return getAgreementWithResponseAsync(publisherId, offerId, planId)
-            .flatMap(
-                (Response<AgreementTermsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get marketplace agreement.
-     *
-     * @param publisherId Publisher identifier string of image being deployed.
-     * @param offerId Offer identifier string of image being deployed.
-     * @param planId Plan identifier string of image being deployed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return marketplace agreement.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AgreementTermsInner getAgreement(String publisherId, String offerId, String planId) {
-        return getAgreementAsync(publisherId, offerId, planId).block();
-    }
-
-    /**
-     * Get marketplace agreement.
-     *
+     * 
      * @param publisherId Publisher identifier string of image being deployed.
      * @param offerId Offer identifier string of image being deployed.
      * @param planId Plan identifier string of image being deployed.
@@ -1008,123 +777,111 @@ public final class MarketplaceAgreementsClientImpl implements MarketplaceAgreeme
      * @return marketplace agreement along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AgreementTermsInner> getAgreementWithResponse(
-        String publisherId, String offerId, String planId, Context context) {
+    public Response<OldAgreementTermsInner> getAgreementWithResponse(String publisherId, String offerId, String planId,
+        Context context) {
         return getAgreementWithResponseAsync(publisherId, offerId, planId, context).block();
     }
 
     /**
-     * List marketplace agreements in the subscription.
-     *
+     * Get marketplace agreement.
+     * 
+     * @param publisherId Publisher identifier string of image being deployed.
+     * @param offerId Offer identifier string of image being deployed.
+     * @param planId Plan identifier string of image being deployed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of AgreementTerms along with {@link Response} on successful completion of {@link Mono}.
+     * @return marketplace agreement.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<AgreementTermsInner>>> listWithResponseAsync() {
+    public OldAgreementTermsInner getAgreement(String publisherId, String offerId, String planId) {
+        return getAgreementWithResponse(publisherId, offerId, planId, Context.NONE).getValue();
+    }
+
+    /**
+     * List marketplace agreements in the subscription.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agreement Terms definition list along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<OldAgreementTermsListInner>> listWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List marketplace agreements in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of AgreementTerms along with {@link Response} on successful completion of {@link Mono}.
+     * @return agreement Terms definition list along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<AgreementTermsInner>>> listWithResponseAsync(Context context) {
+    private Mono<Response<OldAgreementTermsListInner>> listWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            accept, context);
     }
 
     /**
      * List marketplace agreements in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of AgreementTerms on successful completion of {@link Mono}.
+     * @return agreement Terms definition list on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<AgreementTermsInner>> listAsync() {
-        return listWithResponseAsync()
-            .flatMap(
-                (Response<List<AgreementTermsInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<OldAgreementTermsListInner> listAsync() {
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * List marketplace agreements in the subscription.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of AgreementTerms.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AgreementTermsInner> list() {
-        return listAsync().block();
-    }
-
-    /**
-     * List marketplace agreements in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of AgreementTerms along with {@link Response}.
+     * @return agreement Terms definition list along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AgreementTermsInner>> listWithResponse(Context context) {
+    public Response<OldAgreementTermsListInner> listWithResponse(Context context) {
         return listWithResponseAsync(context).block();
+    }
+
+    /**
+     * List marketplace agreements in the subscription.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return agreement Terms definition list.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OldAgreementTermsListInner list() {
+        return listWithResponse(Context.NONE).getValue();
     }
 }

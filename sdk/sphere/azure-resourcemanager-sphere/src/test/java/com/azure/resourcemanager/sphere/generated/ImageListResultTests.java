@@ -21,18 +21,23 @@ public final class ImageListResultTests {
         Assertions.assertEquals("fouflmmnkzsmo", model.value().get(0).properties().image());
         Assertions.assertEquals("glougpbk", model.value().get(0).properties().imageId());
         Assertions.assertEquals(RegionalDataBoundary.NONE, model.value().get(0).properties().regionalDataBoundary());
+        Assertions.assertEquals("rfidfvzwdz", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ImageListResult model = new ImageListResult().withValue(Arrays.asList(
-            new ImageInner().withProperties(new ImageProperties().withImage("fouflmmnkzsmo").withImageId("glougpbk")
+            new ImageInner().withProperties(new ImageProperties().withImage("fouflmmnkzsmo")
+                .withImageId("glougpbk")
                 .withRegionalDataBoundary(RegionalDataBoundary.NONE)),
-            new ImageInner().withProperties(new ImageProperties().withImage("awrlyx").withImageId("kcprbnw")
-                .withRegionalDataBoundary(RegionalDataBoundary.NONE))));
+            new ImageInner().withProperties(new ImageProperties().withImage("awrlyx")
+                .withImageId("kcprbnw")
+                .withRegionalDataBoundary(RegionalDataBoundary.NONE))))
+            .withNextLink("rfidfvzwdz");
         model = BinaryData.fromObject(model).toObject(ImageListResult.class);
         Assertions.assertEquals("fouflmmnkzsmo", model.value().get(0).properties().image());
         Assertions.assertEquals("glougpbk", model.value().get(0).properties().imageId());
         Assertions.assertEquals(RegionalDataBoundary.NONE, model.value().get(0).properties().regionalDataBoundary());
+        Assertions.assertEquals("rfidfvzwdz", model.nextLink());
     }
 }

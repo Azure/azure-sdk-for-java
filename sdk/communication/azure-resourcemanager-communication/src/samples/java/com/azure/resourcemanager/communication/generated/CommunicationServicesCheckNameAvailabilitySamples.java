@@ -22,9 +22,9 @@ public final class CommunicationServicesCheckNameAvailabilitySamples {
      */
     public static void
         checkNameAvailabilityAvailable(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().checkNameAvailabilityWithResponse(new NameAvailabilityParameters()
-            .withName("MyCommunicationService").withType("Microsoft.Communication/CommunicationServices"),
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .checkNameAvailabilityWithResponse(new NameAvailabilityParameters().withName("MyCommunicationService")
+                .withType("Microsoft.Communication/CommunicationServices"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -39,8 +39,8 @@ public final class CommunicationServicesCheckNameAvailabilitySamples {
      */
     public static void
         checkNameAvailabilityUnavailable(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().checkNameAvailabilityWithResponse(new NameAvailabilityParameters()
-            .withName("MyCommunicationService").withType("Microsoft.Communication/CommunicationServices"),
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .checkNameAvailabilityWithResponse(new NameAvailabilityParameters().withName("MyCommunicationService")
+                .withType("Microsoft.Communication/CommunicationServices"), com.azure.core.util.Context.NONE);
     }
 }

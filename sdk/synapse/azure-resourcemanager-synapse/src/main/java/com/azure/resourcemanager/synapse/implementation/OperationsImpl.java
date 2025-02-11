@@ -28,21 +28,18 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest request, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(request, context);
+    public Response<CheckNameAvailabilityResponse>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest request, Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(request, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -61,12 +58,8 @@ public final class OperationsImpl implements Operations {
     public Response<List<AvailableRpOperation>> listWithResponse(Context context) {
         Response<List<AvailableRpOperationInner>> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new AvailableRpOperationImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -78,21 +71,17 @@ public final class OperationsImpl implements Operations {
     public List<AvailableRpOperation> list() {
         List<AvailableRpOperationInner> inner = this.serviceClient().list();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new AvailableRpOperationImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new AvailableRpOperationImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
     }
 
-    public Response<Void> getLocationHeaderResultWithResponse(
-        String resourceGroupName, String workspaceName, String operationId, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> getLocationHeaderResultWithResponse(String resourceGroupName, String workspaceName,
+        String operationId, Context context) {
+        return this.serviceClient()
             .getLocationHeaderResultWithResponse(resourceGroupName, workspaceName, operationId, context);
     }
 
@@ -100,27 +89,22 @@ public final class OperationsImpl implements Operations {
         this.serviceClient().getLocationHeaderResult(resourceGroupName, workspaceName, operationId);
     }
 
-    public Response<OperationResource> getAzureAsyncHeaderResultWithResponse(
-        String resourceGroupName, String workspaceName, String operationId, Context context) {
-        Response<OperationResourceInner> inner =
-            this
-                .serviceClient()
-                .getAzureAsyncHeaderResultWithResponse(resourceGroupName, workspaceName, operationId, context);
+    public Response<OperationResource> getAzureAsyncHeaderResultWithResponse(String resourceGroupName,
+        String workspaceName, String operationId, Context context) {
+        Response<OperationResourceInner> inner = this.serviceClient()
+            .getAzureAsyncHeaderResultWithResponse(resourceGroupName, workspaceName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public OperationResource getAzureAsyncHeaderResult(
-        String resourceGroupName, String workspaceName, String operationId) {
-        OperationResourceInner inner =
-            this.serviceClient().getAzureAsyncHeaderResult(resourceGroupName, workspaceName, operationId);
+    public OperationResource getAzureAsyncHeaderResult(String resourceGroupName, String workspaceName,
+        String operationId) {
+        OperationResourceInner inner
+            = this.serviceClient().getAzureAsyncHeaderResult(resourceGroupName, workspaceName, operationId);
         if (inner != null) {
             return new OperationResourceImpl(inner, this.manager());
         } else {

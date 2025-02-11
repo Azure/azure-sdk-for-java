@@ -30,7 +30,8 @@ public final class CreateFileSearchToolResourceVectorStoreOptionsList
      *
      * @param vectorStores the fileIds value to set.
      */
-    public CreateFileSearchToolResourceVectorStoreOptionsList(List<CreateFileSearchToolResourceVectorStoreOptions> vectorStores) {
+    public CreateFileSearchToolResourceVectorStoreOptionsList(
+        List<CreateFileSearchToolResourceVectorStoreOptions> vectorStores) {
         this.vectorStores = vectorStores;
     }
 
@@ -62,14 +63,16 @@ public final class CreateFileSearchToolResourceVectorStoreOptionsList
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CreateFileSearchToolResourceVectorStoreOptions.
      */
-    public static CreateFileSearchToolResourceVectorStoreOptionsList fromJson(JsonReader jsonReader) throws IOException {
+    public static CreateFileSearchToolResourceVectorStoreOptionsList fromJson(JsonReader jsonReader)
+        throws IOException {
         return jsonReader.readObject(reader -> {
             List<CreateFileSearchToolResourceVectorStoreOptions> vectorStores = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("vector_stores".equals(fieldName)) {
-                    vectorStores = reader.readArray(reader1 -> CreateFileSearchToolResourceVectorStoreOptions.fromJson(reader1));
+                    vectorStores
+                        = reader.readArray(reader1 -> CreateFileSearchToolResourceVectorStoreOptions.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }

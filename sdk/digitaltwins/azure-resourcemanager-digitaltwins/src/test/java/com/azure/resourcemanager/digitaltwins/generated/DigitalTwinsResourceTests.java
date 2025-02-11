@@ -16,41 +16,27 @@ import org.junit.jupiter.api.Assertions;
 public final class DigitalTwinsResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DigitalTwinsResource model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"ygexpaojakhmsb\",\"tenantId\":\"hcrzevd\",\"userAssignedIdentities\":{\"fsinzgvfcjrwzoxx\":{\"clientId\":\"aolthqtrg\",\"principalId\":\"bpf\"},\"pfxxy\":{\"clientId\":\"felluwfzitonpe\",\"principalId\":\"pjkjlxofpdv\"},\"inuvamiheogn\":{\"clientId\":\"ninmayhuyb\",\"principalId\":\"podepoo\"},\"yevc\":{\"clientId\":\"xzxtheo\",\"principalId\":\"si\"}}},\"location\":\"qi\",\"tags\":{\"bwjzr\":\"un\",\"fublj\":\"fygxgispemvtzfk\",\"aeqjhqjbasvms\":\"fxqeof\"},\"id\":\"jqul\",\"name\":\"gsntnbybkzgcwr\",\"type\":\"clxxwrljdo\"}")
-                .toObject(DigitalTwinsResource.class);
-        Assertions.assertEquals("qi", model.location());
-        Assertions.assertEquals("un", model.tags().get("bwjzr"));
-        Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        DigitalTwinsResource model = BinaryData.fromString(
+            "{\"identity\":{\"type\":\"SystemAssigned,UserAssigned\",\"principalId\":\"zzd\",\"tenantId\":\"qxhocdgeablgphut\",\"userAssignedIdentities\":{\"wcukjfkgiawxk\":{\"clientId\":\"vkaozwyiftyhxhur\",\"principalId\":\"ftyxolniw\"}}},\"location\":\"ypl\",\"tags\":{\"nddhsgcbacph\":\"basyy\",\"nqgoulzndli\":\"jkot\"},\"id\":\"wyqkgfgibm\",\"name\":\"dgak\",\"type\":\"qsrxybzqqed\"}")
+            .toObject(DigitalTwinsResource.class);
+        Assertions.assertEquals("ypl", model.location());
+        Assertions.assertEquals("basyy", model.tags().get("nddhsgcbacph"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DigitalTwinsResource model =
-            new DigitalTwinsResource()
-                .withLocation("qi")
-                .withTags(mapOf("bwjzr", "un", "fublj", "fygxgispemvtzfk", "aeqjhqjbasvms", "fxqeof"))
-                .withIdentity(
-                    new DigitalTwinsIdentity()
-                        .withType(DigitalTwinsIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "fsinzgvfcjrwzoxx",
-                                new UserAssignedIdentity(),
-                                "pfxxy",
-                                new UserAssignedIdentity(),
-                                "inuvamiheogn",
-                                new UserAssignedIdentity(),
-                                "yevc",
-                                new UserAssignedIdentity())));
+        DigitalTwinsResource model = new DigitalTwinsResource().withLocation("ypl")
+            .withTags(mapOf("nddhsgcbacph", "basyy", "nqgoulzndli", "jkot"))
+            .withIdentity(new DigitalTwinsIdentity().withType(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("wcukjfkgiawxk", new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(DigitalTwinsResource.class);
-        Assertions.assertEquals("qi", model.location());
-        Assertions.assertEquals("un", model.tags().get("bwjzr"));
-        Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("ypl", model.location());
+        Assertions.assertEquals("basyy", model.tags().get("nddhsgcbacph"));
+        Assertions.assertEquals(DigitalTwinsIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

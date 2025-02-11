@@ -6,18 +6,20 @@ package com.azure.resourcemanager.automation.models;
 
 import com.azure.resourcemanager.automation.fluent.models.LinkedWorkspaceInner;
 
-/** An immutable client-side representation of LinkedWorkspace. */
+/**
+ * An immutable client-side representation of LinkedWorkspace.
+ */
 public interface LinkedWorkspace {
     /**
      * Gets the id property: Gets the id of the linked workspace.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the inner com.azure.resourcemanager.automation.fluent.models.LinkedWorkspaceInner object.
-     *
+     * 
      * @return the inner object.
      */
     LinkedWorkspaceInner innerModel();

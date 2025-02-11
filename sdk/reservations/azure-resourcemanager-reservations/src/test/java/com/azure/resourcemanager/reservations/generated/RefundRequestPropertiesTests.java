@@ -12,32 +12,27 @@ import org.junit.jupiter.api.Assertions;
 public final class RefundRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RefundRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"sessionId\":\"omzlfmi\",\"scope\":\"wbnb\",\"reservationToReturn\":{\"reservationId\":\"dawkzbali\",\"quantity\":12612409},\"returnReason\":\"hakauhashsf\"}")
-                .toObject(RefundRequestProperties.class);
-        Assertions.assertEquals("omzlfmi", model.sessionId());
-        Assertions.assertEquals("wbnb", model.scope());
-        Assertions.assertEquals("dawkzbali", model.reservationToReturn().reservationId());
-        Assertions.assertEquals(12612409, model.reservationToReturn().quantity());
-        Assertions.assertEquals("hakauhashsf", model.returnReason());
+        RefundRequestProperties model = BinaryData.fromString(
+            "{\"sessionId\":\"nlqidybyxczf\",\"scope\":\"haaxdbabphl\",\"reservationToReturn\":{\"reservationId\":\"lfktsths\",\"quantity\":2034865697},\"returnReason\":\"mnyyazt\"}")
+            .toObject(RefundRequestProperties.class);
+        Assertions.assertEquals("nlqidybyxczf", model.sessionId());
+        Assertions.assertEquals("haaxdbabphl", model.scope());
+        Assertions.assertEquals("lfktsths", model.reservationToReturn().reservationId());
+        Assertions.assertEquals(2034865697, model.reservationToReturn().quantity());
+        Assertions.assertEquals("mnyyazt", model.returnReason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RefundRequestProperties model =
-            new RefundRequestProperties()
-                .withSessionId("omzlfmi")
-                .withScope("wbnb")
-                .withReservationToReturn(
-                    new ReservationToReturn().withReservationId("dawkzbali").withQuantity(12612409))
-                .withReturnReason("hakauhashsf");
+        RefundRequestProperties model = new RefundRequestProperties().withSessionId("nlqidybyxczf")
+            .withScope("haaxdbabphl")
+            .withReservationToReturn(new ReservationToReturn().withReservationId("lfktsths").withQuantity(2034865697))
+            .withReturnReason("mnyyazt");
         model = BinaryData.fromObject(model).toObject(RefundRequestProperties.class);
-        Assertions.assertEquals("omzlfmi", model.sessionId());
-        Assertions.assertEquals("wbnb", model.scope());
-        Assertions.assertEquals("dawkzbali", model.reservationToReturn().reservationId());
-        Assertions.assertEquals(12612409, model.reservationToReturn().quantity());
-        Assertions.assertEquals("hakauhashsf", model.returnReason());
+        Assertions.assertEquals("nlqidybyxczf", model.sessionId());
+        Assertions.assertEquals("haaxdbabphl", model.scope());
+        Assertions.assertEquals("lfktsths", model.reservationToReturn().reservationId());
+        Assertions.assertEquals(2034865697, model.reservationToReturn().quantity());
+        Assertions.assertEquals("mnyyazt", model.returnReason());
     }
 }

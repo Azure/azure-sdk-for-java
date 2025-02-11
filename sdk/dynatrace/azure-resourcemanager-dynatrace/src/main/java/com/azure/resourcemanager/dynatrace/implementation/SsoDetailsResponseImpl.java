@@ -15,8 +15,8 @@ public final class SsoDetailsResponseImpl implements SsoDetailsResponse {
 
     private final com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager;
 
-    SsoDetailsResponseImpl(
-        SsoDetailsResponseInner innerObject, com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
+    SsoDetailsResponseImpl(SsoDetailsResponseInner innerObject,
+        com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

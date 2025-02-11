@@ -44,12 +44,14 @@ public class AmazonRedshiftLinkedService extends LinkedService {
     private Object database;
 
     /*
-     * The TCP port number that the Amazon Redshift server uses to listen for client connections. The default value is 5439. Type: integer (or Expression with resultType integer).
+     * The TCP port number that the Amazon Redshift server uses to listen for client connections. The default value is
+     * 5439. Type: integer (or Expression with resultType integer).
      */
     private Object port;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

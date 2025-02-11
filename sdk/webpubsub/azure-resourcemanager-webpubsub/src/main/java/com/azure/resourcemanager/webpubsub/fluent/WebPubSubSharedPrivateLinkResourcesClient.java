@@ -19,7 +19,7 @@ import com.azure.resourcemanager.webpubsub.fluent.models.SharedPrivateLinkResour
 public interface WebPubSubSharedPrivateLinkResourcesClient {
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,7 +32,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
 
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -46,7 +46,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -57,12 +57,12 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @return the specified shared private link resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SharedPrivateLinkResourceInner> getWithResponse(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
+    Response<SharedPrivateLinkResourceInner> getWithResponse(String sharedPrivateLinkResourceName,
+        String resourceGroupName, String resourceName, Context context);
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -72,12 +72,12 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @return the specified shared private link resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedPrivateLinkResourceInner get(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName);
+    SharedPrivateLinkResourceInner get(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName);
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -89,14 +89,12 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
+        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
         SharedPrivateLinkResourceInner parameters);
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -109,15 +107,12 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SharedPrivateLinkResourceInner>, SharedPrivateLinkResourceInner> beginCreateOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters,
-        Context context);
+        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName,
+        SharedPrivateLinkResourceInner parameters, Context context);
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -128,15 +123,12 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @return describes a Shared Private Link Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedPrivateLinkResourceInner createOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters);
+    SharedPrivateLinkResourceInner createOrUpdate(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, SharedPrivateLinkResourceInner parameters);
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -148,16 +140,12 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @return describes a Shared Private Link Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SharedPrivateLinkResourceInner createOrUpdate(
-        String sharedPrivateLinkResourceName,
-        String resourceGroupName,
-        String resourceName,
-        SharedPrivateLinkResourceInner parameters,
-        Context context);
+    SharedPrivateLinkResourceInner createOrUpdate(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, SharedPrivateLinkResourceInner parameters, Context context);
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -167,12 +155,12 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName);
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -183,12 +171,12 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String sharedPrivateLinkResourceName, String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -201,7 +189,7 @@ public interface WebPubSubSharedPrivateLinkResourcesClient {
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.

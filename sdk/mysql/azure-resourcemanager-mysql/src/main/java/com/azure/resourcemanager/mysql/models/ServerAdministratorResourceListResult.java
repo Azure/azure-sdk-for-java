@@ -14,7 +14,8 @@ import java.util.List;
 /** The response to a list Active Directory Administrators request. */
 @Fluent
 public final class ServerAdministratorResourceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerAdministratorResourceListResult.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerAdministratorResourceListResult.class);
 
     /*
      * The list of server Active Directory Administrators for the server.

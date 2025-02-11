@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.GetUserTablesSqlSyncTaskOu
 public final class GetUserTablesSqlSyncTaskOutputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GetUserTablesSqlSyncTaskOutput model =
-            BinaryData
-                .fromString(
-                    "{\"databasesToSourceTables\":\"jphuopxodlqi\",\"databasesToTargetTables\":\"torzih\",\"tableValidationErrors\":\"osjswsr\",\"validationErrors\":[{\"message\":\"zrpzb\",\"actionableMessage\":\"ckqqzqioxiysui\",\"filePath\":\"ynkedyatrwyhqmib\",\"lineNumber\":\"hwit\",\"hResult\":1364304656,\"stackTrace\":\"yynpcdpumnzgmwz\"},{\"message\":\"abikns\",\"actionableMessage\":\"gj\",\"filePath\":\"bldtlww\",\"lineNumber\":\"kdmtncvokotll\",\"hResult\":1085578683,\"stackTrace\":\"gsyocogj\"},{\"message\":\"dtbnnha\",\"actionableMessage\":\"ocrkvcikh\",\"filePath\":\"p\",\"lineNumber\":\"qgxqquezikyw\",\"hResult\":1344310513,\"stackTrace\":\"allatmelwuipic\"},{\"message\":\"zkzivgvvcnay\",\"actionableMessage\":\"yrnxxmueedn\",\"filePath\":\"dvstkw\",\"lineNumber\":\"tchealmf\",\"hResult\":149792642,\"stackTrace\":\"aygdvwvgpioh\"}]}")
-                .toObject(GetUserTablesSqlSyncTaskOutput.class);
+        GetUserTablesSqlSyncTaskOutput model = BinaryData.fromString(
+            "{\"databasesToSourceTables\":\"lkfg\",\"databasesToTargetTables\":\"dneu\",\"tableValidationErrors\":\"fphsdyhtozfikdow\",\"validationErrors\":[{\"message\":\"v\",\"actionableMessage\":\"xclvit\",\"filePath\":\"qzonosggbhcohf\",\"lineNumber\":\"sjnkal\",\"hResult\":391766197,\"stackTrace\":\"iswac\"},{\"message\":\"gdkz\",\"actionableMessage\":\"wkfvhqcrailvp\",\"filePath\":\"pfuflrw\",\"lineNumber\":\"hdlxyjrxsagafcn\",\"hResult\":781571507,\"stackTrace\":\"qapnedgfbcv\"}]}")
+            .toObject(GetUserTablesSqlSyncTaskOutput.class);
     }
 
     @org.junit.jupiter.api.Test

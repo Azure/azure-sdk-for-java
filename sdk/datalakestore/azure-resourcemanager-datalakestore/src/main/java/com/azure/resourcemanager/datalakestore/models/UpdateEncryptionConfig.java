@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The encryption configuration used to update a user managed Key Vault key. */
+/**
+ * The encryption configuration used to update a user managed Key Vault key.
+ */
 @Fluent
-public final class UpdateEncryptionConfig {
+public final class UpdateEncryptionConfig implements JsonSerializable<UpdateEncryptionConfig> {
     /*
      * The updated Key Vault key to use in user managed key rotation.
      */
-    @JsonProperty(value = "keyVaultMetaInfo")
     private UpdateKeyVaultMetaInfo keyVaultMetaInfo;
 
-    /** Creates an instance of UpdateEncryptionConfig class. */
+    /**
+     * Creates an instance of UpdateEncryptionConfig class.
+     */
     public UpdateEncryptionConfig() {
     }
 
     /**
      * Get the keyVaultMetaInfo property: The updated Key Vault key to use in user managed key rotation.
-     *
+     * 
      * @return the keyVaultMetaInfo value.
      */
     public UpdateKeyVaultMetaInfo keyVaultMetaInfo() {
@@ -31,7 +38,7 @@ public final class UpdateEncryptionConfig {
 
     /**
      * Set the keyVaultMetaInfo property: The updated Key Vault key to use in user managed key rotation.
-     *
+     * 
      * @param keyVaultMetaInfo the keyVaultMetaInfo value to set.
      * @return the UpdateEncryptionConfig object itself.
      */
@@ -42,12 +49,48 @@ public final class UpdateEncryptionConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVaultMetaInfo() != null) {
             keyVaultMetaInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("keyVaultMetaInfo", this.keyVaultMetaInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateEncryptionConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateEncryptionConfig if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateEncryptionConfig.
+     */
+    public static UpdateEncryptionConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateEncryptionConfig deserializedUpdateEncryptionConfig = new UpdateEncryptionConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultMetaInfo".equals(fieldName)) {
+                    deserializedUpdateEncryptionConfig.keyVaultMetaInfo = UpdateKeyVaultMetaInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateEncryptionConfig;
+        });
     }
 }

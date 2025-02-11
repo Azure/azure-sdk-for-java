@@ -18,13 +18,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Represents a extension collection associated with a virtual machine. */
-class VirtualMachineExtensionsImpl
-    extends ExternalChildResourcesCachedImpl<
-        VirtualMachineExtensionImpl,
-        VirtualMachineExtension,
-        VirtualMachineExtensionInner,
-        VirtualMachineImpl,
-        VirtualMachine> {
+class VirtualMachineExtensionsImpl extends
+    ExternalChildResourcesCachedImpl<VirtualMachineExtensionImpl, VirtualMachineExtension, VirtualMachineExtensionInner, VirtualMachineImpl, VirtualMachine> {
     private final VirtualMachineExtensionsClient client;
 
     /**
@@ -39,36 +34,39 @@ class VirtualMachineExtensionsImpl
         this.cacheCollection();
     }
 
-    /** @return the extension as a map indexed by name. */
+    /**
+     * Gets the extension as a map indexed by name.
+     *
+     * @return the extension as a map indexed by name.
+     */
     public Map<String, VirtualMachineExtension> asMap() {
         return this.asMapAsync().block();
     }
 
-    /** @return an observable emits extensions in this collection as a map indexed by name. */
+    /**
+     * Gets an observable emits extensions in this collection as a map indexed by name.
+     *
+     * @return an observable emits extensions in this collection as a map indexed by name.
+     */
     public Mono<Map<String, VirtualMachineExtension>> asMapAsync() {
-        return listAsync()
-            .flatMapMany(Flux::fromIterable)
+        return listAsync().flatMapMany(Flux::fromIterable)
             .collect(Collectors.toMap(extension -> extension.name(), extension -> extension))
             .map(map -> Collections.unmodifiableMap(map));
     }
 
-    /** @return a Mono emits extensions in this collection */
+    /**
+     * Gets a Mono emits extensions in this collection.
+     *
+     * @return a Mono emits extensions in this collection
+     */
     public Mono<List<VirtualMachineExtension>> listAsync() {
         Flux<VirtualMachineExtensionImpl> extensions = Flux.fromIterable(this.collection().values());
         // Resolve reference getExtensions
-        Flux<VirtualMachineExtension> resolvedExtensionsStream =
-            extensions
-                .filter(extension -> extension.isReference())
-                .flatMap(
-                    extension ->
-                        client
-                            .getAsync(getParent().resourceGroupName(), getParent().name(), extension.name())
-                            .map(
-                                extensionInner ->
-                                    new VirtualMachineExtensionImpl(
-                                        extension.name(), getParent(), extensionInner, client)));
-        return resolvedExtensionsStream
-            .concatWith(extensions.filter(extension -> !extension.isReference()))
+        Flux<VirtualMachineExtension> resolvedExtensionsStream = extensions.filter(extension -> extension.isReference())
+            .flatMap(extension -> client.getAsync(getParent().resourceGroupName(), getParent().name(), extension.name())
+                .map(extensionInner -> new VirtualMachineExtensionImpl(extension.name(), getParent(), extensionInner,
+                    client)));
+        return resolvedExtensionsStream.concatWith(extensions.filter(extension -> !extension.isReference()))
             .collectList()
             .map(list -> Collections.unmodifiableList(list));
     }
@@ -120,10 +118,8 @@ class VirtualMachineExtensionsImpl
                 if (inner.name() == null) {
                     // This extension exists in the parent VM extension collection as a reference id.
                     inner.withLocation(getParent().regionName());
-                    childResources
-                        .add(
-                            new VirtualMachineExtensionImpl(
-                                ResourceUtils.nameFromResourceId(inner.id()), this.getParent(), inner, this.client));
+                    childResources.add(new VirtualMachineExtensionImpl(ResourceUtils.nameFromResourceId(inner.id()),
+                        this.getParent(), inner, this.client));
                 } else {
                     // This extension exists in the parent VM as a fully blown object
                     childResources
@@ -141,8 +137,8 @@ class VirtualMachineExtensionsImpl
 
     @Override
     protected VirtualMachineExtensionImpl newChildResource(String name) {
-        VirtualMachineExtensionImpl extension =
-            VirtualMachineExtensionImpl.newVirtualMachineExtension(name, this.getParent(), this.client);
+        VirtualMachineExtensionImpl extension
+            = VirtualMachineExtensionImpl.newVirtualMachineExtension(name, this.getParent(), this.client);
         return extension;
     }
 }

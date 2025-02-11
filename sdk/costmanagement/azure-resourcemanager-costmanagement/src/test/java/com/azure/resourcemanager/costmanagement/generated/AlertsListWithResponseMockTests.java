@@ -6,59 +6,30 @@ package com.azure.resourcemanager.costmanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.costmanagement.CostManagementManager;
 import com.azure.resourcemanager.costmanagement.models.AlertsResult;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AlertsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"definition\":{\"type\":\"General\",\"category\":\"Cost\",\"criteria\":\"MultiCurrency\"},\"description\":\"gamxzkrrcoiis\",\"source\":\"User\",\"details\":{\"timeGrainType\":\"Monthly\",\"periodStartDate\":\"cekuz\",\"triggeredBy\":\"sbezaxyfukzxuizh\",\"resourceGroupFilter\":[\"dataepkpe\"],\"resourceFilter\":[\"datarx\",\"dataiubxdukec\"],\"meterFilter\":[\"dataazvdhctmmkosz\",\"datadblnsntrp\",\"dataaqkiofkb\"],\"tagFilter\":\"datamhklbnl\",\"operator\":\"EqualTo\",\"unit\":\"hez\",\"contactEmails\":[\"usqxutrpbrr\",\"yuuatvlmbjwcolbm\"],\"contactGroups\":[\"nwtpcpahprz\"],\"contactRoles\":[\"hmtfho\",\"nxzcm\",\"hngxnoqrxtd\"],\"overridingAlert\":\"njevhdlmydidw\",\"departmentName\":\"pfwwt\",\"companyName\":\"doesxxhmwcdb\",\"enrollmentNumber\":\"yo\",\"enrollmentStartDate\":\"xkxhnegknjzrbhtm\",\"enrollmentEndDate\":\"lvukaobrlb\"},\"costEntityId\":\"nbagnchj\",\"status\":\"Dismissed\",\"creationTime\":\"uowakyw\",\"closeTime\":\"hjym\",\"modificationTime\":\"gqtagd\",\"statusModificationUserName\":\"lss\",\"statusModificationTime\":\"jomevtfycnlb\"},\"eTag\":\"jcodkkgjiiytssi\",\"id\":\"izbcufqbvntnr\",\"name\":\"mqso\",\"type\":\"hcekxgnlykm\"},{\"properties\":{\"definition\":{\"type\":\"General\",\"category\":\"Cost\",\"criteria\":\"ForecastCostThresholdExceeded\"},\"description\":\"sqdtiwlwxlbon\",\"source\":\"User\",\"details\":{\"timeGrainType\":\"Monthly\",\"periodStartDate\":\"cqchygtvxbyjane\",\"triggeredBy\":\"bdpkxyqvgx\",\"resourceGroupFilter\":[\"datadetv\"],\"resourceFilter\":[\"dataxdxuwsaifmc\",\"datanosbz\",\"dataehgcvkbcknjo\",\"datagjyy\"],\"meterFilter\":[\"dataels\",\"dataerqzevxo\"],\"tagFilter\":\"dataintxwa\",\"operator\":\"GreaterThan\",\"unit\":\"blqwaafrqulhmzy\",\"contactEmails\":[\"vafjrqpjiyrqj\"],\"contactGroups\":[\"a\",\"wmzwdfkbnrzorpdl\",\"bqc\",\"qjf\"],\"contactRoles\":[\"saetgzdgvpyig\",\"aqqilzdcduwjoed\"],\"overridingAlert\":\"gucaif\",\"departmentName\":\"urwwgilfjq\",\"companyName\":\"cdmkxwxdcvjw\",\"enrollmentNumber\":\"z\",\"enrollmentStartDate\":\"keciqchxrtuicd\",\"enrollmentEndDate\":\"wdfmmpzhzzwvywr\"},\"costEntityId\":\"gydgrpxncakiq\",\"status\":\"Dismissed\",\"creationTime\":\"jrkc\",\"closeTime\":\"mgglvlmfe\",\"modificationTime\":\"oqeykglt\",\"statusModificationUserName\":\"xhqf\",\"statusModificationTime\":\"ka\"},\"eTag\":\"jsxtlgflwfgziiuc\",\"id\":\"jjceatlijjjr\",\"name\":\"va\",\"type\":\"caszk\"},{\"properties\":{\"definition\":{\"type\":\"Budget\",\"category\":\"Usage\",\"criteria\":\"ForecastUsageThresholdExceeded\"},\"description\":\"vkunmign\",\"source\":\"Preset\",\"details\":{\"timeGrainType\":\"Monthly\",\"periodStartDate\":\"ogjwpindedvabbxb\",\"triggeredBy\":\"edeilb\",\"resourceGroupFilter\":[\"datafcfxzirzzihvwy\",\"datausuv\",\"dataslczwciidjsllf\"],\"resourceFilter\":[\"datadmvxadq\",\"datacfrgnawbabgfbkt\",\"datajmfczlfsyqkf\"],\"meterFilter\":[\"datag\",\"datawoxqm\"],\"tagFilter\":\"dataajcxnyqgxhl\",\"operator\":\"GreaterThanOrEqualTo\",\"unit\":\"simjceagbjqvlsu\",\"contactEmails\":[\"ashxgonoyjfqi\"],\"contactGroups\":[\"yznclkfkee\"],\"contactRoles\":[\"opemtu\"],\"overridingAlert\":\"ujlyegq\",\"departmentName\":\"nigflqqbtnyj\",\"companyName\":\"lxdbfvabmvms\",\"enrollmentNumber\":\"aevwjcnkot\",\"enrollmentStartDate\":\"wuhvaj\",\"enrollmentEndDate\":\"ilfemjj\"},\"costEntityId\":\"zwjiqullq\",\"status\":\"Dismissed\",\"creationTime\":\"vr\",\"closeTime\":\"mqerndb\",\"modificationTime\":\"yeofltfnnxrkad\",\"statusModificationUserName\":\"ynnfmuiii\",\"statusModificationTime\":\"pfoh\"},\"eTag\":\"fkx\",\"id\":\"bcbrwjiutgnjizbe\",\"name\":\"woiymrvz\",\"type\":\"juyrsrziuctixg\"},{\"properties\":{\"definition\":{\"type\":\"Budget\",\"category\":\"Billing\",\"criteria\":\"CostThresholdExceeded\"},\"description\":\"aapezkiswqjmdghs\",\"source\":\"User\",\"details\":{\"timeGrainType\":\"BillingMonth\",\"periodStartDate\":\"ufptb\",\"triggeredBy\":\"z\",\"resourceGroupFilter\":[\"dataiuiyqvldas\",\"datav\",\"datapisqqzlgcndhzx\",\"datarfc\"],\"resourceFilter\":[\"datahkhg\"],\"meterFilter\":[\"datauww\",\"datapphefsbzx\"],\"tagFilter\":\"datazxomeikjclwz\",\"operator\":\"LessThanOrEqualTo\",\"unit\":\"fsuqtaazyqbxy\",\"contactEmails\":[\"puq\"],\"contactGroups\":[\"ezxlhdjzqdca\",\"wvpsoz\"],\"contactRoles\":[\"hjriyb\"],\"overridingAlert\":\"zo\",\"departmentName\":\"nxwdvwnjkg\",\"companyName\":\"nmx\",\"enrollmentNumber\":\"rsqftib\",\"enrollmentStartDate\":\"ibuyvpirf\",\"enrollmentEndDate\":\"pnqn\"},\"costEntityId\":\"sbede\",\"status\":\"None\",\"creationTime\":\"k\",\"closeTime\":\"hxvucnu\",\"modificationTime\":\"mnhjevdyzn\",\"statusModificationUserName\":\"jsvkskmqozzkivy\",\"statusModificationTime\":\"rl\"},\"eTag\":\"zji\",\"id\":\"lqfhefkwabs\",\"name\":\"lronqqlmg\",\"type\":\"lqxsjxtelex\"}],\"nextLink\":\"uqbo\"}";
 
-        String responseStr =
-            "{\"value\":[{\"eTag\":\"gqqqxh\",\"id\":\"n\",\"name\":\"rxcpjuisavo\",\"type\":\"qdzfvazivjlfrqtt\"}],\"nextLink\":\"jlkatnwxy\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        CostManagementManager manager = CostManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AlertsResult response = manager.alerts().listWithResponse("scz", com.azure.core.util.Context.NONE).getValue();
 
-        CostManagementManager manager =
-            CostManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AlertsResult response =
-            manager.alerts().listWithResponse("ctxtgzukxi", com.azure.core.util.Context.NONE).getValue();
     }
 }

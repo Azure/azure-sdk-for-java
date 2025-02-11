@@ -6,65 +6,34 @@ package com.azure.resourcemanager.datadog.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datadog.MicrosoftDatadogManager;
 import com.azure.resourcemanager.datadog.models.MonitoringTagRules;
 import com.azure.resourcemanager.datadog.models.TagAction;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class TagRulesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":false,\"filteringTags\":[{\"name\":\"aln\",\"value\":\"xisxyawjoyaqcsl\",\"action\":\"Include\"},{\"name\":\"iidzyexzne\",\"value\":\"xhnrztfolhb\",\"action\":\"Exclude\"},{\"name\":\"alaulppggdtpnapn\",\"value\":\"ropuhpigv\",\"action\":\"Exclude\"},{\"name\":\"gqgitxmedjvcsl\",\"value\":\"qwwncw\",\"action\":\"Include\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"rmgucnap\",\"value\":\"eoellwptfdygp\",\"action\":\"Include\"},{\"name\":\"ac\",\"value\":\"pzfqrhhuaoppp\",\"action\":\"Include\"},{\"name\":\"xolzdahzx\",\"value\":\"obgbkdmoizp\",\"action\":\"Exclude\"}]},\"automuting\":false},\"id\":\"cfbu\",\"name\":\"rmfqjhhkxbpvj\",\"type\":\"mjh\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Accepted\",\"logRules\":{\"sendAadLogs\":true,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":false,\"filteringTags\":[{\"name\":\"aln\",\"value\":\"xisxyawjoyaqcsl\",\"action\":\"Include\"},{\"name\":\"iidzyexzne\",\"value\":\"xhnrztfolhb\",\"action\":\"Exclude\"},{\"name\":\"alaulppggdtpnapn\",\"value\":\"ropuhpigv\",\"action\":\"Exclude\"},{\"name\":\"gqgitxmedjvcsl\",\"value\":\"qwwncw\",\"action\":\"Include\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"rmgucnap\",\"value\":\"eoellwptfdygp\",\"action\":\"Include\"},{\"name\":\"ac\",\"value\":\"pzfqrhhuaoppp\",\"action\":\"Include\"},{\"name\":\"xolzdahzx\",\"value\":\"obgbkdmoizp\",\"action\":\"Exclude\"}]},\"automuting\":false},\"id\":\"cfbu\",\"name\":\"rmfqjhhkxbpvj\",\"type\":\"mjh\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MicrosoftDatadogManager manager = MicrosoftDatadogManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        MicrosoftDatadogManager manager =
-            MicrosoftDatadogManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        MonitoringTagRules response =
-            manager
-                .tagRules()
-                .getWithResponse("uusdttouwa", "oekqvk", "lns", com.azure.core.util.Context.NONE)
-                .getValue();
+        MonitoringTagRules response = manager.tagRules()
+            .getWithResponse("uusdttouwa", "oekqvk", "lns", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals(true, response.properties().logRules().sendAadLogs());
         Assertions.assertEquals(false, response.properties().logRules().sendSubscriptionLogs());

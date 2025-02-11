@@ -81,6 +81,10 @@ public final class OrderItemResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public OrderItemResourceInner innerModel() {
         return this.innerObject;
     }
@@ -103,20 +107,16 @@ public final class OrderItemResourceImpl
     }
 
     public OrderItemResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .createOrderItem(orderItemName, resourceGroupName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .createOrderItem(orderItemName, resourceGroupName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public OrderItemResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .createOrderItem(orderItemName, resourceGroupName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .createOrderItem(orderItemName, resourceGroupName, this.innerModel(), context);
         return this;
     }
 
@@ -133,63 +133,53 @@ public final class OrderItemResourceImpl
     }
 
     public OrderItemResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .updateOrderItem(
-                    orderItemName, resourceGroupName, updateOrderItemUpdateParameter, updateIfMatch, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .updateOrderItem(orderItemName, resourceGroupName, updateOrderItemUpdateParameter, updateIfMatch,
+                Context.NONE);
         return this;
     }
 
     public OrderItemResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .updateOrderItem(
-                    orderItemName, resourceGroupName, updateOrderItemUpdateParameter, updateIfMatch, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .updateOrderItem(orderItemName, resourceGroupName, updateOrderItemUpdateParameter, updateIfMatch, context);
         return this;
     }
 
-    OrderItemResourceImpl(
-        OrderItemResourceInner innerObject, com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
+    OrderItemResourceImpl(OrderItemResourceInner innerObject,
+        com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.orderItemName = Utils.getValueFromIdByName(innerObject.id(), "orderItems");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.orderItemName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "orderItems");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
     }
 
     public OrderItemResource refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .getOrderItemByNameWithResponse(orderItemName, resourceGroupName, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .getOrderItemByNameWithResponse(orderItemName, resourceGroupName, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public OrderItemResource refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getResourceProviders()
-                .getOrderItemByNameWithResponse(orderItemName, resourceGroupName, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getResourceProviders()
+            .getOrderItemByNameWithResponse(orderItemName, resourceGroupName, localExpand, context)
+            .getValue();
         return this;
+    }
+
+    public Response<Void> cancelOrderItemWithResponse(CancellationReason cancellationReason, Context context) {
+        return serviceManager.resourceProviders()
+            .cancelOrderItemWithResponse(orderItemName, resourceGroupName, cancellationReason, context);
     }
 
     public void cancelOrderItem(CancellationReason cancellationReason) {
         serviceManager.resourceProviders().cancelOrderItem(orderItemName, resourceGroupName, cancellationReason);
-    }
-
-    public Response<Void> cancelOrderItemWithResponse(CancellationReason cancellationReason, Context context) {
-        return serviceManager
-            .resourceProviders()
-            .cancelOrderItemWithResponse(orderItemName, resourceGroupName, cancellationReason, context);
     }
 
     public void returnOrderItem(ReturnOrderItemDetails returnOrderItemDetails) {
@@ -197,8 +187,7 @@ public final class OrderItemResourceImpl
     }
 
     public void returnOrderItem(ReturnOrderItemDetails returnOrderItemDetails, Context context) {
-        serviceManager
-            .resourceProviders()
+        serviceManager.resourceProviders()
             .returnOrderItem(orderItemName, resourceGroupName, returnOrderItemDetails, context);
     }
 

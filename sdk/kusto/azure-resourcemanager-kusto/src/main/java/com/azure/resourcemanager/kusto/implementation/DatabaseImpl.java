@@ -6,6 +6,7 @@ package com.azure.resourcemanager.kusto.implementation;
 
 import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.kusto.models.Database;
+import com.azure.resourcemanager.kusto.models.Kind;
 
 public final class DatabaseImpl implements Database {
     private DatabaseInner innerObject;
@@ -27,6 +28,10 @@ public final class DatabaseImpl implements Database {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public Kind kind() {
+        return this.innerModel().kind();
     }
 
     public String location() {

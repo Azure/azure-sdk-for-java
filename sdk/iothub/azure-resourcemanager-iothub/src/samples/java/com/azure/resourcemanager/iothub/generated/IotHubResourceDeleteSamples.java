@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-/** Samples for IotHubResource Delete. */
+/**
+ * Samples for IotHubResource Delete.
+ */
 public final class IotHubResourceDeleteSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_delete.json
+     * x-ms-original-file:
+     * specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_delete.json
      */
     /**
      * Sample code: IotHubResource_Delete.
-     *
+     * 
      * @param manager Entry point to IotHubManager.
      */
     public static void iotHubResourceDelete(com.azure.resourcemanager.iothub.IotHubManager manager) {

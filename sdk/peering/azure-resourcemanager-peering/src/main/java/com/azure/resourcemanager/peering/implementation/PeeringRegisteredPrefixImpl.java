@@ -73,24 +73,20 @@ public final class PeeringRegisteredPrefixImpl
     }
 
     public PeeringRegisteredPrefix create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredPrefixes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringName, registeredPrefixName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredPrefixes()
+            .createOrUpdateWithResponse(resourceGroupName, peeringName, registeredPrefixName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeeringRegisteredPrefix create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredPrefixes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringName, registeredPrefixName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredPrefixes()
+            .createOrUpdateWithResponse(resourceGroupName, peeringName, registeredPrefixName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -105,53 +101,45 @@ public final class PeeringRegisteredPrefixImpl
     }
 
     public PeeringRegisteredPrefix apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredPrefixes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringName, registeredPrefixName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredPrefixes()
+            .createOrUpdateWithResponse(resourceGroupName, peeringName, registeredPrefixName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeeringRegisteredPrefix apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredPrefixes()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, peeringName, registeredPrefixName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredPrefixes()
+            .createOrUpdateWithResponse(resourceGroupName, peeringName, registeredPrefixName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    PeeringRegisteredPrefixImpl(
-        PeeringRegisteredPrefixInner innerObject, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    PeeringRegisteredPrefixImpl(PeeringRegisteredPrefixInner innerObject,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.peeringName = Utils.getValueFromIdByName(innerObject.id(), "peerings");
-        this.registeredPrefixName = Utils.getValueFromIdByName(innerObject.id(), "registeredPrefixes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.peeringName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "peerings");
+        this.registeredPrefixName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registeredPrefixes");
     }
 
     public PeeringRegisteredPrefix refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredPrefixes()
-                .getWithResponse(resourceGroupName, peeringName, registeredPrefixName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredPrefixes()
+            .getWithResponse(resourceGroupName, peeringName, registeredPrefixName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PeeringRegisteredPrefix refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegisteredPrefixes()
-                .getWithResponse(resourceGroupName, peeringName, registeredPrefixName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegisteredPrefixes()
+            .getWithResponse(resourceGroupName, peeringName, registeredPrefixName, context)
+            .getValue();
         return this;
     }
 

@@ -4,7 +4,7 @@
 package io.clientcore.core.models.traits;
 
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpRedirectOptions;
 import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -30,7 +30,7 @@ import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
  * @see HttpClient
  * @see HttpPipeline
  * @see HttpPipelinePolicy
- * @see HttpLogOptions
+ * @see HttpInstrumentationOptions
  * @see HttpRetryOptions
  * @see HttpRedirectOptions
  */
@@ -106,9 +106,21 @@ public interface HttpTrait<T extends HttpTrait<T>> {
     T httpRetryOptions(HttpRetryOptions retryOptions);
 
     /**
-     * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from the
-     * service. If a {@code logLevel} is not provided, default value of {@link HttpLogOptions.HttpLogDetailLevel#NONE}
-     * is set.
+     * Sets the {@link HttpInstrumentationOptions instrumentation configuration} to use when recording telemetry about HTTP
+     * requests sent to the service and responses received from it.
+     * <p>
+     * By default, when instrumentation options are not provided (explicitly or via environment variables), the following
+     * defaults are used:
+     * <ul>
+     *     <li>Detailed HTTP logging about requests and responses is disabled</li>
+     *     <li>Distributed tracing is enabled. If OpenTelemetry is found on the classpath, HTTP requests are
+     *     captured as OpenTelemetry spans.
+     *     If OpenTelemetry is not found on the classpath, the same information is captured in logs.
+     *     HTTP request spans contain basic information about the request, such as the HTTP method, URL, status code and
+     *     duration.
+     *     See {@link io.clientcore.core.http.pipeline.HttpInstrumentationPolicy} for
+     *     the details.</li>
+     * </ul>
      *
      * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
      * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
@@ -117,13 +129,13 @@ public interface HttpTrait<T extends HttpTrait<T>> {
      * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
-     * and from the service.
+     * @param instrumentationOptions The {@link HttpInstrumentationOptions configuration} to use when recording telemetry about HTTP
+     * requests sent to the service and responses received from it.
      *
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
      * operations.
      */
-    T httpLogOptions(HttpLogOptions logOptions);
+    T httpInstrumentationOptions(HttpInstrumentationOptions instrumentationOptions);
 
     /**
      * Sets the {@link HttpRedirectOptions} for all the requests made through the client.

@@ -9,6 +9,8 @@ import java.util.Map;
 @Fluent()
 public interface HasBackendNics {
     /**
+     * Gets a map of names of the IP configurations of network interfaces assigned to this backend.
+     *
      * @return a map of names of the IP configurations of network interfaces assigned to this backend, indexed by their
      *     NIC's resource id
      */

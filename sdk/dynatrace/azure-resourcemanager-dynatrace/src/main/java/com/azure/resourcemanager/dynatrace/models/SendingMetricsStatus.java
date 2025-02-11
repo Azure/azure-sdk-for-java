@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates whether metrics are being sent. */
+/**
+ * Indicates whether metrics are being sent.
+ */
 public final class SendingMetricsStatus extends ExpandableStringEnum<SendingMetricsStatus> {
-    /** Static value Enabled for SendingMetricsStatus. */
+    /**
+     * Static value Enabled for SendingMetricsStatus.
+     */
     public static final SendingMetricsStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for SendingMetricsStatus. */
+    /**
+     * Static value Disabled for SendingMetricsStatus.
+     */
     public static final SendingMetricsStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of SendingMetricsStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class SendingMetricsStatus extends ExpandableStringEnum<SendingMetr
 
     /**
      * Creates or finds a SendingMetricsStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SendingMetricsStatus.
      */
-    @JsonCreator
     public static SendingMetricsStatus fromString(String name) {
         return fromString(name, SendingMetricsStatus.class);
     }
 
     /**
      * Gets known SendingMetricsStatus values.
-     *
+     * 
      * @return known SendingMetricsStatus values.
      */
     public static Collection<SendingMetricsStatus> values() {

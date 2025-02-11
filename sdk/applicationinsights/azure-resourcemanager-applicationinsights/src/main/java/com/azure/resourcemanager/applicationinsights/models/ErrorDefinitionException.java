@@ -7,11 +7,13 @@ package com.azure.resourcemanager.applicationinsights.models;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.exception.ManagementException;
 
-/** Exception thrown for an invalid response with ErrorDefinition information. */
+/**
+ * Exception thrown for an invalid response with ErrorDefinition information.
+ */
 public final class ErrorDefinitionException extends ManagementException {
     /**
      * Initializes a new instance of the ErrorDefinitionException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -21,7 +23,7 @@ public final class ErrorDefinitionException extends ManagementException {
 
     /**
      * Initializes a new instance of the ErrorDefinitionException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
@@ -30,7 +32,9 @@ public final class ErrorDefinitionException extends ManagementException {
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ErrorDefinition getValue() {
         return (ErrorDefinition) super.getValue();

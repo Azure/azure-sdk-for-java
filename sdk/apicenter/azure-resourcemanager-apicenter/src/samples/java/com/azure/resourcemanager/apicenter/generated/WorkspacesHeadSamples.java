@@ -18,7 +18,7 @@ public final class WorkspacesHeadSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void workspacesHead(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.workspaces().headWithResponse("contoso-resources", "contoso", "default",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .headWithResponse("contoso-resources", "contoso", "default", com.azure.core.util.Context.NONE);
     }
 }

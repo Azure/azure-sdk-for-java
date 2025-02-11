@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,20 +20,17 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.notificationhubs.fluent.NotificationHubsRPClient;
+import com.azure.resourcemanager.notificationhubs.fluent.NotificationHubsManagementClient;
 import com.azure.resourcemanager.notificationhubs.implementation.NamespacesImpl;
 import com.azure.resourcemanager.notificationhubs.implementation.NotificationHubsImpl;
-import com.azure.resourcemanager.notificationhubs.implementation.NotificationHubsRPClientBuilder;
+import com.azure.resourcemanager.notificationhubs.implementation.NotificationHubsManagementClientBuilder;
 import com.azure.resourcemanager.notificationhubs.implementation.OperationsImpl;
-import com.azure.resourcemanager.notificationhubs.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.notificationhubs.models.Namespaces;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubs;
 import com.azure.resourcemanager.notificationhubs.models.Operations;
-import com.azure.resourcemanager.notificationhubs.models.PrivateEndpointConnections;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -42,25 +40,25 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to NotificationHubsManager.
- * Microsoft Notification Hubs Resource Provider REST API.
+ * Azure NotificationHub client.
  */
 public final class NotificationHubsManager {
-    private NotificationHubs notificationHubs;
+    private Operations operations;
 
     private Namespaces namespaces;
 
-    private Operations operations;
+    private NotificationHubs notificationHubs;
 
-    private PrivateEndpointConnections privateEndpointConnections;
-
-    private final NotificationHubsRPClient clientObject;
+    private final NotificationHubsManagementClient clientObject;
 
     private NotificationHubsManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new NotificationHubsRPClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+        this.clientObject = new NotificationHubsManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -211,12 +209,19 @@ public final class NotificationHubsManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.notificationhubs")
-                .append("/").append("1.0.0-beta.4");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.notificationhubs")
+                .append("/")
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -235,45 +240,23 @@ public final class NotificationHubsManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new NotificationHubsManager(httpPipeline, profile, defaultPollInterval);
         }
-    }
-
-    /**
-     * Gets the resource collection API of NotificationHubs. It manages NotificationHubResource,
-     * SharedAccessAuthorizationRuleResource.
-     * 
-     * @return Resource collection API of NotificationHubs.
-     */
-    public NotificationHubs notificationHubs() {
-        if (this.notificationHubs == null) {
-            this.notificationHubs = new NotificationHubsImpl(clientObject.getNotificationHubs(), this);
-        }
-        return notificationHubs;
-    }
-
-    /**
-     * Gets the resource collection API of Namespaces. It manages NamespaceResource.
-     * 
-     * @return Resource collection API of Namespaces.
-     */
-    public Namespaces namespaces() {
-        if (this.namespaces == null) {
-            this.namespaces = new NamespacesImpl(clientObject.getNamespaces(), this);
-        }
-        return namespaces;
     }
 
     /**
@@ -289,25 +272,37 @@ public final class NotificationHubsManager {
     }
 
     /**
-     * Gets the resource collection API of PrivateEndpointConnections.
+     * Gets the resource collection API of Namespaces. It manages NamespaceResource,
+     * SharedAccessAuthorizationRuleResource.
      * 
-     * @return Resource collection API of PrivateEndpointConnections.
+     * @return Resource collection API of Namespaces.
      */
-    public PrivateEndpointConnections privateEndpointConnections() {
-        if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections
-                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+    public Namespaces namespaces() {
+        if (this.namespaces == null) {
+            this.namespaces = new NamespacesImpl(clientObject.getNamespaces(), this);
         }
-        return privateEndpointConnections;
+        return namespaces;
     }
 
     /**
-     * Gets wrapped service client NotificationHubsRPClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets the resource collection API of NotificationHubs. It manages NotificationHubResource.
      * 
-     * @return Wrapped service client NotificationHubsRPClient.
+     * @return Resource collection API of NotificationHubs.
      */
-    public NotificationHubsRPClient serviceClient() {
+    public NotificationHubs notificationHubs() {
+        if (this.notificationHubs == null) {
+            this.notificationHubs = new NotificationHubsImpl(clientObject.getNotificationHubs(), this);
+        }
+        return notificationHubs;
+    }
+
+    /**
+     * Gets wrapped service client NotificationHubsManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client NotificationHubsManagementClient.
+     */
+    public NotificationHubsManagementClient serviceClient() {
         return this.clientObject;
     }
 }

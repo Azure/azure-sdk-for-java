@@ -18,7 +18,10 @@ public final class CatalogsCreateOrUpdateSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void catalogsCreateOrUpdate(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.catalogs().define("MyCatalog1").withRegion("global").withExistingResourceGroup("MyResourceGroup1")
+        manager.catalogs()
+            .define("MyCatalog1")
+            .withRegion("global")
+            .withExistingResourceGroup("MyResourceGroup1")
             .create();
     }
 }

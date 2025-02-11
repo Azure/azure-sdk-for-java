@@ -5,40 +5,39 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The configuration parameters used for performing automatic OS upgrade.
  */
 @Fluent
-public final class AutomaticOSUpgradePolicy {
+public final class AutomaticOSUpgradePolicy implements JsonSerializable<AutomaticOSUpgradePolicy> {
     /*
      * Whether OS image rollback feature should be disabled.
      */
-    @JsonProperty(value = "disableAutomaticRollback")
     private Boolean disableAutomaticRollback;
 
     /*
      * Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a
      * newer version of the OS image becomes available. <br /><br /> If this is set to true for Windows based pools,
      * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchmanagement/pool/
-     * create?tabs=HTTP#windowsconfiguration)
-     * cannot be set to true.
+     * create?tabs=HTTP#windowsconfiguration) cannot be set to true.
      */
-    @JsonProperty(value = "enableAutomaticOSUpgrade")
     private Boolean enableAutomaticOSUpgrade;
 
     /*
      * Indicates whether rolling upgrade policy should be used during Auto OS Upgrade. Auto OS Upgrade will fallback to
      * the default policy if no policy is defined on the VMSS.
      */
-    @JsonProperty(value = "useRollingUpgradePolicy")
     private Boolean useRollingUpgradePolicy;
 
     /*
      * Defer OS upgrades on the TVMs if they are running tasks.
      */
-    @JsonProperty(value = "osRollingUpgradeDeferral")
     private Boolean osRollingUpgradeDeferral;
 
     /**
@@ -68,9 +67,9 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Get the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to
-     * scale set instances in a rolling fashion when a newer version of the OS image becomes available. &lt;br
-     * /&gt;&lt;br /&gt; If this is set to true for Windows based pools,
+     * Get the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
+     * set instances in a rolling fashion when a newer version of the OS image becomes available. &lt;br /&gt;&lt;br
+     * /&gt; If this is set to true for Windows based pools,
      * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchmanagement/pool/create?tabs=HTTP#windowsconfiguration)
      * cannot be set to true.
      * 
@@ -81,9 +80,9 @@ public final class AutomaticOSUpgradePolicy {
     }
 
     /**
-     * Set the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to
-     * scale set instances in a rolling fashion when a newer version of the OS image becomes available. &lt;br
-     * /&gt;&lt;br /&gt; If this is set to true for Windows based pools,
+     * Set the enableAutomaticOSUpgrade property: Indicates whether OS upgrades should automatically be applied to scale
+     * set instances in a rolling fashion when a newer version of the OS image becomes available. &lt;br /&gt;&lt;br
+     * /&gt; If this is set to true for Windows based pools,
      * [WindowsConfiguration.enableAutomaticUpdates](https://learn.microsoft.com/en-us/rest/api/batchmanagement/pool/create?tabs=HTTP#windowsconfiguration)
      * cannot be set to true.
      * 
@@ -143,5 +142,54 @@ public final class AutomaticOSUpgradePolicy {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("disableAutomaticRollback", this.disableAutomaticRollback);
+        jsonWriter.writeBooleanField("enableAutomaticOSUpgrade", this.enableAutomaticOSUpgrade);
+        jsonWriter.writeBooleanField("useRollingUpgradePolicy", this.useRollingUpgradePolicy);
+        jsonWriter.writeBooleanField("osRollingUpgradeDeferral", this.osRollingUpgradeDeferral);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomaticOSUpgradePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomaticOSUpgradePolicy if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutomaticOSUpgradePolicy.
+     */
+    public static AutomaticOSUpgradePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomaticOSUpgradePolicy deserializedAutomaticOSUpgradePolicy = new AutomaticOSUpgradePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disableAutomaticRollback".equals(fieldName)) {
+                    deserializedAutomaticOSUpgradePolicy.disableAutomaticRollback
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAutomaticOSUpgrade".equals(fieldName)) {
+                    deserializedAutomaticOSUpgradePolicy.enableAutomaticOSUpgrade
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("useRollingUpgradePolicy".equals(fieldName)) {
+                    deserializedAutomaticOSUpgradePolicy.useRollingUpgradePolicy
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("osRollingUpgradeDeferral".equals(fieldName)) {
+                    deserializedAutomaticOSUpgradePolicy.osRollingUpgradeDeferral
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomaticOSUpgradePolicy;
+        });
     }
 }

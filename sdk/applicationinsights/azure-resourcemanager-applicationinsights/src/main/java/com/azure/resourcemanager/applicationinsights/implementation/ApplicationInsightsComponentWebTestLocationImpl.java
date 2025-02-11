@@ -13,8 +13,7 @@ public final class ApplicationInsightsComponentWebTestLocationImpl
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    ApplicationInsightsComponentWebTestLocationImpl(
-        ApplicationInsightsComponentWebTestLocationInner innerObject,
+    ApplicationInsightsComponentWebTestLocationImpl(ApplicationInsightsComponentWebTestLocationInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

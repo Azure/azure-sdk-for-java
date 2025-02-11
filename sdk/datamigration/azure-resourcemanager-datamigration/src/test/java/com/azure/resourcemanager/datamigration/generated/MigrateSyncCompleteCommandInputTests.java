@@ -12,22 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class MigrateSyncCompleteCommandInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSyncCompleteCommandInput model =
-            BinaryData
-                .fromString("{\"databaseName\":\"cattpngjcrcczsq\",\"commitTimeStamp\":\"2021-06-22T20:12:51Z\"}")
-                .toObject(MigrateSyncCompleteCommandInput.class);
-        Assertions.assertEquals("cattpngjcrcczsq", model.databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T20:12:51Z"), model.commitTimestamp());
+        MigrateSyncCompleteCommandInput model = BinaryData
+            .fromString("{\"databaseName\":\"gnxkrxdqmidtth\",\"commitTimeStamp\":\"2021-10-23T16:11:35Z\"}")
+            .toObject(MigrateSyncCompleteCommandInput.class);
+        Assertions.assertEquals("gnxkrxdqmidtth", model.databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T16:11:35Z"), model.commitTimestamp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrateSyncCompleteCommandInput model =
-            new MigrateSyncCompleteCommandInput()
-                .withDatabaseName("cattpngjcrcczsq")
-                .withCommitTimestamp(OffsetDateTime.parse("2021-06-22T20:12:51Z"));
+        MigrateSyncCompleteCommandInput model = new MigrateSyncCompleteCommandInput().withDatabaseName("gnxkrxdqmidtth")
+            .withCommitTimestamp(OffsetDateTime.parse("2021-10-23T16:11:35Z"));
         model = BinaryData.fromObject(model).toObject(MigrateSyncCompleteCommandInput.class);
-        Assertions.assertEquals("cattpngjcrcczsq", model.databaseName());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-22T20:12:51Z"), model.commitTimestamp());
+        Assertions.assertEquals("gnxkrxdqmidtth", model.databaseName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-23T16:11:35Z"), model.commitTimestamp());
     }
 }

@@ -33,8 +33,8 @@ class VirtualMachineScaleSetVMsImpl
     private final VirtualMachineScaleSetVMsClient client;
     private final ComputeManager computeManager;
 
-    VirtualMachineScaleSetVMsImpl(
-        VirtualMachineScaleSetImpl scaleSet, VirtualMachineScaleSetVMsClient client, ComputeManager computeManager) {
+    VirtualMachineScaleSetVMsImpl(VirtualMachineScaleSetImpl scaleSet, VirtualMachineScaleSetVMsClient client,
+        ComputeManager computeManager) {
         this.scaleSet = scaleSet;
         this.client = client;
         this.computeManager = computeManager;
@@ -64,7 +64,8 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     public Mono<Void> deleteInstancesAsync(Collection<String> instanceIds) {
-        return this.scaleSet.manager().virtualMachineScaleSets()
+        return this.scaleSet.manager()
+            .virtualMachineScaleSets()
             .deleteInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceIds, false);
     }
 
@@ -80,8 +81,9 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     public Mono<Void> deleteInstancesAsync(Collection<String> instanceIds, boolean forceDeletion) {
-        return this.scaleSet.manager().virtualMachineScaleSets().deleteInstancesAsync(this.scaleSet.resourceGroupName(),
-            this.scaleSet.name(), instanceIds, forceDeletion);
+        return this.scaleSet.manager()
+            .virtualMachineScaleSets()
+            .deleteInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceIds, forceDeletion);
     }
 
     @Override
@@ -96,9 +98,11 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     public Mono<Void> deallocateInstancesAsync(Collection<String> instanceIds) {
-        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().deallocateAsync(
-            this.scaleSet.resourceGroupName(), this.scaleSet.name(), null,
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+        return this.scaleSet.manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .deallocateAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), null,
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
     }
 
     @Override
@@ -108,9 +112,11 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     public Mono<Void> powerOffInstancesAsync(Collection<String> instanceIds, boolean skipShutdown) {
-        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().powerOffAsync(
-            this.scaleSet.resourceGroupName(), this.scaleSet.name(), skipShutdown,
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+        return this.scaleSet.manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .powerOffAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), skipShutdown,
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
     }
 
     @Override
@@ -120,9 +126,11 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     public Mono<Void> startInstancesAsync(Collection<String> instanceIds) {
-        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().startAsync(
-            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+        return this.scaleSet.manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .startAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
     }
 
     @Override
@@ -132,9 +140,11 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     public Mono<Void> restartInstancesAsync(Collection<String> instanceIds) {
-        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().restartAsync(
-            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+        return this.scaleSet.manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .restartAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
     }
 
     @Override
@@ -144,22 +154,24 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     public Mono<Void> redeployInstancesAsync(Collection<String> instanceIds) {
-        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().redeployAsync(
-            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
-            new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
+        return this.scaleSet.manager()
+            .serviceClient()
+            .getVirtualMachineScaleSets()
+            .redeployAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(new ArrayList<>(instanceIds)));
     }
 
-//    @Override
-//    public void reimageInstances(Collection<String> instanceIds) {
-//        this.reimageInstancesAsync(instanceIds).block();
-//    }
-//
-//    @Override
-//    public Mono<Void> reimageInstancesAsync(Collection<String> instanceIds) {
-//        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().reimageAsync(
-//            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
-//            new VirtualMachineScaleSetReimageParameters().withInstanceIds(new ArrayList<>(instanceIds)));
-//    }
+    //    @Override
+    //    public void reimageInstances(Collection<String> instanceIds) {
+    //        this.reimageInstancesAsync(instanceIds).block();
+    //    }
+    //
+    //    @Override
+    //    public Mono<Void> reimageInstancesAsync(Collection<String> instanceIds) {
+    //        return this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets().reimageAsync(
+    //            this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+    //            new VirtualMachineScaleSetReimageParameters().withInstanceIds(new ArrayList<>(instanceIds)));
+    //    }
 
     @Override
     public VirtualMachineScaleSetVM getInstance(String instanceId) {
@@ -168,8 +180,7 @@ class VirtualMachineScaleSetVMsImpl
 
     @Override
     public Mono<VirtualMachineScaleSetVM> getInstanceAsync(String instanceId) {
-        return this
-            .client
+        return this.client
             .getWithResponseAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(), instanceId,
                 InstanceViewTypes.INSTANCE_VIEW)
             .map(Response::getValue)
@@ -185,11 +196,10 @@ class VirtualMachineScaleSetVMsImpl
         for (String instanceId : instanceIds) {
             instanceIdList.add(instanceId);
         }
-        VirtualMachineScaleSetsClient scaleSetInnerManager =
-            this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets();
-        return scaleSetInnerManager
-            .updateInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(),
-                new VirtualMachineScaleSetVMInstanceRequiredIDs().withInstanceIds(instanceIdList));
+        VirtualMachineScaleSetsClient scaleSetInnerManager
+            = this.scaleSet.manager().serviceClient().getVirtualMachineScaleSets();
+        return scaleSetInnerManager.updateInstancesAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name(),
+            new VirtualMachineScaleSetVMInstanceRequiredIDs().withInstanceIds(instanceIdList));
     }
 
     @Override

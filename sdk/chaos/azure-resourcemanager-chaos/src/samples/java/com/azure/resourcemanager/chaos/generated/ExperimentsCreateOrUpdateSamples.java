@@ -30,7 +30,9 @@ public final class ExperimentsCreateOrUpdateSamples {
      * @param manager Entry point to ChaosManager.
      */
     public static void createUpdateAExperimentInAResourceGroup(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.experiments().define("exampleExperiment").withRegion("eastus2euap")
+        manager.experiments()
+            .define("exampleExperiment")
+            .withRegion("eastus2euap")
             .withExistingResourceGroup("exampleRG")
             .withSteps(
                 Arrays.asList(new ChaosExperimentStep().withName("step1")
@@ -42,8 +44,10 @@ public final class ExperimentsCreateOrUpdateSamples {
                                 Arrays.asList(new KeyValuePair().withKey("fakeTokenPlaceholder").withValue("false")))
                             .withSelectorId("selector1")))))))
             .withSelectors(Arrays.asList(new ChaosTargetListSelector().withId("selector1")
-                .withTargets(Arrays.asList(new TargetReference().withType(TargetReferenceType.CHAOS_TARGET).withId(
-                    "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine")))))
-            .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)).create();
+                .withTargets(Arrays.asList(new TargetReference().withType(TargetReferenceType.CHAOS_TARGET)
+                    .withId(
+                        "/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVM/providers/Microsoft.Chaos/targets/Microsoft-VirtualMachine")))))
+            .withIdentity(new ResourceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
+            .create();
     }
 }

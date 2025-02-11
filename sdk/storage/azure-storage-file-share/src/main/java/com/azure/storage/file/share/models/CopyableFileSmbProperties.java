@@ -17,6 +17,7 @@ public enum CopyableFileSmbProperties {
     CHANGED_ON("changedon");
 
     private final String value;
+
     CopyableFileSmbProperties(String value) {
         this.value = value;
     }

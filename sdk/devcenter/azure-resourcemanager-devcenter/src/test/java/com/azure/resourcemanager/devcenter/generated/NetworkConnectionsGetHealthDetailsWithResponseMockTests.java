@@ -20,7 +20,7 @@ public final class NetworkConnectionsGetHealthDetailsWithResponseMockTests {
     @Test
     public void testGetHealthDetailsWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"startDateTime\":\"2021-06-28T14:43:57Z\",\"endDateTime\":\"2021-08-31T20:26:30Z\",\"healthChecks\":[{\"status\":\"Warning\",\"displayName\":\"yl\",\"startDateTime\":\"2021-07-19T10:35:53Z\",\"endDateTime\":\"2021-07-06T13:46:49Z\",\"errorType\":\"tgqztwhghmup\",\"recommendedAction\":\"yjtcdxabbujftab\",\"additionalDetails\":\"bbklqpxzuca\"},{\"status\":\"Unknown\",\"displayName\":\"wwnlzafwxudgnh\",\"startDateTime\":\"2021-06-14T13:01:38Z\",\"endDateTime\":\"2021-02-20T06:36:38Z\",\"errorType\":\"alvnbwgpb\",\"recommendedAction\":\"eluclvdjj\",\"additionalDetails\":\"yrdnqod\"}]},\"id\":\"hhxhq\",\"name\":\"aqnvzoqgyipemchg\",\"type\":\"v\"}";
+            = "{\"properties\":{\"startDateTime\":\"2021-11-21T17:16:57Z\",\"endDateTime\":\"2021-07-25T21:14:07Z\",\"healthChecks\":[{\"status\":\"Unknown\",\"displayName\":\"tzlswvaj\",\"startDateTime\":\"2021-11-03T15:02:37Z\",\"endDateTime\":\"2021-09-26T07:25:25Z\",\"errorType\":\"joqza\",\"recommendedAction\":\"nwqrjzfrgqh\",\"additionalDetails\":\"hcmbuocnjrohmbp\"},{\"status\":\"Passed\",\"displayName\":\"ameb\",\"startDateTime\":\"2021-06-25T02:42:36Z\",\"endDateTime\":\"2021-01-06T18:36:20Z\",\"errorType\":\"fkmroc\",\"recommendedAction\":\"e\",\"additionalDetails\":\"sm\"},{\"status\":\"Warning\",\"displayName\":\"fpyapucygvoavyu\",\"startDateTime\":\"2021-10-30T10:18:56Z\",\"endDateTime\":\"2021-07-23T07:04:55Z\",\"errorType\":\"hi\",\"recommendedAction\":\"gjlgvvpase\",\"additionalDetails\":\"gbuxantuygdh\"}]},\"id\":\"qipir\",\"name\":\"iwrqofulopmjnl\",\"type\":\"x\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class NetworkConnectionsGetHealthDetailsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         HealthCheckStatusDetails response = manager.networkConnections()
-            .getHealthDetailsWithResponse("lzijiufehgmvflnw", "v", com.azure.core.util.Context.NONE)
+            .getHealthDetailsWithResponse("mtuatmzwcjjncqtj", "mizvgbgatzuuvbx", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

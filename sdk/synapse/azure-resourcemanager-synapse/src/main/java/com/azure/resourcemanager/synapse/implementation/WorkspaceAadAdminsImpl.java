@@ -20,21 +20,18 @@ public final class WorkspaceAadAdminsImpl implements WorkspaceAadAdmins {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public WorkspaceAadAdminsImpl(
-        WorkspaceAadAdminsClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public WorkspaceAadAdminsImpl(WorkspaceAadAdminsClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<WorkspaceAadAdminInfo> getWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
-        Response<WorkspaceAadAdminInfoInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, context);
+    public Response<WorkspaceAadAdminInfo> getWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
+        Response<WorkspaceAadAdminInfoInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WorkspaceAadAdminInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -50,10 +47,10 @@ public final class WorkspaceAadAdminsImpl implements WorkspaceAadAdmins {
         }
     }
 
-    public WorkspaceAadAdminInfo createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
-        WorkspaceAadAdminInfoInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, workspaceName, aadAdminInfo);
+    public WorkspaceAadAdminInfo createOrUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo) {
+        WorkspaceAadAdminInfoInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, workspaceName, aadAdminInfo);
         if (inner != null) {
             return new WorkspaceAadAdminInfoImpl(inner, this.manager());
         } else {
@@ -61,10 +58,10 @@ public final class WorkspaceAadAdminsImpl implements WorkspaceAadAdmins {
         }
     }
 
-    public WorkspaceAadAdminInfo createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
-        WorkspaceAadAdminInfoInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, workspaceName, aadAdminInfo, context);
+    public WorkspaceAadAdminInfo createOrUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
+        WorkspaceAadAdminInfoInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, workspaceName, aadAdminInfo, context);
         if (inner != null) {
             return new WorkspaceAadAdminInfoImpl(inner, this.manager());
         } else {

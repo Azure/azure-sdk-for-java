@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Import operation configuration information.
  */
 @Fluent
-public final class FhirServiceImportConfiguration {
+public final class FhirServiceImportConfiguration implements JsonSerializable<FhirServiceImportConfiguration> {
     /*
      * The name of the default integration storage account.
      */
-    @JsonProperty(value = "integrationDataStore")
     private String integrationDataStore;
 
     /*
      * If the FHIR service is in InitialImportMode.
      */
-    @JsonProperty(value = "initialImportMode")
     private Boolean initialImportMode;
 
     /*
      * If the import operation is enabled.
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /**
@@ -102,5 +103,49 @@ public final class FhirServiceImportConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("integrationDataStore", this.integrationDataStore);
+        jsonWriter.writeBooleanField("initialImportMode", this.initialImportMode);
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirServiceImportConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirServiceImportConfiguration if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FhirServiceImportConfiguration.
+     */
+    public static FhirServiceImportConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirServiceImportConfiguration deserializedFhirServiceImportConfiguration
+                = new FhirServiceImportConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("integrationDataStore".equals(fieldName)) {
+                    deserializedFhirServiceImportConfiguration.integrationDataStore = reader.getString();
+                } else if ("initialImportMode".equals(fieldName)) {
+                    deserializedFhirServiceImportConfiguration.initialImportMode
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enabled".equals(fieldName)) {
+                    deserializedFhirServiceImportConfiguration.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFhirServiceImportConfiguration;
+        });
     }
 }

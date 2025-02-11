@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The WAN-link upload limit schedule. Overlapping recurrences are not allowed.
  */
 @Fluent
-public final class UploadLimitSchedule {
+public final class UploadLimitSchedule implements JsonSerializable<UploadLimitSchedule> {
     /*
      * The set of weekly repeating recurrences of the WAN-link upload limit schedule.
      */
-    @JsonProperty(value = "weeklyRecurrences")
     private List<UploadLimitWeeklyRecurrence> weeklyRecurrences;
 
     /**
@@ -56,5 +59,44 @@ public final class UploadLimitSchedule {
         if (weeklyRecurrences() != null) {
             weeklyRecurrences().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("weeklyRecurrences", this.weeklyRecurrences,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UploadLimitSchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UploadLimitSchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UploadLimitSchedule.
+     */
+    public static UploadLimitSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UploadLimitSchedule deserializedUploadLimitSchedule = new UploadLimitSchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("weeklyRecurrences".equals(fieldName)) {
+                    List<UploadLimitWeeklyRecurrence> weeklyRecurrences
+                        = reader.readArray(reader1 -> UploadLimitWeeklyRecurrence.fromJson(reader1));
+                    deserializedUploadLimitSchedule.weeklyRecurrences = weeklyRecurrences;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUploadLimitSchedule;
+        });
     }
 }

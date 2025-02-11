@@ -22,7 +22,7 @@ public final class StorageProfileTests {
         Assertions.assertEquals(OsDiskStorageAccountType.STANDARD_SSD, model.osDiskStorageAccountType());
         Assertions.assertEquals(CachingType.NONE, model.dataDisks().get(0).caching());
         Assertions.assertEquals(103063252, model.dataDisks().get(0).diskSizeGiB());
-        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_LRS, model.dataDisks().get(0).storageAccountType());
+        Assertions.assertEquals(StorageAccountType.STANDARD_SSDLRS, model.dataDisks().get(0).storageAccountType());
         Assertions.assertEquals("zw", model.dataDisks().get(0).driveLetter());
     }
 
@@ -31,13 +31,13 @@ public final class StorageProfileTests {
         StorageProfile model = new StorageProfile().withOsDiskStorageAccountType(OsDiskStorageAccountType.STANDARD_SSD)
             .withDataDisks(Arrays.asList(new DataDisk().withCaching(CachingType.NONE)
                 .withDiskSizeGiB(103063252)
-                .withStorageAccountType(StorageAccountType.STANDARD_SSD_LRS)
+                .withStorageAccountType(StorageAccountType.STANDARD_SSDLRS)
                 .withDriveLetter("zw")));
         model = BinaryData.fromObject(model).toObject(StorageProfile.class);
         Assertions.assertEquals(OsDiskStorageAccountType.STANDARD_SSD, model.osDiskStorageAccountType());
         Assertions.assertEquals(CachingType.NONE, model.dataDisks().get(0).caching());
         Assertions.assertEquals(103063252, model.dataDisks().get(0).diskSizeGiB());
-        Assertions.assertEquals(StorageAccountType.STANDARD_SSD_LRS, model.dataDisks().get(0).storageAccountType());
+        Assertions.assertEquals(StorageAccountType.STANDARD_SSDLRS, model.dataDisks().get(0).storageAccountType());
         Assertions.assertEquals("zw", model.dataDisks().get(0).driveLetter());
     }
 }

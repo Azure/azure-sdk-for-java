@@ -14,11 +14,18 @@ import java.util.Map;
  */
 @Fluent
 public class ShareSetMetadataOptions {
-
     private Map<String, String> metadata;
     private ShareRequestConditions requestConditions;
 
     /**
+     * Creates a new instance of {@link ShareSetMetadataOptions}.
+     */
+    public ShareSetMetadataOptions() {
+    }
+
+    /**
+     * Gets the metadata to set on the share.
+     *
      * @return Metadata to set on the share, if null is passed the metadata for the share is cleared.
      */
     public Map<String, String> getMetadata() {
@@ -26,6 +33,8 @@ public class ShareSetMetadataOptions {
     }
 
     /**
+     * Sets the metadata to set on the share.
+     *
      * @param metadata Metadata to set on the share, if null is passed the metadata for the share is cleared.
      * @return The updated options.
      */
@@ -35,6 +44,8 @@ public class ShareSetMetadataOptions {
     }
 
     /**
+     * Gets the {@link ShareRequestConditions}.
+     *
      * @return {@link ShareRequestConditions}.
      */
     public ShareRequestConditions getRequestConditions() {
@@ -42,6 +53,8 @@ public class ShareSetMetadataOptions {
     }
 
     /**
+     * Sets the {@link ShareRequestConditions}.
+     *
      * @param requestConditions {@link ShareRequestConditions}.
      * @return The updated options.
      */

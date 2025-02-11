@@ -11,25 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class PeeringServiceLocationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringServiceLocationProperties model =
-            BinaryData
-                .fromString("{\"country\":\"ashsfwxos\",\"state\":\"z\",\"azureRegion\":\"ugicjooxdjebw\"}")
+        PeeringServiceLocationProperties model
+            = BinaryData.fromString("{\"country\":\"qtdo\",\"state\":\"cbxvwvxyslqbh\",\"azureRegion\":\"xoblytkbl\"}")
                 .toObject(PeeringServiceLocationProperties.class);
-        Assertions.assertEquals("ashsfwxos", model.country());
-        Assertions.assertEquals("z", model.state());
-        Assertions.assertEquals("ugicjooxdjebw", model.azureRegion());
+        Assertions.assertEquals("qtdo", model.country());
+        Assertions.assertEquals("cbxvwvxyslqbh", model.state());
+        Assertions.assertEquals("xoblytkbl", model.azureRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringServiceLocationProperties model =
-            new PeeringServiceLocationProperties()
-                .withCountry("ashsfwxos")
-                .withState("z")
-                .withAzureRegion("ugicjooxdjebw");
+        PeeringServiceLocationProperties model = new PeeringServiceLocationProperties().withCountry("qtdo")
+            .withState("cbxvwvxyslqbh")
+            .withAzureRegion("xoblytkbl");
         model = BinaryData.fromObject(model).toObject(PeeringServiceLocationProperties.class);
-        Assertions.assertEquals("ashsfwxos", model.country());
-        Assertions.assertEquals("z", model.state());
-        Assertions.assertEquals("ugicjooxdjebw", model.azureRegion());
+        Assertions.assertEquals("qtdo", model.country());
+        Assertions.assertEquals("cbxvwvxyslqbh", model.state());
+        Assertions.assertEquals("xoblytkbl", model.azureRegion());
     }
 }

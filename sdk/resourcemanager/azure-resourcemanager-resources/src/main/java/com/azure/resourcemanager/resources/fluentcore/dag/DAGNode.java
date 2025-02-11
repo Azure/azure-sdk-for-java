@@ -35,8 +35,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     private final ReentrantLock lock;
 
     private final ClientLogger logger = new ClientLogger(this.getClass());
-    private static final String ERROR_MESSAGE_FORMAT =
-        "invalid state - %s: The dependency '%s' is already reported or there is no such dependencyKey";
+    private static final String ERROR_MESSAGE_FORMAT
+        = "invalid state - %s: The dependency '%s' is already reported or there is no such dependencyKey";
 
     /**
      * Creates a DAG node.
@@ -51,6 +51,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
+     * Gets the lock to be used while performing thread safe operation on this node.
+     *
      * @return the lock to be used while performing thread safe operation on this node.
      */
     public ReentrantLock lock() {
@@ -58,6 +60,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
+     * Gets a list of keys of nodes in DAGraph those are dependents on this node.
+     *
      * @return a list of keys of nodes in {@link DAGraph} those are dependents on this node
      */
     List<String> dependentKeys() {
@@ -74,6 +78,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
+     * Gets a list of keys of nodes in DAGraph that this node depends on.
+     *
      * @return a list of keys of nodes in {@link DAGraph} that this node depends on
      */
     public List<String> dependencyKeys() {
@@ -99,6 +105,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
+     * Check whether this node has any dependency.
+     *
      * @return true if this node has any dependency
      */
     public boolean hasDependencies() {
@@ -115,6 +123,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
+     * Check whether this node is marked as preparer.
+     *
      * @return true if this node is marked as preparer
      */
     public boolean isPreparer() {
@@ -130,6 +140,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
+     * Check whether all dependencies of this node are resolved.
+     *
      * @return true if all dependencies of this node are resolved
      */
     boolean hasAllResolved() {
@@ -143,8 +155,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
      */
     protected void onSuccessfulResolution(String dependencyKey) {
         if (toBeResolved == 0) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format(ERROR_MESSAGE_FORMAT, key(), dependencyKey)));
+            throw logger
+                .logExceptionAsError(new RuntimeException(String.format(ERROR_MESSAGE_FORMAT, key(), dependencyKey)));
         }
         toBeResolved--;
     }
@@ -157,8 +169,8 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
      */
     protected void onFaultedResolution(String dependencyKey, Throwable throwable) {
         if (toBeResolved == 0) {
-            throw logger.logExceptionAsError(new RuntimeException(
-                String.format(ERROR_MESSAGE_FORMAT, key(), dependencyKey)));
+            throw logger
+                .logExceptionAsError(new RuntimeException(String.format(ERROR_MESSAGE_FORMAT, key(), dependencyKey)));
         }
         toBeResolved--;
     }

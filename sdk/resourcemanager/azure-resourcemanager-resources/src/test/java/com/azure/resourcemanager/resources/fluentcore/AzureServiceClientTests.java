@@ -22,7 +22,7 @@ public class AzureServiceClientTests {
         }
 
         protected AzureServiceClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-                                         AzureEnvironment environment) {
+            AzureEnvironment environment) {
             super(httpPipeline, serializerAdapter, environment);
         }
 

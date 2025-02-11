@@ -22,9 +22,9 @@ public final class UnplannedFailoverInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnplannedFailoverInput model
-            = new UnplannedFailoverInput().withProperties(new UnplannedFailoverInputProperties()
-                .withFailoverDirection("szqujizdvoq").withSourceSiteOperations("ibyowbblgyavutp")
+        UnplannedFailoverInput model = new UnplannedFailoverInput()
+            .withProperties(new UnplannedFailoverInputProperties().withFailoverDirection("szqujizdvoq")
+                .withSourceSiteOperations("ibyowbblgyavutp")
                 .withProviderSpecificDetails(new UnplannedFailoverProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(UnplannedFailoverInput.class);
         Assertions.assertEquals("szqujizdvoq", model.properties().failoverDirection());

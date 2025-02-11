@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties that define connectivity to the Peering Service Location. */
+/**
+ * The properties that define connectivity to the Peering Service Location.
+ */
 @Fluent
-public final class PeeringServiceLocationProperties {
+public final class PeeringServiceLocationProperties implements JsonSerializable<PeeringServiceLocationProperties> {
     /*
      * Country of the customer
      */
-    @JsonProperty(value = "country")
     private String country;
 
     /*
      * State of the customer
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * Azure region for the location
      */
-    @JsonProperty(value = "azureRegion")
     private String azureRegion;
 
-    /** Creates an instance of PeeringServiceLocationProperties class. */
+    /**
+     * Creates an instance of PeeringServiceLocationProperties class.
+     */
     public PeeringServiceLocationProperties() {
     }
 
     /**
      * Get the country property: Country of the customer.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
@@ -43,7 +48,7 @@ public final class PeeringServiceLocationProperties {
 
     /**
      * Set the country property: Country of the customer.
-     *
+     * 
      * @param country the country value to set.
      * @return the PeeringServiceLocationProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class PeeringServiceLocationProperties {
 
     /**
      * Get the state property: State of the customer.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -63,7 +68,7 @@ public final class PeeringServiceLocationProperties {
 
     /**
      * Set the state property: State of the customer.
-     *
+     * 
      * @param state the state value to set.
      * @return the PeeringServiceLocationProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class PeeringServiceLocationProperties {
 
     /**
      * Get the azureRegion property: Azure region for the location.
-     *
+     * 
      * @return the azureRegion value.
      */
     public String azureRegion() {
@@ -83,7 +88,7 @@ public final class PeeringServiceLocationProperties {
 
     /**
      * Set the azureRegion property: Azure region for the location.
-     *
+     * 
      * @param azureRegion the azureRegion value to set.
      * @return the PeeringServiceLocationProperties object itself.
      */
@@ -94,9 +99,52 @@ public final class PeeringServiceLocationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("country", this.country);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("azureRegion", this.azureRegion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringServiceLocationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringServiceLocationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringServiceLocationProperties.
+     */
+    public static PeeringServiceLocationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringServiceLocationProperties deserializedPeeringServiceLocationProperties
+                = new PeeringServiceLocationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("country".equals(fieldName)) {
+                    deserializedPeeringServiceLocationProperties.country = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedPeeringServiceLocationProperties.state = reader.getString();
+                } else if ("azureRegion".equals(fieldName)) {
+                    deserializedPeeringServiceLocationProperties.azureRegion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringServiceLocationProperties;
+        });
     }
 }

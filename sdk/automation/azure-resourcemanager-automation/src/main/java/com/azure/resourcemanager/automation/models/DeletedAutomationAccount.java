@@ -5,46 +5,53 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.DeletedAutomationAccountProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Definition of the deleted automation account type. */
+/**
+ * Definition of the deleted automation account type.
+ */
 @Fluent
-public final class DeletedAutomationAccount {
+public final class DeletedAutomationAccount implements JsonSerializable<DeletedAutomationAccount> {
     /*
      * Gets or sets the automation account properties.
      */
-    @JsonProperty(value = "properties")
     private DeletedAutomationAccountProperties innerProperties;
 
     /*
      * The resource id.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Gets or sets name of the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Gets or sets the location of the resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /**
+     * Creates an instance of DeletedAutomationAccount class.
+     */
+    public DeletedAutomationAccount() {
+    }
+
+    /**
      * Get the innerProperties property: Gets or sets the automation account properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeletedAutomationAccountProperties innerProperties() {
@@ -53,7 +60,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Get the id property: The resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -62,7 +69,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Set the id property: The resource id.
-     *
+     * 
      * @param id the id value to set.
      * @return the DeletedAutomationAccount object itself.
      */
@@ -73,7 +80,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Get the name property: Gets or sets name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -82,7 +89,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Set the name property: Gets or sets name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the DeletedAutomationAccount object itself.
      */
@@ -93,7 +100,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -102,7 +109,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Set the type property: The resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the DeletedAutomationAccount object itself.
      */
@@ -113,7 +120,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Get the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -122,7 +129,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Set the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the DeletedAutomationAccount object itself.
      */
@@ -133,7 +140,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Get the automationAccountResourceId property: Gets or sets the Automation Account Resource Id.
-     *
+     * 
      * @return the automationAccountResourceId value.
      */
     public String automationAccountResourceId() {
@@ -142,7 +149,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Set the automationAccountResourceId property: Gets or sets the Automation Account Resource Id.
-     *
+     * 
      * @param automationAccountResourceId the automationAccountResourceId value to set.
      * @return the DeletedAutomationAccount object itself.
      */
@@ -156,7 +163,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Get the automationAccountId property: Gets or sets the Automation Account Id.
-     *
+     * 
      * @return the automationAccountId value.
      */
     public String automationAccountId() {
@@ -165,7 +172,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Set the automationAccountId property: Gets or sets the Automation Account Id.
-     *
+     * 
      * @param automationAccountId the automationAccountId value to set.
      * @return the DeletedAutomationAccount object itself.
      */
@@ -179,7 +186,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Get the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String locationPropertiesLocation() {
@@ -188,7 +195,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Set the location property: Gets or sets the location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the DeletedAutomationAccount object itself.
      */
@@ -202,7 +209,7 @@ public final class DeletedAutomationAccount {
 
     /**
      * Get the deletionTime property: Gets the deletion time.
-     *
+     * 
      * @return the deletionTime value.
      */
     public OffsetDateTime deletionTime() {
@@ -211,12 +218,61 @@ public final class DeletedAutomationAccount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedAutomationAccount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedAutomationAccount if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeletedAutomationAccount.
+     */
+    public static DeletedAutomationAccount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedAutomationAccount deserializedDeletedAutomationAccount = new DeletedAutomationAccount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedDeletedAutomationAccount.innerProperties
+                        = DeletedAutomationAccountProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedDeletedAutomationAccount.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeletedAutomationAccount.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDeletedAutomationAccount.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDeletedAutomationAccount.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedAutomationAccount;
+        });
     }
 }

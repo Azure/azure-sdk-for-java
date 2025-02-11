@@ -7,20 +7,45 @@ import com.azure.core.annotation.Fluent;
 /** Endpoints and credentials for publishing to a web app. */
 @Fluent
 public interface PublishingProfile {
-    /** @return the url for FTP publishing, with ftp:// and the root folder. E.g. ftp://ftp.contoso.com/site/wwwroot */
+    /**
+     * Gets the URL for FTP publishing.
+     *
+     * @return the URL for FTP publishing, with ftp:// and the root folder. E.g. ftp://ftp.contoso.com/site/wwwroot
+     */
     String ftpUrl();
-    /** @return the username used for FTP publishing */
+
+    /**
+     * Gets the username used for FTP publishing
+     *
+     * @return the username used for FTP publishing
+     */
     String ftpUsername();
 
-    /** @return the password used for FTP publishing */
+    /**
+     * Gets the password used for FTP publishing.
+     *
+     * @return the password used for FTP publishing
+     */
     String ftpPassword();
 
-    /** @return the url for FTP publishing, with https:// upfront. E.g. https://contoso.com:443/myRepo.git */
+    /**
+     * Gets the URL for FTP publishing.
+     *
+     * @return the URL for FTP publishing, with https:// upfront. E.g. https://contoso.com:443/myRepo.git
+     */
     String gitUrl();
 
-    /** @return the username used for Git publishing */
+    /**
+     * Gets the username used for Git publishing.
+     *
+     * @return the username used for Git publishing
+     */
     String gitUsername();
 
-    /** @return the password used for Git publishing */
+    /**
+     * Gets the password used for Git publishing.
+     *
+     * @return the password used for Git publishing
+     */
     String gitPassword();
 }

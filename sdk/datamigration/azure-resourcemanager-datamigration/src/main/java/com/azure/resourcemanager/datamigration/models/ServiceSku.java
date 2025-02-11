@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An Azure SKU instance. */
+/**
+ * An Azure SKU instance.
+ */
 @Fluent
-public final class ServiceSku {
+public final class ServiceSku implements JsonSerializable<ServiceSku> {
     /*
      * The unique name of the SKU, such as 'P3'
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The tier of the SKU, such as 'Free', 'Basic', 'Standard', or 'Premium'
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The SKU family, used when the service has multiple performance classes within a tier, such as 'A', 'D', etc. for
      * virtual machines
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /*
      * The size of the SKU, used when the name alone does not denote a service size or when a SKU has multiple
      * performance classes within a family, e.g. 'A1' for virtual machines
      */
-    @JsonProperty(value = "size")
     private String size;
 
     /*
      * The capacity of the SKU, if it supports scaling
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
-    /** Creates an instance of ServiceSku class. */
+    /**
+     * Creates an instance of ServiceSku class.
+     */
     public ServiceSku() {
     }
 
     /**
      * Get the name property: The unique name of the SKU, such as 'P3'.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +60,7 @@ public final class ServiceSku {
 
     /**
      * Set the name property: The unique name of the SKU, such as 'P3'.
-     *
+     * 
      * @param name the name value to set.
      * @return the ServiceSku object itself.
      */
@@ -68,7 +71,7 @@ public final class ServiceSku {
 
     /**
      * Get the tier property: The tier of the SKU, such as 'Free', 'Basic', 'Standard', or 'Premium'.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -77,7 +80,7 @@ public final class ServiceSku {
 
     /**
      * Set the tier property: The tier of the SKU, such as 'Free', 'Basic', 'Standard', or 'Premium'.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the ServiceSku object itself.
      */
@@ -89,7 +92,7 @@ public final class ServiceSku {
     /**
      * Get the family property: The SKU family, used when the service has multiple performance classes within a tier,
      * such as 'A', 'D', etc. for virtual machines.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -99,7 +102,7 @@ public final class ServiceSku {
     /**
      * Set the family property: The SKU family, used when the service has multiple performance classes within a tier,
      * such as 'A', 'D', etc. for virtual machines.
-     *
+     * 
      * @param family the family value to set.
      * @return the ServiceSku object itself.
      */
@@ -111,7 +114,7 @@ public final class ServiceSku {
     /**
      * Get the size property: The size of the SKU, used when the name alone does not denote a service size or when a SKU
      * has multiple performance classes within a family, e.g. 'A1' for virtual machines.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -121,7 +124,7 @@ public final class ServiceSku {
     /**
      * Set the size property: The size of the SKU, used when the name alone does not denote a service size or when a SKU
      * has multiple performance classes within a family, e.g. 'A1' for virtual machines.
-     *
+     * 
      * @param size the size value to set.
      * @return the ServiceSku object itself.
      */
@@ -132,7 +135,7 @@ public final class ServiceSku {
 
     /**
      * Get the capacity property: The capacity of the SKU, if it supports scaling.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -141,7 +144,7 @@ public final class ServiceSku {
 
     /**
      * Set the capacity property: The capacity of the SKU, if it supports scaling.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the ServiceSku object itself.
      */
@@ -152,9 +155,57 @@ public final class ServiceSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeStringField("size", this.size);
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceSku if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceSku.
+     */
+    public static ServiceSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceSku deserializedServiceSku = new ServiceSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedServiceSku.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedServiceSku.tier = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedServiceSku.family = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedServiceSku.size = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedServiceSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceSku;
+        });
     }
 }

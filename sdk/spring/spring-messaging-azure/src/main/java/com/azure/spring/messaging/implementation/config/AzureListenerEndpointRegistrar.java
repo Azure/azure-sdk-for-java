@@ -40,6 +40,7 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
      * A {@link BeanFactory} only needs to be available in conjunction with {@link #setContainerFactoryBeanName}.
      */
     @Override
+    @SuppressWarnings("deprecation")
     public void setBeanFactory(BeanFactory beanFactory) {
         this.beanFactory = beanFactory;
         if (beanFactory instanceof ConfigurableBeanFactory) {

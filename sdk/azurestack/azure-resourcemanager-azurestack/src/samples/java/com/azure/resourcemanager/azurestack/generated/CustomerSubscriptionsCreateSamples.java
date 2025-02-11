@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.azurestack.generated;
 
-/** Samples for CustomerSubscriptions Create. */
+/**
+ * Samples for CustomerSubscriptions Create.
+ */
 public final class CustomerSubscriptionsCreateSamples {
     /*
-     * x-ms-original-file: specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CustomerSubscription/Put.json
+     * x-ms-original-file:
+     * specification/azurestack/resource-manager/Microsoft.AzureStack/stable/2022-06-01/examples/CustomerSubscription/
+     * Put.json
      */
     /**
      * Sample code: Creates a new customer subscription under a registration.
-     *
+     * 
      * @param manager Entry point to AzureStackManager.
      */
     public static void createsANewCustomerSubscriptionUnderARegistration(
         com.azure.resourcemanager.azurestack.AzureStackManager manager) {
-        manager
-            .customerSubscriptions()
+        manager.customerSubscriptions()
             .define("E09A4E93-29A7-4EBA-A6D4-76202383F07F")
             .withExistingRegistration("azurestack", "testregistration")
             .withTenantId("dbab3982-796f-4d03-9908-044c08aef8a2")

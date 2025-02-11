@@ -5,47 +5,53 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Describes external reference. */
+/**
+ * Describes external reference.
+ */
 @Fluent
-public final class ThreatIntelligenceExternalReference {
+public final class ThreatIntelligenceExternalReference
+    implements JsonSerializable<ThreatIntelligenceExternalReference> {
     /*
      * External reference description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * External reference ID
      */
-    @JsonProperty(value = "externalId")
     private String externalId;
 
     /*
      * External reference source name
      */
-    @JsonProperty(value = "sourceName")
     private String sourceName;
 
     /*
      * External reference URL
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * External reference hashes
      */
-    @JsonProperty(value = "hashes")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> hashes;
 
     /**
+     * Creates an instance of ThreatIntelligenceExternalReference class.
+     */
+    public ThreatIntelligenceExternalReference() {
+    }
+
+    /**
      * Get the description property: External reference description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -54,7 +60,7 @@ public final class ThreatIntelligenceExternalReference {
 
     /**
      * Set the description property: External reference description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ThreatIntelligenceExternalReference object itself.
      */
@@ -65,7 +71,7 @@ public final class ThreatIntelligenceExternalReference {
 
     /**
      * Get the externalId property: External reference ID.
-     *
+     * 
      * @return the externalId value.
      */
     public String externalId() {
@@ -74,7 +80,7 @@ public final class ThreatIntelligenceExternalReference {
 
     /**
      * Set the externalId property: External reference ID.
-     *
+     * 
      * @param externalId the externalId value to set.
      * @return the ThreatIntelligenceExternalReference object itself.
      */
@@ -85,7 +91,7 @@ public final class ThreatIntelligenceExternalReference {
 
     /**
      * Get the sourceName property: External reference source name.
-     *
+     * 
      * @return the sourceName value.
      */
     public String sourceName() {
@@ -94,7 +100,7 @@ public final class ThreatIntelligenceExternalReference {
 
     /**
      * Set the sourceName property: External reference source name.
-     *
+     * 
      * @param sourceName the sourceName value to set.
      * @return the ThreatIntelligenceExternalReference object itself.
      */
@@ -105,7 +111,7 @@ public final class ThreatIntelligenceExternalReference {
 
     /**
      * Get the url property: External reference URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -114,7 +120,7 @@ public final class ThreatIntelligenceExternalReference {
 
     /**
      * Set the url property: External reference URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the ThreatIntelligenceExternalReference object itself.
      */
@@ -125,7 +131,7 @@ public final class ThreatIntelligenceExternalReference {
 
     /**
      * Get the hashes property: External reference hashes.
-     *
+     * 
      * @return the hashes value.
      */
     public Map<String, String> hashes() {
@@ -134,7 +140,7 @@ public final class ThreatIntelligenceExternalReference {
 
     /**
      * Set the hashes property: External reference hashes.
-     *
+     * 
      * @param hashes the hashes value to set.
      * @return the ThreatIntelligenceExternalReference object itself.
      */
@@ -145,9 +151,59 @@ public final class ThreatIntelligenceExternalReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("externalId", this.externalId);
+        jsonWriter.writeStringField("sourceName", this.sourceName);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeMapField("hashes", this.hashes, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreatIntelligenceExternalReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreatIntelligenceExternalReference if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThreatIntelligenceExternalReference.
+     */
+    public static ThreatIntelligenceExternalReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreatIntelligenceExternalReference deserializedThreatIntelligenceExternalReference
+                = new ThreatIntelligenceExternalReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedThreatIntelligenceExternalReference.description = reader.getString();
+                } else if ("externalId".equals(fieldName)) {
+                    deserializedThreatIntelligenceExternalReference.externalId = reader.getString();
+                } else if ("sourceName".equals(fieldName)) {
+                    deserializedThreatIntelligenceExternalReference.sourceName = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedThreatIntelligenceExternalReference.url = reader.getString();
+                } else if ("hashes".equals(fieldName)) {
+                    Map<String, String> hashes = reader.readMap(reader1 -> reader1.getString());
+                    deserializedThreatIntelligenceExternalReference.hashes = hashes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreatIntelligenceExternalReference;
+        });
     }
 }

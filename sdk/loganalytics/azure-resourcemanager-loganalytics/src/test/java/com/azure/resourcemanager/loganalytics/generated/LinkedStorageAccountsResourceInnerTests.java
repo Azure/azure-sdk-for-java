@@ -12,19 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedStorageAccountsResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedStorageAccountsResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"dataSourceType\":\"Query\",\"storageAccountIds\":[\"hsmtxpsiebtfhvp\",\"sapskr\",\"qmhjjdhtld\"]},\"id\":\"kyzxuutk\",\"name\":\"cwscwsvlx\",\"type\":\"togt\"}")
-                .toObject(LinkedStorageAccountsResourceInner.class);
+        LinkedStorageAccountsResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"dataSourceType\":\"Query\",\"storageAccountIds\":[\"hsmtxpsiebtfhvp\",\"sapskr\",\"qmhjjdhtld\"]},\"id\":\"kyzxuutk\",\"name\":\"cwscwsvlx\",\"type\":\"togt\"}")
+            .toObject(LinkedStorageAccountsResourceInner.class);
         Assertions.assertEquals("hsmtxpsiebtfhvp", model.storageAccountIds().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedStorageAccountsResourceInner model =
-            new LinkedStorageAccountsResourceInner()
-                .withStorageAccountIds(Arrays.asList("hsmtxpsiebtfhvp", "sapskr", "qmhjjdhtld"));
+        LinkedStorageAccountsResourceInner model = new LinkedStorageAccountsResourceInner()
+            .withStorageAccountIds(Arrays.asList("hsmtxpsiebtfhvp", "sapskr", "qmhjjdhtld"));
         model = BinaryData.fromObject(model).toObject(LinkedStorageAccountsResourceInner.class);
         Assertions.assertEquals("hsmtxpsiebtfhvp", model.storageAccountIds().get(0));
     }

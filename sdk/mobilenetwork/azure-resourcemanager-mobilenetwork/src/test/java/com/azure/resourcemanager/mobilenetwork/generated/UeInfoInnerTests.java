@@ -19,27 +19,27 @@ public final class UeInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UeInfoInner model = BinaryData.fromString(
-            "{\"properties\":{\"ratType\":\"4G\",\"ueState\":\"Deregistered\",\"ueIpAddresses\":[{\"dnn\":\"yhbxcudchxgs\",\"ueIpAddress\":{\"ipV4Addr\":\"ldforobwj\"}}],\"lastReadAt\":\"2021-02-10T16:46:43Z\"},\"id\":\"bfhfovvacqp\",\"name\":\"tuodxeszabbelaw\",\"type\":\"muaslzkw\"}")
+            "{\"properties\":{\"ratType\":\"4G\",\"ueState\":\"Detached\",\"ueIpAddresses\":[{\"dnn\":\"kmfx\",\"ueIpAddress\":{\"ipV4Addr\":\"wogqqnobpudcdab\"}}],\"lastReadAt\":\"2021-07-29T09:39:50Z\"},\"id\":\"wyawbzasqbuc\",\"name\":\"jg\",\"type\":\"yexaoguy\"}")
             .toObject(UeInfoInner.class);
         Assertions.assertEquals(RatType.FOURG, model.properties().ratType());
-        Assertions.assertEquals(UeState.DEREGISTERED, model.properties().ueState());
-        Assertions.assertEquals("yhbxcudchxgs", model.properties().ueIpAddresses().get(0).dnn());
-        Assertions.assertEquals("ldforobwj", model.properties().ueIpAddresses().get(0).ueIpAddress().ipV4Addr());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-10T16:46:43Z"), model.properties().lastReadAt());
+        Assertions.assertEquals(UeState.DETACHED, model.properties().ueState());
+        Assertions.assertEquals("kmfx", model.properties().ueIpAddresses().get(0).dnn());
+        Assertions.assertEquals("wogqqnobpudcdab", model.properties().ueIpAddresses().get(0).ueIpAddress().ipV4Addr());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T09:39:50Z"), model.properties().lastReadAt());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UeInfoInner model = new UeInfoInner().withProperties(new UeInfoPropertiesFormat().withRatType(RatType.FOURG)
-            .withUeState(UeState.DEREGISTERED)
+            .withUeState(UeState.DETACHED)
             .withUeIpAddresses(Arrays.asList(
-                new DnnIpPair().withDnn("yhbxcudchxgs").withUeIpAddress(new UeIpAddress().withIpV4Addr("ldforobwj"))))
-            .withLastReadAt(OffsetDateTime.parse("2021-02-10T16:46:43Z")));
+                new DnnIpPair().withDnn("kmfx").withUeIpAddress(new UeIpAddress().withIpV4Addr("wogqqnobpudcdab"))))
+            .withLastReadAt(OffsetDateTime.parse("2021-07-29T09:39:50Z")));
         model = BinaryData.fromObject(model).toObject(UeInfoInner.class);
         Assertions.assertEquals(RatType.FOURG, model.properties().ratType());
-        Assertions.assertEquals(UeState.DEREGISTERED, model.properties().ueState());
-        Assertions.assertEquals("yhbxcudchxgs", model.properties().ueIpAddresses().get(0).dnn());
-        Assertions.assertEquals("ldforobwj", model.properties().ueIpAddresses().get(0).ueIpAddress().ipV4Addr());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-10T16:46:43Z"), model.properties().lastReadAt());
+        Assertions.assertEquals(UeState.DETACHED, model.properties().ueState());
+        Assertions.assertEquals("kmfx", model.properties().ueIpAddresses().get(0).dnn());
+        Assertions.assertEquals("wogqqnobpudcdab", model.properties().ueIpAddresses().get(0).ueIpAddress().ipV4Addr());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T09:39:50Z"), model.properties().lastReadAt());
     }
 }

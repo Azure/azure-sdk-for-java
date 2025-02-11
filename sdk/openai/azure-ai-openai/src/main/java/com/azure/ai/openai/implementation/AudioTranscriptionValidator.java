@@ -21,15 +21,16 @@ public final class AudioTranscriptionValidator {
      *
      * @param audioTranscriptionOptions The audio transcription options.
      */
-    public static void validateAudioResponseFormatForTranscription(AudioTranscriptionOptions audioTranscriptionOptions) {
+    public static void
+        validateAudioResponseFormatForTranscription(AudioTranscriptionOptions audioTranscriptionOptions) {
         List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
         acceptedFormats.add(AudioTranscriptionFormat.JSON);
         acceptedFormats.add(AudioTranscriptionFormat.VERBOSE_JSON);
         AudioTranscriptionFormat responseFormat = audioTranscriptionOptions.getResponseFormat();
         if (!acceptedFormats.contains(responseFormat)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "This operation does not support the requested audio format: " + responseFormat
-                    + ", supported formats: JSON, VERBOSE_JSON."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("This operation does not support the requested audio format: "
+                    + responseFormat + ", supported formats: JSON, VERBOSE_JSON."));
         }
     }
 
@@ -38,16 +39,17 @@ public final class AudioTranscriptionValidator {
      *
      * @param audioTranscriptionOptions The audio transcription options.
      */
-    public static void validateAudioResponseFormatForTranscriptionText(AudioTranscriptionOptions audioTranscriptionOptions) {
+    public static void
+        validateAudioResponseFormatForTranscriptionText(AudioTranscriptionOptions audioTranscriptionOptions) {
         List<AudioTranscriptionFormat> acceptedFormats = new ArrayList<>();
         acceptedFormats.add(AudioTranscriptionFormat.TEXT);
         acceptedFormats.add(AudioTranscriptionFormat.VTT);
         acceptedFormats.add(AudioTranscriptionFormat.SRT);
         AudioTranscriptionFormat responseFormat = audioTranscriptionOptions.getResponseFormat();
         if (!acceptedFormats.contains(responseFormat)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "This operation does not support the requested audio format: " + responseFormat
-                    + ", supported formats: TEXT, VTT, SRT."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("This operation does not support the requested audio format: "
+                    + responseFormat + ", supported formats: TEXT, VTT, SRT."));
         }
     }
 }

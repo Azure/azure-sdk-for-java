@@ -6,9 +6,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -21,7 +24,6 @@ public final class IdentityProviderCreateContractProperties extends IdentityProv
      * Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for
      * Google login, App ID for Microsoft.
      */
-    @JsonProperty(value = "clientId", required = true)
     private String clientId;
 
     /*
@@ -29,17 +31,18 @@ public final class IdentityProviderCreateContractProperties extends IdentityProv
      * it is App Secret for Facebook login, API Key for Google login, Public Key for Microsoft. This property will not
      * be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
-    /** Creates an instance of IdentityProviderCreateContractProperties class. */
+    /**
+     * Creates an instance of IdentityProviderCreateContractProperties class.
+     */
     public IdentityProviderCreateContractProperties() {
     }
 
     /**
      * Get the clientId property: Client Id of the Application in the external Identity Provider. It is App ID for
      * Facebook login, Client ID for Google login, App ID for Microsoft.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -49,7 +52,7 @@ public final class IdentityProviderCreateContractProperties extends IdentityProv
     /**
      * Set the clientId property: Client Id of the Application in the external Identity Provider. It is App ID for
      * Facebook login, Client ID for Google login, App ID for Microsoft.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the IdentityProviderCreateContractProperties object itself.
      */
@@ -63,7 +66,7 @@ public final class IdentityProviderCreateContractProperties extends IdentityProv
      * authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public
      * Key for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
      * the value.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -75,7 +78,7 @@ public final class IdentityProviderCreateContractProperties extends IdentityProv
      * authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public
      * Key for Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
      * the value.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the IdentityProviderCreateContractProperties object itself.
      */
@@ -84,63 +87,81 @@ public final class IdentityProviderCreateContractProperties extends IdentityProv
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderCreateContractProperties withType(IdentityProviderType type) {
         super.withType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderCreateContractProperties withSigninTenant(String signinTenant) {
         super.withSigninTenant(signinTenant);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderCreateContractProperties withAllowedTenants(List<String> allowedTenants) {
         super.withAllowedTenants(allowedTenants);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderCreateContractProperties withAuthority(String authority) {
         super.withAuthority(authority);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderCreateContractProperties withSignupPolicyName(String signupPolicyName) {
         super.withSignupPolicyName(signupPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderCreateContractProperties withSigninPolicyName(String signinPolicyName) {
         super.withSigninPolicyName(signinPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderCreateContractProperties withProfileEditingPolicyName(String profileEditingPolicyName) {
         super.withProfileEditingPolicyName(profileEditingPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderCreateContractProperties withPasswordResetPolicyName(String passwordResetPolicyName) {
         super.withPasswordResetPolicyName(passwordResetPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IdentityProviderCreateContractProperties withClientLibrary(String clientLibrary) {
         super.withClientLibrary(clientLibrary);
@@ -149,25 +170,95 @@ public final class IdentityProviderCreateContractProperties extends IdentityProv
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model IdentityProviderCreateContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model IdentityProviderCreateContractProperties"));
         }
         if (clientSecret() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientSecret in model IdentityProviderCreateContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientSecret in model IdentityProviderCreateContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IdentityProviderCreateContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", type() == null ? null : type().toString());
+        jsonWriter.writeStringField("signinTenant", signinTenant());
+        jsonWriter.writeArrayField("allowedTenants", allowedTenants(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("authority", authority());
+        jsonWriter.writeStringField("signupPolicyName", signupPolicyName());
+        jsonWriter.writeStringField("signinPolicyName", signinPolicyName());
+        jsonWriter.writeStringField("profileEditingPolicyName", profileEditingPolicyName());
+        jsonWriter.writeStringField("passwordResetPolicyName", passwordResetPolicyName());
+        jsonWriter.writeStringField("clientLibrary", clientLibrary());
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityProviderCreateContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityProviderCreateContractProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IdentityProviderCreateContractProperties.
+     */
+    public static IdentityProviderCreateContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityProviderCreateContractProperties deserializedIdentityProviderCreateContractProperties
+                = new IdentityProviderCreateContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedIdentityProviderCreateContractProperties
+                        .withType(IdentityProviderType.fromString(reader.getString()));
+                } else if ("signinTenant".equals(fieldName)) {
+                    deserializedIdentityProviderCreateContractProperties.withSigninTenant(reader.getString());
+                } else if ("allowedTenants".equals(fieldName)) {
+                    List<String> allowedTenants = reader.readArray(reader1 -> reader1.getString());
+                    deserializedIdentityProviderCreateContractProperties.withAllowedTenants(allowedTenants);
+                } else if ("authority".equals(fieldName)) {
+                    deserializedIdentityProviderCreateContractProperties.withAuthority(reader.getString());
+                } else if ("signupPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderCreateContractProperties.withSignupPolicyName(reader.getString());
+                } else if ("signinPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderCreateContractProperties.withSigninPolicyName(reader.getString());
+                } else if ("profileEditingPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderCreateContractProperties
+                        .withProfileEditingPolicyName(reader.getString());
+                } else if ("passwordResetPolicyName".equals(fieldName)) {
+                    deserializedIdentityProviderCreateContractProperties
+                        .withPasswordResetPolicyName(reader.getString());
+                } else if ("clientLibrary".equals(fieldName)) {
+                    deserializedIdentityProviderCreateContractProperties.withClientLibrary(reader.getString());
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedIdentityProviderCreateContractProperties.clientId = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedIdentityProviderCreateContractProperties.clientSecret = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityProviderCreateContractProperties;
+        });
+    }
 }

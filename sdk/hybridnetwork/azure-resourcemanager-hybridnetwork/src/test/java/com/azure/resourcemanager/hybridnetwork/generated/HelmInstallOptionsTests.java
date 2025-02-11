@@ -22,7 +22,8 @@ public final class HelmInstallOptionsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HelmInstallOptions model = new HelmInstallOptions().withAtomic("ujwsawddjibabxvi")
-            .withWaitOption("tvtzeexavoxtfg").withTimeout("cd");
+            .withWaitOption("tvtzeexavoxtfg")
+            .withTimeout("cd");
         model = BinaryData.fromObject(model).toObject(HelmInstallOptions.class);
         Assertions.assertEquals("ujwsawddjibabxvi", model.atomic());
         Assertions.assertEquals("tvtzeexavoxtfg", model.waitOption());

@@ -221,14 +221,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
+     * Gets all databases in the specified Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster along with {@link PagedResponse} on successful
+     * @return all databases in the specified Redis Enterprise cluster along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -259,7 +259,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
+     * Gets all databases in the specified Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -267,7 +267,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster along with {@link PagedResponse} on successful
+     * @return all databases in the specified Redis Enterprise cluster along with {@link PagedResponse} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -298,14 +298,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
+     * Gets all databases in the specified Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster as paginated response with {@link PagedFlux}.
+     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatabaseInner> listByClusterAsync(String resourceGroupName, String clusterName) {
@@ -314,7 +314,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
+     * Gets all databases in the specified Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -322,7 +322,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster as paginated response with {@link PagedFlux}.
+     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatabaseInner> listByClusterAsync(String resourceGroupName, String clusterName, Context context) {
@@ -331,14 +331,14 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
+     * Gets all databases in the specified Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster as paginated response with {@link PagedIterable}.
+     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByCluster(String resourceGroupName, String clusterName) {
@@ -346,7 +346,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
+     * Gets all databases in the specified Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -354,7 +354,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster as paginated response with {@link PagedIterable}.
+     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByCluster(String resourceGroupName, String clusterName, Context context) {
@@ -371,7 +371,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster along with {@link Response} on successful completion
+     * @return describes a database on the Redis Enterprise cluster along with {@link Response} on successful completion
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -419,7 +419,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster along with {@link Response} on successful completion
+     * @return describes a database on the Redis Enterprise cluster along with {@link Response} on successful completion
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -464,7 +464,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link PollerFlux} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateAsync(String resourceGroupName,
@@ -486,7 +486,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link PollerFlux} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateAsync(String resourceGroupName,
@@ -508,7 +508,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(String resourceGroupName,
@@ -527,7 +527,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(String resourceGroupName,
@@ -545,7 +545,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster on successful completion of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> createAsync(String resourceGroupName, String clusterName, String databaseName,
@@ -565,7 +565,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster on successful completion of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> createAsync(String resourceGroupName, String clusterName, String databaseName,
@@ -584,7 +584,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster.
+     * @return describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner create(String resourceGroupName, String clusterName, String databaseName,
@@ -603,7 +603,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster.
+     * @return describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner create(String resourceGroupName, String clusterName, String databaseName,
@@ -621,7 +621,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster along with {@link Response} on successful completion
+     * @return describes a database on the Redis Enterprise cluster along with {@link Response} on successful completion
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -669,7 +669,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster along with {@link Response} on successful completion
+     * @return describes a database on the Redis Enterprise cluster along with {@link Response} on successful completion
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -714,7 +714,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link PollerFlux} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(String resourceGroupName,
@@ -736,7 +736,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link PollerFlux} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(String resourceGroupName,
@@ -758,7 +758,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName,
@@ -777,7 +777,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName,
@@ -795,7 +795,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster on successful completion of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName,
@@ -815,7 +815,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster on successful completion of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName,
@@ -834,7 +834,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster.
+     * @return describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner update(String resourceGroupName, String clusterName, String databaseName,
@@ -853,7 +853,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster.
+     * @return describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner update(String resourceGroupName, String clusterName, String databaseName,
@@ -862,7 +862,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
+     * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -870,7 +870,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster along with {@link Response} on successful
+     * @return information about a database in a Redis Enterprise cluster along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -902,7 +902,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
+     * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -911,7 +911,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster along with {@link Response} on successful
+     * @return information about a database in a Redis Enterprise cluster along with {@link Response} on successful
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -942,7 +942,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
+     * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -950,7 +950,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster on successful completion of {@link Mono}.
+     * @return information about a database in a Redis Enterprise cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> getAsync(String resourceGroupName, String clusterName, String databaseName) {
@@ -959,7 +959,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
+     * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -968,7 +968,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster along with {@link Response}.
+     * @return information about a database in a Redis Enterprise cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseInner> getWithResponse(String resourceGroupName, String clusterName, String databaseName,
@@ -977,7 +977,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
+     * Gets information about a database in a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -985,7 +985,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster.
+     * @return information about a database in a Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DatabaseInner get(String resourceGroupName, String clusterName, String databaseName) {
@@ -1213,7 +1213,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
+     * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1252,7 +1252,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
+     * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1291,7 +1291,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
+     * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1308,7 +1308,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
+     * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1326,7 +1326,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
+     * Retrieves the access keys for the Redis Enterprise database.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1342,7 +1342,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1388,7 +1388,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1433,7 +1433,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1454,7 +1454,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1477,7 +1477,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1495,7 +1495,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1515,7 +1515,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1534,7 +1534,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1554,7 +1554,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -1572,7 +1572,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
+     * Regenerates the Redis Enterprise database's access keys.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Redis Enterprise cluster.
@@ -3073,9 +3073,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3102,9 +3100,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

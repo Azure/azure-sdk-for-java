@@ -6,36 +6,36 @@ package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * A class that describes the properties of a SenderUsername resource.
  */
 @Fluent
-public final class SenderUsernameProperties {
+public final class SenderUsernameProperties implements JsonSerializable<SenderUsernameProperties> {
     /*
      * The location where the SenderUsername resource data is stored at rest.
      */
-    @JsonProperty(value = "dataLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String dataLocation;
 
     /*
      * A sender senderUsername to be used when sending emails.
      */
-    @JsonProperty(value = "username", required = true)
     private String username;
 
     /*
      * The display name for the senderUsername.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Provisioning state of the resource. Unknown is the default state for Communication Services.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -110,10 +110,56 @@ public final class SenderUsernameProperties {
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property username in model SenderUsernameProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model SenderUsernameProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SenderUsernameProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SenderUsernameProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SenderUsernameProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SenderUsernameProperties.
+     */
+    public static SenderUsernameProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SenderUsernameProperties deserializedSenderUsernameProperties = new SenderUsernameProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedSenderUsernameProperties.username = reader.getString();
+                } else if ("dataLocation".equals(fieldName)) {
+                    deserializedSenderUsernameProperties.dataLocation = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSenderUsernameProperties.displayName = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSenderUsernameProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSenderUsernameProperties;
+        });
+    }
 }

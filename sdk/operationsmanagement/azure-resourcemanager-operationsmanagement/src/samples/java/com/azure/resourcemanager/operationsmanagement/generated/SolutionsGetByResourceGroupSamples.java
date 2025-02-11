@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.operationsmanagement.generated;
 
-/** Samples for Solutions GetByResourceGroup. */
+/**
+ * Samples for Solutions GetByResourceGroup.
+ */
 public final class SolutionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/examples/SolutionGet.json
+     * x-ms-original-file:
+     * specification/operationsmanagement/resource-manager/Microsoft.OperationsManagement/preview/2015-11-01-preview/
+     * examples/SolutionGet.json
      */
     /**
      * Sample code: SolutionGet.
-     *
+     * 
      * @param manager Entry point to OperationsManagementManager.
      */
     public static void solutionGet(com.azure.resourcemanager.operationsmanagement.OperationsManagementManager manager) {

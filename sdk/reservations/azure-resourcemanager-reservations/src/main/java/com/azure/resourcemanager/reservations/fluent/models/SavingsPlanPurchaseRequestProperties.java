@@ -5,66 +5,68 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.AppliedScopeProperties;
 import com.azure.resourcemanager.reservations.models.AppliedScopeType;
 import com.azure.resourcemanager.reservations.models.BillingPlan;
 import com.azure.resourcemanager.reservations.models.Commitment;
 import com.azure.resourcemanager.reservations.models.SavingsPlanTerm;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of a savings plan purchase. */
+/**
+ * Properties of a savings plan purchase.
+ */
 @Fluent
-public final class SavingsPlanPurchaseRequestProperties {
+public final class SavingsPlanPurchaseRequestProperties
+    implements JsonSerializable<SavingsPlanPurchaseRequestProperties> {
     /*
      * Friendly name of the savings plan
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Subscription that will be charged for purchasing reservation or savings plan
      */
-    @JsonProperty(value = "billingScopeId")
     private String billingScopeId;
 
     /*
      * Represent savings plan term in ISO 8601 format.
      */
-    @JsonProperty(value = "term")
     private SavingsPlanTerm term;
 
     /*
      * Represents the billing plan in ISO 8601 format. Required only for monthly billing plans.
      */
-    @JsonProperty(value = "billingPlan")
     private BillingPlan billingPlan;
 
     /*
      * Type of the Applied Scope.
      */
-    @JsonProperty(value = "appliedScopeType")
     private AppliedScopeType appliedScopeType;
 
     /*
      * Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId
      * and managementGroupId if AppliedScopeType is ManagementGroup
      */
-    @JsonProperty(value = "appliedScopeProperties")
     private AppliedScopeProperties appliedScopeProperties;
 
     /*
      * Commitment towards the benefit.
      */
-    @JsonProperty(value = "commitment")
     private Commitment commitment;
 
-    /** Creates an instance of SavingsPlanPurchaseRequestProperties class. */
+    /**
+     * Creates an instance of SavingsPlanPurchaseRequestProperties class.
+     */
     public SavingsPlanPurchaseRequestProperties() {
     }
 
     /**
      * Get the displayName property: Friendly name of the savings plan.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -73,7 +75,7 @@ public final class SavingsPlanPurchaseRequestProperties {
 
     /**
      * Set the displayName property: Friendly name of the savings plan.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SavingsPlanPurchaseRequestProperties object itself.
      */
@@ -84,7 +86,7 @@ public final class SavingsPlanPurchaseRequestProperties {
 
     /**
      * Get the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
-     *
+     * 
      * @return the billingScopeId value.
      */
     public String billingScopeId() {
@@ -93,7 +95,7 @@ public final class SavingsPlanPurchaseRequestProperties {
 
     /**
      * Set the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
-     *
+     * 
      * @param billingScopeId the billingScopeId value to set.
      * @return the SavingsPlanPurchaseRequestProperties object itself.
      */
@@ -104,7 +106,7 @@ public final class SavingsPlanPurchaseRequestProperties {
 
     /**
      * Get the term property: Represent savings plan term in ISO 8601 format.
-     *
+     * 
      * @return the term value.
      */
     public SavingsPlanTerm term() {
@@ -113,7 +115,7 @@ public final class SavingsPlanPurchaseRequestProperties {
 
     /**
      * Set the term property: Represent savings plan term in ISO 8601 format.
-     *
+     * 
      * @param term the term value to set.
      * @return the SavingsPlanPurchaseRequestProperties object itself.
      */
@@ -125,7 +127,7 @@ public final class SavingsPlanPurchaseRequestProperties {
     /**
      * Get the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public BillingPlan billingPlan() {
@@ -135,7 +137,7 @@ public final class SavingsPlanPurchaseRequestProperties {
     /**
      * Set the billingPlan property: Represents the billing plan in ISO 8601 format. Required only for monthly billing
      * plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the SavingsPlanPurchaseRequestProperties object itself.
      */
@@ -146,7 +148,7 @@ public final class SavingsPlanPurchaseRequestProperties {
 
     /**
      * Get the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -155,7 +157,7 @@ public final class SavingsPlanPurchaseRequestProperties {
 
     /**
      * Set the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the SavingsPlanPurchaseRequestProperties object itself.
      */
@@ -167,7 +169,7 @@ public final class SavingsPlanPurchaseRequestProperties {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -177,19 +179,19 @@ public final class SavingsPlanPurchaseRequestProperties {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the SavingsPlanPurchaseRequestProperties object itself.
      */
-    public SavingsPlanPurchaseRequestProperties withAppliedScopeProperties(
-        AppliedScopeProperties appliedScopeProperties) {
+    public SavingsPlanPurchaseRequestProperties
+        withAppliedScopeProperties(AppliedScopeProperties appliedScopeProperties) {
         this.appliedScopeProperties = appliedScopeProperties;
         return this;
     }
 
     /**
      * Get the commitment property: Commitment towards the benefit.
-     *
+     * 
      * @return the commitment value.
      */
     public Commitment commitment() {
@@ -198,7 +200,7 @@ public final class SavingsPlanPurchaseRequestProperties {
 
     /**
      * Set the commitment property: Commitment towards the benefit.
-     *
+     * 
      * @param commitment the commitment value to set.
      * @return the SavingsPlanPurchaseRequestProperties object itself.
      */
@@ -209,7 +211,7 @@ public final class SavingsPlanPurchaseRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -219,5 +221,65 @@ public final class SavingsPlanPurchaseRequestProperties {
         if (commitment() != null) {
             commitment().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("billingScopeId", this.billingScopeId);
+        jsonWriter.writeStringField("term", this.term == null ? null : this.term.toString());
+        jsonWriter.writeStringField("billingPlan", this.billingPlan == null ? null : this.billingPlan.toString());
+        jsonWriter.writeStringField("appliedScopeType",
+            this.appliedScopeType == null ? null : this.appliedScopeType.toString());
+        jsonWriter.writeJsonField("appliedScopeProperties", this.appliedScopeProperties);
+        jsonWriter.writeJsonField("commitment", this.commitment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SavingsPlanPurchaseRequestProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SavingsPlanPurchaseRequestProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SavingsPlanPurchaseRequestProperties.
+     */
+    public static SavingsPlanPurchaseRequestProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SavingsPlanPurchaseRequestProperties deserializedSavingsPlanPurchaseRequestProperties
+                = new SavingsPlanPurchaseRequestProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedSavingsPlanPurchaseRequestProperties.displayName = reader.getString();
+                } else if ("billingScopeId".equals(fieldName)) {
+                    deserializedSavingsPlanPurchaseRequestProperties.billingScopeId = reader.getString();
+                } else if ("term".equals(fieldName)) {
+                    deserializedSavingsPlanPurchaseRequestProperties.term
+                        = SavingsPlanTerm.fromString(reader.getString());
+                } else if ("billingPlan".equals(fieldName)) {
+                    deserializedSavingsPlanPurchaseRequestProperties.billingPlan
+                        = BillingPlan.fromString(reader.getString());
+                } else if ("appliedScopeType".equals(fieldName)) {
+                    deserializedSavingsPlanPurchaseRequestProperties.appliedScopeType
+                        = AppliedScopeType.fromString(reader.getString());
+                } else if ("appliedScopeProperties".equals(fieldName)) {
+                    deserializedSavingsPlanPurchaseRequestProperties.appliedScopeProperties
+                        = AppliedScopeProperties.fromJson(reader);
+                } else if ("commitment".equals(fieldName)) {
+                    deserializedSavingsPlanPurchaseRequestProperties.commitment = Commitment.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSavingsPlanPurchaseRequestProperties;
+        });
     }
 }

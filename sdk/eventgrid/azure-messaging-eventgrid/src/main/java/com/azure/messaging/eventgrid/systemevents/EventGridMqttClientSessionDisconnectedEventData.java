@@ -16,8 +16,8 @@ import java.io.IOException;
 @Fluent
 public final class EventGridMqttClientSessionDisconnectedEventData extends EventGridMqttClientEventData {
     /*
-     * Unique identifier for the MQTT client's session. This case-sensitive string can be up to 128 characters long,
-     * and supports UTF-8 characters.
+     * Unique identifier for the MQTT client's session. This case-sensitive string can be up to 128 characters long, and
+     * supports UTF-8 characters.
      */
     private String clientSessionName;
 
@@ -134,6 +134,9 @@ public final class EventGridMqttClientSessionDisconnectedEventData extends Event
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

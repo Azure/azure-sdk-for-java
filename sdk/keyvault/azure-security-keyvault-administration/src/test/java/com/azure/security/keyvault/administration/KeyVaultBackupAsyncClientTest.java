@@ -25,15 +25,15 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     private KeyVaultBackupAsyncClient asyncClient;
 
     private void getAsyncClient(HttpClient httpClient, boolean forCleanup) {
-        asyncClient = getClientBuilder(buildAsyncAssertingClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
-            .buildAsyncClient();
+        asyncClient
+            = getClientBuilder(
+                buildAsyncAssertingClient(
+                    interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
+                forCleanup).buildAsyncClient();
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
-            .build();
+        return new AssertingHttpClientBuilder(httpClient).assertAsync().build();
     }
 
     /**
@@ -45,14 +45,11 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     public void beginBackup(HttpClient httpClient) {
         getAsyncClient(httpClient, false);
 
-        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult))
-            .assertNext(backupBlobUri -> {
+        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken)).last()
+            .flatMap(AsyncPollResponse::getFinalResult)).assertNext(backupBlobUri -> {
                 assertNotNull(backupBlobUri);
                 assertTrue(backupBlobUri.startsWith(blobStorageUrl));
-            })
-            .verifyComplete();
+            }).verifyComplete();
     }
 
     /**
@@ -64,8 +61,8 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     public void beginPreBackup(HttpClient httpClient) {
         getAsyncClient(httpClient, false);
 
-        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginPreBackup(blobStorageUrl, sasToken))
-                .last()
+        StepVerifier
+            .create(setPlaybackPollerFluxPollInterval(asyncClient.beginPreBackup(blobStorageUrl, sasToken)).last()
                 .flatMap(AsyncPollResponse::getFinalResult)
                 .mapNotNull(backupBlobUri -> {
                     assertNull(backupBlobUri);
@@ -84,18 +81,17 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     public void beginRestore(HttpClient httpClient) {
         getAsyncClient(httpClient, false);
 
-        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult)
-                .map(backupBlobUri -> {
-                    assertNotNull(backupBlobUri);
-                    assertTrue(backupBlobUri.startsWith(blobStorageUrl));
+        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken)).last()
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .map(backupBlobUri -> {
+                assertNotNull(backupBlobUri);
+                assertTrue(backupBlobUri.startsWith(blobStorageUrl));
 
-                    return backupBlobUri;
-                })
-                .map(backupBlobUri -> asyncClient.beginRestore(backupBlobUri, sasToken)
-                    .last()
-                    .map(AsyncPollResponse::getValue)))
+                return backupBlobUri;
+            })
+            .map(backupBlobUri -> asyncClient.beginRestore(backupBlobUri, sasToken)
+                .last()
+                .map(AsyncPollResponse::getValue)))
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
@@ -113,18 +109,17 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     public void beginPreRestore(HttpClient httpClient) {
         getAsyncClient(httpClient, false);
 
-        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult)
-                .map(backupBlobUri -> {
-                    assertNotNull(backupBlobUri);
-                    assertTrue(backupBlobUri.startsWith(blobStorageUrl));
+        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken)).last()
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .map(backupBlobUri -> {
+                assertNotNull(backupBlobUri);
+                assertTrue(backupBlobUri.startsWith(blobStorageUrl));
 
-                    return backupBlobUri;
-                })
-                .map(backupBlobUri -> asyncClient.beginPreRestore(backupBlobUri, sasToken)
-                    .last()
-                    .map(AsyncPollResponse::getValue)))
+                return backupBlobUri;
+            })
+            .map(backupBlobUri -> asyncClient.beginPreRestore(backupBlobUri, sasToken)
+                .last()
+                .map(AsyncPollResponse::getValue)))
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
@@ -140,33 +135,29 @@ public class KeyVaultBackupAsyncClientTest extends KeyVaultBackupClientTestBase 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
     public void beginSelectiveKeyRestore(HttpClient httpClient) {
-        KeyClient keyClient = new KeyClientBuilder()
-            .vaultUrl(getEndpoint())
-            .pipeline(getPipeline(httpClient, false))
-            .buildClient();
+        KeyClient keyClient
+            = new KeyClientBuilder().vaultUrl(getEndpoint()).pipeline(getPipeline(httpClient, false)).buildClient();
 
         String keyName = testResourceNamer.randomName("backupKey", 20);
-        CreateRsaKeyOptions rsaKeyOptions = new CreateRsaKeyOptions(keyName)
-            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
-            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC));
+        CreateRsaKeyOptions rsaKeyOptions
+            = new CreateRsaKeyOptions(keyName).setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
+                .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC));
 
         KeyVaultKey createdKey = keyClient.createRsaKey(rsaKeyOptions);
 
         getAsyncClient(httpClient, false);
 
-        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken))
-                .last()
-                .flatMap(AsyncPollResponse::getFinalResult)
-                .map(backupBlobUri -> {
-                    assertNotNull(backupBlobUri);
-                    assertTrue(backupBlobUri.startsWith(blobStorageUrl));
+        StepVerifier.create(setPlaybackPollerFluxPollInterval(asyncClient.beginBackup(blobStorageUrl, sasToken)).last()
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .map(backupBlobUri -> {
+                assertNotNull(backupBlobUri);
+                assertTrue(backupBlobUri.startsWith(blobStorageUrl));
 
-                    return backupBlobUri;
-                })
-                .map(backupBlobUri ->
-                    asyncClient.beginSelectiveKeyRestore(createdKey.getName(), backupBlobUri, sasToken)
-                        .last()
-                        .map(AsyncPollResponse::getValue)))
+                return backupBlobUri;
+            })
+            .map(backupBlobUri -> asyncClient.beginSelectiveKeyRestore(createdKey.getName(), backupBlobUri, sasToken)
+                .last()
+                .map(AsyncPollResponse::getValue)))
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 

@@ -8,22 +8,24 @@ import com.azure.resourcemanager.connectedvmware.models.VirtualNetwork;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualNetworks Update. */
+/**
+ * Samples for VirtualNetworks Update.
+ */
 public final class VirtualNetworksUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/UpdateVirtualNetwork.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateVirtualNetwork.json
      */
     /**
      * Sample code: UpdateVirtualNetwork.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateVirtualNetwork(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        VirtualNetwork resource =
-            manager
-                .virtualNetworks()
-                .getByResourceGroupWithResponse("testrg", "ProdNetwork", com.azure.core.util.Context.NONE)
-                .getValue();
+        VirtualNetwork resource = manager.virtualNetworks()
+            .getByResourceGroupWithResponse("testrg", "ProdNetwork", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 

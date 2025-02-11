@@ -21,22 +21,18 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
 
     private final com.azure.resourcemanager.reservations.ReservationsManager serviceManager;
 
-    public QuotaRequestStatusImpl(
-        QuotaRequestStatusClient innerClient,
+    public QuotaRequestStatusImpl(QuotaRequestStatusClient innerClient,
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<QuotaRequestDetails> getWithResponse(
-        String subscriptionId, String providerId, String location, String id, Context context) {
-        Response<QuotaRequestDetailsInner> inner =
-            this.serviceClient().getWithResponse(subscriptionId, providerId, location, id, context);
+    public Response<QuotaRequestDetails> getWithResponse(String subscriptionId, String providerId, String location,
+        String id, Context context) {
+        Response<QuotaRequestDetailsInner> inner
+            = this.serviceClient().getWithResponse(subscriptionId, providerId, location, id, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QuotaRequestDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -54,20 +50,14 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
 
     public PagedIterable<QuotaRequestDetails> list(String subscriptionId, String providerId, String location) {
         PagedIterable<QuotaRequestDetailsInner> inner = this.serviceClient().list(subscriptionId, providerId, location);
-        return Utils.mapPage(inner, inner1 -> new QuotaRequestDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaRequestDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<QuotaRequestDetails> list(
-        String subscriptionId,
-        String providerId,
-        String location,
-        String filter,
-        Integer top,
-        String skiptoken,
-        Context context) {
-        PagedIterable<QuotaRequestDetailsInner> inner =
-            this.serviceClient().list(subscriptionId, providerId, location, filter, top, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new QuotaRequestDetailsImpl(inner1, this.manager()));
+    public PagedIterable<QuotaRequestDetails> list(String subscriptionId, String providerId, String location,
+        String filter, Integer top, String skiptoken, Context context) {
+        PagedIterable<QuotaRequestDetailsInner> inner
+            = this.serviceClient().list(subscriptionId, providerId, location, filter, top, skiptoken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaRequestDetailsImpl(inner1, this.manager()));
     }
 
     private QuotaRequestStatusClient serviceClient() {

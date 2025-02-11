@@ -37,7 +37,7 @@ import java.time.Duration;
  *
  * @see ShareLeaseClientBuilder
  */
-@ServiceClient(builder =  ShareLeaseClientBuilder.class)
+@ServiceClient(builder = ShareLeaseClientBuilder.class)
 public final class ShareLeaseClient {
     private final ShareLeaseAsyncClient client;
 
@@ -278,8 +278,8 @@ public final class ShareLeaseClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> changeLeaseWithResponse(String proposedId, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(this.client
-            .changeLeaseWithResponse(proposedId, context), timeout);
+        return StorageImplUtils.blockWithOptionalTimeout(this.client.changeLeaseWithResponse(proposedId, context),
+            timeout);
     }
 
     /**

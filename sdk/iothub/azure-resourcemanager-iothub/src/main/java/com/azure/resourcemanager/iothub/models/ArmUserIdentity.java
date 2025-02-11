@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ArmUserIdentity model. */
+/**
+ * The ArmUserIdentity model.
+ */
 @Immutable
-public final class ArmUserIdentity {
+public final class ArmUserIdentity implements JsonSerializable<ArmUserIdentity> {
     /*
      * The principalId property.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The clientId property.
      */
-    @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
-    /** Creates an instance of ArmUserIdentity class. */
+    /**
+     * Creates an instance of ArmUserIdentity class.
+     */
     public ArmUserIdentity() {
     }
 
     /**
      * Get the principalId property: The principalId property.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -37,7 +43,7 @@ public final class ArmUserIdentity {
 
     /**
      * Get the clientId property: The clientId property.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -46,9 +52,46 @@ public final class ArmUserIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArmUserIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArmUserIdentity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArmUserIdentity.
+     */
+    public static ArmUserIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArmUserIdentity deserializedArmUserIdentity = new ArmUserIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedArmUserIdentity.principalId = reader.getString();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedArmUserIdentity.clientId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArmUserIdentity;
+        });
     }
 }

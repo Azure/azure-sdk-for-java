@@ -26,22 +26,28 @@ import com.azure.resourcemanager.automation.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.automation.fluent.models.GraphicalRunbookContentInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AutomationClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(AutomationClientImpl client) {
-        this.service =
-            RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ResourceProvidersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,27 +57,22 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "AutomationClientReso")
-    private interface ResourceProvidersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/convertGraphRunbookContent")
-        @ExpectedResponses({200})
+    public interface ResourceProvidersService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation/automationAccounts/{automationAccountName}/convertGraphRunbookContent")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GraphicalRunbookContentInner>> convertGraphRunbookContent(
-            @HostParam("$host") String endpoint,
+        Mono<Response<GraphicalRunbookContentInner>> convertGraphRunbookContent(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GraphicalRunbookContentInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Post operation to serialize or deserialize GraphRunbookContent.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Input data describing the graphical runbook.
@@ -84,10 +85,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     private Mono<Response<GraphicalRunbookContentInner>> convertGraphRunbookContentWithResponseAsync(
         String resourceGroupName, String automationAccountName, GraphicalRunbookContentInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -98,10 +97,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -111,24 +108,14 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .convertGraphRunbookContent(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.convertGraphRunbookContent(this.client.getEndpoint(), resourceGroupName,
+                automationAccountName, this.client.getSubscriptionId(), apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Post operation to serialize or deserialize GraphRunbookContent.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Input data describing the graphical runbook.
@@ -140,15 +127,11 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GraphicalRunbookContentInner>> convertGraphRunbookContentWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        GraphicalRunbookContentInner parameters,
+        String resourceGroupName, String automationAccountName, GraphicalRunbookContentInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -159,10 +142,8 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
                 .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -172,21 +153,13 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
         final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .convertGraphRunbookContent(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.convertGraphRunbookContent(this.client.getEndpoint(), resourceGroupName, automationAccountName,
+            this.client.getSubscriptionId(), apiVersion, parameters, accept, context);
     }
 
     /**
      * Post operation to serialize or deserialize GraphRunbookContent.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Input data describing the graphical runbook.
@@ -196,32 +169,15 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return graphical Runbook Content on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GraphicalRunbookContentInner> convertGraphRunbookContentAsync(
-        String resourceGroupName, String automationAccountName, GraphicalRunbookContentInner parameters) {
+    private Mono<GraphicalRunbookContentInner> convertGraphRunbookContentAsync(String resourceGroupName,
+        String automationAccountName, GraphicalRunbookContentInner parameters) {
         return convertGraphRunbookContentWithResponseAsync(resourceGroupName, automationAccountName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Post operation to serialize or deserialize GraphRunbookContent.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param parameters Input data describing the graphical runbook.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return graphical Runbook Content.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GraphicalRunbookContentInner convertGraphRunbookContent(
-        String resourceGroupName, String automationAccountName, GraphicalRunbookContentInner parameters) {
-        return convertGraphRunbookContentAsync(resourceGroupName, automationAccountName, parameters).block();
-    }
-
-    /**
-     * Post operation to serialize or deserialize GraphRunbookContent.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param parameters Input data describing the graphical runbook.
@@ -232,13 +188,27 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * @return graphical Runbook Content along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GraphicalRunbookContentInner> convertGraphRunbookContentWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        GraphicalRunbookContentInner parameters,
-        Context context) {
-        return convertGraphRunbookContentWithResponseAsync(
-                resourceGroupName, automationAccountName, parameters, context)
-            .block();
+    public Response<GraphicalRunbookContentInner> convertGraphRunbookContentWithResponse(String resourceGroupName,
+        String automationAccountName, GraphicalRunbookContentInner parameters, Context context) {
+        return convertGraphRunbookContentWithResponseAsync(resourceGroupName, automationAccountName, parameters,
+            context).block();
+    }
+
+    /**
+     * Post operation to serialize or deserialize GraphRunbookContent.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param parameters Input data describing the graphical runbook.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return graphical Runbook Content.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GraphicalRunbookContentInner convertGraphRunbookContent(String resourceGroupName,
+        String automationAccountName, GraphicalRunbookContentInner parameters) {
+        return convertGraphRunbookContentWithResponse(resourceGroupName, automationAccountName, parameters,
+            Context.NONE).getValue();
     }
 }

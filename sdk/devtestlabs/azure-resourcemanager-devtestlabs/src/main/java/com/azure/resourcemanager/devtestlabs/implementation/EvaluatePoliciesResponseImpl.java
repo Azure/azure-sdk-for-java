@@ -15,8 +15,7 @@ public final class EvaluatePoliciesResponseImpl implements EvaluatePoliciesRespo
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    EvaluatePoliciesResponseImpl(
-        EvaluatePoliciesResponseInner innerObject,
+    EvaluatePoliciesResponseImpl(EvaluatePoliciesResponseInner innerObject,
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

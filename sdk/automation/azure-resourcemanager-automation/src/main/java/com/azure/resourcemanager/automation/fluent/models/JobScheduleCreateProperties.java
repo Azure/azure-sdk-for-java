@@ -6,43 +6,49 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
 import com.azure.resourcemanager.automation.models.ScheduleAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the create job schedule operation. */
+/**
+ * The parameters supplied to the create job schedule operation.
+ */
 @Fluent
-public final class JobScheduleCreateProperties {
+public final class JobScheduleCreateProperties implements JsonSerializable<JobScheduleCreateProperties> {
     /*
      * Gets or sets the schedule.
      */
-    @JsonProperty(value = "schedule", required = true)
     private ScheduleAssociationProperty schedule;
 
     /*
      * Gets or sets the runbook.
      */
-    @JsonProperty(value = "runbook", required = true)
     private RunbookAssociationProperty runbook;
 
     /*
      * Gets or sets the hybrid worker group that the scheduled job should run on.
      */
-    @JsonProperty(value = "runOn")
     private String runOn;
 
     /*
      * Gets or sets a list of job properties.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /**
+     * Creates an instance of JobScheduleCreateProperties class.
+     */
+    public JobScheduleCreateProperties() {
+    }
+
+    /**
      * Get the schedule property: Gets or sets the schedule.
-     *
+     * 
      * @return the schedule value.
      */
     public ScheduleAssociationProperty schedule() {
@@ -51,7 +57,7 @@ public final class JobScheduleCreateProperties {
 
     /**
      * Set the schedule property: Gets or sets the schedule.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the JobScheduleCreateProperties object itself.
      */
@@ -62,7 +68,7 @@ public final class JobScheduleCreateProperties {
 
     /**
      * Get the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
@@ -71,7 +77,7 @@ public final class JobScheduleCreateProperties {
 
     /**
      * Set the runbook property: Gets or sets the runbook.
-     *
+     * 
      * @param runbook the runbook value to set.
      * @return the JobScheduleCreateProperties object itself.
      */
@@ -82,7 +88,7 @@ public final class JobScheduleCreateProperties {
 
     /**
      * Get the runOn property: Gets or sets the hybrid worker group that the scheduled job should run on.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -91,7 +97,7 @@ public final class JobScheduleCreateProperties {
 
     /**
      * Set the runOn property: Gets or sets the hybrid worker group that the scheduled job should run on.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the JobScheduleCreateProperties object itself.
      */
@@ -102,7 +108,7 @@ public final class JobScheduleCreateProperties {
 
     /**
      * Get the parameters property: Gets or sets a list of job properties.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -111,7 +117,7 @@ public final class JobScheduleCreateProperties {
 
     /**
      * Set the parameters property: Gets or sets a list of job properties.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the JobScheduleCreateProperties object itself.
      */
@@ -122,27 +128,72 @@ public final class JobScheduleCreateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (schedule() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schedule in model JobScheduleCreateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property schedule in model JobScheduleCreateProperties"));
         } else {
             schedule().validate();
         }
         if (runbook() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property runbook in model JobScheduleCreateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property runbook in model JobScheduleCreateProperties"));
         } else {
             runbook().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(JobScheduleCreateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        jsonWriter.writeJsonField("runbook", this.runbook);
+        jsonWriter.writeStringField("runOn", this.runOn);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobScheduleCreateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobScheduleCreateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JobScheduleCreateProperties.
+     */
+    public static JobScheduleCreateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobScheduleCreateProperties deserializedJobScheduleCreateProperties = new JobScheduleCreateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schedule".equals(fieldName)) {
+                    deserializedJobScheduleCreateProperties.schedule = ScheduleAssociationProperty.fromJson(reader);
+                } else if ("runbook".equals(fieldName)) {
+                    deserializedJobScheduleCreateProperties.runbook = RunbookAssociationProperty.fromJson(reader);
+                } else if ("runOn".equals(fieldName)) {
+                    deserializedJobScheduleCreateProperties.runOn = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedJobScheduleCreateProperties.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobScheduleCreateProperties;
+        });
+    }
 }

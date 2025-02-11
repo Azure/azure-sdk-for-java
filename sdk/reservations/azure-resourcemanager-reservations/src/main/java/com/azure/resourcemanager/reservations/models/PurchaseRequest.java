@@ -5,39 +5,44 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.fluent.models.PurchaseRequestProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The request for reservation purchase. */
+/**
+ * The request for reservation purchase.
+ */
 @Fluent
-public final class PurchaseRequest {
+public final class PurchaseRequest implements JsonSerializable<PurchaseRequest> {
     /*
      * The name of sku
      */
-    @JsonProperty(value = "sku")
     private SkuName sku;
 
     /*
      * The Azure region where the reserved resource lives.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Properties of reservation purchase request
      */
-    @JsonProperty(value = "properties")
     private PurchaseRequestProperties innerProperties;
 
-    /** Creates an instance of PurchaseRequest class. */
+    /**
+     * Creates an instance of PurchaseRequest class.
+     */
     public PurchaseRequest() {
     }
 
     /**
      * Get the sku property: The name of sku.
-     *
+     * 
      * @return the sku value.
      */
     public SkuName sku() {
@@ -46,7 +51,7 @@ public final class PurchaseRequest {
 
     /**
      * Set the sku property: The name of sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -57,7 +62,7 @@ public final class PurchaseRequest {
 
     /**
      * Get the location property: The Azure region where the reserved resource lives.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -66,7 +71,7 @@ public final class PurchaseRequest {
 
     /**
      * Set the location property: The Azure region where the reserved resource lives.
-     *
+     * 
      * @param location the location value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -77,7 +82,7 @@ public final class PurchaseRequest {
 
     /**
      * Get the innerProperties property: Properties of reservation purchase request.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PurchaseRequestProperties innerProperties() {
@@ -86,7 +91,7 @@ public final class PurchaseRequest {
 
     /**
      * Get the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @return the reservedResourceType value.
      */
     public ReservedResourceType reservedResourceType() {
@@ -95,7 +100,7 @@ public final class PurchaseRequest {
 
     /**
      * Set the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @param reservedResourceType the reservedResourceType value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -109,7 +114,7 @@ public final class PurchaseRequest {
 
     /**
      * Get the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
-     *
+     * 
      * @return the billingScopeId value.
      */
     public String billingScopeId() {
@@ -118,7 +123,7 @@ public final class PurchaseRequest {
 
     /**
      * Set the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
-     *
+     * 
      * @param billingScopeId the billingScopeId value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -132,7 +137,7 @@ public final class PurchaseRequest {
 
     /**
      * Get the term property: Represent the term of reservation.
-     *
+     * 
      * @return the term value.
      */
     public ReservationTerm term() {
@@ -141,7 +146,7 @@ public final class PurchaseRequest {
 
     /**
      * Set the term property: Represent the term of reservation.
-     *
+     * 
      * @param term the term value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -155,7 +160,7 @@ public final class PurchaseRequest {
 
     /**
      * Get the billingPlan property: Represent the billing plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public ReservationBillingPlan billingPlan() {
@@ -164,7 +169,7 @@ public final class PurchaseRequest {
 
     /**
      * Set the billingPlan property: Represent the billing plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -178,7 +183,7 @@ public final class PurchaseRequest {
 
     /**
      * Get the quantity property: Quantity of the skus that are part of the reservation.
-     *
+     * 
      * @return the quantity value.
      */
     public Integer quantity() {
@@ -187,7 +192,7 @@ public final class PurchaseRequest {
 
     /**
      * Set the quantity property: Quantity of the skus that are part of the reservation.
-     *
+     * 
      * @param quantity the quantity value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -201,7 +206,7 @@ public final class PurchaseRequest {
 
     /**
      * Get the displayName property: Friendly name of the reservation.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -210,7 +215,7 @@ public final class PurchaseRequest {
 
     /**
      * Set the displayName property: Friendly name of the reservation.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -224,7 +229,7 @@ public final class PurchaseRequest {
 
     /**
      * Get the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -233,7 +238,7 @@ public final class PurchaseRequest {
 
     /**
      * Set the appliedScopeType property: Type of the Applied Scope.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -249,7 +254,7 @@ public final class PurchaseRequest {
      * Get the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
      * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
      * Single AppliedScopeType.
-     *
+     * 
      * @return the appliedScopes value.
      */
     public List<String> appliedScopes() {
@@ -260,7 +265,7 @@ public final class PurchaseRequest {
      * Set the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
      * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
      * Single AppliedScopeType.
-     *
+     * 
      * @param appliedScopes the appliedScopes value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -275,7 +280,7 @@ public final class PurchaseRequest {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -285,7 +290,7 @@ public final class PurchaseRequest {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -300,7 +305,7 @@ public final class PurchaseRequest {
     /**
      * Get the renew property: Setting this to true will automatically purchase a new reservation on the expiration date
      * time.
-     *
+     * 
      * @return the renew value.
      */
     public Boolean renew() {
@@ -310,7 +315,7 @@ public final class PurchaseRequest {
     /**
      * Set the renew property: Setting this to true will automatically purchase a new reservation on the expiration date
      * time.
-     *
+     * 
      * @param renew the renew value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -325,7 +330,7 @@ public final class PurchaseRequest {
     /**
      * Get the reservedResourceProperties property: Properties specific to each reserved resource type. Not required if
      * not applicable.
-     *
+     * 
      * @return the reservedResourceProperties value.
      */
     public PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties() {
@@ -335,12 +340,12 @@ public final class PurchaseRequest {
     /**
      * Set the reservedResourceProperties property: Properties specific to each reserved resource type. Not required if
      * not applicable.
-     *
+     * 
      * @param reservedResourceProperties the reservedResourceProperties value to set.
      * @return the PurchaseRequest object itself.
      */
-    public PurchaseRequest withReservedResourceProperties(
-        PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties) {
+    public PurchaseRequest
+        withReservedResourceProperties(PurchaseRequestPropertiesReservedResourceProperties reservedResourceProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PurchaseRequestProperties();
         }
@@ -350,7 +355,7 @@ public final class PurchaseRequest {
 
     /**
      * Get the reviewDateTime property: This is the date-time when the Azure hybrid benefit needs to be reviewed.
-     *
+     * 
      * @return the reviewDateTime value.
      */
     public OffsetDateTime reviewDateTime() {
@@ -359,7 +364,7 @@ public final class PurchaseRequest {
 
     /**
      * Set the reviewDateTime property: This is the date-time when the Azure hybrid benefit needs to be reviewed.
-     *
+     * 
      * @param reviewDateTime the reviewDateTime value to set.
      * @return the PurchaseRequest object itself.
      */
@@ -373,7 +378,7 @@ public final class PurchaseRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -383,5 +388,47 @@ public final class PurchaseRequest {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PurchaseRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PurchaseRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PurchaseRequest.
+     */
+    public static PurchaseRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PurchaseRequest deserializedPurchaseRequest = new PurchaseRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedPurchaseRequest.sku = SkuName.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedPurchaseRequest.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPurchaseRequest.innerProperties = PurchaseRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPurchaseRequest;
+        });
     }
 }

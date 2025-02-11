@@ -20,36 +20,58 @@ import reactor.core.publisher.Mono;
 
 /** An object that represents a webhook for a container registry. */
 @Fluent
-public interface Webhook
-    extends ExternalChildResource<Webhook, Registry>,
-        Resource,
-        HasInnerModel<WebhookInner>,
-        Refreshable<Webhook>,
-        Updatable<Webhook.Update> {
+public interface Webhook extends ExternalChildResource<Webhook, Registry>, Resource, HasInnerModel<WebhookInner>,
+    Refreshable<Webhook>, Updatable<Webhook.Update> {
 
-    /** @return the status of the webhook */
+    /**
+     * Gets the status of the webhook.
+     *
+     * @return the status of the webhook
+     */
     boolean isEnabled();
 
     /**
+     * Gets the scope of repositories where the event can be triggered.
+     *
      * @return the scope of repositories where the event can be triggered
      *     <p>For example: - 'foo:*' means events for all tags under repository 'foo' - 'foo:bar' means events for
      *     'foo:bar' only - 'foo' is equivalent to 'foo:latest' - empty means all events
      */
     String scope();
 
-    /** @return the service URI for the webhook to post notifications */
+    /**
+     * Gets the service URI for the webhook to post notifications.
+     *
+     * @return the service URI for the webhook to post notifications
+     */
     String serviceUri();
 
-    /** @return the Custom headers that will be added to the webhook notifications */
+    /**
+     * Gets the Custom headers that will be added to the webhook notifications.
+     *
+     * @return the Custom headers that will be added to the webhook notifications
+     */
     Map<String, String> customHeaders();
 
-    /** @return the list of actions that trigger the webhook to post notifications */
+    /**
+     * Gets the list of actions that trigger the webhook to post notifications.
+     *
+     * @return the list of actions that trigger the webhook to post notifications
+     */
     Collection<WebhookAction> triggers();
 
-    /** @return the provisioning state of the webhook */
+    /**
+     * Gets the provisioning state of the webhook.
+     *
+     * @return the provisioning state of the webhook
+     */
     ProvisioningState provisioningState();
 
-    /** @return the webhook parent ID */
+    /**
+     * Gets the webhook parent ID.
+     *
+     * @return the webhook parent ID
+     */
     String parentId();
 
     /** Changes the status of the webhook to "enabled". */
@@ -72,16 +94,32 @@ public interface Webhook
      */
     Mono<Void> disableAsync();
 
-    /** @return the id on an event info resource */
+    /**
+     * Gets the id on an event info resource.
+     *
+     * @return the id on an event info resource
+     */
     String ping();
 
-    /** @return a representation of the future computation of this call, returning the id on an event info resource */
+    /**
+     * Gets the id on an event info resource.
+     *
+     * @return a representation of the future computation of this call, returning the id on an event info resource
+     */
     Mono<String> pingAsync();
 
-    /** @return the list of event info object */
+    /**
+     * Gets the list of event info object.
+     *
+     * @return the list of event info object
+     */
     PagedIterable<WebhookEventInfo> listEvents();
 
-    /** @return a representation of the future computation of this call, returning the list of event info object */
+    /**
+     * Gets the list of event info object.
+     *
+     * @return a representation of the future computation of this call, returning the list of event info object
+     */
     PagedFlux<WebhookEventInfo> listEventsAsync();
 
     /** Grouping of webhook definition stages. */
@@ -196,12 +234,8 @@ public interface Webhook
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends WithCustomHeaders<ParentT>,
-                WithRepositoriesScope<ParentT>,
-                WithDefaultStatus<ParentT>,
-                DefinitionWithTags<WithAttach<ParentT>>,
-                Attachable.InDefinition<ParentT> {
+        interface WithAttach<ParentT> extends WithCustomHeaders<ParentT>, WithRepositoriesScope<ParentT>,
+            WithDefaultStatus<ParentT>, DefinitionWithTags<WithAttach<ParentT>>, Attachable.InDefinition<ParentT> {
         }
     }
 
@@ -211,10 +245,8 @@ public interface Webhook
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface WebhookDefinition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithTriggerWhen<ParentT>,
-            DefinitionStages.WithServiceUri<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+        extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithTriggerWhen<ParentT>,
+        DefinitionStages.WithServiceUri<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of webhook update definition stages. */
@@ -353,12 +385,8 @@ public interface Webhook
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT>
-            extends WithCustomHeaders<ParentT>,
-                WithRepositoriesScope<ParentT>,
-                WithDefaultStatus<ParentT>,
-                WithTags<ParentT>,
-                Attachable.InUpdate<ParentT> {
+        interface WithAttach<ParentT> extends WithCustomHeaders<ParentT>, WithRepositoriesScope<ParentT>,
+            WithDefaultStatus<ParentT>, WithTags<ParentT>, Attachable.InUpdate<ParentT> {
         }
     }
 
@@ -368,21 +396,14 @@ public interface Webhook
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT>
-        extends UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithTriggerWhen<ParentT>,
-            UpdateDefinitionStages.WithServiceUri<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithTriggerWhen<ParentT>,
+        UpdateDefinitionStages.WithServiceUri<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
     /** The entirety of a webhook update. */
-    interface Update
-        extends UpdateStages.WithTriggerWhen,
-            UpdateStages.WithServiceUri,
-            UpdateStages.WithCustomHeaders,
-            UpdateStages.WithRepositoriesScope,
-            UpdateStages.WithDefaultStatus,
-            Resource.UpdateWithTags<Update>,
-            Appliable<Webhook> {
+    interface Update extends UpdateStages.WithTriggerWhen, UpdateStages.WithServiceUri, UpdateStages.WithCustomHeaders,
+        UpdateStages.WithRepositoriesScope, UpdateStages.WithDefaultStatus, Resource.UpdateWithTags<Update>,
+        Appliable<Webhook> {
     }
 
     /** Grouping of webhook update stages. */
@@ -622,13 +643,8 @@ public interface Webhook
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAttach<ParentT>
-            extends WithTriggerWhen<ParentT>,
-                WithServiceUri<ParentT>,
-                WithCustomHeaders<ParentT>,
-                WithRepositoriesScope<ParentT>,
-                WithDefaultStatus<ParentT>,
-                WithOrWithoutTags<ParentT>,
-                Settable<ParentT> {
+            extends WithTriggerWhen<ParentT>, WithServiceUri<ParentT>, WithCustomHeaders<ParentT>,
+            WithRepositoriesScope<ParentT>, WithDefaultStatus<ParentT>, WithOrWithoutTags<ParentT>, Settable<ParentT> {
         }
     }
 }

@@ -23,7 +23,8 @@ public final class HyperVReplicaAzureUnplannedFailoverInputTests {
     public void testSerialize() throws Exception {
         HyperVReplicaAzureUnplannedFailoverInput model
             = new HyperVReplicaAzureUnplannedFailoverInput().withPrimaryKekCertificatePfx("ydbjzcqymlcf")
-                .withSecondaryKekCertificatePfx("hmhsurlgwqkpm").withRecoveryPointId("pstauol");
+                .withSecondaryKekCertificatePfx("hmhsurlgwqkpm")
+                .withRecoveryPointId("pstauol");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureUnplannedFailoverInput.class);
         Assertions.assertEquals("ydbjzcqymlcf", model.primaryKekCertificatePfx());
         Assertions.assertEquals("hmhsurlgwqkpm", model.secondaryKekCertificatePfx());

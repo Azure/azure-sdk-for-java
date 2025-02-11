@@ -29,24 +29,26 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.RECEIVE;
 
 public final class EventHubsConsumerInstrumentation {
-    private static final Symbol ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL = Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
+    private static final Symbol ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL
+        = Symbol.valueOf(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue());
     private static final InstrumentationScope NOOP_SCOPE = new InstrumentationScope(null, null, null);
     private final EventHubsTracer tracer;
     private final EventHubsMetricsProvider meter;
     private final boolean isSync;
 
-    public EventHubsConsumerInstrumentation(Tracer tracer, Meter meter, String fullyQualifiedName, String entityName, String consumerGroup, boolean isSyncConsumer) {
+    public EventHubsConsumerInstrumentation(Tracer tracer, Meter meter, String fullyQualifiedName, String entityName,
+        String consumerGroup, boolean isSyncConsumer) {
         this.tracer = new EventHubsTracer(tracer, fullyQualifiedName, entityName, consumerGroup);
         this.meter = new EventHubsMetricsProvider(meter, fullyQualifiedName, entityName, consumerGroup);
         this.isSync = isSyncConsumer;
     }
 
-
     public EventHubsTracer getTracer() {
         return tracer;
     }
 
-    public InstrumentationScope createScope(BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback) {
+    public InstrumentationScope
+        createScope(BiConsumer<EventHubsMetricsProvider, InstrumentationScope> reportMetricsCallback) {
         return isEnabled() ? new InstrumentationScope(tracer, meter, reportMetricsCallback) : NOOP_SCOPE;
     }
 
@@ -60,14 +62,14 @@ public final class EventHubsConsumerInstrumentation {
                 m.reportProcess(1, partitionId, s);
             }
         });
-        Instant enqueuedTime = MessageUtils.getEnqueuedTime(message.getMessageAnnotations().getValue(), ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL);
+        Instant enqueuedTime = MessageUtils.getEnqueuedTime(message.getMessageAnnotations().getValue(),
+            ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL);
         if (!isSync) {
             ApplicationProperties properties = message.getApplicationProperties();
-            scope.setSpan(tracer.startProcessSpan(properties == null ? null : properties.getValue(),
-                            enqueuedTime,
-                            partitionId
-                ))
-                    .makeSpanCurrent();
+            scope
+                .setSpan(tracer.startProcessSpan(properties == null ? null : properties.getValue(), enqueuedTime,
+                    partitionId))
+                .makeSpanCurrent();
         }
 
         if (enqueuedTime != null) {
@@ -81,36 +83,31 @@ public final class EventHubsConsumerInstrumentation {
             return events;
         }
 
-        StartSpanOptions startOptions = tracer.isEnabled() ? tracer.createStartOptions(CLIENT, RECEIVE, partitionId) : null;
-        Integer[] receivedCount = new Integer[]{0};
+        StartSpanOptions startOptions
+            = tracer.isEnabled() ? tracer.createStartOptions(CLIENT, RECEIVE, partitionId) : null;
+        Integer[] receivedCount = new Integer[] { 0 };
 
-        return Flux.using(
-                () ->  {
-                    if (startOptions != null) {
-                        startOptions.setStartTimestamp(Instant.now());
-                    }
+        return Flux.using(() -> {
+            if (startOptions != null) {
+                startOptions.setStartTimestamp(Instant.now());
+            }
 
-                    return createScope((m, s) -> meter.reportReceive(receivedCount[0], partitionId, s));
-                },
-                scope -> events
-                        .doOnNext(partitionEvent -> {
-                            if (startOptions != null) {
-                                receivedCount[0] = receivedCount[0] + 1;
-                                EventData data = partitionEvent.getData();
-                                startOptions.addLink(tracer.createLink(data.getProperties(), data.getEnqueuedTime()));
-                            }
-                        })
-                        .doOnError(scope::setError)
-                        .doOnCancel(scope::setCancelled),
-                scope -> {
-                    if (startOptions != null) {
-                        startOptions.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, receivedCount[0]);
-                        startOptions.setAttribute(MESSAGING_DESTINATION_PARTITION_ID, partitionId);
+            return createScope((m, s) -> meter.reportReceive(receivedCount[0], partitionId, s));
+        }, scope -> events.doOnNext(partitionEvent -> {
+            if (startOptions != null) {
+                receivedCount[0] = receivedCount[0] + 1;
+                EventData data = partitionEvent.getData();
+                startOptions.addLink(tracer.createLink(data.getProperties(), data.getEnqueuedTime()));
+            }
+        }).doOnError(scope::setError).doOnCancel(scope::setCancelled), scope -> {
+            if (startOptions != null) {
+                startOptions.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, receivedCount[0]);
+                startOptions.setAttribute(MESSAGING_DESTINATION_PARTITION_ID, partitionId);
 
-                        scope.setSpan(tracer.startSpan(RECEIVE, startOptions, Context.NONE));
-                    }
-                    scope.close();
-                });
+                scope.setSpan(tracer.startSpan(RECEIVE, startOptions, Context.NONE));
+            }
+            scope.close();
+        });
     }
 
     public InstrumentationScope startProcess(EventBatchContext batchContext) {
@@ -118,12 +115,10 @@ public final class EventHubsConsumerInstrumentation {
             return NOOP_SCOPE;
         }
 
-        InstrumentationScope scope = createScope((m, s) ->
-                m.reportProcess(batchContext.getEvents().size(), batchContext.getPartitionContext().getPartitionId(), s));
+        InstrumentationScope scope = createScope((m, s) -> m.reportProcess(batchContext.getEvents().size(),
+            batchContext.getPartitionContext().getPartitionId(), s));
 
-        return scope
-                .setSpan(tracer.startProcessSpan(batchContext))
-                .makeSpanCurrent();
+        return scope.setSpan(tracer.startProcessSpan(batchContext)).makeSpanCurrent();
     }
 
     public InstrumentationScope startProcess(EventContext eventContext) {
@@ -132,17 +127,13 @@ public final class EventHubsConsumerInstrumentation {
             return NOOP_SCOPE;
         }
 
-        InstrumentationScope scope = createScope((m, s) ->
-                m.reportProcess(1, eventContext.getPartitionContext().getPartitionId(), s));
+        InstrumentationScope scope
+            = createScope((m, s) -> m.reportProcess(1, eventContext.getPartitionContext().getPartitionId(), s));
 
-        Context span = tracer.startProcessSpan(event.getProperties(),
-                event.getEnqueuedTime(),
-                eventContext.getPartitionContext().getPartitionId()
-        );
+        Context span = tracer.startProcessSpan(event.getProperties(), event.getEnqueuedTime(),
+            eventContext.getPartitionContext().getPartitionId());
 
-        return scope
-                .setSpan(span)
-                .makeSpanCurrent();
+        return scope.setSpan(span).makeSpanCurrent();
     }
 
     public <T> Mono<T> instrumentMono(Mono<T> publisher, OperationName operationName, String partitionId) {
@@ -153,8 +144,7 @@ public final class EventHubsConsumerInstrumentation {
         return Mono.using(
             () -> createScope((m, s) -> m.reportGenericOperationDuration(operationName, partitionId, s))
                 .setSpan(tracer.startGenericOperationSpan(operationName, partitionId, Context.NONE)),
-            scope -> publisher
-                .doOnError(scope::setError)
+            scope -> publisher.doOnError(scope::setError)
                 .doOnCancel(scope::setCancelled)
                 .contextWrite(c -> c.put(PARENT_TRACE_CONTEXT_KEY, scope.getSpan())),
             InstrumentationScope::close);

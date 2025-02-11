@@ -1,6 +1,6 @@
 # Release History
 
-## 12.5.0-beta.1 (Unreleased)
+## 12.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,60 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.5.0 (2024-11-21)
+
+### Features Added
+
+- Added support for Microsoft Entra authentication when using the Tables SDK with Azure Cosmos endpoints.
+
+### Other Changes
+
+- Removed handwritten translation layer between generated and custom types.
+- Add serialization support using `azure-xml`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
+
+## 12.4.6 (2024-10-17)
+
+### Bugs Fixed
+
+- `createTableIfNotExists` now returns a table client for the table that already exists instead of null when the table is
+present within the service.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+## 12.4.5 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+
+
+## 12.4.4 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-xml` from `1.0.0` to version `1.1.0`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+
 
 ## 12.4.3 (2024-07-26)
 

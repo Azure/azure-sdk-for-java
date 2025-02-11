@@ -10,9 +10,8 @@ import com.azure.resourcemanager.workloads.models.ThreeTierCustomResourceNames;
 public final class ThreeTierCustomResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ThreeTierCustomResourceNames model =
-            BinaryData
-                .fromString("{\"namingPatternType\":\"ThreeTierCustomResourceNames\"}")
+        ThreeTierCustomResourceNames model
+            = BinaryData.fromString("{\"namingPatternType\":\"ThreeTierCustomResourceNames\"}")
                 .toObject(ThreeTierCustomResourceNames.class);
     }
 

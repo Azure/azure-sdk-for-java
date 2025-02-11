@@ -6,49 +6,52 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of the scheduled action notification. */
+/**
+ * The properties of the scheduled action notification.
+ */
 @Fluent
-public final class NotificationProperties {
+public final class NotificationProperties implements JsonSerializable<NotificationProperties> {
     /*
      * Array of email addresses.
      */
-    @JsonProperty(value = "to", required = true)
     private List<String> to;
 
     /*
      * Locale of the email.
      */
-    @JsonProperty(value = "language")
     private String language;
 
     /*
      * Optional message to be added in the email. Length is limited to 250 characters.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Regional format used for formatting date/time and currency values in the email.
      */
-    @JsonProperty(value = "regionalFormat")
     private String regionalFormat;
 
     /*
      * Subject of the email. Length is limited to 70 characters.
      */
-    @JsonProperty(value = "subject", required = true)
     private String subject;
 
-    /** Creates an instance of NotificationProperties class. */
+    /**
+     * Creates an instance of NotificationProperties class.
+     */
     public NotificationProperties() {
     }
 
     /**
      * Get the to property: Array of email addresses.
-     *
+     * 
      * @return the to value.
      */
     public List<String> to() {
@@ -57,7 +60,7 @@ public final class NotificationProperties {
 
     /**
      * Set the to property: Array of email addresses.
-     *
+     * 
      * @param to the to value to set.
      * @return the NotificationProperties object itself.
      */
@@ -68,7 +71,7 @@ public final class NotificationProperties {
 
     /**
      * Get the language property: Locale of the email.
-     *
+     * 
      * @return the language value.
      */
     public String language() {
@@ -77,7 +80,7 @@ public final class NotificationProperties {
 
     /**
      * Set the language property: Locale of the email.
-     *
+     * 
      * @param language the language value to set.
      * @return the NotificationProperties object itself.
      */
@@ -88,7 +91,7 @@ public final class NotificationProperties {
 
     /**
      * Get the message property: Optional message to be added in the email. Length is limited to 250 characters.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -97,7 +100,7 @@ public final class NotificationProperties {
 
     /**
      * Set the message property: Optional message to be added in the email. Length is limited to 250 characters.
-     *
+     * 
      * @param message the message value to set.
      * @return the NotificationProperties object itself.
      */
@@ -108,7 +111,7 @@ public final class NotificationProperties {
 
     /**
      * Get the regionalFormat property: Regional format used for formatting date/time and currency values in the email.
-     *
+     * 
      * @return the regionalFormat value.
      */
     public String regionalFormat() {
@@ -117,7 +120,7 @@ public final class NotificationProperties {
 
     /**
      * Set the regionalFormat property: Regional format used for formatting date/time and currency values in the email.
-     *
+     * 
      * @param regionalFormat the regionalFormat value to set.
      * @return the NotificationProperties object itself.
      */
@@ -128,7 +131,7 @@ public final class NotificationProperties {
 
     /**
      * Get the subject property: Subject of the email. Length is limited to 70 characters.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -137,7 +140,7 @@ public final class NotificationProperties {
 
     /**
      * Set the subject property: Subject of the email. Length is limited to 70 characters.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the NotificationProperties object itself.
      */
@@ -148,21 +151,69 @@ public final class NotificationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (to() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property to in model NotificationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property to in model NotificationProperties"));
         }
         if (subject() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subject in model NotificationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property subject in model NotificationProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(NotificationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("to", this.to, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("regionalFormat", this.regionalFormat);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotificationProperties.
+     */
+    public static NotificationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationProperties deserializedNotificationProperties = new NotificationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("to".equals(fieldName)) {
+                    List<String> to = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNotificationProperties.to = to;
+                } else if ("subject".equals(fieldName)) {
+                    deserializedNotificationProperties.subject = reader.getString();
+                } else if ("language".equals(fieldName)) {
+                    deserializedNotificationProperties.language = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedNotificationProperties.message = reader.getString();
+                } else if ("regionalFormat".equals(fieldName)) {
+                    deserializedNotificationProperties.regionalFormat = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationProperties;
+        });
+    }
 }

@@ -255,20 +255,16 @@ public final class LabVirtualMachineImpl
     }
 
     public LabVirtualMachine create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LabVirtualMachine create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), context);
         return this;
     }
 
@@ -284,53 +280,45 @@ public final class LabVirtualMachineImpl
     }
 
     public LabVirtualMachine apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .updateWithResponse(resourceGroupName, labName, name, updateLabVirtualMachine, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .updateWithResponse(resourceGroupName, labName, name, updateLabVirtualMachine, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LabVirtualMachine apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .updateWithResponse(resourceGroupName, labName, name, updateLabVirtualMachine, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .updateWithResponse(resourceGroupName, labName, name, updateLabVirtualMachine, context)
+            .getValue();
         return this;
     }
 
-    LabVirtualMachineImpl(
-        LabVirtualMachineInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    LabVirtualMachineImpl(LabVirtualMachineInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.labName = Utils.getValueFromIdByName(innerObject.id(), "labs");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "virtualmachines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.labName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "labs");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "virtualmachines");
     }
 
     public LabVirtualMachine refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LabVirtualMachine refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVirtualMachines()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVirtualMachines()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, context)
+            .getValue();
         return this;
     }
 
@@ -347,8 +335,7 @@ public final class LabVirtualMachineImpl
     }
 
     public void applyArtifacts(ApplyArtifactsRequest applyArtifactsRequest, Context context) {
-        serviceManager
-            .virtualMachines()
+        serviceManager.virtualMachines()
             .applyArtifacts(resourceGroupName, labName, name, applyArtifactsRequest, context);
     }
 
@@ -365,14 +352,12 @@ public final class LabVirtualMachineImpl
     }
 
     public void detachDataDisk(DetachDataDiskProperties detachDataDiskProperties, Context context) {
-        serviceManager
-            .virtualMachines()
+        serviceManager.virtualMachines()
             .detachDataDisk(resourceGroupName, labName, name, detachDataDiskProperties, context);
     }
 
     public Response<RdpConnection> getRdpFileContentsWithResponse(Context context) {
-        return serviceManager
-            .virtualMachines()
+        return serviceManager.virtualMachines()
             .getRdpFileContentsWithResponse(resourceGroupName, labName, name, context);
     }
 
@@ -381,8 +366,7 @@ public final class LabVirtualMachineImpl
     }
 
     public Response<ApplicableSchedule> listApplicableSchedulesWithResponse(Context context) {
-        return serviceManager
-            .virtualMachines()
+        return serviceManager.virtualMachines()
             .listApplicableSchedulesWithResponse(resourceGroupName, labName, name, context);
     }
 
@@ -403,8 +387,7 @@ public final class LabVirtualMachineImpl
     }
 
     public void resize(ResizeLabVirtualMachineProperties resizeLabVirtualMachineProperties, Context context) {
-        serviceManager
-            .virtualMachines()
+        serviceManager.virtualMachines()
             .resize(resourceGroupName, labName, name, resizeLabVirtualMachineProperties, context);
     }
 

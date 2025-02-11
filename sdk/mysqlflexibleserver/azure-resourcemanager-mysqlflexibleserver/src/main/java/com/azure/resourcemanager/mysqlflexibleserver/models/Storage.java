@@ -5,48 +5,36 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Storage Profile properties of a server.
  */
 @Fluent
-public final class Storage {
+public final class Storage implements JsonSerializable<Storage> {
     /*
      * Max storage size allowed for a server.
      */
-    @JsonProperty(value = "storageSizeGB")
     private Integer storageSizeGB;
 
     /*
      * Storage IOPS for a server.
      */
-    @JsonProperty(value = "iops")
     private Integer iops;
 
     /*
      * Enable Storage Auto Grow or not.
      */
-    @JsonProperty(value = "autoGrow")
     private EnableStatusEnum autoGrow;
-
-    /*
-     * Enable Log On Disk or not.
-     */
-    @JsonProperty(value = "logOnDisk")
-    private EnableStatusEnum logOnDisk;
 
     /*
      * The sku name of the server storage.
      */
-    @JsonProperty(value = "storageSku", access = JsonProperty.Access.WRITE_ONLY)
     private String storageSku;
-
-    /*
-     * Enable IO Auto Scaling or not.
-     */
-    @JsonProperty(value = "autoIoScaling")
-    private EnableStatusEnum autoIoScaling;
 
     /**
      * Creates an instance of Storage class.
@@ -115,26 +103,6 @@ public final class Storage {
     }
 
     /**
-     * Get the logOnDisk property: Enable Log On Disk or not.
-     * 
-     * @return the logOnDisk value.
-     */
-    public EnableStatusEnum logOnDisk() {
-        return this.logOnDisk;
-    }
-
-    /**
-     * Set the logOnDisk property: Enable Log On Disk or not.
-     * 
-     * @param logOnDisk the logOnDisk value to set.
-     * @return the Storage object itself.
-     */
-    public Storage withLogOnDisk(EnableStatusEnum logOnDisk) {
-        this.logOnDisk = logOnDisk;
-        return this;
-    }
-
-    /**
      * Get the storageSku property: The sku name of the server storage.
      * 
      * @return the storageSku value.
@@ -144,30 +112,54 @@ public final class Storage {
     }
 
     /**
-     * Get the autoIoScaling property: Enable IO Auto Scaling or not.
-     * 
-     * @return the autoIoScaling value.
-     */
-    public EnableStatusEnum autoIoScaling() {
-        return this.autoIoScaling;
-    }
-
-    /**
-     * Set the autoIoScaling property: Enable IO Auto Scaling or not.
-     * 
-     * @param autoIoScaling the autoIoScaling value to set.
-     * @return the Storage object itself.
-     */
-    public Storage withAutoIoScaling(EnableStatusEnum autoIoScaling) {
-        this.autoIoScaling = autoIoScaling;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("storageSizeGB", this.storageSizeGB);
+        jsonWriter.writeNumberField("iops", this.iops);
+        jsonWriter.writeStringField("autoGrow", this.autoGrow == null ? null : this.autoGrow.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Storage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Storage if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Storage.
+     */
+    public static Storage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Storage deserializedStorage = new Storage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageSizeGB".equals(fieldName)) {
+                    deserializedStorage.storageSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("iops".equals(fieldName)) {
+                    deserializedStorage.iops = reader.getNullable(JsonReader::getInt);
+                } else if ("autoGrow".equals(fieldName)) {
+                    deserializedStorage.autoGrow = EnableStatusEnum.fromString(reader.getString());
+                } else if ("storageSku".equals(fieldName)) {
+                    deserializedStorage.storageSku = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorage;
+        });
     }
 }

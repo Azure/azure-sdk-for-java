@@ -12,7 +12,7 @@ import java.time.Duration;
  */
 public interface MySqlManagementClient {
     /**
-     * Gets The ID of the target subscription. The value must be an UUID.
+     * Gets The ID of the target subscription.
      * 
      * @return the subscriptionId value.
      */
@@ -24,6 +24,13 @@ public interface MySqlManagementClient {
      * @return the endpoint value.
      */
     String getEndpoint();
+
+    /**
+     * Gets Api Version.
+     * 
+     * @return the apiVersion value.
+     */
+    String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -40,62 +47,6 @@ public interface MySqlManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the AzureADAdministratorsClient object to access its operations.
-     * 
-     * @return the AzureADAdministratorsClient object.
-     */
-    AzureADAdministratorsClient getAzureADAdministrators();
-
-    /**
-     * Gets the BackupsClient object to access its operations.
-     * 
-     * @return the BackupsClient object.
-     */
-    BackupsClient getBackups();
-
-    /**
-     * Gets the BackupAndExportsClient object to access its operations.
-     * 
-     * @return the BackupAndExportsClient object.
-     */
-    BackupAndExportsClient getBackupAndExports();
-
-    /**
-     * Gets the LongRunningBackupsClient object to access its operations.
-     * 
-     * @return the LongRunningBackupsClient object.
-     */
-    LongRunningBackupsClient getLongRunningBackups();
-
-    /**
-     * Gets the LongRunningBackupsOperationsClient object to access its operations.
-     * 
-     * @return the LongRunningBackupsOperationsClient object.
-     */
-    LongRunningBackupsOperationsClient getLongRunningBackupsOperations();
-
-    /**
-     * Gets the ConfigurationsClient object to access its operations.
-     * 
-     * @return the ConfigurationsClient object.
-     */
-    ConfigurationsClient getConfigurations();
-
-    /**
-     * Gets the DatabasesClient object to access its operations.
-     * 
-     * @return the DatabasesClient object.
-     */
-    DatabasesClient getDatabases();
-
-    /**
-     * Gets the FirewallRulesClient object to access its operations.
-     * 
-     * @return the FirewallRulesClient object.
-     */
-    FirewallRulesClient getFirewallRules();
-
-    /**
      * Gets the ServersClient object to access its operations.
      * 
      * @return the ServersClient object.
@@ -110,25 +61,32 @@ public interface MySqlManagementClient {
     ReplicasClient getReplicas();
 
     /**
-     * Gets the ServersMigrationsClient object to access its operations.
+     * Gets the BackupsClient object to access its operations.
      * 
-     * @return the ServersMigrationsClient object.
+     * @return the BackupsClient object.
      */
-    ServersMigrationsClient getServersMigrations();
+    BackupsClient getBackups();
 
     /**
-     * Gets the AdvancedThreatProtectionSettingsClient object to access its operations.
+     * Gets the FirewallRulesClient object to access its operations.
      * 
-     * @return the AdvancedThreatProtectionSettingsClient object.
+     * @return the FirewallRulesClient object.
      */
-    AdvancedThreatProtectionSettingsClient getAdvancedThreatProtectionSettings();
+    FirewallRulesClient getFirewallRules();
 
     /**
-     * Gets the LogFilesClient object to access its operations.
+     * Gets the DatabasesClient object to access its operations.
      * 
-     * @return the LogFilesClient object.
+     * @return the DatabasesClient object.
      */
-    LogFilesClient getLogFiles();
+    DatabasesClient getDatabases();
+
+    /**
+     * Gets the ConfigurationsClient object to access its operations.
+     * 
+     * @return the ConfigurationsClient object.
+     */
+    ConfigurationsClient getConfigurations();
 
     /**
      * Gets the LocationBasedCapabilitiesClient object to access its operations.
@@ -136,13 +94,6 @@ public interface MySqlManagementClient {
      * @return the LocationBasedCapabilitiesClient object.
      */
     LocationBasedCapabilitiesClient getLocationBasedCapabilities();
-
-    /**
-     * Gets the LocationBasedCapabilitySetsClient object to access its operations.
-     * 
-     * @return the LocationBasedCapabilitySetsClient object.
-     */
-    LocationBasedCapabilitySetsClient getLocationBasedCapabilitySets();
 
     /**
      * Gets the CheckVirtualNetworkSubnetUsagesClient object to access its operations.
@@ -166,20 +117,6 @@ public interface MySqlManagementClient {
     CheckNameAvailabilityWithoutLocationsClient getCheckNameAvailabilityWithoutLocations();
 
     /**
-     * Gets the OperationResultsClient object to access its operations.
-     * 
-     * @return the OperationResultsClient object.
-     */
-    OperationResultsClient getOperationResults();
-
-    /**
-     * Gets the OperationProgressClient object to access its operations.
-     * 
-     * @return the OperationProgressClient object.
-     */
-    OperationProgressClient getOperationProgress();
-
-    /**
      * Gets the GetPrivateDnsZoneSuffixesClient object to access its operations.
      * 
      * @return the GetPrivateDnsZoneSuffixesClient object.
@@ -192,11 +129,4 @@ public interface MySqlManagementClient {
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
-
-    /**
-     * Gets the MaintenancesClient object to access its operations.
-     * 
-     * @return the MaintenancesClient object.
-     */
-    MaintenancesClient getMaintenances();
 }

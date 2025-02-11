@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * SQLDataDirectory info.
  */
 @Fluent
-public final class SqlDataDirectory {
+public final class SqlDataDirectory implements JsonSerializable<SqlDataDirectory> {
     /*
      * Type of data directory mapping
      */
-    @JsonProperty(value = "type")
     private SqlDataDirectoryType type;
 
     /*
      * File path
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /*
      * Logical name of the file
      */
-    @JsonProperty(value = "logicalName")
     private String logicalName;
 
     /**
@@ -102,5 +103,47 @@ public final class SqlDataDirectory {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("logicalName", this.logicalName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlDataDirectory from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlDataDirectory if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlDataDirectory.
+     */
+    public static SqlDataDirectory fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlDataDirectory deserializedSqlDataDirectory = new SqlDataDirectory();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedSqlDataDirectory.type = SqlDataDirectoryType.fromString(reader.getString());
+                } else if ("path".equals(fieldName)) {
+                    deserializedSqlDataDirectory.path = reader.getString();
+                } else if ("logicalName".equals(fieldName)) {
+                    deserializedSqlDataDirectory.logicalName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlDataDirectory;
+        });
     }
 }

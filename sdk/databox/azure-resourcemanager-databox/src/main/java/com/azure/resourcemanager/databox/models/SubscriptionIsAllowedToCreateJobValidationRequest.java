@@ -5,25 +5,83 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request to validate subscription permission to create jobs. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "validationType")
-@JsonTypeName("ValidateSubscriptionIsAllowedToCreateJob")
+/**
+ * Request to validate subscription permission to create jobs.
+ */
 @Immutable
 public final class SubscriptionIsAllowedToCreateJobValidationRequest extends ValidationInputRequest {
-    /** Creates an instance of SubscriptionIsAllowedToCreateJobValidationRequest class. */
+    /*
+     * Identifies the type of validation request.
+     */
+    private ValidationInputDiscriminator validationType
+        = ValidationInputDiscriminator.VALIDATE_SUBSCRIPTION_IS_ALLOWED_TO_CREATE_JOB;
+
+    /**
+     * Creates an instance of SubscriptionIsAllowedToCreateJobValidationRequest class.
+     */
     public SubscriptionIsAllowedToCreateJobValidationRequest() {
     }
 
     /**
+     * Get the validationType property: Identifies the type of validation request.
+     * 
+     * @return the validationType value.
+     */
+    @Override
+    public ValidationInputDiscriminator validationType() {
+        return this.validationType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validationType",
+            this.validationType == null ? null : this.validationType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionIsAllowedToCreateJobValidationRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionIsAllowedToCreateJobValidationRequest if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionIsAllowedToCreateJobValidationRequest.
+     */
+    public static SubscriptionIsAllowedToCreateJobValidationRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionIsAllowedToCreateJobValidationRequest deserializedSubscriptionIsAllowedToCreateJobValidationRequest
+                = new SubscriptionIsAllowedToCreateJobValidationRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("validationType".equals(fieldName)) {
+                    deserializedSubscriptionIsAllowedToCreateJobValidationRequest.validationType
+                        = ValidationInputDiscriminator.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionIsAllowedToCreateJobValidationRequest;
+        });
     }
 }

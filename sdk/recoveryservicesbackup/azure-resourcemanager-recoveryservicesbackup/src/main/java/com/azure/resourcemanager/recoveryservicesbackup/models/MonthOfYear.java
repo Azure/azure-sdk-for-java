@@ -4,9 +4,6 @@
 
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 /**
  * Defines values for MonthOfYear.
  */
@@ -91,7 +88,6 @@ public enum MonthOfYear {
      * @param value the serialized value to parse.
      * @return the parsed MonthOfYear object, or null if unable to parse.
      */
-    @JsonCreator
     public static MonthOfYear fromString(String value) {
         if (value == null) {
             return null;
@@ -108,7 +104,6 @@ public enum MonthOfYear {
     /**
      * {@inheritDoc}
      */
-    @JsonValue
     @Override
     public String toString() {
         return this.value;

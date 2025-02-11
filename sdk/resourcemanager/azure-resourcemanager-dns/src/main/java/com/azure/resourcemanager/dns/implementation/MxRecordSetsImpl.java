@@ -25,8 +25,7 @@ class MxRecordSetsImpl extends DnsRecordSetsBaseImpl<MxRecordSet, MxRecordSetImp
 
     @Override
     public Mono<MxRecordSet> getByNameAsync(String name) {
-        return this
-            .parent()
+        return this.parent()
             .manager()
             .serviceClient()
             .getRecordSets()
@@ -36,43 +35,30 @@ class MxRecordSetsImpl extends DnsRecordSetsBaseImpl<MxRecordSet, MxRecordSetImp
 
     @Override
     public PagedIterable<MxRecordSet> list() {
-        return super
-            .wrapList(
-                this
-                    .parent()
-                    .manager()
-                    .serviceClient()
-                    .getRecordSets()
-                    .listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
+        return super.wrapList(this.parent()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }
 
     @Override
     protected PagedIterable<MxRecordSet> listIntern(String recordSetNameSuffix, Integer pageSize) {
-        return super
-            .wrapList(
-                this
-                    .parent()
-                    .manager()
-                    .serviceClient()
-                    .getRecordSets()
-                    .listByType(
-                        this.dnsZone.resourceGroupName(),
-                        this.dnsZone.name(),
-                        this.recordType,
-                        pageSize,
-                        recordSetNameSuffix,
-                        Context.NONE));
+        return super.wrapList(this.parent()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType, pageSize,
+                recordSetNameSuffix, Context.NONE));
     }
 
     @Override
     protected PagedFlux<MxRecordSet> listInternAsync(String recordSetNameSuffix, Integer pageSize) {
-        return wrapPageAsync(
-            this
-                .parent()
-                .manager()
-                .serviceClient()
-                .getRecordSets()
-                .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
+        return wrapPageAsync(this.parent()
+            .manager()
+            .serviceClient()
+            .getRecordSets()
+            .listByTypeAsync(this.dnsZone.resourceGroupName(), this.dnsZone.name(), this.recordType));
     }
 
     @Override

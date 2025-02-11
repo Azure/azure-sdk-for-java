@@ -5,6 +5,7 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -147,6 +148,9 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -187,14 +191,14 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
                 } else if ("threadId".equals(fieldName)) {
                     deserializedAcsChatParticipantAddedToThreadWithUserEventData.setThreadId(reader.getString());
                 } else if ("createTime".equals(fieldName)) {
-                    deserializedAcsChatParticipantAddedToThreadWithUserEventData.setCreateTime(
-                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                    deserializedAcsChatParticipantAddedToThreadWithUserEventData.setCreateTime(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("version".equals(fieldName)) {
                     deserializedAcsChatParticipantAddedToThreadWithUserEventData
                         .setVersion(reader.getNullable(JsonReader::getLong));
                 } else if ("time".equals(fieldName)) {
-                    deserializedAcsChatParticipantAddedToThreadWithUserEventData.time
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAcsChatParticipantAddedToThreadWithUserEventData.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("addedByCommunicationIdentifier".equals(fieldName)) {
                     deserializedAcsChatParticipantAddedToThreadWithUserEventData.addedByCommunicationIdentifier
                         = CommunicationIdentifierModel.fromJson(reader);

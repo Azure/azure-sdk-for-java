@@ -21,7 +21,7 @@ public final class DatabasesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"charset\":\"pgepqtybbwwpgda\",\"collation\":\"hzyvlixqnrkcx\"},\"id\":\"ibn\",\"name\":\"mysu\",\"type\":\"swqrntvlwijp\"}";
+            = "{\"properties\":{\"charset\":\"idjks\",\"collation\":\"kyxvxevblbjedn\"},\"id\":\"lageuaulxun\",\"name\":\"mjbnk\",\"type\":\"pxynenlsvxeizzg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,10 +31,10 @@ public final class DatabasesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Database response = manager.databases()
-            .getWithResponse("mdr", "ywuhpsvfuur", "tlwexxwlalniexz", com.azure.core.util.Context.NONE)
+            .getWithResponse("atjeaahh", "jhhn", "kzyb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("pgepqtybbwwpgda", response.charset());
-        Assertions.assertEquals("hzyvlixqnrkcx", response.collation());
+        Assertions.assertEquals("idjks", response.charset());
+        Assertions.assertEquals("kyxvxevblbjedn", response.collation());
     }
 }

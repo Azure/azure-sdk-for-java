@@ -7,11 +7,13 @@ package com.azure.resourcemanager.kusto.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DatabaseOperations. */
+/**
+ * Resource collection API of DatabaseOperations.
+ */
 public interface DatabaseOperations {
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -22,16 +24,12 @@ public interface DatabaseOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a follower invitation generation request along with {@link Response}.
      */
-    Response<DatabaseInviteFollowerResult> inviteFollowerWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInviteFollowerRequest parameters,
-        Context context);
+    Response<DatabaseInviteFollowerResult> inviteFollowerWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInviteFollowerRequest parameters, Context context);
 
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -41,6 +39,6 @@ public interface DatabaseOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a follower invitation generation request.
      */
-    DatabaseInviteFollowerResult inviteFollower(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters);
+    DatabaseInviteFollowerResult inviteFollower(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInviteFollowerRequest parameters);
 }

@@ -14,8 +14,7 @@ class AuthPropertyFromEnvTest {
 
     @Test
     void testGetValuesFromPropertiesAndEnv() throws Exception {
-        new EnvironmentVariables()
-            .set("AZURE_CLIENT_ID", "ENV_AZURE_CLIENT_ID")
+        new EnvironmentVariables().set("AZURE_CLIENT_ID", "ENV_AZURE_CLIENT_ID")
             .set("AZURE_CLIENT_SECRET", "ENV_AZURE_CLIENT_SECRET")
             .set("AZURE_CLIENT_CERTIFICATE_PATH", "ENV_AZURE_CLIENT_CERTIFICATE_PATH")
             .set("AZURE_USERNAME", "ENV_AZURE_USERNAME")

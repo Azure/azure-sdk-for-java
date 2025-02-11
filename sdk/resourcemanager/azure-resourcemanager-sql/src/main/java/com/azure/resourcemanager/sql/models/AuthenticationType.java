@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.sql.models;
 
-
 /** Defines values for AuthenticationType. */
 public enum AuthenticationType {
     /** Enum value SQL. */

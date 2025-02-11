@@ -13,16 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class SapInstanceTagsUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapInstanceTagsUpdate model = BinaryData.fromString("{\"tags\":{\"juvf\":\"jysvl\",\"jkcpr\":\"awrlyx\"}}")
-            .toObject(SapInstanceTagsUpdate.class);
-        Assertions.assertEquals("jysvl", model.tags().get("juvf"));
+        SapInstanceTagsUpdate model
+            = BinaryData.fromString("{\"tags\":{\"wfndiodjpsl\":\"k\",\"pvwryoqpsoacc\":\"ej\"}}")
+                .toObject(SapInstanceTagsUpdate.class);
+        Assertions.assertEquals("k", model.tags().get("wfndiodjpsl"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapInstanceTagsUpdate model = new SapInstanceTagsUpdate().withTags(mapOf("juvf", "jysvl", "jkcpr", "awrlyx"));
+        SapInstanceTagsUpdate model
+            = new SapInstanceTagsUpdate().withTags(mapOf("wfndiodjpsl", "k", "pvwryoqpsoacc", "ej"));
         model = BinaryData.fromObject(model).toObject(SapInstanceTagsUpdate.class);
-        Assertions.assertEquals("jysvl", model.tags().get("juvf"));
+        Assertions.assertEquals("k", model.tags().get("wfndiodjpsl"));
     }
 
     // Use "Map.of" if available

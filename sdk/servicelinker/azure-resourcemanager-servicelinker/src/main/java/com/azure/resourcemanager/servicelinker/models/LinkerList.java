@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.servicelinker.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicelinker.fluent.models.LinkerResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of Linker. */
+/**
+ * The list of Linker.
+ */
 @Fluent
-public final class LinkerList {
+public final class LinkerList implements JsonSerializable<LinkerList> {
     /*
      * The link used to get the next page of Linker list.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of Linkers.
      */
-    @JsonProperty(value = "value")
     private List<LinkerResourceInner> value;
 
     /**
+     * Creates an instance of LinkerList class.
+     */
+    public LinkerList() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of Linker list.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +45,7 @@ public final class LinkerList {
 
     /**
      * Set the nextLink property: The link used to get the next page of Linker list.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LinkerList object itself.
      */
@@ -46,7 +56,7 @@ public final class LinkerList {
 
     /**
      * Get the value property: The list of Linkers.
-     *
+     * 
      * @return the value value.
      */
     public List<LinkerResourceInner> value() {
@@ -55,7 +65,7 @@ public final class LinkerList {
 
     /**
      * Set the value property: The list of Linkers.
-     *
+     * 
      * @param value the value value to set.
      * @return the LinkerList object itself.
      */
@@ -66,12 +76,53 @@ public final class LinkerList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkerList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkerList if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the LinkerList.
+     */
+    public static LinkerList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkerList deserializedLinkerList = new LinkerList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedLinkerList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<LinkerResourceInner> value
+                        = reader.readArray(reader1 -> LinkerResourceInner.fromJson(reader1));
+                    deserializedLinkerList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkerList;
+        });
     }
 }

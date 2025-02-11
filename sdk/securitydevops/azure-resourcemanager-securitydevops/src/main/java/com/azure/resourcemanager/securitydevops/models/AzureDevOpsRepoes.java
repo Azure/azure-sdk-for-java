@@ -33,8 +33,8 @@ public interface AzureDevOpsRepoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AzureDevOpsRepo> listByConnector(
-        String resourceGroupName, String azureDevOpsConnectorName, Context context);
+    PagedIterable<AzureDevOpsRepo> listByConnector(String resourceGroupName, String azureDevOpsConnectorName,
+        Context context);
 
     /**
      * The list operation.
@@ -48,11 +48,8 @@ public interface AzureDevOpsRepoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AzureDevOpsRepo> list(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName);
+    PagedIterable<AzureDevOpsRepo> list(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, String azureDevOpsProjectName);
 
     /**
      * The list operation.
@@ -67,12 +64,8 @@ public interface AzureDevOpsRepoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AzureDevOpsRepo> list(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        Context context);
+    PagedIterable<AzureDevOpsRepo> list(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, String azureDevOpsProjectName, Context context);
 
     /**
      * Returns a monitored AzureDevOps Project resource for a given ID.
@@ -88,13 +81,8 @@ public interface AzureDevOpsRepoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure DevOps Repo Proxy Resource along with {@link Response}.
      */
-    Response<AzureDevOpsRepo> getWithResponse(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName,
-        Context context);
+    Response<AzureDevOpsRepo> getWithResponse(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, String azureDevOpsProjectName, String azureDevOpsRepoName, Context context);
 
     /**
      * Returns a monitored AzureDevOps Project resource for a given ID.
@@ -109,12 +97,8 @@ public interface AzureDevOpsRepoes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure DevOps Repo Proxy Resource.
      */
-    AzureDevOpsRepo get(
-        String resourceGroupName,
-        String azureDevOpsConnectorName,
-        String azureDevOpsOrgName,
-        String azureDevOpsProjectName,
-        String azureDevOpsRepoName);
+    AzureDevOpsRepo get(String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName,
+        String azureDevOpsProjectName, String azureDevOpsRepoName);
 
     /**
      * Returns a monitored AzureDevOps Project resource for a given ID.

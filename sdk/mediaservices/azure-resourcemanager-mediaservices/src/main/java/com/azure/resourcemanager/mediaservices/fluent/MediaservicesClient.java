@@ -17,13 +17,15 @@ import com.azure.resourcemanager.mediaservices.models.ListEdgePoliciesInput;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceUpdate;
 import com.azure.resourcemanager.mediaservices.models.SyncStorageKeysInput;
 
-/** An instance of this class provides access to all the operations defined in MediaservicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MediaservicesClient.
+ */
 public interface MediaservicesClient {
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the resource group.
-     *
+     * 
+     * List Media Services accounts in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,9 +37,9 @@ public interface MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the resource group.
-     *
+     * 
+     * List Media Services accounts in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,9 +52,9 @@ public interface MediaservicesClient {
 
     /**
      * Get a Media Services account
-     *
-     * <p>Get the details of a Media Services account.
-     *
+     * 
+     * Get the details of a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -62,14 +64,14 @@ public interface MediaservicesClient {
      * @return the details of a Media Services account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<MediaServiceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<MediaServiceInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Get a Media Services account
-     *
-     * <p>Get the details of a Media Services account.
-     *
+     * 
+     * Get the details of a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -82,9 +84,9 @@ public interface MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -94,14 +96,14 @@ public interface MediaservicesClient {
      * @return the {@link SyncPoller} for polling of a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, MediaServiceInner parameters);
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, MediaServiceInner parameters);
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -112,14 +114,14 @@ public interface MediaservicesClient {
      * @return the {@link SyncPoller} for polling of a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, MediaServiceInner parameters, Context context);
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, MediaServiceInner parameters, Context context);
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -133,9 +135,9 @@ public interface MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -146,14 +148,14 @@ public interface MediaservicesClient {
      * @return a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MediaServiceInner createOrUpdate(
-        String resourceGroupName, String accountName, MediaServiceInner parameters, Context context);
+    MediaServiceInner createOrUpdate(String resourceGroupName, String accountName, MediaServiceInner parameters,
+        Context context);
 
     /**
      * Delete a Media Services account.
-     *
-     * <p>Deletes a Media Services account.
-     *
+     * 
+     * Deletes a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -167,9 +169,9 @@ public interface MediaservicesClient {
 
     /**
      * Delete a Media Services account.
-     *
-     * <p>Deletes a Media Services account.
-     *
+     * 
+     * Deletes a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,9 +183,9 @@ public interface MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -193,14 +195,14 @@ public interface MediaservicesClient {
      * @return the {@link SyncPoller} for polling of a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(
-        String resourceGroupName, String accountName, MediaServiceUpdate parameters);
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(String resourceGroupName,
+        String accountName, MediaServiceUpdate parameters);
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -211,14 +213,14 @@ public interface MediaservicesClient {
      * @return the {@link SyncPoller} for polling of a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(
-        String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context);
+    SyncPoller<PollResult<MediaServiceInner>, MediaServiceInner> beginUpdate(String resourceGroupName,
+        String accountName, MediaServiceUpdate parameters, Context context);
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -232,9 +234,9 @@ public interface MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -245,14 +247,14 @@ public interface MediaservicesClient {
      * @return a Media Services account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    MediaServiceInner update(
-        String resourceGroupName, String accountName, MediaServiceUpdate parameters, Context context);
+    MediaServiceInner update(String resourceGroupName, String accountName, MediaServiceUpdate parameters,
+        Context context);
 
     /**
      * Synchronizes Storage Account Keys
-     *
-     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
-     *
+     * 
+     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -263,14 +265,14 @@ public interface MediaservicesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> syncStorageKeysWithResponse(
-        String resourceGroupName, String accountName, SyncStorageKeysInput parameters, Context context);
+    Response<Void> syncStorageKeysWithResponse(String resourceGroupName, String accountName,
+        SyncStorageKeysInput parameters, Context context);
 
     /**
      * Synchronizes Storage Account Keys
-     *
-     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
-     *
+     * 
+     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -283,9 +285,9 @@ public interface MediaservicesClient {
 
     /**
      * List the media edge policies associated with the Media Services account.
-     *
-     * <p>List all the media edge policies associated with the Media Services account.
-     *
+     * 
+     * List all the media edge policies associated with the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -296,14 +298,14 @@ public interface MediaservicesClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EdgePoliciesInner> listEdgePoliciesWithResponse(
-        String resourceGroupName, String accountName, ListEdgePoliciesInput parameters, Context context);
+    Response<EdgePoliciesInner> listEdgePoliciesWithResponse(String resourceGroupName, String accountName,
+        ListEdgePoliciesInput parameters, Context context);
 
     /**
      * List the media edge policies associated with the Media Services account.
-     *
-     * <p>List all the media edge policies associated with the Media Services account.
-     *
+     * 
+     * List all the media edge policies associated with the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -317,9 +319,9 @@ public interface MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the subscription.
-     *
+     * 
+     * List Media Services accounts in the subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of MediaService items as paginated response with {@link PagedIterable}.
@@ -329,9 +331,9 @@ public interface MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the subscription.
-     *
+     * 
+     * List Media Services accounts in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

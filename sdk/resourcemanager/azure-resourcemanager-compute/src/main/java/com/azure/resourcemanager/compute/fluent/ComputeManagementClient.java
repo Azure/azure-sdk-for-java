@@ -300,11 +300,32 @@ public interface ComputeManagementClient {
     GalleryApplicationVersionsClient getGalleryApplicationVersions();
 
     /**
+     * Gets the SoftDeletedResourcesClient object to access its operations.
+     * 
+     * @return the SoftDeletedResourcesClient object.
+     */
+    SoftDeletedResourcesClient getSoftDeletedResources();
+
+    /**
      * Gets the GallerySharingProfilesClient object to access its operations.
      * 
      * @return the GallerySharingProfilesClient object.
      */
     GallerySharingProfilesClient getGallerySharingProfiles();
+
+    /**
+     * Gets the GalleryInVMAccessControlProfilesClient object to access its operations.
+     * 
+     * @return the GalleryInVMAccessControlProfilesClient object.
+     */
+    GalleryInVMAccessControlProfilesClient getGalleryInVMAccessControlProfiles();
+
+    /**
+     * Gets the GalleryInVMAccessControlProfileVersionsClient object to access its operations.
+     * 
+     * @return the GalleryInVMAccessControlProfileVersionsClient object.
+     */
+    GalleryInVMAccessControlProfileVersionsClient getGalleryInVMAccessControlProfileVersions();
 
     /**
      * Gets the SharedGalleriesClient object to access its operations.

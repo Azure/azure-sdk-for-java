@@ -19,8 +19,7 @@ public final class ApiManagementOperationsImpl implements ApiManagementOperation
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public ApiManagementOperationsImpl(
-        ApiManagementOperationsClient innerClient,
+    public ApiManagementOperationsImpl(ApiManagementOperationsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class ApiManagementOperationsImpl implements ApiManagementOperation
 
     public PagedIterable<Operation> list() {
         PagedIterable<OperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Operation> list(Context context) {
         PagedIterable<OperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     private ApiManagementOperationsClient serviceClient() {

@@ -23,7 +23,7 @@ public final class EnvironmentTypesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"displayName\":\"gueiookjbsahrtdt\"},\"tags\":{\"cslmotoebnfxo\":\"lq\",\"razftxejwabmdujt\":\"vcjkgd\",\"m\":\"vcopex\"},\"id\":\"rbuhhlky\",\"name\":\"ltqs\",\"type\":\"ogtu\"}";
+            = "{\"properties\":{\"provisioningState\":\"TransientFailure\",\"displayName\":\"paglqivbgk\"},\"tags\":{\"pubcpzgpxtivhjk\":\"hpzvuqdflvoniyp\",\"hgovfgp\":\"idibgqjxgpn\",\"zvuporqzdfuydz\":\"kqmhhaowjr\"},\"id\":\"fvxcnqmxqpswo\",\"name\":\"mvkhlggd\",\"type\":\"bemzqkzszuwi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,15 +33,14 @@ public final class EnvironmentTypesCreateOrUpdateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         EnvironmentType response = manager.environmentTypes()
-            .define("ewmrswnjlxu")
-            .withExistingDevcenter("ey", "tuhxuicb")
-            .withTags(mapOf("xncnwfe", "hzjqatucoige", "cgbjbgdlfgt", "bnwgfmxj", "naquflq", "y", "zeqyjleziun",
-                "ctqhamzjrwdk"))
-            .withDisplayName("usxjbaqehg")
+            .define("nknlqwzdvpi")
+            .withExistingDevcenter("jletlxsmrpddo", "ifamowazi")
+            .withTags(mapOf("kfkyjp", "ygjbmzyospspsh"))
+            .withDisplayName("zdtmaajquhuxylrj")
             .create();
 
-        Assertions.assertEquals("lq", response.tags().get("cslmotoebnfxo"));
-        Assertions.assertEquals("gueiookjbsahrtdt", response.displayName());
+        Assertions.assertEquals("hpzvuqdflvoniyp", response.tags().get("pubcpzgpxtivhjk"));
+        Assertions.assertEquals("paglqivbgk", response.displayName());
     }
 
     // Use "Map.of" if available

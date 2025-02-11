@@ -93,7 +93,7 @@ public class CallMediaAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                                 PlayOptions options) {
+        PlayOptions options) {
         return playWithResponseInternal(playSource, playTo, options, null);
     }
 
@@ -137,26 +137,30 @@ public class CallMediaAsync {
             DtmfConfigurationsInternal dtmfConfigurationsInternal = null;
             if (recognizeConfigurations.getDtmfConfigurations() != null) {
                 DtmfConfigurations dtmfConfigurations = recognizeConfigurations.getDtmfConfigurations();
-                dtmfConfigurationsInternal = new DtmfConfigurationsInternal()
-                    .setMaxTonesToCollect(dtmfConfigurations.getMaxTonesToCollect());
+                dtmfConfigurationsInternal
+                    = new DtmfConfigurationsInternal().setMaxTonesToCollect(dtmfConfigurations.getMaxTonesToCollect());
 
                 if (dtmfConfigurations.getInterToneTimeoutInSeconds() != null) {
-                    dtmfConfigurationsInternal.setInterToneTimeoutInSeconds((int) dtmfConfigurations.getInterToneTimeoutInSeconds().getSeconds());
+                    dtmfConfigurationsInternal.setInterToneTimeoutInSeconds(
+                        (int) dtmfConfigurations.getInterToneTimeoutInSeconds().getSeconds());
                 }
                 if (dtmfConfigurations.getStopTones() != null) {
-                    dtmfConfigurationsInternal
-                        .setStopTones(dtmfConfigurations.getStopTones().stream()
-                            .map(stopTones -> StopTonesInternal.fromString(stopTones.toString()))
-                            .collect(Collectors.toList()));
+                    dtmfConfigurationsInternal.setStopTones(dtmfConfigurations.getStopTones()
+                        .stream()
+                        .map(stopTones -> StopTonesInternal.fromString(stopTones.toString()))
+                        .collect(Collectors.toList()));
 
                 }
             }
-            RecognizeConfigurationsInternal recognizeConfigurationsInternal = new RecognizeConfigurationsInternal()
-                .setDtmfConfigurations(dtmfConfigurationsInternal)
-                .setInterruptPromptAndStartRecognition(recognizeConfigurations.isInterruptPromptAndStartRecognition())
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(recognizeConfigurations.getTargetParticipant()));
+            RecognizeConfigurationsInternal recognizeConfigurationsInternal
+                = new RecognizeConfigurationsInternal().setDtmfConfigurations(dtmfConfigurationsInternal)
+                    .setInterruptPromptAndStartRecognition(
+                        recognizeConfigurations.isInterruptPromptAndStartRecognition())
+                    .setTargetParticipant(
+                        CommunicationIdentifierConverter.convert(recognizeConfigurations.getTargetParticipant()));
             if (recognizeConfigurations.getInitialSilenceTimeoutInSeconds() != null) {
-                recognizeConfigurationsInternal.setInitialSilenceTimeoutInSeconds((int) recognizeConfigurations.getInitialSilenceTimeoutInSeconds().getSeconds());
+                recognizeConfigurationsInternal.setInitialSilenceTimeoutInSeconds(
+                    (int) recognizeConfigurations.getInitialSilenceTimeoutInSeconds().getSeconds());
             }
 
             PlaySourceInternal playSourceInternal = null;
@@ -167,7 +171,8 @@ public class CallMediaAsync {
                 }
             }
             RecognizeRequest recognizeRequest = new RecognizeRequest()
-                .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
+                .setRecognizeInputType(
+                    RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
                 .setRecognizeConfiguration(recognizeConfigurationsInternal)
                 .setStopCurrentOperations(recognizeOptions.isStopCurrentOperations())
                 .setPlayPrompt(playSourceInternal)
@@ -212,7 +217,7 @@ public class CallMediaAsync {
     }
 
     Mono<Response<Void>> playWithResponseInternal(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                                  PlayOptions options, Context context) {
+        PlayOptions options, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -230,13 +235,8 @@ public class CallMediaAsync {
         if (playSource instanceof FileSource) {
             PlaySourceInternal playSourceInternal = getPlaySourceInternal((FileSource) playSource);
 
-            PlayRequest request = new PlayRequest()
-                .setPlaySourceInfo(playSourceInternal)
-                .setPlayTo(
-                    playTo
-                        .stream()
-                        .map(CommunicationIdentifierConverter::convert)
-                        .collect(Collectors.toList()));
+            PlayRequest request = new PlayRequest().setPlaySourceInfo(playSourceInternal)
+                .setPlayTo(playTo.stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList()));
 
             if (options != null) {
                 request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
@@ -251,8 +251,7 @@ public class CallMediaAsync {
 
     private PlaySourceInternal getPlaySourceInternal(FileSource fileSource) {
         FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(fileSource.getUri());
-        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
-            .setSourceType(PlaySourceTypeInternal.FILE)
+        PlaySourceInternal playSourceInternal = new PlaySourceInternal().setSourceType(PlaySourceTypeInternal.FILE)
             .setFileSource(fileSourceInternal)
             .setPlaySourceId(fileSource.getPlaySourceId());
         return playSourceInternal;

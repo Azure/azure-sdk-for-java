@@ -7,6 +7,5 @@ package com.azure.storage.blob.batch;
  * Enum class used to indicate the batch operation type.
  */
 enum BlobBatchType {
-    DELETE,
-    SET_TIER
+    DELETE, SET_TIER
 }

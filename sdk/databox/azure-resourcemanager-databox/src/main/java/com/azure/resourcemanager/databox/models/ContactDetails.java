@@ -6,55 +6,57 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Contact Details. */
+/**
+ * Contact Details.
+ */
 @Fluent
-public final class ContactDetails {
+public final class ContactDetails implements JsonSerializable<ContactDetails> {
     /*
      * Contact name of the person.
      */
-    @JsonProperty(value = "contactName", required = true)
     private String contactName;
 
     /*
      * Phone number of the contact person.
      */
-    @JsonProperty(value = "phone", required = true)
     private String phone;
 
     /*
      * Phone extension number of the contact person.
      */
-    @JsonProperty(value = "phoneExtension")
     private String phoneExtension;
 
     /*
      * Mobile number of the contact person.
      */
-    @JsonProperty(value = "mobile")
     private String mobile;
 
     /*
      * List of Email-ids to be notified about job progress.
      */
-    @JsonProperty(value = "emailList", required = true)
     private List<String> emailList;
 
     /*
      * Notification preference for a job stage.
      */
-    @JsonProperty(value = "notificationPreference")
     private List<NotificationPreference> notificationPreference;
 
-    /** Creates an instance of ContactDetails class. */
+    /**
+     * Creates an instance of ContactDetails class.
+     */
     public ContactDetails() {
     }
 
     /**
      * Get the contactName property: Contact name of the person.
-     *
+     * 
      * @return the contactName value.
      */
     public String contactName() {
@@ -63,7 +65,7 @@ public final class ContactDetails {
 
     /**
      * Set the contactName property: Contact name of the person.
-     *
+     * 
      * @param contactName the contactName value to set.
      * @return the ContactDetails object itself.
      */
@@ -74,7 +76,7 @@ public final class ContactDetails {
 
     /**
      * Get the phone property: Phone number of the contact person.
-     *
+     * 
      * @return the phone value.
      */
     public String phone() {
@@ -83,7 +85,7 @@ public final class ContactDetails {
 
     /**
      * Set the phone property: Phone number of the contact person.
-     *
+     * 
      * @param phone the phone value to set.
      * @return the ContactDetails object itself.
      */
@@ -94,7 +96,7 @@ public final class ContactDetails {
 
     /**
      * Get the phoneExtension property: Phone extension number of the contact person.
-     *
+     * 
      * @return the phoneExtension value.
      */
     public String phoneExtension() {
@@ -103,7 +105,7 @@ public final class ContactDetails {
 
     /**
      * Set the phoneExtension property: Phone extension number of the contact person.
-     *
+     * 
      * @param phoneExtension the phoneExtension value to set.
      * @return the ContactDetails object itself.
      */
@@ -114,7 +116,7 @@ public final class ContactDetails {
 
     /**
      * Get the mobile property: Mobile number of the contact person.
-     *
+     * 
      * @return the mobile value.
      */
     public String mobile() {
@@ -123,7 +125,7 @@ public final class ContactDetails {
 
     /**
      * Set the mobile property: Mobile number of the contact person.
-     *
+     * 
      * @param mobile the mobile value to set.
      * @return the ContactDetails object itself.
      */
@@ -134,7 +136,7 @@ public final class ContactDetails {
 
     /**
      * Get the emailList property: List of Email-ids to be notified about job progress.
-     *
+     * 
      * @return the emailList value.
      */
     public List<String> emailList() {
@@ -143,7 +145,7 @@ public final class ContactDetails {
 
     /**
      * Set the emailList property: List of Email-ids to be notified about job progress.
-     *
+     * 
      * @param emailList the emailList value to set.
      * @return the ContactDetails object itself.
      */
@@ -154,7 +156,7 @@ public final class ContactDetails {
 
     /**
      * Get the notificationPreference property: Notification preference for a job stage.
-     *
+     * 
      * @return the notificationPreference value.
      */
     public List<NotificationPreference> notificationPreference() {
@@ -163,7 +165,7 @@ public final class ContactDetails {
 
     /**
      * Set the notificationPreference property: Notification preference for a job stage.
-     *
+     * 
      * @param notificationPreference the notificationPreference value to set.
      * @return the ContactDetails object itself.
      */
@@ -174,24 +176,21 @@ public final class ContactDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contactName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contactName in model ContactDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property contactName in model ContactDetails"));
         }
         if (phone() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property phone in model ContactDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property phone in model ContactDetails"));
         }
         if (emailList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property emailList in model ContactDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property emailList in model ContactDetails"));
         }
         if (notificationPreference() != null) {
             notificationPreference().forEach(e -> e.validate());
@@ -199,4 +198,60 @@ public final class ContactDetails {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContactDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contactName", this.contactName);
+        jsonWriter.writeStringField("phone", this.phone);
+        jsonWriter.writeArrayField("emailList", this.emailList, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("phoneExtension", this.phoneExtension);
+        jsonWriter.writeStringField("mobile", this.mobile);
+        jsonWriter.writeArrayField("notificationPreference", this.notificationPreference,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContactDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContactDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContactDetails.
+     */
+    public static ContactDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContactDetails deserializedContactDetails = new ContactDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactName".equals(fieldName)) {
+                    deserializedContactDetails.contactName = reader.getString();
+                } else if ("phone".equals(fieldName)) {
+                    deserializedContactDetails.phone = reader.getString();
+                } else if ("emailList".equals(fieldName)) {
+                    List<String> emailList = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContactDetails.emailList = emailList;
+                } else if ("phoneExtension".equals(fieldName)) {
+                    deserializedContactDetails.phoneExtension = reader.getString();
+                } else if ("mobile".equals(fieldName)) {
+                    deserializedContactDetails.mobile = reader.getString();
+                } else if ("notificationPreference".equals(fieldName)) {
+                    List<NotificationPreference> notificationPreference
+                        = reader.readArray(reader1 -> NotificationPreference.fromJson(reader1));
+                    deserializedContactDetails.notificationPreference = notificationPreference;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContactDetails;
+        });
+    }
 }

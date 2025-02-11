@@ -14,8 +14,10 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the ProviderHubImpl type. */
-@ServiceClientBuilder(serviceClients = {ProviderHubImpl.class})
+/**
+ * A builder for creating a new instance of the ProviderHubImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { ProviderHubImpl.class })
 public final class ProviderHubBuilder {
     /*
      * The ID of the target subscription.
@@ -24,7 +26,7 @@ public final class ProviderHubBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the ProviderHubBuilder.
      */
@@ -40,7 +42,7 @@ public final class ProviderHubBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ProviderHubBuilder.
      */
@@ -56,7 +58,7 @@ public final class ProviderHubBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ProviderHubBuilder.
      */
@@ -72,7 +74,7 @@ public final class ProviderHubBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ProviderHubBuilder.
      */
@@ -88,7 +90,7 @@ public final class ProviderHubBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ProviderHubBuilder.
      */
@@ -104,7 +106,7 @@ public final class ProviderHubBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ProviderHubBuilder.
      */
@@ -115,30 +117,22 @@ public final class ProviderHubBuilder {
 
     /**
      * Builds an instance of ProviderHubImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ProviderHubImpl.
      */
     public ProviderHubImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
-        HttpPipeline localPipeline =
-            (pipeline != null)
-                ? pipeline
-                : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        Duration localDefaultPollInterval =
-            (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
-        SerializerAdapter localSerializerAdapter =
-            (serializerAdapter != null)
-                ? serializerAdapter
-                : SerializerFactory.createDefaultManagementSerializerAdapter();
-        ProviderHubImpl client =
-            new ProviderHubImpl(
-                localPipeline,
-                localSerializerAdapter,
-                localDefaultPollInterval,
-                localEnvironment,
-                subscriptionId,
-                localEndpoint);
+        HttpPipeline localPipeline = (pipeline != null)
+            ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
+            ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        ProviderHubImpl client = new ProviderHubImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
+            localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

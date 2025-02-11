@@ -5,28 +5,35 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * The database suspension details. If the database is suspended, this object contains information related to the
  * database's suspension state.
  */
 @Fluent
-public final class SuspensionDetails {
+public final class SuspensionDetails implements JsonSerializable<SuspensionDetails> {
     /*
      * The starting date and time of the suspension state.
      */
-    @JsonProperty(value = "suspensionStartDate")
     private OffsetDateTime suspensionStartDate;
 
-    /** Creates an instance of SuspensionDetails class. */
+    /**
+     * Creates an instance of SuspensionDetails class.
+     */
     public SuspensionDetails() {
     }
 
     /**
      * Get the suspensionStartDate property: The starting date and time of the suspension state.
-     *
+     * 
      * @return the suspensionStartDate value.
      */
     public OffsetDateTime suspensionStartDate() {
@@ -35,7 +42,7 @@ public final class SuspensionDetails {
 
     /**
      * Set the suspensionStartDate property: The starting date and time of the suspension state.
-     *
+     * 
      * @param suspensionStartDate the suspensionStartDate value to set.
      * @return the SuspensionDetails object itself.
      */
@@ -46,9 +53,49 @@ public final class SuspensionDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("suspensionStartDate",
+            this.suspensionStartDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.suspensionStartDate));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SuspensionDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SuspensionDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SuspensionDetails.
+     */
+    public static SuspensionDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SuspensionDetails deserializedSuspensionDetails = new SuspensionDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("suspensionStartDate".equals(fieldName)) {
+                    deserializedSuspensionDetails.suspensionStartDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSuspensionDetails;
+        });
     }
 }

@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.providerhub.fluent.models.ResourceTypeRegistrationInner;
 
-/** An instance of this class provides access to all the operations defined in ResourceTypeRegistrationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceTypeRegistrationsClient.
+ */
 public interface ResourceTypeRegistrationsClient {
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -27,12 +29,12 @@ public interface ResourceTypeRegistrationsClient {
      * @return a resource type details in the given subscription and provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ResourceTypeRegistrationInner> getWithResponse(
-        String providerNamespace, String resourceType, Context context);
+    Response<ResourceTypeRegistrationInner> getWithResponse(String providerNamespace, String resourceType,
+        Context context);
 
     /**
      * Gets a resource type details in the given subscription and provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,27 +47,27 @@ public interface ResourceTypeRegistrationsClient {
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner> beginCreateOrUpdate(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties);
+    SyncPoller<PollResult<ResourceTypeRegistrationInner>, ResourceTypeRegistrationInner>
+        beginCreateOrUpdate(String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties);
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,27 +80,27 @@ public interface ResourceTypeRegistrationsClient {
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceTypeRegistrationInner createOrUpdate(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties);
+    ResourceTypeRegistrationInner createOrUpdate(String providerNamespace, String resourceType,
+        ResourceTypeRegistrationInner properties);
 
     /**
      * Creates or updates a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param properties The required request body parameters supplied to the resource type registration CreateOrUpdate
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -106,12 +108,12 @@ public interface ResourceTypeRegistrationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ResourceTypeRegistrationInner createOrUpdate(
-        String providerNamespace, String resourceType, ResourceTypeRegistrationInner properties, Context context);
+    ResourceTypeRegistrationInner createOrUpdate(String providerNamespace, String resourceType,
+        ResourceTypeRegistrationInner properties, Context context);
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @param context The context to associate with this operation.
@@ -125,7 +127,7 @@ public interface ResourceTypeRegistrationsClient {
 
     /**
      * Deletes a resource type.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param resourceType The resource type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface ResourceTypeRegistrationsClient {
 
     /**
      * Gets the list of the resource types for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -149,7 +151,7 @@ public interface ResourceTypeRegistrationsClient {
 
     /**
      * Gets the list of the resource types for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

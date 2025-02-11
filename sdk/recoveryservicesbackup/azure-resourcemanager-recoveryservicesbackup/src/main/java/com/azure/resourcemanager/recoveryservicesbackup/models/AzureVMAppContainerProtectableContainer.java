@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Azure workload-specific container.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "protectableContainerType",
-    defaultImpl = AzureVMAppContainerProtectableContainer.class,
-    visible = true)
-@JsonTypeName("VMAppContainer")
 @Fluent
 public final class AzureVMAppContainerProtectableContainer extends ProtectableContainer {
     /*
@@ -26,8 +20,6 @@ public final class AzureVMAppContainerProtectableContainer extends ProtectableCo
      * 1. Compute Azure VM is Microsoft.Compute/virtualMachines
      * 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines
      */
-    @JsonTypeId
-    @JsonProperty(value = "protectableContainerType", required = true)
     private ProtectableContainerType protectableContainerType = ProtectableContainerType.VMAPP_CONTAINER;
 
     /**
@@ -91,6 +83,58 @@ public final class AzureVMAppContainerProtectableContainer extends ProtectableCo
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", friendlyName());
+        jsonWriter.writeStringField("backupManagementType",
+            backupManagementType() == null ? null : backupManagementType().toString());
+        jsonWriter.writeStringField("healthStatus", healthStatus());
+        jsonWriter.writeStringField("containerId", containerId());
+        jsonWriter.writeStringField("protectableContainerType",
+            this.protectableContainerType == null ? null : this.protectableContainerType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureVMAppContainerProtectableContainer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureVMAppContainerProtectableContainer if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureVMAppContainerProtectableContainer.
+     */
+    public static AzureVMAppContainerProtectableContainer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureVMAppContainerProtectableContainer deserializedAzureVMAppContainerProtectableContainer
+                = new AzureVMAppContainerProtectableContainer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedAzureVMAppContainerProtectableContainer.withFriendlyName(reader.getString());
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedAzureVMAppContainerProtectableContainer
+                        .withBackupManagementType(BackupManagementType.fromString(reader.getString()));
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedAzureVMAppContainerProtectableContainer.withHealthStatus(reader.getString());
+                } else if ("containerId".equals(fieldName)) {
+                    deserializedAzureVMAppContainerProtectableContainer.withContainerId(reader.getString());
+                } else if ("protectableContainerType".equals(fieldName)) {
+                    deserializedAzureVMAppContainerProtectableContainer.protectableContainerType
+                        = ProtectableContainerType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureVMAppContainerProtectableContainer;
+        });
     }
 }

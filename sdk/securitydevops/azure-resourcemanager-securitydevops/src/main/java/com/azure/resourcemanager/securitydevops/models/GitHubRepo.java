@@ -63,11 +63,13 @@ public interface GitHubRepo {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The GitHubRepo definition stages. */
     interface DefinitionStages {
         /** The first stage of the GitHubRepo definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the GitHubRepo definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -80,6 +82,7 @@ public interface GitHubRepo {
              */
             WithCreate withExistingOwner(String resourceGroupName, String gitHubConnectorName, String gitHubOwnerName);
         }
+
         /**
          * The stage of the GitHubRepo definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
@@ -100,6 +103,7 @@ public interface GitHubRepo {
              */
             GitHubRepo create(Context context);
         }
+
         /** The stage of the GitHubRepo definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -111,6 +115,7 @@ public interface GitHubRepo {
             WithCreate withProperties(GitHubRepoProperties properties);
         }
     }
+
     /**
      * Begins update for the GitHubRepo resource.
      *
@@ -135,6 +140,7 @@ public interface GitHubRepo {
          */
         GitHubRepo apply(Context context);
     }
+
     /** The GitHubRepo update stages. */
     interface UpdateStages {
         /** The stage of the GitHubRepo update allowing to specify properties. */
@@ -148,6 +154,7 @@ public interface GitHubRepo {
             Update withProperties(GitHubRepoProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

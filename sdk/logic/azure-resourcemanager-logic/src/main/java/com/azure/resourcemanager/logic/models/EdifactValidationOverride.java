@@ -6,60 +6,61 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Edifact validation override settings. */
+/**
+ * The Edifact validation override settings.
+ */
 @Fluent
-public final class EdifactValidationOverride {
+public final class EdifactValidationOverride implements JsonSerializable<EdifactValidationOverride> {
     /*
      * The message id on which the validation settings has to be applied.
      */
-    @JsonProperty(value = "messageId", required = true)
     private String messageId;
 
     /*
      * The value indicating whether to validate character Set.
      */
-    @JsonProperty(value = "enforceCharacterSet", required = true)
     private boolean enforceCharacterSet;
 
     /*
      * The value indicating whether to validate EDI types.
      */
-    @JsonProperty(value = "validateEDITypes", required = true)
     private boolean validateEdiTypes;
 
     /*
      * The value indicating whether to validate XSD types.
      */
-    @JsonProperty(value = "validateXSDTypes", required = true)
     private boolean validateXsdTypes;
 
     /*
      * The value indicating whether to allow leading and trailing spaces and zeroes.
      */
-    @JsonProperty(value = "allowLeadingAndTrailingSpacesAndZeroes", required = true)
     private boolean allowLeadingAndTrailingSpacesAndZeroes;
 
     /*
      * The trailing separator policy.
      */
-    @JsonProperty(value = "trailingSeparatorPolicy", required = true)
     private TrailingSeparatorPolicy trailingSeparatorPolicy;
 
     /*
      * The value indicating whether to trim leading and trailing spaces and zeroes.
      */
-    @JsonProperty(value = "trimLeadingAndTrailingSpacesAndZeroes", required = true)
     private boolean trimLeadingAndTrailingSpacesAndZeroes;
 
-    /** Creates an instance of EdifactValidationOverride class. */
+    /**
+     * Creates an instance of EdifactValidationOverride class.
+     */
     public EdifactValidationOverride() {
     }
 
     /**
      * Get the messageId property: The message id on which the validation settings has to be applied.
-     *
+     * 
      * @return the messageId value.
      */
     public String messageId() {
@@ -68,7 +69,7 @@ public final class EdifactValidationOverride {
 
     /**
      * Set the messageId property: The message id on which the validation settings has to be applied.
-     *
+     * 
      * @param messageId the messageId value to set.
      * @return the EdifactValidationOverride object itself.
      */
@@ -79,7 +80,7 @@ public final class EdifactValidationOverride {
 
     /**
      * Get the enforceCharacterSet property: The value indicating whether to validate character Set.
-     *
+     * 
      * @return the enforceCharacterSet value.
      */
     public boolean enforceCharacterSet() {
@@ -88,7 +89,7 @@ public final class EdifactValidationOverride {
 
     /**
      * Set the enforceCharacterSet property: The value indicating whether to validate character Set.
-     *
+     * 
      * @param enforceCharacterSet the enforceCharacterSet value to set.
      * @return the EdifactValidationOverride object itself.
      */
@@ -99,7 +100,7 @@ public final class EdifactValidationOverride {
 
     /**
      * Get the validateEdiTypes property: The value indicating whether to validate EDI types.
-     *
+     * 
      * @return the validateEdiTypes value.
      */
     public boolean validateEdiTypes() {
@@ -108,7 +109,7 @@ public final class EdifactValidationOverride {
 
     /**
      * Set the validateEdiTypes property: The value indicating whether to validate EDI types.
-     *
+     * 
      * @param validateEdiTypes the validateEdiTypes value to set.
      * @return the EdifactValidationOverride object itself.
      */
@@ -119,7 +120,7 @@ public final class EdifactValidationOverride {
 
     /**
      * Get the validateXsdTypes property: The value indicating whether to validate XSD types.
-     *
+     * 
      * @return the validateXsdTypes value.
      */
     public boolean validateXsdTypes() {
@@ -128,7 +129,7 @@ public final class EdifactValidationOverride {
 
     /**
      * Set the validateXsdTypes property: The value indicating whether to validate XSD types.
-     *
+     * 
      * @param validateXsdTypes the validateXsdTypes value to set.
      * @return the EdifactValidationOverride object itself.
      */
@@ -140,7 +141,7 @@ public final class EdifactValidationOverride {
     /**
      * Get the allowLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to allow leading and
      * trailing spaces and zeroes.
-     *
+     * 
      * @return the allowLeadingAndTrailingSpacesAndZeroes value.
      */
     public boolean allowLeadingAndTrailingSpacesAndZeroes() {
@@ -150,19 +151,19 @@ public final class EdifactValidationOverride {
     /**
      * Set the allowLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to allow leading and
      * trailing spaces and zeroes.
-     *
+     * 
      * @param allowLeadingAndTrailingSpacesAndZeroes the allowLeadingAndTrailingSpacesAndZeroes value to set.
      * @return the EdifactValidationOverride object itself.
      */
-    public EdifactValidationOverride withAllowLeadingAndTrailingSpacesAndZeroes(
-        boolean allowLeadingAndTrailingSpacesAndZeroes) {
+    public EdifactValidationOverride
+        withAllowLeadingAndTrailingSpacesAndZeroes(boolean allowLeadingAndTrailingSpacesAndZeroes) {
         this.allowLeadingAndTrailingSpacesAndZeroes = allowLeadingAndTrailingSpacesAndZeroes;
         return this;
     }
 
     /**
      * Get the trailingSeparatorPolicy property: The trailing separator policy.
-     *
+     * 
      * @return the trailingSeparatorPolicy value.
      */
     public TrailingSeparatorPolicy trailingSeparatorPolicy() {
@@ -171,7 +172,7 @@ public final class EdifactValidationOverride {
 
     /**
      * Set the trailingSeparatorPolicy property: The trailing separator policy.
-     *
+     * 
      * @param trailingSeparatorPolicy the trailingSeparatorPolicy value to set.
      * @return the EdifactValidationOverride object itself.
      */
@@ -183,7 +184,7 @@ public final class EdifactValidationOverride {
     /**
      * Get the trimLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to trim leading and trailing
      * spaces and zeroes.
-     *
+     * 
      * @return the trimLeadingAndTrailingSpacesAndZeroes value.
      */
     public boolean trimLeadingAndTrailingSpacesAndZeroes() {
@@ -193,35 +194,92 @@ public final class EdifactValidationOverride {
     /**
      * Set the trimLeadingAndTrailingSpacesAndZeroes property: The value indicating whether to trim leading and trailing
      * spaces and zeroes.
-     *
+     * 
      * @param trimLeadingAndTrailingSpacesAndZeroes the trimLeadingAndTrailingSpacesAndZeroes value to set.
      * @return the EdifactValidationOverride object itself.
      */
-    public EdifactValidationOverride withTrimLeadingAndTrailingSpacesAndZeroes(
-        boolean trimLeadingAndTrailingSpacesAndZeroes) {
+    public EdifactValidationOverride
+        withTrimLeadingAndTrailingSpacesAndZeroes(boolean trimLeadingAndTrailingSpacesAndZeroes) {
         this.trimLeadingAndTrailingSpacesAndZeroes = trimLeadingAndTrailingSpacesAndZeroes;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (messageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property messageId in model EdifactValidationOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property messageId in model EdifactValidationOverride"));
         }
         if (trailingSeparatorPolicy() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trailingSeparatorPolicy in model EdifactValidationOverride"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property trailingSeparatorPolicy in model EdifactValidationOverride"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EdifactValidationOverride.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageId", this.messageId);
+        jsonWriter.writeBooleanField("enforceCharacterSet", this.enforceCharacterSet);
+        jsonWriter.writeBooleanField("validateEDITypes", this.validateEdiTypes);
+        jsonWriter.writeBooleanField("validateXSDTypes", this.validateXsdTypes);
+        jsonWriter.writeBooleanField("allowLeadingAndTrailingSpacesAndZeroes",
+            this.allowLeadingAndTrailingSpacesAndZeroes);
+        jsonWriter.writeStringField("trailingSeparatorPolicy",
+            this.trailingSeparatorPolicy == null ? null : this.trailingSeparatorPolicy.toString());
+        jsonWriter.writeBooleanField("trimLeadingAndTrailingSpacesAndZeroes",
+            this.trimLeadingAndTrailingSpacesAndZeroes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EdifactValidationOverride from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EdifactValidationOverride if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EdifactValidationOverride.
+     */
+    public static EdifactValidationOverride fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EdifactValidationOverride deserializedEdifactValidationOverride = new EdifactValidationOverride();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageId".equals(fieldName)) {
+                    deserializedEdifactValidationOverride.messageId = reader.getString();
+                } else if ("enforceCharacterSet".equals(fieldName)) {
+                    deserializedEdifactValidationOverride.enforceCharacterSet = reader.getBoolean();
+                } else if ("validateEDITypes".equals(fieldName)) {
+                    deserializedEdifactValidationOverride.validateEdiTypes = reader.getBoolean();
+                } else if ("validateXSDTypes".equals(fieldName)) {
+                    deserializedEdifactValidationOverride.validateXsdTypes = reader.getBoolean();
+                } else if ("allowLeadingAndTrailingSpacesAndZeroes".equals(fieldName)) {
+                    deserializedEdifactValidationOverride.allowLeadingAndTrailingSpacesAndZeroes = reader.getBoolean();
+                } else if ("trailingSeparatorPolicy".equals(fieldName)) {
+                    deserializedEdifactValidationOverride.trailingSeparatorPolicy
+                        = TrailingSeparatorPolicy.fromString(reader.getString());
+                } else if ("trimLeadingAndTrailingSpacesAndZeroes".equals(fieldName)) {
+                    deserializedEdifactValidationOverride.trimLeadingAndTrailingSpacesAndZeroes = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEdifactValidationOverride;
+        });
+    }
 }

@@ -30,22 +30,28 @@ import com.azure.resourcemanager.resourcehealth.fluent.models.EventInner;
 import com.azure.resourcemanager.resourcehealth.models.Events;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EventsOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EventsOperationsClient.
+ */
 public final class EventsOperationsClientImpl implements EventsOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EventsOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftResourceHealthImpl client;
 
     /**
      * Initializes an instance of EventsOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EventsOperationsClientImpl(MicrosoftResourceHealthImpl client) {
-        this.service =
-            RestProxy.create(EventsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EventsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,183 +62,125 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftResourceHea")
     public interface EventsOperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("queryStartTime") String queryStartTime,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Events>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("queryStartTime") String queryStartTime,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ResourceHealth/events")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> listByTenantId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("queryStartTime") String queryStartTime,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Events>> listByTenantId(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("queryStartTime") String queryStartTime, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{resourceUri}/providers/Microsoft.ResourceHealth/events")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> listBySingleResource(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Events>> listBySingleResource(@HostParam("$host") String endpoint,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> listBySubscriptionIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Events>> listBySubscriptionIdNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> listByTenantIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Events>> listByTenantIdNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Events>> listBySingleResourceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Events>> listBySingleResourceNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listSinglePageAsync(String filter, String queryStartTime) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            filter,
-                            queryStartTime,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), filter,
+                queryStartTime, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listSinglePageAsync(String filter, String queryStartTime, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                filter,
-                queryStartTime,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), filter, queryStartTime,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -240,14 +188,13 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listAsync(String filter, String queryStartTime) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, queryStartTime),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, queryStartTime),
             nextLink -> listBySubscriptionIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List events operation response as paginated response with {@link PagedFlux}.
@@ -256,18 +203,17 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     private PagedFlux<EventInner> listAsync() {
         final String filter = null;
         final String queryStartTime = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, queryStartTime),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, queryStartTime),
             nextLink -> listBySubscriptionIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -276,14 +222,13 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listAsync(String filter, String queryStartTime, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, queryStartTime, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, queryStartTime, context),
             nextLink -> listBySubscriptionIdNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List events operation response as paginated response with {@link PagedIterable}.
@@ -297,11 +242,11 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists service health events in the subscription.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -315,95 +260,69 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listByTenantIdSinglePageAsync(String filter, String queryStartTime) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByTenantId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            filter,
-                            queryStartTime,
-                            accept,
-                            context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByTenantId(this.client.getEndpoint(), this.client.getApiVersion(),
+                filter, queryStartTime, accept, context))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventInner>> listByTenantIdSinglePageAsync(
-        String filter, String queryStartTime, Context context) {
+    private Mono<PagedResponse<EventInner>> listByTenantIdSinglePageAsync(String filter, String queryStartTime,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByTenantId(
-                this.client.getEndpoint(), this.client.getApiVersion(), filter, queryStartTime, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByTenantId(this.client.getEndpoint(), this.client.getApiVersion(), filter, queryStartTime, accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -411,14 +330,13 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listByTenantIdAsync(String filter, String queryStartTime) {
-        return new PagedFlux<>(
-            () -> listByTenantIdSinglePageAsync(filter, queryStartTime),
+        return new PagedFlux<>(() -> listByTenantIdSinglePageAsync(filter, queryStartTime),
             nextLink -> listByTenantIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List events operation response as paginated response with {@link PagedFlux}.
@@ -427,18 +345,17 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     private PagedFlux<EventInner> listByTenantIdAsync() {
         final String filter = null;
         final String queryStartTime = null;
-        return new PagedFlux<>(
-            () -> listByTenantIdSinglePageAsync(filter, queryStartTime),
+        return new PagedFlux<>(() -> listByTenantIdSinglePageAsync(filter, queryStartTime),
             nextLink -> listByTenantIdNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -447,14 +364,13 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listByTenantIdAsync(String filter, String queryStartTime, Context context) {
-        return new PagedFlux<>(
-            () -> listByTenantIdSinglePageAsync(filter, queryStartTime, context),
+        return new PagedFlux<>(() -> listByTenantIdSinglePageAsync(filter, queryStartTime, context),
             nextLink -> listByTenantIdNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List events operation response as paginated response with {@link PagedIterable}.
@@ -468,11 +384,11 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events in the tenant.
-     *
+     * 
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param queryStartTime Specifies from when to return events, based on the lastUpdateTime property. For example,
-     *     queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
+     * queryStartTime = 7/24/2020 OR queryStartTime=7%2F24%2F2020.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -486,80 +402,61 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySingleResourceSinglePageAsync(String resourceUri, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySingleResource(
-                            this.client.getEndpoint(),
-                            resourceUri,
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listBySingleResource(this.client.getEndpoint(), resourceUri,
+                this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventInner>> listBySingleResourceSinglePageAsync(
-        String resourceUri, String filter, Context context) {
+    private Mono<PagedResponse<EventInner>> listBySingleResourceSinglePageAsync(String resourceUri, String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceUri == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
@@ -567,29 +464,22 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySingleResource(
-                this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), filter, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listBySingleResource(this.client.getEndpoint(), resourceUri, this.client.getApiVersion(), filter, accept,
+                context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -597,19 +487,18 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listBySingleResourceAsync(String resourceUri, String filter) {
-        return new PagedFlux<>(
-            () -> listBySingleResourceSinglePageAsync(resourceUri, filter),
+        return new PagedFlux<>(() -> listBySingleResourceSinglePageAsync(resourceUri, filter),
             nextLink -> listBySingleResourceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -618,21 +507,20 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listBySingleResourceAsync(String resourceUri) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listBySingleResourceSinglePageAsync(resourceUri, filter),
+        return new PagedFlux<>(() -> listBySingleResourceSinglePageAsync(resourceUri, filter),
             nextLink -> listBySingleResourceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -641,19 +529,18 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventInner> listBySingleResourceAsync(String resourceUri, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listBySingleResourceSinglePageAsync(resourceUri, filter, context),
+        return new PagedFlux<>(() -> listBySingleResourceSinglePageAsync(resourceUri, filter, context),
             nextLink -> listBySingleResourceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -667,14 +554,14 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Lists current service health events for given resource.
-     *
+     * 
      * @param resourceUri The fully qualified ID of the resource, including the resource name and resource type.
-     *     Currently the API support not nested and one nesting level resource types :
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
-     *     and
-     *     /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
+     * Currently the API support not nested and one nesting level resource types :
+     * /subscriptions/{subscriptionId}/resourceGroups/{resource-group-name}/providers/{resource-provider-name}/{resource-type}/{resource-name}
+     * and
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resource-provider-name}/{parentResourceType}/{parentResourceName}/{resourceType}/{resourceName}.
      * @param filter The filter to apply on the operation. For more information please see
-     *     https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
+     * https://docs.microsoft.com/en-us/rest/api/apimanagement/apis?redirectedfrom=MSDN.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -688,14 +575,13 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySubscriptionIdNextSinglePageAsync(String nextLink) {
@@ -703,38 +589,28 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySubscriptionIdNextSinglePageAsync(String nextLink, Context context) {
@@ -742,36 +618,25 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listByTenantIdNextSinglePageAsync(String nextLink) {
@@ -779,37 +644,27 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByTenantIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listByTenantIdNextSinglePageAsync(String nextLink, Context context) {
@@ -817,36 +672,25 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTenantIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTenantIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySingleResourceNextSinglePageAsync(String nextLink) {
@@ -854,38 +698,28 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySingleResourceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List events operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the List events operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventInner>> listBySingleResourceNextSinglePageAsync(String nextLink, Context context) {
@@ -893,23 +727,13 @@ public final class EventsOperationsClientImpl implements EventsOperationsClient 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySingleResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySingleResourceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

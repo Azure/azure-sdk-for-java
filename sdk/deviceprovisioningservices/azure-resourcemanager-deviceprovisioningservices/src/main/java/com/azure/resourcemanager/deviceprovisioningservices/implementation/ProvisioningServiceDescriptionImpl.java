@@ -17,10 +17,8 @@ import com.azure.resourcemanager.deviceprovisioningservices.models.TagsResource;
 import java.util.Collections;
 import java.util.Map;
 
-public final class ProvisioningServiceDescriptionImpl
-    implements ProvisioningServiceDescription,
-        ProvisioningServiceDescription.Definition,
-        ProvisioningServiceDescription.Update {
+public final class ProvisioningServiceDescriptionImpl implements ProvisioningServiceDescription,
+    ProvisioningServiceDescription.Definition, ProvisioningServiceDescription.Update {
     private ProvisioningServiceDescriptionInner innerObject;
 
     private final com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager;
@@ -98,25 +96,21 @@ public final class ProvisioningServiceDescriptionImpl
     }
 
     public ProvisioningServiceDescription create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .createOrUpdate(resourceGroupName, provisioningServiceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .createOrUpdate(resourceGroupName, provisioningServiceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ProvisioningServiceDescription create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .createOrUpdate(resourceGroupName, provisioningServiceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .createOrUpdate(resourceGroupName, provisioningServiceName, this.innerModel(), context);
         return this;
     }
 
-    ProvisioningServiceDescriptionImpl(
-        String name, com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
+    ProvisioningServiceDescriptionImpl(String name,
+        com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = new ProvisioningServiceDescriptionInner();
         this.serviceManager = serviceManager;
         this.provisioningServiceName = name;
@@ -128,49 +122,41 @@ public final class ProvisioningServiceDescriptionImpl
     }
 
     public ProvisioningServiceDescription apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .update(resourceGroupName, provisioningServiceName, updateProvisioningServiceTags, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .update(resourceGroupName, provisioningServiceName, updateProvisioningServiceTags, Context.NONE);
         return this;
     }
 
     public ProvisioningServiceDescription apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .update(resourceGroupName, provisioningServiceName, updateProvisioningServiceTags, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .update(resourceGroupName, provisioningServiceName, updateProvisioningServiceTags, context);
         return this;
     }
 
-    ProvisioningServiceDescriptionImpl(
-        ProvisioningServiceDescriptionInner innerObject,
+    ProvisioningServiceDescriptionImpl(ProvisioningServiceDescriptionInner innerObject,
         com.azure.resourcemanager.deviceprovisioningservices.IotDpsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.provisioningServiceName = Utils.getValueFromIdByName(innerObject.id(), "provisioningServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.provisioningServiceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "provisioningServices");
     }
 
     public ProvisioningServiceDescription refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ProvisioningServiceDescription refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotDpsResources()
-                .getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIotDpsResources()
+            .getByResourceGroupWithResponse(resourceGroupName, provisioningServiceName, context)
+            .getValue();
         return this;
     }
 

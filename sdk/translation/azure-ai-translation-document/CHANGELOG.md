@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,15 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-11-20)
+
+### Other Changes
+- Renamed `document_translate` API of SingleDocumentTranslationClient to `translate`.
+- Renamed `GetTranslationsStatus` API to `ListTranslationStatuses`.
+- Renamed `GetDocumentsStatus` API to `ListDocumentStatuses`.
+- Encapsulated all API parameters for `ListTranslationStatuses` into a dedicated options class named `ListTranslationStatusesOptions`.
+- Encapsulated all API parameters for `ListDocumentStatuses` into a dedicated options class named `ListDocumentStatusesOptions`.
 
 ## 1.0.0-beta.2 (2024-06-18)
 

@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -103,8 +104,23 @@ public final class ThrottledRequestsInput extends LogAnalyticsInputBase {
      */
     @Override
     public void validate() {
-        super.validate();
+        if (blobContainerSasUri() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property blobContainerSasUri in model ThrottledRequestsInput"));
+        }
+        if (fromTime() == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property fromTime in model ThrottledRequestsInput"));
+        }
+        if (toTime() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property toTime in model ThrottledRequestsInput"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ThrottledRequestsInput.class);
 
     /**
      * {@inheritDoc}

@@ -14,7 +14,8 @@ import java.time.OffsetDateTime;
 /** Properties for a key execution. */
 @Fluent
 public final class ServerKeyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerKeyProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerKeyProperties.class);
 
     /*
      * The key type like 'AzureKeyVault'.
@@ -90,10 +91,8 @@ public final class ServerKeyProperties {
      */
     public void validate() {
         if (serverKeyType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverKeyType in model ServerKeyProperties"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property serverKeyType in model ServerKeyProperties"));
         }
     }
 }

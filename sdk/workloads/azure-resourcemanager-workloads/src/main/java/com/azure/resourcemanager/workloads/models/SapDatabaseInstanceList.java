@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.workloads.fluent.models.SapDatabaseInstanceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the collection of SAP Database Instances. */
+/**
+ * Defines the collection of SAP Database Instances.
+ */
 @Fluent
-public final class SapDatabaseInstanceList {
+public final class SapDatabaseInstanceList implements JsonSerializable<SapDatabaseInstanceList> {
     /*
      * Gets the list of SAP Database instances.
      */
-    @JsonProperty(value = "value")
     private List<SapDatabaseInstanceInner> value;
 
     /*
      * Gets the value of next link.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SapDatabaseInstanceList class. */
+    /**
+     * Creates an instance of SapDatabaseInstanceList class.
+     */
     public SapDatabaseInstanceList() {
     }
 
     /**
      * Get the value property: Gets the list of SAP Database instances.
-     *
+     * 
      * @return the value value.
      */
     public List<SapDatabaseInstanceInner> value() {
@@ -39,7 +45,7 @@ public final class SapDatabaseInstanceList {
 
     /**
      * Set the value property: Gets the list of SAP Database instances.
-     *
+     * 
      * @param value the value value to set.
      * @return the SapDatabaseInstanceList object itself.
      */
@@ -50,7 +56,7 @@ public final class SapDatabaseInstanceList {
 
     /**
      * Get the nextLink property: Gets the value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class SapDatabaseInstanceList {
 
     /**
      * Set the nextLink property: Gets the value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SapDatabaseInstanceList object itself.
      */
@@ -70,12 +76,53 @@ public final class SapDatabaseInstanceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapDatabaseInstanceList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapDatabaseInstanceList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapDatabaseInstanceList.
+     */
+    public static SapDatabaseInstanceList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapDatabaseInstanceList deserializedSapDatabaseInstanceList = new SapDatabaseInstanceList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SapDatabaseInstanceInner> value
+                        = reader.readArray(reader1 -> SapDatabaseInstanceInner.fromJson(reader1));
+                    deserializedSapDatabaseInstanceList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSapDatabaseInstanceList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapDatabaseInstanceList;
+        });
     }
 }

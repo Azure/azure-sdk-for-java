@@ -27,6 +27,24 @@ public final class LicensesImpl implements Licenses {
         this.serviceManager = serviceManager;
     }
 
+    public License validateLicense(LicenseInner parameters) {
+        LicenseInner inner = this.serviceClient().validateLicense(parameters);
+        if (inner != null) {
+            return new LicenseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public License validateLicense(LicenseInner parameters, Context context) {
+        LicenseInner inner = this.serviceClient().validateLicense(parameters, context);
+        if (inner != null) {
+            return new LicenseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public Response<License> getByResourceGroupWithResponse(String resourceGroupName, String licenseName,
         Context context) {
         Response<LicenseInner> inner

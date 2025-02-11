@@ -19,26 +19,20 @@ public final class EventsImpl implements Events {
 
     private final EventsClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    public EventsImpl(
-        EventsClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    public EventsImpl(EventsClient innerClient,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<EventModel> getWithResponse(
-        String resourceGroupName, String vaultName, String eventName, Context context) {
-        Response<EventModelInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, eventName, context);
+    public Response<EventModel> getWithResponse(String resourceGroupName, String vaultName, String eventName,
+        Context context) {
+        Response<EventModelInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, eventName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EventModelImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -56,14 +50,14 @@ public final class EventsImpl implements Events {
 
     public PagedIterable<EventModel> list(String resourceGroupName, String vaultName) {
         PagedIterable<EventModelInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new EventModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventModelImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EventModel> list(
-        String resourceGroupName, String vaultName, String filter, String continuationToken, Context context) {
-        PagedIterable<EventModelInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, filter, continuationToken, context);
-        return Utils.mapPage(inner, inner1 -> new EventModelImpl(inner1, this.manager()));
+    public PagedIterable<EventModel> list(String resourceGroupName, String vaultName, String filter,
+        String continuationToken, Context context) {
+        PagedIterable<EventModelInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, filter, continuationToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EventModelImpl(inner1, this.manager()));
     }
 
     private EventsClient serviceClient() {

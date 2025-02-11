@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.datalakestore.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The state of the Data Lake Store account. */
+/**
+ * The state of the Data Lake Store account.
+ */
 public enum DataLakeStoreAccountState {
-    /** Enum value Active. */
+    /**
+     * Enum value Active.
+     */
     ACTIVE("Active"),
 
-    /** Enum value Suspended. */
+    /**
+     * Enum value Suspended.
+     */
     SUSPENDED("Suspended");
 
-    /** The actual serialized value for a DataLakeStoreAccountState instance. */
+    /**
+     * The actual serialized value for a DataLakeStoreAccountState instance.
+     */
     private final String value;
 
     DataLakeStoreAccountState(String value) {
@@ -24,11 +29,10 @@ public enum DataLakeStoreAccountState {
 
     /**
      * Parses a serialized value to a DataLakeStoreAccountState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DataLakeStoreAccountState object, or null if unable to parse.
      */
-    @JsonCreator
     public static DataLakeStoreAccountState fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum DataLakeStoreAccountState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

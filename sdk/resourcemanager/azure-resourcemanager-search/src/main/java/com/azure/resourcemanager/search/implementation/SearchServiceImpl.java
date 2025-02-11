@@ -26,15 +26,8 @@ import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
  * Implementation for Search service and its create and update interfaces.
  */
 class SearchServiceImpl
-    extends GroupableParentResourceImpl<
-        SearchService,
-        SearchServiceInner,
-        SearchServiceImpl,
-        SearchServiceManager>
-    implements
-        SearchService,
-        SearchService.Definition,
-        SearchService.Update {
+    extends GroupableParentResourceImpl<SearchService, SearchServiceInner, SearchServiceImpl, SearchServiceManager>
+    implements SearchService, SearchService.Definition, SearchService.Update {
 
     SearchServiceImpl(String name, final SearchServiceInner innerModel, final SearchServiceManager searchManager) {
         super(name, innerModel, searchManager);
@@ -42,10 +35,14 @@ class SearchServiceImpl
 
     @Override
     protected Mono<SearchServiceInner> createInner() {
-        return this.manager().serviceClient().getServices()
+        return this.manager()
+            .serviceClient()
+            .getServices()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             // TODO: remove this after azure-core-management upgrade to 1.0.1
-            .switchIfEmpty(this.manager().serviceClient().getServices()
+            .switchIfEmpty(this.manager()
+                .serviceClient()
+                .getServices()
                 .getByResourceGroupAsync(this.resourceGroupName(), this.name()));
     }
 
@@ -55,7 +52,9 @@ class SearchServiceImpl
 
     @Override
     protected Mono<SearchServiceInner> getInnerAsync() {
-        return this.manager().serviceClient().getServices()
+        return this.manager()
+            .serviceClient()
+            .getServices()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -101,7 +100,10 @@ class SearchServiceImpl
 
     @Override
     public Mono<AdminKeys> getAdminKeysAsync() {
-        return this.manager().serviceClient().getAdminKeys().getAsync(this.resourceGroupName(), this.name())
+        return this.manager()
+            .serviceClient()
+            .getAdminKeys()
+            .getAsync(this.resourceGroupName(), this.name())
             .map(AdminKeysImpl::new);
     }
 
@@ -112,9 +114,10 @@ class SearchServiceImpl
 
     @Override
     public PagedFlux<QueryKey> listQueryKeysAsync() {
-        return PagedConverter.mapPage(this.manager().serviceClient().getQueryKeys()
-            .listBySearchServiceAsync(this.resourceGroupName(), this.name()),
-            QueryKeyImpl::new);
+        return PagedConverter.mapPage(this.manager()
+            .serviceClient()
+            .getQueryKeys()
+            .listBySearchServiceAsync(this.resourceGroupName(), this.name()), QueryKeyImpl::new);
     }
 
     @Override
@@ -124,7 +127,9 @@ class SearchServiceImpl
 
     @Override
     public Mono<AdminKeys> regenerateAdminKeysAsync(AdminKeyKind keyKind) {
-        return this.manager().serviceClient().getAdminKeys()
+        return this.manager()
+            .serviceClient()
+            .getAdminKeys()
             .regenerateAsync(this.resourceGroupName(), this.name(), keyKind)
             .map(AdminKeysImpl::new);
     }
@@ -136,7 +141,9 @@ class SearchServiceImpl
 
     @Override
     public Mono<QueryKey> createQueryKeyAsync(String name) {
-        return this.manager().serviceClient().getQueryKeys()
+        return this.manager()
+            .serviceClient()
+            .getQueryKeys()
             .createAsync(this.resourceGroupName(), this.name(), name)
             .map(QueryKeyImpl::new);
     }
@@ -148,8 +155,7 @@ class SearchServiceImpl
 
     @Override
     public Mono<Void> deleteQueryKeyAsync(String key) {
-        return this.manager().serviceClient().getQueryKeys()
-            .deleteAsync(this.resourceGroupName(), this.name(), key);
+        return this.manager().serviceClient().getQueryKeys().deleteAsync(this.resourceGroupName(), this.name(), key);
     }
 
     @Override

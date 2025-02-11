@@ -6,28 +6,38 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistItemInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List all the watchlist items. */
+/**
+ * List all the watchlist items.
+ */
 @Fluent
-public final class WatchlistItemList {
+public final class WatchlistItemList implements JsonSerializable<WatchlistItemList> {
     /*
-     * URL to fetch the next set of watchlist item.
+     * URL to fetch the next set of watchlist items.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * Array of watchlist items.
      */
-    @JsonProperty(value = "value", required = true)
     private List<WatchlistItemInner> value;
 
     /**
-     * Get the nextLink property: URL to fetch the next set of watchlist item.
-     *
+     * Creates an instance of WatchlistItemList class.
+     */
+    public WatchlistItemList() {
+    }
+
+    /**
+     * Get the nextLink property: URL to fetch the next set of watchlist items.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -36,7 +46,7 @@ public final class WatchlistItemList {
 
     /**
      * Get the value property: Array of watchlist items.
-     *
+     * 
      * @return the value value.
      */
     public List<WatchlistItemInner> value() {
@@ -45,7 +55,7 @@ public final class WatchlistItemList {
 
     /**
      * Set the value property: Array of watchlist items.
-     *
+     * 
      * @param value the value value to set.
      * @return the WatchlistItemList object itself.
      */
@@ -56,18 +66,57 @@ public final class WatchlistItemList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model WatchlistItemList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model WatchlistItemList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WatchlistItemList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WatchlistItemList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WatchlistItemList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WatchlistItemList.
+     */
+    public static WatchlistItemList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WatchlistItemList deserializedWatchlistItemList = new WatchlistItemList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<WatchlistItemInner> value = reader.readArray(reader1 -> WatchlistItemInner.fromJson(reader1));
+                    deserializedWatchlistItemList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedWatchlistItemList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWatchlistItemList;
+        });
+    }
 }

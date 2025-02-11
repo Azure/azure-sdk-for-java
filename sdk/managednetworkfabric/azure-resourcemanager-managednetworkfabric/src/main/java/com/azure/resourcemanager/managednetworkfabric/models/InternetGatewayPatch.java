@@ -5,33 +5,41 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.fluent.models.InternetGatewayPatchableProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Internet Gateway patch resource definition. */
+/**
+ * The Internet Gateway patch resource definition.
+ */
 @Fluent
 public final class InternetGatewayPatch extends TagsUpdate {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private InternetGatewayPatchableProperties innerProperties;
 
-    /** Creates an instance of InternetGatewayPatch class. */
+    /**
+     * Creates an instance of InternetGatewayPatch class.
+     */
     public InternetGatewayPatch() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InternetGatewayPatchableProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InternetGatewayPatch withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -40,7 +48,7 @@ public final class InternetGatewayPatch extends TagsUpdate {
 
     /**
      * Get the internetGatewayRuleId property: ARM Resource ID of the Internet Gateway Rule.
-     *
+     * 
      * @return the internetGatewayRuleId value.
      */
     public String internetGatewayRuleId() {
@@ -49,7 +57,7 @@ public final class InternetGatewayPatch extends TagsUpdate {
 
     /**
      * Set the internetGatewayRuleId property: ARM Resource ID of the Internet Gateway Rule.
-     *
+     * 
      * @param internetGatewayRuleId the internetGatewayRuleId value to set.
      * @return the InternetGatewayPatch object itself.
      */
@@ -63,14 +71,54 @@ public final class InternetGatewayPatch extends TagsUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InternetGatewayPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InternetGatewayPatch if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InternetGatewayPatch.
+     */
+    public static InternetGatewayPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InternetGatewayPatch deserializedInternetGatewayPatch = new InternetGatewayPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedInternetGatewayPatch.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInternetGatewayPatch.innerProperties
+                        = InternetGatewayPatchableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInternetGatewayPatch;
+        });
     }
 }

@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters to generate upgraded definition. */
+/**
+ * The parameters to generate upgraded definition.
+ */
 @Fluent
-public final class GenerateUpgradedDefinitionParameters {
+public final class GenerateUpgradedDefinitionParameters
+    implements JsonSerializable<GenerateUpgradedDefinitionParameters> {
     /*
      * The target schema version.
      */
-    @JsonProperty(value = "targetSchemaVersion")
     private String targetSchemaVersion;
 
-    /** Creates an instance of GenerateUpgradedDefinitionParameters class. */
+    /**
+     * Creates an instance of GenerateUpgradedDefinitionParameters class.
+     */
     public GenerateUpgradedDefinitionParameters() {
     }
 
     /**
      * Get the targetSchemaVersion property: The target schema version.
-     *
+     * 
      * @return the targetSchemaVersion value.
      */
     public String targetSchemaVersion() {
@@ -31,7 +39,7 @@ public final class GenerateUpgradedDefinitionParameters {
 
     /**
      * Set the targetSchemaVersion property: The target schema version.
-     *
+     * 
      * @param targetSchemaVersion the targetSchemaVersion value to set.
      * @return the GenerateUpgradedDefinitionParameters object itself.
      */
@@ -42,9 +50,46 @@ public final class GenerateUpgradedDefinitionParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetSchemaVersion", this.targetSchemaVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GenerateUpgradedDefinitionParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GenerateUpgradedDefinitionParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GenerateUpgradedDefinitionParameters.
+     */
+    public static GenerateUpgradedDefinitionParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GenerateUpgradedDefinitionParameters deserializedGenerateUpgradedDefinitionParameters
+                = new GenerateUpgradedDefinitionParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetSchemaVersion".equals(fieldName)) {
+                    deserializedGenerateUpgradedDefinitionParameters.targetSchemaVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGenerateUpgradedDefinitionParameters;
+        });
     }
 }

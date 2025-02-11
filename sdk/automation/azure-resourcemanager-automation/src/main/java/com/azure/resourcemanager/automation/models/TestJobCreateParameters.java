@@ -5,29 +5,37 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The parameters supplied to the create test job operation. */
+/**
+ * The parameters supplied to the create test job operation.
+ */
 @Fluent
-public final class TestJobCreateParameters {
+public final class TestJobCreateParameters implements JsonSerializable<TestJobCreateParameters> {
     /*
      * Gets or sets the parameters of the test job.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> parameters;
 
     /*
      * Gets or sets the runOn which specifies the group name where the job is to be executed.
      */
-    @JsonProperty(value = "runOn")
     private String runOn;
 
     /**
+     * Creates an instance of TestJobCreateParameters class.
+     */
+    public TestJobCreateParameters() {
+    }
+
+    /**
      * Get the parameters property: Gets or sets the parameters of the test job.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -36,7 +44,7 @@ public final class TestJobCreateParameters {
 
     /**
      * Set the parameters property: Gets or sets the parameters of the test job.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the TestJobCreateParameters object itself.
      */
@@ -47,7 +55,7 @@ public final class TestJobCreateParameters {
 
     /**
      * Get the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @return the runOn value.
      */
     public String runOn() {
@@ -56,7 +64,7 @@ public final class TestJobCreateParameters {
 
     /**
      * Set the runOn property: Gets or sets the runOn which specifies the group name where the job is to be executed.
-     *
+     * 
      * @param runOn the runOn value to set.
      * @return the TestJobCreateParameters object itself.
      */
@@ -67,9 +75,49 @@ public final class TestJobCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("runOn", this.runOn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestJobCreateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestJobCreateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TestJobCreateParameters.
+     */
+    public static TestJobCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestJobCreateParameters deserializedTestJobCreateParameters = new TestJobCreateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("parameters".equals(fieldName)) {
+                    Map<String, String> parameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTestJobCreateParameters.parameters = parameters;
+                } else if ("runOn".equals(fieldName)) {
+                    deserializedTestJobCreateParameters.runOn = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestJobCreateParameters;
+        });
     }
 }

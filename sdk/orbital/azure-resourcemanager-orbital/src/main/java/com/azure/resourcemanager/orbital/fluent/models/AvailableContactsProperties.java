@@ -5,22 +5,226 @@
 package com.azure.resourcemanager.orbital.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.orbital.models.ContactInstanceProperties;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** Properties of Contact resource. */
+/**
+ * Properties of Contact resource.
+ */
 @Immutable
 public final class AvailableContactsProperties extends ContactInstanceProperties {
-    /** Creates an instance of AvailableContactsProperties class. */
+    /*
+     * Spacecraft elevation above the horizon at contact end.
+     */
+    private Float endElevationDegrees;
+
+    /*
+     * Spacecraft elevation above the horizon at contact start.
+     */
+    private Float startElevationDegrees;
+
+    /*
+     * Azimuth of the antenna at the end of the contact in decimal degrees.
+     */
+    private Float endAzimuthDegrees;
+
+    /*
+     * Azimuth of the antenna at the start of the contact in decimal degrees.
+     */
+    private Float startAzimuthDegrees;
+
+    /*
+     * Time to lost receiving a signal (ISO 8601 UTC standard).
+     */
+    private OffsetDateTime rxEndTime;
+
+    /*
+     * Earliest time to receive a signal (ISO 8601 UTC standard).
+     */
+    private OffsetDateTime rxStartTime;
+
+    /*
+     * Time at which antenna transmit will be disabled (ISO 8601 UTC standard).
+     */
+    private OffsetDateTime txEndTime;
+
+    /*
+     * Time at which antenna transmit will be enabled (ISO 8601 UTC standard).
+     */
+    private OffsetDateTime txStartTime;
+
+    /*
+     * Maximum elevation of the antenna during the contact in decimal degrees.
+     */
+    private Float maximumElevationDegrees;
+
+    /**
+     * Creates an instance of AvailableContactsProperties class.
+     */
     public AvailableContactsProperties() {
     }
 
     /**
+     * Get the endElevationDegrees property: Spacecraft elevation above the horizon at contact end.
+     * 
+     * @return the endElevationDegrees value.
+     */
+    @Override
+    public Float endElevationDegrees() {
+        return this.endElevationDegrees;
+    }
+
+    /**
+     * Get the startElevationDegrees property: Spacecraft elevation above the horizon at contact start.
+     * 
+     * @return the startElevationDegrees value.
+     */
+    @Override
+    public Float startElevationDegrees() {
+        return this.startElevationDegrees;
+    }
+
+    /**
+     * Get the endAzimuthDegrees property: Azimuth of the antenna at the end of the contact in decimal degrees.
+     * 
+     * @return the endAzimuthDegrees value.
+     */
+    @Override
+    public Float endAzimuthDegrees() {
+        return this.endAzimuthDegrees;
+    }
+
+    /**
+     * Get the startAzimuthDegrees property: Azimuth of the antenna at the start of the contact in decimal degrees.
+     * 
+     * @return the startAzimuthDegrees value.
+     */
+    @Override
+    public Float startAzimuthDegrees() {
+        return this.startAzimuthDegrees;
+    }
+
+    /**
+     * Get the rxEndTime property: Time to lost receiving a signal (ISO 8601 UTC standard).
+     * 
+     * @return the rxEndTime value.
+     */
+    @Override
+    public OffsetDateTime rxEndTime() {
+        return this.rxEndTime;
+    }
+
+    /**
+     * Get the rxStartTime property: Earliest time to receive a signal (ISO 8601 UTC standard).
+     * 
+     * @return the rxStartTime value.
+     */
+    @Override
+    public OffsetDateTime rxStartTime() {
+        return this.rxStartTime;
+    }
+
+    /**
+     * Get the txEndTime property: Time at which antenna transmit will be disabled (ISO 8601 UTC standard).
+     * 
+     * @return the txEndTime value.
+     */
+    @Override
+    public OffsetDateTime txEndTime() {
+        return this.txEndTime;
+    }
+
+    /**
+     * Get the txStartTime property: Time at which antenna transmit will be enabled (ISO 8601 UTC standard).
+     * 
+     * @return the txStartTime value.
+     */
+    @Override
+    public OffsetDateTime txStartTime() {
+        return this.txStartTime;
+    }
+
+    /**
+     * Get the maximumElevationDegrees property: Maximum elevation of the antenna during the contact in decimal degrees.
+     * 
+     * @return the maximumElevationDegrees value.
+     */
+    @Override
+    public Float maximumElevationDegrees() {
+        return this.maximumElevationDegrees;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableContactsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableContactsProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableContactsProperties.
+     */
+    public static AvailableContactsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableContactsProperties deserializedAvailableContactsProperties = new AvailableContactsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maximumElevationDegrees".equals(fieldName)) {
+                    deserializedAvailableContactsProperties.maximumElevationDegrees
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("txStartTime".equals(fieldName)) {
+                    deserializedAvailableContactsProperties.txStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("txEndTime".equals(fieldName)) {
+                    deserializedAvailableContactsProperties.txEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("rxStartTime".equals(fieldName)) {
+                    deserializedAvailableContactsProperties.rxStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("rxEndTime".equals(fieldName)) {
+                    deserializedAvailableContactsProperties.rxEndTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startAzimuthDegrees".equals(fieldName)) {
+                    deserializedAvailableContactsProperties.startAzimuthDegrees
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("endAzimuthDegrees".equals(fieldName)) {
+                    deserializedAvailableContactsProperties.endAzimuthDegrees
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("startElevationDegrees".equals(fieldName)) {
+                    deserializedAvailableContactsProperties.startElevationDegrees
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("endElevationDegrees".equals(fieldName)) {
+                    deserializedAvailableContactsProperties.endElevationDegrees
+                        = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableContactsProperties;
+        });
     }
 }

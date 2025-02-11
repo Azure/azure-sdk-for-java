@@ -17,15 +17,10 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for domain management API. */
 @Fluent
-public interface AppServiceDomains
-    extends SupportsCreating<AppServiceDomain.DefinitionStages.Blank>,
-        SupportsListing<AppServiceDomain>,
-        SupportsListingByResourceGroup<AppServiceDomain>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsGettingByResourceGroup<AppServiceDomain>,
-        SupportsGettingById<AppServiceDomain>,
-        HasManager<AppServiceManager> {
+public interface AppServiceDomains extends SupportsCreating<AppServiceDomain.DefinitionStages.Blank>,
+    SupportsListing<AppServiceDomain>, SupportsListingByResourceGroup<AppServiceDomain>, SupportsDeletingById,
+    SupportsDeletingByResourceGroup, SupportsGettingByResourceGroup<AppServiceDomain>,
+    SupportsGettingById<AppServiceDomain>, HasManager<AppServiceManager> {
     /**
      * List the agreements for purchasing a domain with a specific top level extension.
      *

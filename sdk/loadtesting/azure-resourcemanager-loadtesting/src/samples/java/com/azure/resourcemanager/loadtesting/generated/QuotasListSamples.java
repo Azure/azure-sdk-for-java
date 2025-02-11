@@ -4,17 +4,22 @@
 
 package com.azure.resourcemanager.loadtesting.generated;
 
-/** Samples for Quotas List. */
+/**
+ * Samples for Quotas List.
+ */
 public final class QuotasListSamples {
     /*
-     * x-ms-original-file: specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/Quotas_List.json
+     * x-ms-original-file:
+     * specification/loadtestservice/resource-manager/Microsoft.LoadTestService/stable/2022-12-01/examples/Quotas_List.
+     * json
      */
     /**
-     * Sample code: Quotas_List.
-     *
+     * Sample code: List quotas for a given subscription Id.
+     * 
      * @param manager Entry point to LoadTestManager.
      */
-    public static void quotasList(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
+    public static void
+        listQuotasForAGivenSubscriptionId(com.azure.resourcemanager.loadtesting.LoadTestManager manager) {
         manager.quotas().list("westus", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Summary item. */
+/**
+ * Summary item.
+ */
 @Fluent
-public final class Summary {
+public final class Summary implements JsonSerializable<Summary> {
     /*
      * Gets the count.
      */
-    @JsonProperty(value = "count")
     private Integer count;
 
     /*
      * Gets the item.
      */
-    @JsonProperty(value = "item")
     private String item;
 
-    /** Creates an instance of Summary class. */
+    /**
+     * Creates an instance of Summary class.
+     */
     public Summary() {
     }
 
     /**
      * Get the count property: Gets the count.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -37,7 +43,7 @@ public final class Summary {
 
     /**
      * Set the count property: Gets the count.
-     *
+     * 
      * @param count the count value to set.
      * @return the Summary object itself.
      */
@@ -48,7 +54,7 @@ public final class Summary {
 
     /**
      * Get the item property: Gets the item.
-     *
+     * 
      * @return the item value.
      */
     public String item() {
@@ -57,7 +63,7 @@ public final class Summary {
 
     /**
      * Set the item property: Gets the item.
-     *
+     * 
      * @param item the item value to set.
      * @return the Summary object itself.
      */
@@ -68,9 +74,48 @@ public final class Summary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("item", this.item);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Summary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Summary if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Summary.
+     */
+    public static Summary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Summary deserializedSummary = new Summary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedSummary.count = reader.getNullable(JsonReader::getInt);
+                } else if ("item".equals(fieldName)) {
+                    deserializedSummary.item = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSummary;
+        });
     }
 }

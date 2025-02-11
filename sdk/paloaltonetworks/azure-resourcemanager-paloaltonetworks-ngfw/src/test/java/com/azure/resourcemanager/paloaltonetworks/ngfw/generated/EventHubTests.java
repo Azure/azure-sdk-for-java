@@ -23,8 +23,11 @@ public final class EventHubTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHub model = new EventHub().withId("togebjoxsl").withSubscriptionId("nhl").withName("rqnkkzjcjbtr")
-            .withNameSpace("ehvvib").withPolicyName("jj");
+        EventHub model = new EventHub().withId("togebjoxsl")
+            .withSubscriptionId("nhl")
+            .withName("rqnkkzjcjbtr")
+            .withNameSpace("ehvvib")
+            .withPolicyName("jj");
         model = BinaryData.fromObject(model).toObject(EventHub.class);
         Assertions.assertEquals("togebjoxsl", model.id());
         Assertions.assertEquals("nhl", model.subscriptionId());

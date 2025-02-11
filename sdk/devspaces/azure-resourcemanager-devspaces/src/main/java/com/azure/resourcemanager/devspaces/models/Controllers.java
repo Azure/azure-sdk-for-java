@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Controllers. */
+/**
+ * Resource collection API of Controllers.
+ */
 public interface Controllers {
     /**
      * Gets an Azure Dev Spaces Controller.
-     *
-     * <p>Gets the properties for an Azure Dev Spaces Controller.
-     *
+     * 
+     * Gets the properties for an Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param context The context to associate with this operation.
@@ -27,9 +29,9 @@ public interface Controllers {
 
     /**
      * Gets an Azure Dev Spaces Controller.
-     *
-     * <p>Gets the properties for an Azure Dev Spaces Controller.
-     *
+     * 
+     * Gets the properties for an Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,9 +43,9 @@ public interface Controllers {
 
     /**
      * Deletes an Azure Dev Spaces Controller.
-     *
-     * <p>Deletes an existing Azure Dev Spaces Controller.
-     *
+     * 
+     * Deletes an existing Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,9 +56,9 @@ public interface Controllers {
 
     /**
      * Deletes an Azure Dev Spaces Controller.
-     *
-     * <p>Deletes an existing Azure Dev Spaces Controller.
-     *
+     * 
+     * Deletes an existing Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param context The context to associate with this operation.
@@ -68,10 +70,10 @@ public interface Controllers {
 
     /**
      * Lists the Azure Dev Spaces Controllers in a resource group.
-     *
-     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
+     * 
+     * Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
      * subscription.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,10 +84,10 @@ public interface Controllers {
 
     /**
      * Lists the Azure Dev Spaces Controllers in a resource group.
-     *
-     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
+     * 
+     * Lists all the Azure Dev Spaces Controllers with their properties in the specified resource group and
      * subscription.
-     *
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,9 +99,9 @@ public interface Controllers {
 
     /**
      * Lists the Azure Dev Spaces Controllers in a subscription.
-     *
-     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
-     *
+     * 
+     * Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated response with {@link PagedIterable}.
@@ -108,9 +110,9 @@ public interface Controllers {
 
     /**
      * Lists the Azure Dev Spaces Controllers in a subscription.
-     *
-     * <p>Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
-     *
+     * 
+     * Lists all the Azure Dev Spaces Controllers with their properties in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -121,9 +123,9 @@ public interface Controllers {
 
     /**
      * Lists connection details for an Azure Dev Spaces Controller.
-     *
-     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
-     *
+     * 
+     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param listConnectionDetailsParameters Parameters for listing connection details of Azure Dev Spaces Controller.
@@ -133,17 +135,14 @@ public interface Controllers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<ControllerConnectionDetailsList> listConnectionDetailsWithResponse(
-        String resourceGroupName,
-        String name,
-        ListConnectionDetailsParameters listConnectionDetailsParameters,
-        Context context);
+    Response<ControllerConnectionDetailsList> listConnectionDetailsWithResponse(String resourceGroupName, String name,
+        ListConnectionDetailsParameters listConnectionDetailsParameters, Context context);
 
     /**
      * Lists connection details for an Azure Dev Spaces Controller.
-     *
-     * <p>Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
-     *
+     * 
+     * Lists connection details for the underlying container resources of an Azure Dev Spaces Controller.
+     * 
      * @param resourceGroupName Resource group to which the resource belongs.
      * @param name Name of the resource.
      * @param listConnectionDetailsParameters Parameters for listing connection details of Azure Dev Spaces Controller.
@@ -152,14 +151,14 @@ public interface Controllers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    ControllerConnectionDetailsList listConnectionDetails(
-        String resourceGroupName, String name, ListConnectionDetailsParameters listConnectionDetailsParameters);
+    ControllerConnectionDetailsList listConnectionDetails(String resourceGroupName, String name,
+        ListConnectionDetailsParameters listConnectionDetailsParameters);
 
     /**
      * Gets an Azure Dev Spaces Controller.
-     *
-     * <p>Gets the properties for an Azure Dev Spaces Controller.
-     *
+     * 
+     * Gets the properties for an Azure Dev Spaces Controller.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -170,9 +169,9 @@ public interface Controllers {
 
     /**
      * Gets an Azure Dev Spaces Controller.
-     *
-     * <p>Gets the properties for an Azure Dev Spaces Controller.
-     *
+     * 
+     * Gets the properties for an Azure Dev Spaces Controller.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -184,9 +183,9 @@ public interface Controllers {
 
     /**
      * Deletes an Azure Dev Spaces Controller.
-     *
-     * <p>Deletes an existing Azure Dev Spaces Controller.
-     *
+     * 
+     * Deletes an existing Azure Dev Spaces Controller.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -196,9 +195,9 @@ public interface Controllers {
 
     /**
      * Deletes an Azure Dev Spaces Controller.
-     *
-     * <p>Deletes an existing Azure Dev Spaces Controller.
-     *
+     * 
+     * Deletes an existing Azure Dev Spaces Controller.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,7 +208,7 @@ public interface Controllers {
 
     /**
      * Begins definition for a new Controller resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Controller definition.
      */

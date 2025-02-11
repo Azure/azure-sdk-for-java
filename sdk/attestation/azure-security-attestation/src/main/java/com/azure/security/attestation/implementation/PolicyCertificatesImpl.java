@@ -89,13 +89,7 @@ public final class PolicyCertificatesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyCertificatesResponse>> getWithResponseAsync() {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.get(this.client.getInstanceUrl(), this.client.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(context));
     }
 
     /**
@@ -157,17 +151,7 @@ public final class PolicyCertificatesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyCertificatesModifyResponse>> addWithResponseAsync(String policyCertificateToAdd) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (policyCertificateToAdd == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter policyCertificateToAdd is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.add(this.client.getInstanceUrl(), this.client.getApiVersion(),
-            policyCertificateToAdd, accept, context));
+        return FluxUtil.withContext(context -> addWithResponseAsync(policyCertificateToAdd, context));
     }
 
     /**
@@ -243,17 +227,7 @@ public final class PolicyCertificatesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PolicyCertificatesModifyResponse>> removeWithResponseAsync(String policyCertificateToRemove) {
-        if (this.client.getInstanceUrl() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getInstanceUrl() is required and cannot be null."));
-        }
-        if (policyCertificateToRemove == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter policyCertificateToRemove is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.remove(this.client.getInstanceUrl(), this.client.getApiVersion(),
-            policyCertificateToRemove, accept, context));
+        return FluxUtil.withContext(context -> removeWithResponseAsync(policyCertificateToRemove, context));
     }
 
     /**

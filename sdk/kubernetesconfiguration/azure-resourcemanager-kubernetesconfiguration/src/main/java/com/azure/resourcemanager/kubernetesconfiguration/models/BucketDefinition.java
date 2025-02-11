@@ -5,61 +5,62 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters to reconcile to the Bucket source kind type. */
+/**
+ * Parameters to reconcile to the Bucket source kind type.
+ */
 @Fluent
-public final class BucketDefinition {
+public final class BucketDefinition implements JsonSerializable<BucketDefinition> {
     /*
      * The URL to sync for the flux configuration S3 bucket.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The bucket name to sync from the url endpoint for the flux configuration.
      */
-    @JsonProperty(value = "bucketName")
     private String bucketName;
 
     /*
      * Specify whether to use insecure communication when puling data from the S3 bucket.
      */
-    @JsonProperty(value = "insecure")
     private Boolean insecure;
 
     /*
      * The maximum time to attempt to reconcile the cluster bucket source with the remote.
      */
-    @JsonProperty(value = "timeoutInSeconds")
     private Long timeoutInSeconds;
 
     /*
      * The interval at which to re-reconcile the cluster bucket source with the remote.
      */
-    @JsonProperty(value = "syncIntervalInSeconds")
     private Long syncIntervalInSeconds;
 
     /*
      * Plaintext access key used to securely access the S3 bucket
      */
-    @JsonProperty(value = "accessKey")
     private String accessKey;
 
     /*
      * Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or
      * user-provided configuration secrets.
      */
-    @JsonProperty(value = "localAuthRef")
     private String localAuthRef;
 
-    /** Creates an instance of BucketDefinition class. */
+    /**
+     * Creates an instance of BucketDefinition class.
+     */
     public BucketDefinition() {
     }
 
     /**
      * Get the url property: The URL to sync for the flux configuration S3 bucket.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -68,7 +69,7 @@ public final class BucketDefinition {
 
     /**
      * Set the url property: The URL to sync for the flux configuration S3 bucket.
-     *
+     * 
      * @param url the url value to set.
      * @return the BucketDefinition object itself.
      */
@@ -79,7 +80,7 @@ public final class BucketDefinition {
 
     /**
      * Get the bucketName property: The bucket name to sync from the url endpoint for the flux configuration.
-     *
+     * 
      * @return the bucketName value.
      */
     public String bucketName() {
@@ -88,7 +89,7 @@ public final class BucketDefinition {
 
     /**
      * Set the bucketName property: The bucket name to sync from the url endpoint for the flux configuration.
-     *
+     * 
      * @param bucketName the bucketName value to set.
      * @return the BucketDefinition object itself.
      */
@@ -99,7 +100,7 @@ public final class BucketDefinition {
 
     /**
      * Get the insecure property: Specify whether to use insecure communication when puling data from the S3 bucket.
-     *
+     * 
      * @return the insecure value.
      */
     public Boolean insecure() {
@@ -108,7 +109,7 @@ public final class BucketDefinition {
 
     /**
      * Set the insecure property: Specify whether to use insecure communication when puling data from the S3 bucket.
-     *
+     * 
      * @param insecure the insecure value to set.
      * @return the BucketDefinition object itself.
      */
@@ -120,7 +121,7 @@ public final class BucketDefinition {
     /**
      * Get the timeoutInSeconds property: The maximum time to attempt to reconcile the cluster bucket source with the
      * remote.
-     *
+     * 
      * @return the timeoutInSeconds value.
      */
     public Long timeoutInSeconds() {
@@ -130,7 +131,7 @@ public final class BucketDefinition {
     /**
      * Set the timeoutInSeconds property: The maximum time to attempt to reconcile the cluster bucket source with the
      * remote.
-     *
+     * 
      * @param timeoutInSeconds the timeoutInSeconds value to set.
      * @return the BucketDefinition object itself.
      */
@@ -142,7 +143,7 @@ public final class BucketDefinition {
     /**
      * Get the syncIntervalInSeconds property: The interval at which to re-reconcile the cluster bucket source with the
      * remote.
-     *
+     * 
      * @return the syncIntervalInSeconds value.
      */
     public Long syncIntervalInSeconds() {
@@ -152,7 +153,7 @@ public final class BucketDefinition {
     /**
      * Set the syncIntervalInSeconds property: The interval at which to re-reconcile the cluster bucket source with the
      * remote.
-     *
+     * 
      * @param syncIntervalInSeconds the syncIntervalInSeconds value to set.
      * @return the BucketDefinition object itself.
      */
@@ -163,7 +164,7 @@ public final class BucketDefinition {
 
     /**
      * Get the accessKey property: Plaintext access key used to securely access the S3 bucket.
-     *
+     * 
      * @return the accessKey value.
      */
     public String accessKey() {
@@ -172,7 +173,7 @@ public final class BucketDefinition {
 
     /**
      * Set the accessKey property: Plaintext access key used to securely access the S3 bucket.
-     *
+     * 
      * @param accessKey the accessKey value to set.
      * @return the BucketDefinition object itself.
      */
@@ -184,7 +185,7 @@ public final class BucketDefinition {
     /**
      * Get the localAuthRef property: Name of a local secret on the Kubernetes cluster to use as the authentication
      * secret rather than the managed or user-provided configuration secrets.
-     *
+     * 
      * @return the localAuthRef value.
      */
     public String localAuthRef() {
@@ -194,7 +195,7 @@ public final class BucketDefinition {
     /**
      * Set the localAuthRef property: Name of a local secret on the Kubernetes cluster to use as the authentication
      * secret rather than the managed or user-provided configuration secrets.
-     *
+     * 
      * @param localAuthRef the localAuthRef value to set.
      * @return the BucketDefinition object itself.
      */
@@ -205,9 +206,63 @@ public final class BucketDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("bucketName", this.bucketName);
+        jsonWriter.writeBooleanField("insecure", this.insecure);
+        jsonWriter.writeNumberField("timeoutInSeconds", this.timeoutInSeconds);
+        jsonWriter.writeNumberField("syncIntervalInSeconds", this.syncIntervalInSeconds);
+        jsonWriter.writeStringField("accessKey", this.accessKey);
+        jsonWriter.writeStringField("localAuthRef", this.localAuthRef);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BucketDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BucketDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BucketDefinition.
+     */
+    public static BucketDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BucketDefinition deserializedBucketDefinition = new BucketDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedBucketDefinition.url = reader.getString();
+                } else if ("bucketName".equals(fieldName)) {
+                    deserializedBucketDefinition.bucketName = reader.getString();
+                } else if ("insecure".equals(fieldName)) {
+                    deserializedBucketDefinition.insecure = reader.getNullable(JsonReader::getBoolean);
+                } else if ("timeoutInSeconds".equals(fieldName)) {
+                    deserializedBucketDefinition.timeoutInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("syncIntervalInSeconds".equals(fieldName)) {
+                    deserializedBucketDefinition.syncIntervalInSeconds = reader.getNullable(JsonReader::getLong);
+                } else if ("accessKey".equals(fieldName)) {
+                    deserializedBucketDefinition.accessKey = reader.getString();
+                } else if ("localAuthRef".equals(fieldName)) {
+                    deserializedBucketDefinition.localAuthRef = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBucketDefinition;
+        });
     }
 }

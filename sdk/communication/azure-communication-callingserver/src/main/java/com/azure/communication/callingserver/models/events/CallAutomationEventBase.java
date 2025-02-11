@@ -3,33 +3,30 @@
 
 package com.azure.communication.callingserver.models.events;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
+
+import java.io.IOException;
 
 /** The base event interface. */
-public abstract class CallAutomationEventBase {
+public abstract class CallAutomationEventBase implements JsonSerializable<CallAutomationEventBase> {
     /*
      * Call connection ID.
      */
-    @JsonProperty(value = "callConnectionId")
-    private final String callConnectionId;
+    private String callConnectionId;
 
     /*
      * Server call ID.
      */
-    @JsonProperty(value = "serverCallId")
-    private final String serverCallId;
+    private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation. Also called ChainId for skype chain ID.
      */
-    @JsonProperty(value = "correlationId")
-    private final String correlationId;
+    private String correlationId;
 
     CallAutomationEventBase() {
-        this.serverCallId = null;
-        this.callConnectionId = null;
-        this.correlationId = null;
     }
 
     /**
@@ -58,5 +55,32 @@ public abstract class CallAutomationEventBase {
      */
     public String getCorrelationId() {
         return this.correlationId;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return toJsonShared(jsonWriter.writeStartObject()).writeEndObject();
+    }
+
+    JsonWriter toJsonShared(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStringField("callConnectionId", callConnectionId)
+            .writeStringField("serverCallId", serverCallId)
+            .writeStringField("correlationId", callConnectionId);
+    }
+
+    static boolean fromJsonShared(CallAutomationEventBase event, String fieldName, JsonReader jsonReader)
+        throws IOException {
+        if ("callConnectionId".equals(fieldName)) {
+            event.callConnectionId = jsonReader.getString();
+            return true;
+        } else if ("serverCallId".equals(fieldName)) {
+            event.serverCallId = jsonReader.getString();
+            return true;
+        } else if ("correlationId".equals(fieldName)) {
+            event.correlationId = jsonReader.getString();
+            return true;
+        }
+
+        return false;
     }
 }

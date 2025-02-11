@@ -6,59 +6,64 @@ package com.azure.resourcemanager.webpubsub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The billing information of the resource. */
+/**
+ * The billing information of the resource.
+ */
 @Fluent
-public final class ResourceSku {
+public final class ResourceSku implements JsonSerializable<ResourceSku> {
     /*
      * The name of the SKU. Required.
-     *
-     * Allowed values: Standard_S1, Free_F1, Premium_P1
+     * 
+     * Allowed values: Standard_S1, Free_F1, Premium_P1, Premium_P2
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Optional tier of this particular SKU. 'Standard' or 'Free'.
-     *
+     * 
      * `Basic` is deprecated, use `Standard` instead.
      */
-    @JsonProperty(value = "tier")
     private WebPubSubSkuTier tier;
 
     /*
      * Not used. Retained for future use.
      */
-    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private String size;
 
     /*
      * Not used. Retained for future use.
      */
-    @JsonProperty(value = "family", access = JsonProperty.Access.WRITE_ONLY)
     private String family;
 
     /*
-     * Optional, integer. The unit count of the resource. 1 by default.
-     *
+     * Optional, integer. The unit count of the resource.
+     * 1 for Free_F1/Standard_S1/Premium_P1, 100 for Premium_P2 by default.
+     * 
      * If present, following values are allowed:
-     * Free: 1;
-     * Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
-     * Premium:  1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+     * Free_F1: 1;
+     * Standard_S1: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+     * Premium_P1: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+     * Premium_P2: 100,200,300,400,500,600,700,800,900,1000;
      */
-    @JsonProperty(value = "capacity")
     private Integer capacity;
 
-    /** Creates an instance of ResourceSku class. */
+    /**
+     * Creates an instance of ResourceSku class.
+     */
     public ResourceSku() {
     }
 
     /**
      * Get the name property: The name of the SKU. Required.
-     *
-     * <p>Allowed values: Standard_S1, Free_F1, Premium_P1.
-     *
+     * 
+     * Allowed values: Standard_S1, Free_F1, Premium_P1, Premium_P2.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -67,9 +72,9 @@ public final class ResourceSku {
 
     /**
      * Set the name property: The name of the SKU. Required.
-     *
-     * <p>Allowed values: Standard_S1, Free_F1, Premium_P1.
-     *
+     * 
+     * Allowed values: Standard_S1, Free_F1, Premium_P1, Premium_P2.
+     * 
      * @param name the name value to set.
      * @return the ResourceSku object itself.
      */
@@ -80,9 +85,9 @@ public final class ResourceSku {
 
     /**
      * Get the tier property: Optional tier of this particular SKU. 'Standard' or 'Free'.
-     *
-     * <p>`Basic` is deprecated, use `Standard` instead.
-     *
+     * 
+     * `Basic` is deprecated, use `Standard` instead.
+     * 
      * @return the tier value.
      */
     public WebPubSubSkuTier tier() {
@@ -91,9 +96,9 @@ public final class ResourceSku {
 
     /**
      * Set the tier property: Optional tier of this particular SKU. 'Standard' or 'Free'.
-     *
-     * <p>`Basic` is deprecated, use `Standard` instead.
-     *
+     * 
+     * `Basic` is deprecated, use `Standard` instead.
+     * 
      * @param tier the tier value to set.
      * @return the ResourceSku object itself.
      */
@@ -104,7 +109,7 @@ public final class ResourceSku {
 
     /**
      * Get the size property: Not used. Retained for future use.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -113,7 +118,7 @@ public final class ResourceSku {
 
     /**
      * Get the family property: Not used. Retained for future use.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -121,11 +126,15 @@ public final class ResourceSku {
     }
 
     /**
-     * Get the capacity property: Optional, integer. The unit count of the resource. 1 by default.
-     *
-     * <p>If present, following values are allowed: Free: 1; Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
-     * Premium: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;.
-     *
+     * Get the capacity property: Optional, integer. The unit count of the resource.
+     * 1 for Free_F1/Standard_S1/Premium_P1, 100 for Premium_P2 by default.
+     * 
+     * If present, following values are allowed:
+     * Free_F1: 1;
+     * Standard_S1: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+     * Premium_P1: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+     * Premium_P2: 100,200,300,400,500,600,700,800,900,1000;.
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -133,11 +142,15 @@ public final class ResourceSku {
     }
 
     /**
-     * Set the capacity property: Optional, integer. The unit count of the resource. 1 by default.
-     *
-     * <p>If present, following values are allowed: Free: 1; Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
-     * Premium: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;.
-     *
+     * Set the capacity property: Optional, integer. The unit count of the resource.
+     * 1 for Free_F1/Standard_S1/Premium_P1, 100 for Premium_P2 by default.
+     * 
+     * If present, following values are allowed:
+     * Free_F1: 1;
+     * Standard_S1: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+     * Premium_P1: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
+     * Premium_P2: 100,200,300,400,500,600,700,800,900,1000;.
+     * 
      * @param capacity the capacity value to set.
      * @return the ResourceSku object itself.
      */
@@ -148,16 +161,62 @@ public final class ResourceSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ResourceSku"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ResourceSku"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResourceSku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResourceSku.
+     */
+    public static ResourceSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSku deserializedResourceSku = new ResourceSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceSku.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedResourceSku.tier = WebPubSubSkuTier.fromString(reader.getString());
+                } else if ("size".equals(fieldName)) {
+                    deserializedResourceSku.size = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedResourceSku.family = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedResourceSku.capacity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSku;
+        });
+    }
 }

@@ -12,11 +12,13 @@ import com.azure.resourcemanager.providerhub.fluent.models.CheckinManifestInfoIn
 import com.azure.resourcemanager.providerhub.fluent.models.ResourceProviderManifestInner;
 import com.azure.resourcemanager.providerhub.models.CheckinManifestParams;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public interface ResourceProvidersClient {
     /**
      * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Generates the manifest for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +43,7 @@ public interface ResourceProvidersClient {
 
     /**
      * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @param context The context to associate with this operation.
@@ -51,12 +53,12 @@ public interface ResourceProvidersClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckinManifestInfoInner> checkinManifestWithResponse(
-        String providerNamespace, CheckinManifestParams checkinManifestParams, Context context);
+    Response<CheckinManifestInfoInner> checkinManifestWithResponse(String providerNamespace,
+        CheckinManifestParams checkinManifestParams, Context context);
 
     /**
      * Checkin the manifest.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param checkinManifestParams The required body parameters supplied to the checkin manifest operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

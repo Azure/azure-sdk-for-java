@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
-/** The ContainerRegistriesGetTagsHeaders model. */
+/**
+ * The ContainerRegistriesGetTagsHeaders model.
+ */
 @Fluent
 public final class ContainerRegistriesGetTagsHeaders {
     /*
@@ -19,7 +21,7 @@ public final class ContainerRegistriesGetTagsHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of ContainerRegistriesGetTagsHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainerRegistriesGetTagsHeaders(HttpHeaders rawHeaders) {
@@ -28,7 +30,7 @@ public final class ContainerRegistriesGetTagsHeaders {
 
     /**
      * Get the link property: The Link property.
-     *
+     * 
      * @return the link value.
      */
     public String getLink() {
@@ -37,7 +39,7 @@ public final class ContainerRegistriesGetTagsHeaders {
 
     /**
      * Set the link property: The Link property.
-     *
+     * 
      * @param link the link value to set.
      * @return the ContainerRegistriesGetTagsHeaders object itself.
      */

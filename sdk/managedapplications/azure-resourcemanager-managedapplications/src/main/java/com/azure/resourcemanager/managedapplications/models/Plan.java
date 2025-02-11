@@ -6,48 +6,51 @@ package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Plan for the managed application. */
+/**
+ * Plan for the managed application.
+ */
 @Fluent
-public final class Plan {
+public final class Plan implements JsonSerializable<Plan> {
     /*
      * The plan name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The publisher ID.
      */
-    @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /*
      * The product code.
      */
-    @JsonProperty(value = "product", required = true)
     private String product;
 
     /*
      * The promotion code.
      */
-    @JsonProperty(value = "promotionCode")
     private String promotionCode;
 
     /*
      * The plan's version.
      */
-    @JsonProperty(value = "version", required = true)
     private String version;
 
-    /** Creates an instance of Plan class. */
+    /**
+     * Creates an instance of Plan class.
+     */
     public Plan() {
     }
 
     /**
      * Get the name property: The plan name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +59,7 @@ public final class Plan {
 
     /**
      * Set the name property: The plan name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Plan object itself.
      */
@@ -67,7 +70,7 @@ public final class Plan {
 
     /**
      * Get the publisher property: The publisher ID.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -76,7 +79,7 @@ public final class Plan {
 
     /**
      * Set the publisher property: The publisher ID.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the Plan object itself.
      */
@@ -87,7 +90,7 @@ public final class Plan {
 
     /**
      * Get the product property: The product code.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -96,7 +99,7 @@ public final class Plan {
 
     /**
      * Set the product property: The product code.
-     *
+     * 
      * @param product the product value to set.
      * @return the Plan object itself.
      */
@@ -107,7 +110,7 @@ public final class Plan {
 
     /**
      * Get the promotionCode property: The promotion code.
-     *
+     * 
      * @return the promotionCode value.
      */
     public String promotionCode() {
@@ -116,7 +119,7 @@ public final class Plan {
 
     /**
      * Set the promotionCode property: The promotion code.
-     *
+     * 
      * @param promotionCode the promotionCode value to set.
      * @return the Plan object itself.
      */
@@ -127,7 +130,7 @@ public final class Plan {
 
     /**
      * Get the version property: The plan's version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -136,7 +139,7 @@ public final class Plan {
 
     /**
      * Set the version property: The plan's version.
-     *
+     * 
      * @param version the version value to set.
      * @return the Plan object itself.
      */
@@ -147,27 +150,73 @@ public final class Plan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Plan"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Plan"));
         }
         if (publisher() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property publisher in model Plan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property publisher in model Plan"));
         }
         if (product() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property product in model Plan"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property product in model Plan"));
         }
         if (version() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property version in model Plan"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property version in model Plan"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Plan.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("promotionCode", this.promotionCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Plan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Plan if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Plan.
+     */
+    public static Plan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Plan deserializedPlan = new Plan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPlan.name = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedPlan.publisher = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedPlan.product = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedPlan.version = reader.getString();
+                } else if ("promotionCode".equals(fieldName)) {
+                    deserializedPlan.promotionCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPlan;
+        });
+    }
 }

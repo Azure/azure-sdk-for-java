@@ -4,9 +4,7 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.notificationhubs.fluent.models.DebugSendResponseInner;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,46 +33,46 @@ public interface DebugSendResponse {
     String type();
 
     /**
-     * Gets the location property: Deprecated - only for compatibility.
+     * Gets the location property: The geo-location where the resource lives.
      * 
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the tags property: Deprecated - only for compatibility.
+     * Gets the tags property: Resource tags.
      * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Gets the sku property: The sku of the created namespace.
      * 
-     * @return the systemData value.
+     * @return the sku value.
      */
-    SystemData systemData();
+    Sku sku();
 
     /**
-     * Gets the success property: Gets or sets successful send.
+     * Gets the success property: successful send.
      * 
      * @return the success value.
      */
-    Long success();
+    Float success();
 
     /**
-     * Gets the failure property: Gets or sets send failure.
+     * Gets the failure property: send failure.
      * 
      * @return the failure value.
      */
-    Long failure();
+    Float failure();
 
     /**
-     * Gets the results property: Gets or sets actual failure description.
+     * Gets the results property: actual failure description.
      * 
      * @return the results value.
      */
-    List<RegistrationResult> results();
+    Object results();
 
     /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.DebugSendResponseInner object.

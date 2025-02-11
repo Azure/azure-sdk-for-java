@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The detailed status of the storage appliance. */
+/**
+ * The detailed status of the storage appliance.
+ */
 public final class StorageApplianceDetailedStatus extends ExpandableStringEnum<StorageApplianceDetailedStatus> {
-    /** Static value Error for StorageApplianceDetailedStatus. */
+    /**
+     * Static value Error for StorageApplianceDetailedStatus.
+     */
     public static final StorageApplianceDetailedStatus ERROR = fromString("Error");
 
-    /** Static value Available for StorageApplianceDetailedStatus. */
+    /**
+     * Static value Available for StorageApplianceDetailedStatus.
+     */
     public static final StorageApplianceDetailedStatus AVAILABLE = fromString("Available");
 
-    /** Static value Provisioning for StorageApplianceDetailedStatus. */
+    /**
+     * Static value Provisioning for StorageApplianceDetailedStatus.
+     */
     public static final StorageApplianceDetailedStatus PROVISIONING = fromString("Provisioning");
 
     /**
      * Creates a new instance of StorageApplianceDetailedStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class StorageApplianceDetailedStatus extends ExpandableStringEnum<S
 
     /**
      * Creates or finds a StorageApplianceDetailedStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageApplianceDetailedStatus.
      */
-    @JsonCreator
     public static StorageApplianceDetailedStatus fromString(String name) {
         return fromString(name, StorageApplianceDetailedStatus.class);
     }
 
     /**
      * Gets known StorageApplianceDetailedStatus values.
-     *
+     * 
      * @return known StorageApplianceDetailedStatus values.
      */
     public static Collection<StorageApplianceDetailedStatus> values() {

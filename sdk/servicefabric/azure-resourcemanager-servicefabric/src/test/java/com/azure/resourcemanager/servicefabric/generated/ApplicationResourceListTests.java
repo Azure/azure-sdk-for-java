@@ -77,26 +77,31 @@ public final class ApplicationResourceListTests {
                                 .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.USER_ASSIGNED)
                                     .withUserAssignedIdentities(mapOf("nedgfbc", new UserAssignedIdentity(), "pcjwv",
                                         new UserAssignedIdentity())))
-                                .withLocation("yuq").withTags(
-                                    mapOf("bdbutauvf", "qlpqwcciuq", "afnn", "tkuwhhmhykojo"))
-                                .withTypeName("gx").withTypeVersion("rslpmutwuoeg")
+                                .withLocation("yuq")
+                                .withTags(mapOf("bdbutauvf", "qlpqwcciuq", "afnn", "tkuwhhmhykojo"))
+                                .withTypeName("gx")
+                                .withTypeVersion("rslpmutwuoeg")
                                 .withParameters(
                                     mapOf("dggkzzlvmbmpa", "hjwniyqsluic", "yhrfouyftaakcpw", "modfvuefywsbpfvm"))
                                 .withUpgradePolicy(new ApplicationUpgradePolicy()
-                                    .withUpgradeReplicaSetCheckTimeout("vqtmnub").withForceRestart(true)
+                                    .withUpgradeReplicaSetCheckTimeout("vqtmnub")
+                                    .withForceRestart(true)
                                     .withRollingUpgradeMonitoringPolicy(new ArmRollingUpgradeMonitoringPolicy()
                                         .withFailureAction(ArmUpgradeFailureAction.ROLLBACK)
                                         .withHealthCheckWaitDuration("mond")
                                         .withHealthCheckStableDuration("quxvypomgkop")
-                                        .withHealthCheckRetryTimeout("hojvpajqgxysmocm").withUpgradeTimeout("fqvm")
+                                        .withHealthCheckRetryTimeout("hojvpajqgxysmocm")
+                                        .withUpgradeTimeout("fqvm")
                                         .withUpgradeDomainTimeout("xozap"))
                                     .withApplicationHealthPolicy(new ArmApplicationHealthPolicy()
                                         .withConsiderWarningAsError(true)
                                         .withMaxPercentUnhealthyDeployedApplications(1480663750)
                                         .withDefaultServiceTypeHealthPolicy(new ArmServiceTypeHealthPolicy())
                                         .withServiceTypeHealthPolicyMap(mapOf("yat", new ArmServiceTypeHealthPolicy())))
-                                    .withUpgradeMode(RollingUpgradeMode.INVALID).withRecreateApplication(true))
-                                .withMinimumNodes(1605920653761823709L).withMaximumNodes(7850386713816708447L)
+                                    .withUpgradeMode(RollingUpgradeMode.INVALID)
+                                    .withRecreateApplication(true))
+                                .withMinimumNodes(1605920653761823709L)
+                                .withMaximumNodes(7850386713816708447L)
                                 .withRemoveApplicationCapacity(false)
                                 .withMetrics(Arrays.asList(
                                     new ApplicationMetricDescription().withName("qibrhosxsdqrhzoy")
@@ -113,35 +118,41 @@ public final class ApplicationResourceListTests {
                                         .withTotalApplicationCapacity(8211205854755134512L)))
                                 .withManagedIdentities(Arrays.asList(
                                     new ApplicationUserAssignedIdentity().withName("ashrt").withPrincipalId("tkcnqxwb"),
-                                    new ApplicationUserAssignedIdentity().withName("okulpiujwa")
+                                    new ApplicationUserAssignedIdentity()
+                                        .withName("okulpiujwa")
                                         .withPrincipalId("sipqii"))),
                             new ApplicationResourceInner()
                                 .withIdentity(new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED)
                                     .withUserAssignedIdentities(mapOf("ibwwiftohqkv", new UserAssignedIdentity(),
                                         "ntorzihleosjswsr", new UserAssignedIdentity(), "zynkedya",
                                         new UserAssignedIdentity(), "pcdpumnz", new UserAssignedIdentity())))
-                                .withLocation("bjhwuaan").withTags(mapOf("jrvxaglrv", "osphyoul"))
-                                .withTypeName("abikns").withTypeVersion("gj")
+                                .withLocation("bjhwuaan")
+                                .withTags(mapOf("jrvxaglrv", "osphyoul"))
+                                .withTypeName("abikns")
+                                .withTypeVersion("gj")
                                 .withParameters(mapOf("kdmtncvokotll", "ldtlwwr", "h", "d"))
-                                .withUpgradePolicy(new ApplicationUpgradePolicy()
-                                    .withUpgradeReplicaSetCheckTimeout("ocogj").withForceRestart(false)
-                                    .withRollingUpgradeMonitoringPolicy(new ArmRollingUpgradeMonitoringPolicy()
-                                        .withFailureAction(ArmUpgradeFailureAction.ROLLBACK)
-                                        .withHealthCheckWaitDuration("hadoocrk")
-                                        .withHealthCheckStableDuration("ikhnvpamqgxqq")
-                                        .withHealthCheckRetryTimeout("zikywgg").withUpgradeTimeout("allatmelwuipic")
-                                        .withUpgradeDomainTimeout("zkzivgvvcnay"))
-                                    .withApplicationHealthPolicy(
-                                        new ArmApplicationHealthPolicy().withConsiderWarningAsError(true)
-                                            .withMaxPercentUnhealthyDeployedApplications(1925040131)
-                                            .withDefaultServiceTypeHealthPolicy(new ArmServiceTypeHealthPolicy())
-                                            .withServiceTypeHealthPolicyMap(
-                                                mapOf("eedndrdvstkwqqtc", new ArmServiceTypeHealthPolicy(),
-                                                    "ealmfmtdaaygdvwv", new ArmServiceTypeHealthPolicy(), "piohgwxrtfu",
-                                                    new ArmServiceTypeHealthPolicy())))
-                                    .withUpgradeMode(RollingUpgradeMode.UNMONITORED_MANUAL)
-                                    .withRecreateApplication(false))
-                                .withMinimumNodes(8172843567981740181L).withMaximumNodes(2498438211029299669L)
+                                .withUpgradePolicy(
+                                    new ApplicationUpgradePolicy().withUpgradeReplicaSetCheckTimeout("ocogj")
+                                        .withForceRestart(false)
+                                        .withRollingUpgradeMonitoringPolicy(new ArmRollingUpgradeMonitoringPolicy()
+                                            .withFailureAction(ArmUpgradeFailureAction.ROLLBACK)
+                                            .withHealthCheckWaitDuration("hadoocrk")
+                                            .withHealthCheckStableDuration("ikhnvpamqgxqq")
+                                            .withHealthCheckRetryTimeout("zikywgg")
+                                            .withUpgradeTimeout("allatmelwuipic")
+                                            .withUpgradeDomainTimeout("zkzivgvvcnay"))
+                                        .withApplicationHealthPolicy(
+                                            new ArmApplicationHealthPolicy().withConsiderWarningAsError(true)
+                                                .withMaxPercentUnhealthyDeployedApplications(1925040131)
+                                                .withDefaultServiceTypeHealthPolicy(new ArmServiceTypeHealthPolicy())
+                                                .withServiceTypeHealthPolicyMap(
+                                                    mapOf("eedndrdvstkwqqtc", new ArmServiceTypeHealthPolicy(),
+                                                        "ealmfmtdaaygdvwv", new ArmServiceTypeHealthPolicy(),
+                                                        "piohgwxrtfu", new ArmServiceTypeHealthPolicy())))
+                                        .withUpgradeMode(RollingUpgradeMode.UNMONITORED_MANUAL)
+                                        .withRecreateApplication(false))
+                                .withMinimumNodes(8172843567981740181L)
+                                .withMaximumNodes(2498438211029299669L)
                                 .withRemoveApplicationCapacity(true)
                                 .withMetrics(Arrays.asList(
                                     new ApplicationMetricDescription().withName("k")
@@ -160,8 +171,9 @@ public final class ApplicationResourceListTests {
                                         .withMaximumCapacity(6566365320530486008L)
                                         .withReservationCapacity(488040231209258224L)
                                         .withTotalApplicationCapacity(2753110503115800438L)))
-                                .withManagedIdentities(Arrays.asList(new ApplicationUserAssignedIdentity()
-                                    .withName("elpcirelsfeaenwa").withPrincipalId("fatkld")))));
+                                .withManagedIdentities(
+                                    Arrays.asList(new ApplicationUserAssignedIdentity().withName("elpcirelsfeaenwa")
+                                        .withPrincipalId("fatkld")))));
         model = BinaryData.fromObject(model).toObject(ApplicationResourceList.class);
         Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
         Assertions.assertEquals("yuq", model.value().get(0).location());

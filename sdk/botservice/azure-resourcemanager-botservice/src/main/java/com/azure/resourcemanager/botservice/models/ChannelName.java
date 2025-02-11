@@ -4,54 +4,108 @@
 
 package com.azure.resourcemanager.botservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ChannelName. */
+/**
+ * Defines values for ChannelName.
+ */
 public enum ChannelName {
-    /** Enum value AlexaChannel. */
+    /**
+     * Enum value AlexaChannel.
+     */
     ALEXA_CHANNEL("AlexaChannel"),
 
-    /** Enum value FacebookChannel. */
+    /**
+     * Enum value FacebookChannel.
+     */
     FACEBOOK_CHANNEL("FacebookChannel"),
 
-    /** Enum value EmailChannel. */
+    /**
+     * Enum value EmailChannel.
+     */
     EMAIL_CHANNEL("EmailChannel"),
 
-    /** Enum value KikChannel. */
+    /**
+     * Enum value KikChannel.
+     */
     KIK_CHANNEL("KikChannel"),
 
-    /** Enum value TelegramChannel. */
+    /**
+     * Enum value TelegramChannel.
+     */
     TELEGRAM_CHANNEL("TelegramChannel"),
 
-    /** Enum value SlackChannel. */
+    /**
+     * Enum value SlackChannel.
+     */
     SLACK_CHANNEL("SlackChannel"),
 
-    /** Enum value MsTeamsChannel. */
+    /**
+     * Enum value MsTeamsChannel.
+     */
     MS_TEAMS_CHANNEL("MsTeamsChannel"),
 
-    /** Enum value SkypeChannel. */
+    /**
+     * Enum value SkypeChannel.
+     */
     SKYPE_CHANNEL("SkypeChannel"),
 
-    /** Enum value WebChatChannel. */
+    /**
+     * Enum value WebChatChannel.
+     */
     WEB_CHAT_CHANNEL("WebChatChannel"),
 
-    /** Enum value DirectLineChannel. */
+    /**
+     * Enum value DirectLineChannel.
+     */
     DIRECT_LINE_CHANNEL("DirectLineChannel"),
 
-    /** Enum value SmsChannel. */
+    /**
+     * Enum value SmsChannel.
+     */
     SMS_CHANNEL("SmsChannel"),
 
-    /** Enum value LineChannel. */
+    /**
+     * Enum value LineChannel.
+     */
     LINE_CHANNEL("LineChannel"),
 
-    /** Enum value DirectLineSpeechChannel. */
+    /**
+     * Enum value DirectLineSpeechChannel.
+     */
     DIRECT_LINE_SPEECH_CHANNEL("DirectLineSpeechChannel"),
 
-    /** Enum value OutlookChannel. */
-    OUTLOOK_CHANNEL("OutlookChannel");
+    /**
+     * Enum value OutlookChannel.
+     */
+    OUTLOOK_CHANNEL("OutlookChannel"),
 
-    /** The actual serialized value for a ChannelName instance. */
+    /**
+     * Enum value Omnichannel.
+     */
+    OMNICHANNEL("Omnichannel"),
+
+    /**
+     * Enum value TelephonyChannel.
+     */
+    TELEPHONY_CHANNEL("TelephonyChannel"),
+
+    /**
+     * Enum value AcsChatChannel.
+     */
+    ACS_CHAT_CHANNEL("AcsChatChannel"),
+
+    /**
+     * Enum value SearchAssistant.
+     */
+    SEARCH_ASSISTANT("SearchAssistant"),
+
+    /**
+     * Enum value M365Extensions.
+     */
+    M365EXTENSIONS("M365Extensions");
+
+    /**
+     * The actual serialized value for a ChannelName instance.
+     */
     private final String value;
 
     ChannelName(String value) {
@@ -60,12 +114,14 @@ public enum ChannelName {
 
     /**
      * Parses a serialized value to a ChannelName instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ChannelName object, or null if unable to parse.
      */
-    @JsonCreator
     public static ChannelName fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ChannelName[] items = ChannelName.values();
         for (ChannelName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -75,7 +131,9 @@ public enum ChannelName {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

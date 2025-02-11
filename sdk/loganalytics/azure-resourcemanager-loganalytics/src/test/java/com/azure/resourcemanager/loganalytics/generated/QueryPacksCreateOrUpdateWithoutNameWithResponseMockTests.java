@@ -6,82 +6,41 @@ package com.azure.resourcemanager.loganalytics.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.loganalytics.LogAnalyticsManager;
 import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPackInner;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPack;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class QueryPacksCreateOrUpdateWithoutNameWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithoutNameWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"queryPackId\":\"xukuqgsj\",\"timeCreated\":\"2021-08-01T00:57:39Z\",\"timeModified\":\"2021-06-29T21:31:03Z\",\"provisioningState\":\"gketwzhhzjhf\"},\"location\":\"mhv\",\"tags\":{\"qsxvmhf\":\"vgpmun\"},\"id\":\"uzjyihsasbhudypo\",\"name\":\"yue\",\"type\":\"slynsqyrpfoo\"}";
 
-        String responseStr =
-            "{\"properties\":{\"queryPackId\":\"alhsnvkc\",\"timeCreated\":\"2021-12-10T08:00:24Z\",\"timeModified\":\"2021-04-10T07:39:53Z\",\"provisioningState\":\"oaimlnw\"},\"location\":\"aaomylweazu\",\"tags\":{\"wpchwahf\":\"ethwwnpjhlfz\",\"wlyxgncxyk\":\"ousnfepgfewe\"},\"id\":\"hdjhlimmbcx\",\"name\":\"h\",\"type\":\"cporxvxcjz\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 201, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogAnalyticsManager manager = LogAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(201);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        LogAnalyticsQueryPack response = manager.queryPacks()
+            .createOrUpdateWithoutNameWithResponse("fiwrxgkn",
+                new LogAnalyticsQueryPackInner().withLocation("gzdjtxvzf").withTags(mapOf("aqvlgafcqusr", "v")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        LogAnalyticsManager manager =
-            LogAnalyticsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        LogAnalyticsQueryPack response =
-            manager
-                .queryPacks()
-                .createOrUpdateWithoutNameWithResponse(
-                    "lqxihhrmooiz",
-                    new LogAnalyticsQueryPackInner()
-                        .withLocation("hvnh")
-                        .withTags(
-                            mapOf(
-                                "aehvvibrxjjstoq",
-                                "rqnkkzjcjbtr",
-                                "bklftidgfcwqmpim",
-                                "eitpkxztmo",
-                                "yhohujswtwkozzwc",
-                                "qxzhem")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("aaomylweazu", response.location());
-        Assertions.assertEquals("ethwwnpjhlfz", response.tags().get("wpchwahf"));
+        Assertions.assertEquals("mhv", response.location());
+        Assertions.assertEquals("vgpmun", response.tags().get("qsxvmhf"));
     }
 
     // Use "Map.of" if available

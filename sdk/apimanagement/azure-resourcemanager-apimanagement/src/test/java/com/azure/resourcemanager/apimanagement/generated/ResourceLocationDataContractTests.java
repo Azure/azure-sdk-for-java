@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceLocationDataContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceLocationDataContract model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"cozawmvgxsmpknpw\",\"city\":\"fljfewxqouoxudnm\",\"district\":\"aprhknqiijgencdg\",\"countryOrRegion\":\"queqihk\"}")
-                .toObject(ResourceLocationDataContract.class);
+        ResourceLocationDataContract model = BinaryData.fromString(
+            "{\"name\":\"cozawmvgxsmpknpw\",\"city\":\"fljfewxqouoxudnm\",\"district\":\"aprhknqiijgencdg\",\"countryOrRegion\":\"queqihk\"}")
+            .toObject(ResourceLocationDataContract.class);
         Assertions.assertEquals("cozawmvgxsmpknpw", model.name());
         Assertions.assertEquals("fljfewxqouoxudnm", model.city());
         Assertions.assertEquals("aprhknqiijgencdg", model.district());
@@ -24,12 +22,10 @@ public final class ResourceLocationDataContractTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceLocationDataContract model =
-            new ResourceLocationDataContract()
-                .withName("cozawmvgxsmpknpw")
-                .withCity("fljfewxqouoxudnm")
-                .withDistrict("aprhknqiijgencdg")
-                .withCountryOrRegion("queqihk");
+        ResourceLocationDataContract model = new ResourceLocationDataContract().withName("cozawmvgxsmpknpw")
+            .withCity("fljfewxqouoxudnm")
+            .withDistrict("aprhknqiijgencdg")
+            .withCountryOrRegion("queqihk");
         model = BinaryData.fromObject(model).toObject(ResourceLocationDataContract.class);
         Assertions.assertEquals("cozawmvgxsmpknpw", model.name());
         Assertions.assertEquals("fljfewxqouoxudnm", model.city());

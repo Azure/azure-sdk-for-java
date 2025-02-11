@@ -75,13 +75,11 @@ generate-client-interfaces: false <optional, generates the Swagger implementatio
 service-interface-as-public: true <optional, will generated interfaces used by RestProxy as public to prevent SecurityManager issues>
 sync-methods: none <optional, will only generate asynchronous methods in the interface layer>
 license-header: MICROSOFT_MIT_SMALL <optional, configuration of the code generation license header>
-context-client-method-parameter: true <optional, generates methods with Context as the final parameter for passing additional metadata per-call>
 default-http-exception-type: <optional, points to hand-written implementation of HttpResponseException that should be used instead of the generated error type>
 models-subpackage: <optional, package where code generated models will be placed>
 custom-types: <optional, list of model names that will be generated into the custom-types-subpackage, generally used for generated models that should be public API>
 custom-types-subpackage: <optional, package where custom-types will be placed>
 generic-response-type: true <optional, generated Swagger response types using ResponseBase<Headers, Body> instead of a sub-type, helps reduce usage of reflection>
-custom-strongly-typed-header-deserialization: true <optional, generated strongly-typed HTTP header classes will use simplified deserialization that is better performing>
 enable-sync-stack: true <optional, fully synchronous call paths will be generated removing or limiting usage of Reactor>
 disable-client-builder: true <optional, Autorest won't generate a client builder, useful for handwritten SDKs to reduce code area>
 customization-class: <path to Java file extending Customization from azure-autorest-customization>
@@ -97,17 +95,12 @@ java: true
 output-folder: ../
 namespace: com.azure.storage.blob
 generate-client-as-impl: true
-generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-context-client-method-parameter: true
 default-http-exception-type: com.azure.storage.blob.models.BlobStorageException
 models-subpackage: implementation.models
 custom-types: <list of models that are generated into public API> 
 custom-types-subpackage: models
-generic-response-type: true
-custom-strongly-typed-header-deserialization: true
 enable-sync-stack: true
 disable-client-builder: true
 customization-class: src/main/java/TemplateCustomization.java
@@ -127,13 +120,8 @@ _Shared configurations_
 java: true
 output-folder: ../
 generate-client-as-impl: true
-generate-client-interfaces: false
-service-interface-as-public: true
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-context-client-method-parameter: true
-generic-response-type: true
-custom-strongly-typed-header-deserialization: true
 ```
 
 ### Tag: storage-blob-package

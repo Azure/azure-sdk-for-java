@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.AccumulatedType;
 import com.azure.resourcemanager.costmanagement.models.ChartType;
 import com.azure.resourcemanager.costmanagement.models.KpiProperties;
@@ -14,26 +19,27 @@ import com.azure.resourcemanager.costmanagement.models.ReportConfigDataset;
 import com.azure.resourcemanager.costmanagement.models.ReportConfigTimePeriod;
 import com.azure.resourcemanager.costmanagement.models.ReportTimeframeType;
 import com.azure.resourcemanager.costmanagement.models.ReportType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The properties of the view. */
+/**
+ * The properties of the view.
+ */
 @Fluent
-public final class ViewProperties {
+public final class ViewProperties implements JsonSerializable<ViewProperties> {
     /*
      * User input name of the view. Required.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Cost Management scope to save the view on. This includes 'subscriptions/{subscriptionId}' for subscription
-     * scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
+     * Cost Management scope to save the view on. This includes 'subscriptions/{subscriptionId}' for subscription scope,
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resourceGroup scope,
      * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for Billing Account scope,
-     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department
-     * scope, 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}'
-     * for EnrollmentAccount scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/departments/{departmentId}' for Department scope,
+     * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/enrollmentAccounts/{enrollmentAccountId}' for
+     * EnrollmentAccount scope,
      * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
      * BillingProfile scope,
      * 'providers/Microsoft.Billing/billingAccounts/{billingAccountId}/invoiceSections/{invoiceSectionId}' for
@@ -43,76 +49,67 @@ public final class ViewProperties {
      * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription
      * scope.
      */
-    @JsonProperty(value = "scope")
     private String scope;
 
     /*
      * Date the user created this view.
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * Date when the user last modified this view.
      */
-    @JsonProperty(value = "modifiedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime modifiedOn;
 
     /*
      * Date range of the current view.
      */
-    @JsonProperty(value = "dateRange", access = JsonProperty.Access.WRITE_ONLY)
     private String dateRange;
 
     /*
      * Currency of the current view.
      */
-    @JsonProperty(value = "currency", access = JsonProperty.Access.WRITE_ONLY)
     private String currency;
 
     /*
      * Query body configuration. Required.
      */
-    @JsonProperty(value = "query")
     private ReportConfigDefinition innerQuery;
 
     /*
      * Chart type of the main view in Cost Analysis. Required.
      */
-    @JsonProperty(value = "chart")
     private ChartType chart;
 
     /*
      * Show costs accumulated over time.
      */
-    @JsonProperty(value = "accumulated")
     private AccumulatedType accumulated;
 
     /*
      * Metric to use when displaying costs.
      */
-    @JsonProperty(value = "metric")
     private MetricType metric;
 
     /*
      * List of KPIs to show in Cost Analysis UI.
      */
-    @JsonProperty(value = "kpis")
     private List<KpiProperties> kpis;
 
     /*
      * Configuration of 3 sub-views in the Cost Analysis UI.
      */
-    @JsonProperty(value = "pivots")
     private List<PivotProperties> pivots;
 
-    /** Creates an instance of ViewProperties class. */
+    /**
+     * Creates an instance of ViewProperties class.
+     */
     public ViewProperties() {
     }
 
     /**
      * Get the displayName property: User input name of the view. Required.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -121,7 +118,7 @@ public final class ViewProperties {
 
     /**
      * Set the displayName property: User input name of the view. Required.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ViewProperties object itself.
      */
@@ -145,7 +142,7 @@ public final class ViewProperties {
      * ExternalBillingAccount scope, and
      * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription
      * scope.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -167,7 +164,7 @@ public final class ViewProperties {
      * ExternalBillingAccount scope, and
      * '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription
      * scope.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the ViewProperties object itself.
      */
@@ -178,7 +175,7 @@ public final class ViewProperties {
 
     /**
      * Get the createdOn property: Date the user created this view.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -187,7 +184,7 @@ public final class ViewProperties {
 
     /**
      * Get the modifiedOn property: Date when the user last modified this view.
-     *
+     * 
      * @return the modifiedOn value.
      */
     public OffsetDateTime modifiedOn() {
@@ -196,7 +193,7 @@ public final class ViewProperties {
 
     /**
      * Get the dateRange property: Date range of the current view.
-     *
+     * 
      * @return the dateRange value.
      */
     public String dateRange() {
@@ -204,8 +201,19 @@ public final class ViewProperties {
     }
 
     /**
+     * Set the dateRange property: Date range of the current view.
+     * 
+     * @param dateRange the dateRange value to set.
+     * @return the ViewProperties object itself.
+     */
+    public ViewProperties withDateRange(String dateRange) {
+        this.dateRange = dateRange;
+        return this;
+    }
+
+    /**
      * Get the currency property: Currency of the current view.
-     *
+     * 
      * @return the currency value.
      */
     public String currency() {
@@ -214,7 +222,7 @@ public final class ViewProperties {
 
     /**
      * Get the innerQuery property: Query body configuration. Required.
-     *
+     * 
      * @return the innerQuery value.
      */
     private ReportConfigDefinition innerQuery() {
@@ -223,7 +231,7 @@ public final class ViewProperties {
 
     /**
      * Get the chart property: Chart type of the main view in Cost Analysis. Required.
-     *
+     * 
      * @return the chart value.
      */
     public ChartType chart() {
@@ -232,7 +240,7 @@ public final class ViewProperties {
 
     /**
      * Set the chart property: Chart type of the main view in Cost Analysis. Required.
-     *
+     * 
      * @param chart the chart value to set.
      * @return the ViewProperties object itself.
      */
@@ -243,7 +251,7 @@ public final class ViewProperties {
 
     /**
      * Get the accumulated property: Show costs accumulated over time.
-     *
+     * 
      * @return the accumulated value.
      */
     public AccumulatedType accumulated() {
@@ -252,7 +260,7 @@ public final class ViewProperties {
 
     /**
      * Set the accumulated property: Show costs accumulated over time.
-     *
+     * 
      * @param accumulated the accumulated value to set.
      * @return the ViewProperties object itself.
      */
@@ -263,7 +271,7 @@ public final class ViewProperties {
 
     /**
      * Get the metric property: Metric to use when displaying costs.
-     *
+     * 
      * @return the metric value.
      */
     public MetricType metric() {
@@ -272,7 +280,7 @@ public final class ViewProperties {
 
     /**
      * Set the metric property: Metric to use when displaying costs.
-     *
+     * 
      * @param metric the metric value to set.
      * @return the ViewProperties object itself.
      */
@@ -283,7 +291,7 @@ public final class ViewProperties {
 
     /**
      * Get the kpis property: List of KPIs to show in Cost Analysis UI.
-     *
+     * 
      * @return the kpis value.
      */
     public List<KpiProperties> kpis() {
@@ -292,7 +300,7 @@ public final class ViewProperties {
 
     /**
      * Set the kpis property: List of KPIs to show in Cost Analysis UI.
-     *
+     * 
      * @param kpis the kpis value to set.
      * @return the ViewProperties object itself.
      */
@@ -303,7 +311,7 @@ public final class ViewProperties {
 
     /**
      * Get the pivots property: Configuration of 3 sub-views in the Cost Analysis UI.
-     *
+     * 
      * @return the pivots value.
      */
     public List<PivotProperties> pivots() {
@@ -312,7 +320,7 @@ public final class ViewProperties {
 
     /**
      * Set the pivots property: Configuration of 3 sub-views in the Cost Analysis UI.
-     *
+     * 
      * @param pivots the pivots value to set.
      * @return the ViewProperties object itself.
      */
@@ -325,7 +333,7 @@ public final class ViewProperties {
      * Get the type property: The type of the report. Usage represents actual usage, forecast represents forecasted data
      * and UsageAndForecast represents both usage and forecasted data. Actual usage and forecasted data can be
      * differentiated based on dates.
-     *
+     * 
      * @return the type value.
      */
     public ReportType type() {
@@ -336,7 +344,7 @@ public final class ViewProperties {
      * Set the type property: The type of the report. Usage represents actual usage, forecast represents forecasted data
      * and UsageAndForecast represents both usage and forecasted data. Actual usage and forecasted data can be
      * differentiated based on dates.
-     *
+     * 
      * @param type the type value to set.
      * @return the ViewProperties object itself.
      */
@@ -351,7 +359,7 @@ public final class ViewProperties {
     /**
      * Get the timeframe property: The time frame for pulling data for the report. If custom, then a specific time
      * period must be provided.
-     *
+     * 
      * @return the timeframe value.
      */
     public ReportTimeframeType timeframe() {
@@ -361,7 +369,7 @@ public final class ViewProperties {
     /**
      * Set the timeframe property: The time frame for pulling data for the report. If custom, then a specific time
      * period must be provided.
-     *
+     * 
      * @param timeframe the timeframe value to set.
      * @return the ViewProperties object itself.
      */
@@ -375,7 +383,7 @@ public final class ViewProperties {
 
     /**
      * Get the timePeriod property: Has time period for pulling data for the report.
-     *
+     * 
      * @return the timePeriod value.
      */
     public ReportConfigTimePeriod timePeriod() {
@@ -384,7 +392,7 @@ public final class ViewProperties {
 
     /**
      * Set the timePeriod property: Has time period for pulling data for the report.
-     *
+     * 
      * @param timePeriod the timePeriod value to set.
      * @return the ViewProperties object itself.
      */
@@ -398,7 +406,7 @@ public final class ViewProperties {
 
     /**
      * Get the dataSet property: Has definition for data in this report config.
-     *
+     * 
      * @return the dataSet value.
      */
     public ReportConfigDataset dataSet() {
@@ -407,7 +415,7 @@ public final class ViewProperties {
 
     /**
      * Set the dataSet property: Has definition for data in this report config.
-     *
+     * 
      * @param dataSet the dataSet value to set.
      * @return the ViewProperties object itself.
      */
@@ -421,7 +429,7 @@ public final class ViewProperties {
 
     /**
      * Get the includeMonetaryCommitment property: If true, report includes monetary commitment.
-     *
+     * 
      * @return the includeMonetaryCommitment value.
      */
     public Boolean includeMonetaryCommitment() {
@@ -430,7 +438,7 @@ public final class ViewProperties {
 
     /**
      * Set the includeMonetaryCommitment property: If true, report includes monetary commitment.
-     *
+     * 
      * @param includeMonetaryCommitment the includeMonetaryCommitment value to set.
      * @return the ViewProperties object itself.
      */
@@ -444,7 +452,7 @@ public final class ViewProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -457,5 +465,75 @@ public final class ViewProperties {
         if (pivots() != null) {
             pivots().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("dateRange", this.dateRange);
+        jsonWriter.writeJsonField("query", this.innerQuery);
+        jsonWriter.writeStringField("chart", this.chart == null ? null : this.chart.toString());
+        jsonWriter.writeStringField("accumulated", this.accumulated == null ? null : this.accumulated.toString());
+        jsonWriter.writeStringField("metric", this.metric == null ? null : this.metric.toString());
+        jsonWriter.writeArrayField("kpis", this.kpis, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("pivots", this.pivots, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ViewProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ViewProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ViewProperties.
+     */
+    public static ViewProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ViewProperties deserializedViewProperties = new ViewProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedViewProperties.displayName = reader.getString();
+                } else if ("scope".equals(fieldName)) {
+                    deserializedViewProperties.scope = reader.getString();
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedViewProperties.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("modifiedOn".equals(fieldName)) {
+                    deserializedViewProperties.modifiedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dateRange".equals(fieldName)) {
+                    deserializedViewProperties.dateRange = reader.getString();
+                } else if ("currency".equals(fieldName)) {
+                    deserializedViewProperties.currency = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedViewProperties.innerQuery = ReportConfigDefinition.fromJson(reader);
+                } else if ("chart".equals(fieldName)) {
+                    deserializedViewProperties.chart = ChartType.fromString(reader.getString());
+                } else if ("accumulated".equals(fieldName)) {
+                    deserializedViewProperties.accumulated = AccumulatedType.fromString(reader.getString());
+                } else if ("metric".equals(fieldName)) {
+                    deserializedViewProperties.metric = MetricType.fromString(reader.getString());
+                } else if ("kpis".equals(fieldName)) {
+                    List<KpiProperties> kpis = reader.readArray(reader1 -> KpiProperties.fromJson(reader1));
+                    deserializedViewProperties.kpis = kpis;
+                } else if ("pivots".equals(fieldName)) {
+                    List<PivotProperties> pivots = reader.readArray(reader1 -> PivotProperties.fromJson(reader1));
+                    deserializedViewProperties.pivots = pivots;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedViewProperties;
+        });
     }
 }

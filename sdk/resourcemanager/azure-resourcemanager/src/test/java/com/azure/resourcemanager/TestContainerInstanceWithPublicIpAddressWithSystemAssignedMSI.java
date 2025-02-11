@@ -31,36 +31,36 @@ public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI
 
     @Override
     public ContainerGroup createResource(ContainerGroups containerGroups) throws Exception {
-        final String cgName = containerGroups.manager().resourceManager().internalContext().randomResourceName("aci", 10);
-        final String rgName = containerGroups.manager().resourceManager().internalContext().randomResourceName("rgaci", 10);
+        final String cgName
+            = containerGroups.manager().resourceManager().internalContext().randomResourceName("aci", 10);
+        final String rgName
+            = containerGroups.manager().resourceManager().internalContext().randomResourceName("rgaci", 10);
 
         List<String> dnsServers = new ArrayList<String>();
         dnsServers.add("dnsServer1");
-        ContainerGroup containerGroup =
-            containerGroups
-                .define(cgName)
-                .withRegion(Region.US_EAST2)
-                .withNewResourceGroup(rgName)
-                .withLinux()
-                .withPublicImageRegistryOnly()
-                .withEmptyDirectoryVolume("emptydir1")
-                .defineContainerInstance("tomcat")
-                .withImage("tomcat")
-                .withExternalTcpPort(8080)
-                .withCpuCoreCount(1)
-                .withEnvironmentVariable("ENV1", "value1")
-                .attach()
-                .defineContainerInstance("nginx")
-                .withImage("nginx")
-                .withExternalTcpPort(80)
-                .withEnvironmentVariableWithSecuredValue("ENV2", "securedValue1")
-                .attach()
-                .withSystemAssignedManagedServiceIdentity()
-                .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
-                .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
-                .withDnsPrefix(cgName)
-                .withTag("tag1", "value1")
-                .create();
+        ContainerGroup containerGroup = containerGroups.define(cgName)
+            .withRegion(Region.US_EAST2)
+            .withNewResourceGroup(rgName)
+            .withLinux()
+            .withPublicImageRegistryOnly()
+            .withEmptyDirectoryVolume("emptydir1")
+            .defineContainerInstance("tomcat")
+            .withImage("tomcat")
+            .withExternalTcpPort(8080)
+            .withCpuCoreCount(1)
+            .withEnvironmentVariable("ENV1", "value1")
+            .attach()
+            .defineContainerInstance("nginx")
+            .withImage("nginx")
+            .withExternalTcpPort(80)
+            .withEnvironmentVariableWithSecuredValue("ENV2", "securedValue1")
+            .attach()
+            .withSystemAssignedManagedServiceIdentity()
+            .withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
+            .withRestartPolicy(ContainerGroupRestartPolicy.NEVER)
+            .withDnsPrefix(cgName)
+            .withTag("tag1", "value1")
+            .create();
 
         Assertions.assertEquals(cgName, containerGroup.name());
         Assertions.assertEquals("Linux", containerGroup.osType().toString());
@@ -106,8 +106,8 @@ public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI
         Assertions.assertEquals(cgName, containerGroup.dnsPrefix());
         ContainerGroup containerGroup2 = containerGroups.getByResourceGroup(rgName, cgName);
 
-        List<ContainerGroup> containerGroupList =
-            containerGroups.listByResourceGroup(rgName).stream().collect(Collectors.toList());
+        List<ContainerGroup> containerGroupList
+            = containerGroups.listByResourceGroup(rgName).stream().collect(Collectors.toList());
         Assertions.assertFalse(containerGroupList.isEmpty());
 
         containerGroup.refresh();
@@ -133,20 +133,18 @@ public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI
 
     @Override
     public void print(ContainerGroup resource) {
-        StringBuilder info =
-            new StringBuilder()
-                .append("Container Group: ")
-                .append(resource.id())
-                .append("Name: ")
-                .append(resource.name())
-                .append("\n\tResource group: ")
-                .append(resource.resourceGroupName())
-                .append("\n\tRegion: ")
-                .append(resource.region())
-                .append("\n\tTags: ")
-                .append(resource.tags())
-                .append("\n\tOS type: ")
-                .append(resource.osType());
+        StringBuilder info = new StringBuilder().append("Container Group: ")
+            .append(resource.id())
+            .append("Name: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .append("\n\tOS type: ")
+            .append(resource.osType());
 
         if (resource.ipAddress() != null) {
             info.append("\n\tPublic IP address: ").append(resource.ipAddress());
@@ -172,14 +170,12 @@ public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI
         if (resource.volumes() != null) {
             info.append("\n\tVolume mapping: ");
             for (Map.Entry<String, Volume> entry : resource.volumes().entrySet()) {
-                info
-                    .append("\n\t\tName: ")
+                info.append("\n\t\tName: ")
                     .append(entry.getKey())
                     .append(" -> ")
-                    .append(
-                        entry.getValue().azureFile() != null
-                            ? entry.getValue().azureFile().shareName()
-                            : "empty direcory volume");
+                    .append(entry.getValue().azureFile() != null
+                        ? entry.getValue().azureFile().shareName()
+                        : "empty direcory volume");
             }
         }
         if (resource.containers() != null) {

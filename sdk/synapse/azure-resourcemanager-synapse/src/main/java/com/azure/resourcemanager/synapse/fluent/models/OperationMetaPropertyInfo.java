@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.OperationMetaServiceSpecification;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** What is this?. */
+/**
+ * What is this?.
+ */
 @Fluent
-public final class OperationMetaPropertyInfo {
+public final class OperationMetaPropertyInfo implements JsonSerializable<OperationMetaPropertyInfo> {
     /*
      * Operation service specification
      */
-    @JsonProperty(value = "serviceSpecification")
     private OperationMetaServiceSpecification serviceSpecification;
 
-    /** Creates an instance of OperationMetaPropertyInfo class. */
+    /**
+     * Creates an instance of OperationMetaPropertyInfo class.
+     */
     public OperationMetaPropertyInfo() {
     }
 
     /**
      * Get the serviceSpecification property: Operation service specification.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public OperationMetaServiceSpecification serviceSpecification() {
@@ -32,7 +39,7 @@ public final class OperationMetaPropertyInfo {
 
     /**
      * Set the serviceSpecification property: Operation service specification.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationMetaPropertyInfo object itself.
      */
@@ -43,12 +50,49 @@ public final class OperationMetaPropertyInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceSpecification() != null) {
             serviceSpecification().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("serviceSpecification", this.serviceSpecification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationMetaPropertyInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationMetaPropertyInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationMetaPropertyInfo.
+     */
+    public static OperationMetaPropertyInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationMetaPropertyInfo deserializedOperationMetaPropertyInfo = new OperationMetaPropertyInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceSpecification".equals(fieldName)) {
+                    deserializedOperationMetaPropertyInfo.serviceSpecification
+                        = OperationMetaServiceSpecification.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationMetaPropertyInfo;
+        });
     }
 }

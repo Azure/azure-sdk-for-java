@@ -33,7 +33,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
- * Represents a session that is received when "any" session is accepted from the service.
+ * Represents a session (in v1 stack) that is received when "any" session is accepted from the service.
  */
 class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiver.class);
@@ -73,7 +73,8 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
      */
     ServiceBusSessionReceiver(String sessionId, ServiceBusReceiveLink receiveLink, MessageSerializer messageSerializer,
         AmqpRetryOptions retryOptions, int prefetch, Scheduler scheduler,
-        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration, Duration sessionIdleTimeout) {
+        Function<String, Mono<OffsetDateTime>> renewSessionLock, Duration maxSessionLockRenewDuration,
+        Duration sessionIdleTimeout) {
 
         this.sessionId = sessionId;
         this.receiveLink = receiveLink;
@@ -82,30 +83,26 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
 
         receiveLink.setEmptyCreditListener(() -> 0);
 
-        this.receivedMessages = receiveLink
-            .receive()
-            .publishOn(scheduler)
-            .doOnSubscribe(subscription -> {
-                withReceiveLinkInformation(LOGGER.atVerbose()).addKeyValue("prefetch", prefetch)
-                    .log("Adding prefetch to receive link.");
+        this.receivedMessages = receiveLink.receive().publishOn(scheduler).doOnSubscribe(subscription -> {
+            withReceiveLinkInformation(LOGGER.atVerbose()).addKeyValue("prefetch", prefetch)
+                .log("Adding prefetch to receive link.");
 
-                if (prefetch > 0) {
-                    receiveLink.addCredits(prefetch).subscribe();
-                }
-            })
-            .doOnRequest(request -> {  // request is of type long.
-                if (prefetch == 0) {  //  add "request" number of credits
-                    receiveLink.addCredits((int) request).subscribe();
-                } else {  // keep total credits "prefetch" if prefetch is not 0.
-                    receiveLink.addCredits(Math.max(0, prefetch - receiveLink.getCredits())).subscribe();
-                }
-            })
+            if (prefetch > 0) {
+                receiveLink.addCredits(prefetch).subscribe();
+            }
+        }).doOnRequest(request -> {  // request is of type long.
+            if (prefetch == 0) {  //  add "request" number of credits
+                receiveLink.addCredits((int) request).subscribe();
+            } else {  // keep total credits "prefetch" if prefetch is not 0.
+                receiveLink.addCredits(Math.max(0, prefetch - receiveLink.getCredits())).subscribe();
+            }
+        })
             .limitRate(1)
             // Continue receiving messages from the underlying AMQP link unless it is cancelled by another source.
             .takeUntilOther(cancelReceiveProcessor)
             .map(message -> {
-                final ServiceBusReceivedMessage deserialized = messageSerializer.deserialize(message,
-                    ServiceBusReceivedMessage.class);
+                final ServiceBusReceivedMessage deserialized
+                    = messageSerializer.deserialize(message, ServiceBusReceivedMessage.class);
 
                 if (!CoreUtils.isNullOrEmpty(deserialized.getLockToken()) && deserialized.getLockedUntil() != null) {
                     lockContainer.addOrUpdate(deserialized.getLockToken(), deserialized.getLockedUntil(),
@@ -120,8 +117,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 return new ServiceBusMessageContext(deserialized);
             })
             .onErrorResume(error -> {
-                withReceiveLinkInformation(LOGGER.atWarning())
-                    .log("Error occurred. Ending session.", error);
+                withReceiveLinkInformation(LOGGER.atWarning()).log("Error occurred. Ending session.", error);
 
                 return Mono.just(new ServiceBusMessageContext(getSessionId(), error));
             })
@@ -131,9 +127,7 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
                 }
 
                 final ServiceBusReceivedMessage message = context.getMessage();
-                final String token = !CoreUtils.isNullOrEmpty(message.getLockToken())
-                    ? message.getLockToken()
-                    : "";
+                final String token = !CoreUtils.isNullOrEmpty(message.getLockToken()) ? message.getLockToken() : "";
 
                 LOGGER.atVerbose()
                     .addKeyValue(SESSION_ID_KEY, context.getSessionId())
@@ -148,27 +142,25 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
         // Creates a subscription that disposes/closes the receiver when there are no more messages in the session and
         // receiver is idle.
         if (sessionIdleTimeout != null) {
-            this.subscriptions.add(Flux.switchOnNext(messageReceivedEmitter
-                .map((String lockToken) -> Mono.delay(sessionIdleTimeout)))
-                .subscribe(item -> {
-                    withReceiveLinkInformation(LOGGER.atInfo())
-                        .addKeyValue("timeout", sessionIdleTimeout)
-                        .log("Did not a receive message within timeout.");
-                    cancelReceiveProcessor.onComplete();
-                }));
+            this.subscriptions
+                .add(Flux.switchOnNext(messageReceivedEmitter.map((String lockToken) -> Mono.delay(sessionIdleTimeout)))
+                    .subscribe(item -> {
+                        withReceiveLinkInformation(LOGGER.atInfo()).addKeyValue("timeout", sessionIdleTimeout)
+                            .log("Did not a receive message within timeout.");
+                        cancelReceiveProcessor.onComplete();
+                    }));
         }
 
         this.subscriptions.add(receiveLink.getSessionLockedUntil().subscribe(lockedUntil -> {
             if (!sessionLockedUntil.compareAndSet(null, lockedUntil)) {
-                withReceiveLinkInformation(LOGGER.atInfo())
-                    .addKeyValue("existingLockToken", sessionLockedUntil.get())
+                withReceiveLinkInformation(LOGGER.atInfo()).addKeyValue("existingLockToken", sessionLockedUntil.get())
                     .addKeyValue("newLockToken", lockedUntil)
                     .log("SessionLockedUntil was already set.");
 
                 return;
             }
-            this.renewalOperation.compareAndSet(null, new LockRenewalOperation(sessionId,
-                maxSessionLockRenewDuration, true, renewSessionLock, lockedUntil));
+            this.renewalOperation.compareAndSet(null,
+                new LockRenewalOperation(sessionId, maxSessionLockRenewDuration, true, renewSessionLock, lockedUntil));
         }));
     }
 
@@ -219,12 +211,11 @@ class ServiceBusSessionReceiver implements AsyncCloseable, AutoCloseable {
     }
 
     Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
-        return receiveLink.updateDisposition(lockToken, deliveryState)
-            .doFinally(ignored -> {
-                // Though the lock-container is cleanup at a fixed interval, it's a good
-                // idea to remove the lock early when possible to reduce GC pressure.
-                lockContainer.remove(lockToken);
-            });
+        return receiveLink.updateDisposition(lockToken, deliveryState).doFinally(ignored -> {
+            // Though the lock-container is cleanup at a fixed interval, it's a good
+            // idea to remove the lock early when possible to reduce GC pressure.
+            lockContainer.remove(lockToken);
+        });
     }
 
     @Override

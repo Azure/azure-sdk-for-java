@@ -6,39 +6,41 @@ package com.azure.resourcemanager.logic.models;
 
 import com.azure.resourcemanager.logic.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
      * Gets the origin property: Operation: origin.
-     *
+     * 
      * @return the origin value.
      */
     String origin();
 
     /**
      * Gets the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the display property: The object that represents the operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the properties property: The properties.
-     *
+     * 
      * @return the properties value.
      */
     Object properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.logic.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

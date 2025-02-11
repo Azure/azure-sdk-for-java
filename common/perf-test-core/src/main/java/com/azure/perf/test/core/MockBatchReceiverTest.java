@@ -16,6 +16,7 @@ import java.util.stream.IntStream;
  */
 public class MockBatchReceiverTest extends BatchPerfTest<MockBatchReceiverTest.MockReceiverOptions> {
     final MockReceiver mockReceiver;
+
     /**
      * Creates an instance of performance test.
      *
@@ -36,17 +37,18 @@ public class MockBatchReceiverTest extends BatchPerfTest<MockBatchReceiverTest.M
     @Override
     public Mono<Integer> runBatchAsync() {
         return mockReceiver.receiveAsync(options.minMessageCount, options.maxMessageCount)
-            .count().map(count -> count.intValue());
+            .count()
+            .map(count -> count.intValue());
     }
 
     /**
      * Options class for Mock Receiver Test.
      */
     public static class MockReceiverOptions extends PerfStressOptions {
-        @Parameter(names = {"--max-message-count" }, description = "Max messages to Receive")
+        @Parameter(names = { "--max-message-count" }, description = "Max messages to Receive")
         private int maxMessageCount = 10;
 
-        @Parameter(names = {"--min-message-count" }, description = "Min messages to Receive")
+        @Parameter(names = { "--min-message-count" }, description = "Min messages to Receive")
         private int minMessageCount = 0;
 
         /**
@@ -73,7 +75,7 @@ public class MockBatchReceiverTest extends BatchPerfTest<MockBatchReceiverTest.M
             return IterableStream.of(IntStream.range(1, returnedMessages).boxed().collect(Collectors.toList()));
         }
 
-        public  Flux<Integer> receiveAsync(int minMessageCount, int maxMessageCount) {
+        public Flux<Integer> receiveAsync(int minMessageCount, int maxMessageCount) {
             return Flux.fromIterable(receive(minMessageCount, maxMessageCount));
         }
     }

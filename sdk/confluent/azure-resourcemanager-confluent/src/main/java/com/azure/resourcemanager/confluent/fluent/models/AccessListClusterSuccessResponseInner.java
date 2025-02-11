@@ -5,32 +5,34 @@
 package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.confluent.models.ClusterRecord;
 import com.azure.resourcemanager.confluent.models.ConfluentListMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Details of the clusters returned on successful response.
  */
 @Fluent
-public final class AccessListClusterSuccessResponseInner {
+public final class AccessListClusterSuccessResponseInner
+    implements JsonSerializable<AccessListClusterSuccessResponseInner> {
     /*
      * Type of response
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
     /*
      * Metadata of the list
      */
-    @JsonProperty(value = "metadata")
     private ConfluentListMetadata metadata;
 
     /*
      * List of clusters
      */
-    @JsonProperty(value = "data")
     private List<ClusterRecord> data;
 
     /**
@@ -111,5 +113,49 @@ public final class AccessListClusterSuccessResponseInner {
         if (data() != null) {
             data().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("metadata", this.metadata);
+        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessListClusterSuccessResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessListClusterSuccessResponseInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccessListClusterSuccessResponseInner.
+     */
+    public static AccessListClusterSuccessResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessListClusterSuccessResponseInner deserializedAccessListClusterSuccessResponseInner
+                = new AccessListClusterSuccessResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedAccessListClusterSuccessResponseInner.kind = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedAccessListClusterSuccessResponseInner.metadata = ConfluentListMetadata.fromJson(reader);
+                } else if ("data".equals(fieldName)) {
+                    List<ClusterRecord> data = reader.readArray(reader1 -> ClusterRecord.fromJson(reader1));
+                    deserializedAccessListClusterSuccessResponseInner.data = data;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessListClusterSuccessResponseInner;
+        });
     }
 }

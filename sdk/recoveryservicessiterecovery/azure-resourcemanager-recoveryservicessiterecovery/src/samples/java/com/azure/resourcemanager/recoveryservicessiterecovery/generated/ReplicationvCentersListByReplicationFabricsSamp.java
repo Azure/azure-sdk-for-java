@@ -20,7 +20,7 @@ public final class ReplicationvCentersListByReplicationFabricsSamp {
      */
     public static void getsTheListOfVCenterRegisteredUnderAFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationvCenters().listByReplicationFabrics("MadhaviVault", "MadhaviVRG", "MadhaviFabric",
-            com.azure.core.util.Context.NONE);
+        manager.replicationvCenters()
+            .listByReplicationFabrics("MadhaviVault", "MadhaviVRG", "MadhaviFabric", com.azure.core.util.Context.NONE);
     }
 }

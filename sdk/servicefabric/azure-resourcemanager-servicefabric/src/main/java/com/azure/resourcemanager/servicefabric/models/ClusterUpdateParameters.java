@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -16,18 +19,15 @@ import java.util.Map;
  * Cluster update request.
  */
 @Fluent
-public final class ClusterUpdateParameters {
+public final class ClusterUpdateParameters implements JsonSerializable<ClusterUpdateParameters> {
     /*
      * Describes the cluster resource properties that can be updated during PATCH operation.
      */
-    @JsonProperty(value = "properties")
     private ClusterPropertiesUpdateParameters innerProperties;
 
     /*
      * Cluster update parameters
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**
@@ -142,8 +142,8 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Get the clientCertificateCommonNames property: The list of client certificates referenced by common name that
-     * are allowed to manage the cluster. This will overwrite the existing list.
+     * Get the clientCertificateCommonNames property: The list of client certificates referenced by common name that are
+     * allowed to manage the cluster. This will overwrite the existing list.
      * 
      * @return the clientCertificateCommonNames value.
      */
@@ -152,8 +152,8 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Set the clientCertificateCommonNames property: The list of client certificates referenced by common name that
-     * are allowed to manage the cluster. This will overwrite the existing list.
+     * Set the clientCertificateCommonNames property: The list of client certificates referenced by common name that are
+     * allowed to manage the cluster. This will overwrite the existing list.
      * 
      * @param clientCertificateCommonNames the clientCertificateCommonNames value to set.
      * @return the ClusterUpdateParameters object itself.
@@ -194,10 +194,10 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Get the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only
-     * by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for
-     * new clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list).
-     * To get the list of available version for existing clusters use **availableClusterVersions**.
+     * Get the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only by
+     * set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new
+     * clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list). To
+     * get the list of available version for existing clusters use **availableClusterVersions**.
      * 
      * @return the clusterCodeVersion value.
      */
@@ -206,10 +206,10 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Set the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only
-     * by set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for
-     * new clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list).
-     * To get the list of available version for existing clusters use **availableClusterVersions**.
+     * Set the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only by
+     * set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new
+     * clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list). To
+     * get the list of available version for existing clusters use **availableClusterVersions**.
      * 
      * @param clusterCodeVersion the clusterCodeVersion value to set.
      * @return the ClusterUpdateParameters object itself.
@@ -246,8 +246,8 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Get the fabricSettings property: The list of custom fabric settings to configure the cluster. This will
-     * overwrite the existing list.
+     * Get the fabricSettings property: The list of custom fabric settings to configure the cluster. This will overwrite
+     * the existing list.
      * 
      * @return the fabricSettings value.
      */
@@ -256,8 +256,8 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Set the fabricSettings property: The list of custom fabric settings to configure the cluster. This will
-     * overwrite the existing list.
+     * Set the fabricSettings property: The list of custom fabric settings to configure the cluster. This will overwrite
+     * the existing list.
      * 
      * @param fabricSettings the fabricSettings value to set.
      * @return the ClusterUpdateParameters object itself.
@@ -430,8 +430,8 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains
-     * (UDs). This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
      * cluster.
      * 
      * @return the sfZonalUpgradeMode value.
@@ -441,8 +441,8 @@ public final class ClusterUpdateParameters {
     }
 
     /**
-     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains
-     * (UDs). This property can't be modified if a node type with multiple Availability Zones is already present in the
+     * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
+     * This property can't be modified if a node type with multiple Availability Zones is already present in the
      * cluster.
      * 
      * @param sfZonalUpgradeMode the sfZonalUpgradeMode value to set.
@@ -634,5 +634,46 @@ public final class ClusterUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterUpdateParameters.
+     */
+    public static ClusterUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterUpdateParameters deserializedClusterUpdateParameters = new ClusterUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedClusterUpdateParameters.innerProperties
+                        = ClusterPropertiesUpdateParameters.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterUpdateParameters;
+        });
     }
 }

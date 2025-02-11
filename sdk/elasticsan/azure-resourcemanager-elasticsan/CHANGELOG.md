@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.1 (2024-10-23)
+
+- Azure Resource Manager ElasticSan client library for Java. This package contains Microsoft Azure SDK for ElasticSan Management SDK.  Package tag package-preview-2024-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.AutoScaleProperties` was added
+
+* `models.AutoScalePolicyEnforcement` was added
+
+* `models.ScaleUpProperties` was added
+
+#### `models.ElasticSanUpdate` was modified
+
+* `autoScaleProperties()` was added
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
+
+#### `models.ElasticSan` was modified
+
+* `autoScaleProperties()` was added
+
+#### `models.ElasticSan$Definition` was modified
+
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
+
+#### `models.ElasticSan$Update` was modified
+
+* `withAutoScaleProperties(models.AutoScaleProperties)` was added
 
 ## 1.1.0 (2024-09-25)
 

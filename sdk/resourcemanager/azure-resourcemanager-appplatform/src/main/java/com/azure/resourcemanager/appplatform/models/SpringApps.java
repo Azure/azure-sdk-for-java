@@ -16,13 +16,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for Spring Apps API. */
 @Fluent
-public interface SpringApps
-    extends HasManager<AppPlatformManager>,
-        HasParent<SpringService>,
-        SupportsCreating<SpringApp.DefinitionStages.Blank>,
-        SupportsGettingById<SpringApp>,
-        SupportsGettingByName<SpringApp>,
-        SupportsListing<SpringApp>,
-        SupportsDeletingById,
-        SupportsDeletingByName {
+public interface SpringApps extends HasManager<AppPlatformManager>, HasParent<SpringService>,
+    SupportsCreating<SpringApp.DefinitionStages.Blank>, SupportsGettingById<SpringApp>,
+    SupportsGettingByName<SpringApp>, SupportsListing<SpringApp>, SupportsDeletingById, SupportsDeletingByName {
 }

@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AdditionalLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdditionalLocation model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"nacyheqwb\",\"sku\":{\"name\":\"Standard\",\"capacity\":1885580225},\"zones\":[\"jubkhjozfymcwmb\",\"pyvqy\",\"li\",\"iipsejbsvsiaies\"],\"publicIPAddresses\":[\"dzydisnuep\",\"wyj\",\"nldpxottd\"],\"privateIPAddresses\":[\"ocqibz\",\"ihweeb\",\"ph\"],\"publicIpAddressId\":\"vcjwqwoqsratj\",\"virtualNetworkConfiguration\":{\"vnetid\":\"zybspijhfrzgdkk\",\"subnetname\":\"v\",\"subnetResourceId\":\"khsusmmorf\"},\"gatewayRegionalUrl\":\"hwilz\",\"natGatewayState\":\"Disabled\",\"outboundPublicIPAddresses\":[\"mriprlk\",\"neyttl\",\"cxiv\",\"bkut\"],\"disableGateway\":true,\"platformVersion\":\"stv2\"}")
-                .toObject(AdditionalLocation.class);
+        AdditionalLocation model = BinaryData.fromString(
+            "{\"location\":\"nacyheqwb\",\"sku\":{\"name\":\"Standard\",\"capacity\":1885580225},\"zones\":[\"jubkhjozfymcwmb\",\"pyvqy\",\"li\",\"iipsejbsvsiaies\"],\"publicIPAddresses\":[\"dzydisnuep\",\"wyj\",\"nldpxottd\"],\"privateIPAddresses\":[\"ocqibz\",\"ihweeb\",\"ph\"],\"publicIpAddressId\":\"vcjwqwoqsratj\",\"virtualNetworkConfiguration\":{\"vnetid\":\"zybspijhfrzgdkk\",\"subnetname\":\"v\",\"subnetResourceId\":\"khsusmmorf\"},\"gatewayRegionalUrl\":\"hwilz\",\"natGatewayState\":\"Disabled\",\"outboundPublicIPAddresses\":[\"mriprlk\",\"neyttl\",\"cxiv\",\"bkut\"],\"disableGateway\":true,\"platformVersion\":\"stv2\"}")
+            .toObject(AdditionalLocation.class);
         Assertions.assertEquals("nacyheqwb", model.location());
         Assertions.assertEquals(SkuType.STANDARD, model.sku().name());
         Assertions.assertEquals(1885580225, model.sku().capacity());
@@ -33,15 +31,13 @@ public final class AdditionalLocationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdditionalLocation model =
-            new AdditionalLocation()
-                .withLocation("nacyheqwb")
-                .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.STANDARD).withCapacity(1885580225))
-                .withZones(Arrays.asList("jubkhjozfymcwmb", "pyvqy", "li", "iipsejbsvsiaies"))
-                .withPublicIpAddressId("vcjwqwoqsratj")
-                .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId("khsusmmorf"))
-                .withNatGatewayState(NatGatewayState.DISABLED)
-                .withDisableGateway(true);
+        AdditionalLocation model = new AdditionalLocation().withLocation("nacyheqwb")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.STANDARD).withCapacity(1885580225))
+            .withZones(Arrays.asList("jubkhjozfymcwmb", "pyvqy", "li", "iipsejbsvsiaies"))
+            .withPublicIpAddressId("vcjwqwoqsratj")
+            .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId("khsusmmorf"))
+            .withNatGatewayState(NatGatewayState.DISABLED)
+            .withDisableGateway(true);
         model = BinaryData.fromObject(model).toObject(AdditionalLocation.class);
         Assertions.assertEquals("nacyheqwb", model.location());
         Assertions.assertEquals(SkuType.STANDARD, model.sku().name());

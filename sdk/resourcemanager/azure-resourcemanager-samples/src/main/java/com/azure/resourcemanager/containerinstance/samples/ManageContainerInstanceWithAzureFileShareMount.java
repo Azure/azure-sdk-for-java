@@ -5,7 +5,7 @@ package com.azure.resourcemanager.containerinstance.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
@@ -47,17 +47,18 @@ public class ManageContainerInstanceWithAzureFileShareMount {
             //   using public Docker image "seanmckenna/aci-hellofiles" which mounts the file share created previously
             //   as read/write shared container volume.
 
-            ContainerGroup containerGroup = azureResourceManager.containerGroups().define(aciName)
+            ContainerGroup containerGroup = azureResourceManager.containerGroups()
+                .define(aciName)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .withLinux()
                 .withPublicImageRegistryOnly()
                 .withNewAzureFileShareVolume(volumeMountName, shareName)
                 .defineContainerInstance(aciName)
-                    .withImage(containerImageName)
-                    .withExternalTcpPort(80)
-                    .withVolumeMountSetting(volumeMountName, "/aci/logs/")
-                    .attach()
+                .withImage(containerImageName)
+                .withExternalTcpPort(80)
+                .withVolumeMountSetting(volumeMountName, "/aci/logs/")
+                .attach()
                 .withDnsPrefix(aciName)
                 .create();
 
@@ -83,15 +84,15 @@ public class ManageContainerInstanceWithAzureFileShareMount {
             // List the file share content
 
             String storageAccountName = containerGroup.volumes().get(volumeMountName).azureFile().storageAccountName();
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().getByResourceGroup(rgName, storageAccountName);
-            ShareClient shareClient = new ShareClientBuilder()
-                .connectionString(ResourceManagerUtils.getStorageConnectionString(
-                    storageAccountName,
-                    storageAccount.getKeys().get(0).value(),
-                    azureResourceManager.containerGroups().manager().environment()
-                ))
-                .shareName(shareName)
-                .buildClient();
+            StorageAccount storageAccount
+                = azureResourceManager.storageAccounts().getByResourceGroup(rgName, storageAccountName);
+            ShareClient shareClient
+                = new ShareClientBuilder()
+                    .connectionString(ResourceManagerUtils.getStorageConnectionString(storageAccountName,
+                        storageAccount.getKeys().get(0).value(),
+                        azureResourceManager.containerGroups().manager().environment()))
+                    .shareName(shareName)
+                    .buildClient();
 
             Iterable<ShareFileItem> shareContent = shareClient.getRootDirectoryClient().listFilesAndDirectories();
 
@@ -128,13 +129,12 @@ public class ManageContainerInstanceWithAzureFileShareMount {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

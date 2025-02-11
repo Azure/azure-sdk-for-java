@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LoadBalancerResourceSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LoadBalancerResourceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Microsoft.Network/loadBalancers\",\"tags\":{\"mcqibycnojv\":\"qbex\",\"zhpvgqzcjrvxd\":\"nmefqsgzvahapj\",\"vawjvzunlu\":\"zlmwlxkvugfhz\",\"xipeilpjzuaejx\":\"hnnpr\"},\"sku\":\"ltskzbbtd\",\"frontendIPConfigurations\":[{\"name\":\"e\",\"privateIpAddress\":\"gpw\",\"privateIpAllocationMethod\":\"uh\",\"subnet\":{\"name\":\"bsjyofdx\",\"sourceArmResourceId\":\"uusdttouwa\"},\"zones\":\"ekqvkeln\"}],\"backendAddressPools\":[{\"name\":\"xwyjsflhhc\"},{\"name\":\"lnjixisxya\"},{\"name\":\"oyaqcslyjpkiid\"}],\"zones\":\"exznelixhnr\",\"targetResourceName\":\"folhbnxknal\",\"targetResourceGroupName\":\"lp\"}")
-                .toObject(LoadBalancerResourceSettings.class);
+        LoadBalancerResourceSettings model = BinaryData.fromString(
+            "{\"resourceType\":\"Microsoft.Network/loadBalancers\",\"tags\":{\"mcqibycnojv\":\"qbex\",\"zhpvgqzcjrvxd\":\"nmefqsgzvahapj\",\"vawjvzunlu\":\"zlmwlxkvugfhz\",\"xipeilpjzuaejx\":\"hnnpr\"},\"sku\":\"ltskzbbtd\",\"frontendIPConfigurations\":[{\"name\":\"e\",\"privateIpAddress\":\"gpw\",\"privateIpAllocationMethod\":\"uh\",\"subnet\":{\"name\":\"bsjyofdx\",\"sourceArmResourceId\":\"uusdttouwa\"},\"zones\":\"ekqvkeln\"}],\"backendAddressPools\":[{\"name\":\"xwyjsflhhc\"},{\"name\":\"lnjixisxya\"},{\"name\":\"oyaqcslyjpkiid\"}],\"zones\":\"exznelixhnr\",\"targetResourceName\":\"folhbnxknal\",\"targetResourceGroupName\":\"lp\"}")
+            .toObject(LoadBalancerResourceSettings.class);
         Assertions.assertEquals("folhbnxknal", model.targetResourceName());
         Assertions.assertEquals("lp", model.targetResourceGroupName());
         Assertions.assertEquals("qbex", model.tags().get("mcqibycnojv"));
@@ -38,38 +36,20 @@ public final class LoadBalancerResourceSettingsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LoadBalancerResourceSettings model =
-            new LoadBalancerResourceSettings()
-                .withTargetResourceName("folhbnxknal")
-                .withTargetResourceGroupName("lp")
-                .withTags(
-                    mapOf(
-                        "mcqibycnojv",
-                        "qbex",
-                        "zhpvgqzcjrvxd",
-                        "nmefqsgzvahapj",
-                        "vawjvzunlu",
-                        "zlmwlxkvugfhz",
-                        "xipeilpjzuaejx",
-                        "hnnpr"))
-                .withSku("ltskzbbtd")
-                .withFrontendIpConfigurations(
-                    Arrays
-                        .asList(
-                            new LBFrontendIpConfigurationResourceSettings()
-                                .withName("e")
-                                .withPrivateIpAddress("gpw")
-                                .withPrivateIpAllocationMethod("uh")
-                                .withSubnet(
-                                    new SubnetReference().withSourceArmResourceId("uusdttouwa").withName("bsjyofdx"))
-                                .withZones("ekqvkeln")))
-                .withBackendAddressPools(
-                    Arrays
-                        .asList(
-                            new LBBackendAddressPoolResourceSettings().withName("xwyjsflhhc"),
-                            new LBBackendAddressPoolResourceSettings().withName("lnjixisxya"),
-                            new LBBackendAddressPoolResourceSettings().withName("oyaqcslyjpkiid")))
-                .withZones("exznelixhnr");
+        LoadBalancerResourceSettings model = new LoadBalancerResourceSettings().withTargetResourceName("folhbnxknal")
+            .withTargetResourceGroupName("lp")
+            .withTags(mapOf("mcqibycnojv", "qbex", "zhpvgqzcjrvxd", "nmefqsgzvahapj", "vawjvzunlu", "zlmwlxkvugfhz",
+                "xipeilpjzuaejx", "hnnpr"))
+            .withSku("ltskzbbtd")
+            .withFrontendIpConfigurations(Arrays.asList(new LBFrontendIpConfigurationResourceSettings().withName("e")
+                .withPrivateIpAddress("gpw")
+                .withPrivateIpAllocationMethod("uh")
+                .withSubnet(new SubnetReference().withSourceArmResourceId("uusdttouwa").withName("bsjyofdx"))
+                .withZones("ekqvkeln")))
+            .withBackendAddressPools(Arrays.asList(new LBBackendAddressPoolResourceSettings().withName("xwyjsflhhc"),
+                new LBBackendAddressPoolResourceSettings().withName("lnjixisxya"),
+                new LBBackendAddressPoolResourceSettings().withName("oyaqcslyjpkiid")))
+            .withZones("exznelixhnr");
         model = BinaryData.fromObject(model).toObject(LoadBalancerResourceSettings.class);
         Assertions.assertEquals("folhbnxknal", model.targetResourceName());
         Assertions.assertEquals("lp", model.targetResourceGroupName());

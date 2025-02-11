@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.edgeorder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.models.ContactDetails;
 import com.azure.resourcemanager.edgeorder.models.ShippingAddress;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Address Properties. */
+/**
+ * Address Properties.
+ */
 @Fluent
-public final class AddressUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressUpdateProperties.class);
-
+public final class AddressUpdateProperties implements JsonSerializable<AddressUpdateProperties> {
     /*
      * Shipping details for the address
      */
-    @JsonProperty(value = "shippingAddress")
     private ShippingAddress shippingAddress;
 
     /*
      * Contact details for the address
      */
-    @JsonProperty(value = "contactDetails")
     private ContactDetails contactDetails;
 
     /**
+     * Creates an instance of AddressUpdateProperties class.
+     */
+    public AddressUpdateProperties() {
+    }
+
+    /**
      * Get the shippingAddress property: Shipping details for the address.
-     *
+     * 
      * @return the shippingAddress value.
      */
     public ShippingAddress shippingAddress() {
@@ -39,7 +45,7 @@ public final class AddressUpdateProperties {
 
     /**
      * Set the shippingAddress property: Shipping details for the address.
-     *
+     * 
      * @param shippingAddress the shippingAddress value to set.
      * @return the AddressUpdateProperties object itself.
      */
@@ -50,7 +56,7 @@ public final class AddressUpdateProperties {
 
     /**
      * Get the contactDetails property: Contact details for the address.
-     *
+     * 
      * @return the contactDetails value.
      */
     public ContactDetails contactDetails() {
@@ -59,7 +65,7 @@ public final class AddressUpdateProperties {
 
     /**
      * Set the contactDetails property: Contact details for the address.
-     *
+     * 
      * @param contactDetails the contactDetails value to set.
      * @return the AddressUpdateProperties object itself.
      */
@@ -70,7 +76,7 @@ public final class AddressUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -80,5 +86,44 @@ public final class AddressUpdateProperties {
         if (contactDetails() != null) {
             contactDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("shippingAddress", this.shippingAddress);
+        jsonWriter.writeJsonField("contactDetails", this.contactDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddressUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddressUpdateProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AddressUpdateProperties.
+     */
+    public static AddressUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddressUpdateProperties deserializedAddressUpdateProperties = new AddressUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("shippingAddress".equals(fieldName)) {
+                    deserializedAddressUpdateProperties.shippingAddress = ShippingAddress.fromJson(reader);
+                } else if ("contactDetails".equals(fieldName)) {
+                    deserializedAddressUpdateProperties.contactDetails = ContactDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddressUpdateProperties;
+        });
     }
 }

@@ -32,10 +32,16 @@ public final class RegionRecordTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegionRecord model = new RegionRecord().withKind("qxvcxgfrpdsofb").withId("rnsvbuswd")
-            .withMetadata(new SCMetadataEntity().withSelf("bycnunvjsrtkf").withResourceName("nopqgikyzirtx")
-                .withCreatedTimestamp("uxzejntpsew").withUpdatedTimestamp("oi").withDeletedTimestamp("ukry"))
-            .withSpec(new RegionSpecEntity().withName("qmi").withCloud("xorgg").withRegionName("hyaomtbghhavgr")
+        RegionRecord model = new RegionRecord().withKind("qxvcxgfrpdsofb")
+            .withId("rnsvbuswd")
+            .withMetadata(new SCMetadataEntity().withSelf("bycnunvjsrtkf")
+                .withResourceName("nopqgikyzirtx")
+                .withCreatedTimestamp("uxzejntpsew")
+                .withUpdatedTimestamp("oi")
+                .withDeletedTimestamp("ukry"))
+            .withSpec(new RegionSpecEntity().withName("qmi")
+                .withCloud("xorgg")
+                .withRegionName("hyaomtbghhavgr")
                 .withPackages(Arrays.asList("fo", "jzhpjbibgjmfx", "mv")));
         model = BinaryData.fromObject(model).toObject(RegionRecord.class);
         Assertions.assertEquals("qxvcxgfrpdsofb", model.kind());

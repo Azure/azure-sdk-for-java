@@ -20,7 +20,7 @@ public final class EnvironmentDefinitionsGetByProjectCatalogWithResponseMockTest
     @Test
     public void testGetByProjectCatalogWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"description\":\"opmx\",\"parameters\":[{\"id\":\"clt\",\"name\":\"edexxmlfm\",\"description\":\"scazuawxtzxpu\",\"type\":\"array\",\"readOnly\":true,\"required\":true}],\"templatePath\":\"vxcushsphaivmx\",\"validationStatus\":\"Failed\"},\"id\":\"lvgsgzwywakoih\",\"name\":\"nsmjbl\",\"type\":\"ljhlnymzotq\"}";
+            = "{\"properties\":{\"description\":\"ojhp\",\"parameters\":[{\"id\":\"mdxotngfdgu\",\"name\":\"yzihgrkyuizabsn\",\"description\":\"pphoj\",\"type\":\"integer\",\"readOnly\":true,\"required\":false},{\"id\":\"gzfc\",\"name\":\"gomfgbeglq\",\"description\":\"eohibet\",\"type\":\"number\",\"readOnly\":false,\"required\":false}],\"templatePath\":\"fxeeebtijvacvbm\",\"validationStatus\":\"Pending\"},\"id\":\"q\",\"name\":\"lajrnwxacevehj\",\"type\":\"uyxoaf\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class EnvironmentDefinitionsGetByProjectCatalogWithResponseMockTest
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         EnvironmentDefinition response = manager.environmentDefinitions()
-            .getByProjectCatalogWithResponse("fmvigorqjbttzh", "aglkafhon", "juj", "ickpz",
+            .getByProjectCatalogWithResponse("fuojrngif", "rzpasccbiuimzdly", "dfqwmkyoq", "fdvruz",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

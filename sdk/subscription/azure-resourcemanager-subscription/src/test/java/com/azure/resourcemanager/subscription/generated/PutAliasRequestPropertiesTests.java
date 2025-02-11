@@ -12,32 +12,28 @@ import org.junit.jupiter.api.Assertions;
 public final class PutAliasRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PutAliasRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"fidfvzw\",\"workload\":\"Production\",\"billingScope\":\"tymw\",\"subscriptionId\":\"dkfthwxmnt\",\"resellerId\":\"waopvkmijcmmxd\"}")
-                .toObject(PutAliasRequestProperties.class);
-        Assertions.assertEquals("fidfvzw", model.displayName());
+        PutAliasRequestProperties model = BinaryData.fromString(
+            "{\"displayName\":\"akeqs\",\"workload\":\"Production\",\"billingScope\":\"zqqedq\",\"subscriptionId\":\"bciqfouflm\",\"resellerId\":\"kzsmodm\"}")
+            .toObject(PutAliasRequestProperties.class);
+        Assertions.assertEquals("akeqs", model.displayName());
         Assertions.assertEquals(Workload.PRODUCTION, model.workload());
-        Assertions.assertEquals("tymw", model.billingScope());
-        Assertions.assertEquals("dkfthwxmnt", model.subscriptionId());
-        Assertions.assertEquals("waopvkmijcmmxd", model.resellerId());
+        Assertions.assertEquals("zqqedq", model.billingScope());
+        Assertions.assertEquals("bciqfouflm", model.subscriptionId());
+        Assertions.assertEquals("kzsmodm", model.resellerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PutAliasRequestProperties model =
-            new PutAliasRequestProperties()
-                .withDisplayName("fidfvzw")
-                .withWorkload(Workload.PRODUCTION)
-                .withBillingScope("tymw")
-                .withSubscriptionId("dkfthwxmnt")
-                .withResellerId("waopvkmijcmmxd");
+        PutAliasRequestProperties model = new PutAliasRequestProperties().withDisplayName("akeqs")
+            .withWorkload(Workload.PRODUCTION)
+            .withBillingScope("zqqedq")
+            .withSubscriptionId("bciqfouflm")
+            .withResellerId("kzsmodm");
         model = BinaryData.fromObject(model).toObject(PutAliasRequestProperties.class);
-        Assertions.assertEquals("fidfvzw", model.displayName());
+        Assertions.assertEquals("akeqs", model.displayName());
         Assertions.assertEquals(Workload.PRODUCTION, model.workload());
-        Assertions.assertEquals("tymw", model.billingScope());
-        Assertions.assertEquals("dkfthwxmnt", model.subscriptionId());
-        Assertions.assertEquals("waopvkmijcmmxd", model.resellerId());
+        Assertions.assertEquals("zqqedq", model.billingScope());
+        Assertions.assertEquals("bciqfouflm", model.subscriptionId());
+        Assertions.assertEquals("kzsmodm", model.resellerId());
     }
 }

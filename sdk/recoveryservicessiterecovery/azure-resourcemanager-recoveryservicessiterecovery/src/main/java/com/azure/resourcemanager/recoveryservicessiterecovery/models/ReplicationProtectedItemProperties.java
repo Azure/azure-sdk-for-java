@@ -5,121 +5,109 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Replication protected item custom data details.
  */
 @Fluent
-public final class ReplicationProtectedItemProperties {
+public final class ReplicationProtectedItemProperties implements JsonSerializable<ReplicationProtectedItemProperties> {
     /*
      * The name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The type of protected item type.
      */
-    @JsonProperty(value = "protectedItemType")
     private String protectedItemType;
 
     /*
      * The protected item ARM Id.
      */
-    @JsonProperty(value = "protectableItemId")
     private String protectableItemId;
 
     /*
      * The recovery provider ARM Id.
      */
-    @JsonProperty(value = "recoveryServicesProviderId")
     private String recoveryServicesProviderId;
 
     /*
      * The friendly name of the primary fabric.
      */
-    @JsonProperty(value = "primaryFabricFriendlyName")
     private String primaryFabricFriendlyName;
 
     /*
      * The fabric provider of the primary fabric.
      */
-    @JsonProperty(value = "primaryFabricProvider")
     private String primaryFabricProvider;
 
     /*
      * The friendly name of recovery fabric.
      */
-    @JsonProperty(value = "recoveryFabricFriendlyName")
     private String recoveryFabricFriendlyName;
 
     /*
      * The Arm Id of recovery fabric.
      */
-    @JsonProperty(value = "recoveryFabricId")
     private String recoveryFabricId;
 
     /*
      * The name of primary protection container friendly name.
      */
-    @JsonProperty(value = "primaryProtectionContainerFriendlyName")
     private String primaryProtectionContainerFriendlyName;
 
     /*
      * The name of recovery container friendly name.
      */
-    @JsonProperty(value = "recoveryProtectionContainerFriendlyName")
     private String recoveryProtectionContainerFriendlyName;
 
     /*
      * The protection status.
      */
-    @JsonProperty(value = "protectionState")
     private String protectionState;
 
     /*
      * The protection state description.
      */
-    @JsonProperty(value = "protectionStateDescription")
     private String protectionStateDescription;
 
     /*
      * The Current active location of the PE.
      */
-    @JsonProperty(value = "activeLocation")
     private String activeLocation;
 
     /*
      * The Test failover state.
      */
-    @JsonProperty(value = "testFailoverState")
     private String testFailoverState;
 
     /*
      * The Test failover state description.
      */
-    @JsonProperty(value = "testFailoverStateDescription")
     private String testFailoverStateDescription;
 
     /*
      * The switch provider state.
      */
-    @JsonProperty(value = "switchProviderState")
     private String switchProviderState;
 
     /*
      * The switch provider state description.
      */
-    @JsonProperty(value = "switchProviderStateDescription")
     private String switchProviderStateDescription;
 
     /*
      * The allowed operations on the Replication protected item.
      */
-    @JsonProperty(value = "allowedOperations")
     private List<String> allowedOperations;
 
     /*
@@ -127,73 +115,61 @@ public final class ReplicationProtectedItemProperties {
      * associated with the VM's replication group into account. This is a string representation of the ProtectionHealth
      * enumeration.
      */
-    @JsonProperty(value = "replicationHealth")
     private String replicationHealth;
 
     /*
      * The consolidated failover health for the VM.
      */
-    @JsonProperty(value = "failoverHealth")
     private String failoverHealth;
 
     /*
      * List of health errors.
      */
-    @JsonProperty(value = "healthErrors")
     private List<HealthError> healthErrors;
 
     /*
      * The ID of Policy governing this PE.
      */
-    @JsonProperty(value = "policyId")
     private String policyId;
 
     /*
      * The name of Policy governing this PE.
      */
-    @JsonProperty(value = "policyFriendlyName")
     private String policyFriendlyName;
 
     /*
      * The Last successful failover time.
      */
-    @JsonProperty(value = "lastSuccessfulFailoverTime")
     private OffsetDateTime lastSuccessfulFailoverTime;
 
     /*
      * The Last successful test failover time.
      */
-    @JsonProperty(value = "lastSuccessfulTestFailoverTime")
     private OffsetDateTime lastSuccessfulTestFailoverTime;
 
     /*
      * The current scenario.
      */
-    @JsonProperty(value = "currentScenario")
     private CurrentScenarioDetails currentScenario;
 
     /*
      * The recovery point ARM Id to which the Vm was failed over.
      */
-    @JsonProperty(value = "failoverRecoveryPointId")
     private String failoverRecoveryPointId;
 
     /*
      * The Replication provider custom settings.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private ReplicationProviderSpecificSettings providerSpecificDetails;
 
     /*
      * The recovery container Id.
      */
-    @JsonProperty(value = "recoveryContainerId")
     private String recoveryContainerId;
 
     /*
      * The correlation Id for events associated with this protected item.
      */
-    @JsonProperty(value = "eventCorrelationId")
     private String eventCorrelationId;
 
     /**
@@ -827,5 +803,146 @@ public final class ReplicationProtectedItemProperties {
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("protectedItemType", this.protectedItemType);
+        jsonWriter.writeStringField("protectableItemId", this.protectableItemId);
+        jsonWriter.writeStringField("recoveryServicesProviderId", this.recoveryServicesProviderId);
+        jsonWriter.writeStringField("primaryFabricFriendlyName", this.primaryFabricFriendlyName);
+        jsonWriter.writeStringField("primaryFabricProvider", this.primaryFabricProvider);
+        jsonWriter.writeStringField("recoveryFabricFriendlyName", this.recoveryFabricFriendlyName);
+        jsonWriter.writeStringField("recoveryFabricId", this.recoveryFabricId);
+        jsonWriter.writeStringField("primaryProtectionContainerFriendlyName",
+            this.primaryProtectionContainerFriendlyName);
+        jsonWriter.writeStringField("recoveryProtectionContainerFriendlyName",
+            this.recoveryProtectionContainerFriendlyName);
+        jsonWriter.writeStringField("protectionState", this.protectionState);
+        jsonWriter.writeStringField("protectionStateDescription", this.protectionStateDescription);
+        jsonWriter.writeStringField("activeLocation", this.activeLocation);
+        jsonWriter.writeStringField("testFailoverState", this.testFailoverState);
+        jsonWriter.writeStringField("testFailoverStateDescription", this.testFailoverStateDescription);
+        jsonWriter.writeStringField("switchProviderState", this.switchProviderState);
+        jsonWriter.writeStringField("switchProviderStateDescription", this.switchProviderStateDescription);
+        jsonWriter.writeArrayField("allowedOperations", this.allowedOperations,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("replicationHealth", this.replicationHealth);
+        jsonWriter.writeStringField("failoverHealth", this.failoverHealth);
+        jsonWriter.writeArrayField("healthErrors", this.healthErrors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("policyId", this.policyId);
+        jsonWriter.writeStringField("policyFriendlyName", this.policyFriendlyName);
+        jsonWriter.writeStringField("lastSuccessfulFailoverTime",
+            this.lastSuccessfulFailoverTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSuccessfulFailoverTime));
+        jsonWriter.writeStringField("lastSuccessfulTestFailoverTime",
+            this.lastSuccessfulTestFailoverTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastSuccessfulTestFailoverTime));
+        jsonWriter.writeJsonField("currentScenario", this.currentScenario);
+        jsonWriter.writeStringField("failoverRecoveryPointId", this.failoverRecoveryPointId);
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        jsonWriter.writeStringField("recoveryContainerId", this.recoveryContainerId);
+        jsonWriter.writeStringField("eventCorrelationId", this.eventCorrelationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationProtectedItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationProtectedItemProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationProtectedItemProperties.
+     */
+    public static ReplicationProtectedItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationProtectedItemProperties deserializedReplicationProtectedItemProperties
+                = new ReplicationProtectedItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("friendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.friendlyName = reader.getString();
+                } else if ("protectedItemType".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.protectedItemType = reader.getString();
+                } else if ("protectableItemId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.protectableItemId = reader.getString();
+                } else if ("recoveryServicesProviderId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.recoveryServicesProviderId = reader.getString();
+                } else if ("primaryFabricFriendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.primaryFabricFriendlyName = reader.getString();
+                } else if ("primaryFabricProvider".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.primaryFabricProvider = reader.getString();
+                } else if ("recoveryFabricFriendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.recoveryFabricFriendlyName = reader.getString();
+                } else if ("recoveryFabricId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.recoveryFabricId = reader.getString();
+                } else if ("primaryProtectionContainerFriendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.primaryProtectionContainerFriendlyName
+                        = reader.getString();
+                } else if ("recoveryProtectionContainerFriendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.recoveryProtectionContainerFriendlyName
+                        = reader.getString();
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.protectionState = reader.getString();
+                } else if ("protectionStateDescription".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.protectionStateDescription = reader.getString();
+                } else if ("activeLocation".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.activeLocation = reader.getString();
+                } else if ("testFailoverState".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.testFailoverState = reader.getString();
+                } else if ("testFailoverStateDescription".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.testFailoverStateDescription = reader.getString();
+                } else if ("switchProviderState".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.switchProviderState = reader.getString();
+                } else if ("switchProviderStateDescription".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.switchProviderStateDescription = reader.getString();
+                } else if ("allowedOperations".equals(fieldName)) {
+                    List<String> allowedOperations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedReplicationProtectedItemProperties.allowedOperations = allowedOperations;
+                } else if ("replicationHealth".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.replicationHealth = reader.getString();
+                } else if ("failoverHealth".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.failoverHealth = reader.getString();
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthError> healthErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedReplicationProtectedItemProperties.healthErrors = healthErrors;
+                } else if ("policyId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.policyId = reader.getString();
+                } else if ("policyFriendlyName".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.policyFriendlyName = reader.getString();
+                } else if ("lastSuccessfulFailoverTime".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.lastSuccessfulFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSuccessfulTestFailoverTime".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.lastSuccessfulTestFailoverTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentScenario".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.currentScenario
+                        = CurrentScenarioDetails.fromJson(reader);
+                } else if ("failoverRecoveryPointId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.failoverRecoveryPointId = reader.getString();
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.providerSpecificDetails
+                        = ReplicationProviderSpecificSettings.fromJson(reader);
+                } else if ("recoveryContainerId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.recoveryContainerId = reader.getString();
+                } else if ("eventCorrelationId".equals(fieldName)) {
+                    deserializedReplicationProtectedItemProperties.eventCorrelationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationProtectedItemProperties;
+        });
     }
 }

@@ -13,27 +13,33 @@ import com.azure.core.util.CoreUtils;
 @Fluent
 public final class BlobHttpHeaders {
     /*
-     * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a
+     * read request.
      */
     private String cacheControl;
 
     /*
-     * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a
+     * read request.
      */
     private String contentType;
 
     /*
-     * Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual blocks were validated when each was uploaded. The value does not need to be base64 encoded as the SDK will perform the encoding.
+     * Optional. An MD5 hash of the blob content. Note that this hash is not validated, as the hashes for the individual
+     * blocks were validated when each was uploaded. The value does not need to be base64 encoded as the SDK will
+     * perform the encoding.
      */
     private byte[] contentMd5;
 
     /*
-     * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with
+     * a read request.
      */
     private String contentEncoding;
 
     /*
-     * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with
+     * a read request.
      */
     private String contentLanguage;
 

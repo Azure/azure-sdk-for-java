@@ -6,33 +6,45 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Recovery plan InMageRcm failover input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("InMageRcm")
 @Fluent
 public final class RecoveryPlanInMageRcmFailoverInput extends RecoveryPlanProviderSpecificFailoverInput {
     /*
+     * The class type.
+     */
+    private String instanceType = "InMageRcm";
+
+    /*
      * The recovery point type.
      */
-    @JsonProperty(value = "recoveryPointType", required = true)
     private RecoveryPlanPointType recoveryPointType;
 
     /*
      * A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
      */
-    @JsonProperty(value = "useMultiVmSyncPoint")
     private String useMultiVmSyncPoint;
 
     /**
      * Creates an instance of RecoveryPlanInMageRcmFailoverInput class.
      */
     public RecoveryPlanInMageRcmFailoverInput() {
+    }
+
+    /**
+     * Get the instanceType property: The class type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -84,12 +96,58 @@ public final class RecoveryPlanInMageRcmFailoverInput extends RecoveryPlanProvid
      */
     @Override
     public void validate() {
-        super.validate();
         if (recoveryPointType() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property recoveryPointType in model RecoveryPlanInMageRcmFailoverInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointType in model RecoveryPlanInMageRcmFailoverInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RecoveryPlanInMageRcmFailoverInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recoveryPointType",
+            this.recoveryPointType == null ? null : this.recoveryPointType.toString());
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeStringField("useMultiVmSyncPoint", this.useMultiVmSyncPoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPlanInMageRcmFailoverInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPlanInMageRcmFailoverInput if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecoveryPlanInMageRcmFailoverInput.
+     */
+    public static RecoveryPlanInMageRcmFailoverInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPlanInMageRcmFailoverInput deserializedRecoveryPlanInMageRcmFailoverInput
+                = new RecoveryPlanInMageRcmFailoverInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recoveryPointType".equals(fieldName)) {
+                    deserializedRecoveryPlanInMageRcmFailoverInput.recoveryPointType
+                        = RecoveryPlanPointType.fromString(reader.getString());
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedRecoveryPlanInMageRcmFailoverInput.instanceType = reader.getString();
+                } else if ("useMultiVmSyncPoint".equals(fieldName)) {
+                    deserializedRecoveryPlanInMageRcmFailoverInput.useMultiVmSyncPoint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPlanInMageRcmFailoverInput;
+        });
+    }
 }

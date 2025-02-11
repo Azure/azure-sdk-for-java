@@ -10,8 +10,8 @@ import com.azure.resourcemanager.trafficmanager.models.TrafficManagerExternalEnd
 
 /** Implementation for {@link TrafficManagerExternalEndpoint}. */
 class TrafficManagerExternalEndpointImpl extends TrafficManagerEndpointImpl implements TrafficManagerExternalEndpoint {
-    TrafficManagerExternalEndpointImpl(
-        String name, TrafficManagerProfileImpl parent, EndpointInner inner, EndpointsClient client) {
+    TrafficManagerExternalEndpointImpl(String name, TrafficManagerProfileImpl parent, EndpointInner inner,
+        EndpointsClient client) {
         super(name, parent, inner, client);
     }
 

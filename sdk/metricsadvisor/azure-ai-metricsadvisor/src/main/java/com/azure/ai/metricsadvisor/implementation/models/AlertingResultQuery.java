@@ -5,6 +5,7 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -99,6 +100,9 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -127,11 +131,11 @@ public final class AlertingResultQuery implements JsonSerializable<AlertingResul
                 reader.nextToken();
 
                 if ("startTime".equals(fieldName)) {
-                    deserializedAlertingResultQuery.startTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAlertingResultQuery.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endTime".equals(fieldName)) {
-                    deserializedAlertingResultQuery.endTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedAlertingResultQuery.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("timeMode".equals(fieldName)) {
                     deserializedAlertingResultQuery.timeMode = TimeMode.fromString(reader.getString());
                 } else {

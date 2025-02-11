@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -52,7 +51,6 @@ public final class SummaryType extends ExpandableStringEnum<SummaryType> {
      * @param name a name to look for.
      * @return the corresponding SummaryType.
      */
-    @JsonCreator
     public static SummaryType fromString(String name) {
         return fromString(name, SummaryType.class);
     }

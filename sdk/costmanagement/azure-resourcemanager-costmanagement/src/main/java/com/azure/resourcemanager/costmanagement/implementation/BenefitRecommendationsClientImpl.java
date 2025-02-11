@@ -30,23 +30,28 @@ import com.azure.resourcemanager.costmanagement.fluent.models.BenefitRecommendat
 import com.azure.resourcemanager.costmanagement.models.BenefitRecommendationsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BenefitRecommendationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BenefitRecommendationsClient.
+ */
 public final class BenefitRecommendationsClientImpl implements BenefitRecommendationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BenefitRecommendationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CostManagementClientImpl client;
 
     /**
      * Initializes an instance of BenefitRecommendationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BenefitRecommendationsClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(BenefitRecommendationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(BenefitRecommendationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,122 +62,95 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface BenefitRecommendationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{billingScope}/providers/Microsoft.CostManagement/benefitRecommendations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BenefitRecommendationsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$expand") String expand,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<BenefitRecommendationsListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("$filter") String filter, @QueryParam("$orderby") String orderby,
+            @QueryParam("$expand") String expand, @QueryParam("api-version") String apiVersion,
             @PathParam(value = "billingScope", encoded = true) String billingScope,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BenefitRecommendationsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing benefit recommendations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitRecommendationModelInner>> listSinglePageAsync(
-        String billingScope, String filter, String orderby, String expand) {
+    private Mono<PagedResponse<BenefitRecommendationModelInner>> listSinglePageAsync(String billingScope, String filter,
+        String orderby, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingScope == null) {
             return Mono.error(new IllegalArgumentException("Parameter billingScope is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            filter,
-                            orderby,
-                            expand,
-                            this.client.getApiVersion(),
-                            billingScope,
-                            accept,
-                            context))
-            .<PagedResponse<BenefitRecommendationModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), filter, orderby, expand,
+                this.client.getApiVersion(), billingScope, accept, context))
+            .<PagedResponse<BenefitRecommendationModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing benefit recommendations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitRecommendationModelInner>> listSinglePageAsync(
-        String billingScope, String filter, String orderby, String expand, Context context) {
+    private Mono<PagedResponse<BenefitRecommendationModelInner>> listSinglePageAsync(String billingScope, String filter,
+        String orderby, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (billingScope == null) {
             return Mono.error(new IllegalArgumentException("Parameter billingScope is required and cannot be null."));
@@ -180,41 +158,27 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                filter,
-                orderby,
-                expand,
-                this.client.getApiVersion(),
-                billingScope,
-                accept,
+            .list(this.client.getEndpoint(), filter, orderby, expand, this.client.getApiVersion(), billingScope, accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -222,22 +186,21 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      * @return result of listing benefit recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitRecommendationModelInner> listAsync(
-        String billingScope, String filter, String orderby, String expand) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(billingScope, filter, orderby, expand),
+    private PagedFlux<BenefitRecommendationModelInner> listAsync(String billingScope, String filter, String orderby,
+        String expand) {
+        return new PagedFlux<>(() -> listSinglePageAsync(billingScope, filter, orderby, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -248,26 +211,25 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
         final String filter = null;
         final String orderby = null;
         final String expand = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(billingScope, filter, orderby, expand),
+        return new PagedFlux<>(() -> listSinglePageAsync(billingScope, filter, orderby, expand),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,22 +238,21 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      * @return result of listing benefit recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BenefitRecommendationModelInner> listAsync(
-        String billingScope, String filter, String orderby, String expand, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(billingScope, filter, orderby, expand, context),
+    private PagedFlux<BenefitRecommendationModelInner> listAsync(String billingScope, String filter, String orderby,
+        String expand, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(billingScope, filter, orderby, expand, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -307,19 +268,19 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,21 +289,20 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
      * @return result of listing benefit recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BenefitRecommendationModelInner> list(
-        String billingScope, String filter, String orderby, String expand, Context context) {
+    public PagedIterable<BenefitRecommendationModelInner> list(String billingScope, String filter, String orderby,
+        String expand, Context context) {
         return new PagedIterable<>(listAsync(billingScope, filter, orderby, expand, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing benefit recommendations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitRecommendationModelInner>> listNextSinglePageAsync(String nextLink) {
@@ -350,62 +310,41 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BenefitRecommendationModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<BenefitRecommendationModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing benefit recommendations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BenefitRecommendationModelInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BenefitRecommendationModelInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

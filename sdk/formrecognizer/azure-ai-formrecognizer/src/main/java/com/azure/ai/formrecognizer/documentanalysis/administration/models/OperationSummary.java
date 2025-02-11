@@ -199,6 +199,7 @@ public final class OperationSummary {
     private void setTags(Map<String, String> tags) {
         this.tags = tags;
     }
+
     /**
      * Get the Service version used to create this document classifier.
      *

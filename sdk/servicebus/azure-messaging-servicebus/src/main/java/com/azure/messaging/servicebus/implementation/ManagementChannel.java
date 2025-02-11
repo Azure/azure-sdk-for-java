@@ -86,8 +86,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
     ManagementChannel(ChannelCacheWrapper channelCache, String fullyQualifiedNamespace, String entityPath,
         TokenManager tokenManager, MessageSerializer messageSerializer, Duration operationTimeout) {
         this.channelCache = Objects.requireNonNull(channelCache, "'channelCache' cannot be null.");
-        this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
-            "'fullyQualifiedNamespace' cannot be null.");
+        this.fullyQualifiedNamespace
+            = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
 
         Map<String, Object> loggingContext = new HashMap<>(1);
@@ -117,11 +117,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
                     ManagementConstants.OPERATION_CANCEL_SCHEDULED_MESSAGE, associatedLinkName);
 
                 final Long[] longs = numbers.toArray(new Long[0]);
-                requestMessage.setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS,
-                    longs)));
+                requestMessage
+                    .setBody(new AmqpValue(Collections.singletonMap(ManagementConstants.SEQUENCE_NUMBERS, longs)));
 
                 return sendWithVerify(channel, requestMessage, null);
-            })).then();
+            }))
+            .then();
     }
 
     /**
@@ -148,18 +149,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Object value = ((AmqpValue) response.getBody()).getValue();
 
             if (!(value instanceof Map)) {
-                return monoError(logger, new AmqpException(false, String.format(
-                    "Body not expected when renewing session. Id: %s. Value: %s", sessionId, value),
-                    getErrorContext()));
+                return monoError(logger,
+                    new AmqpException(false,
+                        String.format("Body not expected when renewing session. Id: %s. Value: %s", sessionId, value),
+                        getErrorContext()));
             }
 
-            @SuppressWarnings("unchecked") final Map<String, Object> map = (Map<String, Object>) value;
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> map = (Map<String, Object>) value;
             final Object sessionState = map.get(ManagementConstants.SESSION_STATE);
 
             if (sessionState == null) {
-                logger.atInfo()
-                    .addKeyValue(SESSION_ID_KEY, sessionId)
-                    .log("Does not have a session state.");
+                logger.atInfo().addKeyValue(SESSION_ID_KEY, sessionId).log("Does not have a session state.");
                 return Mono.empty();
             }
 
@@ -173,8 +174,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
      */
     @Override
     public Mono<ServiceBusReceivedMessage> peek(long fromSequenceNumber, String sessionId, String associatedLinkName) {
-        return peek(fromSequenceNumber, sessionId, associatedLinkName, 1)
-            .next();
+        return peek(fromSequenceNumber, sessionId, associatedLinkName, 1).next();
     }
 
     /**
@@ -199,8 +199,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
             return sendWithVerify(channel, message, null);
         }).flatMapMany(response -> {
-            final List<ServiceBusReceivedMessage> messages =
-                messageSerializer.deserializeList(response, ServiceBusReceivedMessage.class);
+            final List<ServiceBusReceivedMessage> messages
+                = messageSerializer.deserializeList(response, ServiceBusReceivedMessage.class);
 
             return Flux.fromIterable(messages);
         }));
@@ -244,8 +244,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
                 return sendWithVerify(channel, message, null);
             }).flatMapMany(amqpMessage -> {
-                final List<ServiceBusReceivedMessage> messageList =
-                    messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
+                final List<ServiceBusReceivedMessage> messageList
+                    = messageSerializer.deserializeList(amqpMessage, ServiceBusReceivedMessage.class);
 
                 return Flux.fromIterable(messageList);
             }));
@@ -265,19 +265,19 @@ public class ManagementChannel implements ServiceBusManagementNode {
     @Override
     public Mono<OffsetDateTime> renewMessageLock(String lockToken, String associatedLinkName) {
         return isAuthorized(ManagementConstants.OPERATION_RENEW_LOCK).then(channelCache.get().flatMap(channel -> {
-            final Message requestMessage = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK,
-                associatedLinkName);
+            final Message requestMessage
+                = createManagementMessage(ManagementConstants.OPERATION_RENEW_LOCK, associatedLinkName);
             final Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{UUID.fromString(lockToken)});
+            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[] { UUID.fromString(lockToken) });
             requestMessage.setBody(new AmqpValue(requestBody));
 
             return sendWithVerify(channel, requestMessage, null);
         }).map(responseMessage -> {
-            final List<OffsetDateTime> renewTimeList = messageSerializer.deserializeList(responseMessage,
-                OffsetDateTime.class);
+            final List<OffsetDateTime> renewTimeList
+                = messageSerializer.deserializeList(responseMessage, OffsetDateTime.class);
             if (CoreUtils.isNullOrEmpty(renewTimeList)) {
-                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
-                    "Service bus response empty. Could not renew message with lock token: '%s'.", lockToken),
+                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String
+                    .format("Service bus response empty. Could not renew message with lock token: '%s'.", lockToken),
                     getErrorContext())));
             }
 
@@ -306,18 +306,20 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Object value = ((AmqpValue) response.getBody()).getValue();
 
             if (!(value instanceof Map)) {
-                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
-                    "Body not expected when renewing session. Id: %s. Value: %s", sessionId, value),
+                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false,
+                    String.format("Body not expected when renewing session. Id: %s. Value: %s", sessionId, value),
                     getErrorContext())));
             }
 
-            @SuppressWarnings("unchecked") final Map<String, Object> map = (Map<String, Object>) value;
+            @SuppressWarnings("unchecked")
+            final Map<String, Object> map = (Map<String, Object>) value;
             final Object expirationValue = map.get(ManagementConstants.EXPIRATION);
 
             if (!(expirationValue instanceof Date)) {
-                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false, String.format(
-                    "Expiration is not of type Date when renewing session. Id: %s. Value: %s", sessionId,
-                    expirationValue), getErrorContext())));
+                throw logger.logExceptionAsError(Exceptions.propagate(new AmqpException(false,
+                    String.format("Expiration is not of type Date when renewing session. Id: %s. Value: %s", sessionId,
+                        expirationValue),
+                    getErrorContext())));
             }
             return ((Date) expirationValue).toInstant().atOffset(ZoneOffset.UTC);
         });
@@ -327,8 +329,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
      * {@inheritDoc}
      */
     @Override
-    public Flux<Long> schedule(List<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime,
-        int maxLinkSize, String associatedLinkName, ServiceBusTransactionContext transactionContext) {
+    public Flux<Long> schedule(List<ServiceBusMessage> messages, OffsetDateTime scheduledEnqueueTime, int maxLinkSize,
+        String associatedLinkName, ServiceBusTransactionContext transactionContext) {
 
         return isAuthorized(OPERATION_SCHEDULE_MESSAGE).thenMany(channelCache.get().flatMap(channel -> {
 
@@ -341,8 +343,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
                 // The maxsize allowed logic is from ReactorSender, this logic should be kept in sync.
                 final int payloadSize = messageSerializer.getSize(amqpMessage);
-                final int allocationSize =
-                    Math.min(payloadSize + ManagementConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxLinkSize);
+                final int allocationSize
+                    = Math.min(payloadSize + ManagementConstants.MAX_MESSAGING_AMQP_HEADER_SIZE_BYTES, maxLinkSize);
                 final byte[] bytes = new byte[allocationSize];
 
                 int encodedSize;
@@ -353,8 +355,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
                         "Error sending. Size of the payload exceeded maximum message size: %s kb", maxLinkSize / 1024);
                     final AmqpErrorContext errorContext = channel.getErrorContext();
 
-                    return monoError(logger, new AmqpException(false,
-                        AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, errorMessage, exception, errorContext));
+                    return monoError(logger, new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                        errorMessage, exception, errorContext));
                 }
 
                 final Map<String, Object> messageEntry = new HashMap<>();
@@ -388,15 +390,16 @@ public class ManagementChannel implements ServiceBusManagementNode {
             }
 
             return sendWithVerify(channel, requestMessage, transactionalState);
-        })
-            .flatMapMany(response -> {
-                final List<Long> sequenceNumbers = messageSerializer.deserializeList(response, Long.class);
-                if (CoreUtils.isNullOrEmpty(sequenceNumbers)) {
-                    fluxError(logger, new AmqpException(false, String.format(
-                        "Service Bus response was empty. Could not schedule message()s."), getErrorContext()));
-                }
-                return Flux.fromIterable(sequenceNumbers);
-            }));
+        }).flatMapMany(response -> {
+            final List<Long> sequenceNumbers = messageSerializer.deserializeList(response, Long.class);
+            if (CoreUtils.isNullOrEmpty(sequenceNumbers)) {
+                fluxError(logger,
+                    new AmqpException(false,
+                        String.format("Service Bus response was empty. Could not schedule message()s."),
+                        getErrorContext()));
+            }
+            return Flux.fromIterable(sequenceNumbers);
+        }));
     }
 
     @Override
@@ -435,7 +438,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Message message = createManagementMessage(OPERATION_UPDATE_DISPOSITION, associatedLinkName);
 
             final Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[]{UUID.fromString(lockToken)});
+            requestBody.put(ManagementConstants.LOCK_TOKENS_KEY, new UUID[] { UUID.fromString(lockToken) });
             requestBody.put(ManagementConstants.DISPOSITION_STATUS_KEY, dispositionStatus.getValue());
 
             if (deadLetterReason != null) {
@@ -525,9 +528,8 @@ public class ManagementChannel implements ServiceBusManagementNode {
             } else if (statusCode == AmqpResponseCode.NO_CONTENT) {
                 list = Collections.emptyList();
             } else {
-                throw logger.logExceptionAsWarning(new AmqpException(true,
-                    "Get rules response error. Could not get rules.",
-                    getErrorContext()));
+                throw logger.logExceptionAsWarning(
+                    new AmqpException(true, "Get rules response error. Could not get rules.", getErrorContext()));
             }
 
             return Flux.fromIterable(list);
@@ -547,52 +549,48 @@ public class ManagementChannel implements ServiceBusManagementNode {
         tokenManager.close();
     }
 
-    private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message,
-        DeliveryState deliveryState) {
-        return channel.sendWithAck(message, deliveryState)
-            .handle((Message response, SynchronousSink<Message> sink) -> {
-                if (RequestResponseUtils.isSuccessful(response)) {
+    private Mono<Message> sendWithVerify(RequestResponseChannel channel, Message message, DeliveryState deliveryState) {
+        return channel.sendWithAck(message, deliveryState).handle((Message response, SynchronousSink<Message> sink) -> {
+            if (RequestResponseUtils.isSuccessful(response)) {
+                sink.next(response);
+                return;
+            }
+
+            final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+
+            if (statusCode == AmqpResponseCode.NO_CONTENT) {
+                sink.next(response);
+                return;
+            }
+
+            final String errorCondition = RequestResponseUtils.getErrorCondition(response);
+
+            if (statusCode == AmqpResponseCode.NOT_FOUND) {
+                final AmqpErrorCondition amqpErrorCondition = AmqpErrorCondition.fromString(errorCondition);
+
+                if (amqpErrorCondition == AmqpErrorCondition.MESSAGE_NOT_FOUND) {
+                    logger.info("There was no matching message found.");
+                    sink.next(response);
+                    return;
+                } else if (amqpErrorCondition == AmqpErrorCondition.SESSION_NOT_FOUND) {
+                    logger.info("There was no matching session found.");
                     sink.next(response);
                     return;
                 }
+            }
 
-                final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
+            final String statusDescription = RequestResponseUtils.getStatusDescription(response);
+            final Throwable throwable
+                = ExceptionUtil.toException(errorCondition, statusDescription, channel.getErrorContext());
 
-                if (statusCode == AmqpResponseCode.NO_CONTENT) {
-                    sink.next(response);
-                    return;
-                }
+            logger.atWarning()
+                .addKeyValue("status", statusCode)
+                .addKeyValue("description", statusDescription)
+                .addKeyValue("condition", errorCondition)
+                .log("Operation not successful.");
 
-                final String errorCondition = RequestResponseUtils.getErrorCondition(response);
-
-                if (statusCode == AmqpResponseCode.NOT_FOUND) {
-                    final AmqpErrorCondition amqpErrorCondition = AmqpErrorCondition.fromString(errorCondition);
-
-                    if (amqpErrorCondition == AmqpErrorCondition.MESSAGE_NOT_FOUND) {
-                        logger.info("There was no matching message found.");
-                        sink.next(response);
-                        return;
-                    } else if (amqpErrorCondition == AmqpErrorCondition.SESSION_NOT_FOUND) {
-                        logger.info("There was no matching session found.");
-                        sink.next(response);
-                        return;
-                    }
-                }
-
-                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
-                final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription,
-                    channel.getErrorContext());
-
-                logger.atWarning()
-                    .addKeyValue("status", statusCode)
-                    .addKeyValue("description", statusDescription)
-                    .addKeyValue("condition", errorCondition)
-                    .log("Operation not successful.");
-
-                sink.error(throwable);
-            })
-            .switchIfEmpty(errorIfEmpty(channel))
-            .onErrorMap(this::mapError);
+            sink.error(throwable);
+        }).switchIfEmpty(errorIfEmpty(channel)).onErrorMap(this::mapError);
     }
 
     private <T> Mono<T> errorIfEmpty(RequestResponseChannel channel) {
@@ -603,20 +601,18 @@ public class ManagementChannel implements ServiceBusManagementNode {
     }
 
     private Mono<Void> isAuthorized(String operation) {
-        return tokenManager.getAuthorizationResults()
-            .onErrorMap(this::mapError)
-            .next()
-            .handle((response, sink) -> {
-                if (response != AmqpResponseCode.ACCEPTED && response != AmqpResponseCode.OK) {
-                    final String message = String.format("User does not have authorization to perform operation "
-                        + "[%s] on entity [%s]. Response: [%s]", operation, entityPath, response);
-                    final Throwable exc = new AmqpException(false, AmqpErrorCondition.UNAUTHORIZED_ACCESS,
-                        message, getErrorContext());
-                    sink.error(new ServiceBusException(exc, ServiceBusErrorSource.MANAGEMENT));
-                } else {
-                    sink.complete();
-                }
-            });
+        return tokenManager.getAuthorizationResults().onErrorMap(this::mapError).next().handle((response, sink) -> {
+            if (response != AmqpResponseCode.ACCEPTED && response != AmqpResponseCode.OK) {
+                final String message = String.format(
+                    "User does not have authorization to perform operation " + "[%s] on entity [%s]. Response: [%s]",
+                    operation, entityPath, response);
+                final Throwable exc
+                    = new AmqpException(false, AmqpErrorCondition.UNAUTHORIZED_ACCESS, message, getErrorContext());
+                sink.error(new ServiceBusException(exc, ServiceBusErrorSource.MANAGEMENT));
+            } else {
+                sink.complete();
+            }
+        });
     }
 
     /**
@@ -659,8 +655,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
             return Collections.emptyList();
         }
 
-        @SuppressWarnings("unchecked") List<Map<String, DescribedType>> rules = ((Map<String, List<Map<String, DescribedType>>>) messageBody.getValue())
-            .get(ManagementConstants.RULES);
+        @SuppressWarnings("unchecked")
+        List<Map<String, DescribedType>> rules
+            = ((Map<String, List<Map<String, DescribedType>>>) messageBody.getValue()).get(ManagementConstants.RULES);
         if (rules == null) {
             return Collections.emptyList();
         }

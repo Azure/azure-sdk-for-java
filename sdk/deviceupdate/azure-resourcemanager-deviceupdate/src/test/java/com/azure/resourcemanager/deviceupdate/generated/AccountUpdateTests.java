@@ -17,7 +17,7 @@ public final class AccountUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccountUpdate model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"7c099291-1044-4a4c-81c6-ac4ac1fcd4a9\",\"tenantId\":\"4ac4af88-70ba-4d46-bef1-7cbfda7fd24f\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wjzrnfygxgisp\":{\"principalId\":\"d13fb7af-034c-472c-9b5a-a47085384ed2\",\"clientId\":\"741d702c-9613-4a03-bef7-904133895b77\"},\"tzfkufubl\":{\"principalId\":\"23cddf20-a410-4978-86b1-f84b09e59e4a\",\"clientId\":\"4bfef0a7-ccc8-4122-ab72-998b167484d5\"}}},\"location\":\"fxqeof\",\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"}}")
+            "{\"identity\":{\"principalId\":\"86ffd529-4a3e-4791-bdb1-7f215afbd159\",\"tenantId\":\"7e249a94-71fe-4993-b193-157130005c73\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wjzrnfygxgisp\":{\"principalId\":\"23cf6a5d-c019-4052-9b42-ed3e65adeb7c\",\"clientId\":\"17372907-60ca-4944-a75a-651bde155eb7\"},\"tzfkufubl\":{\"principalId\":\"75d444c3-d113-427c-8a05-8eea4629815f\",\"clientId\":\"5409ec3f-22b0-4b9a-a9f3-eb49b5d2b589\"}}},\"location\":\"fxqeof\",\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"}}")
             .toObject(AccountUpdate.class);
         Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());

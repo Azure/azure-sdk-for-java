@@ -19,10 +19,7 @@ import com.azure.resourcemanager.eventhubs.models.NestedResource;
  * @param <InnerModelT> the inner model of the nested resource
  * @param <FluentModelImplT> the fluent model implementation of the nested resource
  */
-public abstract class NestedResourceImpl<
-    FluentModelT extends Indexable,
-    InnerModelT extends ProxyResource,
-    FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
+public abstract class NestedResourceImpl<FluentModelT extends Indexable, InnerModelT extends ProxyResource, FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
     extends CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
     implements HasManager<EventHubsManager>, NestedResource {
     protected final EventHubsManager manager;

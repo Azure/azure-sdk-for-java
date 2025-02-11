@@ -6,18 +6,20 @@ package com.azure.resourcemanager.logz.models;
 
 import com.azure.resourcemanager.logz.fluent.models.UserRoleResponseInner;
 
-/** An immutable client-side representation of UserRoleResponse. */
+/**
+ * An immutable client-side representation of UserRoleResponse.
+ */
 public interface UserRoleResponse {
     /**
      * Gets the role property: User roles on configured in Logz.io account.
-     *
+     * 
      * @return the role value.
      */
     UserRole role();
 
     /**
      * Gets the inner com.azure.resourcemanager.logz.fluent.models.UserRoleResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     UserRoleResponseInner innerModel();

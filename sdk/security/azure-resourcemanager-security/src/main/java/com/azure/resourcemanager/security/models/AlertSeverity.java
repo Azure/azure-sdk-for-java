@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class AlertSeverity extends ExpandableStringEnum<AlertSeverity> {
      * @param name a name to look for.
      * @return the corresponding AlertSeverity.
      */
-    @JsonCreator
     public static AlertSeverity fromString(String name) {
         return fromString(name, AlertSeverity.class);
     }

@@ -64,23 +64,19 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, firewallRuleName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, firewallRuleName, createParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public FirewallRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, firewallRuleName, createParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, firewallRuleName, createParameters, context)
+            .getValue();
         return this;
     }
 
@@ -97,51 +93,43 @@ public final class FirewallRuleImpl implements FirewallRule, FirewallRule.Defini
     }
 
     public FirewallRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .updateWithResponse(resourceGroupName, accountName, firewallRuleName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .updateWithResponse(resourceGroupName, accountName, firewallRuleName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FirewallRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .updateWithResponse(resourceGroupName, accountName, firewallRuleName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .updateWithResponse(resourceGroupName, accountName, firewallRuleName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    FirewallRuleImpl(
-        FirewallRuleInner innerObject, com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager) {
+    FirewallRuleImpl(FirewallRuleInner innerObject,
+        com.azure.resourcemanager.datalakestore.DataLakeStoreManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.firewallRuleName = Utils.getValueFromIdByName(innerObject.id(), "firewallRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.firewallRuleName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "firewallRules");
     }
 
     public FirewallRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .getWithResponse(resourceGroupName, accountName, firewallRuleName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .getWithResponse(resourceGroupName, accountName, firewallRuleName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FirewallRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFirewallRules()
-                .getWithResponse(resourceGroupName, accountName, firewallRuleName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFirewallRules()
+            .getWithResponse(resourceGroupName, accountName, firewallRuleName, context)
+            .getValue();
         return this;
     }
 

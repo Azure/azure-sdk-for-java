@@ -6,20 +6,17 @@ package com.azure.resourcemanager.policyinsights.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.fluent.models.PolicyMetadataProperties;
-import org.junit.jupiter.api.Test;
 
 public final class PolicyMetadataPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        PolicyMetadataProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"pajqgxysm\",\"requirements\":\"mbqfqvmk\",\"metadataId\":\"oz\",\"category\":\"vhelxprglyatdd\",\"title\":\"cbcuejrjxgciqi\",\"owner\":\"hos\",\"additionalContentUrl\":\"dqrhzoymib\"}")
-                .toObject(PolicyMetadataProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PolicyMetadataProperties model = BinaryData.fromString(
+            "{\"description\":\"hokvbwnh\",\"requirements\":\"qlgehg\",\"metadataId\":\"ipifhpfeoajvg\",\"category\":\"txjcsheafidlt\",\"title\":\"sr\",\"owner\":\"mks\",\"additionalContentUrl\":\"h\",\"metadata\":\"dataftxfkf\"}")
+            .toObject(PolicyMetadataProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PolicyMetadataProperties model = new PolicyMetadataProperties();
         model = BinaryData.fromObject(model).toObject(PolicyMetadataProperties.class);
     }

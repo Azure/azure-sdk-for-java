@@ -35,12 +35,9 @@ public class EventProcessorOptionsTest {
         final String connectionString = "eh connection string";
         final String storageConnectionString = "foo-bar-storage";
         final String storageEndpoint = "foo-bar-storage-endpoint";
-        final List<String> arguments = Arrays.asList(
-            "--storageConnectionString", storageConnectionString,
-            "--storageEndpoint", storageEndpoint,
-            "--eventsToSend", String.valueOf(numberOfEvents),
-            "--connectionString", connectionString,
-            "--name", name);
+        final List<String> arguments = Arrays.asList("--storageConnectionString", storageConnectionString,
+            "--storageEndpoint", storageEndpoint, "--eventsToSend", String.valueOf(numberOfEvents),
+            "--connectionString", connectionString, "--name", name);
         final EventProcessorOptions options = new EventProcessorOptions();
         final JCommander commander = new JCommander(options);
 
@@ -97,8 +94,8 @@ public class EventProcessorOptionsTest {
         final JCommander commander = new JCommander(options);
 
         // Act
-        final ParameterException parameterException = assertThrows(ParameterException.class,
-            () -> commander.parse(argumentList.toArray(new String[0])));
+        final ParameterException parameterException
+            = assertThrows(ParameterException.class, () -> commander.parse(argumentList.toArray(new String[0])));
 
         // Assert
         assertTrue(parameterException.getMessage().contains(parameterToRemove));
@@ -116,19 +113,16 @@ public class EventProcessorOptionsTest {
         final String transportType = "invalidType";
         final String transportTypeKey = "--transportType";
 
-        final List<String> arguments = Arrays.asList(
-            transportTypeKey, transportType,
-            "--storageConnectionString", storageConnectionString,
-            "--storageEndpoint", storageEndpoint,
-            "--connectionString", connectionString,
-            "--name", name);
+        final List<String> arguments
+            = Arrays.asList(transportTypeKey, transportType, "--storageConnectionString", storageConnectionString,
+                "--storageEndpoint", storageEndpoint, "--connectionString", connectionString, "--name", name);
 
         final EventProcessorOptions options = new EventProcessorOptions();
         final JCommander commander = new JCommander(options);
 
         // Act
-        final ParameterException exception = assertThrows(ParameterException.class,
-            () -> commander.parse(arguments.toArray(new String[0])));
+        final ParameterException exception
+            = assertThrows(ParameterException.class, () -> commander.parse(arguments.toArray(new String[0])));
 
         // Assert
         assertTrue(exception.getMessage().contains(transportTypeKey));
@@ -145,13 +139,9 @@ public class EventProcessorOptionsTest {
         final String storageEndpoint = "foo-bar-storage-endpoint";
         final AmqpTransportType transportType = AmqpTransportType.AMQP_WEB_SOCKETS;
 
-        final List<String> arguments = Arrays.asList(
-            "--transportType", transportType.toString(),
-            "--storageConnectionString", storageConnectionString,
-            "--storageEndpoint", storageEndpoint,
-            "--connectionString", connectionString,
-            "--name", name);
-
+        final List<String> arguments = Arrays.asList("--transportType", transportType.toString(),
+            "--storageConnectionString", storageConnectionString, "--storageEndpoint", storageEndpoint,
+            "--connectionString", connectionString, "--name", name);
 
         final EventProcessorOptions options = new EventProcessorOptions();
         final JCommander commander = new JCommander(options);

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class CallbackUrlInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CallbackUrlInner model = BinaryData.fromString("{\"value\":\"jervtia\"}").toObject(CallbackUrlInner.class);
-        Assertions.assertEquals("jervtia", model.value());
+        CallbackUrlInner model = BinaryData.fromString("{\"value\":\"hrnxrxc\"}").toObject(CallbackUrlInner.class);
+        Assertions.assertEquals("hrnxrxc", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CallbackUrlInner model = new CallbackUrlInner().withValue("jervtia");
+        CallbackUrlInner model = new CallbackUrlInner().withValue("hrnxrxc");
         model = BinaryData.fromObject(model).toObject(CallbackUrlInner.class);
-        Assertions.assertEquals("jervtia", model.value());
+        Assertions.assertEquals("hrnxrxc", model.value());
     }
 }

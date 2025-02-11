@@ -28,6 +28,15 @@ public final class EncryptionStatus extends ExpandableStringEnum<EncryptionStatu
     public static final EncryptionStatus UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of EncryptionStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionStatus() {
+    }
+
+    /**
      * Creates of finds an encryption status based on its name.
      *
      * @param name a name to look for
@@ -37,7 +46,11 @@ public final class EncryptionStatus extends ExpandableStringEnum<EncryptionStatu
         return fromString(name, EncryptionStatus.class);
     }
 
-    /** @return known encryption statuses */
+    /**
+     * Gets known encryption statuses.
+     *
+     * @return known encryption statuses
+     */
     public static Collection<EncryptionStatus> values() {
         return values(EncryptionStatus.class);
     }

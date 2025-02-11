@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a properties of a cluster that is part of a migration. */
+/**
+ * Represents a properties of a cluster that is part of a migration.
+ */
 @Immutable
-public final class MigrationClusterProperties {
+public final class MigrationClusterProperties implements JsonSerializable<MigrationClusterProperties> {
     /*
      * The resource ID of the cluster.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The public URL of the cluster.
      */
-    @JsonProperty(value = "uri", access = JsonProperty.Access.WRITE_ONLY)
     private String uri;
 
     /*
      * The public data ingestion URL of the cluster.
      */
-    @JsonProperty(value = "dataIngestionUri", access = JsonProperty.Access.WRITE_ONLY)
     private String dataIngestionUri;
 
     /*
      * The role of the cluster in the migration process.
      */
-    @JsonProperty(value = "role", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationClusterRole role;
 
-    /** Creates an instance of MigrationClusterProperties class. */
+    /**
+     * Creates an instance of MigrationClusterProperties class.
+     */
     public MigrationClusterProperties() {
     }
 
     /**
      * Get the id property: The resource ID of the cluster.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -49,7 +53,7 @@ public final class MigrationClusterProperties {
 
     /**
      * Get the uri property: The public URL of the cluster.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -58,7 +62,7 @@ public final class MigrationClusterProperties {
 
     /**
      * Get the dataIngestionUri property: The public data ingestion URL of the cluster.
-     *
+     * 
      * @return the dataIngestionUri value.
      */
     public String dataIngestionUri() {
@@ -67,7 +71,7 @@ public final class MigrationClusterProperties {
 
     /**
      * Get the role property: The role of the cluster in the migration process.
-     *
+     * 
      * @return the role value.
      */
     public MigrationClusterRole role() {
@@ -76,9 +80,50 @@ public final class MigrationClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrationClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrationClusterProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrationClusterProperties.
+     */
+    public static MigrationClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrationClusterProperties deserializedMigrationClusterProperties = new MigrationClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrationClusterProperties.id = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedMigrationClusterProperties.uri = reader.getString();
+                } else if ("dataIngestionUri".equals(fieldName)) {
+                    deserializedMigrationClusterProperties.dataIngestionUri = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedMigrationClusterProperties.role = MigrationClusterRole.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrationClusterProperties;
+        });
     }
 }

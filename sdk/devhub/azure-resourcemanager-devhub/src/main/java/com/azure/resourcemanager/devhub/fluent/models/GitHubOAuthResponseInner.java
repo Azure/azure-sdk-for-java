@@ -7,30 +7,50 @@ package com.azure.resourcemanager.devhub.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Singleton response of GitHubOAuth containing. */
+/**
+ * Singleton response of GitHubOAuth containing.
+ */
 @Fluent
 public final class GitHubOAuthResponseInner extends ProxyResource {
     /*
      * Properties of a workflow.
      */
-    @JsonProperty(value = "properties")
     private GitHubOAuthProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of GitHubOAuthResponseInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of GitHubOAuthResponseInner class.
+     */
     public GitHubOAuthResponseInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of a workflow.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GitHubOAuthProperties innerProperties() {
@@ -39,7 +59,7 @@ public final class GitHubOAuthResponseInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -47,8 +67,38 @@ public final class GitHubOAuthResponseInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the username property: user making request.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -57,7 +107,7 @@ public final class GitHubOAuthResponseInner extends ProxyResource {
 
     /**
      * Set the username property: user making request.
-     *
+     * 
      * @param username the username value to set.
      * @return the GitHubOAuthResponseInner object itself.
      */
@@ -71,12 +121,57 @@ public final class GitHubOAuthResponseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubOAuthResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubOAuthResponseInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GitHubOAuthResponseInner.
+     */
+    public static GitHubOAuthResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubOAuthResponseInner deserializedGitHubOAuthResponseInner = new GitHubOAuthResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGitHubOAuthResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGitHubOAuthResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGitHubOAuthResponseInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGitHubOAuthResponseInner.innerProperties = GitHubOAuthProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedGitHubOAuthResponseInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubOAuthResponseInner;
+        });
     }
 }

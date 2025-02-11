@@ -6,15 +6,14 @@ package com.azure.resourcemanager.loadtesting.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.loadtesting.models.EndpointDetail;
-import org.junit.jupiter.api.Test;
 
 public final class EndpointDetailTests {
-    @Test
+    @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointDetail model = BinaryData.fromString("{\"port\":1629637737}").toObject(EndpointDetail.class);
+        EndpointDetail model = BinaryData.fromString("{\"port\":1998185224}").toObject(EndpointDetail.class);
     }
 
-    @Test
+    @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EndpointDetail model = new EndpointDetail();
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);

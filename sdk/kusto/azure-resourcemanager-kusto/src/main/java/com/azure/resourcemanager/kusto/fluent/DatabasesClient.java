@@ -19,11 +19,13 @@ import com.azure.resourcemanager.kusto.models.CallerRole;
 import com.azure.resourcemanager.kusto.models.CheckNameRequest;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalListRequest;
 
-/** An instance of this class provides access to all the operations defined in DatabasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabasesClient.
+ */
 public interface DatabasesClient {
     /**
      * Checks that the databases resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -34,12 +36,12 @@ public interface DatabasesClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName, Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        CheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the databases resource name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
@@ -49,12 +51,12 @@ public interface DatabasesClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName);
+    CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName,
+        CheckNameRequest resourceName);
 
     /**
      * Returns the list of databases of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,13 +69,13 @@ public interface DatabasesClient {
 
     /**
      * Returns the list of databases of the given Kusto cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param top limit the number of results.
      * @param skiptoken Skiptoken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,12 +83,12 @@ public interface DatabasesClient {
      * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabaseInner> listByCluster(
-        String resourceGroupName, String clusterName, Integer top, String skiptoken, Context context);
+    PagedIterable<DatabaseInner> listByCluster(String resourceGroupName, String clusterName, Integer top,
+        String skiptoken, Context context);
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -97,12 +99,12 @@ public interface DatabasesClient {
      * @return class representing a Kusto database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    Response<DatabaseInner> getWithResponse(String resourceGroupName, String clusterName, String databaseName,
+        Context context);
 
     /**
      * Returns a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -116,7 +118,7 @@ public interface DatabasesClient {
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -127,18 +129,18 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters);
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -146,17 +148,12 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, CallerRole callerRole, Context context);
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -167,18 +164,18 @@ public interface DatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters);
+    DatabaseInner createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters);
 
     /**
      * Creates or updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -186,17 +183,12 @@ public interface DatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context);
+    DatabaseInner createOrUpdate(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters, CallerRole callerRole, Context context);
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -207,18 +199,18 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInner parameters);
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -226,17 +218,12 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context);
+    SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInner parameters, CallerRole callerRole, Context context);
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -251,13 +238,13 @@ public interface DatabasesClient {
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
+     * allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -265,17 +252,12 @@ public interface DatabasesClient {
      * @return class representing a Kusto database.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner update(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole,
-        Context context);
+    DatabaseInner update(String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters,
+        CallerRole callerRole, Context context);
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -289,7 +271,7 @@ public interface DatabasesClient {
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -300,12 +282,12 @@ public interface DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String databaseName,
+        Context context);
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -318,7 +300,7 @@ public interface DatabasesClient {
 
     /**
      * Deletes the database with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -332,7 +314,7 @@ public interface DatabasesClient {
 
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -342,12 +324,12 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabasePrincipalInner> listPrincipals(
-        String resourceGroupName, String clusterName, String databaseName);
+    PagedIterable<DatabasePrincipalInner> listPrincipals(String resourceGroupName, String clusterName,
+        String databaseName);
 
     /**
      * Returns a list of database principals of the given Kusto cluster and database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -358,12 +340,12 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DatabasePrincipalInner> listPrincipals(
-        String resourceGroupName, String clusterName, String databaseName, Context context);
+    PagedIterable<DatabasePrincipalInner> listPrincipals(String resourceGroupName, String clusterName,
+        String databaseName, Context context);
 
     /**
      * Add Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -375,16 +357,12 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabasePrincipalListResultInner> addPrincipalsWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd,
-        Context context);
+    Response<DatabasePrincipalListResultInner> addPrincipalsWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, DatabasePrincipalListRequest databasePrincipalsToAdd, Context context);
 
     /**
      * Add Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -395,15 +373,12 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalListResultInner addPrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
+    DatabasePrincipalListResultInner addPrincipals(String resourceGroupName, String clusterName, String databaseName,
         DatabasePrincipalListRequest databasePrincipalsToAdd);
 
     /**
      * Remove Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -415,16 +390,13 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatabasePrincipalListResultInner> removePrincipalsWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove,
+    Response<DatabasePrincipalListResultInner> removePrincipalsWithResponse(String resourceGroupName,
+        String clusterName, String databaseName, DatabasePrincipalListRequest databasePrincipalsToRemove,
         Context context);
 
     /**
      * Remove Database principals permissions.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
@@ -435,9 +407,6 @@ public interface DatabasesClient {
      * @return the list Kusto database principals operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabasePrincipalListResultInner removePrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
+    DatabasePrincipalListResultInner removePrincipals(String resourceGroupName, String clusterName, String databaseName,
         DatabasePrincipalListRequest databasePrincipalsToRemove);
 }

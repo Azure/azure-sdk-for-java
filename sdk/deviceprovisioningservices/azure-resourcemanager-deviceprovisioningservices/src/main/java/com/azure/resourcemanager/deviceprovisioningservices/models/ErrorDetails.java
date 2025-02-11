@@ -5,21 +5,58 @@
 package com.azure.resourcemanager.deviceprovisioningservices.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.exception.AdditionalInfo;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Error details. */
+/**
+ * Error details.
+ */
 @Immutable
 public final class ErrorDetails extends ManagementError {
     /*
      * The HTTP status code.
      */
-    @JsonProperty(value = "httpStatusCode", access = JsonProperty.Access.WRITE_ONLY)
     private String httpStatusCode;
+
+    /*
+     * Additional info for the error.
+     */
+    private List<AdditionalInfo> additionalInfo;
+
+    /*
+     * Details for the error.
+     */
+    private List<ManagementError> details;
+
+    /*
+     * The target of the error.
+     */
+    private String target;
+
+    /*
+     * The error message parsed from the body of the http error response.
+     */
+    private String message;
+
+    /*
+     * The error code parsed from the body of the http error response.
+     */
+    private String code;
+
+    /**
+     * Creates an instance of ErrorDetails class.
+     */
+    public ErrorDetails() {
+    }
 
     /**
      * Get the httpStatusCode property: The HTTP status code.
-     *
+     * 
      * @return the httpStatusCode value.
      */
     public String getHttpStatusCode() {
@@ -27,10 +64,125 @@ public final class ErrorDetails extends ManagementError {
     }
 
     /**
+     * Get the additionalInfo property: Additional info for the error.
+     * 
+     * @return the additionalInfo value.
+     */
+    @Override
+    public List<AdditionalInfo> getAdditionalInfo() {
+        return this.additionalInfo;
+    }
+
+    /**
+     * Get the details property: Details for the error.
+     * 
+     * @return the details value.
+     */
+    @Override
+    public List<ManagementError> getDetails() {
+        return this.details;
+    }
+
+    /**
+     * Get the target property: The target of the error.
+     * 
+     * @return the target value.
+     */
+    @Override
+    public String getTarget() {
+        return this.target;
+    }
+
+    /**
+     * Get the message property: The error message parsed from the body of the http error response.
+     * 
+     * @return the message value.
+     */
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
+
+    /**
+     * Get the code property: The error code parsed from the body of the http error response.
+     * 
+     * @return the code value.
+     */
+    @Override
+    public String getCode() {
+        return this.code;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ErrorDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ErrorDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ErrorDetails.
+     */
+    public static ErrorDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonReader bufferedReader = reader.bufferObject();
+            bufferedReader.nextToken();
+            while (bufferedReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = bufferedReader.getFieldName();
+                bufferedReader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    return readManagementError(bufferedReader);
+                } else {
+                    bufferedReader.skipChildren();
+                }
+            }
+            return readManagementError(bufferedReader.reset());
+        });
+    }
+
+    private static ErrorDetails readManagementError(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ErrorDetails deserializedErrorDetails = new ErrorDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedErrorDetails.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedErrorDetails.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedErrorDetails.target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<ManagementError> details = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
+                    deserializedErrorDetails.details = details;
+                } else if ("additionalInfo".equals(fieldName)) {
+                    List<AdditionalInfo> additionalInfo = reader.readArray(reader1 -> AdditionalInfo.fromJson(reader1));
+                    deserializedErrorDetails.additionalInfo = additionalInfo;
+                } else if ("httpStatusCode".equals(fieldName)) {
+                    deserializedErrorDetails.httpStatusCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedErrorDetails;
+        });
     }
 }

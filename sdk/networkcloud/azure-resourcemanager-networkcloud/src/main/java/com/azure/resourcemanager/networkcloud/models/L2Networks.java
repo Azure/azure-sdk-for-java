@@ -8,68 +8,70 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of L2Networks. */
+/**
+ * Resource collection API of L2Networks.
+ */
 public interface L2Networks {
     /**
      * List layer 2 (L2) networks in the subscription.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided subscription.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<L2Network> list();
 
     /**
      * List layer 2 (L2) networks in the subscription.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided subscription.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of layer 2 (L2) networks in the provided subscription as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<L2Network> list(Context context);
 
     /**
      * List layer 2 (L2) networks in the resource group.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided resource group.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<L2Network> listByResourceGroup(String resourceGroupName);
 
     /**
      * List layer 2 (L2) networks in the resource group.
-     *
-     * <p>Get a list of layer 2 (L2) networks in the provided resource group.
-     *
+     * 
+     * Get a list of layer 2 (L2) networks in the provided resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of layer 2 (L2) networks in the provided resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<L2Network> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Retrieve the layer 2 (L2) network.
-     *
-     * <p>Get properties of the provided layer 2 (L2) network.
-     *
+     * 
+     * Get properties of the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param context The context to associate with this operation.
@@ -82,9 +84,9 @@ public interface L2Networks {
 
     /**
      * Retrieve the layer 2 (L2) network.
-     *
-     * <p>Get properties of the provided layer 2 (L2) network.
-     *
+     * 
+     * Get properties of the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,36 +98,38 @@ public interface L2Networks {
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByResourceGroup(String resourceGroupName, String l2NetworkName);
+    OperationStatusResult deleteByResourceGroup(String resourceGroupName, String l2NetworkName);
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l2NetworkName The name of the L2 network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void delete(String resourceGroupName, String l2NetworkName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String l2NetworkName, Context context);
 
     /**
      * Retrieve the layer 2 (L2) network.
-     *
-     * <p>Get properties of the provided layer 2 (L2) network.
-     *
+     * 
+     * Get properties of the provided layer 2 (L2) network.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -136,9 +140,9 @@ public interface L2Networks {
 
     /**
      * Retrieve the layer 2 (L2) network.
-     *
-     * <p>Get properties of the provided layer 2 (L2) network.
-     *
+     * 
+     * Get properties of the provided layer 2 (L2) network.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,32 +154,34 @@ public interface L2Networks {
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteById(String id);
+    OperationStatusResult deleteById(String id);
 
     /**
      * Delete the layer 2 (L2) network.
-     *
-     * <p>Delete the provided layer 2 (L2) network.
-     *
+     * 
+     * Delete the provided layer 2 (L2) network.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
      */
-    void deleteByIdWithResponse(String id, Context context);
+    OperationStatusResult deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new L2Network resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new L2Network definition.
      */

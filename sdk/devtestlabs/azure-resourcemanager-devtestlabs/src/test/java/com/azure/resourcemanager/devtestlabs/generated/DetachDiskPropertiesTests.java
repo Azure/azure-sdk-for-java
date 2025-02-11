@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DetachDiskPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DetachDiskProperties model =
-            BinaryData.fromString("{\"leasedByLabVmId\":\"ylhjlm\"}").toObject(DetachDiskProperties.class);
+        DetachDiskProperties model
+            = BinaryData.fromString("{\"leasedByLabVmId\":\"ylhjlm\"}").toObject(DetachDiskProperties.class);
         Assertions.assertEquals("ylhjlm", model.leasedByLabVmId());
     }
 

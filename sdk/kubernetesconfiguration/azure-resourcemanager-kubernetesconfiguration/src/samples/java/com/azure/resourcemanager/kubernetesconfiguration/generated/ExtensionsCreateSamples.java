@@ -11,62 +11,52 @@ import com.azure.resourcemanager.kubernetesconfiguration.models.ScopeCluster;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Extensions Create. */
+/**
+ * Samples for Extensions Create.
+ */
 public final class ExtensionsCreateSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/CreateExtension.json
+     * x-ms-original-file:
+     * specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/
+     * examples/CreateExtension.json
      */
     /**
      * Sample code: Create Extension.
-     *
+     * 
      * @param manager Entry point to SourceControlConfigurationManager.
      */
-    public static void createExtension(
-        com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager manager) {
-        manager
-            .extensions()
-            .create(
-                "rg1",
-                "Microsoft.Kubernetes",
-                "connectedClusters",
-                "clusterName1",
-                "ClusterMonitor",
-                new ExtensionInner()
-                    .withExtensionType("azuremonitor-containers")
+    public static void
+        createExtension(com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager manager) {
+        manager.extensions()
+            .create("rg1", "Microsoft.Kubernetes", "connectedClusters", "clusterName1", "ClusterMonitor",
+                new ExtensionInner().withExtensionType("azuremonitor-containers")
                     .withAutoUpgradeMinorVersion(true)
                     .withReleaseTrain("Preview")
                     .withScope(new Scope().withCluster(new ScopeCluster().withReleaseNamespace("kube-system")))
-                    .withConfigurationSettings(
-                        mapOf(
-                            "omsagent.env.clusterName", "clusterName1", "omsagent.secret.wsid", "fakeTokenPlaceholder"))
+                    .withConfigurationSettings(mapOf("omsagent.env.clusterName", "clusterName1", "omsagent.secret.wsid",
+                        "fakeTokenPlaceholder"))
                     .withConfigurationProtectedSettings(mapOf("omsagent.secret.key", "fakeTokenPlaceholder")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/examples/CreateExtensionWithPlan.json
+     * x-ms-original-file:
+     * specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2023-05-01/
+     * examples/CreateExtensionWithPlan.json
      */
     /**
      * Sample code: Create Extension with Plan.
-     *
+     * 
      * @param manager Entry point to SourceControlConfigurationManager.
      */
     public static void createExtensionWithPlan(
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager manager) {
-        manager
-            .extensions()
-            .create(
-                "rg1",
-                "Microsoft.Kubernetes",
-                "connectedClusters",
-                "clusterName1",
-                "azureVote",
+        manager.extensions()
+            .create("rg1", "Microsoft.Kubernetes", "connectedClusters", "clusterName1", "azureVote",
                 new ExtensionInner()
-                    .withPlan(
-                        new Plan()
-                            .withName("azure-vote-standard")
-                            .withPublisher("Microsoft")
-                            .withProduct("azure-vote-standard-offer-id"))
+                    .withPlan(new Plan().withName("azure-vote-standard")
+                        .withPublisher("Microsoft")
+                        .withProduct("azure-vote-standard-offer-id"))
                     .withExtensionType("azure-vote")
                     .withAutoUpgradeMinorVersion(true)
                     .withReleaseTrain("Preview"),

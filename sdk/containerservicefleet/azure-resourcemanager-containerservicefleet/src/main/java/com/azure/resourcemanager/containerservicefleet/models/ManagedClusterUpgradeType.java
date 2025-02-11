@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservicefleet.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ManagedClusterUpgradeType extends ExpandableStringEnum<Manage
      * @param name a name to look for.
      * @return the corresponding ManagedClusterUpgradeType.
      */
-    @JsonCreator
     public static ManagedClusterUpgradeType fromString(String name) {
         return fromString(name, ManagedClusterUpgradeType.class);
     }

@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuTier. */
+/**
+ * Gets the sku tier. This is based on the SKU name.
+ */
 public final class SkuTier extends ExpandableStringEnum<SkuTier> {
-    /** Static value Free for SkuTier. */
+    /**
+     * Static value Free for SkuTier.
+     */
     public static final SkuTier FREE = fromString("Free");
 
-    /** Static value Standard for SkuTier. */
+    /**
+     * Static value Standard for SkuTier.
+     */
     public static final SkuTier STANDARD = fromString("Standard");
 
     /**
+     * Creates a new instance of SkuTier value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuTier() {
+    }
+
+    /**
      * Creates or finds a SkuTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SkuTier.
      */
-    @JsonCreator
     public static SkuTier fromString(String name) {
         return fromString(name, SkuTier.class);
     }
 
     /**
      * Gets known SkuTier values.
-     *
+     * 
      * @return known SkuTier values.
      */
     public static Collection<SkuTier> values() {

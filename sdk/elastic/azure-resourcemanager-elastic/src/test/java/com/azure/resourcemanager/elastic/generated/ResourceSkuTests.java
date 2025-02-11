@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceSku model = BinaryData.fromString("{\"name\":\"joxzjnchgejspodm\"}").toObject(ResourceSku.class);
-        Assertions.assertEquals("joxzjnchgejspodm", model.name());
+        ResourceSku model = BinaryData.fromString("{\"name\":\"abkyqduujitcjcz\"}").toObject(ResourceSku.class);
+        Assertions.assertEquals("abkyqduujitcjcz", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResourceSku model = new ResourceSku().withName("joxzjnchgejspodm");
+        ResourceSku model = new ResourceSku().withName("abkyqduujitcjcz");
         model = BinaryData.fromObject(model).toObject(ResourceSku.class);
-        Assertions.assertEquals("joxzjnchgejspodm", model.name());
+        Assertions.assertEquals("abkyqduujitcjcz", model.name());
     }
 }

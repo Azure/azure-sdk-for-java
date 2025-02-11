@@ -6,20 +6,17 @@ package com.azure.resourcemanager.education.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.models.JoinRequestList;
-import org.junit.jupiter.api.Test;
 
 public final class JoinRequestListTests {
-    @Test
-    public void testDeserialize() {
-        JoinRequestList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"firstName\":\"luwfzitonpeqfpjk\",\"lastName\":\"xofpdvhpfxxypi\",\"email\":\"nmayhuybb\",\"status\":\"Denied\"},\"id\":\"epoo\",\"name\":\"inuvamiheogn\",\"type\":\"rxzxtheo\"},{\"properties\":{\"firstName\":\"ivyevcciqihnhun\",\"lastName\":\"wjzrnfygxgisp\",\"email\":\"vtz\",\"status\":\"Pending\"},\"id\":\"ubljofxqe\",\"name\":\"fjaeq\",\"type\":\"hqjbasvmsmj\"},{\"properties\":{\"firstName\":\"ngsntnbybk\",\"lastName\":\"cwrwclxxwrljdous\",\"email\":\"qvkoc\",\"status\":\"Denied\"},\"id\":\"kwt\",\"name\":\"hxbnjbiksqrg\",\"type\":\"ssainqpjwnzll\"},{\"properties\":{\"firstName\":\"ppeebvmgxsab\",\"lastName\":\"qduujitcjczdz\",\"email\":\"ndhkrw\",\"status\":\"Pending\"},\"id\":\"p\",\"name\":\"sbdkvwr\",\"type\":\"jfeusnh\"}],\"nextLink\":\"je\"}")
-                .toObject(JoinRequestList.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        JoinRequestList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"firstName\":\"iheogna\",\"lastName\":\"zxtheotusivyevcc\",\"email\":\"ihnhun\",\"status\":\"Denied\"},\"id\":\"zrnf\",\"name\":\"gxg\",\"type\":\"spemvtzfk\"},{\"properties\":{\"firstName\":\"bljofxqeof\",\"lastName\":\"e\",\"email\":\"hqjbasvmsmj\",\"status\":\"Denied\"},\"id\":\"gsntnbybkzgcwr\",\"name\":\"clxxwrljdo\",\"type\":\"skcqvkocrcjd\"}],\"nextLink\":\"tnhxbn\"}")
+            .toObject(JoinRequestList.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         JoinRequestList model = new JoinRequestList();
         model = BinaryData.fromObject(model).toObject(JoinRequestList.class);
     }

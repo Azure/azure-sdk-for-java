@@ -14,8 +14,7 @@ public final class MediaServiceOperationStatusImpl implements MediaServiceOperat
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    MediaServiceOperationStatusImpl(
-        MediaServiceOperationStatusInner innerObject,
+    MediaServiceOperationStatusImpl(MediaServiceOperationStatusInner innerObject,
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

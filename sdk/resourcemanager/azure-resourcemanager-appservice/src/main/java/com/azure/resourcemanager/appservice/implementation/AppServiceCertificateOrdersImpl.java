@@ -12,13 +12,8 @@ import com.azure.resourcemanager.appservice.fluent.AppServiceCertificateOrdersCl
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** The implementation for {@link AppServicePlans}. */
-public class AppServiceCertificateOrdersImpl
-    extends TopLevelModifiableResourcesImpl<
-        AppServiceCertificateOrder,
-        AppServiceCertificateOrderImpl,
-        AppServiceCertificateOrderInner,
-    AppServiceCertificateOrdersClient,
-    AppServiceManager>
+public class AppServiceCertificateOrdersImpl extends
+    TopLevelModifiableResourcesImpl<AppServiceCertificateOrder, AppServiceCertificateOrderImpl, AppServiceCertificateOrderInner, AppServiceCertificateOrdersClient, AppServiceManager>
     implements AppServiceCertificateOrders {
 
     public AppServiceCertificateOrdersImpl(AppServiceManager manager) {

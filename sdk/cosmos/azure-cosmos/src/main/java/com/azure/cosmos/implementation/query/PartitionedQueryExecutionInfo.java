@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Constants;
@@ -23,6 +23,7 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
     private QueryInfo queryInfo;
     private List<Range<String>> queryRanges;
     private RequestTimeline queryPlanRequestTimeline;
+    private HybridSearchQueryInfo hybridSearchQueryInfo;
 
     PartitionedQueryExecutionInfo(QueryInfo queryInfo, List<Range<String>> queryRanges) {
         this.queryInfo = queryInfo;
@@ -30,8 +31,8 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
 
         this.set(
             PartitionedQueryExecutionInfoInternal.PARTITIONED_QUERY_EXECUTION_INFO_VERSION_PROPERTY,
-            Constants.PartitionedQueryExecutionInfo.VERSION_1,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            Constants.PartitionedQueryExecutionInfo.VERSION_1
+        );
     }
 
     public PartitionedQueryExecutionInfo(ObjectNode content, RequestTimeline queryPlanRequestTimeline) {
@@ -61,6 +62,20 @@ public final class PartitionedQueryExecutionInfo extends JsonSerializable {
 
     public RequestTimeline getQueryPlanRequestTimeline() {
         return queryPlanRequestTimeline;
+    }
+
+    public boolean hasHybridSearchQueryInfo() {
+        getHybridSearchQueryInfo();
+        return hybridSearchQueryInfo != null;
+    }
+
+    public HybridSearchQueryInfo getHybridSearchQueryInfo() {
+        if (hybridSearchQueryInfo == null) {
+            hybridSearchQueryInfo = super.getObject(
+                PartitionedQueryExecutionInfoInternal.HYBRID_SEARCH_QUERY_INFO_PROPERTY, HybridSearchQueryInfo.class);
+        }
+
+        return this.hybridSearchQueryInfo;
     }
 
     @Override

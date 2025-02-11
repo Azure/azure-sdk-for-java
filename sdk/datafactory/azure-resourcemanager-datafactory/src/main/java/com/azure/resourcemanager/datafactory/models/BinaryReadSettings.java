@@ -70,7 +70,6 @@ public final class BinaryReadSettings extends FormatReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
         if (compressionProperties() != null) {
             compressionProperties().validate();
         }

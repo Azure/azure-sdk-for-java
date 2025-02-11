@@ -12,8 +12,8 @@ public final class AppAvailabilityInfoImpl implements AppAvailabilityInfo {
 
     private final com.azure.resourcemanager.iotcentral.IotCentralManager serviceManager;
 
-    AppAvailabilityInfoImpl(
-        AppAvailabilityInfoInner innerObject, com.azure.resourcemanager.iotcentral.IotCentralManager serviceManager) {
+    AppAvailabilityInfoImpl(AppAvailabilityInfoInner innerObject,
+        com.azure.resourcemanager.iotcentral.IotCentralManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

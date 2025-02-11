@@ -23,7 +23,8 @@ public final class AlertPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AlertProperties model = new AlertProperties().withSendToOwners("wryoqpsoacc")
-            .withCustomEmailAddresses(Arrays.asList("akl", "lahbcryff", "fdosyg")).withLocale("paojakhmsbzjh");
+            .withCustomEmailAddresses(Arrays.asList("akl", "lahbcryff", "fdosyg"))
+            .withLocale("paojakhmsbzjh");
         model = BinaryData.fromObject(model).toObject(AlertProperties.class);
         Assertions.assertEquals("wryoqpsoacc", model.sendToOwners());
         Assertions.assertEquals("akl", model.customEmailAddresses().get(0));

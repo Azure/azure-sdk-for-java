@@ -25,24 +25,28 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.Protecte
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProtectedItemOperationStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectedItemOperationStatusClient.
+ */
 public final class ProtectedItemOperationStatusClientImpl implements ProtectedItemOperationStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProtectedItemOperationStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataReplicationMgmtClientImpl client;
 
     /**
      * Initializes an instance of ProtectedItemOperationStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProtectedItemOperationStatusClientImpl(DataReplicationMgmtClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ProtectedItemOperationStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ProtectedItemOperationStatusService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,28 +57,22 @@ public final class ProtectedItemOperationStatusClientImpl implements ProtectedIt
     @Host("{$host}")
     @ServiceInterface(name = "DataReplicationMgmtC")
     public interface ProtectedItemOperationStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}/operations/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}/operations/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<OperationStatusInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @PathParam("operationId") String operationId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("protectedItemName") String protectedItemName, @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the protected item operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the protected item.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -85,19 +83,15 @@ public final class ProtectedItemOperationStatusClientImpl implements ProtectedIt
      * @return defines the operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -116,26 +110,16 @@ public final class ProtectedItemOperationStatusClientImpl implements ProtectedIt
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            protectedItemName,
-                            operationId,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    vaultName, protectedItemName, operationId, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the protected item operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the protected item.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -147,19 +131,15 @@ public final class ProtectedItemOperationStatusClientImpl implements ProtectedIt
      * @return defines the operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId, Context context) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -177,24 +157,15 @@ public final class ProtectedItemOperationStatusClientImpl implements ProtectedIt
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                protectedItemName,
-                operationId,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            protectedItemName, operationId, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the protected item operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the protected item.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -205,17 +176,17 @@ public final class ProtectedItemOperationStatusClientImpl implements ProtectedIt
      * @return defines the operation status on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationStatusInner> getAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId) {
+    private Mono<OperationStatusInner> getAsync(String resourceGroupName, String vaultName, String protectedItemName,
+        String operationId) {
         return getWithResponseAsync(resourceGroupName, vaultName, protectedItemName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the protected item operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the protected item.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -227,16 +198,16 @@ public final class ProtectedItemOperationStatusClientImpl implements ProtectedIt
      * @return defines the operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusInner> getWithResponse(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId, Context context) {
+    public Response<OperationStatusInner> getWithResponse(String resourceGroupName, String vaultName,
+        String protectedItemName, String operationId, Context context) {
         return getWithResponseAsync(resourceGroupName, vaultName, protectedItemName, operationId, context).block();
     }
 
     /**
      * Gets the protected item operation status.
-     *
-     * <p>Tracks the results of an asynchronous operation on the protected item.
-     *
+     * 
+     * Tracks the results of an asynchronous operation on the protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -247,8 +218,8 @@ public final class ProtectedItemOperationStatusClientImpl implements ProtectedIt
      * @return defines the operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner get(
-        String resourceGroupName, String vaultName, String protectedItemName, String operationId) {
+    public OperationStatusInner get(String resourceGroupName, String vaultName, String protectedItemName,
+        String operationId) {
         return getWithResponse(resourceGroupName, vaultName, protectedItemName, operationId, Context.NONE).getValue();
     }
 }

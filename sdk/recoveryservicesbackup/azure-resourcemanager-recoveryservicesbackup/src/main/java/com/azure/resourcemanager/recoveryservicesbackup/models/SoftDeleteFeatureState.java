@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -47,7 +46,6 @@ public final class SoftDeleteFeatureState extends ExpandableStringEnum<SoftDelet
      * @param name a name to look for.
      * @return the corresponding SoftDeleteFeatureState.
      */
-    @JsonCreator
     public static SoftDeleteFeatureState fromString(String name) {
         return fromString(name, SoftDeleteFeatureState.class);
     }

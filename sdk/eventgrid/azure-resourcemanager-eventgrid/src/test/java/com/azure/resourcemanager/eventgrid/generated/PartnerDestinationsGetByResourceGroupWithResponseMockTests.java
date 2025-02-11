@@ -23,7 +23,7 @@ public final class PartnerDestinationsGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"8e0a3c47-9bb9-40e6-995f-6c8f521764df\",\"endpointServiceContext\":\"tzbpyfao\",\"expirationTimeIfNotActivatedUtc\":\"2021-10-06T17:50:37Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"wmhjobzrfprizdcq\",\"messageForActivation\":\"f\"},\"location\":\"vb\",\"tags\":{\"oorssatfy\":\"whgkgsoa\",\"as\":\"ipufdmxuqbdq\",\"ixhg\":\"tuxvzfqayopbt\"},\"id\":\"bhxmndztgsqjayq\",\"name\":\"arxneibpgbr\",\"type\":\"bjdqkn\"}";
+            = "{\"properties\":{\"partnerRegistrationImmutableId\":\"b051e1a5-4f98-4923-8542-687729421201\",\"endpointServiceContext\":\"tzbpyfao\",\"expirationTimeIfNotActivatedUtc\":\"2021-10-06T17:50:37Z\",\"provisioningState\":\"Succeeded\",\"activationState\":\"NeverActivated\",\"endpointBaseUrl\":\"wmhjobzrfprizdcq\",\"messageForActivation\":\"f\"},\"location\":\"vb\",\"tags\":{\"oorssatfy\":\"whgkgsoa\",\"as\":\"ipufdmxuqbdq\",\"ixhg\":\"tuxvzfqayopbt\"},\"id\":\"bhxmndztgsqjayq\",\"name\":\"arxneibpgbr\",\"type\":\"bjdqkn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -38,7 +38,7 @@ public final class PartnerDestinationsGetByResourceGroupWithResponseMockTests {
 
         Assertions.assertEquals("vb", response.location());
         Assertions.assertEquals("whgkgsoa", response.tags().get("oorssatfy"));
-        Assertions.assertEquals(UUID.fromString("8e0a3c47-9bb9-40e6-995f-6c8f521764df"),
+        Assertions.assertEquals(UUID.fromString("b051e1a5-4f98-4923-8542-687729421201"),
             response.partnerRegistrationImmutableId());
         Assertions.assertEquals("tzbpyfao", response.endpointServiceContext());
         Assertions.assertEquals(OffsetDateTime.parse("2021-10-06T17:50:37Z"),

@@ -5,53 +5,49 @@
 package com.azure.resourcemanager.maintenance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.maintenance.models.InputPatchConfiguration;
 import com.azure.resourcemanager.maintenance.models.MaintenanceScope;
 import com.azure.resourcemanager.maintenance.models.Visibility;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Properties for maintenance configuration.
  */
 @Fluent
-public final class MaintenanceConfigurationProperties {
+public final class MaintenanceConfigurationProperties implements JsonSerializable<MaintenanceConfigurationProperties> {
     /*
      * Gets or sets namespace of the resource
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * Gets or sets extensionProperties of the maintenanceConfiguration
      */
-    @JsonProperty(value = "extensionProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> extensionProperties;
 
     /*
      * Gets or sets maintenanceScope of the configuration
      */
-    @JsonProperty(value = "maintenanceScope")
     private MaintenanceScope maintenanceScope;
 
     /*
      * Definition of a MaintenanceWindow
      */
-    @JsonProperty(value = "maintenanceWindow")
     private MaintenanceWindow innerMaintenanceWindow;
 
     /*
      * Gets or sets the visibility of the configuration. The default value is 'Custom'
      */
-    @JsonProperty(value = "visibility")
     private Visibility visibility;
 
     /*
      * The input parameters to be passed to the patch run operation.
      */
-    @JsonProperty(value = "installPatches")
     private InputPatchConfiguration installPatches;
 
     /**
@@ -332,5 +328,64 @@ public final class MaintenanceConfigurationProperties {
         if (installPatches() != null) {
             installPatches().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeMapField("extensionProperties", this.extensionProperties,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("maintenanceScope",
+            this.maintenanceScope == null ? null : this.maintenanceScope.toString());
+        jsonWriter.writeJsonField("maintenanceWindow", this.innerMaintenanceWindow);
+        jsonWriter.writeStringField("visibility", this.visibility == null ? null : this.visibility.toString());
+        jsonWriter.writeJsonField("installPatches", this.installPatches);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MaintenanceConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MaintenanceConfigurationProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MaintenanceConfigurationProperties.
+     */
+    public static MaintenanceConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MaintenanceConfigurationProperties deserializedMaintenanceConfigurationProperties
+                = new MaintenanceConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("namespace".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationProperties.namespace = reader.getString();
+                } else if ("extensionProperties".equals(fieldName)) {
+                    Map<String, String> extensionProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMaintenanceConfigurationProperties.extensionProperties = extensionProperties;
+                } else if ("maintenanceScope".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationProperties.maintenanceScope
+                        = MaintenanceScope.fromString(reader.getString());
+                } else if ("maintenanceWindow".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationProperties.innerMaintenanceWindow
+                        = MaintenanceWindow.fromJson(reader);
+                } else if ("visibility".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationProperties.visibility
+                        = Visibility.fromString(reader.getString());
+                } else if ("installPatches".equals(fieldName)) {
+                    deserializedMaintenanceConfigurationProperties.installPatches
+                        = InputPatchConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMaintenanceConfigurationProperties;
+        });
     }
 }

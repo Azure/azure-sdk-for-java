@@ -27,64 +27,42 @@ public final class StorageAccountsImpl implements StorageAccounts {
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    public StorageAccountsImpl(
-        StorageAccountsClient innerClient,
+    public StorageAccountsImpl(StorageAccountsClient innerClient,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<StorageAccountInformation> listByAccount(String resourceGroupName, String accountName) {
-        PagedIterable<StorageAccountInformationInner> inner =
-            this.serviceClient().listByAccount(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new StorageAccountInformationImpl(inner1, this.manager()));
+        PagedIterable<StorageAccountInformationInner> inner
+            = this.serviceClient().listByAccount(resourceGroupName, accountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageAccountInformationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StorageAccountInformation> listByAccount(
-        String resourceGroupName,
-        String accountName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
-        Boolean count,
-        Context context) {
-        PagedIterable<StorageAccountInformationInner> inner =
-            this
-                .serviceClient()
-                .listByAccount(resourceGroupName, accountName, filter, top, skip, select, orderby, count, context);
-        return Utils.mapPage(inner, inner1 -> new StorageAccountInformationImpl(inner1, this.manager()));
+    public PagedIterable<StorageAccountInformation> listByAccount(String resourceGroupName, String accountName,
+        String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context) {
+        PagedIterable<StorageAccountInformationInner> inner = this.serviceClient()
+            .listByAccount(resourceGroupName, accountName, filter, top, skip, select, orderby, count, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageAccountInformationImpl(inner1, this.manager()));
     }
 
-    public Response<Void> addWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        AddStorageAccountParameters parameters,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> addWithResponse(String resourceGroupName, String accountName, String storageAccountName,
+        AddStorageAccountParameters parameters, Context context) {
+        return this.serviceClient()
             .addWithResponse(resourceGroupName, accountName, storageAccountName, parameters, context);
     }
 
-    public void add(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
+    public void add(String resourceGroupName, String accountName, String storageAccountName,
         AddStorageAccountParameters parameters) {
         this.serviceClient().add(resourceGroupName, accountName, storageAccountName, parameters);
     }
 
-    public Response<StorageAccountInformation> getWithResponse(
-        String resourceGroupName, String accountName, String storageAccountName, Context context) {
-        Response<StorageAccountInformationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, storageAccountName, context);
+    public Response<StorageAccountInformation> getWithResponse(String resourceGroupName, String accountName,
+        String storageAccountName, Context context) {
+        Response<StorageAccountInformationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, storageAccountName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StorageAccountInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -92,8 +70,8 @@ public final class StorageAccountsImpl implements StorageAccounts {
     }
 
     public StorageAccountInformation get(String resourceGroupName, String accountName, String storageAccountName) {
-        StorageAccountInformationInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, storageAccountName);
+        StorageAccountInformationInner inner
+            = this.serviceClient().get(resourceGroupName, accountName, storageAccountName);
         if (inner != null) {
             return new StorageAccountInformationImpl(inner, this.manager());
         } else {
@@ -101,14 +79,9 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
     }
 
-    public Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        UpdateStorageAccountParameters parameters,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> updateWithResponse(String resourceGroupName, String accountName, String storageAccountName,
+        UpdateStorageAccountParameters parameters, Context context) {
+        return this.serviceClient()
             .updateWithResponse(resourceGroupName, accountName, storageAccountName, parameters, context);
     }
 
@@ -116,8 +89,8 @@ public final class StorageAccountsImpl implements StorageAccounts {
         this.serviceClient().update(resourceGroupName, accountName, storageAccountName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String storageAccountName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String storageAccountName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, storageAccountName, context);
     }
 
@@ -125,46 +98,37 @@ public final class StorageAccountsImpl implements StorageAccounts {
         this.serviceClient().delete(resourceGroupName, accountName, storageAccountName);
     }
 
-    public PagedIterable<StorageContainer> listStorageContainers(
-        String resourceGroupName, String accountName, String storageAccountName) {
-        PagedIterable<StorageContainerInner> inner =
-            this.serviceClient().listStorageContainers(resourceGroupName, accountName, storageAccountName);
-        return Utils.mapPage(inner, inner1 -> new StorageContainerImpl(inner1, this.manager()));
+    public PagedIterable<StorageContainer> listStorageContainers(String resourceGroupName, String accountName,
+        String storageAccountName) {
+        PagedIterable<StorageContainerInner> inner
+            = this.serviceClient().listStorageContainers(resourceGroupName, accountName, storageAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageContainerImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StorageContainer> listStorageContainers(
-        String resourceGroupName, String accountName, String storageAccountName, Context context) {
-        PagedIterable<StorageContainerInner> inner =
-            this.serviceClient().listStorageContainers(resourceGroupName, accountName, storageAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new StorageContainerImpl(inner1, this.manager()));
+    public PagedIterable<StorageContainer> listStorageContainers(String resourceGroupName, String accountName,
+        String storageAccountName, Context context) {
+        PagedIterable<StorageContainerInner> inner
+            = this.serviceClient().listStorageContainers(resourceGroupName, accountName, storageAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageContainerImpl(inner1, this.manager()));
     }
 
-    public Response<StorageContainer> getStorageContainerWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        String containerName,
-        Context context) {
-        Response<StorageContainerInner> inner =
-            this
-                .serviceClient()
-                .getStorageContainerWithResponse(
-                    resourceGroupName, accountName, storageAccountName, containerName, context);
+    public Response<StorageContainer> getStorageContainerWithResponse(String resourceGroupName, String accountName,
+        String storageAccountName, String containerName, Context context) {
+        Response<StorageContainerInner> inner = this.serviceClient()
+            .getStorageContainerWithResponse(resourceGroupName, accountName, storageAccountName, containerName,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StorageContainerImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public StorageContainer getStorageContainer(
-        String resourceGroupName, String accountName, String storageAccountName, String containerName) {
-        StorageContainerInner inner =
-            this.serviceClient().getStorageContainer(resourceGroupName, accountName, storageAccountName, containerName);
+    public StorageContainer getStorageContainer(String resourceGroupName, String accountName, String storageAccountName,
+        String containerName) {
+        StorageContainerInner inner = this.serviceClient()
+            .getStorageContainer(resourceGroupName, accountName, storageAccountName, containerName);
         if (inner != null) {
             return new StorageContainerImpl(inner, this.manager());
         } else {
@@ -172,24 +136,18 @@ public final class StorageAccountsImpl implements StorageAccounts {
         }
     }
 
-    public PagedIterable<SasTokenInformation> listSasTokens(
-        String resourceGroupName, String accountName, String storageAccountName, String containerName) {
-        PagedIterable<SasTokenInformationInner> inner =
-            this.serviceClient().listSasTokens(resourceGroupName, accountName, storageAccountName, containerName);
-        return Utils.mapPage(inner, inner1 -> new SasTokenInformationImpl(inner1, this.manager()));
+    public PagedIterable<SasTokenInformation> listSasTokens(String resourceGroupName, String accountName,
+        String storageAccountName, String containerName) {
+        PagedIterable<SasTokenInformationInner> inner
+            = this.serviceClient().listSasTokens(resourceGroupName, accountName, storageAccountName, containerName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SasTokenInformationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SasTokenInformation> listSasTokens(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        String containerName,
-        Context context) {
-        PagedIterable<SasTokenInformationInner> inner =
-            this
-                .serviceClient()
-                .listSasTokens(resourceGroupName, accountName, storageAccountName, containerName, context);
-        return Utils.mapPage(inner, inner1 -> new SasTokenInformationImpl(inner1, this.manager()));
+    public PagedIterable<SasTokenInformation> listSasTokens(String resourceGroupName, String accountName,
+        String storageAccountName, String containerName, Context context) {
+        PagedIterable<SasTokenInformationInner> inner = this.serviceClient()
+            .listSasTokens(resourceGroupName, accountName, storageAccountName, containerName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SasTokenInformationImpl(inner1, this.manager()));
     }
 
     private StorageAccountsClient serviceClient() {

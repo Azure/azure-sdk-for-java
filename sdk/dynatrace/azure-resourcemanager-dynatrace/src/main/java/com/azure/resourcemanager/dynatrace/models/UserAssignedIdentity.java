@@ -6,30 +6,36 @@ package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A managed identity assigned by the user. */
+/**
+ * A managed identity assigned by the user.
+ */
 @Fluent
-public final class UserAssignedIdentity {
+public final class UserAssignedIdentity implements JsonSerializable<UserAssignedIdentity> {
     /*
      * The active directory client identifier for this principal.
      */
-    @JsonProperty(value = "clientId", required = true)
     private String clientId;
 
     /*
      * The active directory identifier for this principal.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
-    /** Creates an instance of UserAssignedIdentity class. */
+    /**
+     * Creates an instance of UserAssignedIdentity class.
+     */
     public UserAssignedIdentity() {
     }
 
     /**
      * Get the clientId property: The active directory client identifier for this principal.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -38,7 +44,7 @@ public final class UserAssignedIdentity {
 
     /**
      * Set the clientId property: The active directory client identifier for this principal.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -49,7 +55,7 @@ public final class UserAssignedIdentity {
 
     /**
      * Get the principalId property: The active directory identifier for this principal.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -58,7 +64,7 @@ public final class UserAssignedIdentity {
 
     /**
      * Set the principalId property: The active directory identifier for this principal.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -69,22 +75,60 @@ public final class UserAssignedIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property clientId in model UserAssignedIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property clientId in model UserAssignedIdentity"));
         }
         if (principalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model UserAssignedIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model UserAssignedIdentity"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserAssignedIdentity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserAssignedIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserAssignedIdentity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserAssignedIdentity.
+     */
+    public static UserAssignedIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserAssignedIdentity deserializedUserAssignedIdentity = new UserAssignedIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientId".equals(fieldName)) {
+                    deserializedUserAssignedIdentity.clientId = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedUserAssignedIdentity.principalId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserAssignedIdentity;
+        });
+    }
 }

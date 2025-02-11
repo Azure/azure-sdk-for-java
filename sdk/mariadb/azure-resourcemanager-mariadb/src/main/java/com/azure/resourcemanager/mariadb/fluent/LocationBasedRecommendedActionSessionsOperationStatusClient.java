@@ -17,7 +17,7 @@ import com.azure.resourcemanager.mariadb.fluent.models.RecommendedActionSessions
 public interface LocationBasedRecommendedActionSessionsOperationStatusClient {
     /**
      * Recommendation action session operation status.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @param context The context to associate with this operation.
@@ -27,12 +27,12 @@ public interface LocationBasedRecommendedActionSessionsOperationStatusClient {
      * @return recommendation action session operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RecommendedActionSessionsOperationStatusInner> getWithResponse(
-        String locationName, String operationId, Context context);
+    Response<RecommendedActionSessionsOperationStatusInner> getWithResponse(String locationName, String operationId,
+        Context context);
 
     /**
      * Recommendation action session operation status.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

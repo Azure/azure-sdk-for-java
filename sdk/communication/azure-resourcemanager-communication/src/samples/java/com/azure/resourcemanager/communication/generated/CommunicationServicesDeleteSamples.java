@@ -19,7 +19,7 @@ public final class CommunicationServicesDeleteSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void deleteResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().delete("MyResourceGroup", "MyCommunicationResource",
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .delete("MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE);
     }
 }

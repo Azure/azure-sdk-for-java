@@ -18,9 +18,7 @@ import java.util.List;
 /**
  * Implementation of {@link IPasta}
  */
-class PastaImpl
-        extends CreatableUpdatableImpl<IPasta, PastaInner, PastaImpl>
-        implements IPasta {
+class PastaImpl extends CreatableUpdatableImpl<IPasta, PastaInner, PastaImpl> implements IPasta {
     private static final ClientLogger LOGGER = new ClientLogger(PastaImpl.class);
 
     final List<Creatable<IPasta>> delayedPastas;
@@ -68,10 +66,10 @@ class PastaImpl
         return this;
     }
 
-
     @Override
     public void beforeGroupCreateOrUpdate() {
-        Assertions.assertFalse(this.prepareCalled, "PastaImpl::beforeGroupCreateOrUpdate() should not be called multiple times");
+        Assertions.assertFalse(this.prepareCalled,
+            "PastaImpl::beforeGroupCreateOrUpdate() should not be called multiple times");
         prepareCalled = true;
         int oldCount = this.taskGroup().getNode(this.key()).dependencyKeys().size();
         for (Creatable<IPasta> pancake : this.delayedPastas) {
@@ -86,14 +84,12 @@ class PastaImpl
     public Mono<IPasta> createResourceAsync() {
         if (this.errorToThrow == null) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::createResourceAsync() 'onNext()'");
-            return Mono.just(this)
-                    .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
-                    .map(pasta -> pasta);
+            return Mono.just(this).delayElement(Duration.ofMillis(this.eventDelayInMilliseconds)).map(pasta -> pasta);
         } else {
             LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::createResourceAsync() 'onError()'");
             return Mono.just(this)
-                    .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
-                    .flatMap(pasta -> toErrorObservable(errorToThrow));
+                .delayElement(Duration.ofMillis(this.eventDelayInMilliseconds))
+                .flatMap(pasta -> toErrorObservable(errorToThrow));
         }
     }
 

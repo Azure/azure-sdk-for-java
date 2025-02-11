@@ -82,8 +82,8 @@ public final class WorkspacesImpl implements Workspaces {
 
     public Response<UrlToken> generateUploadUrlWithResponse(String resourceGroupName, String workspaceName,
         GenerateUploadUrlRequest generateUploadUrl, Context context) {
-        Response<UrlTokenInner> inner = this.serviceClient().generateUploadUrlWithResponse(resourceGroupName,
-            workspaceName, generateUploadUrl, context);
+        Response<UrlTokenInner> inner = this.serviceClient()
+            .generateUploadUrlWithResponse(resourceGroupName, workspaceName, generateUploadUrl, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UrlTokenImpl(inner.getValue(), this.manager()));

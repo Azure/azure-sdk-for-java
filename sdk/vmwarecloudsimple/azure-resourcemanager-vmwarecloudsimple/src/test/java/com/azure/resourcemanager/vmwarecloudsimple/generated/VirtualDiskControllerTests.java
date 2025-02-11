@@ -10,10 +10,10 @@ import com.azure.resourcemanager.vmwarecloudsimple.models.VirtualDiskController;
 public final class VirtualDiskControllerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualDiskController model =
-            BinaryData
-                .fromString("{\"id\":\"waasip\",\"name\":\"iobyu\",\"subType\":\"rpqlp\",\"type\":\"cciuqgbdbutau\"}")
-                .toObject(VirtualDiskController.class);
+        VirtualDiskController model = BinaryData
+            .fromString(
+                "{\"id\":\"rrghxjbdhqxvcxgf\",\"name\":\"dsofbshrns\",\"subType\":\"uswdv\",\"type\":\"ybycnunvj\"}")
+            .toObject(VirtualDiskController.class);
     }
 
     @org.junit.jupiter.api.Test

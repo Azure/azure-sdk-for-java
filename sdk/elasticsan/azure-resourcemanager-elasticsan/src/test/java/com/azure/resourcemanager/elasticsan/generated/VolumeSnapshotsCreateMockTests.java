@@ -22,7 +22,7 @@ public final class VolumeSnapshotsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"creationData\":{\"sourceId\":\"qncygupkvi\"},\"provisioningState\":\"Succeeded\",\"sourceVolumeSizeGiB\":5273179551661824620,\"volumeName\":\"qupevzh\"},\"id\":\"totxhojujb\",\"name\":\"pelmcuvhixbjxyf\",\"type\":\"n\"}";
+            = "{\"properties\":{\"creationData\":{\"sourceId\":\"luudfdlwggytsb\"},\"provisioningState\":\"Succeeded\",\"sourceVolumeSizeGiB\":5784000721532409978,\"volumeName\":\"seinqfiuf\"},\"id\":\"knpirgnepttwq\",\"name\":\"sniffc\",\"type\":\"mqnrojlpijnkr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,11 +32,11 @@ public final class VolumeSnapshotsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Snapshot response = manager.volumeSnapshots()
-            .define("ibreb")
-            .withExistingVolumegroup("azpxdtnkdmkqjjl", "uenvrkp", "ou")
-            .withCreationData(new SnapshotCreationData().withSourceId("aays"))
+            .define("kkbnu")
+            .withExistingVolumegroup("pelmcuvhixbjxyf", "n", "lrcoolsttpki")
+            .withCreationData(new SnapshotCreationData().withSourceId("rywvtylbfpn"))
             .create();
 
-        Assertions.assertEquals("qncygupkvi", response.creationData().sourceId());
+        Assertions.assertEquals("luudfdlwggytsb", response.creationData().sourceId());
     }
 }

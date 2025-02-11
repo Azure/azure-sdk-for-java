@@ -5,109 +5,105 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.EnableState;
 import com.azure.resourcemanager.labservices.models.OsState;
 import com.azure.resourcemanager.labservices.models.OsType;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of an image resource. */
+/**
+ * Properties of an image resource.
+ */
 @Fluent
 public final class ImageProperties extends ImageUpdateProperties {
     /*
      * Current provisioning state of the image.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The image display name.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * A description of the image.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * URL of the image icon.
      */
-    @JsonProperty(value = "iconUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String iconUrl;
 
     /*
      * The image author.
      */
-    @JsonProperty(value = "author", access = JsonProperty.Access.WRITE_ONLY)
     private String author;
 
     /*
      * The OS Type of the image.
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
 
     /*
      * The ID of marketplace plan associated with the image (optional).
      */
-    @JsonProperty(value = "plan", access = JsonProperty.Access.WRITE_ONLY)
     private String plan;
 
     /*
      * The status of image terms of use (enabled = accepted, disabled = not accepted).
      */
-    @JsonProperty(value = "termsStatus", access = JsonProperty.Access.WRITE_ONLY)
     private EnableState termsStatus;
 
     /*
      * The ID of an offer associated with the image.
      */
-    @JsonProperty(value = "offer", access = JsonProperty.Access.WRITE_ONLY)
     private String offer;
 
     /*
      * The ID of the publisher of the image.
      */
-    @JsonProperty(value = "publisher", access = JsonProperty.Access.WRITE_ONLY)
     private String publisher;
 
     /*
      * The image SKU.
      */
-    @JsonProperty(value = "sku", access = JsonProperty.Access.WRITE_ONLY)
     private String sku;
 
     /*
      * The image version.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * The ID for the image in the shared gallery.
      */
-    @JsonProperty(value = "sharedGalleryId", access = JsonProperty.Access.WRITE_ONLY)
     private String sharedGalleryId;
 
     /*
      * The available regions of the image in the shared gallery.
      */
-    @JsonProperty(value = "availableRegions")
     private List<String> availableRegions;
 
     /*
      * The OS State of the image.
      */
-    @JsonProperty(value = "osState", access = JsonProperty.Access.WRITE_ONLY)
     private OsState osState;
 
     /**
+     * Creates an instance of ImageProperties class.
+     */
+    public ImageProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Current provisioning state of the image.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,7 +112,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the displayName property: The image display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -125,7 +121,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the description property: A description of the image.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -134,7 +130,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the iconUrl property: URL of the image icon.
-     *
+     * 
      * @return the iconUrl value.
      */
     public String iconUrl() {
@@ -143,7 +139,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the author property: The image author.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -152,7 +148,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the osType property: The OS Type of the image.
-     *
+     * 
      * @return the osType value.
      */
     public OsType osType() {
@@ -161,7 +157,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the plan property: The ID of marketplace plan associated with the image (optional).
-     *
+     * 
      * @return the plan value.
      */
     public String plan() {
@@ -170,7 +166,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the termsStatus property: The status of image terms of use (enabled = accepted, disabled = not accepted).
-     *
+     * 
      * @return the termsStatus value.
      */
     public EnableState termsStatus() {
@@ -179,7 +175,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the offer property: The ID of an offer associated with the image.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -188,7 +184,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the publisher property: The ID of the publisher of the image.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -197,7 +193,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the sku property: The image SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -206,7 +202,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the version property: The image version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -215,7 +211,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the sharedGalleryId property: The ID for the image in the shared gallery.
-     *
+     * 
      * @return the sharedGalleryId value.
      */
     public String sharedGalleryId() {
@@ -224,7 +220,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the availableRegions property: The available regions of the image in the shared gallery.
-     *
+     * 
      * @return the availableRegions value.
      */
     public List<String> availableRegions() {
@@ -233,7 +229,7 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Set the availableRegions property: The available regions of the image in the shared gallery.
-     *
+     * 
      * @param availableRegions the availableRegions value to set.
      * @return the ImageProperties object itself.
      */
@@ -244,14 +240,16 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Get the osState property: The OS State of the image.
-     *
+     * 
      * @return the osState value.
      */
     public OsState osState() {
         return this.osState;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageProperties withEnabledState(EnableState enabledState) {
         super.withEnabledState(enabledState);
@@ -260,11 +258,79 @@ public final class ImageProperties extends ImageUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("enabledState", enabledState() == null ? null : enabledState().toString());
+        jsonWriter.writeArrayField("availableRegions", this.availableRegions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageProperties.
+     */
+    public static ImageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageProperties deserializedImageProperties = new ImageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabledState".equals(fieldName)) {
+                    deserializedImageProperties.withEnabledState(EnableState.fromString(reader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedImageProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedImageProperties.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedImageProperties.description = reader.getString();
+                } else if ("iconUrl".equals(fieldName)) {
+                    deserializedImageProperties.iconUrl = reader.getString();
+                } else if ("author".equals(fieldName)) {
+                    deserializedImageProperties.author = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedImageProperties.osType = OsType.fromString(reader.getString());
+                } else if ("plan".equals(fieldName)) {
+                    deserializedImageProperties.plan = reader.getString();
+                } else if ("termsStatus".equals(fieldName)) {
+                    deserializedImageProperties.termsStatus = EnableState.fromString(reader.getString());
+                } else if ("offer".equals(fieldName)) {
+                    deserializedImageProperties.offer = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedImageProperties.publisher = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedImageProperties.sku = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedImageProperties.version = reader.getString();
+                } else if ("sharedGalleryId".equals(fieldName)) {
+                    deserializedImageProperties.sharedGalleryId = reader.getString();
+                } else if ("availableRegions".equals(fieldName)) {
+                    List<String> availableRegions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedImageProperties.availableRegions = availableRegions;
+                } else if ("osState".equals(fieldName)) {
+                    deserializedImageProperties.osState = OsState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageProperties;
+        });
     }
 }

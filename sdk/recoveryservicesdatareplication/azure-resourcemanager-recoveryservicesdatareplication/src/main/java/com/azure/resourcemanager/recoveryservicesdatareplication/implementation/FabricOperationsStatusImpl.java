@@ -18,26 +18,20 @@ public final class FabricOperationsStatusImpl implements FabricOperationsStatus 
 
     private final FabricOperationsStatusClient innerClient;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    public FabricOperationsStatusImpl(
-        FabricOperationsStatusClient innerClient,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    public FabricOperationsStatusImpl(FabricOperationsStatusClient innerClient,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationStatus> getWithResponse(
-        String resourceGroupName, String fabricName, String operationId, Context context) {
-        Response<OperationStatusInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, fabricName, operationId, context);
+    public Response<OperationStatus> getWithResponse(String resourceGroupName, String fabricName, String operationId,
+        Context context) {
+        Response<OperationStatusInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, fabricName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

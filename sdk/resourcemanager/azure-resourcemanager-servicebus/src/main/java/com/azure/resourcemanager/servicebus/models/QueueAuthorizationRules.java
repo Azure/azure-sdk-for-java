@@ -10,7 +10,6 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
  * Entry point to queue authorization rules management API.
  */
 @Fluent
-public interface QueueAuthorizationRules extends
-    AuthorizationRules<QueueAuthorizationRule>,
+public interface QueueAuthorizationRules extends AuthorizationRules<QueueAuthorizationRule>,
     SupportsCreating<QueueAuthorizationRule.DefinitionStages.Blank> {
 }

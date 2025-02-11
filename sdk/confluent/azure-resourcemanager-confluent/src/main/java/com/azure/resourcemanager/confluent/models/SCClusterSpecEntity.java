@@ -5,83 +5,75 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Spec of the cluster record.
  */
 @Fluent
-public final class SCClusterSpecEntity {
+public final class SCClusterSpecEntity implements JsonSerializable<SCClusterSpecEntity> {
     /*
      * The name of the cluster
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The availability zone configuration of the cluster
      */
-    @JsonProperty(value = "availability")
     private String availability;
 
     /*
      * The cloud service provider
      */
-    @JsonProperty(value = "cloud")
     private String cloud;
 
     /*
      * type of zone availability
      */
-    @JsonProperty(value = "zone")
     private String zone;
 
     /*
      * The cloud service provider region
      */
-    @JsonProperty(value = "region")
     private String region;
 
     /*
      * The bootstrap endpoint used by Kafka clients to connect to the cluster
      */
-    @JsonProperty(value = "kafkaBootstrapEndpoint")
     private String kafkaBootstrapEndpoint;
 
     /*
      * The cluster HTTP request URL.
      */
-    @JsonProperty(value = "httpEndpoint")
     private String httpEndpoint;
 
     /*
      * The Kafka API cluster endpoint
      */
-    @JsonProperty(value = "apiEndpoint")
     private String apiEndpoint;
 
     /*
      * Specification of the cluster configuration
      */
-    @JsonProperty(value = "config")
     private ClusterConfigEntity config;
 
     /*
      * Specification of the cluster environment
      */
-    @JsonProperty(value = "environment")
     private SCClusterNetworkEnvironmentEntity environment;
 
     /*
      * Specification of the cluster network
      */
-    @JsonProperty(value = "network")
     private SCClusterNetworkEnvironmentEntity network;
 
     /*
      * Specification of the cluster byok
      */
-    @JsonProperty(value = "byok")
     private SCClusterByokEntity byok;
 
     /**
@@ -348,5 +340,74 @@ public final class SCClusterSpecEntity {
         if (byok() != null) {
             byok().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("availability", this.availability);
+        jsonWriter.writeStringField("cloud", this.cloud);
+        jsonWriter.writeStringField("zone", this.zone);
+        jsonWriter.writeStringField("region", this.region);
+        jsonWriter.writeStringField("kafkaBootstrapEndpoint", this.kafkaBootstrapEndpoint);
+        jsonWriter.writeStringField("httpEndpoint", this.httpEndpoint);
+        jsonWriter.writeStringField("apiEndpoint", this.apiEndpoint);
+        jsonWriter.writeJsonField("config", this.config);
+        jsonWriter.writeJsonField("environment", this.environment);
+        jsonWriter.writeJsonField("network", this.network);
+        jsonWriter.writeJsonField("byok", this.byok);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SCClusterSpecEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SCClusterSpecEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SCClusterSpecEntity.
+     */
+    public static SCClusterSpecEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SCClusterSpecEntity deserializedSCClusterSpecEntity = new SCClusterSpecEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.name = reader.getString();
+                } else if ("availability".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.availability = reader.getString();
+                } else if ("cloud".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.cloud = reader.getString();
+                } else if ("zone".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.zone = reader.getString();
+                } else if ("region".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.region = reader.getString();
+                } else if ("kafkaBootstrapEndpoint".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.kafkaBootstrapEndpoint = reader.getString();
+                } else if ("httpEndpoint".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.httpEndpoint = reader.getString();
+                } else if ("apiEndpoint".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.apiEndpoint = reader.getString();
+                } else if ("config".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.config = ClusterConfigEntity.fromJson(reader);
+                } else if ("environment".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.environment = SCClusterNetworkEnvironmentEntity.fromJson(reader);
+                } else if ("network".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.network = SCClusterNetworkEnvironmentEntity.fromJson(reader);
+                } else if ("byok".equals(fieldName)) {
+                    deserializedSCClusterSpecEntity.byok = SCClusterByokEntity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSCClusterSpecEntity;
+        });
     }
 }

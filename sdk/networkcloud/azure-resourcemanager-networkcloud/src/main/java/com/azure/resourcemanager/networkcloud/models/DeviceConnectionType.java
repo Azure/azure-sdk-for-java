@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.networkcloud.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The connection type of the device. */
+/**
+ * The connection type of the device.
+ */
 public final class DeviceConnectionType extends ExpandableStringEnum<DeviceConnectionType> {
-    /** Static value PCI for DeviceConnectionType. */
+    /**
+     * Static value PCI for DeviceConnectionType.
+     */
     public static final DeviceConnectionType PCI = fromString("PCI");
 
     /**
      * Creates a new instance of DeviceConnectionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class DeviceConnectionType extends ExpandableStringEnum<DeviceConne
 
     /**
      * Creates or finds a DeviceConnectionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeviceConnectionType.
      */
-    @JsonCreator
     public static DeviceConnectionType fromString(String name) {
         return fromString(name, DeviceConnectionType.class);
     }
 
     /**
      * Gets known DeviceConnectionType values.
-     *
+     * 
      * @return known DeviceConnectionType values.
      */
     public static Collection<DeviceConnectionType> values() {

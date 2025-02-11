@@ -6,66 +6,41 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.mediaservices.MediaServicesManager;
 import com.azure.resourcemanager.mediaservices.models.ActionType;
 import com.azure.resourcemanager.mediaservices.models.OperationCollection;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class OperationsListWithResponseMockTests {
     @Test
     public void testListWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"name\":\"yryuzcb\",\"display\":{\"provider\":\"vxmvw\",\"resource\":\"tayx\",\"operation\":\"supe\",\"description\":\"lzqnhcvs\"},\"origin\":\"tnzoibgsxgnxfy\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{}],\"metricSpecifications\":[{}]}},\"isDataAction\":true,\"actionType\":\"Internal\"},{\"name\":\"fdbxiqxeiiqbim\",\"display\":{\"provider\":\"wwinhehf\",\"resource\":\"ofvwbcb\",\"operation\":\"mbnkb\",\"description\":\"qvxkd\"},\"origin\":\"qihebw\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}],\"metricSpecifications\":[{},{},{}]}},\"isDataAction\":false,\"actionType\":\"Internal\"},{\"name\":\"ragegi\",\"display\":{\"provider\":\"jfelisdjubggbqig\",\"resource\":\"kbsazgak\",\"operation\":\"cyrcmjdmspo\",\"description\":\"pv\"},\"origin\":\"rylniofrzg\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}],\"metricSpecifications\":[{}]}},\"isDataAction\":true,\"actionType\":\"Internal\"},{\"name\":\"l\",\"display\":{\"provider\":\"c\",\"resource\":\"iznk\",\"operation\":\"f\",\"description\":\"snvpdibmi\"},\"origin\":\"stbz\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{},{}],\"metricSpecifications\":[{},{},{}]}},\"isDataAction\":false,\"actionType\":\"Internal\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"dzaumweooh\",\"origin\":\"fuzboyjathwtzolb\",\"isDataAction\":false,\"actionType\":\"Internal\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        OperationCollection response
+            = manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        OperationCollection response =
-            manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
-
-        Assertions.assertEquals("dzaumweooh", response.value().get(0).name());
-        Assertions.assertEquals("fuzboyjathwtzolb", response.value().get(0).origin());
-        Assertions.assertEquals(false, response.value().get(0).isDataAction());
+        Assertions.assertEquals("yryuzcb", response.value().get(0).name());
+        Assertions.assertEquals("vxmvw", response.value().get(0).display().provider());
+        Assertions.assertEquals("tayx", response.value().get(0).display().resource());
+        Assertions.assertEquals("supe", response.value().get(0).display().operation());
+        Assertions.assertEquals("lzqnhcvs", response.value().get(0).display().description());
+        Assertions.assertEquals("tnzoibgsxgnxfy", response.value().get(0).origin());
+        Assertions.assertEquals(true, response.value().get(0).isDataAction());
         Assertions.assertEquals(ActionType.INTERNAL, response.value().get(0).actionType());
     }
 }

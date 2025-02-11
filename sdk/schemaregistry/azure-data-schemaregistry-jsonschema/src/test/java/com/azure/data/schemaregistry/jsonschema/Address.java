@@ -7,15 +7,9 @@ package com.azure.data.schemaregistry.jsonschema;
  * Test person.
  */
 public class Address {
-    public static final String JSON_SCHEMA =
-        "{\n"
-        + "  \"type\": \"object\",\n"
-        + "  \"properties\": {\n"
-        + "    \"number\": { \"type\": \"number\" },\n"
-        + "     \"streetName\": { \"type\": \"string\" },\n"
-        + "    \"streetType\": { \"enum\": [\"Street\", \"Avenue\", \"Boulevard\"] }\n"
-        + "  }\n"
-        + "}";
+    public static final String JSON_SCHEMA = "{\n" + "  \"type\": \"object\",\n" + "  \"properties\": {\n"
+        + "    \"number\": { \"type\": \"number\" },\n" + "     \"streetName\": { \"type\": \"string\" },\n"
+        + "    \"streetType\": { \"enum\": [\"Street\", \"Avenue\", \"Boulevard\"] }\n" + "  }\n" + "}";
 
     private String streetName;
     private String streetType;

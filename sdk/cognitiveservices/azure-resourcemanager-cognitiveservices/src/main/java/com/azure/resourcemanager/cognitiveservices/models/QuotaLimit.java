@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The QuotaLimit model. */
+/**
+ * The QuotaLimit model.
+ */
 @Fluent
-public final class QuotaLimit {
+public final class QuotaLimit implements JsonSerializable<QuotaLimit> {
     /*
      * The count property.
      */
-    @JsonProperty(value = "count")
     private Float count;
 
     /*
      * The renewalPeriod property.
      */
-    @JsonProperty(value = "renewalPeriod")
     private Float renewalPeriod;
 
     /*
      * The rules property.
      */
-    @JsonProperty(value = "rules")
     private List<ThrottlingRule> rules;
 
-    /** Creates an instance of QuotaLimit class. */
+    /**
+     * Creates an instance of QuotaLimit class.
+     */
     public QuotaLimit() {
     }
 
     /**
      * Get the count property: The count property.
-     *
+     * 
      * @return the count value.
      */
     public Float count() {
@@ -44,7 +49,7 @@ public final class QuotaLimit {
 
     /**
      * Set the count property: The count property.
-     *
+     * 
      * @param count the count value to set.
      * @return the QuotaLimit object itself.
      */
@@ -55,7 +60,7 @@ public final class QuotaLimit {
 
     /**
      * Get the renewalPeriod property: The renewalPeriod property.
-     *
+     * 
      * @return the renewalPeriod value.
      */
     public Float renewalPeriod() {
@@ -64,7 +69,7 @@ public final class QuotaLimit {
 
     /**
      * Set the renewalPeriod property: The renewalPeriod property.
-     *
+     * 
      * @param renewalPeriod the renewalPeriod value to set.
      * @return the QuotaLimit object itself.
      */
@@ -75,7 +80,7 @@ public final class QuotaLimit {
 
     /**
      * Get the rules property: The rules property.
-     *
+     * 
      * @return the rules value.
      */
     public List<ThrottlingRule> rules() {
@@ -84,7 +89,7 @@ public final class QuotaLimit {
 
     /**
      * Set the rules property: The rules property.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the QuotaLimit object itself.
      */
@@ -95,12 +100,55 @@ public final class QuotaLimit {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeNumberField("renewalPeriod", this.renewalPeriod);
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaLimit from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaLimit if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaLimit.
+     */
+    public static QuotaLimit fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaLimit deserializedQuotaLimit = new QuotaLimit();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("count".equals(fieldName)) {
+                    deserializedQuotaLimit.count = reader.getNullable(JsonReader::getFloat);
+                } else if ("renewalPeriod".equals(fieldName)) {
+                    deserializedQuotaLimit.renewalPeriod = reader.getNullable(JsonReader::getFloat);
+                } else if ("rules".equals(fieldName)) {
+                    List<ThrottlingRule> rules = reader.readArray(reader1 -> ThrottlingRule.fromJson(reader1));
+                    deserializedQuotaLimit.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaLimit;
+        });
     }
 }

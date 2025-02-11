@@ -47,6 +47,9 @@ public final class AppEventTypeDetail implements JsonSerializable<AppEventTypeDe
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

@@ -12,27 +12,27 @@ public final class WeeklyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WeeklySchedule model = BinaryData.fromString(
-            "{\"snapshotsToKeep\":1575788840,\"day\":\"exn\",\"hour\":850324011,\"minute\":1536688095,\"usedBytes\":2199712032932609839}")
+            "{\"snapshotsToKeep\":1074129183,\"day\":\"erqf\",\"hour\":62182202,\"minute\":2077702872,\"usedBytes\":2726192915830006028}")
             .toObject(WeeklySchedule.class);
-        Assertions.assertEquals(1575788840, model.snapshotsToKeep());
-        Assertions.assertEquals("exn", model.day());
-        Assertions.assertEquals(850324011, model.hour());
-        Assertions.assertEquals(1536688095, model.minute());
-        Assertions.assertEquals(2199712032932609839L, model.usedBytes());
+        Assertions.assertEquals(1074129183, model.snapshotsToKeep());
+        Assertions.assertEquals("erqf", model.day());
+        Assertions.assertEquals(62182202, model.hour());
+        Assertions.assertEquals(2077702872, model.minute());
+        Assertions.assertEquals(2726192915830006028L, model.usedBytes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WeeklySchedule model = new WeeklySchedule().withSnapshotsToKeep(1575788840)
-            .withDay("exn")
-            .withHour(850324011)
-            .withMinute(1536688095)
-            .withUsedBytes(2199712032932609839L);
+        WeeklySchedule model = new WeeklySchedule().withSnapshotsToKeep(1074129183)
+            .withDay("erqf")
+            .withHour(62182202)
+            .withMinute(2077702872)
+            .withUsedBytes(2726192915830006028L);
         model = BinaryData.fromObject(model).toObject(WeeklySchedule.class);
-        Assertions.assertEquals(1575788840, model.snapshotsToKeep());
-        Assertions.assertEquals("exn", model.day());
-        Assertions.assertEquals(850324011, model.hour());
-        Assertions.assertEquals(1536688095, model.minute());
-        Assertions.assertEquals(2199712032932609839L, model.usedBytes());
+        Assertions.assertEquals(1074129183, model.snapshotsToKeep());
+        Assertions.assertEquals("erqf", model.day());
+        Assertions.assertEquals(62182202, model.hour());
+        Assertions.assertEquals(2077702872, model.minute());
+        Assertions.assertEquals(2726192915830006028L, model.usedBytes());
     }
 }

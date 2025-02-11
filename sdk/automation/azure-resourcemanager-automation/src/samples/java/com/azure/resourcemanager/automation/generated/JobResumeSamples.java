@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.automation.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Job Resume. */
+/**
+ * Samples for Job Resume.
+ */
 public final class JobResumeSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/resumeJob.json
+     * x-ms-original-file:
+     * specification/automation/resource-manager/Microsoft.Automation/stable/2019-06-01/examples/job/resumeJob.json
      */
     /**
      * Sample code: Resume job.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void resumeJob(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager.jobs().resumeWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, Context.NONE);
+        manager.jobs()
+            .resumeWithResponse("mygroup", "ContoseAutomationAccount", "foo", null, com.azure.core.util.Context.NONE);
     }
 }

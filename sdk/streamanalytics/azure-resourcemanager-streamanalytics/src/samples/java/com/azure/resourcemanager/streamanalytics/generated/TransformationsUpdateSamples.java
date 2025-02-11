@@ -12,7 +12,7 @@ import com.azure.resourcemanager.streamanalytics.models.Transformation;
 public final class TransformationsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/
      * Transformation_Update.json
      */
     /**
@@ -22,7 +22,8 @@ public final class TransformationsUpdateSamples {
      */
     public static void updateATransformation(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Transformation resource = manager.transformations()
-            .getWithResponse("sjrg4423", "sj8374", "transformation952", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("sjrg4423", "sj8374", "transformation952", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withQuery("New query").apply();
     }
 }

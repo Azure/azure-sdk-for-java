@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.iotfirmwaredefense.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Properties of the SBOM component for a CVE.
  */
 @Fluent
-public final class CveComponent {
+public final class CveComponent implements JsonSerializable<CveComponent> {
     /*
      * ID of the SBOM component
      */
-    @JsonProperty(value = "componentId")
     private String componentId;
 
     /*
      * Name of the SBOM component
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Version of the SBOM component.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /**
@@ -102,5 +103,47 @@ public final class CveComponent {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("componentId", this.componentId);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CveComponent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CveComponent if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CveComponent.
+     */
+    public static CveComponent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CveComponent deserializedCveComponent = new CveComponent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("componentId".equals(fieldName)) {
+                    deserializedCveComponent.componentId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCveComponent.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedCveComponent.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCveComponent;
+        });
     }
 }

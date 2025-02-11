@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TagDescriptionContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TagDescriptionContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"tagId\":\"rnpnuhzafccnuh\",\"displayName\":\"gbylbuig\",\"description\":\"vatvcrkd\",\"externalDocsUrl\":\"nbqxvhcsyhzlwxae\",\"externalDocsDescription\":\"vurex\"},\"id\":\"ndsbdw\",\"name\":\"aderzmw\",\"type\":\"t\"}")
-                .toObject(TagDescriptionContractInner.class);
+        TagDescriptionContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"tagId\":\"rnpnuhzafccnuh\",\"displayName\":\"gbylbuig\",\"description\":\"vatvcrkd\",\"externalDocsUrl\":\"nbqxvhcsyhzlwxae\",\"externalDocsDescription\":\"vurex\"},\"id\":\"ndsbdw\",\"name\":\"aderzmw\",\"type\":\"t\"}")
+            .toObject(TagDescriptionContractInner.class);
         Assertions.assertEquals("rnpnuhzafccnuh", model.tagId());
         Assertions.assertEquals("gbylbuig", model.displayName());
         Assertions.assertEquals("vatvcrkd", model.description());
@@ -25,13 +23,11 @@ public final class TagDescriptionContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagDescriptionContractInner model =
-            new TagDescriptionContractInner()
-                .withTagId("rnpnuhzafccnuh")
-                .withDisplayName("gbylbuig")
-                .withDescription("vatvcrkd")
-                .withExternalDocsUrl("nbqxvhcsyhzlwxae")
-                .withExternalDocsDescription("vurex");
+        TagDescriptionContractInner model = new TagDescriptionContractInner().withTagId("rnpnuhzafccnuh")
+            .withDisplayName("gbylbuig")
+            .withDescription("vatvcrkd")
+            .withExternalDocsUrl("nbqxvhcsyhzlwxae")
+            .withExternalDocsDescription("vurex");
         model = BinaryData.fromObject(model).toObject(TagDescriptionContractInner.class);
         Assertions.assertEquals("rnpnuhzafccnuh", model.tagId());
         Assertions.assertEquals("gbylbuig", model.displayName());

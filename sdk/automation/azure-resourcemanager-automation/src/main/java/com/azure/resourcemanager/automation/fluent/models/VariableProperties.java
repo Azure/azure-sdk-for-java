@@ -5,45 +5,54 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Definition of the variable properties. */
+/**
+ * Definition of the variable properties.
+ */
 @Fluent
-public final class VariableProperties {
+public final class VariableProperties implements JsonSerializable<VariableProperties> {
     /*
      * Gets or sets the value of the variable.
      */
-    @JsonProperty(value = "value")
     private String value;
 
     /*
      * Gets or sets the encrypted flag of the variable.
      */
-    @JsonProperty(value = "isEncrypted")
     private Boolean isEncrypted;
 
     /*
      * Gets or sets the creation time.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * Gets or sets the last modified time.
      */
-    @JsonProperty(value = "lastModifiedTime")
     private OffsetDateTime lastModifiedTime;
 
     /*
      * Gets or sets the description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of VariableProperties class.
+     */
+    public VariableProperties() {
+    }
+
+    /**
      * Get the value property: Gets or sets the value of the variable.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -52,7 +61,7 @@ public final class VariableProperties {
 
     /**
      * Set the value property: Gets or sets the value of the variable.
-     *
+     * 
      * @param value the value value to set.
      * @return the VariableProperties object itself.
      */
@@ -63,7 +72,7 @@ public final class VariableProperties {
 
     /**
      * Get the isEncrypted property: Gets or sets the encrypted flag of the variable.
-     *
+     * 
      * @return the isEncrypted value.
      */
     public Boolean isEncrypted() {
@@ -72,7 +81,7 @@ public final class VariableProperties {
 
     /**
      * Set the isEncrypted property: Gets or sets the encrypted flag of the variable.
-     *
+     * 
      * @param isEncrypted the isEncrypted value to set.
      * @return the VariableProperties object itself.
      */
@@ -83,7 +92,7 @@ public final class VariableProperties {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -92,7 +101,7 @@ public final class VariableProperties {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the VariableProperties object itself.
      */
@@ -103,7 +112,7 @@ public final class VariableProperties {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -112,7 +121,7 @@ public final class VariableProperties {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the VariableProperties object itself.
      */
@@ -123,7 +132,7 @@ public final class VariableProperties {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -132,7 +141,7 @@ public final class VariableProperties {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the VariableProperties object itself.
      */
@@ -143,9 +152,63 @@ public final class VariableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("value", this.value);
+        jsonWriter.writeBooleanField("isEncrypted", this.isEncrypted);
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("lastModifiedTime",
+            this.lastModifiedTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastModifiedTime));
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VariableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VariableProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VariableProperties.
+     */
+    public static VariableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VariableProperties deserializedVariableProperties = new VariableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    deserializedVariableProperties.value = reader.getString();
+                } else if ("isEncrypted".equals(fieldName)) {
+                    deserializedVariableProperties.isEncrypted = reader.getNullable(JsonReader::getBoolean);
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedVariableProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedTime".equals(fieldName)) {
+                    deserializedVariableProperties.lastModifiedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("description".equals(fieldName)) {
+                    deserializedVariableProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVariableProperties;
+        });
     }
 }

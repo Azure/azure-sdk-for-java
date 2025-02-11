@@ -21,22 +21,18 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
 
     private final com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager;
 
-    public DelegatedSubnetServicesImpl(
-        DelegatedSubnetServicesClient innerClient,
+    public DelegatedSubnetServicesImpl(DelegatedSubnetServicesClient innerClient,
         com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<DelegatedSubnet> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<DelegatedSubnetInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
+    public Response<DelegatedSubnet> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
+        Response<DelegatedSubnetInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DelegatedSubnetImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,106 +58,78 @@ public final class DelegatedSubnetServicesImpl implements DelegatedSubnetService
 
     public PagedIterable<DelegatedSubnet> list() {
         PagedIterable<DelegatedSubnetInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DelegatedSubnetImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DelegatedSubnetImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DelegatedSubnet> list(Context context) {
         PagedIterable<DelegatedSubnetInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DelegatedSubnetImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DelegatedSubnetImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DelegatedSubnet> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DelegatedSubnetInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DelegatedSubnetImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DelegatedSubnetImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DelegatedSubnet> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<DelegatedSubnetInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new DelegatedSubnetImpl(inner1, this.manager()));
+        PagedIterable<DelegatedSubnetInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DelegatedSubnetImpl(inner1, this.manager()));
     }
 
     public DelegatedSubnet getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'delegatedSubnets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'delegatedSubnets'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     public Response<DelegatedSubnet> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'delegatedSubnets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'delegatedSubnets'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'delegatedSubnets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'delegatedSubnets'.", id)));
         }
         Boolean localForceDelete = null;
         this.delete(resourceGroupName, resourceName, localForceDelete, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "delegatedSubnets");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "delegatedSubnets");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'delegatedSubnets'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'delegatedSubnets'.", id)));
         }
         this.delete(resourceGroupName, resourceName, forceDelete, context);
     }

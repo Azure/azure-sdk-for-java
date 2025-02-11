@@ -89,20 +89,16 @@ public final class AccessConnectorImpl implements AccessConnector, AccessConnect
     }
 
     public AccessConnector create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessConnectors()
-                .createOrUpdate(resourceGroupName, connectorName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessConnectors()
+            .createOrUpdate(resourceGroupName, connectorName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public AccessConnector create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessConnectors()
-                .createOrUpdate(resourceGroupName, connectorName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessConnectors()
+            .createOrUpdate(resourceGroupName, connectorName, this.innerModel(), context);
         return this;
     }
 
@@ -118,48 +114,40 @@ public final class AccessConnectorImpl implements AccessConnector, AccessConnect
     }
 
     public AccessConnector apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessConnectors()
-                .update(resourceGroupName, connectorName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessConnectors()
+            .update(resourceGroupName, connectorName, updateParameters, Context.NONE);
         return this;
     }
 
     public AccessConnector apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessConnectors()
-                .update(resourceGroupName, connectorName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessConnectors()
+            .update(resourceGroupName, connectorName, updateParameters, context);
         return this;
     }
 
-    AccessConnectorImpl(
-        AccessConnectorInner innerObject, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
+    AccessConnectorImpl(AccessConnectorInner innerObject,
+        com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.connectorName = Utils.getValueFromIdByName(innerObject.id(), "accessConnectors");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.connectorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accessConnectors");
     }
 
     public AccessConnector refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessConnectors()
-                .getByResourceGroupWithResponse(resourceGroupName, connectorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessConnectors()
+            .getByResourceGroupWithResponse(resourceGroupName, connectorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AccessConnector refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAccessConnectors()
-                .getByResourceGroupWithResponse(resourceGroupName, connectorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAccessConnectors()
+            .getByResourceGroupWithResponse(resourceGroupName, connectorName, context)
+            .getValue();
         return this;
     }
 

@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GoneException;
@@ -203,8 +202,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                                             "EpkRange %s spans %s physical partitions: %s",
                                             this.range,
                                             pkRanges.size(),
-                                            pkRanges.stream().map(pkRange -> pkRange.getId()).collect(Collectors.toList()),
-                                    this.range));
+                                            pkRanges.stream().map(pkRange -> pkRange.getId()).collect(Collectors.toList())));
                             BridgeInternal.setSubStatusCode(
                                 goneException,
                                 HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
@@ -260,7 +258,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
         if (this.range != null) {
             ModelBridgeInternal.populatePropertyBag(this.range);
-            serializable.set(Constants.Properties.RANGE, this.range, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            serializable.set(Constants.Properties.RANGE, this.range);
         }
     }
 

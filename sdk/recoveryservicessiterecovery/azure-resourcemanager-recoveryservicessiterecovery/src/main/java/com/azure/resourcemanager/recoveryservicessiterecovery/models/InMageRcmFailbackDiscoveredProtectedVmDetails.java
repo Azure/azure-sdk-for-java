@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -13,77 +18,66 @@ import java.util.List;
  * InMageRcmFailback discovered VM details.
  */
 @Immutable
-public final class InMageRcmFailbackDiscoveredProtectedVmDetails {
+public final class InMageRcmFailbackDiscoveredProtectedVmDetails
+    implements JsonSerializable<InMageRcmFailbackDiscoveredProtectedVmDetails> {
     /*
      * The VCenter Id.
      */
-    @JsonProperty(value = "vCenterId", access = JsonProperty.Access.WRITE_ONLY)
     private String vCenterId;
 
     /*
      * The VCenter fqdn.
      */
-    @JsonProperty(value = "vCenterFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String vCenterFqdn;
 
     /*
      * The list of datastores.
      */
-    @JsonProperty(value = "datastores", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> datastores;
 
     /*
      * The list of IP addresses.
      */
-    @JsonProperty(value = "ipAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> ipAddresses;
 
     /*
      * The VMware tools status.
      */
-    @JsonProperty(value = "vmwareToolsStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String vmwareToolsStatus;
 
     /*
      * The VM power status.
      */
-    @JsonProperty(value = "powerStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String powerStatus;
 
     /*
      * The VM fqdn.
      */
-    @JsonProperty(value = "vmFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String vmFqdn;
 
     /*
      * The VM's OS name.
      */
-    @JsonProperty(value = "osName", access = JsonProperty.Access.WRITE_ONLY)
     private String osName;
 
     /*
      * The SDS created timestamp.
      */
-    @JsonProperty(value = "createdTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTimestamp;
 
     /*
      * The SDS updated timestamp.
      */
-    @JsonProperty(value = "updatedTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime updatedTimestamp;
 
     /*
      * A value indicating whether the VM is deleted.
      */
-    @JsonProperty(value = "isDeleted", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDeleted;
 
     /*
      * The last time when SDS information discovered in SRS.
      */
-    @JsonProperty(value = "lastDiscoveryTimeInUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastDiscoveryTimeInUtc;
 
     /**
@@ -206,5 +200,69 @@ public final class InMageRcmFailbackDiscoveredProtectedVmDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InMageRcmFailbackDiscoveredProtectedVmDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InMageRcmFailbackDiscoveredProtectedVmDetails if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InMageRcmFailbackDiscoveredProtectedVmDetails.
+     */
+    public static InMageRcmFailbackDiscoveredProtectedVmDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InMageRcmFailbackDiscoveredProtectedVmDetails deserializedInMageRcmFailbackDiscoveredProtectedVmDetails
+                = new InMageRcmFailbackDiscoveredProtectedVmDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vCenterId".equals(fieldName)) {
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.vCenterId = reader.getString();
+                } else if ("vCenterFqdn".equals(fieldName)) {
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.vCenterFqdn = reader.getString();
+                } else if ("datastores".equals(fieldName)) {
+                    List<String> datastores = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.datastores = datastores;
+                } else if ("ipAddresses".equals(fieldName)) {
+                    List<String> ipAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.ipAddresses = ipAddresses;
+                } else if ("vmwareToolsStatus".equals(fieldName)) {
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.vmwareToolsStatus = reader.getString();
+                } else if ("powerStatus".equals(fieldName)) {
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.powerStatus = reader.getString();
+                } else if ("vmFqdn".equals(fieldName)) {
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.vmFqdn = reader.getString();
+                } else if ("osName".equals(fieldName)) {
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.osName = reader.getString();
+                } else if ("createdTimestamp".equals(fieldName)) {
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.createdTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("updatedTimestamp".equals(fieldName)) {
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.updatedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isDeleted".equals(fieldName)) {
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.isDeleted
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastDiscoveryTimeInUtc".equals(fieldName)) {
+                    deserializedInMageRcmFailbackDiscoveredProtectedVmDetails.lastDiscoveryTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInMageRcmFailbackDiscoveredProtectedVmDetails;
+        });
     }
 }

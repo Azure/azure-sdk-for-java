@@ -5,77 +5,78 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.AgreementContent;
 import com.azure.resourcemanager.logic.models.AgreementType;
 import com.azure.resourcemanager.logic.models.BusinessIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The integration account agreement properties. */
+/**
+ * The integration account agreement properties.
+ */
 @Fluent
-public final class IntegrationAccountAgreementProperties {
+public final class IntegrationAccountAgreementProperties
+    implements JsonSerializable<IntegrationAccountAgreementProperties> {
     /*
      * The created time.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * The changed time.
      */
-    @JsonProperty(value = "changedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime changedTime;
 
     /*
      * The metadata.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The agreement type.
      */
-    @JsonProperty(value = "agreementType", required = true)
     private AgreementType agreementType;
 
     /*
      * The integration account partner that is set as host partner for this agreement.
      */
-    @JsonProperty(value = "hostPartner", required = true)
     private String hostPartner;
 
     /*
      * The integration account partner that is set as guest partner for this agreement.
      */
-    @JsonProperty(value = "guestPartner", required = true)
     private String guestPartner;
 
     /*
      * The business identity of the host partner.
      */
-    @JsonProperty(value = "hostIdentity", required = true)
     private BusinessIdentity hostIdentity;
 
     /*
      * The business identity of the guest partner.
      */
-    @JsonProperty(value = "guestIdentity", required = true)
     private BusinessIdentity guestIdentity;
 
     /*
      * The agreement content.
      */
-    @JsonProperty(value = "content", required = true)
     private AgreementContent content;
 
-    /** Creates an instance of IntegrationAccountAgreementProperties class. */
+    /**
+     * Creates an instance of IntegrationAccountAgreementProperties class.
+     */
     public IntegrationAccountAgreementProperties() {
     }
 
     /**
      * Get the createdTime property: The created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -84,7 +85,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Get the changedTime property: The changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -93,7 +94,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Get the metadata property: The metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -102,7 +103,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Set the metadata property: The metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the IntegrationAccountAgreementProperties object itself.
      */
@@ -113,7 +114,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Get the agreementType property: The agreement type.
-     *
+     * 
      * @return the agreementType value.
      */
     public AgreementType agreementType() {
@@ -122,7 +123,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Set the agreementType property: The agreement type.
-     *
+     * 
      * @param agreementType the agreementType value to set.
      * @return the IntegrationAccountAgreementProperties object itself.
      */
@@ -133,7 +134,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Get the hostPartner property: The integration account partner that is set as host partner for this agreement.
-     *
+     * 
      * @return the hostPartner value.
      */
     public String hostPartner() {
@@ -142,7 +143,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Set the hostPartner property: The integration account partner that is set as host partner for this agreement.
-     *
+     * 
      * @param hostPartner the hostPartner value to set.
      * @return the IntegrationAccountAgreementProperties object itself.
      */
@@ -153,7 +154,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Get the guestPartner property: The integration account partner that is set as guest partner for this agreement.
-     *
+     * 
      * @return the guestPartner value.
      */
     public String guestPartner() {
@@ -162,7 +163,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Set the guestPartner property: The integration account partner that is set as guest partner for this agreement.
-     *
+     * 
      * @param guestPartner the guestPartner value to set.
      * @return the IntegrationAccountAgreementProperties object itself.
      */
@@ -173,7 +174,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Get the hostIdentity property: The business identity of the host partner.
-     *
+     * 
      * @return the hostIdentity value.
      */
     public BusinessIdentity hostIdentity() {
@@ -182,7 +183,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Set the hostIdentity property: The business identity of the host partner.
-     *
+     * 
      * @param hostIdentity the hostIdentity value to set.
      * @return the IntegrationAccountAgreementProperties object itself.
      */
@@ -193,7 +194,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Get the guestIdentity property: The business identity of the guest partner.
-     *
+     * 
      * @return the guestIdentity value.
      */
     public BusinessIdentity guestIdentity() {
@@ -202,7 +203,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Set the guestIdentity property: The business identity of the guest partner.
-     *
+     * 
      * @param guestIdentity the guestIdentity value to set.
      * @return the IntegrationAccountAgreementProperties object itself.
      */
@@ -213,7 +214,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Get the content property: The agreement content.
-     *
+     * 
      * @return the content value.
      */
     public AgreementContent content() {
@@ -222,7 +223,7 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Set the content property: The agreement content.
-     *
+     * 
      * @param content the content value to set.
      * @return the IntegrationAccountAgreementProperties object itself.
      */
@@ -233,53 +234,110 @@ public final class IntegrationAccountAgreementProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (agreementType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property agreementType in model IntegrationAccountAgreementProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property agreementType in model IntegrationAccountAgreementProperties"));
         }
         if (hostPartner() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hostPartner in model IntegrationAccountAgreementProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hostPartner in model IntegrationAccountAgreementProperties"));
         }
         if (guestPartner() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property guestPartner in model IntegrationAccountAgreementProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property guestPartner in model IntegrationAccountAgreementProperties"));
         }
         if (hostIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hostIdentity in model IntegrationAccountAgreementProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hostIdentity in model IntegrationAccountAgreementProperties"));
         } else {
             hostIdentity().validate();
         }
         if (guestIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property guestIdentity in model IntegrationAccountAgreementProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property guestIdentity in model IntegrationAccountAgreementProperties"));
         } else {
             guestIdentity().validate();
         }
         if (content() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property content in model IntegrationAccountAgreementProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property content in model IntegrationAccountAgreementProperties"));
         } else {
             content().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountAgreementProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("agreementType", this.agreementType == null ? null : this.agreementType.toString());
+        jsonWriter.writeStringField("hostPartner", this.hostPartner);
+        jsonWriter.writeStringField("guestPartner", this.guestPartner);
+        jsonWriter.writeJsonField("hostIdentity", this.hostIdentity);
+        jsonWriter.writeJsonField("guestIdentity", this.guestIdentity);
+        jsonWriter.writeJsonField("content", this.content);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountAgreementProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountAgreementProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationAccountAgreementProperties.
+     */
+    public static IntegrationAccountAgreementProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountAgreementProperties deserializedIntegrationAccountAgreementProperties
+                = new IntegrationAccountAgreementProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("agreementType".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementProperties.agreementType
+                        = AgreementType.fromString(reader.getString());
+                } else if ("hostPartner".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementProperties.hostPartner = reader.getString();
+                } else if ("guestPartner".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementProperties.guestPartner = reader.getString();
+                } else if ("hostIdentity".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementProperties.hostIdentity = BusinessIdentity.fromJson(reader);
+                } else if ("guestIdentity".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementProperties.guestIdentity = BusinessIdentity.fromJson(reader);
+                } else if ("content".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementProperties.content = AgreementContent.fromJson(reader);
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementProperties.changedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedIntegrationAccountAgreementProperties.metadata = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountAgreementProperties;
+        });
+    }
 }

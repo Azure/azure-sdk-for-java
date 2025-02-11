@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -116,8 +117,8 @@ public final class LibraryRequirements implements JsonSerializable<LibraryRequir
                 reader.nextToken();
 
                 if ("time".equals(fieldName)) {
-                    deserializedLibraryRequirements.time
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedLibraryRequirements.time = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("content".equals(fieldName)) {
                     deserializedLibraryRequirements.content = reader.getString();
                 } else if ("filename".equals(fieldName)) {

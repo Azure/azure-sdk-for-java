@@ -8,31 +8,33 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RestorableDroppedSqlPools. */
+/**
+ * Resource collection API of RestorableDroppedSqlPools.
+ */
 public interface RestorableDroppedSqlPools {
     /**
      * Gets a deleted sql pool that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param restorableDroppedSqlPoolId The id of the deleted Sql Pool in the form of
-     *     sqlPoolName,deletionTimeInFileTimeFormat.
+     * sqlPoolName,deletionTimeInFileTimeFormat.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deleted sql pool that can be restored along with {@link Response}.
      */
-    Response<RestorableDroppedSqlPool> getWithResponse(
-        String resourceGroupName, String workspaceName, String restorableDroppedSqlPoolId, Context context);
+    Response<RestorableDroppedSqlPool> getWithResponse(String resourceGroupName, String workspaceName,
+        String restorableDroppedSqlPoolId, Context context);
 
     /**
      * Gets a deleted sql pool that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param restorableDroppedSqlPoolId The id of the deleted Sql Pool in the form of
-     *     sqlPoolName,deletionTimeInFileTimeFormat.
+     * sqlPoolName,deletionTimeInFileTimeFormat.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -42,7 +44,7 @@ public interface RestorableDroppedSqlPools {
 
     /**
      * Gets a list of deleted Sql pools that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,7 +56,7 @@ public interface RestorableDroppedSqlPools {
 
     /**
      * Gets a list of deleted Sql pools that can be restored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -63,6 +65,6 @@ public interface RestorableDroppedSqlPools {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of deleted Sql pools that can be restored as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RestorableDroppedSqlPool> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<RestorableDroppedSqlPool> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

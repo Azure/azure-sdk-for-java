@@ -6,19 +6,21 @@ package com.azure.resourcemanager.automation.generated;
 
 import com.azure.resourcemanager.automation.models.RunAsCredentialAssociationProperty;
 
-/** Samples for HybridRunbookWorkerGroup Create. */
+/**
+ * Samples for HybridRunbookWorkerGroup Create.
+ */
 public final class HybridRunbookWorkerGroupCreateSamples {
     /*
-     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/putHybridRunbookWorkerGroup.json
+     * x-ms-original-file: specification/automation/resource-manager/Microsoft.Automation/stable/2022-02-22/examples/
+     * putHybridRunbookWorkerGroup.json
      */
     /**
      * Sample code: Create a hybrid worker group.
-     *
+     * 
      * @param manager Entry point to AutomationManager.
      */
     public static void createAHybridWorkerGroup(com.azure.resourcemanager.automation.AutomationManager manager) {
-        manager
-            .hybridRunbookWorkerGroups()
+        manager.hybridRunbookWorkerGroups()
             .define("TestHybridGroup")
             .withExistingAutomationAccount("rg", "testaccount")
             .withCredential(new RunAsCredentialAssociationProperty().withName("myRunAsCredentialName"))

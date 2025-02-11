@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"},\"origin\":\"ownoizhw\"},{\"name\":\"xybqsoqij\",\"isDataAction\":true,\"display\":{\"provider\":\"pazlobcufpdz\",\"resource\":\"btcqq\",\"operation\":\"qglhq\",\"description\":\"ufo\"},\"origin\":\"jywif\"},{\"name\":\"esaagdfm\",\"isDataAction\":true,\"display\":{\"provider\":\"j\",\"resource\":\"ifkwmrvktsizntoc\",\"operation\":\"a\",\"description\":\"ajpsquc\"},\"origin\":\"o\"}],\"nextLink\":\"dkfo\"}")
-                .toObject(OperationListResult.class);
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"display\":{\"provider\":\"pbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"},\"origin\":\"ownoizhw\"},{\"name\":\"xybqsoqij\",\"isDataAction\":true,\"display\":{\"provider\":\"pazlobcufpdz\",\"resource\":\"btcqq\",\"operation\":\"qglhq\",\"description\":\"ufo\"},\"origin\":\"jywif\"},{\"name\":\"esaagdfm\",\"isDataAction\":true,\"display\":{\"provider\":\"j\",\"resource\":\"ifkwmrvktsizntoc\",\"operation\":\"a\",\"description\":\"ajpsquc\"},\"origin\":\"o\"}],\"nextLink\":\"dkfo\"}")
+            .toObject(OperationListResult.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
         Assertions.assertEquals("pbsphrupidgs", model.value().get(0).display().provider());
@@ -31,42 +29,29 @@ public final class OperationListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationListResult model =
-            new OperationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationResultInner()
-                                .withName("quvgjxpybczme")
-                                .withIsDataAction(true)
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("pbsphrupidgs")
-                                        .withResource("bejhphoycmsxa")
-                                        .withOperation("hdxbmtqio")
-                                        .withDescription("zehtbmu"))
-                                .withOrigin("ownoizhw"),
-                            new OperationResultInner()
-                                .withName("xybqsoqij")
-                                .withIsDataAction(true)
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("pazlobcufpdz")
-                                        .withResource("btcqq")
-                                        .withOperation("qglhq")
-                                        .withDescription("ufo"))
-                                .withOrigin("jywif"),
-                            new OperationResultInner()
-                                .withName("esaagdfm")
-                                .withIsDataAction(true)
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("j")
-                                        .withResource("ifkwmrvktsizntoc")
-                                        .withOperation("a")
-                                        .withDescription("ajpsquc"))
-                                .withOrigin("o")))
-                .withNextLink("dkfo");
+        OperationListResult model = new OperationListResult().withValue(Arrays.asList(
+            new OperationResultInner().withName("quvgjxpybczme")
+                .withIsDataAction(true)
+                .withDisplay(new OperationDisplay().withProvider("pbsphrupidgs")
+                    .withResource("bejhphoycmsxa")
+                    .withOperation("hdxbmtqio")
+                    .withDescription("zehtbmu"))
+                .withOrigin("ownoizhw"),
+            new OperationResultInner().withName("xybqsoqij")
+                .withIsDataAction(true)
+                .withDisplay(new OperationDisplay().withProvider("pazlobcufpdz")
+                    .withResource("btcqq")
+                    .withOperation("qglhq")
+                    .withDescription("ufo"))
+                .withOrigin("jywif"),
+            new OperationResultInner().withName("esaagdfm")
+                .withIsDataAction(true)
+                .withDisplay(new OperationDisplay().withProvider("j")
+                    .withResource("ifkwmrvktsizntoc")
+                    .withOperation("a")
+                    .withDescription("ajpsquc"))
+                .withOrigin("o")))
+            .withNextLink("dkfo");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());

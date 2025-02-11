@@ -514,13 +514,8 @@ public final class FarmBeatsClientImpl {
      * @param serviceVersion Service version.
      */
     public FarmBeatsClientImpl(String endpoint, FarmBeatsServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder()
-                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                        .build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -542,11 +537,8 @@ public final class FarmBeatsClientImpl {
      * @param endpoint The Azure FarmBeats account endpoint.
      * @param serviceVersion Service version.
      */
-    public FarmBeatsClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            FarmBeatsServiceVersion serviceVersion) {
+    public FarmBeatsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        FarmBeatsServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

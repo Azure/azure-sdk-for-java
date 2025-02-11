@@ -6,18 +6,20 @@ package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.resourcemanager.devtestlabs.fluent.models.RdpConnectionInner;
 
-/** An immutable client-side representation of RdpConnection. */
+/**
+ * An immutable client-side representation of RdpConnection.
+ */
 public interface RdpConnection {
     /**
      * Gets the contents property: The contents of the .rdp file.
-     *
+     * 
      * @return the contents value.
      */
     String contents();
 
     /**
      * Gets the inner com.azure.resourcemanager.devtestlabs.fluent.models.RdpConnectionInner object.
-     *
+     * 
      * @return the inner object.
      */
     RdpConnectionInner innerModel();

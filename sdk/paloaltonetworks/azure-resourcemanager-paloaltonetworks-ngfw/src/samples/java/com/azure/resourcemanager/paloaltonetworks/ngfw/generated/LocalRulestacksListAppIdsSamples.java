@@ -20,8 +20,9 @@ public final class LocalRulestacksListAppIdsSamples {
      */
     public static void localRulestacksListAppIdsMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRulestacks().listAppIdsWithResponse("rgopenapi", "lrs1", "8543", "pref", "a6a321", 20,
-            com.azure.core.util.Context.NONE);
+        manager.localRulestacks()
+            .listAppIdsWithResponse("rgopenapi", "lrs1", "8543", "pref", "a6a321", 20,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +37,7 @@ public final class LocalRulestacksListAppIdsSamples {
      */
     public static void localRulestacksListAppIdsMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRulestacks().listAppIdsWithResponse("rgopenapi", "lrs1", null, null, null, null,
-            com.azure.core.util.Context.NONE);
+        manager.localRulestacks()
+            .listAppIdsWithResponse("rgopenapi", "lrs1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

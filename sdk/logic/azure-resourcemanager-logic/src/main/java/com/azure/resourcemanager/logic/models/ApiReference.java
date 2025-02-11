@@ -5,60 +5,70 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Api reference. */
+/**
+ * The Api reference.
+ */
 @Fluent
 public final class ApiReference extends ResourceReference {
     /*
      * The display name of the api.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The description of the api.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The icon uri of the api.
      */
-    @JsonProperty(value = "iconUri")
     private String iconUri;
 
     /*
      * The swagger of the api.
      */
-    @JsonProperty(value = "swagger")
     private Object swagger;
 
     /*
      * The brand color of the api.
      */
-    @JsonProperty(value = "brandColor")
     private String brandColor;
 
     /*
      * The tier.
      */
-    @JsonProperty(value = "category")
     private ApiTier category;
 
     /*
      * The integration service environment reference.
      */
-    @JsonProperty(value = "integrationServiceEnvironment")
     private ResourceReference integrationServiceEnvironment;
 
-    /** Creates an instance of ApiReference class. */
+    /*
+     * Gets the resource type.
+     */
+    private String type;
+
+    /*
+     * Gets the resource name.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of ApiReference class.
+     */
     public ApiReference() {
     }
 
     /**
      * Get the displayName property: The display name of the api.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -67,7 +77,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Set the displayName property: The display name of the api.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApiReference object itself.
      */
@@ -78,7 +88,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Get the description property: The description of the api.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -87,7 +97,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Set the description property: The description of the api.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApiReference object itself.
      */
@@ -98,7 +108,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Get the iconUri property: The icon uri of the api.
-     *
+     * 
      * @return the iconUri value.
      */
     public String iconUri() {
@@ -107,7 +117,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Set the iconUri property: The icon uri of the api.
-     *
+     * 
      * @param iconUri the iconUri value to set.
      * @return the ApiReference object itself.
      */
@@ -118,7 +128,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Get the swagger property: The swagger of the api.
-     *
+     * 
      * @return the swagger value.
      */
     public Object swagger() {
@@ -127,7 +137,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Set the swagger property: The swagger of the api.
-     *
+     * 
      * @param swagger the swagger value to set.
      * @return the ApiReference object itself.
      */
@@ -138,7 +148,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Get the brandColor property: The brand color of the api.
-     *
+     * 
      * @return the brandColor value.
      */
     public String brandColor() {
@@ -147,7 +157,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Set the brandColor property: The brand color of the api.
-     *
+     * 
      * @param brandColor the brandColor value to set.
      * @return the ApiReference object itself.
      */
@@ -158,7 +168,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Get the category property: The tier.
-     *
+     * 
      * @return the category value.
      */
     public ApiTier category() {
@@ -167,7 +177,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Set the category property: The tier.
-     *
+     * 
      * @param category the category value to set.
      * @return the ApiReference object itself.
      */
@@ -178,7 +188,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Get the integrationServiceEnvironment property: The integration service environment reference.
-     *
+     * 
      * @return the integrationServiceEnvironment value.
      */
     public ResourceReference integrationServiceEnvironment() {
@@ -187,7 +197,7 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Set the integrationServiceEnvironment property: The integration service environment reference.
-     *
+     * 
      * @param integrationServiceEnvironment the integrationServiceEnvironment value to set.
      * @return the ApiReference object itself.
      */
@@ -196,7 +206,29 @@ public final class ApiReference extends ResourceReference {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: Gets the resource type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: Gets the resource name.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApiReference withId(String id) {
         super.withId(id);
@@ -205,14 +237,74 @@ public final class ApiReference extends ResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (integrationServiceEnvironment() != null) {
             integrationServiceEnvironment().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("iconUri", this.iconUri);
+        jsonWriter.writeUntypedField("swagger", this.swagger);
+        jsonWriter.writeStringField("brandColor", this.brandColor);
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeJsonField("integrationServiceEnvironment", this.integrationServiceEnvironment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiReference if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiReference.
+     */
+    public static ApiReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiReference deserializedApiReference = new ApiReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApiReference.withId(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedApiReference.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApiReference.type = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedApiReference.displayName = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedApiReference.description = reader.getString();
+                } else if ("iconUri".equals(fieldName)) {
+                    deserializedApiReference.iconUri = reader.getString();
+                } else if ("swagger".equals(fieldName)) {
+                    deserializedApiReference.swagger = reader.readUntyped();
+                } else if ("brandColor".equals(fieldName)) {
+                    deserializedApiReference.brandColor = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedApiReference.category = ApiTier.fromString(reader.getString());
+                } else if ("integrationServiceEnvironment".equals(fieldName)) {
+                    deserializedApiReference.integrationServiceEnvironment = ResourceReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiReference;
+        });
     }
 }

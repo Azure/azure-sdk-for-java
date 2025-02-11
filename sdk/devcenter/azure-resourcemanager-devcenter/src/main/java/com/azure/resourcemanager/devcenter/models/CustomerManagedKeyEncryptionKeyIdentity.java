@@ -5,7 +5,12 @@
 package com.azure.resourcemanager.devcenter.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -13,23 +18,27 @@ import java.util.UUID;
  * Vault.
  */
 @Fluent
-public final class CustomerManagedKeyEncryptionKeyIdentity {
+public final class CustomerManagedKeyEncryptionKeyIdentity
+    implements JsonSerializable<CustomerManagedKeyEncryptionKeyIdentity> {
     /*
      * Values can be systemAssignedIdentity or userAssignedIdentity
      */
-    @JsonProperty(value = "identityType")
     private IdentityType identityType;
 
     /*
-     * user assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity and delegatedResourceIdentity.
+     * user assigned identity to use for accessing key encryption key Url. Ex:
+     * /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
+     * group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType
+     * systemAssignedIdentity and delegatedResourceIdentity.
      */
-    @JsonProperty(value = "userAssignedIdentityResourceId")
     private String userAssignedIdentityResourceId;
 
     /*
-     * delegated identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity and userAssignedIdentity - internal use only.
+     * delegated identity to use for accessing key encryption key Url. Ex:
+     * /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/<resource
+     * group>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType
+     * systemAssignedIdentity and userAssignedIdentity - internal use only.
      */
-    @JsonProperty(value = "delegatedIdentityClientId")
     private UUID delegatedIdentityClientId;
 
     /**
@@ -117,5 +126,52 @@ public final class CustomerManagedKeyEncryptionKeyIdentity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("identityType", this.identityType == null ? null : this.identityType.toString());
+        jsonWriter.writeStringField("userAssignedIdentityResourceId", this.userAssignedIdentityResourceId);
+        jsonWriter.writeStringField("delegatedIdentityClientId",
+            Objects.toString(this.delegatedIdentityClientId, null));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomerManagedKeyEncryptionKeyIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomerManagedKeyEncryptionKeyIdentity if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomerManagedKeyEncryptionKeyIdentity.
+     */
+    public static CustomerManagedKeyEncryptionKeyIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomerManagedKeyEncryptionKeyIdentity deserializedCustomerManagedKeyEncryptionKeyIdentity
+                = new CustomerManagedKeyEncryptionKeyIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identityType".equals(fieldName)) {
+                    deserializedCustomerManagedKeyEncryptionKeyIdentity.identityType
+                        = IdentityType.fromString(reader.getString());
+                } else if ("userAssignedIdentityResourceId".equals(fieldName)) {
+                    deserializedCustomerManagedKeyEncryptionKeyIdentity.userAssignedIdentityResourceId
+                        = reader.getString();
+                } else if ("delegatedIdentityClientId".equals(fieldName)) {
+                    deserializedCustomerManagedKeyEncryptionKeyIdentity.delegatedIdentityClientId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomerManagedKeyEncryptionKeyIdentity;
+        });
     }
 }

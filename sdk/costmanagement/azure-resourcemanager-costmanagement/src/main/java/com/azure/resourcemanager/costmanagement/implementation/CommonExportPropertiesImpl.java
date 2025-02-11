@@ -18,8 +18,7 @@ public final class CommonExportPropertiesImpl implements CommonExportProperties 
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    CommonExportPropertiesImpl(
-        CommonExportPropertiesInner innerObject,
+    CommonExportPropertiesImpl(CommonExportPropertiesInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

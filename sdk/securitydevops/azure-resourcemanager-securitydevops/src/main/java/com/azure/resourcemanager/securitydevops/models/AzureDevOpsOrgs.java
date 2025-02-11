@@ -47,8 +47,8 @@ public interface AzureDevOpsOrgs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azure DevOps Org Proxy Resource along with {@link Response}.
      */
-    Response<AzureDevOpsOrg> getWithResponse(
-        String resourceGroupName, String azureDevOpsConnectorName, String azureDevOpsOrgName, Context context);
+    Response<AzureDevOpsOrg> getWithResponse(String resourceGroupName, String azureDevOpsConnectorName,
+        String azureDevOpsOrgName, Context context);
 
     /**
      * Returns a monitored AzureDevOps Org resource for a given ID.

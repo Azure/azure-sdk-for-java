@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.4 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,540 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2025-01-06)
+
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2024-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.NodeTypeCapability` was removed
+
+#### `models.StorageMBCapability` was removed
+
+#### `models.HyperscaleNodeEditionCapability` was removed
+
+#### `models.CapabilityProperties` was removed
+
+#### `models.VcoreCapability` was removed
+
+#### `models.StorageTierCapability` was modified
+
+* `tierName()` was removed
+* `java.lang.Long iops()` -> `java.lang.Integer iops()`
+* `isBaseline()` was removed
+* `java.lang.String status()` -> `models.CapabilityStatus status()`
+
+#### `models.FastProvisioningEditionCapability` was modified
+
+* `java.lang.Long supportedStorageGb()` -> `java.lang.Integer supportedStorageGb()`
+
+#### `models.ServerVersionCapability` was modified
+
+* `supportedVcores()` was removed
+* `java.lang.String status()` -> `models.CapabilityStatus status()`
+
+#### `models.FlexibleServerEditionCapability` was modified
+
+* `supportedServerVersions()` was removed
+* `java.lang.String status()` -> `models.CapabilityStatus status()`
+
+#### `models.StorageEditionCapability` was modified
+
+* `supportedStorageMB()` was removed
+* `java.lang.String status()` -> `models.CapabilityStatus status()`
+
+### Features Added
+
+* `models.ServerThreatProtectionSettingsModel$UpdateStages` was added
+
+* `models.ExecutionStatus` was added
+
+* `models.MigrationResource$Definition` was added
+
+* `models.LogFiles` was added
+
+* `models.ThreatProtectionState` was added
+
+* `models.MigrationResourceListResult` was added
+
+* `models.ServerThreatProtectionSettingsModel` was added
+
+* `models.LtrBackupResponse` was added
+
+* `models.MigrationOption` was added
+
+* `models.PrivateLinkResource` was added
+
+* `models.Migrations` was added
+
+* `models.Replica` was added
+
+* `models.ServerThreatProtectionSettingsModel$Update` was added
+
+* `models.MigrationMode` was added
+
+* `models.LtrBackupRequest` was added
+
+* `models.FlexibleServersTriggerLtrPreBackupResponse` was added
+
+* `models.ZoneRedundantHaSupportedEnum` was added
+
+* `models.ValidationState` was added
+
+* `models.ReadReplicaPromoteMode` was added
+
+* `models.PrivateEndpointConnectionProvisioningState` was added
+
+* `models.MigrationResourceForPatch` was added
+
+* `models.ServerThreatProtectionListResult` was added
+
+* `models.RestrictedEnum` was added
+
+* `models.PrivateLinkResources` was added
+
+* `models.VirtualEndpoints` was added
+
+* `models.OverwriteDbsInTargetEnum` was added
+
+* `models.VirtualEndpointResource$Definition` was added
+
+* `models.MigrationState` was added
+
+* `models.CapabilityStatus` was added
+
+* `models.AzureManagedDiskPerformanceTiers` was added
+
+* `models.StorageAutoGrowthSupportedEnum` was added
+
+* `models.PrivateLinkServiceConnectionState` was added
+
+* `models.MigrationResource$Update` was added
+
+* `models.VirtualEndpointResource$Update` was added
+
+* `models.ResourceProviders` was added
+
+* `models.PrivateLinkResourceListResult` was added
+
+* `models.MigrationStatus` was added
+
+* `models.PrivateEndpointConnections` was added
+
+* `models.StartDataMigrationEnum` was added
+
+* `models.ZoneRedundantHaAndGeoBackupSupportedEnum` was added
+
+* `models.StorageMbCapability` was added
+
+* `models.OnlineResizeSupportedEnum` was added
+
+* `models.MigrationNameAvailabilityResource` was added
+
+* `models.ServerSku` was added
+
+* `models.ThreatProtectionName` was added
+
+* `models.PrivateEndpoint` was added
+
+* `models.BackupStoreDetails` was added
+
+* `models.ServerThreatProtectionSettingsModel$Definition` was added
+
+* `models.MigrationResource$UpdateStages` was added
+
+* `models.FlexibleServers` was added
+
+* `models.LogicalReplicationOnSourceDbEnum` was added
+
+* `models.MigrationDbState` was added
+
+* `models.KeyStatusEnum` was added
+
+* `models.CancelEnum` was added
+
+* `models.MigrationListFilter` was added
+
+* `models.FlexibleServerCapability` was added
+
+* `models.ReplicationState` was added
+
+* `models.PrivateEndpointServiceConnectionStatus` was added
+
+* `models.CapabilityBase` was added
+
+* `models.MigrationNameAvailabilityReason` was added
+
+* `models.LtrBackupOperations` was added
+
+* `models.LtrServerBackupOperation` was added
+
+* `models.ServerCapabilities` was added
+
+* `models.ValidationDetails` was added
+
+* `models.ReplicationPromoteOption` was added
+
+* `models.FastProvisioningSupportedEnum` was added
+
+* `models.LogFile` was added
+
+* `models.VirtualEndpointResourceForPatch` was added
+
+* `models.BackupRequestBase` was added
+
+* `models.ServerSkuCapability` was added
+
+* `models.StorageType` was added
+
+* `models.ValidationMessage` was added
+
+* `models.VirtualEndpointResource` was added
+
+* `models.SourceType` was added
+
+* `models.LogFileListResult` was added
+
+* `models.StorageAutoGrow` was added
+
+* `models.PrivateEndpointConnectionOperations` was added
+
+* `models.VirtualEndpointsListResult` was added
+
+* `models.BackupSettings` was added
+
+* `models.MigrationSubStateDetails` was added
+
+* `models.LtrServerBackupOperationList` was added
+
+* `models.PrivateEndpointConnectionListResult` was added
+
+* `models.DbMigrationStatus` was added
+
+* `models.MigrateRolesEnum` was added
+
+* `models.ValidationSummaryItem` was added
+
+* `models.LtrPreBackupRequest` was added
+
+* `models.LtrPreBackupResponse` was added
+
+* `models.ServerThreatProtectionSettingsModel$DefinitionStages` was added
+
+* `models.MigrationResource` was added
+
+* `models.HaMode` was added
+
+* `models.GeoBackupSupportedEnum` was added
+
+* `models.MigrationSecretParameters` was added
+
+* `models.TriggerCutoverEnum` was added
+
+* `models.VirtualEndpointType` was added
+
+* `models.DbLevelValidationStatus` was added
+
+* `models.ServerThreatProtectionSettings` was added
+
+* `models.MigrationResource$DefinitionStages` was added
+
+* `models.MigrationSubState` was added
+
+* `models.PrivateEndpointConnection` was added
+
+* `models.VirtualEndpointResource$DefinitionStages` was added
+
+* `models.DbServerMetadata` was added
+
+* `models.FlexibleServersTriggerLtrPreBackupHeaders` was added
+
+* `models.AdminCredentials` was added
+
+* `models.VirtualEndpointResource$UpdateStages` was added
+
+* `models.SslMode` was added
+
+#### `models.Backup` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.StorageTierCapability` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `reason()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.HighAvailability` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.VirtualNetworkSubnetUsageParameter` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Backups` was modified
+
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `create(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `create(java.lang.String,java.lang.String,java.lang.String)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.ActiveDirectoryAdministratorAdd` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CheckNameAvailabilityResponse` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FastProvisioningEditionCapability` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `supportedTier()` was added
+* `status()` was added
+* `reason()` was added
+* `serverCount()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Storage` was modified
+
+* `withThroughput(java.lang.Integer)` was added
+* `withAutoGrow(models.StorageAutoGrow)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withTier(models.AzureManagedDiskPerformanceTiers)` was added
+* `iops()` was added
+* `autoGrow()` was added
+* `withType(models.StorageType)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `tier()` was added
+* `withIops(java.lang.Integer)` was added
+* `throughput()` was added
+* `type()` was added
+
+#### `models.UserIdentity` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.OperationDisplay` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.UserAssignedIdentity` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.DelegatedSubnetUsage` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ServerForUpdate` was modified
+
+* `replica()` was added
+* `withAdministratorLogin(java.lang.String)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `administratorLogin()` was added
+* `withReplica(models.Replica)` was added
+
+#### `models.DatabaseListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.FirewallRuleListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.DataEncryption` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withPrimaryEncryptionKeyStatus(models.KeyStatusEnum)` was added
+* `geoBackupEncryptionKeyStatus()` was added
+* `geoBackupUserAssignedIdentityId()` was added
+* `geoBackupKeyUri()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `withGeoBackupEncryptionKeyStatus(models.KeyStatusEnum)` was added
+* `primaryEncryptionKeyStatus()` was added
+* `withGeoBackupKeyUri(java.lang.String)` was added
+* `withGeoBackupUserAssignedIdentityId(java.lang.String)` was added
+
+#### `models.RestartParameter` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ServerVersionCapability` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `reason()` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.AdministratorListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.FlexibleServerEditionCapability` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `reason()` was added
+* `supportedServerSkus()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `defaultSkuName()` was added
+
+#### `models.CapabilitiesListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ConfigurationForUpdate` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Operation` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.ServerBackupListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.MaintenanceWindow` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Network` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `withPublicNetworkAccess(models.ServerPublicNetworkAccessState)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.Sku` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.ConfigurationListResult` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `models.CheckNameAvailabilityRequest` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.Server$Update` was modified
+
+* `withReplica(models.Replica)` was added
+* `withAdministratorLogin(java.lang.String)` was added
+
+#### `models.Server` was modified
+
+* `replica()` was added
+* `privateEndpointConnections()` was added
+
+#### `models.ServerListResult` was modified
+
+* `toJson(com.azure.json.JsonWriter)` was added
+* `fromJson(com.azure.json.JsonReader)` was added
+
+#### `models.StorageEditionCapability` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `reason()` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+* `supportedStorageMb()` was added
+* `defaultStorageSizeMb()` was added
+
+#### `models.AuthConfig` was modified
+
+* `fromJson(com.azure.json.JsonReader)` was added
+* `toJson(com.azure.json.JsonWriter)` was added
+
+#### `PostgreSqlManager` was modified
+
+* `serverThreatProtectionSettings()` was added
+* `privateEndpointConnections()` was added
+* `migrations()` was added
+* `privateEndpointConnectionOperations()` was added
+* `logFiles()` was added
+* `virtualEndpoints()` was added
+* `resourceProviders()` was added
+* `flexibleServers()` was added
+* `serverCapabilities()` was added
+* `ltrBackupOperations()` was added
+* `privateLinkResources()` was added
+
+## 1.1.0-beta.4 (2024-12-06)
+
+- Azure Resource Manager PostgreSql client library for Java. This package contains Microsoft Azure SDK for PostgreSql Management SDK. The Microsoft Azure management API provides create, read, update, and delete functionality for Azure PostgreSQL resources including servers, databases, firewall rules, VNET rules, security alert policies, log files and configurations with new business model. Package tag package-flexibleserver-2023-12-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.StorageTierCapability` was modified
+
+* `status()` was added
+* `reason()` was added
+
+#### `models.FastProvisioningEditionCapability` was modified
+
+* `reason()` was added
+* `status()` was added
+
+#### `models.StorageMbCapability` was modified
+
+* `status()` was added
+* `reason()` was added
+
+#### `models.ServerVersionCapability` was modified
+
+* `reason()` was added
+* `status()` was added
+
+#### `models.FlexibleServerEditionCapability` was modified
+
+* `status()` was added
+* `reason()` was added
+
+#### `models.ServerSkuCapability` was modified
+
+* `status()` was added
+* `reason()` was added
+
+#### `models.StorageEditionCapability` was modified
+
+* `status()` was added
+* `reason()` was added
 
 ## 1.1.0-beta.3 (2024-04-18)
 

@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Disk model =
-            BinaryData
-                .fromString("{\"name\":\"lzufcyzkohdbi\",\"diskSizeGB\":1182566841,\"lun\":1205739744}")
-                .toObject(Disk.class);
-        Assertions.assertEquals("lzufcyzkohdbi", model.name());
-        Assertions.assertEquals(1182566841, model.diskSizeGB());
+        Disk model = BinaryData.fromString("{\"name\":\"glzufc\",\"diskSizeGB\":2049014083,\"lun\":1760407196}")
+            .toObject(Disk.class);
+        Assertions.assertEquals("glzufc", model.name());
+        Assertions.assertEquals(2049014083, model.diskSizeGB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Disk model = new Disk().withName("lzufcyzkohdbi").withDiskSizeGB(1182566841);
+        Disk model = new Disk().withName("glzufc").withDiskSizeGB(2049014083);
         model = BinaryData.fromObject(model).toObject(Disk.class);
-        Assertions.assertEquals("lzufcyzkohdbi", model.name());
-        Assertions.assertEquals(1182566841, model.diskSizeGB());
+        Assertions.assertEquals("glzufc", model.name());
+        Assertions.assertEquals(2049014083, model.diskSizeGB());
     }
 }

@@ -93,10 +93,8 @@ public interface MetricDefinition extends HasManager<MonitorManager>, HasInnerMo
     MetricsQueryDefinitionStages.WithMetricStartTimeFilter defineQuery();
 
     /** The entirety of a Metrics query definition. */
-    interface MetricsQueryDefinition
-        extends MetricsQueryDefinitionStages.WithMetricStartTimeFilter,
-            MetricsQueryDefinitionStages.WithMetricEndFilter,
-            MetricsQueryDefinitionStages.WithMetricsQueryExecute {
+    interface MetricsQueryDefinition extends MetricsQueryDefinitionStages.WithMetricStartTimeFilter,
+        MetricsQueryDefinitionStages.WithMetricEndFilter, MetricsQueryDefinitionStages.WithMetricsQueryExecute {
     }
 
     /** Grouping of Metric query stages. */

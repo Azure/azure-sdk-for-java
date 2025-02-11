@@ -54,9 +54,8 @@ public class SegmentCursor implements JsonSerializable<SegmentCursor> {
         List<ShardCursor> copy = new ArrayList<>();
         if (userSegmentCursor != null) {
             userSegmentCursor.getShardCursors()
-                .forEach(shardCursor ->
-                    copy.add(new ShardCursor(shardCursor.getCurrentChunkPath(), shardCursor.getBlockOffset(),
-                        shardCursor.getEventIndex())));
+                .forEach(shardCursor -> copy.add(new ShardCursor(shardCursor.getCurrentChunkPath(),
+                    shardCursor.getBlockOffset(), shardCursor.getEventIndex())));
         }
         this.shardCursors = copy;
         this.currentShardPath = null;
@@ -90,10 +89,7 @@ public class SegmentCursor implements JsonSerializable<SegmentCursor> {
             /* If we found a shard cursor for this shard, modify it. */
             if (cursor.getCurrentChunkPath().contains(this.currentShardPath)) {
                 found = true;
-                cursor
-                    .setCurrentChunkPath(chunkPath)
-                    .setBlockOffset(blockOffset)
-                    .setEventIndex(eventIndex);
+                cursor.setCurrentChunkPath(chunkPath).setBlockOffset(blockOffset).setEventIndex(eventIndex);
             }
             /* Add the cursor to the copied list after modifying it. */
             copy.add(new ShardCursor(cursor.getCurrentChunkPath(), cursor.getBlockOffset(), cursor.getEventIndex()));

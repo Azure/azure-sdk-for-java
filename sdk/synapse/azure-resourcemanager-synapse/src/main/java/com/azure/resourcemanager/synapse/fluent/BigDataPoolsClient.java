@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.BigDataPoolResourceInfoInner;
 import com.azure.resourcemanager.synapse.models.BigDataPoolPatchInfo;
 
-/** An instance of this class provides access to all the operations defined in BigDataPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BigDataPoolsClient.
+ */
 public interface BigDataPoolsClient {
     /**
      * Get Big Data pool
-     *
-     * <p>Get a Big Data pool.
-     *
+     * 
+     * Get a Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -31,14 +33,14 @@ public interface BigDataPoolsClient {
      * @return a Big Data pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BigDataPoolResourceInfoInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
+    Response<BigDataPoolResourceInfoInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String bigDataPoolName, Context context);
 
     /**
      * Get Big Data pool
-     *
-     * <p>Get a Big Data pool.
-     *
+     * 
+     * Get a Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -52,9 +54,9 @@ public interface BigDataPoolsClient {
 
     /**
      * Update a Big Data pool.
-     *
-     * <p>Patch a Big Data pool.
-     *
+     * 
+     * Patch a Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -66,18 +68,14 @@ public interface BigDataPoolsClient {
      * @return big Data pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BigDataPoolResourceInfoInner> updateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String bigDataPoolName,
-        BigDataPoolPatchInfo bigDataPoolPatchInfo,
-        Context context);
+    Response<BigDataPoolResourceInfoInner> updateWithResponse(String resourceGroupName, String workspaceName,
+        String bigDataPoolName, BigDataPoolPatchInfo bigDataPoolPatchInfo, Context context);
 
     /**
      * Update a Big Data pool.
-     *
-     * <p>Patch a Big Data pool.
-     *
+     * 
+     * Patch a Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -88,17 +86,14 @@ public interface BigDataPoolsClient {
      * @return big Data pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BigDataPoolResourceInfoInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String bigDataPoolName,
+    BigDataPoolResourceInfoInner update(String resourceGroupName, String workspaceName, String bigDataPoolName,
         BigDataPoolPatchInfo bigDataPoolPatchInfo);
 
     /**
      * Create a Big Data pool.
-     *
-     * <p>Create a new Big Data pool.
-     *
+     * 
+     * Create a new Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -110,16 +105,14 @@ public interface BigDataPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BigDataPoolResourceInfoInner>, BigDataPoolResourceInfoInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String bigDataPoolName,
+        String resourceGroupName, String workspaceName, String bigDataPoolName,
         BigDataPoolResourceInfoInner bigDataPoolInfo);
 
     /**
      * Create a Big Data pool.
-     *
-     * <p>Create a new Big Data pool.
-     *
+     * 
+     * Create a new Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -133,18 +126,14 @@ public interface BigDataPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BigDataPoolResourceInfoInner>, BigDataPoolResourceInfoInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String bigDataPoolName,
-        BigDataPoolResourceInfoInner bigDataPoolInfo,
-        Boolean force,
-        Context context);
+        String resourceGroupName, String workspaceName, String bigDataPoolName,
+        BigDataPoolResourceInfoInner bigDataPoolInfo, Boolean force, Context context);
 
     /**
      * Create a Big Data pool.
-     *
-     * <p>Create a new Big Data pool.
-     *
+     * 
+     * Create a new Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -155,17 +144,14 @@ public interface BigDataPoolsClient {
      * @return big Data pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BigDataPoolResourceInfoInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String bigDataPoolName,
+    BigDataPoolResourceInfoInner createOrUpdate(String resourceGroupName, String workspaceName, String bigDataPoolName,
         BigDataPoolResourceInfoInner bigDataPoolInfo);
 
     /**
      * Create a Big Data pool.
-     *
-     * <p>Create a new Big Data pool.
-     *
+     * 
+     * Create a new Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -178,36 +164,31 @@ public interface BigDataPoolsClient {
      * @return big Data pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BigDataPoolResourceInfoInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String bigDataPoolName,
-        BigDataPoolResourceInfoInner bigDataPoolInfo,
-        Boolean force,
-        Context context);
+    BigDataPoolResourceInfoInner createOrUpdate(String resourceGroupName, String workspaceName, String bigDataPoolName,
+        BigDataPoolResourceInfoInner bigDataPoolInfo, Boolean force, Context context);
 
     /**
      * Delete a Big Data pool.
-     *
-     * <p>Delete a Big Data pool from the workspace.
-     *
+     * 
+     * Delete a Big Data pool from the workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of big Data pool.
+     * @return the {@link SyncPoller} for polling of any object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BigDataPoolResourceInfoInner>, BigDataPoolResourceInfoInner> beginDelete(
-        String resourceGroupName, String workspaceName, String bigDataPoolName);
+    SyncPoller<PollResult<Object>, Object> beginDelete(String resourceGroupName, String workspaceName,
+        String bigDataPoolName);
 
     /**
      * Delete a Big Data pool.
-     *
-     * <p>Delete a Big Data pool from the workspace.
-     *
+     * 
+     * Delete a Big Data pool from the workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -215,33 +196,33 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of big Data pool.
+     * @return the {@link SyncPoller} for polling of any object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BigDataPoolResourceInfoInner>, BigDataPoolResourceInfoInner> beginDelete(
-        String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
+    SyncPoller<PollResult<Object>, Object> beginDelete(String resourceGroupName, String workspaceName,
+        String bigDataPoolName, Context context);
 
     /**
      * Delete a Big Data pool.
-     *
-     * <p>Delete a Big Data pool from the workspace.
-     *
+     * 
+     * Delete a Big Data pool from the workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return big Data pool.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BigDataPoolResourceInfoInner delete(String resourceGroupName, String workspaceName, String bigDataPoolName);
+    Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName);
 
     /**
      * Delete a Big Data pool.
-     *
-     * <p>Delete a Big Data pool from the workspace.
-     *
+     * 
+     * Delete a Big Data pool from the workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -249,17 +230,16 @@ public interface BigDataPoolsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return big Data pool.
+     * @return any object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BigDataPoolResourceInfoInner delete(
-        String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
+    Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName, Context context);
 
     /**
      * List the Big Data pools in a workspace.
-     *
-     * <p>List Big Data pools in a workspace.
-     *
+     * 
+     * List Big Data pools in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,9 +252,9 @@ public interface BigDataPoolsClient {
 
     /**
      * List the Big Data pools in a workspace.
-     *
-     * <p>List Big Data pools in a workspace.
-     *
+     * 
+     * List Big Data pools in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -284,6 +264,6 @@ public interface BigDataPoolsClient {
      * @return collection of Big Data pools as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BigDataPoolResourceInfoInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<BigDataPoolResourceInfoInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

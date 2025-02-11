@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.mariadb.generated;
 
-/** Samples for Configurations ListByServer. */
+/**
+ * Samples for Configurations ListByServer.
+ */
 public final class ConfigurationsListByServerSamples {
     /*
-     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/ConfigurationListByServer.json
+     * x-ms-original-file: specification/mariadb/resource-manager/Microsoft.DBforMariaDB/stable/2018-06-01/examples/
+     * ConfigurationListByServer.json
      */
     /**
      * Sample code: ConfigurationList.
-     *
+     * 
      * @param manager Entry point to MariaDBManager.
      */
     public static void configurationList(com.azure.resourcemanager.mariadb.MariaDBManager manager) {

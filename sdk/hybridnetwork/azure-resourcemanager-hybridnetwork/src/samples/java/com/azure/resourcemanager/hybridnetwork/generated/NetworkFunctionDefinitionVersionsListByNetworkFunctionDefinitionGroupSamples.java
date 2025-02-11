@@ -19,7 +19,8 @@ public final class NetworkFunctionDefinitionVersionsListByNetworkFunctionDefinit
      * @param manager Entry point to HybridNetworkManager.
      */
     public static void getPublisherResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctionDefinitionVersions().listByNetworkFunctionDefinitionGroup("rg", "TestPublisher",
-            "TestNetworkFunctionDefinitionGroupNameName", com.azure.core.util.Context.NONE);
+        manager.networkFunctionDefinitionVersions()
+            .listByNetworkFunctionDefinitionGroup("rg", "TestPublisher", "TestNetworkFunctionDefinitionGroupNameName",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -11,11 +11,31 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.automanage.fluent.models.ReportInner;
 
-/** An instance of this class provides access to all the operations defined in ReportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReportsClient.
+ */
 public interface ReportsClient {
     /**
      * Get information about a report associated with a configuration profile assignment run.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param configurationProfileAssignmentName The configuration profile assignment name.
+     * @param reportName The report name.
+     * @param vmName The name of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a report associated with a configuration profile assignment run along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ReportInner> getWithResponse(String resourceGroupName, String configurationProfileAssignmentName,
+        String reportName, String vmName, Context context);
+
+    /**
+     * Get information about a report associated with a configuration profile assignment run.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param reportName The report name.
@@ -26,34 +46,12 @@ public interface ReportsClient {
      * @return information about a report associated with a configuration profile assignment run.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReportInner get(
-        String resourceGroupName, String configurationProfileAssignmentName, String reportName, String vmName);
-
-    /**
-     * Get information about a report associated with a configuration profile assignment run.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param configurationProfileAssignmentName The configuration profile assignment name.
-     * @param reportName The report name.
-     * @param vmName The name of the virtual machine.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a report associated with a configuration profile assignment run along with {@link
-     *     Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReportInner> getWithResponse(
-        String resourceGroupName,
-        String configurationProfileAssignmentName,
-        String reportName,
-        String vmName,
-        Context context);
+    ReportInner get(String resourceGroupName, String configurationProfileAssignmentName, String reportName,
+        String vmName);
 
     /**
      * Retrieve a list of reports within a given configuration profile assignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param vmName The name of the virtual machine.
@@ -63,12 +61,12 @@ public interface ReportsClient {
      * @return the response of the list report operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportInner> listByConfigurationProfileAssignments(
-        String resourceGroupName, String configurationProfileAssignmentName, String vmName);
+    PagedIterable<ReportInner> listByConfigurationProfileAssignments(String resourceGroupName,
+        String configurationProfileAssignmentName, String vmName);
 
     /**
      * Retrieve a list of reports within a given configuration profile assignment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param configurationProfileAssignmentName The configuration profile assignment name.
      * @param vmName The name of the virtual machine.
@@ -79,6 +77,6 @@ public interface ReportsClient {
      * @return the response of the list report operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReportInner> listByConfigurationProfileAssignments(
-        String resourceGroupName, String configurationProfileAssignmentName, String vmName, Context context);
+    PagedIterable<ReportInner> listByConfigurationProfileAssignments(String resourceGroupName,
+        String configurationProfileAssignmentName, String vmName, Context context);
 }

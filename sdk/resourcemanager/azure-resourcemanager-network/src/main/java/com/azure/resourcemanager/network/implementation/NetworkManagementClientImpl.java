@@ -38,9 +38,9 @@ import com.azure.resourcemanager.network.fluent.AdminRuleCollectionsClient;
 import com.azure.resourcemanager.network.fluent.AdminRulesClient;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewayPrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewayPrivateLinkResourcesClient;
-import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewayWafDynamicManifestsClient;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewayWafDynamicManifestsDefaultsClient;
+import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
 import com.azure.resourcemanager.network.fluent.ApplicationSecurityGroupsClient;
 import com.azure.resourcemanager.network.fluent.AvailableDelegationsClient;
 import com.azure.resourcemanager.network.fluent.AvailableEndpointServicesClient;
@@ -88,6 +88,7 @@ import com.azure.resourcemanager.network.fluent.InboundNatRulesClient;
 import com.azure.resourcemanager.network.fluent.InboundSecurityRuleOperationsClient;
 import com.azure.resourcemanager.network.fluent.IpAllocationsClient;
 import com.azure.resourcemanager.network.fluent.IpGroupsClient;
+import com.azure.resourcemanager.network.fluent.IpamPoolsClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerBackendAddressPoolsClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerFrontendIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.LoadBalancerLoadBalancingRulesClient;
@@ -102,8 +103,8 @@ import com.azure.resourcemanager.network.fluent.NatRulesClient;
 import com.azure.resourcemanager.network.fluent.NetworkGroupsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceLoadBalancersClient;
-import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceTapConfigurationsClient;
+import com.azure.resourcemanager.network.fluent.NetworkInterfacesClient;
 import com.azure.resourcemanager.network.fluent.NetworkManagementClient;
 import com.azure.resourcemanager.network.fluent.NetworkManagerCommitsClient;
 import com.azure.resourcemanager.network.fluent.NetworkManagerDeploymentStatusOperationsClient;
@@ -123,12 +124,14 @@ import com.azure.resourcemanager.network.fluent.PrivateEndpointsClient;
 import com.azure.resourcemanager.network.fluent.PrivateLinkServicesClient;
 import com.azure.resourcemanager.network.fluent.PublicIpAddressesClient;
 import com.azure.resourcemanager.network.fluent.PublicIpPrefixesClient;
+import com.azure.resourcemanager.network.fluent.ReachabilityAnalysisIntentsClient;
+import com.azure.resourcemanager.network.fluent.ReachabilityAnalysisRunsClient;
 import com.azure.resourcemanager.network.fluent.ResourceNavigationLinksClient;
 import com.azure.resourcemanager.network.fluent.RouteFilterRulesClient;
 import com.azure.resourcemanager.network.fluent.RouteFiltersClient;
 import com.azure.resourcemanager.network.fluent.RouteMapsClient;
-import com.azure.resourcemanager.network.fluent.RoutesClient;
 import com.azure.resourcemanager.network.fluent.RouteTablesClient;
+import com.azure.resourcemanager.network.fluent.RoutesClient;
 import com.azure.resourcemanager.network.fluent.RoutingIntentsClient;
 import com.azure.resourcemanager.network.fluent.RoutingRuleCollectionsClient;
 import com.azure.resourcemanager.network.fluent.RoutingRulesClient;
@@ -144,10 +147,12 @@ import com.azure.resourcemanager.network.fluent.ServiceEndpointPoliciesClient;
 import com.azure.resourcemanager.network.fluent.ServiceEndpointPolicyDefinitionsClient;
 import com.azure.resourcemanager.network.fluent.ServiceTagInformationsClient;
 import com.azure.resourcemanager.network.fluent.ServiceTagsClient;
+import com.azure.resourcemanager.network.fluent.StaticCidrsClient;
 import com.azure.resourcemanager.network.fluent.StaticMembersClient;
 import com.azure.resourcemanager.network.fluent.SubnetsClient;
 import com.azure.resourcemanager.network.fluent.SubscriptionNetworkManagerConnectionsClient;
 import com.azure.resourcemanager.network.fluent.UsagesClient;
+import com.azure.resourcemanager.network.fluent.VerifierWorkspacesClient;
 import com.azure.resourcemanager.network.fluent.VipSwapsClient;
 import com.azure.resourcemanager.network.fluent.VirtualApplianceSitesClient;
 import com.azure.resourcemanager.network.fluent.VirtualApplianceSkusClient;
@@ -159,8 +164,8 @@ import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayConnections
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewayNatRulesClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkGatewaysClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkPeeringsClient;
-import com.azure.resourcemanager.network.fluent.VirtualNetworksClient;
 import com.azure.resourcemanager.network.fluent.VirtualNetworkTapsClient;
+import com.azure.resourcemanager.network.fluent.VirtualNetworksClient;
 import com.azure.resourcemanager.network.fluent.VirtualRouterPeeringsClient;
 import com.azure.resourcemanager.network.fluent.VirtualRoutersClient;
 import com.azure.resourcemanager.network.fluent.VirtualWansClient;
@@ -220,7 +225,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Gets The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription ID
      * forms part of the URI for every service call.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
@@ -234,7 +239,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets server parameter.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -248,7 +253,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -262,7 +267,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
@@ -276,7 +281,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets The default poll interval for long-running operation.
-     * 
+     *
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
@@ -290,7 +295,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ApplicationGatewaysClient object to access its operations.
-     * 
+     *
      * @return the ApplicationGatewaysClient object.
      */
     public ApplicationGatewaysClient getApplicationGateways() {
@@ -304,7 +309,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ApplicationGatewayPrivateLinkResourcesClient object to access its operations.
-     * 
+     *
      * @return the ApplicationGatewayPrivateLinkResourcesClient object.
      */
     public ApplicationGatewayPrivateLinkResourcesClient getApplicationGatewayPrivateLinkResources() {
@@ -318,7 +323,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ApplicationGatewayPrivateEndpointConnectionsClient object to access its operations.
-     * 
+     *
      * @return the ApplicationGatewayPrivateEndpointConnectionsClient object.
      */
     public ApplicationGatewayPrivateEndpointConnectionsClient getApplicationGatewayPrivateEndpointConnections() {
@@ -332,7 +337,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ApplicationGatewayWafDynamicManifestsDefaultsClient object to access its operations.
-     * 
+     *
      * @return the ApplicationGatewayWafDynamicManifestsDefaultsClient object.
      */
     public ApplicationGatewayWafDynamicManifestsDefaultsClient getApplicationGatewayWafDynamicManifestsDefaults() {
@@ -346,7 +351,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ApplicationGatewayWafDynamicManifestsClient object to access its operations.
-     * 
+     *
      * @return the ApplicationGatewayWafDynamicManifestsClient object.
      */
     public ApplicationGatewayWafDynamicManifestsClient getApplicationGatewayWafDynamicManifests() {
@@ -360,7 +365,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ApplicationSecurityGroupsClient object to access its operations.
-     * 
+     *
      * @return the ApplicationSecurityGroupsClient object.
      */
     public ApplicationSecurityGroupsClient getApplicationSecurityGroups() {
@@ -374,7 +379,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the AvailableDelegationsClient object to access its operations.
-     * 
+     *
      * @return the AvailableDelegationsClient object.
      */
     public AvailableDelegationsClient getAvailableDelegations() {
@@ -388,7 +393,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the AvailableResourceGroupDelegationsClient object to access its operations.
-     * 
+     *
      * @return the AvailableResourceGroupDelegationsClient object.
      */
     public AvailableResourceGroupDelegationsClient getAvailableResourceGroupDelegations() {
@@ -402,7 +407,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the AvailableServiceAliasesClient object to access its operations.
-     * 
+     *
      * @return the AvailableServiceAliasesClient object.
      */
     public AvailableServiceAliasesClient getAvailableServiceAliases() {
@@ -416,7 +421,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the AzureFirewallsClient object to access its operations.
-     * 
+     *
      * @return the AzureFirewallsClient object.
      */
     public AzureFirewallsClient getAzureFirewalls() {
@@ -430,7 +435,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the AzureFirewallFqdnTagsClient object to access its operations.
-     * 
+     *
      * @return the AzureFirewallFqdnTagsClient object.
      */
     public AzureFirewallFqdnTagsClient getAzureFirewallFqdnTags() {
@@ -444,7 +449,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the WebCategoriesClient object to access its operations.
-     * 
+     *
      * @return the WebCategoriesClient object.
      */
     public WebCategoriesClient getWebCategories() {
@@ -458,7 +463,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the BastionHostsClient object to access its operations.
-     * 
+     *
      * @return the BastionHostsClient object.
      */
     public BastionHostsClient getBastionHosts() {
@@ -472,7 +477,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkInterfacesClient object to access its operations.
-     * 
+     *
      * @return the NetworkInterfacesClient object.
      */
     public NetworkInterfacesClient getNetworkInterfaces() {
@@ -486,7 +491,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the PublicIpAddressesClient object to access its operations.
-     * 
+     *
      * @return the PublicIpAddressesClient object.
      */
     public PublicIpAddressesClient getPublicIpAddresses() {
@@ -500,7 +505,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VipSwapsClient object to access its operations.
-     * 
+     *
      * @return the VipSwapsClient object.
      */
     public VipSwapsClient getVipSwaps() {
@@ -514,7 +519,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the CustomIpPrefixesClient object to access its operations.
-     * 
+     *
      * @return the CustomIpPrefixesClient object.
      */
     public CustomIpPrefixesClient getCustomIpPrefixes() {
@@ -528,7 +533,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DdosCustomPoliciesClient object to access its operations.
-     * 
+     *
      * @return the DdosCustomPoliciesClient object.
      */
     public DdosCustomPoliciesClient getDdosCustomPolicies() {
@@ -542,7 +547,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DdosProtectionPlansClient object to access its operations.
-     * 
+     *
      * @return the DdosProtectionPlansClient object.
      */
     public DdosProtectionPlansClient getDdosProtectionPlans() {
@@ -556,7 +561,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DscpConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the DscpConfigurationsClient object.
      */
     public DscpConfigurationsClient getDscpConfigurations() {
@@ -570,7 +575,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the AvailableEndpointServicesClient object to access its operations.
-     * 
+     *
      * @return the AvailableEndpointServicesClient object.
      */
     public AvailableEndpointServicesClient getAvailableEndpointServices() {
@@ -584,7 +589,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteCircuitAuthorizationsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCircuitAuthorizationsClient object.
      */
     public ExpressRouteCircuitAuthorizationsClient getExpressRouteCircuitAuthorizations() {
@@ -598,7 +603,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteCircuitPeeringsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCircuitPeeringsClient object.
      */
     public ExpressRouteCircuitPeeringsClient getExpressRouteCircuitPeerings() {
@@ -612,7 +617,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteCircuitConnectionsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCircuitConnectionsClient object.
      */
     public ExpressRouteCircuitConnectionsClient getExpressRouteCircuitConnections() {
@@ -626,7 +631,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the PeerExpressRouteCircuitConnectionsClient object to access its operations.
-     * 
+     *
      * @return the PeerExpressRouteCircuitConnectionsClient object.
      */
     public PeerExpressRouteCircuitConnectionsClient getPeerExpressRouteCircuitConnections() {
@@ -640,7 +645,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteCircuitsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCircuitsClient object.
      */
     public ExpressRouteCircuitsClient getExpressRouteCircuits() {
@@ -654,7 +659,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteServiceProvidersClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteServiceProvidersClient object.
      */
     public ExpressRouteServiceProvidersClient getExpressRouteServiceProviders() {
@@ -668,7 +673,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteCrossConnectionsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCrossConnectionsClient object.
      */
     public ExpressRouteCrossConnectionsClient getExpressRouteCrossConnections() {
@@ -682,7 +687,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteCrossConnectionPeeringsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteCrossConnectionPeeringsClient object.
      */
     public ExpressRouteCrossConnectionPeeringsClient getExpressRouteCrossConnectionPeerings() {
@@ -696,7 +701,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRoutePortsLocationsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRoutePortsLocationsClient object.
      */
     public ExpressRoutePortsLocationsClient getExpressRoutePortsLocations() {
@@ -710,7 +715,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRoutePortsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRoutePortsClient object.
      */
     public ExpressRoutePortsClient getExpressRoutePorts() {
@@ -724,7 +729,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteLinksClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteLinksClient object.
      */
     public ExpressRouteLinksClient getExpressRouteLinks() {
@@ -738,7 +743,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRoutePortAuthorizationsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRoutePortAuthorizationsClient object.
      */
     public ExpressRoutePortAuthorizationsClient getExpressRoutePortAuthorizations() {
@@ -752,7 +757,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteProviderPortsLocationsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteProviderPortsLocationsClient object.
      */
     public ExpressRouteProviderPortsLocationsClient getExpressRouteProviderPortsLocations() {
@@ -766,7 +771,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FirewallPoliciesClient object to access its operations.
-     * 
+     *
      * @return the FirewallPoliciesClient object.
      */
     public FirewallPoliciesClient getFirewallPolicies() {
@@ -780,7 +785,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FirewallPolicyRuleCollectionGroupsClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyRuleCollectionGroupsClient object.
      */
     public FirewallPolicyRuleCollectionGroupsClient getFirewallPolicyRuleCollectionGroups() {
@@ -794,7 +799,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FirewallPolicyIdpsSignaturesClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyIdpsSignaturesClient object.
      */
     public FirewallPolicyIdpsSignaturesClient getFirewallPolicyIdpsSignatures() {
@@ -808,7 +813,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FirewallPolicyIdpsSignaturesOverridesClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyIdpsSignaturesOverridesClient object.
      */
     public FirewallPolicyIdpsSignaturesOverridesClient getFirewallPolicyIdpsSignaturesOverrides() {
@@ -822,7 +827,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FirewallPolicyIdpsSignaturesFilterValuesClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyIdpsSignaturesFilterValuesClient object.
      */
     public FirewallPolicyIdpsSignaturesFilterValuesClient getFirewallPolicyIdpsSignaturesFilterValues() {
@@ -836,7 +841,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FirewallPolicyDraftsClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyDraftsClient object.
      */
     public FirewallPolicyDraftsClient getFirewallPolicyDrafts() {
@@ -850,7 +855,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FirewallPolicyDeploymentsClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyDeploymentsClient object.
      */
     public FirewallPolicyDeploymentsClient getFirewallPolicyDeployments() {
@@ -864,11 +869,39 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FirewallPolicyRuleCollectionGroupDraftsClient object to access its operations.
-     * 
+     *
      * @return the FirewallPolicyRuleCollectionGroupDraftsClient object.
      */
     public FirewallPolicyRuleCollectionGroupDraftsClient getFirewallPolicyRuleCollectionGroupDrafts() {
         return this.firewallPolicyRuleCollectionGroupDrafts;
+    }
+
+    /**
+     * The IpamPoolsClient object to access its operations.
+     */
+    private final IpamPoolsClient ipamPools;
+
+    /**
+     * Gets the IpamPoolsClient object to access its operations.
+     *
+     * @return the IpamPoolsClient object.
+     */
+    public IpamPoolsClient getIpamPools() {
+        return this.ipamPools;
+    }
+
+    /**
+     * The StaticCidrsClient object to access its operations.
+     */
+    private final StaticCidrsClient staticCidrs;
+
+    /**
+     * Gets the StaticCidrsClient object to access its operations.
+     *
+     * @return the StaticCidrsClient object.
+     */
+    public StaticCidrsClient getStaticCidrs() {
+        return this.staticCidrs;
     }
 
     /**
@@ -878,7 +911,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the IpAllocationsClient object to access its operations.
-     * 
+     *
      * @return the IpAllocationsClient object.
      */
     public IpAllocationsClient getIpAllocations() {
@@ -892,7 +925,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the IpGroupsClient object to access its operations.
-     * 
+     *
      * @return the IpGroupsClient object.
      */
     public IpGroupsClient getIpGroups() {
@@ -906,7 +939,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the LoadBalancersClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancersClient object.
      */
     public LoadBalancersClient getLoadBalancers() {
@@ -920,7 +953,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the LoadBalancerBackendAddressPoolsClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerBackendAddressPoolsClient object.
      */
     public LoadBalancerBackendAddressPoolsClient getLoadBalancerBackendAddressPools() {
@@ -934,7 +967,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the LoadBalancerFrontendIpConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerFrontendIpConfigurationsClient object.
      */
     public LoadBalancerFrontendIpConfigurationsClient getLoadBalancerFrontendIpConfigurations() {
@@ -948,7 +981,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the InboundNatRulesClient object to access its operations.
-     * 
+     *
      * @return the InboundNatRulesClient object.
      */
     public InboundNatRulesClient getInboundNatRules() {
@@ -962,7 +995,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the LoadBalancerLoadBalancingRulesClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerLoadBalancingRulesClient object.
      */
     public LoadBalancerLoadBalancingRulesClient getLoadBalancerLoadBalancingRules() {
@@ -976,7 +1009,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the LoadBalancerOutboundRulesClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerOutboundRulesClient object.
      */
     public LoadBalancerOutboundRulesClient getLoadBalancerOutboundRules() {
@@ -990,7 +1023,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the LoadBalancerNetworkInterfacesClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerNetworkInterfacesClient object.
      */
     public LoadBalancerNetworkInterfacesClient getLoadBalancerNetworkInterfaces() {
@@ -1004,7 +1037,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the LoadBalancerProbesClient object to access its operations.
-     * 
+     *
      * @return the LoadBalancerProbesClient object.
      */
     public LoadBalancerProbesClient getLoadBalancerProbes() {
@@ -1018,7 +1051,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NatGatewaysClient object to access its operations.
-     * 
+     *
      * @return the NatGatewaysClient object.
      */
     public NatGatewaysClient getNatGateways() {
@@ -1032,7 +1065,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkInterfaceIpConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the NetworkInterfaceIpConfigurationsClient object.
      */
     public NetworkInterfaceIpConfigurationsClient getNetworkInterfaceIpConfigurations() {
@@ -1046,7 +1079,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkInterfaceLoadBalancersClient object to access its operations.
-     * 
+     *
      * @return the NetworkInterfaceLoadBalancersClient object.
      */
     public NetworkInterfaceLoadBalancersClient getNetworkInterfaceLoadBalancers() {
@@ -1060,7 +1093,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkInterfaceTapConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the NetworkInterfaceTapConfigurationsClient object.
      */
     public NetworkInterfaceTapConfigurationsClient getNetworkInterfaceTapConfigurations() {
@@ -1074,7 +1107,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkManagersClient object to access its operations.
-     * 
+     *
      * @return the NetworkManagersClient object.
      */
     public NetworkManagersClient getNetworkManagers() {
@@ -1088,7 +1121,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkManagerCommitsClient object to access its operations.
-     * 
+     *
      * @return the NetworkManagerCommitsClient object.
      */
     public NetworkManagerCommitsClient getNetworkManagerCommits() {
@@ -1102,7 +1135,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkManagerDeploymentStatusOperationsClient object to access its operations.
-     * 
+     *
      * @return the NetworkManagerDeploymentStatusOperationsClient object.
      */
     public NetworkManagerDeploymentStatusOperationsClient getNetworkManagerDeploymentStatusOperations() {
@@ -1116,7 +1149,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the SubscriptionNetworkManagerConnectionsClient object to access its operations.
-     * 
+     *
      * @return the SubscriptionNetworkManagerConnectionsClient object.
      */
     public SubscriptionNetworkManagerConnectionsClient getSubscriptionNetworkManagerConnections() {
@@ -1130,7 +1163,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ManagementGroupNetworkManagerConnectionsClient object to access its operations.
-     * 
+     *
      * @return the ManagementGroupNetworkManagerConnectionsClient object.
      */
     public ManagementGroupNetworkManagerConnectionsClient getManagementGroupNetworkManagerConnections() {
@@ -1144,7 +1177,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ConnectivityConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the ConnectivityConfigurationsClient object.
      */
     public ConnectivityConfigurationsClient getConnectivityConfigurations() {
@@ -1158,7 +1191,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkGroupsClient object to access its operations.
-     * 
+     *
      * @return the NetworkGroupsClient object.
      */
     public NetworkGroupsClient getNetworkGroups() {
@@ -1172,109 +1205,11 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the StaticMembersClient object to access its operations.
-     * 
+     *
      * @return the StaticMembersClient object.
      */
     public StaticMembersClient getStaticMembers() {
         return this.staticMembers;
-    }
-
-    /**
-     * The ScopeConnectionsClient object to access its operations.
-     */
-    private final ScopeConnectionsClient scopeConnections;
-
-    /**
-     * Gets the ScopeConnectionsClient object to access its operations.
-     * 
-     * @return the ScopeConnectionsClient object.
-     */
-    public ScopeConnectionsClient getScopeConnections() {
-        return this.scopeConnections;
-    }
-
-    /**
-     * The SecurityAdminConfigurationsClient object to access its operations.
-     */
-    private final SecurityAdminConfigurationsClient securityAdminConfigurations;
-
-    /**
-     * Gets the SecurityAdminConfigurationsClient object to access its operations.
-     * 
-     * @return the SecurityAdminConfigurationsClient object.
-     */
-    public SecurityAdminConfigurationsClient getSecurityAdminConfigurations() {
-        return this.securityAdminConfigurations;
-    }
-
-    /**
-     * The AdminRuleCollectionsClient object to access its operations.
-     */
-    private final AdminRuleCollectionsClient adminRuleCollections;
-
-    /**
-     * Gets the AdminRuleCollectionsClient object to access its operations.
-     * 
-     * @return the AdminRuleCollectionsClient object.
-     */
-    public AdminRuleCollectionsClient getAdminRuleCollections() {
-        return this.adminRuleCollections;
-    }
-
-    /**
-     * The AdminRulesClient object to access its operations.
-     */
-    private final AdminRulesClient adminRules;
-
-    /**
-     * Gets the AdminRulesClient object to access its operations.
-     * 
-     * @return the AdminRulesClient object.
-     */
-    public AdminRulesClient getAdminRules() {
-        return this.adminRules;
-    }
-
-    /**
-     * The SecurityUserConfigurationsClient object to access its operations.
-     */
-    private final SecurityUserConfigurationsClient securityUserConfigurations;
-
-    /**
-     * Gets the SecurityUserConfigurationsClient object to access its operations.
-     * 
-     * @return the SecurityUserConfigurationsClient object.
-     */
-    public SecurityUserConfigurationsClient getSecurityUserConfigurations() {
-        return this.securityUserConfigurations;
-    }
-
-    /**
-     * The SecurityUserRuleCollectionsClient object to access its operations.
-     */
-    private final SecurityUserRuleCollectionsClient securityUserRuleCollections;
-
-    /**
-     * Gets the SecurityUserRuleCollectionsClient object to access its operations.
-     * 
-     * @return the SecurityUserRuleCollectionsClient object.
-     */
-    public SecurityUserRuleCollectionsClient getSecurityUserRuleCollections() {
-        return this.securityUserRuleCollections;
-    }
-
-    /**
-     * The SecurityUserRulesClient object to access its operations.
-     */
-    private final SecurityUserRulesClient securityUserRules;
-
-    /**
-     * Gets the SecurityUserRulesClient object to access its operations.
-     * 
-     * @return the SecurityUserRulesClient object.
-     */
-    public SecurityUserRulesClient getSecurityUserRules() {
-        return this.securityUserRules;
     }
 
     /**
@@ -1284,7 +1219,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkManagerRoutingConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the NetworkManagerRoutingConfigurationsClient object.
      */
     public NetworkManagerRoutingConfigurationsClient getNetworkManagerRoutingConfigurations() {
@@ -1298,7 +1233,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the RoutingRuleCollectionsClient object to access its operations.
-     * 
+     *
      * @return the RoutingRuleCollectionsClient object.
      */
     public RoutingRuleCollectionsClient getRoutingRuleCollections() {
@@ -1312,11 +1247,109 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the RoutingRulesClient object to access its operations.
-     * 
+     *
      * @return the RoutingRulesClient object.
      */
     public RoutingRulesClient getRoutingRules() {
         return this.routingRules;
+    }
+
+    /**
+     * The ScopeConnectionsClient object to access its operations.
+     */
+    private final ScopeConnectionsClient scopeConnections;
+
+    /**
+     * Gets the ScopeConnectionsClient object to access its operations.
+     *
+     * @return the ScopeConnectionsClient object.
+     */
+    public ScopeConnectionsClient getScopeConnections() {
+        return this.scopeConnections;
+    }
+
+    /**
+     * The SecurityAdminConfigurationsClient object to access its operations.
+     */
+    private final SecurityAdminConfigurationsClient securityAdminConfigurations;
+
+    /**
+     * Gets the SecurityAdminConfigurationsClient object to access its operations.
+     *
+     * @return the SecurityAdminConfigurationsClient object.
+     */
+    public SecurityAdminConfigurationsClient getSecurityAdminConfigurations() {
+        return this.securityAdminConfigurations;
+    }
+
+    /**
+     * The AdminRuleCollectionsClient object to access its operations.
+     */
+    private final AdminRuleCollectionsClient adminRuleCollections;
+
+    /**
+     * Gets the AdminRuleCollectionsClient object to access its operations.
+     *
+     * @return the AdminRuleCollectionsClient object.
+     */
+    public AdminRuleCollectionsClient getAdminRuleCollections() {
+        return this.adminRuleCollections;
+    }
+
+    /**
+     * The AdminRulesClient object to access its operations.
+     */
+    private final AdminRulesClient adminRules;
+
+    /**
+     * Gets the AdminRulesClient object to access its operations.
+     *
+     * @return the AdminRulesClient object.
+     */
+    public AdminRulesClient getAdminRules() {
+        return this.adminRules;
+    }
+
+    /**
+     * The SecurityUserConfigurationsClient object to access its operations.
+     */
+    private final SecurityUserConfigurationsClient securityUserConfigurations;
+
+    /**
+     * Gets the SecurityUserConfigurationsClient object to access its operations.
+     *
+     * @return the SecurityUserConfigurationsClient object.
+     */
+    public SecurityUserConfigurationsClient getSecurityUserConfigurations() {
+        return this.securityUserConfigurations;
+    }
+
+    /**
+     * The SecurityUserRuleCollectionsClient object to access its operations.
+     */
+    private final SecurityUserRuleCollectionsClient securityUserRuleCollections;
+
+    /**
+     * Gets the SecurityUserRuleCollectionsClient object to access its operations.
+     *
+     * @return the SecurityUserRuleCollectionsClient object.
+     */
+    public SecurityUserRuleCollectionsClient getSecurityUserRuleCollections() {
+        return this.securityUserRuleCollections;
+    }
+
+    /**
+     * The SecurityUserRulesClient object to access its operations.
+     */
+    private final SecurityUserRulesClient securityUserRules;
+
+    /**
+     * Gets the SecurityUserRulesClient object to access its operations.
+     *
+     * @return the SecurityUserRulesClient object.
+     */
+    public SecurityUserRulesClient getSecurityUserRules() {
+        return this.securityUserRules;
     }
 
     /**
@@ -1326,7 +1359,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkProfilesClient object to access its operations.
-     * 
+     *
      * @return the NetworkProfilesClient object.
      */
     public NetworkProfilesClient getNetworkProfiles() {
@@ -1340,7 +1373,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkSecurityGroupsClient object to access its operations.
-     * 
+     *
      * @return the NetworkSecurityGroupsClient object.
      */
     public NetworkSecurityGroupsClient getNetworkSecurityGroups() {
@@ -1354,7 +1387,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the SecurityRulesClient object to access its operations.
-     * 
+     *
      * @return the SecurityRulesClient object.
      */
     public SecurityRulesClient getSecurityRules() {
@@ -1368,11 +1401,53 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the DefaultSecurityRulesClient object to access its operations.
-     * 
+     *
      * @return the DefaultSecurityRulesClient object.
      */
     public DefaultSecurityRulesClient getDefaultSecurityRules() {
         return this.defaultSecurityRules;
+    }
+
+    /**
+     * The ReachabilityAnalysisIntentsClient object to access its operations.
+     */
+    private final ReachabilityAnalysisIntentsClient reachabilityAnalysisIntents;
+
+    /**
+     * Gets the ReachabilityAnalysisIntentsClient object to access its operations.
+     *
+     * @return the ReachabilityAnalysisIntentsClient object.
+     */
+    public ReachabilityAnalysisIntentsClient getReachabilityAnalysisIntents() {
+        return this.reachabilityAnalysisIntents;
+    }
+
+    /**
+     * The ReachabilityAnalysisRunsClient object to access its operations.
+     */
+    private final ReachabilityAnalysisRunsClient reachabilityAnalysisRuns;
+
+    /**
+     * Gets the ReachabilityAnalysisRunsClient object to access its operations.
+     *
+     * @return the ReachabilityAnalysisRunsClient object.
+     */
+    public ReachabilityAnalysisRunsClient getReachabilityAnalysisRuns() {
+        return this.reachabilityAnalysisRuns;
+    }
+
+    /**
+     * The VerifierWorkspacesClient object to access its operations.
+     */
+    private final VerifierWorkspacesClient verifierWorkspaces;
+
+    /**
+     * Gets the VerifierWorkspacesClient object to access its operations.
+     *
+     * @return the VerifierWorkspacesClient object.
+     */
+    public VerifierWorkspacesClient getVerifierWorkspaces() {
+        return this.verifierWorkspaces;
     }
 
     /**
@@ -1382,7 +1457,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkVirtualAppliancesClient object to access its operations.
-     * 
+     *
      * @return the NetworkVirtualAppliancesClient object.
      */
     public NetworkVirtualAppliancesClient getNetworkVirtualAppliances() {
@@ -1396,7 +1471,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualApplianceSitesClient object to access its operations.
-     * 
+     *
      * @return the VirtualApplianceSitesClient object.
      */
     public VirtualApplianceSitesClient getVirtualApplianceSites() {
@@ -1410,7 +1485,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualApplianceSkusClient object to access its operations.
-     * 
+     *
      * @return the VirtualApplianceSkusClient object.
      */
     public VirtualApplianceSkusClient getVirtualApplianceSkus() {
@@ -1424,7 +1499,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the InboundSecurityRuleOperationsClient object to access its operations.
-     * 
+     *
      * @return the InboundSecurityRuleOperationsClient object.
      */
     public InboundSecurityRuleOperationsClient getInboundSecurityRuleOperations() {
@@ -1438,7 +1513,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkWatchersClient object to access its operations.
-     * 
+     *
      * @return the NetworkWatchersClient object.
      */
     public NetworkWatchersClient getNetworkWatchers() {
@@ -1452,7 +1527,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the PacketCapturesClient object to access its operations.
-     * 
+     *
      * @return the PacketCapturesClient object.
      */
     public PacketCapturesClient getPacketCaptures() {
@@ -1466,7 +1541,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ConnectionMonitorsClient object to access its operations.
-     * 
+     *
      * @return the ConnectionMonitorsClient object.
      */
     public ConnectionMonitorsClient getConnectionMonitors() {
@@ -1480,7 +1555,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the FlowLogsClient object to access its operations.
-     * 
+     *
      * @return the FlowLogsClient object.
      */
     public FlowLogsClient getFlowLogs() {
@@ -1494,7 +1569,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the OperationsClient object to access its operations.
-     * 
+     *
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
@@ -1508,7 +1583,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the PrivateEndpointsClient object to access its operations.
-     * 
+     *
      * @return the PrivateEndpointsClient object.
      */
     public PrivateEndpointsClient getPrivateEndpoints() {
@@ -1522,7 +1597,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the AvailablePrivateEndpointTypesClient object to access its operations.
-     * 
+     *
      * @return the AvailablePrivateEndpointTypesClient object.
      */
     public AvailablePrivateEndpointTypesClient getAvailablePrivateEndpointTypes() {
@@ -1536,7 +1611,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the PrivateDnsZoneGroupsClient object to access its operations.
-     * 
+     *
      * @return the PrivateDnsZoneGroupsClient object.
      */
     public PrivateDnsZoneGroupsClient getPrivateDnsZoneGroups() {
@@ -1550,7 +1625,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the PrivateLinkServicesClient object to access its operations.
-     * 
+     *
      * @return the PrivateLinkServicesClient object.
      */
     public PrivateLinkServicesClient getPrivateLinkServices() {
@@ -1564,7 +1639,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the PublicIpPrefixesClient object to access its operations.
-     * 
+     *
      * @return the PublicIpPrefixesClient object.
      */
     public PublicIpPrefixesClient getPublicIpPrefixes() {
@@ -1578,7 +1653,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the RouteFiltersClient object to access its operations.
-     * 
+     *
      * @return the RouteFiltersClient object.
      */
     public RouteFiltersClient getRouteFilters() {
@@ -1592,7 +1667,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the RouteFilterRulesClient object to access its operations.
-     * 
+     *
      * @return the RouteFilterRulesClient object.
      */
     public RouteFilterRulesClient getRouteFilterRules() {
@@ -1606,7 +1681,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the RouteTablesClient object to access its operations.
-     * 
+     *
      * @return the RouteTablesClient object.
      */
     public RouteTablesClient getRouteTables() {
@@ -1620,7 +1695,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the RoutesClient object to access its operations.
-     * 
+     *
      * @return the RoutesClient object.
      */
     public RoutesClient getRoutes() {
@@ -1634,7 +1709,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the SecurityPartnerProvidersClient object to access its operations.
-     * 
+     *
      * @return the SecurityPartnerProvidersClient object.
      */
     public SecurityPartnerProvidersClient getSecurityPartnerProviders() {
@@ -1648,7 +1723,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the BgpServiceCommunitiesClient object to access its operations.
-     * 
+     *
      * @return the BgpServiceCommunitiesClient object.
      */
     public BgpServiceCommunitiesClient getBgpServiceCommunities() {
@@ -1662,7 +1737,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ServiceEndpointPoliciesClient object to access its operations.
-     * 
+     *
      * @return the ServiceEndpointPoliciesClient object.
      */
     public ServiceEndpointPoliciesClient getServiceEndpointPolicies() {
@@ -1676,7 +1751,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ServiceEndpointPolicyDefinitionsClient object to access its operations.
-     * 
+     *
      * @return the ServiceEndpointPolicyDefinitionsClient object.
      */
     public ServiceEndpointPolicyDefinitionsClient getServiceEndpointPolicyDefinitions() {
@@ -1690,7 +1765,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ServiceTagsClient object to access its operations.
-     * 
+     *
      * @return the ServiceTagsClient object.
      */
     public ServiceTagsClient getServiceTags() {
@@ -1704,7 +1779,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ServiceTagInformationsClient object to access its operations.
-     * 
+     *
      * @return the ServiceTagInformationsClient object.
      */
     public ServiceTagInformationsClient getServiceTagInformations() {
@@ -1718,7 +1793,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the UsagesClient object to access its operations.
-     * 
+     *
      * @return the UsagesClient object.
      */
     public UsagesClient getUsages() {
@@ -1732,7 +1807,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualNetworksClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworksClient object.
      */
     public VirtualNetworksClient getVirtualNetworks() {
@@ -1746,7 +1821,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the SubnetsClient object to access its operations.
-     * 
+     *
      * @return the SubnetsClient object.
      */
     public SubnetsClient getSubnets() {
@@ -1760,7 +1835,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ResourceNavigationLinksClient object to access its operations.
-     * 
+     *
      * @return the ResourceNavigationLinksClient object.
      */
     public ResourceNavigationLinksClient getResourceNavigationLinks() {
@@ -1774,7 +1849,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ServiceAssociationLinksClient object to access its operations.
-     * 
+     *
      * @return the ServiceAssociationLinksClient object.
      */
     public ServiceAssociationLinksClient getServiceAssociationLinks() {
@@ -1788,7 +1863,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualNetworkPeeringsClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkPeeringsClient object.
      */
     public VirtualNetworkPeeringsClient getVirtualNetworkPeerings() {
@@ -1802,7 +1877,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualNetworkGatewaysClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkGatewaysClient object.
      */
     public VirtualNetworkGatewaysClient getVirtualNetworkGateways() {
@@ -1816,7 +1891,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualNetworkGatewayConnectionsClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkGatewayConnectionsClient object.
      */
     public VirtualNetworkGatewayConnectionsClient getVirtualNetworkGatewayConnections() {
@@ -1830,7 +1905,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the LocalNetworkGatewaysClient object to access its operations.
-     * 
+     *
      * @return the LocalNetworkGatewaysClient object.
      */
     public LocalNetworkGatewaysClient getLocalNetworkGateways() {
@@ -1844,7 +1919,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualNetworkGatewayNatRulesClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkGatewayNatRulesClient object.
      */
     public VirtualNetworkGatewayNatRulesClient getVirtualNetworkGatewayNatRules() {
@@ -1858,7 +1933,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualNetworkTapsClient object to access its operations.
-     * 
+     *
      * @return the VirtualNetworkTapsClient object.
      */
     public VirtualNetworkTapsClient getVirtualNetworkTaps() {
@@ -1872,7 +1947,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualRoutersClient object to access its operations.
-     * 
+     *
      * @return the VirtualRoutersClient object.
      */
     public VirtualRoutersClient getVirtualRouters() {
@@ -1886,7 +1961,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualRouterPeeringsClient object to access its operations.
-     * 
+     *
      * @return the VirtualRouterPeeringsClient object.
      */
     public VirtualRouterPeeringsClient getVirtualRouterPeerings() {
@@ -1900,7 +1975,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualWansClient object to access its operations.
-     * 
+     *
      * @return the VirtualWansClient object.
      */
     public VirtualWansClient getVirtualWans() {
@@ -1914,7 +1989,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VpnSitesClient object to access its operations.
-     * 
+     *
      * @return the VpnSitesClient object.
      */
     public VpnSitesClient getVpnSites() {
@@ -1928,7 +2003,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VpnSiteLinksClient object to access its operations.
-     * 
+     *
      * @return the VpnSiteLinksClient object.
      */
     public VpnSiteLinksClient getVpnSiteLinks() {
@@ -1942,7 +2017,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VpnSitesConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the VpnSitesConfigurationsClient object.
      */
     public VpnSitesConfigurationsClient getVpnSitesConfigurations() {
@@ -1956,7 +2031,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VpnServerConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the VpnServerConfigurationsClient object.
      */
     public VpnServerConfigurationsClient getVpnServerConfigurations() {
@@ -1970,7 +2045,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ConfigurationPolicyGroupsClient object to access its operations.
-     * 
+     *
      * @return the ConfigurationPolicyGroupsClient object.
      */
     public ConfigurationPolicyGroupsClient getConfigurationPolicyGroups() {
@@ -1984,7 +2059,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualHubsClient object to access its operations.
-     * 
+     *
      * @return the VirtualHubsClient object.
      */
     public VirtualHubsClient getVirtualHubs() {
@@ -1998,7 +2073,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the RouteMapsClient object to access its operations.
-     * 
+     *
      * @return the RouteMapsClient object.
      */
     public RouteMapsClient getRouteMaps() {
@@ -2012,7 +2087,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the HubVirtualNetworkConnectionsClient object to access its operations.
-     * 
+     *
      * @return the HubVirtualNetworkConnectionsClient object.
      */
     public HubVirtualNetworkConnectionsClient getHubVirtualNetworkConnections() {
@@ -2026,7 +2101,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VpnGatewaysClient object to access its operations.
-     * 
+     *
      * @return the VpnGatewaysClient object.
      */
     public VpnGatewaysClient getVpnGateways() {
@@ -2040,7 +2115,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VpnLinkConnectionsClient object to access its operations.
-     * 
+     *
      * @return the VpnLinkConnectionsClient object.
      */
     public VpnLinkConnectionsClient getVpnLinkConnections() {
@@ -2054,7 +2129,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VpnConnectionsClient object to access its operations.
-     * 
+     *
      * @return the VpnConnectionsClient object.
      */
     public VpnConnectionsClient getVpnConnections() {
@@ -2068,7 +2143,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VpnSiteLinkConnectionsClient object to access its operations.
-     * 
+     *
      * @return the VpnSiteLinkConnectionsClient object.
      */
     public VpnSiteLinkConnectionsClient getVpnSiteLinkConnections() {
@@ -2082,7 +2157,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NatRulesClient object to access its operations.
-     * 
+     *
      * @return the NatRulesClient object.
      */
     public NatRulesClient getNatRules() {
@@ -2096,7 +2171,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the P2SVpnGatewaysClient object to access its operations.
-     * 
+     *
      * @return the P2SVpnGatewaysClient object.
      */
     public P2SVpnGatewaysClient getP2SVpnGateways() {
@@ -2110,7 +2185,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VpnServerConfigurationsAssociatedWithVirtualWansClient object to access its operations.
-     * 
+     *
      * @return the VpnServerConfigurationsAssociatedWithVirtualWansClient object.
      */
     public VpnServerConfigurationsAssociatedWithVirtualWansClient
@@ -2125,7 +2200,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualHubRouteTableV2SClient object to access its operations.
-     * 
+     *
      * @return the VirtualHubRouteTableV2SClient object.
      */
     public VirtualHubRouteTableV2SClient getVirtualHubRouteTableV2S() {
@@ -2139,7 +2214,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteGatewaysClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteGatewaysClient object.
      */
     public ExpressRouteGatewaysClient getExpressRouteGateways() {
@@ -2153,7 +2228,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the ExpressRouteConnectionsClient object to access its operations.
-     * 
+     *
      * @return the ExpressRouteConnectionsClient object.
      */
     public ExpressRouteConnectionsClient getExpressRouteConnections() {
@@ -2167,7 +2242,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the NetworkVirtualApplianceConnectionsClient object to access its operations.
-     * 
+     *
      * @return the NetworkVirtualApplianceConnectionsClient object.
      */
     public NetworkVirtualApplianceConnectionsClient getNetworkVirtualApplianceConnections() {
@@ -2181,7 +2256,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualHubBgpConnectionsClient object to access its operations.
-     * 
+     *
      * @return the VirtualHubBgpConnectionsClient object.
      */
     public VirtualHubBgpConnectionsClient getVirtualHubBgpConnections() {
@@ -2195,7 +2270,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the VirtualHubIpConfigurationsClient object to access its operations.
-     * 
+     *
      * @return the VirtualHubIpConfigurationsClient object.
      */
     public VirtualHubIpConfigurationsClient getVirtualHubIpConfigurations() {
@@ -2209,7 +2284,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the HubRouteTablesClient object to access its operations.
-     * 
+     *
      * @return the HubRouteTablesClient object.
      */
     public HubRouteTablesClient getHubRouteTables() {
@@ -2223,7 +2298,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the RoutingIntentsClient object to access its operations.
-     * 
+     *
      * @return the RoutingIntentsClient object.
      */
     public RoutingIntentsClient getRoutingIntents() {
@@ -2237,7 +2312,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gets the WebApplicationFirewallPoliciesClient object to access its operations.
-     * 
+     *
      * @return the WebApplicationFirewallPoliciesClient object.
      */
     public WebApplicationFirewallPoliciesClient getWebApplicationFirewallPolicies() {
@@ -2246,13 +2321,14 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Initializes an instance of NetworkManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param subscriptionId The subscription credentials which uniquely identify the Microsoft Azure subscription. The
      * subscription ID forms part of the URI for every service call.
+     * @param endpoint server parameter.
      * @param endpoint server parameter.
      */
     NetworkManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
@@ -2307,6 +2383,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.firewallPolicyDrafts = new FirewallPolicyDraftsClientImpl(this);
         this.firewallPolicyDeployments = new FirewallPolicyDeploymentsClientImpl(this);
         this.firewallPolicyRuleCollectionGroupDrafts = new FirewallPolicyRuleCollectionGroupDraftsClientImpl(this);
+        this.ipamPools = new IpamPoolsClientImpl(this);
+        this.staticCidrs = new StaticCidrsClientImpl(this);
         this.ipAllocations = new IpAllocationsClientImpl(this);
         this.ipGroups = new IpGroupsClientImpl(this);
         this.loadBalancers = new LoadBalancersClientImpl(this);
@@ -2329,6 +2407,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.connectivityConfigurations = new ConnectivityConfigurationsClientImpl(this);
         this.networkGroups = new NetworkGroupsClientImpl(this);
         this.staticMembers = new StaticMembersClientImpl(this);
+        this.networkManagerRoutingConfigurations = new NetworkManagerRoutingConfigurationsClientImpl(this);
+        this.routingRuleCollections = new RoutingRuleCollectionsClientImpl(this);
+        this.routingRules = new RoutingRulesClientImpl(this);
         this.scopeConnections = new ScopeConnectionsClientImpl(this);
         this.securityAdminConfigurations = new SecurityAdminConfigurationsClientImpl(this);
         this.adminRuleCollections = new AdminRuleCollectionsClientImpl(this);
@@ -2336,13 +2417,13 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         this.securityUserConfigurations = new SecurityUserConfigurationsClientImpl(this);
         this.securityUserRuleCollections = new SecurityUserRuleCollectionsClientImpl(this);
         this.securityUserRules = new SecurityUserRulesClientImpl(this);
-        this.networkManagerRoutingConfigurations = new NetworkManagerRoutingConfigurationsClientImpl(this);
-        this.routingRuleCollections = new RoutingRuleCollectionsClientImpl(this);
-        this.routingRules = new RoutingRulesClientImpl(this);
         this.networkProfiles = new NetworkProfilesClientImpl(this);
         this.networkSecurityGroups = new NetworkSecurityGroupsClientImpl(this);
         this.securityRules = new SecurityRulesClientImpl(this);
         this.defaultSecurityRules = new DefaultSecurityRulesClientImpl(this);
+        this.reachabilityAnalysisIntents = new ReachabilityAnalysisIntentsClientImpl(this);
+        this.reachabilityAnalysisRuns = new ReachabilityAnalysisRunsClientImpl(this);
+        this.verifierWorkspaces = new VerifierWorkspacesClientImpl(this);
         this.networkVirtualAppliances = new NetworkVirtualAppliancesClientImpl(this);
         this.virtualApplianceSites = new VirtualApplianceSitesClientImpl(this);
         this.virtualApplianceSkus = new VirtualApplianceSkusClientImpl(this);
@@ -2603,7 +2684,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2637,7 +2718,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono
@@ -2658,7 +2739,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2693,7 +2774,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -2712,7 +2793,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2731,7 +2812,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2751,7 +2832,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2768,7 +2849,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Creates a Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2787,7 +2868,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2820,7 +2901,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteBastionShareableLink(this.getEndpoint(), resourceGroupName,
@@ -2830,7 +2911,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2864,7 +2945,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.deleteBastionShareableLink(this.getEndpoint(), resourceGroupName, bastionHostname, apiVersion,
@@ -2873,7 +2954,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2892,7 +2973,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2913,7 +2994,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2931,7 +3012,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2950,7 +3031,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2968,7 +3049,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -2987,7 +3068,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -3003,7 +3084,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -3020,7 +3101,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -3054,7 +3135,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslTokenRequest.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.deleteBastionShareableLinkByToken(this.getEndpoint(), resourceGroupName,
@@ -3064,7 +3145,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -3100,7 +3181,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslTokenRequest.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.deleteBastionShareableLinkByToken(this.getEndpoint(), resourceGroupName, bastionHostname,
@@ -3109,7 +3190,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -3128,7 +3209,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -3149,7 +3230,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -3167,7 +3248,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -3187,7 +3268,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -3205,7 +3286,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -3225,7 +3306,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -3241,7 +3322,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Deletes the Bastion Shareable Links for all the tokens specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslTokenRequest Post request for Delete Bastion Shareable Link By Token endpoint.
@@ -3258,7 +3339,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -3292,7 +3373,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getBastionShareableLink(this.getEndpoint(), resourceGroupName,
@@ -3304,7 +3385,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -3339,7 +3420,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             bslRequest.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3351,7 +3432,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -3370,7 +3451,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -3390,7 +3471,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -3407,7 +3488,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Return the Bastion Shareable Links for all the VMs specified in the request.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param bslRequest Post request for Create/Delete/Get Bastion Shareable Link endpoints.
@@ -3426,7 +3507,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3453,7 +3534,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> {
             Mono<Response<Flux<ByteBuffer>>> mono
@@ -3474,7 +3555,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -3502,7 +3583,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
@@ -3521,7 +3602,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3538,7 +3619,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -3556,7 +3637,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3572,7 +3653,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param context The context to associate with this operation.
@@ -3589,7 +3670,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param sessionIds The list of sessionids to disconnect.
@@ -3623,7 +3704,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             sessionIds.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.disconnectActiveSessions(this.getEndpoint(), resourceGroupName,
@@ -3635,7 +3716,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param sessionIds The list of sessionids to disconnect.
@@ -3670,7 +3751,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             sessionIds.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service
@@ -3682,7 +3763,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param sessionIds The list of sessionids to disconnect.
@@ -3701,7 +3782,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param sessionIds The list of sessionids to disconnect.
@@ -3721,7 +3802,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param sessionIds The list of sessionids to disconnect.
@@ -3738,7 +3819,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Returns the list of currently active sessions on the Bastion.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param bastionHostname The name of the Bastion Host.
      * @param sessionIds The list of sessionids to disconnect.
@@ -3757,7 +3838,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
+     *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
@@ -3785,7 +3866,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.checkDnsNameAvailability(this.getEndpoint(), location, domainNameLabel,
@@ -3795,7 +3876,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
+     *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
@@ -3824,7 +3905,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.checkDnsNameAvailability(this.getEndpoint(), location, domainNameLabel, apiVersion,
@@ -3833,7 +3914,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
+     *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
@@ -3850,7 +3931,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
+     *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
@@ -3868,7 +3949,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
-     * 
+     *
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      * ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
@@ -3884,7 +3965,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Retrieves detail of a provider port.
-     * 
+     *
      * @param providerport The name of the provider port.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3905,7 +3986,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.expressRouteProviderPort(this.getEndpoint(), providerport, apiVersion,
@@ -3915,7 +3996,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Retrieves detail of a provider port.
-     * 
+     *
      * @param providerport The name of the provider port.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3937,7 +4018,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
             return Mono.error(
                 new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.expressRouteProviderPort(this.getEndpoint(), providerport, apiVersion, this.getSubscriptionId(),
@@ -3946,7 +4027,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Retrieves detail of a provider port.
-     * 
+     *
      * @param providerport The name of the provider port.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3960,7 +4041,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Retrieves detail of a provider port.
-     * 
+     *
      * @param providerport The name of the provider port.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3976,7 +4057,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Retrieves detail of a provider port.
-     * 
+     *
      * @param providerport The name of the provider port.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -3990,7 +4071,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Lists active connectivity configurations in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -4027,7 +4108,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listActiveConnectivityConfigurations(this.getEndpoint(), apiVersion,
@@ -4037,7 +4118,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Lists active connectivity configurations in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -4075,7 +4156,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.listActiveConnectivityConfigurations(this.getEndpoint(), apiVersion, this.getSubscriptionId(),
@@ -4084,7 +4165,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Lists active connectivity configurations in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -4104,7 +4185,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Lists active connectivity configurations in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -4126,7 +4207,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Lists active connectivity configurations in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -4145,7 +4226,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Lists active security admin rules in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -4181,7 +4262,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listActiveSecurityAdminRules(this.getEndpoint(), apiVersion,
@@ -4191,7 +4272,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Lists active security admin rules in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -4229,7 +4310,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.listActiveSecurityAdminRules(this.getEndpoint(), apiVersion, this.getSubscriptionId(),
@@ -4238,7 +4319,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Lists active security admin rules in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -4257,7 +4338,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Lists active security admin rules in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -4279,7 +4360,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Lists active security admin rules in a network manager.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param parameters Active Configuration Parameter.
@@ -4298,7 +4379,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -4335,7 +4416,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNetworkManagerEffectiveConnectivityConfigurations(this.getEndpoint(),
@@ -4346,7 +4427,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -4384,7 +4465,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.listNetworkManagerEffectiveConnectivityConfigurations(this.getEndpoint(),
@@ -4394,7 +4475,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -4415,7 +4496,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -4438,7 +4519,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * List all effective connectivity configurations applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -4458,7 +4539,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * List all effective security admin rules applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -4495,7 +4576,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNetworkManagerEffectiveSecurityAdminRules(this.getEndpoint(),
@@ -4506,7 +4587,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * List all effective security admin rules applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -4544,7 +4625,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.listNetworkManagerEffectiveSecurityAdminRules(this.getEndpoint(), this.getSubscriptionId(),
@@ -4553,7 +4634,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * List all effective security admin rules applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -4574,7 +4655,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * List all effective security admin rules applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -4596,7 +4677,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * List all effective security admin rules applied on a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to list correct page.
@@ -4615,7 +4696,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gives the supported security providers for the virtual wan.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4641,7 +4722,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.supportedSecurityProviders(this.getEndpoint(), this.getSubscriptionId(),
@@ -4651,7 +4732,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gives the supported security providers for the virtual wan.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @param context The context to associate with this operation.
@@ -4678,7 +4759,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.supportedSecurityProviders(this.getEndpoint(), this.getSubscriptionId(), resourceGroupName,
@@ -4687,7 +4768,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gives the supported security providers for the virtual wan.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4704,7 +4785,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gives the supported security providers for the virtual wan.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @param context The context to associate with this operation.
@@ -4721,7 +4802,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Gives the supported security providers for the virtual wan.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -4738,7 +4819,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -4772,7 +4853,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.generatevirtualwanvpnserverconfigurationvpnprofile(this.getEndpoint(),
@@ -4784,7 +4865,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -4820,7 +4901,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
         } else {
             vpnClientParams.validate();
         }
-        final String apiVersion = "2024-03-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.mergeContext(context);
         return service.generatevirtualwanvpnserverconfigurationvpnprofile(this.getEndpoint(), this.getSubscriptionId(),
@@ -4830,7 +4911,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -4852,7 +4933,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -4876,7 +4957,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -4898,7 +4979,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -4921,7 +5002,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -4940,7 +5021,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -4961,7 +5042,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -4980,7 +5061,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
     /**
      * Generates a unique VPN profile for P2S clients for VirtualWan and associated VpnServerConfiguration combination
      * in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN whose associated VpnServerConfigurations is needed.
      * @param vpnClientParams Parameters supplied to the generate VirtualWan VPN profile generation operation.
@@ -4999,7 +5080,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5026,7 +5107,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5054,7 +5135,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5081,7 +5162,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5109,7 +5190,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5135,7 +5216,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -5162,7 +5243,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -5189,7 +5270,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient implem
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

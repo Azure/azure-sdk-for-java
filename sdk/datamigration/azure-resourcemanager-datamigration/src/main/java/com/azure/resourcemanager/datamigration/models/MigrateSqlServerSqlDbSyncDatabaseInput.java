@@ -5,72 +5,68 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Database specific information for SQL to Azure SQL DB sync migration task inputs. */
+/**
+ * Database specific information for SQL to Azure SQL DB sync migration task inputs.
+ */
 @Fluent
-public final class MigrateSqlServerSqlDbSyncDatabaseInput {
+public final class MigrateSqlServerSqlDbSyncDatabaseInput
+    implements JsonSerializable<MigrateSqlServerSqlDbSyncDatabaseInput> {
     /*
      * Unique identifier for database
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Name of database
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Target database name
      */
-    @JsonProperty(value = "targetDatabaseName")
     private String targetDatabaseName;
 
     /*
      * Schema name to be migrated
      */
-    @JsonProperty(value = "schemaName")
     private String schemaName;
 
     /*
      * Mapping of source to target tables
      */
-    @JsonProperty(value = "tableMap")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tableMap;
 
     /*
      * Migration settings which tune the migration behavior
      */
-    @JsonProperty(value = "migrationSetting")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> migrationSetting;
 
     /*
      * Source settings to tune source endpoint migration behavior
      */
-    @JsonProperty(value = "sourceSetting")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> sourceSetting;
 
     /*
      * Target settings to tune target endpoint migration behavior
      */
-    @JsonProperty(value = "targetSetting")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetSetting;
 
-    /** Creates an instance of MigrateSqlServerSqlDbSyncDatabaseInput class. */
+    /**
+     * Creates an instance of MigrateSqlServerSqlDbSyncDatabaseInput class.
+     */
     public MigrateSqlServerSqlDbSyncDatabaseInput() {
     }
 
     /**
      * Get the id property: Unique identifier for database.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -79,7 +75,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Set the id property: Unique identifier for database.
-     *
+     * 
      * @param id the id value to set.
      * @return the MigrateSqlServerSqlDbSyncDatabaseInput object itself.
      */
@@ -90,7 +86,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Get the name property: Name of database.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -99,7 +95,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Set the name property: Name of database.
-     *
+     * 
      * @param name the name value to set.
      * @return the MigrateSqlServerSqlDbSyncDatabaseInput object itself.
      */
@@ -110,7 +106,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Get the targetDatabaseName property: Target database name.
-     *
+     * 
      * @return the targetDatabaseName value.
      */
     public String targetDatabaseName() {
@@ -119,7 +115,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Set the targetDatabaseName property: Target database name.
-     *
+     * 
      * @param targetDatabaseName the targetDatabaseName value to set.
      * @return the MigrateSqlServerSqlDbSyncDatabaseInput object itself.
      */
@@ -130,7 +126,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Get the schemaName property: Schema name to be migrated.
-     *
+     * 
      * @return the schemaName value.
      */
     public String schemaName() {
@@ -139,7 +135,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Set the schemaName property: Schema name to be migrated.
-     *
+     * 
      * @param schemaName the schemaName value to set.
      * @return the MigrateSqlServerSqlDbSyncDatabaseInput object itself.
      */
@@ -150,7 +146,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Get the tableMap property: Mapping of source to target tables.
-     *
+     * 
      * @return the tableMap value.
      */
     public Map<String, String> tableMap() {
@@ -159,7 +155,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Set the tableMap property: Mapping of source to target tables.
-     *
+     * 
      * @param tableMap the tableMap value to set.
      * @return the MigrateSqlServerSqlDbSyncDatabaseInput object itself.
      */
@@ -170,7 +166,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Get the migrationSetting property: Migration settings which tune the migration behavior.
-     *
+     * 
      * @return the migrationSetting value.
      */
     public Map<String, String> migrationSetting() {
@@ -179,7 +175,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Set the migrationSetting property: Migration settings which tune the migration behavior.
-     *
+     * 
      * @param migrationSetting the migrationSetting value to set.
      * @return the MigrateSqlServerSqlDbSyncDatabaseInput object itself.
      */
@@ -190,7 +186,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Get the sourceSetting property: Source settings to tune source endpoint migration behavior.
-     *
+     * 
      * @return the sourceSetting value.
      */
     public Map<String, String> sourceSetting() {
@@ -199,7 +195,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Set the sourceSetting property: Source settings to tune source endpoint migration behavior.
-     *
+     * 
      * @param sourceSetting the sourceSetting value to set.
      * @return the MigrateSqlServerSqlDbSyncDatabaseInput object itself.
      */
@@ -210,7 +206,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Get the targetSetting property: Target settings to tune target endpoint migration behavior.
-     *
+     * 
      * @return the targetSetting value.
      */
     public Map<String, String> targetSetting() {
@@ -219,7 +215,7 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Set the targetSetting property: Target settings to tune target endpoint migration behavior.
-     *
+     * 
      * @param targetSetting the targetSetting value to set.
      * @return the MigrateSqlServerSqlDbSyncDatabaseInput object itself.
      */
@@ -230,9 +226,72 @@ public final class MigrateSqlServerSqlDbSyncDatabaseInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("targetDatabaseName", this.targetDatabaseName);
+        jsonWriter.writeStringField("schemaName", this.schemaName);
+        jsonWriter.writeMapField("tableMap", this.tableMap, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("migrationSetting", this.migrationSetting,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("sourceSetting", this.sourceSetting, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("targetSetting", this.targetSetting, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlDbSyncDatabaseInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlDbSyncDatabaseInput if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlDbSyncDatabaseInput.
+     */
+    public static MigrateSqlServerSqlDbSyncDatabaseInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlDbSyncDatabaseInput deserializedMigrateSqlServerSqlDbSyncDatabaseInput
+                = new MigrateSqlServerSqlDbSyncDatabaseInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbSyncDatabaseInput.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbSyncDatabaseInput.name = reader.getString();
+                } else if ("targetDatabaseName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbSyncDatabaseInput.targetDatabaseName = reader.getString();
+                } else if ("schemaName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlDbSyncDatabaseInput.schemaName = reader.getString();
+                } else if ("tableMap".equals(fieldName)) {
+                    Map<String, String> tableMap = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigrateSqlServerSqlDbSyncDatabaseInput.tableMap = tableMap;
+                } else if ("migrationSetting".equals(fieldName)) {
+                    Map<String, String> migrationSetting = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigrateSqlServerSqlDbSyncDatabaseInput.migrationSetting = migrationSetting;
+                } else if ("sourceSetting".equals(fieldName)) {
+                    Map<String, String> sourceSetting = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigrateSqlServerSqlDbSyncDatabaseInput.sourceSetting = sourceSetting;
+                } else if ("targetSetting".equals(fieldName)) {
+                    Map<String, String> targetSetting = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMigrateSqlServerSqlDbSyncDatabaseInput.targetSetting = targetSetting;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlDbSyncDatabaseInput;
+        });
     }
 }

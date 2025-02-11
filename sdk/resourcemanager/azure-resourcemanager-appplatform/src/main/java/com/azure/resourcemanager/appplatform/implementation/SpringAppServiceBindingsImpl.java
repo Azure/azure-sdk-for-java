@@ -17,9 +17,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
-public class SpringAppServiceBindingsImpl
-    extends ExternalChildResourcesNonCachedImpl<
-        SpringAppServiceBindingImpl, SpringAppServiceBinding, BindingResourceInner, SpringAppImpl, SpringApp>
+public class SpringAppServiceBindingsImpl extends
+    ExternalChildResourcesNonCachedImpl<SpringAppServiceBindingImpl, SpringAppServiceBinding, BindingResourceInner, SpringAppImpl, SpringApp>
     implements SpringAppServiceBindings {
     SpringAppServiceBindingsImpl(SpringAppImpl parent) {
         super(parent, parent.taskGroup(), "SpringAppServiceBinding");
@@ -77,8 +76,8 @@ public class SpringAppServiceBindingsImpl
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return inner().deleteAsync(
-            parent().parent().resourceGroupName(), parent().parent().name(), parent().name(), name);
+        return inner().deleteAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name(),
+            name);
     }
 
     @Override
@@ -88,7 +87,8 @@ public class SpringAppServiceBindingsImpl
 
     @Override
     public PagedFlux<SpringAppServiceBinding> listAsync() {
-        return PagedConverter.mapPage(inner().listAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name()),
+        return PagedConverter.mapPage(
+            inner().listAsync(parent().parent().resourceGroupName(), parent().parent().name(), parent().name()),
             this::wrapModel);
     }
 

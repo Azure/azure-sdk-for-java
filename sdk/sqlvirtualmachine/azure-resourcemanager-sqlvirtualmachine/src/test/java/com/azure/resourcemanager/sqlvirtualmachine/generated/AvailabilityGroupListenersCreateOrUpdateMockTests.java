@@ -6,76 +6,106 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AgConfiguration;
+import com.azure.resourcemanager.sqlvirtualmachine.models.AgReplica;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListener;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.sqlvirtualmachine.models.Commit;
+import com.azure.resourcemanager.sqlvirtualmachine.models.Failover;
+import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfiguration;
+import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
+import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
+import com.azure.resourcemanager.sqlvirtualmachine.models.ReadableSecondary;
+import com.azure.resourcemanager.sqlvirtualmachine.models.Role;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class AvailabilityGroupListenersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"availabilityGroupName\":\"adm\",\"loadBalancerConfigurations\":[{\"privateIpAddress\":{\"ipAddress\":\"gvxp\",\"subnetResourceId\":\"omzlfmi\"},\"publicIpAddressResourceId\":\"wbnb\",\"loadBalancerResourceId\":\"ldawkzbaliourqha\",\"probePort\":30531984,\"sqlVirtualMachineInstances\":[\"shsfwxosowzxcu\",\"i\",\"jooxdjebw\"]},{\"privateIpAddress\":{\"ipAddress\":\"wwfvov\",\"subnetResourceId\":\"meue\"},\"publicIpAddressResourceId\":\"vyhzceuojgjrwj\",\"loadBalancerResourceId\":\"iotwmcdytdxwit\",\"probePort\":1070997174,\"sqlVirtualMachineInstances\":[\"wgqwgxhn\",\"skxfbk\",\"y\"]}],\"multiSubnetIpConfigurations\":[{\"privateIpAddress\":{\"ipAddress\":\"wndnhj\",\"subnetResourceId\":\"uwhvylwzbtdhxujz\"},\"sqlVirtualMachineInstance\":\"bm\"},{\"privateIpAddress\":{\"ipAddress\":\"wuwprzqlv\",\"subnetResourceId\":\"alupjm\"},\"sqlVirtualMachineInstance\":\"hfxobbcswsrtj\"},{\"privateIpAddress\":{\"ipAddress\":\"plrbpbewtghf\",\"subnetResourceId\":\"lcgwxzvlvqh\"},\"sqlVirtualMachineInstance\":\"kbegibt\"},{\"privateIpAddress\":{\"ipAddress\":\"xiebwwaloayqcg\",\"subnetResourceId\":\"tzjuzgwyzmhtxo\"},\"sqlVirtualMachineInstance\":\"gmtsavjcbpwxqpsr\"}],\"createDefaultAvailabilityGroupIfNotExist\":false,\"port\":810124654,\"availabilityGroupConfiguration\":{\"replicas\":[{\"sqlVirtualMachineInstanceId\":\"uhprwmdyvxqt\",\"role\":\"PRIMARY\",\"commit\":\"SYNCHRONOUS_COMMIT\",\"failover\":\"AUTOMATIC\",\"readableSecondary\":\"READ_ONLY\"},{\"sqlVirtualMachineInstanceId\":\"bexrmcq\",\"role\":\"SECONDARY\",\"commit\":\"ASYNCHRONOUS_COMMIT\",\"failover\":\"AUTOMATIC\",\"readableSecondary\":\"ALL\"}]}},\"id\":\"mefqsgzvahapjyzh\",\"name\":\"vgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"availabilityGroupName\":\"ihkaetcktvfc\",\"loadBalancerConfigurations\":[],\"multiSubnetIpConfigurations\":[],\"createDefaultAvailabilityGroupIfNotExist\":true,\"port\":5394429,\"availabilityGroupConfiguration\":{\"replicas\":[]}},\"id\":\"hjfbebrjcxe\",\"name\":\"fuwutttxf\",\"type\":\"jrbirphxepcyv\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        SqlVirtualMachineManager manager = SqlVirtualMachineManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        AvailabilityGroupListener response = manager.availabilityGroupListeners()
+            .define("ie")
+            .withExistingSqlVirtualMachineGroup("upedeojnabckhs", "txp")
+            .withAvailabilityGroupName("jdhtldwkyzxu")
+            .withLoadBalancerConfigurations(Arrays.asList(new LoadBalancerConfiguration()
+                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("ws").withSubnetResourceId("svlxotogtwrup"))
+                .withPublicIpAddressResourceId("xvnmicykvceov")
+                .withLoadBalancerResourceId("lo")
+                .withProbePort(660644635)
+                .withSqlVirtualMachineInstances(Arrays.asList("fj", "cnjbkcnxdhbt", "kphywpnvjto"))))
+            .withMultiSubnetIpConfigurations(Arrays.asList(
+                new MultiSubnetIpConfiguration()
+                    .withPrivateIpAddress(
+                        new PrivateIpAddress().withIpAddress("mclfplphoxuscr").withSubnetResourceId("bgyepsbj"))
+                    .withSqlVirtualMachineInstance("azqugxywpmueefj"),
+                new MultiSubnetIpConfiguration()
+                    .withPrivateIpAddress(
+                        new PrivateIpAddress().withIpAddress("fqkquj").withSubnetResourceId("suyonobglaocq"))
+                    .withSqlVirtualMachineInstance("tcc"),
+                new MultiSubnetIpConfiguration()
+                    .withPrivateIpAddress(
+                        new PrivateIpAddress().withIpAddress("yudxytlmoy").withSubnetResourceId("vwfudwpzntxhd"))
+                    .withSqlVirtualMachineInstance("hl"),
+                new MultiSubnetIpConfiguration()
+                    .withPrivateIpAddress(
+                        new PrivateIpAddress().withIpAddress("jbhckfrlhr").withSubnetResourceId("bkyvp"))
+                    .withSqlVirtualMachineInstance("ca")))
+            .withCreateDefaultAvailabilityGroupIfNotExist(false)
+            .withPort(86930899)
+            .withAvailabilityGroupConfiguration(new AgConfiguration().withReplicas(Arrays.asList(
+                new AgReplica().withSqlVirtualMachineInstanceId("kuwbcrnwb")
+                    .withRole(Role.PRIMARY)
+                    .withCommit(Commit.SYNCHRONOUS_COMMIT)
+                    .withFailover(Failover.MANUAL)
+                    .withReadableSecondary(ReadableSecondary.NO),
+                new AgReplica().withSqlVirtualMachineInstanceId("srtslhspkdeem")
+                    .withRole(Role.PRIMARY)
+                    .withCommit(Commit.ASYNCHRONOUS_COMMIT)
+                    .withFailover(Failover.MANUAL)
+                    .withReadableSecondary(ReadableSecondary.READ_ONLY))))
+            .create();
 
-        SqlVirtualMachineManager manager =
-            SqlVirtualMachineManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        AvailabilityGroupListener response =
-            manager
-                .availabilityGroupListeners()
-                .define("heun")
-                .withExistingSqlVirtualMachineGroup("qnwvlrya", "w")
-                .withAvailabilityGroupName("oklyaxuconuq")
-                .withLoadBalancerConfigurations(Arrays.asList())
-                .withMultiSubnetIpConfigurations(Arrays.asList())
-                .withCreateDefaultAvailabilityGroupIfNotExist(true)
-                .withPort(1413337127)
-                .withAvailabilityGroupConfiguration(new AgConfiguration().withReplicas(Arrays.asList()))
-                .create();
-
-        Assertions.assertEquals("ihkaetcktvfc", response.availabilityGroupName());
-        Assertions.assertEquals(true, response.createDefaultAvailabilityGroupIfNotExist());
-        Assertions.assertEquals(5394429, response.port());
+        Assertions.assertEquals("adm", response.availabilityGroupName());
+        Assertions.assertEquals("gvxp", response.loadBalancerConfigurations().get(0).privateIpAddress().ipAddress());
+        Assertions.assertEquals("omzlfmi",
+            response.loadBalancerConfigurations().get(0).privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("wbnb", response.loadBalancerConfigurations().get(0).publicIpAddressResourceId());
+        Assertions.assertEquals("ldawkzbaliourqha",
+            response.loadBalancerConfigurations().get(0).loadBalancerResourceId());
+        Assertions.assertEquals(30531984, response.loadBalancerConfigurations().get(0).probePort());
+        Assertions.assertEquals("shsfwxosowzxcu",
+            response.loadBalancerConfigurations().get(0).sqlVirtualMachineInstances().get(0));
+        Assertions.assertEquals("wndnhj", response.multiSubnetIpConfigurations().get(0).privateIpAddress().ipAddress());
+        Assertions.assertEquals("uwhvylwzbtdhxujz",
+            response.multiSubnetIpConfigurations().get(0).privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("bm", response.multiSubnetIpConfigurations().get(0).sqlVirtualMachineInstance());
+        Assertions.assertEquals(false, response.createDefaultAvailabilityGroupIfNotExist());
+        Assertions.assertEquals(810124654, response.port());
+        Assertions.assertEquals("uhprwmdyvxqt",
+            response.availabilityGroupConfiguration().replicas().get(0).sqlVirtualMachineInstanceId());
+        Assertions.assertEquals(Role.PRIMARY, response.availabilityGroupConfiguration().replicas().get(0).role());
+        Assertions.assertEquals(Commit.SYNCHRONOUS_COMMIT,
+            response.availabilityGroupConfiguration().replicas().get(0).commit());
+        Assertions.assertEquals(Failover.AUTOMATIC,
+            response.availabilityGroupConfiguration().replicas().get(0).failover());
+        Assertions.assertEquals(ReadableSecondary.READ_ONLY,
+            response.availabilityGroupConfiguration().replicas().get(0).readableSecondary());
     }
 }

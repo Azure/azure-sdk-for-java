@@ -5,50 +5,50 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.recoveryservicesbackup.models.NameInfo;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UsagesUnit;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Backup management usages of a vault.
  */
 @Fluent
-public final class BackupManagementUsageInner {
+public final class BackupManagementUsageInner implements JsonSerializable<BackupManagementUsageInner> {
     /*
      * Unit of the usage.
      */
-    @JsonProperty(value = "unit")
     private UsagesUnit unit;
 
     /*
      * Quota period of usage.
      */
-    @JsonProperty(value = "quotaPeriod")
     private String quotaPeriod;
 
     /*
      * Next reset time of usage.
      */
-    @JsonProperty(value = "nextResetTime")
     private OffsetDateTime nextResetTime;
 
     /*
      * Current value of usage.
      */
-    @JsonProperty(value = "currentValue")
     private Long currentValue;
 
     /*
      * Limit of usage.
      */
-    @JsonProperty(value = "limit")
     private Long limit;
 
     /*
      * Name of usage.
      */
-    @JsonProperty(value = "name")
     private NameInfo name;
 
     /**
@@ -186,5 +186,58 @@ public final class BackupManagementUsageInner {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unit", this.unit == null ? null : this.unit.toString());
+        jsonWriter.writeStringField("quotaPeriod", this.quotaPeriod);
+        jsonWriter.writeStringField("nextResetTime",
+            this.nextResetTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.nextResetTime));
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeJsonField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupManagementUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupManagementUsageInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupManagementUsageInner.
+     */
+    public static BackupManagementUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupManagementUsageInner deserializedBackupManagementUsageInner = new BackupManagementUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unit".equals(fieldName)) {
+                    deserializedBackupManagementUsageInner.unit = UsagesUnit.fromString(reader.getString());
+                } else if ("quotaPeriod".equals(fieldName)) {
+                    deserializedBackupManagementUsageInner.quotaPeriod = reader.getString();
+                } else if ("nextResetTime".equals(fieldName)) {
+                    deserializedBackupManagementUsageInner.nextResetTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedBackupManagementUsageInner.currentValue = reader.getNullable(JsonReader::getLong);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedBackupManagementUsageInner.limit = reader.getNullable(JsonReader::getLong);
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackupManagementUsageInner.name = NameInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupManagementUsageInner;
+        });
     }
 }

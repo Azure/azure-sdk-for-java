@@ -12,12 +12,12 @@ import java.util.Collection;
  */
 public final class RegularPriorityAllocationStrategy extends ExpandableStringEnum<RegularPriorityAllocationStrategy> {
     /**
-     * Static value LowestPrice for RegularPriorityAllocationStrategy.
+     * Default. VM sizes distribution will be determined to optimize for price.
      */
     public static final RegularPriorityAllocationStrategy LOWEST_PRICE = fromString("LowestPrice");
 
     /**
-     * Static value Prioritized for RegularPriorityAllocationStrategy.
+     * VM sizes distribution will be determined to optimize for the 'priority' as specified for each vm size.
      */
     public static final RegularPriorityAllocationStrategy PRIORITIZED = fromString("Prioritized");
 

@@ -23,7 +23,7 @@ public final class VaultCertificatesCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"cnojvknmefqsg\",\"issuer\":\"ah\",\"resourceId\":8796329803823614210,\"subject\":\"hpvgqz\",\"thumbprint\":\"rvxdjzlmw\",\"validFrom\":\"2021-07-11T22:18:52Z\",\"validTo\":\"2021-11-03T14:53:04Z\"},\"id\":\"fhzovawjvzunluth\",\"name\":\"n\",\"type\":\"rnxipei\"}";
+            = "{\"properties\":{\"authType\":\"ResourceCertificateDetails\",\"friendlyName\":\"kbegibt\",\"issuer\":\"xiebwwaloayqcg\",\"resourceId\":6136339981043942378,\"subject\":\"uzgwyzmhtx\",\"thumbprint\":\"gmtsavjcbpwxqpsr\",\"validFrom\":\"2021-10-15T11:22:09Z\",\"validTo\":\"2021-01-16T18:55:51Z\"},\"id\":\"uvriuhprwm\",\"name\":\"yvxqtayriwwroy\",\"type\":\"bexrmcq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class VaultCertificatesCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VaultCertificateResponse response = manager.vaultCertificates()
-            .define("vxqtayriwwroyqbe")
-            .withExistingVault("vjcbpwxqpsrknf", "guvriuhprwmd")
+            .define("gw")
+            .withExistingVault("bbcswsrtjri", "lrbpbewtghfgbl")
             .withProperties(new RawCertificateData().withAuthType(AuthType.ACCESS_CONTROL_SERVICE))
             .create();
 
-        Assertions.assertEquals("cnojvknmefqsg", response.properties().friendlyName());
-        Assertions.assertEquals("ah", response.properties().issuer());
-        Assertions.assertEquals(8796329803823614210L, response.properties().resourceId());
-        Assertions.assertEquals("hpvgqz", response.properties().subject());
-        Assertions.assertEquals("rvxdjzlmw", response.properties().thumbprint());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-11T22:18:52Z"), response.properties().validFrom());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T14:53:04Z"), response.properties().validTo());
+        Assertions.assertEquals("kbegibt", response.properties().friendlyName());
+        Assertions.assertEquals("xiebwwaloayqcg", response.properties().issuer());
+        Assertions.assertEquals(6136339981043942378L, response.properties().resourceId());
+        Assertions.assertEquals("uzgwyzmhtx", response.properties().subject());
+        Assertions.assertEquals("gmtsavjcbpwxqpsr", response.properties().thumbprint());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-15T11:22:09Z"), response.properties().validFrom());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-16T18:55:51Z"), response.properties().validTo());
     }
 }

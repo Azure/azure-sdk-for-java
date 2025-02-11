@@ -337,7 +337,6 @@ public final class AzureFileStorageReadSettings extends StoreReadSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

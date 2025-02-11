@@ -6,35 +6,52 @@ package com.azure.resourcemanager.postgresql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties used to create a new server. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "createMode")
-@JsonTypeName("Default")
+/**
+ * The properties used to create a new server.
+ */
 @Fluent
 public final class ServerPropertiesForDefaultCreate extends ServerPropertiesForCreate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerPropertiesForDefaultCreate.class);
+    /*
+     * The mode to create a new server.
+     */
+    private CreateMode createMode = CreateMode.DEFAULT;
 
     /*
-     * The administrator's login name of a server. Can only be specified when
-     * the server is being created (and is required for creation).
+     * The administrator's login name of a server. Can only be specified when the server is being created (and is
+     * required for creation).
      */
-    @JsonProperty(value = "administratorLogin", required = true)
     private String administratorLogin;
 
     /*
      * The password of the administrator login.
      */
-    @JsonProperty(value = "administratorLoginPassword", required = true)
     private String administratorLoginPassword;
+
+    /**
+     * Creates an instance of ServerPropertiesForDefaultCreate class.
+     */
+    public ServerPropertiesForDefaultCreate() {
+    }
+
+    /**
+     * Get the createMode property: The mode to create a new server.
+     * 
+     * @return the createMode value.
+     */
+    @Override
+    public CreateMode createMode() {
+        return this.createMode;
+    }
 
     /**
      * Get the administratorLogin property: The administrator's login name of a server. Can only be specified when the
      * server is being created (and is required for creation).
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -44,7 +61,7 @@ public final class ServerPropertiesForDefaultCreate extends ServerPropertiesForC
     /**
      * Set the administratorLogin property: The administrator's login name of a server. Can only be specified when the
      * server is being created (and is required for creation).
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ServerPropertiesForDefaultCreate object itself.
      */
@@ -55,7 +72,7 @@ public final class ServerPropertiesForDefaultCreate extends ServerPropertiesForC
 
     /**
      * Get the administratorLoginPassword property: The password of the administrator login.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -64,7 +81,7 @@ public final class ServerPropertiesForDefaultCreate extends ServerPropertiesForC
 
     /**
      * Set the administratorLoginPassword property: The password of the administrator login.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerPropertiesForDefaultCreate object itself.
      */
@@ -73,43 +90,55 @@ public final class ServerPropertiesForDefaultCreate extends ServerPropertiesForC
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForDefaultCreate withVersion(ServerVersion version) {
         super.withVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForDefaultCreate withSslEnforcement(SslEnforcementEnum sslEnforcement) {
         super.withSslEnforcement(sslEnforcement);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForDefaultCreate withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
         super.withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ServerPropertiesForDefaultCreate withInfrastructureEncryption(
-        InfrastructureEncryption infrastructureEncryption) {
+    public ServerPropertiesForDefaultCreate
+        withInfrastructureEncryption(InfrastructureEncryption infrastructureEncryption) {
         super.withInfrastructureEncryption(infrastructureEncryption);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForDefaultCreate withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServerPropertiesForDefaultCreate withStorageProfile(StorageProfile storageProfile) {
         super.withStorageProfile(storageProfile);
@@ -118,24 +147,95 @@ public final class ServerPropertiesForDefaultCreate extends ServerPropertiesForC
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (administratorLogin() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorLogin in model ServerPropertiesForDefaultCreate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorLogin in model ServerPropertiesForDefaultCreate"));
         }
         if (administratorLoginPassword() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorLoginPassword in model"
-                            + " ServerPropertiesForDefaultCreate"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property administratorLoginPassword in model ServerPropertiesForDefaultCreate"));
         }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerPropertiesForDefaultCreate.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version() == null ? null : version().toString());
+        jsonWriter.writeStringField("sslEnforcement", sslEnforcement() == null ? null : sslEnforcement().toString());
+        jsonWriter.writeStringField("minimalTlsVersion",
+            minimalTlsVersion() == null ? null : minimalTlsVersion().toString());
+        jsonWriter.writeStringField("infrastructureEncryption",
+            infrastructureEncryption() == null ? null : infrastructureEncryption().toString());
+        jsonWriter.writeStringField("publicNetworkAccess",
+            publicNetworkAccess() == null ? null : publicNetworkAccess().toString());
+        jsonWriter.writeJsonField("storageProfile", storageProfile());
+        jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
+        jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
+        jsonWriter.writeStringField("createMode", this.createMode == null ? null : this.createMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerPropertiesForDefaultCreate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerPropertiesForDefaultCreate if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerPropertiesForDefaultCreate.
+     */
+    public static ServerPropertiesForDefaultCreate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerPropertiesForDefaultCreate deserializedServerPropertiesForDefaultCreate
+                = new ServerPropertiesForDefaultCreate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedServerPropertiesForDefaultCreate
+                        .withVersion(ServerVersion.fromString(reader.getString()));
+                } else if ("sslEnforcement".equals(fieldName)) {
+                    deserializedServerPropertiesForDefaultCreate
+                        .withSslEnforcement(SslEnforcementEnum.fromString(reader.getString()));
+                } else if ("minimalTlsVersion".equals(fieldName)) {
+                    deserializedServerPropertiesForDefaultCreate
+                        .withMinimalTlsVersion(MinimalTlsVersionEnum.fromString(reader.getString()));
+                } else if ("infrastructureEncryption".equals(fieldName)) {
+                    deserializedServerPropertiesForDefaultCreate
+                        .withInfrastructureEncryption(InfrastructureEncryption.fromString(reader.getString()));
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedServerPropertiesForDefaultCreate
+                        .withPublicNetworkAccess(PublicNetworkAccessEnum.fromString(reader.getString()));
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedServerPropertiesForDefaultCreate.withStorageProfile(StorageProfile.fromJson(reader));
+                } else if ("administratorLogin".equals(fieldName)) {
+                    deserializedServerPropertiesForDefaultCreate.administratorLogin = reader.getString();
+                } else if ("administratorLoginPassword".equals(fieldName)) {
+                    deserializedServerPropertiesForDefaultCreate.administratorLoginPassword = reader.getString();
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedServerPropertiesForDefaultCreate.createMode = CreateMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerPropertiesForDefaultCreate;
+        });
     }
 }

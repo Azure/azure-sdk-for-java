@@ -5,33 +5,30 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Base certificate properties.
  */
 @Fluent
-public class CertificateBaseProperties {
+public class CertificateBaseProperties implements JsonSerializable<CertificateBaseProperties> {
     /*
-     * The algorithm of the certificate thumbprint.
-     * 
      * This must match the first portion of the certificate name. Currently required to be 'SHA1'.
      */
-    @JsonProperty(value = "thumbprintAlgorithm")
     private String thumbprintAlgorithm;
 
     /*
-     * The thumbprint of the certificate.
-     * 
      * This must match the thumbprint from the name.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
      * The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
      */
-    @JsonProperty(value = "format")
     private CertificateFormat format;
 
     /**
@@ -41,9 +38,8 @@ public class CertificateBaseProperties {
     }
 
     /**
-     * Get the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
-     * 
-     * This must match the first portion of the certificate name. Currently required to be 'SHA1'.
+     * Get the thumbprintAlgorithm property: This must match the first portion of the certificate name. Currently
+     * required to be 'SHA1'.
      * 
      * @return the thumbprintAlgorithm value.
      */
@@ -52,9 +48,8 @@ public class CertificateBaseProperties {
     }
 
     /**
-     * Set the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
-     * 
-     * This must match the first portion of the certificate name. Currently required to be 'SHA1'.
+     * Set the thumbprintAlgorithm property: This must match the first portion of the certificate name. Currently
+     * required to be 'SHA1'.
      * 
      * @param thumbprintAlgorithm the thumbprintAlgorithm value to set.
      * @return the CertificateBaseProperties object itself.
@@ -65,9 +60,7 @@ public class CertificateBaseProperties {
     }
 
     /**
-     * Get the thumbprint property: The thumbprint of the certificate.
-     * 
-     * This must match the thumbprint from the name.
+     * Get the thumbprint property: This must match the thumbprint from the name.
      * 
      * @return the thumbprint value.
      */
@@ -76,9 +69,7 @@ public class CertificateBaseProperties {
     }
 
     /**
-     * Set the thumbprint property: The thumbprint of the certificate.
-     * 
-     * This must match the thumbprint from the name.
+     * Set the thumbprint property: This must match the thumbprint from the name.
      * 
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateBaseProperties object itself.
@@ -114,5 +105,47 @@ public class CertificateBaseProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("thumbprintAlgorithm", this.thumbprintAlgorithm);
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        jsonWriter.writeStringField("format", this.format == null ? null : this.format.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateBaseProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CertificateBaseProperties.
+     */
+    public static CertificateBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateBaseProperties deserializedCertificateBaseProperties = new CertificateBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("thumbprintAlgorithm".equals(fieldName)) {
+                    deserializedCertificateBaseProperties.thumbprintAlgorithm = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedCertificateBaseProperties.thumbprint = reader.getString();
+                } else if ("format".equals(fieldName)) {
+                    deserializedCertificateBaseProperties.format = CertificateFormat.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateBaseProperties;
+        });
     }
 }

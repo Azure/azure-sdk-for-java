@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.notificationhubs.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.notificationhubs.fluent.models.CheckAvailabilityResultInner;
 import com.azure.resourcemanager.notificationhubs.models.CheckAvailabilityResult;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
@@ -34,10 +33,6 @@ public final class CheckAvailabilityResultImpl implements CheckAvailabilityResul
         return this.innerModel().type();
     }
 
-    public Boolean isAvailiable() {
-        return this.innerModel().isAvailiable();
-    }
-
     public String location() {
         return this.innerModel().location();
     }
@@ -51,12 +46,12 @@ public final class CheckAvailabilityResultImpl implements CheckAvailabilityResul
         }
     }
 
-    public Sku sku() {
-        return this.innerModel().sku();
+    public Boolean isAvailiable() {
+        return this.innerModel().isAvailiable();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public Sku sku() {
+        return this.innerModel().sku();
     }
 
     public CheckAvailabilityResultInner innerModel() {

@@ -6,35 +6,30 @@ package com.azure.resourcemanager.mediaservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyInner;
+import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyConfiguration;
 import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyOption;
+import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicyRestriction;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class ContentKeyPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"policyId\":\"4da702f2-8c84-4f1a-a467-dfc67a48c0d7\",\"created\":\"2021-09-03T17:59:20Z\",\"lastModified\":\"2021-10-17T19:30:49Z\",\"description\":\"rts\",\"options\":[{\"policyOptionId\":\"5a7c4e55-9bc6-4d6f-9b4f-ccda1de8fd47\",\"name\":\"kdeemaofmxagkvtm\"},{\"policyOptionId\":\"d33a70ba-68d8-4f15-b495-65a6363e35ec\",\"name\":\"qkrhahvljua\"},{\"policyOptionId\":\"d933a30b-c3ef-4541-aba4-45be3c661f9f\",\"name\":\"uhcdhm\"}]},\"id\":\"alaexqpvfadmwsrc\",\"name\":\"gvxp\",\"type\":\"gomz\"}")
-                .toObject(ContentKeyPolicyInner.class);
-        Assertions.assertEquals("rts", model.description());
-        Assertions.assertEquals("kdeemaofmxagkvtm", model.options().get(0).name());
+        ContentKeyPolicyInner model = BinaryData.fromString(
+            "{\"properties\":{\"policyId\":\"58a2619b-e9b9-4b7d-8974-287b849ca4fe\",\"created\":\"2021-03-21T05:49:29Z\",\"lastModified\":\"2021-02-12T16:02:06Z\",\"description\":\"hdlxyjrxsagafcn\",\"options\":[{\"policyOptionId\":\"9cf78129-ad13-498e-9528-eefa9251619e\",\"name\":\"qapnedgfbcv\",\"configuration\":{\"@odata.type\":\"ContentKeyPolicyConfiguration\"},\"restriction\":{\"@odata.type\":\"ContentKeyPolicyRestriction\"}}]},\"id\":\"vq\",\"name\":\"pkeqdcvdrhvoo\",\"type\":\"sotbob\"}")
+            .toObject(ContentKeyPolicyInner.class);
+        Assertions.assertEquals("hdlxyjrxsagafcn", model.description());
+        Assertions.assertEquals("qapnedgfbcv", model.options().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentKeyPolicyInner model =
-            new ContentKeyPolicyInner()
-                .withDescription("rts")
-                .withOptions(
-                    Arrays
-                        .asList(
-                            new ContentKeyPolicyOption().withName("kdeemaofmxagkvtm"),
-                            new ContentKeyPolicyOption().withName("qkrhahvljua"),
-                            new ContentKeyPolicyOption().withName("uhcdhm")));
+        ContentKeyPolicyInner model = new ContentKeyPolicyInner().withDescription("hdlxyjrxsagafcn")
+            .withOptions(Arrays.asList(new ContentKeyPolicyOption().withName("qapnedgfbcv")
+                .withConfiguration(new ContentKeyPolicyConfiguration())
+                .withRestriction(new ContentKeyPolicyRestriction())));
         model = BinaryData.fromObject(model).toObject(ContentKeyPolicyInner.class);
-        Assertions.assertEquals("rts", model.description());
-        Assertions.assertEquals("kdeemaofmxagkvtm", model.options().get(0).name());
+        Assertions.assertEquals("hdlxyjrxsagafcn", model.description());
+        Assertions.assertEquals("qapnedgfbcv", model.options().get(0).name());
     }
 }

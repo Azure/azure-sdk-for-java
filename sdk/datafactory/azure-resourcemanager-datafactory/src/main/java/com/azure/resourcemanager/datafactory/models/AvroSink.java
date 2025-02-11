@@ -149,7 +149,6 @@ public final class AvroSink extends CopySink {
      */
     @Override
     public void validate() {
-        super.validate();
         if (storeSettings() != null) {
             storeSettings().validate();
         }

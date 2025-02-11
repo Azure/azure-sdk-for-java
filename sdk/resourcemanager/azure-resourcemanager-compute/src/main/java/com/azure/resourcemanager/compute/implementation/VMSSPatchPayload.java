@@ -45,13 +45,12 @@ class VMSSPatchPayload {
             //
             if (scaleSet.innerModel().virtualMachineProfile().storageProfile() != null) {
                 // -- --
-                VirtualMachineScaleSetUpdateStorageProfile storageProfile =
-                    new VirtualMachineScaleSetUpdateStorageProfile();
+                VirtualMachineScaleSetUpdateStorageProfile storageProfile
+                    = new VirtualMachineScaleSetUpdateStorageProfile();
                 storageProfile
                     .withDataDisks(scaleSet.innerModel().virtualMachineProfile().storageProfile().dataDisks());
-                storageProfile
-                    .withImageReference(
-                        scaleSet.innerModel().virtualMachineProfile().storageProfile().imageReference());
+                storageProfile.withImageReference(
+                    scaleSet.innerModel().virtualMachineProfile().storageProfile().imageReference());
 
                 if (scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk() != null
                     // Filling patch payload with osDisk property for VMSS with ephemeral OS disks will be considered updating VM model.
@@ -59,26 +58,20 @@ class VMSSPatchPayload {
                     // e.g. scale out using `withCapacity`, especially if the scale set's `updatePolicy` is `Rolling` or `Automatic`, which may trigger
                     // a VM restart.
                     // Thus, we won't fill for VMSS with ephemeral OS disks.
-                    && !scaleSet.isEphemeralOSDisk()
-                ) {
+                    && !scaleSet.isEphemeralOSDisk()) {
                     VirtualMachineScaleSetUpdateOSDisk osDisk = new VirtualMachineScaleSetUpdateOSDisk();
                     osDisk
                         .withCaching(scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().caching());
                     osDisk.withImage(scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().image());
-                    osDisk
-                        .withManagedDisk(
-                            scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().managedDisk());
-                    osDisk
-                        .withVhdContainers(
-                            scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().vhdContainers());
-                    osDisk
-                        .withWriteAcceleratorEnabled(
-                            scaleSet
-                                .innerModel()
-                                .virtualMachineProfile()
-                                .storageProfile()
-                                .osDisk()
-                                .writeAcceleratorEnabled());
+                    osDisk.withManagedDisk(
+                        scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().managedDisk());
+                    osDisk.withVhdContainers(
+                        scaleSet.innerModel().virtualMachineProfile().storageProfile().osDisk().vhdContainers());
+                    osDisk.withWriteAcceleratorEnabled(scaleSet.innerModel()
+                        .virtualMachineProfile()
+                        .storageProfile()
+                        .osDisk()
+                        .writeAcceleratorEnabled());
                     storageProfile.withOsDisk(osDisk);
                 }
                 updateVMProfile.withStorageProfile(storageProfile);
@@ -88,34 +81,29 @@ class VMSSPatchPayload {
                 // -- --
                 VirtualMachineScaleSetUpdateOSProfile osProfile = new VirtualMachineScaleSetUpdateOSProfile();
                 osProfile.withCustomData(scaleSet.innerModel().virtualMachineProfile().osProfile().customData());
-                osProfile
-                    .withLinuxConfiguration(
-                        scaleSet.innerModel().virtualMachineProfile().osProfile().linuxConfiguration());
+                osProfile.withLinuxConfiguration(
+                    scaleSet.innerModel().virtualMachineProfile().osProfile().linuxConfiguration());
                 osProfile.withSecrets(scaleSet.innerModel().virtualMachineProfile().osProfile().secrets());
-                osProfile
-                    .withWindowsConfiguration(
-                        scaleSet.innerModel().virtualMachineProfile().osProfile().windowsConfiguration());
+                osProfile.withWindowsConfiguration(
+                    scaleSet.innerModel().virtualMachineProfile().osProfile().windowsConfiguration());
                 updateVMProfile.withOsProfile(osProfile);
                 // -- --
             }
             if (scaleSet.innerModel().virtualMachineProfile().networkProfile() != null) {
                 // -- --
-                VirtualMachineScaleSetUpdateNetworkProfile networkProfile =
-                    new VirtualMachineScaleSetUpdateNetworkProfile();
-                networkProfile.withNetworkApiVersion(scaleSet.innerModel().virtualMachineProfile().networkProfile().networkApiVersion());
+                VirtualMachineScaleSetUpdateNetworkProfile networkProfile
+                    = new VirtualMachineScaleSetUpdateNetworkProfile();
+                networkProfile.withNetworkApiVersion(
+                    scaleSet.innerModel().virtualMachineProfile().networkProfile().networkApiVersion());
                 if (scaleSet.innerModel().virtualMachineProfile().networkProfile().networkInterfaceConfigurations()
                     != null) {
-                    networkProfile
-                        .withNetworkInterfaceConfigurations(
-                            new ArrayList<>());
-                    for (VirtualMachineScaleSetNetworkConfiguration nicConfig
-                        : scaleSet
-                            .innerModel()
-                            .virtualMachineProfile()
-                            .networkProfile()
-                            .networkInterfaceConfigurations()) {
-                        VirtualMachineScaleSetUpdateNetworkConfiguration nicPatchConfig =
-                            new VirtualMachineScaleSetUpdateNetworkConfiguration();
+                    networkProfile.withNetworkInterfaceConfigurations(new ArrayList<>());
+                    for (VirtualMachineScaleSetNetworkConfiguration nicConfig : scaleSet.innerModel()
+                        .virtualMachineProfile()
+                        .networkProfile()
+                        .networkInterfaceConfigurations()) {
+                        VirtualMachineScaleSetUpdateNetworkConfiguration nicPatchConfig
+                            = new VirtualMachineScaleSetUpdateNetworkConfiguration();
                         nicPatchConfig.withDnsSettings(nicConfig.dnsSettings());
                         nicPatchConfig.withEnableAcceleratedNetworking(nicConfig.enableAcceleratedNetworking());
                         nicPatchConfig.withEnableIpForwarding(nicConfig.enableIpForwarding());
@@ -123,14 +111,12 @@ class VMSSPatchPayload {
                         nicPatchConfig.withNetworkSecurityGroup(nicConfig.networkSecurityGroup());
                         nicPatchConfig.withPrimary(nicConfig.primary());
                         if (nicConfig.ipConfigurations() != null) {
-                            nicPatchConfig
-                                .withIpConfigurations(new ArrayList<>());
+                            nicPatchConfig.withIpConfigurations(new ArrayList<>());
                             for (VirtualMachineScaleSetIpConfiguration ipConfig : nicConfig.ipConfigurations()) {
-                                VirtualMachineScaleSetUpdateIpConfiguration patchIpConfig =
-                                    new VirtualMachineScaleSetUpdateIpConfiguration();
-                                patchIpConfig
-                                    .withApplicationGatewayBackendAddressPools(
-                                        ipConfig.applicationGatewayBackendAddressPools());
+                                VirtualMachineScaleSetUpdateIpConfiguration patchIpConfig
+                                    = new VirtualMachineScaleSetUpdateIpConfiguration();
+                                patchIpConfig.withApplicationGatewayBackendAddressPools(
+                                    ipConfig.applicationGatewayBackendAddressPools());
                                 patchIpConfig
                                     .withLoadBalancerBackendAddressPools(ipConfig.loadBalancerBackendAddressPools());
                                 patchIpConfig.withLoadBalancerInboundNatPools(ipConfig.loadBalancerInboundNatPools());
@@ -139,25 +125,20 @@ class VMSSPatchPayload {
                                 patchIpConfig.withPrivateIpAddressVersion(ipConfig.privateIpAddressVersion());
                                 patchIpConfig.withSubnet(ipConfig.subnet());
                                 if (ipConfig.publicIpAddressConfiguration() != null) {
-                                    patchIpConfig
-                                        .withPublicIpAddressConfiguration(
-                                            new VirtualMachineScaleSetUpdatePublicIpAddressConfiguration());
-                                    patchIpConfig
-                                        .publicIpAddressConfiguration()
+                                    patchIpConfig.withPublicIpAddressConfiguration(
+                                        new VirtualMachineScaleSetUpdatePublicIpAddressConfiguration());
+                                    patchIpConfig.publicIpAddressConfiguration()
                                         .withDnsSettings(ipConfig.publicIpAddressConfiguration().dnsSettings());
-                                    patchIpConfig
-                                        .publicIpAddressConfiguration()
+                                    patchIpConfig.publicIpAddressConfiguration()
                                         .withIdleTimeoutInMinutes(
                                             ipConfig.publicIpAddressConfiguration().idleTimeoutInMinutes());
-                                    patchIpConfig
-                                        .publicIpAddressConfiguration()
+                                    patchIpConfig.publicIpAddressConfiguration()
                                         .withName(ipConfig.publicIpAddressConfiguration().name());
                                 }
                                 if (ipConfig.applicationSecurityGroups() != null) {
                                     patchIpConfig.withApplicationSecurityGroups(new ArrayList<>());
                                     for (SubResource asg : ipConfig.applicationSecurityGroups()) {
-                                        patchIpConfig
-                                            .applicationSecurityGroups()
+                                        patchIpConfig.applicationSecurityGroups()
                                             .add(new SubResource().withId(asg.id()));
                                     }
                                 }

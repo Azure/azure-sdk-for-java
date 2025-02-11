@@ -5,37 +5,56 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventHubEventSourceMutableProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters supplied to the Update Event Source operation to update an EventHub event source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Microsoft.EventHub")
+/**
+ * Parameters supplied to the Update Event Source operation to update an EventHub event source.
+ */
 @Fluent
 public final class EventHubEventSourceUpdateParameters extends EventSourceUpdateParameters {
     /*
+     * The kind of the event source.
+     */
+    private EventSourceKind kind = EventSourceKind.MICROSOFT_EVENT_HUB;
+
+    /*
      * Properties of the EventHub event source.
      */
-    @JsonProperty(value = "properties")
     private EventHubEventSourceMutableProperties innerProperties;
 
-    /** Creates an instance of EventHubEventSourceUpdateParameters class. */
+    /**
+     * Creates an instance of EventHubEventSourceUpdateParameters class.
+     */
     public EventHubEventSourceUpdateParameters() {
     }
 
     /**
+     * Get the kind property: The kind of the event source.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public EventSourceKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: Properties of the EventHub event source.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EventHubEventSourceMutableProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubEventSourceUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -45,7 +64,7 @@ public final class EventHubEventSourceUpdateParameters extends EventSourceUpdate
     /**
      * Get the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
      * read access to the event hub. This property is not shown in event source responses.
-     *
+     * 
      * @return the sharedAccessKey value.
      */
     public String sharedAccessKey() {
@@ -55,7 +74,7 @@ public final class EventHubEventSourceUpdateParameters extends EventSourceUpdate
     /**
      * Set the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
      * read access to the event hub. This property is not shown in event source responses.
-     *
+     * 
      * @param sharedAccessKey the sharedAccessKey value to set.
      * @return the EventHubEventSourceUpdateParameters object itself.
      */
@@ -71,7 +90,7 @@ public final class EventHubEventSourceUpdateParameters extends EventSourceUpdate
      * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
      * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
      * time will be used.
-     *
+     * 
      * @return the timestampPropertyName value.
      */
     public String timestampPropertyName() {
@@ -82,7 +101,7 @@ public final class EventHubEventSourceUpdateParameters extends EventSourceUpdate
      * Set the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
      * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
      * time will be used.
-     *
+     * 
      * @param timestampPropertyName the timestampPropertyName value to set.
      * @return the EventHubEventSourceUpdateParameters object itself.
      */
@@ -96,14 +115,59 @@ public final class EventHubEventSourceUpdateParameters extends EventSourceUpdate
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubEventSourceUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubEventSourceUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventHubEventSourceUpdateParameters.
+     */
+    public static EventHubEventSourceUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubEventSourceUpdateParameters deserializedEventHubEventSourceUpdateParameters
+                = new EventHubEventSourceUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEventHubEventSourceUpdateParameters.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEventHubEventSourceUpdateParameters.kind
+                        = EventSourceKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEventHubEventSourceUpdateParameters.innerProperties
+                        = EventHubEventSourceMutableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubEventSourceUpdateParameters;
+        });
     }
 }

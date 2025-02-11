@@ -55,8 +55,8 @@ public final class TimeSeriesElement implements JsonSerializable<TimeSeriesEleme
     }
 
     /**
-     * Get the data property: An array of data points representing the metric values. This is only returned if a
-     * result type of data is specified.
+     * Get the data property: An array of data points representing the metric values. This is only returned if a result
+     * type of data is specified.
      * 
      * @return the data value.
      */
@@ -65,8 +65,8 @@ public final class TimeSeriesElement implements JsonSerializable<TimeSeriesEleme
     }
 
     /**
-     * Set the data property: An array of data points representing the metric values. This is only returned if a
-     * result type of data is specified.
+     * Set the data property: An array of data points representing the metric values. This is only returned if a result
+     * type of data is specified.
      * 
      * @param data the data value to set.
      * @return the TimeSeriesElement object itself.
@@ -76,6 +76,9 @@ public final class TimeSeriesElement implements JsonSerializable<TimeSeriesEleme
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

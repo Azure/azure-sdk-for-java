@@ -12,15 +12,15 @@ public final class ProfileListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ProfileList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"resourceState\":\"Disabled\",\"enabledState\":\"Enabled\"},\"etag\":\"fvaawzqa\",\"location\":\"f\",\"tags\":{\"glae\":\"ur\"},\"id\":\"xndticokpvzmlqtm\",\"name\":\"dgxobfircl\",\"type\":\"pkc\"},{\"properties\":{\"resourceState\":\"Creating\",\"enabledState\":\"Enabled\"},\"etag\":\"khyawfvjlboxqv\",\"location\":\"jlmxhomdynhd\",\"tags\":{\"ysdzhez\":\"gumbnraauzzptja\"},\"id\":\"wva\",\"name\":\"qyuvvfonkp\",\"type\":\"hqyikvy\"}],\"nextLink\":\"uyav\"}")
+            "{\"value\":[{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Disabled\"},\"etag\":\"vyi\",\"location\":\"zqodfvpgshox\",\"tags\":{\"xvzflbqv\":\"bpfgzdj\",\"vetnwsdtutn\":\"aqvlgafcqusr\"},\"id\":\"lduycv\",\"name\":\"zhyrmewipmve\",\"type\":\"dxukuqgsjjxundxg\"},{\"properties\":{\"resourceState\":\"Enabling\",\"enabledState\":\"Enabled\"},\"etag\":\"zjhfjmhvv\",\"location\":\"uvgp\",\"tags\":{\"mhfbuzjy\":\"eqsx\",\"ypoh\":\"hsasbhu\"},\"id\":\"uemsly\",\"name\":\"sqy\",\"type\":\"pfoobr\"}],\"nextLink\":\"tyms\"}")
             .toObject(ProfileList.class);
-        Assertions.assertEquals("uyav", model.nextLink());
+        Assertions.assertEquals("tyms", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProfileList model = new ProfileList().withNextLink("uyav");
+        ProfileList model = new ProfileList().withNextLink("tyms");
         model = BinaryData.fromObject(model).toObject(ProfileList.class);
-        Assertions.assertEquals("uyav", model.nextLink());
+        Assertions.assertEquals("tyms", model.nextLink());
     }
 }

@@ -5,34 +5,107 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AutomationRuleAction;
 import com.azure.resourcemanager.securityinsights.models.AutomationRuleTriggeringLogic;
 import com.azure.resourcemanager.securityinsights.models.ClientInfo;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The AutomationRule model. */
+/**
+ * The AutomationRule model.
+ */
 @Fluent
 public final class AutomationRuleInner extends ResourceWithEtag {
     /*
      * Automation rule properties
      */
-    @JsonProperty(value = "properties", required = true)
     private AutomationRuleProperties innerProperties = new AutomationRuleProperties();
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AutomationRuleInner class.
+     */
+    public AutomationRuleInner() {
+    }
 
     /**
      * Get the innerProperties property: Automation rule properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AutomationRuleProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AutomationRuleInner withEtag(String etag) {
         super.withEtag(etag);
@@ -41,7 +114,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Get the displayName property: The display name of the automation rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -50,7 +123,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Set the displayName property: The display name of the automation rule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AutomationRuleInner object itself.
      */
@@ -64,7 +137,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Get the order property: The order of execution of the automation rule.
-     *
+     * 
      * @return the order value.
      */
     public int order() {
@@ -73,7 +146,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Set the order property: The order of execution of the automation rule.
-     *
+     * 
      * @param order the order value to set.
      * @return the AutomationRuleInner object itself.
      */
@@ -87,7 +160,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Get the triggeringLogic property: Describes automation rule triggering logic.
-     *
+     * 
      * @return the triggeringLogic value.
      */
     public AutomationRuleTriggeringLogic triggeringLogic() {
@@ -96,7 +169,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Set the triggeringLogic property: Describes automation rule triggering logic.
-     *
+     * 
      * @param triggeringLogic the triggeringLogic value to set.
      * @return the AutomationRuleInner object itself.
      */
@@ -110,7 +183,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Get the actions property: The actions to execute when the automation rule is triggered.
-     *
+     * 
      * @return the actions value.
      */
     public List<AutomationRuleAction> actions() {
@@ -119,7 +192,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Set the actions property: The actions to execute when the automation rule is triggered.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AutomationRuleInner object itself.
      */
@@ -133,7 +206,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Get the lastModifiedTimeUtc property: The last time the automation rule was updated.
-     *
+     * 
      * @return the lastModifiedTimeUtc value.
      */
     public OffsetDateTime lastModifiedTimeUtc() {
@@ -142,7 +215,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Get the createdTimeUtc property: The time the automation rule was created.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -151,7 +224,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Get the lastModifiedBy property: Information on the client (user or application) that made some action.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public ClientInfo lastModifiedBy() {
@@ -160,7 +233,7 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Get the createdBy property: Information on the client (user or application) that made some action.
-     *
+     * 
      * @return the createdBy value.
      */
     public ClientInfo createdBy() {
@@ -169,21 +242,67 @@ public final class AutomationRuleInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AutomationRuleInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model AutomationRuleInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutomationRuleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationRuleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationRuleInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutomationRuleInner.
+     */
+    public static AutomationRuleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationRuleInner deserializedAutomationRuleInner = new AutomationRuleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAutomationRuleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAutomationRuleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAutomationRuleInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedAutomationRuleInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAutomationRuleInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAutomationRuleInner.innerProperties = AutomationRuleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationRuleInner;
+        });
+    }
 }

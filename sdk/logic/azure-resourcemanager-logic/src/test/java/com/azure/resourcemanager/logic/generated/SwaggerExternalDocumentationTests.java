@@ -13,28 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class SwaggerExternalDocumentationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwaggerExternalDocumentation model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"pzaamrdixtreki\",\"uri\":\"wyskbruffgll\",\"extensions\":{\"qhvmblcouqe\":\"datautvlxhr\",\"randoypmb\":\"databhbcdszir\",\"ormkfqlwxldyk\":\"datat\"}}")
-                .toObject(SwaggerExternalDocumentation.class);
-        Assertions.assertEquals("pzaamrdixtreki", model.description());
-        Assertions.assertEquals("wyskbruffgll", model.uri());
+        SwaggerExternalDocumentation model = BinaryData.fromString(
+            "{\"description\":\"cexdxhxpqkcstynj\",\"uri\":\"ndxrofwctjhdbidl\",\"extensions\":{\"ekpxvet\":\"dataiojitf\",\"rwtakn\":\"datarcmts\"}}")
+            .toObject(SwaggerExternalDocumentation.class);
+        Assertions.assertEquals("cexdxhxpqkcstynj", model.description());
+        Assertions.assertEquals("ndxrofwctjhdbidl", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwaggerExternalDocumentation model =
-            new SwaggerExternalDocumentation()
-                .withDescription("pzaamrdixtreki")
-                .withUri("wyskbruffgll")
-                .withExtensions(
-                    mapOf("qhvmblcouqe", "datautvlxhr", "randoypmb", "databhbcdszir", "ormkfqlwxldyk", "datat"));
+        SwaggerExternalDocumentation model = new SwaggerExternalDocumentation().withDescription("cexdxhxpqkcstynj")
+            .withUri("ndxrofwctjhdbidl")
+            .withExtensions(mapOf("ekpxvet", "dataiojitf", "rwtakn", "datarcmts"));
         model = BinaryData.fromObject(model).toObject(SwaggerExternalDocumentation.class);
-        Assertions.assertEquals("pzaamrdixtreki", model.description());
-        Assertions.assertEquals("wyskbruffgll", model.uri());
+        Assertions.assertEquals("cexdxhxpqkcstynj", model.description());
+        Assertions.assertEquals("ndxrofwctjhdbidl", model.uri());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

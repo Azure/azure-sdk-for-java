@@ -5,77 +5,76 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 
-/** Benefit recommendation details. */
+/**
+ * Benefit recommendation details.
+ */
 @Immutable
-public final class AllSavingsBenefitDetails {
+public final class AllSavingsBenefitDetails implements JsonSerializable<AllSavingsBenefitDetails> {
     /*
      * The difference between total cost and benefit cost for the 'totalHours' in the look-back period.
      */
-    @JsonProperty(value = "overageCost", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal overageCost;
 
     /*
      * The estimated cost with benefit for the 'totalHours' in the look-back period. It's equal to (commitmentAmount *
      * totalHours)
      */
-    @JsonProperty(value = "benefitCost", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal benefitCost;
 
     /*
      * Total cost, which is sum of benefit cost and overage cost.
      */
-    @JsonProperty(value = "totalCost", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal totalCost;
 
     /*
      * The amount saved for the 'totalHours' in the look-back period, by purchasing the recommended quantity of the
      * benefit.
      */
-    @JsonProperty(value = "savingsAmount", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal savingsAmount;
 
     /*
-     * The savings in percentage for the 'totalHours' in the look-back period, by purchasing the recommended quantity
-     * of benefit.
+     * The savings in percentage for the 'totalHours' in the look-back period, by purchasing the recommended quantity of
+     * benefit.
      */
-    @JsonProperty(value = "savingsPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal savingsPercentage;
 
     /*
      * Estimated benefit coverage percentage for the 'totalHours' in the look-back period, with this commitment.
      */
-    @JsonProperty(value = "coveragePercentage", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal coveragePercentage;
 
     /*
      * The commitment amount at the commitmentGranularity.
      */
-    @JsonProperty(value = "commitmentAmount", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal commitmentAmount;
 
     /*
      * Estimated average utilization percentage for the 'totalHours' in the look-back period, with this commitment.
      */
-    @JsonProperty(value = "averageUtilizationPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal averageUtilizationPercentage;
 
     /*
      * Estimated unused portion of the 'benefitCost'.
      */
-    @JsonProperty(value = "wastageCost", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal wastageCost;
 
-    /** Creates an instance of AllSavingsBenefitDetails class. */
+    /**
+     * Creates an instance of AllSavingsBenefitDetails class.
+     */
     public AllSavingsBenefitDetails() {
     }
 
     /**
      * Get the overageCost property: The difference between total cost and benefit cost for the 'totalHours' in the
      * look-back period.
-     *
+     * 
      * @return the overageCost value.
      */
     public BigDecimal overageCost() {
@@ -85,7 +84,7 @@ public final class AllSavingsBenefitDetails {
     /**
      * Get the benefitCost property: The estimated cost with benefit for the 'totalHours' in the look-back period. It's
      * equal to (commitmentAmount * totalHours).
-     *
+     * 
      * @return the benefitCost value.
      */
     public BigDecimal benefitCost() {
@@ -94,7 +93,7 @@ public final class AllSavingsBenefitDetails {
 
     /**
      * Get the totalCost property: Total cost, which is sum of benefit cost and overage cost.
-     *
+     * 
      * @return the totalCost value.
      */
     public BigDecimal totalCost() {
@@ -104,7 +103,7 @@ public final class AllSavingsBenefitDetails {
     /**
      * Get the savingsAmount property: The amount saved for the 'totalHours' in the look-back period, by purchasing the
      * recommended quantity of the benefit.
-     *
+     * 
      * @return the savingsAmount value.
      */
     public BigDecimal savingsAmount() {
@@ -114,7 +113,7 @@ public final class AllSavingsBenefitDetails {
     /**
      * Get the savingsPercentage property: The savings in percentage for the 'totalHours' in the look-back period, by
      * purchasing the recommended quantity of benefit.
-     *
+     * 
      * @return the savingsPercentage value.
      */
     public BigDecimal savingsPercentage() {
@@ -124,7 +123,7 @@ public final class AllSavingsBenefitDetails {
     /**
      * Get the coveragePercentage property: Estimated benefit coverage percentage for the 'totalHours' in the look-back
      * period, with this commitment.
-     *
+     * 
      * @return the coveragePercentage value.
      */
     public BigDecimal coveragePercentage() {
@@ -133,7 +132,7 @@ public final class AllSavingsBenefitDetails {
 
     /**
      * Get the commitmentAmount property: The commitment amount at the commitmentGranularity.
-     *
+     * 
      * @return the commitmentAmount value.
      */
     public BigDecimal commitmentAmount() {
@@ -143,7 +142,7 @@ public final class AllSavingsBenefitDetails {
     /**
      * Get the averageUtilizationPercentage property: Estimated average utilization percentage for the 'totalHours' in
      * the look-back period, with this commitment.
-     *
+     * 
      * @return the averageUtilizationPercentage value.
      */
     public BigDecimal averageUtilizationPercentage() {
@@ -152,7 +151,7 @@ public final class AllSavingsBenefitDetails {
 
     /**
      * Get the wastageCost property: Estimated unused portion of the 'benefitCost'.
-     *
+     * 
      * @return the wastageCost value.
      */
     public BigDecimal wastageCost() {
@@ -161,9 +160,69 @@ public final class AllSavingsBenefitDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AllSavingsBenefitDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AllSavingsBenefitDetails if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AllSavingsBenefitDetails.
+     */
+    public static AllSavingsBenefitDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AllSavingsBenefitDetails deserializedAllSavingsBenefitDetails = new AllSavingsBenefitDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("overageCost".equals(fieldName)) {
+                    deserializedAllSavingsBenefitDetails.overageCost
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("benefitCost".equals(fieldName)) {
+                    deserializedAllSavingsBenefitDetails.benefitCost
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("totalCost".equals(fieldName)) {
+                    deserializedAllSavingsBenefitDetails.totalCost
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("savingsAmount".equals(fieldName)) {
+                    deserializedAllSavingsBenefitDetails.savingsAmount
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("savingsPercentage".equals(fieldName)) {
+                    deserializedAllSavingsBenefitDetails.savingsPercentage
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("coveragePercentage".equals(fieldName)) {
+                    deserializedAllSavingsBenefitDetails.coveragePercentage
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("commitmentAmount".equals(fieldName)) {
+                    deserializedAllSavingsBenefitDetails.commitmentAmount
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("averageUtilizationPercentage".equals(fieldName)) {
+                    deserializedAllSavingsBenefitDetails.averageUtilizationPercentage
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("wastageCost".equals(fieldName)) {
+                    deserializedAllSavingsBenefitDetails.wastageCost
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAllSavingsBenefitDetails;
+        });
     }
 }

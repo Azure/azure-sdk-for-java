@@ -6,30 +6,48 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.UUID;
 
-/** Specifies that the content key ID is specified in the PlayReady configuration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier")
+/**
+ * Specifies that the content key ID is specified in the PlayReady configuration.
+ */
 @Fluent
 public final class ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier
     extends ContentKeyPolicyPlayReadyContentKeyLocation {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier";
+
+    /*
      * The content key ID.
      */
-    @JsonProperty(value = "keyId", required = true)
     private UUID keyId;
 
-    /** Creates an instance of ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier class. */
+    /**
+     * Creates an instance of ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier class.
+     */
     public ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the keyId property: The content key ID.
-     *
+     * 
      * @return the keyId value.
      */
     public UUID keyId() {
@@ -38,7 +56,7 @@ public final class ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifie
 
     /**
      * Set the keyId property: The content key ID.
-     *
+     * 
      * @param keyId the keyId value to set.
      * @return the ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier object itself.
      */
@@ -49,21 +67,63 @@ public final class ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifie
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (keyId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyId in model"
-                            + " ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyId in model ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyId", Objects.toString(this.keyId, null));
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the
+     * ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.
+     */
+    public static ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier deserializedContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier
+                = new ContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyId".equals(fieldName)) {
+                    deserializedContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.keyId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier.odataType
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyPlayReadyContentEncryptionKeyFromKeyIdentifier;
+        });
+    }
 }

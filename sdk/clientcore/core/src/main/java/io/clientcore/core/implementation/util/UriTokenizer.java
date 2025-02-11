@@ -3,18 +3,23 @@
 
 package io.clientcore.core.implementation.util;
 
-class UriTokenizer {
+/**
+ * Represents a URI parser.
+ */
+public final class UriTokenizer {
     private final String text;
     private final int textLength;
     private UriTokenizerState state;
     private int currentIndex;
     private UriToken currentToken;
 
-    UriTokenizer(String text) {
-        this(text, UriTokenizerState.SCHEME_OR_HOST);
-    }
-
-    UriTokenizer(String text, UriTokenizerState state) {
+    /**
+     * Creates a new UriTokenizer object with the specified text and state.
+     *
+     * @param text The text to tokenize.
+     * @param state The state of the tokenizer.
+     */
+    public UriTokenizer(String text, UriTokenizerState state) {
         this.text = text;
         this.textLength = (text == null ? 0 : text.length());
         this.state = state;
@@ -50,11 +55,22 @@ class UriTokenizer {
         return false;
     }
 
-    UriToken current() {
+    /**
+     * Gets the current token.
+     *
+     * @return The current token.
+     */
+    public UriToken current() {
         return currentToken;
     }
 
-    boolean next() {
+    /**
+     * Advances the tokenizer to the next token.
+     *
+     * @return {@code true} if the tokenizer advanced to the next token; {@code false} if the tokenizer has reached the
+     * end of the text.
+     */
+    public boolean next() {
         if (!hasCurrentCharacter()) {
             currentToken = null;
         } else {

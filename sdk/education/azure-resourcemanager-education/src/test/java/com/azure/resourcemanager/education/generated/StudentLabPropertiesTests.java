@@ -6,20 +6,17 @@ package com.azure.resourcemanager.education.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.education.fluent.models.StudentLabProperties;
-import org.junit.jupiter.api.Test;
 
 public final class StudentLabPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        StudentLabProperties model =
-            BinaryData
-                .fromString(
-                    "{\"displayName\":\"hrzayvvtpgvdf\",\"description\":\"otkftutqxlngx\",\"expirationDate\":\"2021-12-03T02:20:16Z\",\"role\":\"Admin\",\"budget\":{\"currency\":\"xkrxdqmi\",\"value\":15.739637},\"subscriptionId\":\"zrvqdr\",\"status\":\"Disabled\",\"effectiveDate\":\"2021-09-24T23:35:33Z\",\"labScope\":\"igeho\"}")
-                .toObject(StudentLabProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        StudentLabProperties model = BinaryData.fromString(
+            "{\"displayName\":\"h\",\"description\":\"fbowskanyk\",\"expirationDate\":\"2021-04-16T07:17:05Z\",\"role\":\"Student\",\"budget\":{\"currency\":\"wgqyw\",\"value\":28.199095},\"subscriptionId\":\"vynhzgpphrcg\",\"status\":\"Active\",\"effectiveDate\":\"2021-08-14T07:53:58Z\",\"labScope\":\"ecfvmm\"}")
+            .toObject(StudentLabProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         StudentLabProperties model = new StudentLabProperties();
         model = BinaryData.fromObject(model).toObject(StudentLabProperties.class);
     }

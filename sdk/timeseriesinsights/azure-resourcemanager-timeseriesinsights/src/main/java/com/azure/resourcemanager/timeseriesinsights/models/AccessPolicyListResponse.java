@@ -7,18 +7,20 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyListResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of AccessPolicyListResponse. */
+/**
+ * An immutable client-side representation of AccessPolicyListResponse.
+ */
 public interface AccessPolicyListResponse {
     /**
      * Gets the value property: Result of the List access policies operation.
-     *
+     * 
      * @return the value value.
      */
     List<AccessPolicyResource> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.timeseriesinsights.fluent.models.AccessPolicyListResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     AccessPolicyListResponseInner innerModel();

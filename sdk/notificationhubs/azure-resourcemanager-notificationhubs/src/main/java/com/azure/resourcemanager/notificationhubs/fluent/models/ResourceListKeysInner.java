@@ -4,43 +4,41 @@
 
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
+ * Namespace/NotificationHub Connection String.
  */
-@Immutable
-public final class ResourceListKeysInner {
+@Fluent
+public final class ResourceListKeysInner implements JsonSerializable<ResourceListKeysInner> {
     /*
-     * Gets or sets primaryConnectionString of the AuthorizationRule.
+     * PrimaryConnectionString of the AuthorizationRule.
      */
-    @JsonProperty(value = "primaryConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryConnectionString;
 
     /*
-     * Gets or sets secondaryConnectionString of the created
-     * AuthorizationRule
+     * SecondaryConnectionString of the created AuthorizationRule
      */
-    @JsonProperty(value = "secondaryConnectionString", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryConnectionString;
 
     /*
-     * Gets or sets primaryKey of the created AuthorizationRule.
+     * PrimaryKey of the created AuthorizationRule.
      */
-    @JsonProperty(value = "primaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryKey;
 
     /*
-     * Gets or sets secondaryKey of the created AuthorizationRule
+     * SecondaryKey of the created AuthorizationRule
      */
-    @JsonProperty(value = "secondaryKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;
 
     /*
-     * Gets or sets keyName of the created AuthorizationRule
+     * KeyName of the created AuthorizationRule
      */
-    @JsonProperty(value = "keyName", access = JsonProperty.Access.WRITE_ONLY)
     private String keyName;
 
     /**
@@ -50,7 +48,7 @@ public final class ResourceListKeysInner {
     }
 
     /**
-     * Get the primaryConnectionString property: Gets or sets primaryConnectionString of the AuthorizationRule.
+     * Get the primaryConnectionString property: PrimaryConnectionString of the AuthorizationRule.
      * 
      * @return the primaryConnectionString value.
      */
@@ -59,8 +57,18 @@ public final class ResourceListKeysInner {
     }
 
     /**
-     * Get the secondaryConnectionString property: Gets or sets secondaryConnectionString of the created
-     * AuthorizationRule.
+     * Set the primaryConnectionString property: PrimaryConnectionString of the AuthorizationRule.
+     * 
+     * @param primaryConnectionString the primaryConnectionString value to set.
+     * @return the ResourceListKeysInner object itself.
+     */
+    public ResourceListKeysInner withPrimaryConnectionString(String primaryConnectionString) {
+        this.primaryConnectionString = primaryConnectionString;
+        return this;
+    }
+
+    /**
+     * Get the secondaryConnectionString property: SecondaryConnectionString of the created AuthorizationRule.
      * 
      * @return the secondaryConnectionString value.
      */
@@ -69,7 +77,18 @@ public final class ResourceListKeysInner {
     }
 
     /**
-     * Get the primaryKey property: Gets or sets primaryKey of the created AuthorizationRule.
+     * Set the secondaryConnectionString property: SecondaryConnectionString of the created AuthorizationRule.
+     * 
+     * @param secondaryConnectionString the secondaryConnectionString value to set.
+     * @return the ResourceListKeysInner object itself.
+     */
+    public ResourceListKeysInner withSecondaryConnectionString(String secondaryConnectionString) {
+        this.secondaryConnectionString = secondaryConnectionString;
+        return this;
+    }
+
+    /**
+     * Get the primaryKey property: PrimaryKey of the created AuthorizationRule.
      * 
      * @return the primaryKey value.
      */
@@ -78,7 +97,18 @@ public final class ResourceListKeysInner {
     }
 
     /**
-     * Get the secondaryKey property: Gets or sets secondaryKey of the created AuthorizationRule.
+     * Set the primaryKey property: PrimaryKey of the created AuthorizationRule.
+     * 
+     * @param primaryKey the primaryKey value to set.
+     * @return the ResourceListKeysInner object itself.
+     */
+    public ResourceListKeysInner withPrimaryKey(String primaryKey) {
+        this.primaryKey = primaryKey;
+        return this;
+    }
+
+    /**
+     * Get the secondaryKey property: SecondaryKey of the created AuthorizationRule.
      * 
      * @return the secondaryKey value.
      */
@@ -87,7 +117,18 @@ public final class ResourceListKeysInner {
     }
 
     /**
-     * Get the keyName property: Gets or sets keyName of the created AuthorizationRule.
+     * Set the secondaryKey property: SecondaryKey of the created AuthorizationRule.
+     * 
+     * @param secondaryKey the secondaryKey value to set.
+     * @return the ResourceListKeysInner object itself.
+     */
+    public ResourceListKeysInner withSecondaryKey(String secondaryKey) {
+        this.secondaryKey = secondaryKey;
+        return this;
+    }
+
+    /**
+     * Get the keyName property: KeyName of the created AuthorizationRule.
      * 
      * @return the keyName value.
      */
@@ -96,10 +137,69 @@ public final class ResourceListKeysInner {
     }
 
     /**
+     * Set the keyName property: KeyName of the created AuthorizationRule.
+     * 
+     * @param keyName the keyName value to set.
+     * @return the ResourceListKeysInner object itself.
+     */
+    public ResourceListKeysInner withKeyName(String keyName) {
+        this.keyName = keyName;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("primaryConnectionString", this.primaryConnectionString);
+        jsonWriter.writeStringField("secondaryConnectionString", this.secondaryConnectionString);
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        jsonWriter.writeStringField("keyName", this.keyName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceListKeysInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceListKeysInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceListKeysInner.
+     */
+    public static ResourceListKeysInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceListKeysInner deserializedResourceListKeysInner = new ResourceListKeysInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primaryConnectionString".equals(fieldName)) {
+                    deserializedResourceListKeysInner.primaryConnectionString = reader.getString();
+                } else if ("secondaryConnectionString".equals(fieldName)) {
+                    deserializedResourceListKeysInner.secondaryConnectionString = reader.getString();
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedResourceListKeysInner.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedResourceListKeysInner.secondaryKey = reader.getString();
+                } else if ("keyName".equals(fieldName)) {
+                    deserializedResourceListKeysInner.keyName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceListKeysInner;
+        });
     }
 }

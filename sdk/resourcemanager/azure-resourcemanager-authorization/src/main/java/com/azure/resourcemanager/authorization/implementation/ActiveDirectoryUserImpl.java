@@ -75,19 +75,13 @@ class ActiveDirectoryUserImpl
 
     @Override
     protected Mono<MicrosoftGraphUserInner> getInnerAsync() {
-        return manager.serviceClient().getUsersUsers().getUserWithResponseAsync(
-            id(),
-            null,
-            Arrays.asList(
-                Get2ItemsItem.ID,
-                Get2ItemsItem.DISPLAY_NAME,
-                Get2ItemsItem.USER_PRINCIPAL_NAME,
-                Get2ItemsItem.MAIL,
-                Get2ItemsItem.MAIL_NICKNAME,
-                Get2ItemsItem.USAGE_LOCATION,
-                Get2ItemsItem.ACCOUNT_ENABLED
-            ),
-            null)
+        return manager.serviceClient()
+            .getUsersUsers()
+            .getUserWithResponseAsync(id(), null,
+                Arrays.asList(Get2ItemsItem.ID, Get2ItemsItem.DISPLAY_NAME, Get2ItemsItem.USER_PRINCIPAL_NAME,
+                    Get2ItemsItem.MAIL, Get2ItemsItem.MAIL_NICKNAME, Get2ItemsItem.USAGE_LOCATION,
+                    Get2ItemsItem.ACCOUNT_ENABLED),
+                null)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -103,24 +97,19 @@ class ActiveDirectoryUserImpl
         }
         Flux<Object> flux = Flux.empty();
         if (emailAlias != null) {
-            flux = manager().serviceClient().getDomainsDomains().listDomainAsync()
-                .flatMap(domainInner -> {
-                    if (domainInner.isVerified() && domainInner.isDefault()) {
-                        withUserPrincipalName(emailAlias + "@" + domainInner.id());
-                    }
-                    return Mono.empty();
-                });
+            flux = manager().serviceClient().getDomainsDomains().listDomainAsync().flatMap(domainInner -> {
+                if (domainInner.isVerified() && domainInner.isDefault()) {
+                    withUserPrincipalName(emailAlias + "@" + domainInner.id());
+                }
+                return Mono.empty();
+            });
         }
         return flux.then(manager().serviceClient().getUsersUsers().createUserAsync(innerModel()))
             .map(innerToFluentMap(this));
     }
 
     public Mono<ActiveDirectoryUser> updateResourceAsync() {
-        return manager()
-            .serviceClient()
-            .getUsersUsers()
-            .updateUserAsync(id(), innerModel())
-            .then(this.refreshAsync());
+        return manager().serviceClient().getUsersUsers().updateUserAsync(id(), innerModel()).then(this.refreshAsync());
     }
 
     @Override

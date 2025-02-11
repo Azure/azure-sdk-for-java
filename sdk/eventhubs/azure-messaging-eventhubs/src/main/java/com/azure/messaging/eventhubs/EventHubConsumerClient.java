@@ -252,11 +252,10 @@ public class EventHubConsumerClient implements Closeable {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
         }
         if (maximumMessageCount < 1) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
         } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
         if (consumer.isV2()) {
@@ -265,9 +264,8 @@ public class EventHubConsumerClient implements Closeable {
                 maximumWaitTime);
         }
 
-        Flux<PartitionEvent> events =
-            Flux.create(emitter -> queueWork(partitionId, maximumMessageCount, startingPosition, maximumWaitTime, defaultReceiveOptions,
-                emitter));
+        Flux<PartitionEvent> events = Flux.create(emitter -> queueWork(partitionId, maximumMessageCount,
+            startingPosition, maximumWaitTime, defaultReceiveOptions, emitter));
 
         return new IterableStream<>(instrumentation.syncReceive(events, partitionId));
     }
@@ -281,7 +279,7 @@ public class EventHubConsumerClient implements Closeable {
      * @param maximumWaitTime The maximum amount of time to wait to build up the requested message count for the
      *     batch; if not specified, the default wait time specified when the consumer was created will be used.
      * @param receiveOptions Options when receiving events from the partition.
-
+    
      * @return A set of {@link PartitionEvent} that was received. The iterable contains up to
      *     {@code maximumMessageCount} events.
      *
@@ -307,11 +305,10 @@ public class EventHubConsumerClient implements Closeable {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'partitionId' cannot be empty."));
         }
         if (maximumMessageCount < 1) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("'maximumMessageCount' cannot be less than 1."));
         } else if (maximumWaitTime.isNegative() || maximumWaitTime.isZero()) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maximumWaitTime' cannot be zero or less."));
         }
 
         if (consumer.isV2()) {
@@ -343,12 +340,10 @@ public class EventHubConsumerClient implements Closeable {
     private void queueWork(String partitionId, int maximumMessageCount, EventPosition startingPosition,
         Duration maximumWaitTime, ReceiveOptions receiveOptions, FluxSink<PartitionEvent> emitter) {
         final long id = idGenerator.getAndIncrement();
-        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime,
-            emitter);
+        final SynchronousReceiveWork work
+            = new SynchronousReceiveWork(id, maximumMessageCount, maximumWaitTime, emitter);
         final SynchronousEventSubscriber syncSubscriber = new SynchronousEventSubscriber(work);
-        LOGGER.atInfo()
-            .addKeyValue(PARTITION_ID_KEY, partitionId)
-            .log("Started synchronous event subscriber.");
+        LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, partitionId).log("Started synchronous event subscriber.");
 
         consumer.receiveFromPartition(partitionId, startingPosition, receiveOptions).subscribeWith(syncSubscriber);
     }

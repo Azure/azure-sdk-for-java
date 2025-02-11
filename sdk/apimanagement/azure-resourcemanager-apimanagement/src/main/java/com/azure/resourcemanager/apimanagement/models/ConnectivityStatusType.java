@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource Connectivity Status Type identifier. */
+/**
+ * Resource Connectivity Status Type identifier.
+ */
 public final class ConnectivityStatusType extends ExpandableStringEnum<ConnectivityStatusType> {
-    /** Static value initializing for ConnectivityStatusType. */
+    /**
+     * Static value initializing for ConnectivityStatusType.
+     */
     public static final ConnectivityStatusType INITIALIZING = fromString("initializing");
 
-    /** Static value success for ConnectivityStatusType. */
+    /**
+     * Static value success for ConnectivityStatusType.
+     */
     public static final ConnectivityStatusType SUCCESS = fromString("success");
 
-    /** Static value failure for ConnectivityStatusType. */
+    /**
+     * Static value failure for ConnectivityStatusType.
+     */
     public static final ConnectivityStatusType FAILURE = fromString("failure");
 
     /**
      * Creates a new instance of ConnectivityStatusType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ConnectivityStatusType extends ExpandableStringEnum<Connectiv
 
     /**
      * Creates or finds a ConnectivityStatusType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectivityStatusType.
      */
-    @JsonCreator
     public static ConnectivityStatusType fromString(String name) {
         return fromString(name, ConnectivityStatusType.class);
     }
 
     /**
      * Gets known ConnectivityStatusType values.
-     *
+     * 
      * @return known ConnectivityStatusType values.
      */
     public static Collection<ConnectivityStatusType> values() {

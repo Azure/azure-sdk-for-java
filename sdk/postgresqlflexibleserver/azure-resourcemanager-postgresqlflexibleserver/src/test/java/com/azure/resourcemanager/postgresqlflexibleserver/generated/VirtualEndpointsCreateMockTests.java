@@ -23,7 +23,7 @@ public final class VirtualEndpointsCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"id\":\"phvtrrmhwrb\",\"name\":\"pyf\",\"type\":\"bhvjglr\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"hhmemhooclutnp\",\"memczjkmmyk\",\"ujxsglhsr\"],\"virtualEndpoints\":[\"ejylmbkzu\",\"nigrfihotjewl\",\"xuzzjgnrefq\",\"hqo\"]}}";
+            = "{\"id\":\"uicbuewmrsw\",\"name\":\"lx\",\"type\":\"rhwpus\",\"properties\":{\"endpointType\":\"ReadWrite\",\"members\":[\"gpdohzj\",\"atucoigebxncn\"],\"virtualEndpoints\":[\"pbnwgfmxjgcg\",\"jbgdlfgtdysnaquf\"]}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class VirtualEndpointsCreateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         VirtualEndpointResource response = manager.virtualEndpoints()
-            .define("tmhqykiz")
-            .withExistingFlexibleServer("owlkjxnqpv", "gf")
+            .define("bauiropi")
+            .withExistingFlexibleServer("rjvzuyt", "rmlmuowo")
             .withEndpointType(VirtualEndpointType.READ_WRITE)
-            .withMembers(Arrays.asList("cbvopwndyqleallk"))
+            .withMembers(Arrays.asList("rd"))
             .create();
 
         Assertions.assertEquals(VirtualEndpointType.READ_WRITE, response.endpointType());
-        Assertions.assertEquals("hhmemhooclutnp", response.members().get(0));
+        Assertions.assertEquals("gpdohzj", response.members().get(0));
     }
 }

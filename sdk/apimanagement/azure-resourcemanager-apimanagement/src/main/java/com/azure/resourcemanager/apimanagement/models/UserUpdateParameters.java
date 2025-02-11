@@ -5,27 +5,34 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserIdentityContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.UserUpdateParametersProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** User update parameters. */
+/**
+ * User update parameters.
+ */
 @Fluent
-public final class UserUpdateParameters {
+public final class UserUpdateParameters implements JsonSerializable<UserUpdateParameters> {
     /*
      * User entity update contract properties.
      */
-    @JsonProperty(value = "properties")
     private UserUpdateParametersProperties innerProperties;
 
-    /** Creates an instance of UserUpdateParameters class. */
+    /**
+     * Creates an instance of UserUpdateParameters class.
+     */
     public UserUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: User entity update contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UserUpdateParametersProperties innerProperties() {
@@ -34,7 +41,7 @@ public final class UserUpdateParameters {
 
     /**
      * Get the email property: Email address. Must not be empty and must be unique within the service instance.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -43,7 +50,7 @@ public final class UserUpdateParameters {
 
     /**
      * Set the email property: Email address. Must not be empty and must be unique within the service instance.
-     *
+     * 
      * @param email the email value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -57,7 +64,7 @@ public final class UserUpdateParameters {
 
     /**
      * Get the password property: User Password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -66,7 +73,7 @@ public final class UserUpdateParameters {
 
     /**
      * Set the password property: User Password.
-     *
+     * 
      * @param password the password value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -80,7 +87,7 @@ public final class UserUpdateParameters {
 
     /**
      * Get the firstName property: First name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -89,7 +96,7 @@ public final class UserUpdateParameters {
 
     /**
      * Set the firstName property: First name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -103,7 +110,7 @@ public final class UserUpdateParameters {
 
     /**
      * Get the lastName property: Last name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -112,7 +119,7 @@ public final class UserUpdateParameters {
 
     /**
      * Set the lastName property: Last name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -127,7 +134,7 @@ public final class UserUpdateParameters {
     /**
      * Get the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
      * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
-     *
+     * 
      * @return the state value.
      */
     public UserState state() {
@@ -137,7 +144,7 @@ public final class UserUpdateParameters {
     /**
      * Set the state property: Account state. Specifies whether the user is active or not. Blocked users are unable to
      * sign into the developer portal or call any APIs of subscribed products. Default state is Active.
-     *
+     * 
      * @param state the state value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -151,7 +158,7 @@ public final class UserUpdateParameters {
 
     /**
      * Get the note property: Optional note about a user set by the administrator.
-     *
+     * 
      * @return the note value.
      */
     public String note() {
@@ -160,7 +167,7 @@ public final class UserUpdateParameters {
 
     /**
      * Set the note property: Optional note about a user set by the administrator.
-     *
+     * 
      * @param note the note value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -174,7 +181,7 @@ public final class UserUpdateParameters {
 
     /**
      * Get the identities property: Collection of user identities.
-     *
+     * 
      * @return the identities value.
      */
     public List<UserIdentityContractInner> identities() {
@@ -183,7 +190,7 @@ public final class UserUpdateParameters {
 
     /**
      * Set the identities property: Collection of user identities.
-     *
+     * 
      * @param identities the identities value to set.
      * @return the UserUpdateParameters object itself.
      */
@@ -197,12 +204,48 @@ public final class UserUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserUpdateParameters.
+     */
+    public static UserUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserUpdateParameters deserializedUserUpdateParameters = new UserUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUserUpdateParameters.innerProperties = UserUpdateParametersProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserUpdateParameters;
+        });
     }
 }

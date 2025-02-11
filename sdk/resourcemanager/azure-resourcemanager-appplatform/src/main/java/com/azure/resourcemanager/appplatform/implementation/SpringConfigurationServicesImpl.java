@@ -13,9 +13,8 @@ import com.azure.resourcemanager.appplatform.models.SpringConfigurationServices;
 import com.azure.resourcemanager.appplatform.models.SpringService;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
-public class SpringConfigurationServicesImpl
-    extends ExternalChildResourcesNonCachedImpl
-        <SpringConfigurationServiceImpl, SpringConfigurationService, ConfigurationServiceResourceInner, SpringServiceImpl, SpringService>
+public class SpringConfigurationServicesImpl extends
+    ExternalChildResourcesNonCachedImpl<SpringConfigurationServiceImpl, SpringConfigurationService, ConfigurationServiceResourceInner, SpringServiceImpl, SpringService>
     implements SpringConfigurationServices {
 
     public SpringConfigurationServicesImpl(SpringServiceImpl parentImpl) {
@@ -23,19 +22,9 @@ public class SpringConfigurationServicesImpl
     }
 
     void prepareCreateOrUpdate(ConfigurationServiceGitProperty property) {
-        prepareInlineDefine(
-            new SpringConfigurationServiceImpl(
-                Constants.DEFAULT_TANZU_COMPONENT_NAME,
-                parent(),
-                new ConfigurationServiceResourceInner()
-                    .withProperties(
-                        new ConfigurationServiceProperties()
-                            .withSettings(
-                                new ConfigurationServiceSettings()
-                                    .withGitProperty(property))
-                    )
-            )
-        );
+        prepareInlineDefine(new SpringConfigurationServiceImpl(Constants.DEFAULT_TANZU_COMPONENT_NAME, parent(),
+            new ConfigurationServiceResourceInner().withProperties(new ConfigurationServiceProperties()
+                .withSettings(new ConfigurationServiceSettings().withGitProperty(property)))));
     }
 
     @Override

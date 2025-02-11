@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The ServerUpgradeParameters model. */
 @Fluent
 public final class ServerUpgradeParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUpgradeParameters.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerUpgradeParameters.class);
 
     /*
      * The properties that can be updated for a server.

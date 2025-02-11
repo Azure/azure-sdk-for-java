@@ -6,26 +6,47 @@ package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Represents a Recommendation Action. */
+/**
+ * Represents a Recommendation Action.
+ */
 @Fluent
 public final class RecommendationActionInner extends ProxyResource {
     /*
      * The properties of a recommendation action.
      */
-    @JsonProperty(value = "properties")
     private RecommendationActionProperties innerProperties;
 
-    /** Creates an instance of RecommendationActionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RecommendationActionInner class.
+     */
     public RecommendationActionInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a recommendation action.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RecommendationActionProperties innerProperties() {
@@ -33,8 +54,38 @@ public final class RecommendationActionInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the advisorName property: Advisor name.
-     *
+     * 
      * @return the advisorName value.
      */
     public String advisorName() {
@@ -43,7 +94,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Set the advisorName property: Advisor name.
-     *
+     * 
      * @param advisorName the advisorName value to set.
      * @return the RecommendationActionInner object itself.
      */
@@ -57,7 +108,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Get the sessionId property: Recommendation action session identifier.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -66,7 +117,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Set the sessionId property: Recommendation action session identifier.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the RecommendationActionInner object itself.
      */
@@ -80,7 +131,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Get the actionId property: Recommendation action identifier.
-     *
+     * 
      * @return the actionId value.
      */
     public Integer actionId() {
@@ -89,7 +140,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Set the actionId property: Recommendation action identifier.
-     *
+     * 
      * @param actionId the actionId value to set.
      * @return the RecommendationActionInner object itself.
      */
@@ -103,7 +154,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Get the createdTime property: Recommendation action creation time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -112,7 +163,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Set the createdTime property: Recommendation action creation time.
-     *
+     * 
      * @param createdTime the createdTime value to set.
      * @return the RecommendationActionInner object itself.
      */
@@ -126,7 +177,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Get the expirationTime property: Recommendation action expiration time.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -135,7 +186,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Set the expirationTime property: Recommendation action expiration time.
-     *
+     * 
      * @param expirationTime the expirationTime value to set.
      * @return the RecommendationActionInner object itself.
      */
@@ -149,7 +200,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Get the reason property: Recommendation action reason.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -158,7 +209,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Set the reason property: Recommendation action reason.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the RecommendationActionInner object itself.
      */
@@ -172,7 +223,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Get the recommendationType property: Recommendation action type.
-     *
+     * 
      * @return the recommendationType value.
      */
     public String recommendationType() {
@@ -181,7 +232,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Set the recommendationType property: Recommendation action type.
-     *
+     * 
      * @param recommendationType the recommendationType value to set.
      * @return the RecommendationActionInner object itself.
      */
@@ -195,7 +246,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Get the details property: Recommendation action details.
-     *
+     * 
      * @return the details value.
      */
     public Map<String, String> details() {
@@ -204,7 +255,7 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Set the details property: Recommendation action details.
-     *
+     * 
      * @param details the details value to set.
      * @return the RecommendationActionInner object itself.
      */
@@ -218,12 +269,56 @@ public final class RecommendationActionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecommendationActionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecommendationActionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RecommendationActionInner.
+     */
+    public static RecommendationActionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendationActionInner deserializedRecommendationActionInner = new RecommendationActionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRecommendationActionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRecommendationActionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRecommendationActionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRecommendationActionInner.innerProperties
+                        = RecommendationActionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecommendationActionInner;
+        });
     }
 }

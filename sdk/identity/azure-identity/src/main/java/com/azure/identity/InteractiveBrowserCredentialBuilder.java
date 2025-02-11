@@ -116,7 +116,6 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
         return this;
     }
 
-
     /**
      * Sets the {@link AuthenticationRecord} captured from a previous authentication.
      *
@@ -137,12 +136,11 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public InteractiveBrowserCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                          tokenCachePersistenceOptions) {
+    public InteractiveBrowserCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
-
 
     /**
      * Sets the Redirect URL where STS will callback the application with the security code. It is required if a custom
@@ -197,8 +195,8 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      */
     @Override
     public InteractiveBrowserCredentialBuilder additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions
-            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
+        identityClientOptions.setAdditionallyAllowedTenants(
+            IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return this;
     }
 
@@ -213,7 +211,8 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      */
     @Override
     public InteractiveBrowserCredentialBuilder additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
+        identityClientOptions
+            .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return this;
     }
 
@@ -222,7 +221,8 @@ public class InteractiveBrowserCredentialBuilder extends AadCredentialBuilderBas
      * @param browserCustomizationOptions the browser customization options
      * @return An updated instance of this builder with the browser customization options configured.
      */
-    public InteractiveBrowserCredentialBuilder browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
+    public InteractiveBrowserCredentialBuilder
+        browserCustomizationOptions(BrowserCustomizationOptions browserCustomizationOptions) {
         this.identityClientOptions.setBrowserCustomizationOptions(browserCustomizationOptions);
         return this;
     }

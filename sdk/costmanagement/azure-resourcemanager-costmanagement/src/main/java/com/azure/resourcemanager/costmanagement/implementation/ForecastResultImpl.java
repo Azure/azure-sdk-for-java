@@ -16,8 +16,7 @@ public final class ForecastResultImpl implements ForecastResult {
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    ForecastResultImpl(
-        ForecastResultInner innerObject,
+    ForecastResultImpl(ForecastResultInner innerObject,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

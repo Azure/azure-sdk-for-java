@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Notification settings for a schedule. */
+/**
+ * Notification settings for a schedule.
+ */
 @Fluent
-public final class NotificationSettings {
+public final class NotificationSettings implements JsonSerializable<NotificationSettings> {
     /*
      * If notifications are enabled for this schedule (i.e. Enabled, Disabled).
      */
-    @JsonProperty(value = "status")
     private EnableStatus status;
 
     /*
      * Time in minutes before event at which notification will be sent.
      */
-    @JsonProperty(value = "timeInMinutes")
     private Integer timeInMinutes;
 
     /*
      * The webhook URL to which the notification will be sent.
      */
-    @JsonProperty(value = "webhookUrl")
     private String webhookUrl;
 
     /*
      * The email recipient to send notifications to (can be a list of semi-colon separated email addresses).
      */
-    @JsonProperty(value = "emailRecipient")
     private String emailRecipient;
 
     /*
      * The locale to use when sending a notification (fallback for unsupported languages is EN).
      */
-    @JsonProperty(value = "notificationLocale")
     private String notificationLocale;
 
-    /** Creates an instance of NotificationSettings class. */
+    /**
+     * Creates an instance of NotificationSettings class.
+     */
     public NotificationSettings() {
     }
 
     /**
      * Get the status property: If notifications are enabled for this schedule (i.e. Enabled, Disabled).
-     *
+     * 
      * @return the status value.
      */
     public EnableStatus status() {
@@ -55,7 +58,7 @@ public final class NotificationSettings {
 
     /**
      * Set the status property: If notifications are enabled for this schedule (i.e. Enabled, Disabled).
-     *
+     * 
      * @param status the status value to set.
      * @return the NotificationSettings object itself.
      */
@@ -66,7 +69,7 @@ public final class NotificationSettings {
 
     /**
      * Get the timeInMinutes property: Time in minutes before event at which notification will be sent.
-     *
+     * 
      * @return the timeInMinutes value.
      */
     public Integer timeInMinutes() {
@@ -75,7 +78,7 @@ public final class NotificationSettings {
 
     /**
      * Set the timeInMinutes property: Time in minutes before event at which notification will be sent.
-     *
+     * 
      * @param timeInMinutes the timeInMinutes value to set.
      * @return the NotificationSettings object itself.
      */
@@ -86,7 +89,7 @@ public final class NotificationSettings {
 
     /**
      * Get the webhookUrl property: The webhook URL to which the notification will be sent.
-     *
+     * 
      * @return the webhookUrl value.
      */
     public String webhookUrl() {
@@ -95,7 +98,7 @@ public final class NotificationSettings {
 
     /**
      * Set the webhookUrl property: The webhook URL to which the notification will be sent.
-     *
+     * 
      * @param webhookUrl the webhookUrl value to set.
      * @return the NotificationSettings object itself.
      */
@@ -107,7 +110,7 @@ public final class NotificationSettings {
     /**
      * Get the emailRecipient property: The email recipient to send notifications to (can be a list of semi-colon
      * separated email addresses).
-     *
+     * 
      * @return the emailRecipient value.
      */
     public String emailRecipient() {
@@ -117,7 +120,7 @@ public final class NotificationSettings {
     /**
      * Set the emailRecipient property: The email recipient to send notifications to (can be a list of semi-colon
      * separated email addresses).
-     *
+     * 
      * @param emailRecipient the emailRecipient value to set.
      * @return the NotificationSettings object itself.
      */
@@ -129,7 +132,7 @@ public final class NotificationSettings {
     /**
      * Get the notificationLocale property: The locale to use when sending a notification (fallback for unsupported
      * languages is EN).
-     *
+     * 
      * @return the notificationLocale value.
      */
     public String notificationLocale() {
@@ -139,7 +142,7 @@ public final class NotificationSettings {
     /**
      * Set the notificationLocale property: The locale to use when sending a notification (fallback for unsupported
      * languages is EN).
-     *
+     * 
      * @param notificationLocale the notificationLocale value to set.
      * @return the NotificationSettings object itself.
      */
@@ -150,9 +153,57 @@ public final class NotificationSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeNumberField("timeInMinutes", this.timeInMinutes);
+        jsonWriter.writeStringField("webhookUrl", this.webhookUrl);
+        jsonWriter.writeStringField("emailRecipient", this.emailRecipient);
+        jsonWriter.writeStringField("notificationLocale", this.notificationLocale);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NotificationSettings.
+     */
+    public static NotificationSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationSettings deserializedNotificationSettings = new NotificationSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedNotificationSettings.status = EnableStatus.fromString(reader.getString());
+                } else if ("timeInMinutes".equals(fieldName)) {
+                    deserializedNotificationSettings.timeInMinutes = reader.getNullable(JsonReader::getInt);
+                } else if ("webhookUrl".equals(fieldName)) {
+                    deserializedNotificationSettings.webhookUrl = reader.getString();
+                } else if ("emailRecipient".equals(fieldName)) {
+                    deserializedNotificationSettings.emailRecipient = reader.getString();
+                } else if ("notificationLocale".equals(fieldName)) {
+                    deserializedNotificationSettings.notificationLocale = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationSettings;
+        });
     }
 }

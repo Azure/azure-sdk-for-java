@@ -21,37 +21,28 @@ public final class PolicySetsImpl implements PolicySets {
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public PolicySetsImpl(
-        PolicySetsClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    public PolicySetsImpl(PolicySetsClient innerClient,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<EvaluatePoliciesResponse> evaluatePoliciesWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        EvaluatePoliciesRequest evaluatePoliciesRequest,
-        Context context) {
-        Response<EvaluatePoliciesResponseInner> inner =
-            this
-                .serviceClient()
-                .evaluatePoliciesWithResponse(resourceGroupName, labName, name, evaluatePoliciesRequest, context);
+    public Response<EvaluatePoliciesResponse> evaluatePoliciesWithResponse(String resourceGroupName, String labName,
+        String name, EvaluatePoliciesRequest evaluatePoliciesRequest, Context context) {
+        Response<EvaluatePoliciesResponseInner> inner = this.serviceClient()
+            .evaluatePoliciesWithResponse(resourceGroupName, labName, name, evaluatePoliciesRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EvaluatePoliciesResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public EvaluatePoliciesResponse evaluatePolicies(
-        String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest) {
-        EvaluatePoliciesResponseInner inner =
-            this.serviceClient().evaluatePolicies(resourceGroupName, labName, name, evaluatePoliciesRequest);
+    public EvaluatePoliciesResponse evaluatePolicies(String resourceGroupName, String labName, String name,
+        EvaluatePoliciesRequest evaluatePoliciesRequest) {
+        EvaluatePoliciesResponseInner inner
+            = this.serviceClient().evaluatePolicies(resourceGroupName, labName, name, evaluatePoliciesRequest);
         if (inner != null) {
             return new EvaluatePoliciesResponseImpl(inner, this.manager());
         } else {

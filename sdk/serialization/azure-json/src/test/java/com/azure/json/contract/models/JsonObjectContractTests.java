@@ -19,6 +19,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -95,6 +96,37 @@ public abstract class JsonObjectContractTests {
     }
 
     @Test
+    public void objectOfBasicTypesFromJsonWithConvenienceMethods() throws IOException {
+        String json = "{\"string\":\"string\",\"null\":null,\"integer\":10,\"float\":10.0,\"boolean\":true}";
+        try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
+            JsonObject jsonObject = JsonObject.fromJson(reader);
+            assertEquals(5, jsonObject.size());
+
+            JsonElement stringElement = jsonObject.getProperty("string");
+            assertEquals("\"string\"", stringElement.asString().toJsonString());
+
+            JsonElement nullElement = jsonObject.getProperty("null");
+            assertDoesNotThrow(nullElement::asNull);
+
+            JsonElement intElement = jsonObject.getProperty("integer");
+            assertEquals("10", intElement.asNumber().toJsonString());
+
+            JsonElement doubleElement = jsonObject.getProperty("float");
+            assertEquals("10.0", doubleElement.asNumber().toJsonString());
+
+            JsonElement booleanElement = jsonObject.getProperty("boolean");
+            assertEquals("true", booleanElement.asBoolean().toJsonString());
+
+            assertEquals(json, jsonObject.toJsonString());
+
+            assertEquals("\"string\"", jsonObject.removeProperty("string").toJsonString());
+            assertEquals(4, jsonObject.size());
+            assertNull(jsonObject.removeProperty("string"));
+            assertEquals("{\"null\":null,\"integer\":10,\"float\":10.0,\"boolean\":true}", jsonObject.toJsonString());
+        }
+    }
+
+    @Test
     public void emptyObjectToJson() throws IOException {
         JsonObject jsonObject = new JsonObject();
         assertEquals(0, jsonObject.size());
@@ -115,6 +147,26 @@ public abstract class JsonObjectContractTests {
             .setProperty("integer", new JsonNumber(10))
             .setProperty("float", new JsonNumber(10.0D))
             .setProperty("boolean", JsonBoolean.getInstance(true));
+
+        assertEquals(5, jsonObject.size());
+
+        try (StringBuilderWriter writer = new StringBuilderWriter();
+            JsonWriter jsonWriter = getJsonProvider().createWriter(writer, new JsonOptions())) {
+            jsonObject.toJson(jsonWriter);
+            jsonWriter.flush();
+
+            assertEquals("{\"string\":\"string\",\"null\":null,\"integer\":10,\"float\":10.0,\"boolean\":true}",
+                writer.toString());
+        }
+    }
+
+    @Test
+    public void objectOfBasicTypesToJsonWithConvenienceMethods() throws IOException {
+        JsonObject jsonObject = new JsonObject().setProperty("string", "string")
+            .setProperty("null", (String) null)
+            .setProperty("integer", 10)
+            .setProperty("float", 10.0D)
+            .setProperty("boolean", true);
 
         assertEquals(5, jsonObject.size());
 

@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AuthorizationAccessPolicyCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthorizationAccessPolicyCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"tenantId\":\"ygtvxbyjanepub\",\"objectId\":\"kxyqvgxiaodetv\"},\"id\":\"hkxdxuwsaifmc\",\"name\":\"nosbz\",\"type\":\"ehgcvkbcknjo\"},{\"properties\":{\"tenantId\":\"y\",\"objectId\":\"pvelszerqze\"},\"id\":\"xoqeintxwalj\",\"name\":\"lzoblqwaafr\",\"type\":\"ulhmzyq\"}],\"count\":3551420284848246514,\"nextLink\":\"fjrqpjiyr\"}")
-                .toObject(AuthorizationAccessPolicyCollection.class);
+        AuthorizationAccessPolicyCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"tenantId\":\"ygtvxbyjanepub\",\"objectId\":\"kxyqvgxiaodetv\"},\"id\":\"hkxdxuwsaifmc\",\"name\":\"nosbz\",\"type\":\"ehgcvkbcknjo\"},{\"properties\":{\"tenantId\":\"y\",\"objectId\":\"pvelszerqze\"},\"id\":\"xoqeintxwalj\",\"name\":\"lzoblqwaafr\",\"type\":\"ulhmzyq\"}],\"count\":3551420284848246514,\"nextLink\":\"fjrqpjiyr\"}")
+            .toObject(AuthorizationAccessPolicyCollection.class);
         Assertions.assertEquals("ygtvxbyjanepub", model.value().get(0).tenantId());
         Assertions.assertEquals("kxyqvgxiaodetv", model.value().get(0).objectId());
         Assertions.assertEquals(3551420284848246514L, model.count());
@@ -26,17 +24,13 @@ public final class AuthorizationAccessPolicyCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthorizationAccessPolicyCollection model =
-            new AuthorizationAccessPolicyCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AuthorizationAccessPolicyContractInner()
-                                .withTenantId("ygtvxbyjanepub")
-                                .withObjectId("kxyqvgxiaodetv"),
-                            new AuthorizationAccessPolicyContractInner().withTenantId("y").withObjectId("pvelszerqze")))
-                .withCount(3551420284848246514L)
-                .withNextLink("fjrqpjiyr");
+        AuthorizationAccessPolicyCollection model = new AuthorizationAccessPolicyCollection()
+            .withValue(Arrays.asList(
+                new AuthorizationAccessPolicyContractInner().withTenantId("ygtvxbyjanepub")
+                    .withObjectId("kxyqvgxiaodetv"),
+                new AuthorizationAccessPolicyContractInner().withTenantId("y").withObjectId("pvelszerqze")))
+            .withCount(3551420284848246514L)
+            .withNextLink("fjrqpjiyr");
         model = BinaryData.fromObject(model).toObject(AuthorizationAccessPolicyCollection.class);
         Assertions.assertEquals("ygtvxbyjanepub", model.value().get(0).tenantId());
         Assertions.assertEquals("kxyqvgxiaodetv", model.value().get(0).objectId());

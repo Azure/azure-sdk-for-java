@@ -5,88 +5,77 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Site network service properties.
  */
 @Fluent
-public final class SiteNetworkServicePropertiesFormat {
+public final class SiteNetworkServicePropertiesFormat implements JsonSerializable<SiteNetworkServicePropertiesFormat> {
     /*
      * The provisioning state of the site network service resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Managed resource group configuration.
      */
-    @JsonProperty(value = "managedResourceGroupConfiguration")
     private ManagedResourceGroupConfiguration managedResourceGroupConfiguration;
 
     /*
      * The site details
      */
-    @JsonProperty(value = "siteReference")
     private ReferencedResource siteReference;
 
     /*
      * The publisher name for the site network service.
      */
-    @JsonProperty(value = "publisherName", access = JsonProperty.Access.WRITE_ONLY)
     private String publisherName;
 
     /*
      * The scope of the publisher.
      */
-    @JsonProperty(value = "publisherScope", access = JsonProperty.Access.WRITE_ONLY)
     private PublisherScope publisherScope;
 
     /*
      * The network service design group name for the site network service.
      */
-    @JsonProperty(value = "networkServiceDesignGroupName", access = JsonProperty.Access.WRITE_ONLY)
     private String networkServiceDesignGroupName;
 
     /*
      * The network service design version for the site network service.
      */
-    @JsonProperty(value = "networkServiceDesignVersionName", access = JsonProperty.Access.WRITE_ONLY)
     private String networkServiceDesignVersionName;
 
     /*
      * The location of the network service design offering.
      */
-    @JsonProperty(value = "networkServiceDesignVersionOfferingLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String networkServiceDesignVersionOfferingLocation;
 
     /*
      * The network service design version resource reference.
      */
-    @JsonProperty(value = "networkServiceDesignVersionResourceReference")
     private DeploymentResourceIdReference networkServiceDesignVersionResourceReference;
 
     /*
-     * The goal state of the site network service resource. This has references to the configuration group value
-     * objects that describe the desired state of the site network service.
+     * The goal state of the site network service resource. This has references to the configuration group value objects
+     * that describe the desired state of the site network service.
      */
-    @JsonProperty(value = "desiredStateConfigurationGroupValueReferences")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ReferencedResource> desiredStateConfigurationGroupValueReferences;
 
     /*
      * The network service design version for the site network service.
      */
-    @JsonProperty(value = "lastStateNetworkServiceDesignVersionName", access = JsonProperty.Access.WRITE_ONLY)
     private String lastStateNetworkServiceDesignVersionName;
 
     /*
      * The last state of the site network service resource.
      */
-    @JsonProperty(value = "lastStateConfigurationGroupValueReferences", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ReferencedResource> lastStateConfigurationGroupValueReferences;
 
     /**
@@ -254,8 +243,7 @@ public final class SiteNetworkServicePropertiesFormat {
     }
 
     /**
-     * Get the lastStateConfigurationGroupValueReferences property: The last state of the site network service
-     * resource.
+     * Get the lastStateConfigurationGroupValueReferences property: The last state of the site network service resource.
      * 
      * @return the lastStateConfigurationGroupValueReferences value.
      */
@@ -292,5 +280,81 @@ public final class SiteNetworkServicePropertiesFormat {
                 }
             });
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("managedResourceGroupConfiguration", this.managedResourceGroupConfiguration);
+        jsonWriter.writeJsonField("siteReference", this.siteReference);
+        jsonWriter.writeJsonField("networkServiceDesignVersionResourceReference",
+            this.networkServiceDesignVersionResourceReference);
+        jsonWriter.writeMapField("desiredStateConfigurationGroupValueReferences",
+            this.desiredStateConfigurationGroupValueReferences, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteNetworkServicePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteNetworkServicePropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteNetworkServicePropertiesFormat.
+     */
+    public static SiteNetworkServicePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteNetworkServicePropertiesFormat deserializedSiteNetworkServicePropertiesFormat
+                = new SiteNetworkServicePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedSiteNetworkServicePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("managedResourceGroupConfiguration".equals(fieldName)) {
+                    deserializedSiteNetworkServicePropertiesFormat.managedResourceGroupConfiguration
+                        = ManagedResourceGroupConfiguration.fromJson(reader);
+                } else if ("siteReference".equals(fieldName)) {
+                    deserializedSiteNetworkServicePropertiesFormat.siteReference = ReferencedResource.fromJson(reader);
+                } else if ("publisherName".equals(fieldName)) {
+                    deserializedSiteNetworkServicePropertiesFormat.publisherName = reader.getString();
+                } else if ("publisherScope".equals(fieldName)) {
+                    deserializedSiteNetworkServicePropertiesFormat.publisherScope
+                        = PublisherScope.fromString(reader.getString());
+                } else if ("networkServiceDesignGroupName".equals(fieldName)) {
+                    deserializedSiteNetworkServicePropertiesFormat.networkServiceDesignGroupName = reader.getString();
+                } else if ("networkServiceDesignVersionName".equals(fieldName)) {
+                    deserializedSiteNetworkServicePropertiesFormat.networkServiceDesignVersionName = reader.getString();
+                } else if ("networkServiceDesignVersionOfferingLocation".equals(fieldName)) {
+                    deserializedSiteNetworkServicePropertiesFormat.networkServiceDesignVersionOfferingLocation
+                        = reader.getString();
+                } else if ("networkServiceDesignVersionResourceReference".equals(fieldName)) {
+                    deserializedSiteNetworkServicePropertiesFormat.networkServiceDesignVersionResourceReference
+                        = DeploymentResourceIdReference.fromJson(reader);
+                } else if ("desiredStateConfigurationGroupValueReferences".equals(fieldName)) {
+                    Map<String, ReferencedResource> desiredStateConfigurationGroupValueReferences
+                        = reader.readMap(reader1 -> ReferencedResource.fromJson(reader1));
+                    deserializedSiteNetworkServicePropertiesFormat.desiredStateConfigurationGroupValueReferences
+                        = desiredStateConfigurationGroupValueReferences;
+                } else if ("lastStateNetworkServiceDesignVersionName".equals(fieldName)) {
+                    deserializedSiteNetworkServicePropertiesFormat.lastStateNetworkServiceDesignVersionName
+                        = reader.getString();
+                } else if ("lastStateConfigurationGroupValueReferences".equals(fieldName)) {
+                    Map<String, ReferencedResource> lastStateConfigurationGroupValueReferences
+                        = reader.readMap(reader1 -> ReferencedResource.fromJson(reader1));
+                    deserializedSiteNetworkServicePropertiesFormat.lastStateConfigurationGroupValueReferences
+                        = lastStateConfigurationGroupValueReferences;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteNetworkServicePropertiesFormat;
+        });
     }
 }

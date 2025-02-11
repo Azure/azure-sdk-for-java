@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Log of the entity being created, updated or deleted. */
+/**
+ * Log of the entity being created, updated or deleted.
+ */
 @Fluent
-public final class OperationResultLogItemContract {
+public final class OperationResultLogItemContract implements JsonSerializable<OperationResultLogItemContract> {
     /*
      * The type of entity contract.
      */
-    @JsonProperty(value = "objectType")
     private String objectType;
 
     /*
      * Action like create/update/delete.
      */
-    @JsonProperty(value = "action")
     private String action;
 
     /*
      * Identifier of the entity being created/updated/deleted.
      */
-    @JsonProperty(value = "objectKey")
     private String objectKey;
 
-    /** Creates an instance of OperationResultLogItemContract class. */
+    /**
+     * Creates an instance of OperationResultLogItemContract class.
+     */
     public OperationResultLogItemContract() {
     }
 
     /**
      * Get the objectType property: The type of entity contract.
-     *
+     * 
      * @return the objectType value.
      */
     public String objectType() {
@@ -43,7 +48,7 @@ public final class OperationResultLogItemContract {
 
     /**
      * Set the objectType property: The type of entity contract.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the OperationResultLogItemContract object itself.
      */
@@ -54,7 +59,7 @@ public final class OperationResultLogItemContract {
 
     /**
      * Get the action property: Action like create/update/delete.
-     *
+     * 
      * @return the action value.
      */
     public String action() {
@@ -63,7 +68,7 @@ public final class OperationResultLogItemContract {
 
     /**
      * Set the action property: Action like create/update/delete.
-     *
+     * 
      * @param action the action value to set.
      * @return the OperationResultLogItemContract object itself.
      */
@@ -74,7 +79,7 @@ public final class OperationResultLogItemContract {
 
     /**
      * Get the objectKey property: Identifier of the entity being created/updated/deleted.
-     *
+     * 
      * @return the objectKey value.
      */
     public String objectKey() {
@@ -83,7 +88,7 @@ public final class OperationResultLogItemContract {
 
     /**
      * Set the objectKey property: Identifier of the entity being created/updated/deleted.
-     *
+     * 
      * @param objectKey the objectKey value to set.
      * @return the OperationResultLogItemContract object itself.
      */
@@ -94,9 +99,52 @@ public final class OperationResultLogItemContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("objectType", this.objectType);
+        jsonWriter.writeStringField("action", this.action);
+        jsonWriter.writeStringField("objectKey", this.objectKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultLogItemContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultLogItemContract if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultLogItemContract.
+     */
+    public static OperationResultLogItemContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultLogItemContract deserializedOperationResultLogItemContract
+                = new OperationResultLogItemContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("objectType".equals(fieldName)) {
+                    deserializedOperationResultLogItemContract.objectType = reader.getString();
+                } else if ("action".equals(fieldName)) {
+                    deserializedOperationResultLogItemContract.action = reader.getString();
+                } else if ("objectKey".equals(fieldName)) {
+                    deserializedOperationResultLogItemContract.objectKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultLogItemContract;
+        });
     }
 }

@@ -39,7 +39,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: formrecognizer
-    JavadocSafeJavaBuildVersion: '1.21'
     Artifacts:
       - name: azure-ai-formrecognizer
         groupId: com.azure
@@ -49,6 +48,4 @@ extends:
         groupId: com.azure
         # both of these are required by the above perf library
       - name: perf-test-core
-        groupId: com.azure
-      - name: azure-aot-graalvm-perf
         groupId: com.azure

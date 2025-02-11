@@ -11,9 +11,9 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Schedule;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
-import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -26,7 +26,7 @@ public final class SchedulesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jhvefgwbmqjchnt\",\"timeZone\":\"faymxbulpz\",\"state\":\"Enabled\",\"tags\":{\"mbtsuahxsg\":\"qkyojwyvf\",\"wsdrnpxqwodif\":\"jcmmzrrscub\",\"jogjonmc\":\"jxcjrmmuabwib\",\"oyzbamwineofvf\":\"e\"},\"location\":\"kpoldtvevboc\"},\"id\":\"hzjkn\",\"name\":\"uxgvttxpnr\",\"type\":\"pzaamrdixtreki\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"pxycphdr\",\"timeZone\":\"jkhvyomacluzvxnq\",\"state\":\"Enabled\",\"tags\":{\"wmkoisq\":\"pd\"},\"location\":\"sffxui\"},\"id\":\"csypobkdqzrdzsyl\",\"name\":\"llg\",\"type\":\"rc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,25 +36,25 @@ public final class SchedulesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Schedule response = manager.schedules()
-            .define("qm")
-            .withExistingPool("upbezqccydrt", "eukdqkkyih", "tg")
-            .withRegion("djfbocyv")
-            .withTags(mapOf("weftkwq", "sjvh", "vssehaepw", "jp", "euknijduyyes", "mcxtczhu"))
+            .define("fkvcisi")
+            .withExistingPool("pomyqwcabvnuile", "yaswlpaugmr", "fjlrxwtoauk")
+            .withRegion("msplzgaufcshhvn")
+            .withTags(mapOf("l", "omguamlj"))
             .withTypePropertiesType(ScheduledType.STOP_DEV_BOX)
             .withFrequency(ScheduledFrequency.DAILY)
-            .withTime("chillcecf")
-            .withTimeZone("uwaoaguhicqlli")
-            .withState(ScheduleEnableStatus.ENABLED)
-            .withTop(1636214642)
+            .withTime("wuived")
+            .withTimeZone("gyeewxeiq")
+            .withState(ScheduleEnableStatus.DISABLED)
+            .withTop(288574233)
             .create();
 
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, response.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, response.frequency());
-        Assertions.assertEquals("jhvefgwbmqjchnt", response.time());
-        Assertions.assertEquals("faymxbulpz", response.timeZone());
+        Assertions.assertEquals("pxycphdr", response.time());
+        Assertions.assertEquals("jkhvyomacluzvxnq", response.timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.ENABLED, response.state());
-        Assertions.assertEquals("qkyojwyvf", response.tags().get("mbtsuahxsg"));
-        Assertions.assertEquals("kpoldtvevboc", response.location());
+        Assertions.assertEquals("pd", response.tags().get("wmkoisq"));
+        Assertions.assertEquals("sffxui", response.location());
     }
 
     // Use "Map.of" if available

@@ -22,14 +22,13 @@ import com.azure.security.keyvault.secrets.perf.ListSecretsTest;
  */
 public class App {
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{
+        PerfStressProgram.run(new Class<?>[] {
             GetCertificateTest.class,
             DecryptTest.class,
             GetKeyTest.class,
             SignTest.class,
             UnwrapTest.class,
             GetSecretTest.class,
-            ListSecretsTest.class
-        }, args);
+            ListSecretsTest.class }, args);
     }
 }

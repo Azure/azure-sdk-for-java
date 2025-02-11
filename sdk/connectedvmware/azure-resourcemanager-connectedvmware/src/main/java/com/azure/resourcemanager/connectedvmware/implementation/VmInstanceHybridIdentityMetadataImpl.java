@@ -14,8 +14,7 @@ public final class VmInstanceHybridIdentityMetadataImpl implements VmInstanceHyb
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    VmInstanceHybridIdentityMetadataImpl(
-        VmInstanceHybridIdentityMetadataInner innerObject,
+    VmInstanceHybridIdentityMetadataImpl(VmInstanceHybridIdentityMetadataInner innerObject,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

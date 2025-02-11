@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The parameters to provide for the Web Chat channel. */
+/**
+ * The parameters to provide for the Web Chat channel.
+ */
 @Fluent
-public final class WebChatChannelProperties {
+public final class WebChatChannelProperties implements JsonSerializable<WebChatChannelProperties> {
     /*
      * Web chat control embed code
      */
-    @JsonProperty(value = "webChatEmbedCode", access = JsonProperty.Access.WRITE_ONLY)
     private String webChatEmbedCode;
 
     /*
      * The list of Web Chat sites
      */
-    @JsonProperty(value = "sites")
     private List<WebChatSite> sites;
 
     /**
+     * Creates an instance of WebChatChannelProperties class.
+     */
+    public WebChatChannelProperties() {
+    }
+
+    /**
      * Get the webChatEmbedCode property: Web chat control embed code.
-     *
+     * 
      * @return the webChatEmbedCode value.
      */
     public String webChatEmbedCode() {
@@ -34,7 +44,7 @@ public final class WebChatChannelProperties {
 
     /**
      * Get the sites property: The list of Web Chat sites.
-     *
+     * 
      * @return the sites value.
      */
     public List<WebChatSite> sites() {
@@ -43,7 +53,7 @@ public final class WebChatChannelProperties {
 
     /**
      * Set the sites property: The list of Web Chat sites.
-     *
+     * 
      * @param sites the sites value to set.
      * @return the WebChatChannelProperties object itself.
      */
@@ -54,12 +64,51 @@ public final class WebChatChannelProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sites() != null) {
             sites().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("sites", this.sites, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebChatChannelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebChatChannelProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WebChatChannelProperties.
+     */
+    public static WebChatChannelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebChatChannelProperties deserializedWebChatChannelProperties = new WebChatChannelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("webChatEmbedCode".equals(fieldName)) {
+                    deserializedWebChatChannelProperties.webChatEmbedCode = reader.getString();
+                } else if ("sites".equals(fieldName)) {
+                    List<WebChatSite> sites = reader.readArray(reader1 -> WebChatSite.fromJson(reader1));
+                    deserializedWebChatChannelProperties.sites = sites;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebChatChannelProperties;
+        });
     }
 }

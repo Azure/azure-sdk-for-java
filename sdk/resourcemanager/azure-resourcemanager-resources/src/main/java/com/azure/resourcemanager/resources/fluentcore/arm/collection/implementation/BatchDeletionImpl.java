@@ -25,16 +25,15 @@ public class BatchDeletionImpl {
      * @return Flux of IDs that successfully deleted.
      */
     public static Flux<String> deleteByIdsAsync(Collection<String> ids,
-                                                BiFunction<String, String, Mono<Void>> deleteByGroupAndNameAsync) {
+        BiFunction<String, String, Mono<Void>> deleteByGroupAndNameAsync) {
         if (ids == null || ids.isEmpty()) {
             return Flux.empty();
         } else {
-            return Flux.fromIterable(ids)
-                .flatMapDelayError(id -> {
-                    final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
-                    final String name = ResourceUtils.nameFromResourceId(id);
-                    return deleteByGroupAndNameAsync.apply(resourceGroupName, name).then(Mono.just(id));
-                }, 32, 32)
+            return Flux.fromIterable(ids).flatMapDelayError(id -> {
+                final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
+                final String name = ResourceUtils.nameFromResourceId(id);
+                return deleteByGroupAndNameAsync.apply(resourceGroupName, name).then(Mono.just(id));
+            }, 32, 32)
                 .onErrorMap(AggregatedManagementException::convertToManagementException)
                 .subscribeOn(ResourceManagerUtils.InternalRuntimeContext.getReactorScheduler());
         }

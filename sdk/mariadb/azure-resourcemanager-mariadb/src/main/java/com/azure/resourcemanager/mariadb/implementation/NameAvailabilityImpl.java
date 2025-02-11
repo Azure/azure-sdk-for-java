@@ -12,8 +12,8 @@ public final class NameAvailabilityImpl implements NameAvailability {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    NameAvailabilityImpl(
-        NameAvailabilityInner innerObject, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    NameAvailabilityImpl(NameAvailabilityInner innerObject,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

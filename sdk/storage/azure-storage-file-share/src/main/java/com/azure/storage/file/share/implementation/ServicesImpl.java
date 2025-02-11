@@ -33,13 +33,13 @@ import com.azure.storage.file.share.implementation.models.ServicesListSharesSegm
 import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
-import com.azure.storage.file.share.implementation.util.ModelHelper;
 
 /**
  * An instance of this class provides access to all the operations defined in Services.
@@ -245,12 +245,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>>
         setPropertiesWithResponseAsync(ShareServiceProperties shareServiceProperties, Integer timeout) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.setProperties(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context))
+        return FluxUtil.withContext(context -> setPropertiesWithResponseAsync(shareServiceProperties, timeout, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -338,12 +333,9 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>>
         setPropertiesNoCustomHeadersWithResponseAsync(ShareServiceProperties shareServiceProperties, Integer timeout) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context))
+            .withContext(
+                context -> setPropertiesNoCustomHeadersWithResponseAsync(shareServiceProperties, timeout, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -390,10 +382,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesSetPropertiesHeaders, Void>
         setPropertiesWithResponse(ShareServiceProperties shareServiceProperties, Integer timeout, Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.setPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), shareServiceProperties, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -435,10 +427,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesNoCustomHeadersWithResponse(ShareServiceProperties shareServiceProperties,
         Integer timeout, Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), shareServiceProperties, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -463,12 +455,7 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties>>
         getPropertiesWithResponseAsync(Integer timeout) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getProperties(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), this.client.getFileRequestIntent(), accept, context))
+        return FluxUtil.withContext(context -> getPropertiesWithResponseAsync(timeout, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -556,12 +543,7 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareServiceProperties>> getPropertiesNoCustomHeadersWithResponseAsync(Integer timeout) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), restype, comp, timeout,
-                this.client.getVersion(), this.client.getFileRequestIntent(), accept, context))
+        return FluxUtil.withContext(context -> getPropertiesNoCustomHeadersWithResponseAsync(timeout, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -609,10 +591,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ServicesGetPropertiesHeaders, ShareServiceProperties> getPropertiesWithResponse(Integer timeout,
         Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), restype, comp, timeout, this.client.getVersion(),
                 this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -658,10 +640,10 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareServiceProperties> getPropertiesNoCustomHeadersWithResponse(Integer timeout, Context context) {
-        final String restype = "service";
-        final String comp = "properties";
-        final String accept = "application/xml";
         try {
+            final String restype = "service";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), restype, comp, timeout,
                 this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -951,17 +933,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentSinglePage(String prefix, String marker,
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res
-            = service.listSharesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
-                timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, Context.NONE);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res = service.listSharesSegmentSync(
+                this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted, timeout,
+                this.client.getVersion(), this.client.getFileRequestIntent(), accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
@@ -992,17 +974,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentSinglePage(String prefix, String marker,
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout, Context context) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res
-            = service.listSharesSegmentSync(this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted,
-                timeout, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            ResponseBase<ServicesListSharesSegmentHeaders, ListSharesResponse> res = service.listSharesSegmentSync(
+                this.client.getUrl(), comp, prefix, marker, maxresults, includeConverted, timeout,
+                this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1087,17 +1069,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNoCustomHeadersSinglePage(String prefix, String marker,
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
-            prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
-            this.client.getFileRequestIntent(), accept, Context.NONE);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
+                prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
+                this.client.getFileRequestIntent(), accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1128,17 +1110,17 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNoCustomHeadersSinglePage(String prefix, String marker,
         Integer maxresults, List<ListSharesIncludeType> include, Integer timeout, Context context) {
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
-        Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
-            prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
-            this.client.getFileRequestIntent(), accept, context);
         try {
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
+            Response<ListSharesResponse> res = service.listSharesSegmentNoCustomHeadersSync(this.client.getUrl(), comp,
+                prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
+                this.client.getFileRequestIntent(), accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1203,9 +1185,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1225,9 +1205,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1249,9 +1227,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1271,9 +1247,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1295,9 +1269,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1305,11 +1277,11 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNextSinglePage(String nextLink) {
-        final String accept = "application/xml";
-        ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res
-            = service.listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
-                this.client.getFileRequestIntent(), accept, Context.NONE);
         try {
+            final String accept = "application/xml";
+            ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res
+                = service.listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
+                    this.client.getFileRequestIntent(), accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1320,9 +1292,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1331,11 +1301,11 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNextSinglePage(String nextLink, Context context) {
-        final String accept = "application/xml";
-        ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res
-            = service.listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
-                this.client.getFileRequestIntent(), accept, context);
         try {
+            final String accept = "application/xml";
+            ResponseBase<ServicesListSharesSegmentNextHeaders, ListSharesResponse> res
+                = service.listSharesSegmentNextSync(nextLink, this.client.getUrl(), this.client.getVersion(),
+                    this.client.getFileRequestIntent(), accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), res.getDeserializedHeaders());
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1346,9 +1316,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1356,10 +1324,11 @@ public final class ServicesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNextNoCustomHeadersSinglePage(String nextLink) {
-        final String accept = "application/xml";
-        Response<ListSharesResponse> res = service.listSharesSegmentNextNoCustomHeadersSync(nextLink,
-            this.client.getUrl(), this.client.getVersion(), this.client.getFileRequestIntent(), accept, Context.NONE);
         try {
+            final String accept = "application/xml";
+            Response<ListSharesResponse> res
+                = service.listSharesSegmentNextNoCustomHeadersSync(nextLink, this.client.getUrl(),
+                    this.client.getVersion(), this.client.getFileRequestIntent(), accept, Context.NONE);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {
@@ -1370,9 +1339,7 @@ public final class ServicesImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The URL to get the next list of items
-     *
-     * The nextLink parameter.
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1382,10 +1349,10 @@ public final class ServicesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<ShareItemInternal> listSharesSegmentNextNoCustomHeadersSinglePage(String nextLink,
         Context context) {
-        final String accept = "application/xml";
-        Response<ListSharesResponse> res = service.listSharesSegmentNextNoCustomHeadersSync(nextLink,
-            this.client.getUrl(), this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
         try {
+            final String accept = "application/xml";
+            Response<ListSharesResponse> res = service.listSharesSegmentNextNoCustomHeadersSync(nextLink,
+                this.client.getUrl(), this.client.getVersion(), this.client.getFileRequestIntent(), accept, context);
             return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().getShareItems(), res.getValue().getNextMarker(), null);
         } catch (ShareStorageExceptionInternal internalException) {

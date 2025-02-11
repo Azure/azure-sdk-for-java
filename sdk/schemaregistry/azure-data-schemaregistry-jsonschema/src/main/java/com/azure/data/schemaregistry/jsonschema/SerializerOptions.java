@@ -26,7 +26,7 @@ class SerializerOptions {
      * @param maxCacheSize The maximum cache size for the serializer.
      */
     SerializerOptions(String schemaGroup, boolean autoRegisterSchemas, int maxCacheSize,
-            JsonSerializer jsonSerializer) {
+        JsonSerializer jsonSerializer) {
         this.schemaGroup = schemaGroup;
         this.autoRegisterSchemas = autoRegisterSchemas;
         this.maxCacheSize = maxCacheSize;

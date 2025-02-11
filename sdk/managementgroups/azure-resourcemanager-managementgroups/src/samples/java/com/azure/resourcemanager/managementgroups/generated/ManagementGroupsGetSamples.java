@@ -6,104 +6,91 @@ package com.azure.resourcemanager.managementgroups.generated;
 
 import com.azure.resourcemanager.managementgroups.models.ManagementGroupExpandType;
 
-/** Samples for ManagementGroups Get. */
+/**
+ * Samples for ManagementGroups Get.
+ */
 public final class ManagementGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/GetManagementGroupWithPath.json
+     * x-ms-original-file:
+     * specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/
+     * GetManagementGroupWithPath.json
      */
     /**
      * Sample code: GetManagementGroupWithPath.
-     *
+     * 
      * @param manager Entry point to ManagementGroupsManager.
      */
-    public static void getManagementGroupWithPath(
-        com.azure.resourcemanager.managementgroups.ManagementGroupsManager manager) {
-        manager
-            .managementGroups()
-            .getWithResponse(
-                "20000000-0001-0000-0000-000000000000",
-                ManagementGroupExpandType.PATH,
-                null,
-                null,
-                "no-cache",
-                com.azure.core.util.Context.NONE);
+    public static void
+        getManagementGroupWithPath(com.azure.resourcemanager.managementgroups.ManagementGroupsManager manager) {
+        manager.managementGroups()
+            .getWithResponse("20000000-0001-0000-0000-000000000000", ManagementGroupExpandType.PATH, null, null,
+                "no-cache", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/GetManagementGroupWithAncestors.json
+     * x-ms-original-file:
+     * specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/
+     * GetManagementGroupWithAncestors.json
      */
     /**
      * Sample code: GetManagementGroupWithAncestors.
-     *
+     * 
      * @param manager Entry point to ManagementGroupsManager.
      */
-    public static void getManagementGroupWithAncestors(
-        com.azure.resourcemanager.managementgroups.ManagementGroupsManager manager) {
-        manager
-            .managementGroups()
-            .getWithResponse(
-                "20000000-0001-0000-0000-00000000000",
-                ManagementGroupExpandType.ANCESTORS,
-                null,
-                null,
-                "no-cache",
-                com.azure.core.util.Context.NONE);
+    public static void
+        getManagementGroupWithAncestors(com.azure.resourcemanager.managementgroups.ManagementGroupsManager manager) {
+        manager.managementGroups()
+            .getWithResponse("20000000-0001-0000-0000-00000000000", ManagementGroupExpandType.ANCESTORS, null, null,
+                "no-cache", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/GetManagementGroupWithExpand.json
+     * x-ms-original-file:
+     * specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/
+     * GetManagementGroupWithExpand.json
      */
     /**
      * Sample code: GetManagementGroupWithExpand.
-     *
+     * 
      * @param manager Entry point to ManagementGroupsManager.
      */
-    public static void getManagementGroupWithExpand(
-        com.azure.resourcemanager.managementgroups.ManagementGroupsManager manager) {
-        manager
-            .managementGroups()
-            .getWithResponse(
-                "20000000-0001-0000-0000-000000000000",
-                ManagementGroupExpandType.CHILDREN,
-                null,
-                null,
-                "no-cache",
+    public static void
+        getManagementGroupWithExpand(com.azure.resourcemanager.managementgroups.ManagementGroupsManager manager) {
+        manager.managementGroups()
+            .getWithResponse("20000000-0001-0000-0000-000000000000", ManagementGroupExpandType.CHILDREN, null, null,
+                "no-cache", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/
+     * GetManagementGroup.json
+     */
+    /**
+     * Sample code: GetManagementGroup.
+     * 
+     * @param manager Entry point to ManagementGroupsManager.
+     */
+    public static void getManagementGroup(com.azure.resourcemanager.managementgroups.ManagementGroupsManager manager) {
+        manager.managementGroups()
+            .getWithResponse("20000000-0001-0000-0000-000000000000", null, null, null, "no-cache",
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/GetManagementGroup.json
-     */
-    /**
-     * Sample code: GetManagementGroup.
-     *
-     * @param manager Entry point to ManagementGroupsManager.
-     */
-    public static void getManagementGroup(com.azure.resourcemanager.managementgroups.ManagementGroupsManager manager) {
-        manager
-            .managementGroups()
-            .getWithResponse(
-                "20000000-0001-0000-0000-000000000000", null, null, null, "no-cache", com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/GetManagementGroupWithExpandAndRecurse.json
+     * x-ms-original-file:
+     * specification/managementgroups/resource-manager/Microsoft.Management/stable/2021-04-01/examples/
+     * GetManagementGroupWithExpandAndRecurse.json
      */
     /**
      * Sample code: GetManagementGroupsWithExpandAndRecurse.
-     *
+     * 
      * @param manager Entry point to ManagementGroupsManager.
      */
     public static void getManagementGroupsWithExpandAndRecurse(
         com.azure.resourcemanager.managementgroups.ManagementGroupsManager manager) {
-        manager
-            .managementGroups()
-            .getWithResponse(
-                "20000000-0001-0000-0000-000000000000",
-                ManagementGroupExpandType.CHILDREN,
-                true,
-                null,
-                "no-cache",
-                com.azure.core.util.Context.NONE);
+        manager.managementGroups()
+            .getWithResponse("20000000-0001-0000-0000-000000000000", ManagementGroupExpandType.CHILDREN, true, null,
+                "no-cache", com.azure.core.util.Context.NONE);
     }
 }

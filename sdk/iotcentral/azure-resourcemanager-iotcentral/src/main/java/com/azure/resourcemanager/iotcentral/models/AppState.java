@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AppState. */
+/**
+ * The current state of the application.
+ */
 public final class AppState extends ExpandableStringEnum<AppState> {
-    /** Static value created for AppState. */
+    /**
+     * Static value created for AppState.
+     */
     public static final AppState CREATED = fromString("created");
 
-    /** Static value suspended for AppState. */
+    /**
+     * Static value suspended for AppState.
+     */
     public static final AppState SUSPENDED = fromString("suspended");
 
     /**
+     * Creates a new instance of AppState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AppState() {
+    }
+
+    /**
      * Creates or finds a AppState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AppState.
      */
-    @JsonCreator
     public static AppState fromString(String name) {
         return fromString(name, AppState.class);
     }
 
-    /** @return known AppState values. */
+    /**
+     * Gets known AppState values.
+     * 
+     * @return known AppState values.
+     */
     public static Collection<AppState> values() {
         return values(AppState.class);
     }

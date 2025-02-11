@@ -73,6 +73,9 @@ public final class PeriodFeedbackValue implements JsonSerializable<PeriodFeedbac
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

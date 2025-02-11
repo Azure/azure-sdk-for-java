@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The user owned storage for Cognitive Services account. */
+/**
+ * The user owned storage for Cognitive Services account.
+ */
 @Fluent
-public final class UserOwnedStorage {
+public final class UserOwnedStorage implements JsonSerializable<UserOwnedStorage> {
     /*
      * Full resource id of a Microsoft.Storage resource.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The identityClientId property.
      */
-    @JsonProperty(value = "identityClientId")
     private String identityClientId;
 
-    /** Creates an instance of UserOwnedStorage class. */
+    /**
+     * Creates an instance of UserOwnedStorage class.
+     */
     public UserOwnedStorage() {
     }
 
     /**
      * Get the resourceId property: Full resource id of a Microsoft.Storage resource.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -37,7 +43,7 @@ public final class UserOwnedStorage {
 
     /**
      * Set the resourceId property: Full resource id of a Microsoft.Storage resource.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the UserOwnedStorage object itself.
      */
@@ -48,7 +54,7 @@ public final class UserOwnedStorage {
 
     /**
      * Get the identityClientId property: The identityClientId property.
-     *
+     * 
      * @return the identityClientId value.
      */
     public String identityClientId() {
@@ -57,7 +63,7 @@ public final class UserOwnedStorage {
 
     /**
      * Set the identityClientId property: The identityClientId property.
-     *
+     * 
      * @param identityClientId the identityClientId value to set.
      * @return the UserOwnedStorage object itself.
      */
@@ -68,9 +74,48 @@ public final class UserOwnedStorage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("identityClientId", this.identityClientId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserOwnedStorage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserOwnedStorage if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserOwnedStorage.
+     */
+    public static UserOwnedStorage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserOwnedStorage deserializedUserOwnedStorage = new UserOwnedStorage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedUserOwnedStorage.resourceId = reader.getString();
+                } else if ("identityClientId".equals(fieldName)) {
+                    deserializedUserOwnedStorage.identityClientId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserOwnedStorage;
+        });
     }
 }

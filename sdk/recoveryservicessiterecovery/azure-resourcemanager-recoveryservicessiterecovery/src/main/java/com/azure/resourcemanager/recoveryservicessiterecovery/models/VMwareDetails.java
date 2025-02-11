@@ -5,221 +5,204 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * Store the fabric details specific to the VMware fabric.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMware")
 @Fluent
 public final class VMwareDetails extends FabricSpecificDetails {
     /*
+     * Gets the class type. Overridden in derived classes.
+     */
+    private String instanceType = "VMware";
+
+    /*
      * The list of Process Servers associated with the fabric.
      */
-    @JsonProperty(value = "processServers")
     private List<ProcessServer> processServers;
 
     /*
      * The list of Master Target servers associated with the fabric.
      */
-    @JsonProperty(value = "masterTargetServers")
     private List<MasterTargetServer> masterTargetServers;
 
     /*
      * The list of run as accounts created on the server.
      */
-    @JsonProperty(value = "runAsAccounts")
     private List<RunAsAccount> runAsAccounts;
 
     /*
      * The number of replication pairs configured in this CS.
      */
-    @JsonProperty(value = "replicationPairCount")
     private String replicationPairCount;
 
     /*
      * The number of process servers.
      */
-    @JsonProperty(value = "processServerCount")
     private String processServerCount;
 
     /*
      * The number of source and target servers configured to talk to this CS.
      */
-    @JsonProperty(value = "agentCount")
     private String agentCount;
 
     /*
      * The number of protected servers.
      */
-    @JsonProperty(value = "protectedServers")
     private String protectedServers;
 
     /*
      * The percentage of the system load.
      */
-    @JsonProperty(value = "systemLoad")
     private String systemLoad;
 
     /*
      * The system load status.
      */
-    @JsonProperty(value = "systemLoadStatus")
     private String systemLoadStatus;
 
     /*
      * The percentage of the CPU load.
      */
-    @JsonProperty(value = "cpuLoad")
     private String cpuLoad;
 
     /*
      * The CPU load status.
      */
-    @JsonProperty(value = "cpuLoadStatus")
     private String cpuLoadStatus;
 
     /*
      * The total memory.
      */
-    @JsonProperty(value = "totalMemoryInBytes")
     private Long totalMemoryInBytes;
 
     /*
      * The available memory.
      */
-    @JsonProperty(value = "availableMemoryInBytes")
     private Long availableMemoryInBytes;
 
     /*
      * The memory usage status.
      */
-    @JsonProperty(value = "memoryUsageStatus")
     private String memoryUsageStatus;
 
     /*
      * The total space.
      */
-    @JsonProperty(value = "totalSpaceInBytes")
     private Long totalSpaceInBytes;
 
     /*
      * The available space.
      */
-    @JsonProperty(value = "availableSpaceInBytes")
     private Long availableSpaceInBytes;
 
     /*
      * The space usage status.
      */
-    @JsonProperty(value = "spaceUsageStatus")
     private String spaceUsageStatus;
 
     /*
      * The web load.
      */
-    @JsonProperty(value = "webLoad")
     private String webLoad;
 
     /*
      * The web load status.
      */
-    @JsonProperty(value = "webLoadStatus")
     private String webLoadStatus;
 
     /*
      * The database server load.
      */
-    @JsonProperty(value = "databaseServerLoad")
     private String databaseServerLoad;
 
     /*
      * The database server load status.
      */
-    @JsonProperty(value = "databaseServerLoadStatus")
     private String databaseServerLoadStatus;
 
     /*
      * The CS service status.
      */
-    @JsonProperty(value = "csServiceStatus")
     private String csServiceStatus;
 
     /*
      * The IP address.
      */
-    @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
     /*
      * The agent Version.
      */
-    @JsonProperty(value = "agentVersion")
     private String agentVersion;
 
     /*
      * The host name.
      */
-    @JsonProperty(value = "hostName")
     private String hostname;
 
     /*
      * The last heartbeat received from CS server.
      */
-    @JsonProperty(value = "lastHeartbeat")
     private OffsetDateTime lastHeartbeat;
 
     /*
      * Version status.
      */
-    @JsonProperty(value = "versionStatus")
     private String versionStatus;
 
     /*
      * CS SSL cert expiry date.
      */
-    @JsonProperty(value = "sslCertExpiryDate")
     private OffsetDateTime sslCertExpiryDate;
 
     /*
      * CS SSL cert expiry date.
      */
-    @JsonProperty(value = "sslCertExpiryRemainingDays")
     private Integer sslCertExpiryRemainingDays;
 
     /*
      * PS template version.
      */
-    @JsonProperty(value = "psTemplateVersion")
     private String psTemplateVersion;
 
     /*
      * Agent expiry date.
      */
-    @JsonProperty(value = "agentExpiryDate")
     private OffsetDateTime agentExpiryDate;
 
     /*
      * The agent version details.
      */
-    @JsonProperty(value = "agentVersionDetails")
     private VersionDetails agentVersionDetails;
 
     /*
      * The switch provider blocking error information.
      */
-    @JsonProperty(value = "switchProviderBlockingErrorDetails")
     private List<InMageFabricSwitchProviderBlockingErrorDetails> switchProviderBlockingErrorDetails;
 
     /**
      * Creates an instance of VMwareDetails class.
      */
     public VMwareDetails() {
+    }
+
+    /**
+     * Get the instanceType property: Gets the class type. Overridden in derived classes.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
     }
 
     /**
@@ -890,7 +873,6 @@ public final class VMwareDetails extends FabricSpecificDetails {
      */
     @Override
     public void validate() {
-        super.validate();
         if (processServers() != null) {
             processServers().forEach(e -> e.validate());
         }
@@ -906,5 +888,157 @@ public final class VMwareDetails extends FabricSpecificDetails {
         if (switchProviderBlockingErrorDetails() != null) {
             switchProviderBlockingErrorDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        jsonWriter.writeArrayField("processServers", this.processServers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("masterTargetServers", this.masterTargetServers,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("runAsAccounts", this.runAsAccounts, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("replicationPairCount", this.replicationPairCount);
+        jsonWriter.writeStringField("processServerCount", this.processServerCount);
+        jsonWriter.writeStringField("agentCount", this.agentCount);
+        jsonWriter.writeStringField("protectedServers", this.protectedServers);
+        jsonWriter.writeStringField("systemLoad", this.systemLoad);
+        jsonWriter.writeStringField("systemLoadStatus", this.systemLoadStatus);
+        jsonWriter.writeStringField("cpuLoad", this.cpuLoad);
+        jsonWriter.writeStringField("cpuLoadStatus", this.cpuLoadStatus);
+        jsonWriter.writeNumberField("totalMemoryInBytes", this.totalMemoryInBytes);
+        jsonWriter.writeNumberField("availableMemoryInBytes", this.availableMemoryInBytes);
+        jsonWriter.writeStringField("memoryUsageStatus", this.memoryUsageStatus);
+        jsonWriter.writeNumberField("totalSpaceInBytes", this.totalSpaceInBytes);
+        jsonWriter.writeNumberField("availableSpaceInBytes", this.availableSpaceInBytes);
+        jsonWriter.writeStringField("spaceUsageStatus", this.spaceUsageStatus);
+        jsonWriter.writeStringField("webLoad", this.webLoad);
+        jsonWriter.writeStringField("webLoadStatus", this.webLoadStatus);
+        jsonWriter.writeStringField("databaseServerLoad", this.databaseServerLoad);
+        jsonWriter.writeStringField("databaseServerLoadStatus", this.databaseServerLoadStatus);
+        jsonWriter.writeStringField("csServiceStatus", this.csServiceStatus);
+        jsonWriter.writeStringField("ipAddress", this.ipAddress);
+        jsonWriter.writeStringField("agentVersion", this.agentVersion);
+        jsonWriter.writeStringField("hostName", this.hostname);
+        jsonWriter.writeStringField("lastHeartbeat",
+            this.lastHeartbeat == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.lastHeartbeat));
+        jsonWriter.writeStringField("versionStatus", this.versionStatus);
+        jsonWriter.writeStringField("sslCertExpiryDate",
+            this.sslCertExpiryDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.sslCertExpiryDate));
+        jsonWriter.writeNumberField("sslCertExpiryRemainingDays", this.sslCertExpiryRemainingDays);
+        jsonWriter.writeStringField("psTemplateVersion", this.psTemplateVersion);
+        jsonWriter.writeStringField("agentExpiryDate",
+            this.agentExpiryDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.agentExpiryDate));
+        jsonWriter.writeJsonField("agentVersionDetails", this.agentVersionDetails);
+        jsonWriter.writeArrayField("switchProviderBlockingErrorDetails", this.switchProviderBlockingErrorDetails,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMwareDetails.
+     */
+    public static VMwareDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareDetails deserializedVMwareDetails = new VMwareDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareDetails.instanceType = reader.getString();
+                } else if ("processServers".equals(fieldName)) {
+                    List<ProcessServer> processServers = reader.readArray(reader1 -> ProcessServer.fromJson(reader1));
+                    deserializedVMwareDetails.processServers = processServers;
+                } else if ("masterTargetServers".equals(fieldName)) {
+                    List<MasterTargetServer> masterTargetServers
+                        = reader.readArray(reader1 -> MasterTargetServer.fromJson(reader1));
+                    deserializedVMwareDetails.masterTargetServers = masterTargetServers;
+                } else if ("runAsAccounts".equals(fieldName)) {
+                    List<RunAsAccount> runAsAccounts = reader.readArray(reader1 -> RunAsAccount.fromJson(reader1));
+                    deserializedVMwareDetails.runAsAccounts = runAsAccounts;
+                } else if ("replicationPairCount".equals(fieldName)) {
+                    deserializedVMwareDetails.replicationPairCount = reader.getString();
+                } else if ("processServerCount".equals(fieldName)) {
+                    deserializedVMwareDetails.processServerCount = reader.getString();
+                } else if ("agentCount".equals(fieldName)) {
+                    deserializedVMwareDetails.agentCount = reader.getString();
+                } else if ("protectedServers".equals(fieldName)) {
+                    deserializedVMwareDetails.protectedServers = reader.getString();
+                } else if ("systemLoad".equals(fieldName)) {
+                    deserializedVMwareDetails.systemLoad = reader.getString();
+                } else if ("systemLoadStatus".equals(fieldName)) {
+                    deserializedVMwareDetails.systemLoadStatus = reader.getString();
+                } else if ("cpuLoad".equals(fieldName)) {
+                    deserializedVMwareDetails.cpuLoad = reader.getString();
+                } else if ("cpuLoadStatus".equals(fieldName)) {
+                    deserializedVMwareDetails.cpuLoadStatus = reader.getString();
+                } else if ("totalMemoryInBytes".equals(fieldName)) {
+                    deserializedVMwareDetails.totalMemoryInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("availableMemoryInBytes".equals(fieldName)) {
+                    deserializedVMwareDetails.availableMemoryInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("memoryUsageStatus".equals(fieldName)) {
+                    deserializedVMwareDetails.memoryUsageStatus = reader.getString();
+                } else if ("totalSpaceInBytes".equals(fieldName)) {
+                    deserializedVMwareDetails.totalSpaceInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("availableSpaceInBytes".equals(fieldName)) {
+                    deserializedVMwareDetails.availableSpaceInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("spaceUsageStatus".equals(fieldName)) {
+                    deserializedVMwareDetails.spaceUsageStatus = reader.getString();
+                } else if ("webLoad".equals(fieldName)) {
+                    deserializedVMwareDetails.webLoad = reader.getString();
+                } else if ("webLoadStatus".equals(fieldName)) {
+                    deserializedVMwareDetails.webLoadStatus = reader.getString();
+                } else if ("databaseServerLoad".equals(fieldName)) {
+                    deserializedVMwareDetails.databaseServerLoad = reader.getString();
+                } else if ("databaseServerLoadStatus".equals(fieldName)) {
+                    deserializedVMwareDetails.databaseServerLoadStatus = reader.getString();
+                } else if ("csServiceStatus".equals(fieldName)) {
+                    deserializedVMwareDetails.csServiceStatus = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedVMwareDetails.ipAddress = reader.getString();
+                } else if ("agentVersion".equals(fieldName)) {
+                    deserializedVMwareDetails.agentVersion = reader.getString();
+                } else if ("hostName".equals(fieldName)) {
+                    deserializedVMwareDetails.hostname = reader.getString();
+                } else if ("lastHeartbeat".equals(fieldName)) {
+                    deserializedVMwareDetails.lastHeartbeat = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("versionStatus".equals(fieldName)) {
+                    deserializedVMwareDetails.versionStatus = reader.getString();
+                } else if ("sslCertExpiryDate".equals(fieldName)) {
+                    deserializedVMwareDetails.sslCertExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("sslCertExpiryRemainingDays".equals(fieldName)) {
+                    deserializedVMwareDetails.sslCertExpiryRemainingDays = reader.getNullable(JsonReader::getInt);
+                } else if ("psTemplateVersion".equals(fieldName)) {
+                    deserializedVMwareDetails.psTemplateVersion = reader.getString();
+                } else if ("agentExpiryDate".equals(fieldName)) {
+                    deserializedVMwareDetails.agentExpiryDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("agentVersionDetails".equals(fieldName)) {
+                    deserializedVMwareDetails.agentVersionDetails = VersionDetails.fromJson(reader);
+                } else if ("switchProviderBlockingErrorDetails".equals(fieldName)) {
+                    List<InMageFabricSwitchProviderBlockingErrorDetails> switchProviderBlockingErrorDetails
+                        = reader.readArray(reader1 -> InMageFabricSwitchProviderBlockingErrorDetails.fromJson(reader1));
+                    deserializedVMwareDetails.switchProviderBlockingErrorDetails = switchProviderBlockingErrorDetails;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareDetails;
+        });
     }
 }

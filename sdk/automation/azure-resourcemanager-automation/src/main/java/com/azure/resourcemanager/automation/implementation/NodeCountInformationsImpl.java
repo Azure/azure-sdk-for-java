@@ -21,32 +21,28 @@ public final class NodeCountInformationsImpl implements NodeCountInformations {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public NodeCountInformationsImpl(
-        NodeCountInformationsClient innerClient,
+    public NodeCountInformationsImpl(NodeCountInformationsClient innerClient,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<NodeCounts> getWithResponse(String resourceGroupName, String automationAccountName,
+        CountType countType, Context context) {
+        Response<NodeCountsInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, countType, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new NodeCountsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public NodeCounts get(String resourceGroupName, String automationAccountName, CountType countType) {
         NodeCountsInner inner = this.serviceClient().get(resourceGroupName, automationAccountName, countType);
         if (inner != null) {
             return new NodeCountsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<NodeCounts> getWithResponse(
-        String resourceGroupName, String automationAccountName, CountType countType, Context context) {
-        Response<NodeCountsInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, countType, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new NodeCountsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

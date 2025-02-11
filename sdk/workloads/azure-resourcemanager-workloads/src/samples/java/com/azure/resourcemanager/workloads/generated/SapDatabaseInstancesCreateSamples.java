@@ -7,20 +7,23 @@ package com.azure.resourcemanager.workloads.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SapDatabaseInstances Create. */
+/**
+ * Samples for SapDatabaseInstances Create.
+ */
 public final class SapDatabaseInstancesCreateSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPDatabaseInstances_Create_HA_AvSet.json
+     * x-ms-original-file:
+     * specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/
+     * SAPDatabaseInstances_Create_HA_AvSet.json
      */
     /**
      * Sample code: Create SAP Database Instances for HA System with Availability Set.
-     *
+     * 
      * @param manager Entry point to WorkloadsManager.
      */
     public static void createSAPDatabaseInstancesForHASystemWithAvailabilitySet(
         com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager
-            .sapDatabaseInstances()
+        manager.sapDatabaseInstances()
             .define("databaseServer")
             .withRegion("westcentralus")
             .withExistingSapVirtualInstance("test-rg", "X00")
@@ -29,16 +32,17 @@ public final class SapDatabaseInstancesCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPDatabaseInstances_Create.json
+     * x-ms-original-file:
+     * specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/
+     * SAPDatabaseInstances_Create.json
      */
     /**
      * Sample code: SAPDatabaseInstances_Create.
-     *
+     * 
      * @param manager Entry point to WorkloadsManager.
      */
     public static void sAPDatabaseInstancesCreate(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager
-            .sapDatabaseInstances()
+        manager.sapDatabaseInstances()
             .define("databaseServer")
             .withRegion("westcentralus")
             .withExistingSapVirtualInstance("test-rg", "X00")
@@ -46,6 +50,7 @@ public final class SapDatabaseInstancesCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

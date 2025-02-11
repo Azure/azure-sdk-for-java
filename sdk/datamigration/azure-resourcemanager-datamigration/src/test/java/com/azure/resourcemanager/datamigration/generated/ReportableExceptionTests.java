@@ -11,18 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ReportableExceptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReportableException model =
-            BinaryData
-                .fromString(
-                    "{\"message\":\"dobpxjmflbvvn\",\"actionableMessage\":\"rkcciwwzjuqk\",\"filePath\":\"sa\",\"lineNumber\":\"wkuofoskghsauu\",\"hResult\":1525008184,\"stackTrace\":\"vxieduugidyj\"}")
-                .toObject(ReportableException.class);
-        Assertions.assertEquals("rkcciwwzjuqk", model.actionableMessage());
+        ReportableException model = BinaryData.fromString(
+            "{\"message\":\"l\",\"actionableMessage\":\"x\",\"filePath\":\"qgtz\",\"lineNumber\":\"pnqbqqwxrjfe\",\"hResult\":61111335,\"stackTrace\":\"wsubisnja\"}")
+            .toObject(ReportableException.class);
+        Assertions.assertEquals("x", model.actionableMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReportableException model = new ReportableException().withActionableMessage("rkcciwwzjuqk");
+        ReportableException model = new ReportableException().withActionableMessage("x");
         model = BinaryData.fromObject(model).toObject(ReportableException.class);
-        Assertions.assertEquals("rkcciwwzjuqk", model.actionableMessage());
+        Assertions.assertEquals("x", model.actionableMessage());
     }
 }

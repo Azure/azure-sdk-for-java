@@ -16,7 +16,8 @@ public class CreateDnsZonesTest extends ResourceGroupTestBase<PerfStressOptions>
 
     @Override
     public void run() {
-        azureResourceManager.dnsZones().define(RESOURCE_NAMER.randomName("dnsstress", 24) + ".com")
+        azureResourceManager.dnsZones()
+            .define(RESOURCE_NAMER.randomName("dnsstress", 24) + ".com")
             .withExistingResourceGroup(RESOURCE_GROUP_NAME)
             .withETagCheck()
             .create();
@@ -24,7 +25,8 @@ public class CreateDnsZonesTest extends ResourceGroupTestBase<PerfStressOptions>
 
     @Override
     public Mono<Void> runAsync() {
-        return azureResourceManager.dnsZones().define(RESOURCE_NAMER.randomName("dnsstress", 24) + ".com")
+        return azureResourceManager.dnsZones()
+            .define(RESOURCE_NAMER.randomName("dnsstress", 24) + ".com")
             .withExistingResourceGroup(RESOURCE_GROUP_NAME)
             .withETagCheck()
             .createAsync()

@@ -20,7 +20,9 @@ import java.util.Arrays;
  */
 public final class JitNetworkAccessPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/CreateJitNetworkAccessPolicy_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/JitNetworkAccessPolicies/
+     * CreateJitNetworkAccessPolicy_example.json
      */
     /**
      * Sample code: Create JIT network access policy.

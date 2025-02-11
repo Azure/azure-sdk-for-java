@@ -14,22 +14,26 @@ import java.util.List;
  * An immutable client-side representation of an Azure resource provider.
  */
 @Fluent
-public interface Provider extends
-        Indexable,
-        HasInnerModel<ProviderInner> {
+public interface Provider extends Indexable, HasInnerModel<ProviderInner> {
 
     /**
+     * Gets the namespace of the provider.
+     *
      * @return the namespace of the provider
      */
     String namespace();
 
     /**
+     * Gets the registration state of the provider.
+     *
      * @return the registration state of the provider, indicating whether this
      * resource provider is registered in the current subscription
      */
     String registrationState();
 
     /**
+     * Gets the list of provider resource types.
+     *
      * @return the list of provider resource types
      */
     List<ProviderResourceType> resourceTypes();

@@ -2,14 +2,13 @@
 // Licensed under the MIT License.
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.security.PrivilegedExceptionAction;
 
 /**
  * Implementation for {@link ReflectionUtilsApi} using {@code java.lang.invoke} to handle reflectively invoking APIs.
@@ -53,8 +52,8 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
             methodHandlesPrivateLookupIn = lookup.findStatic(MethodHandles.class, "privateLookupIn",
                 MethodType.methodType(MethodHandles.Lookup.class, Class.class, MethodHandles.Lookup.class));
             moduleIsOpenUnconditionally = lookup.unreflect(moduleClass.getDeclaredMethod("isOpen", String.class));
-            moduleIsOpenToOtherModule = lookup.unreflect(
-                moduleClass.getDeclaredMethod("isOpen", String.class, moduleClass));
+            moduleIsOpenToOtherModule
+                = lookup.unreflect(moduleClass.getDeclaredMethod("isOpen", String.class, moduleClass));
 
             coreModule = classGetModule.invokeWithArguments(ReflectionUtils.class);
             moduleBased = true;
@@ -62,15 +61,16 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
             if (throwable instanceof Error) {
                 throw (Error) throwable;
             } else {
-                LOGGER.atInfo().log("Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. "
-                    + "Will attempt to fallback to using the package-private constructor.", throwable);
+                LOGGER.atInfo()
+                    .log("Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. Will "
+                        + "attempt to fallback to using the package-private constructor.", throwable);
             }
         }
 
         if (!moduleBased) {
             try {
-                Constructor<MethodHandles.Lookup> privateLookupInConstructor =
-                    MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
+                Constructor<MethodHandles.Lookup> privateLookupInConstructor
+                    = MethodHandles.Lookup.class.getDeclaredConstructor(Class.class);
 
                 if (!privateLookupInConstructor.isAccessible()) {
                     privateLookupInConstructor.setAccessible(true);
@@ -96,16 +96,17 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
     }
 
     @Override
-    public ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToGenericCore) throws Exception {
-        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToGenericCore);
+    public ReflectiveInvoker getMethodInvoker(Class<?> targetClass, Method method, boolean scopeToClientCore)
+        throws Exception {
+        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToClientCore);
 
         return new MethodHandleReflectiveInvoker(lookup.unreflect(method));
     }
 
     @Override
-    public ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToGenericCore)
-        throws Exception {
-        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToGenericCore);
+    public ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
+        boolean scopeToAzureCore) throws Exception {
+        MethodHandles.Lookup lookup = getLookupToUse(targetClass, scopeToAzureCore);
 
         return new MethodHandleReflectiveInvoker(lookup.unreflectConstructor(constructor));
     }
@@ -123,21 +124,21 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
      * <p>
      * If Java 9 or above is being used this will return a {@link MethodHandles.Lookup} based on whether the module
      * containing the {@code targetClass} exports the package containing the class. Otherwise, the
-     * {@link MethodHandles.Lookup} associated to {@code io.clientcore.core} will attempt to read the module containing
+     * {@link MethodHandles.Lookup} associated to {@code com.azure.core} will attempt to read the module containing
      * {@code targetClass}.
      *
      * @param targetClass The {@link Class} that will need to be reflectively accessed.
-     * @param scopeToGenericCore Whether to scope the {@link MethodHandles.Lookup} to {@code io.clientcore.core} if Java 9+
+     * @param scopeToAzureCore Whether to scope the {@link MethodHandles.Lookup} to {@code com.azure.core} if Java 9+
      * modules is being used.
-     * @return The {@link MethodHandles.Lookup} that will allow {@code io.clientcore.core} to access the
-     * {@code targetClass} reflectively.
+     * @return The {@link MethodHandles.Lookup} that will allow {@code com.azure.core} to access the {@code targetClass}
+     * reflectively.
      * @throws Exception If the underlying reflective calls throw an exception.
      */
-    private static MethodHandles.Lookup getLookupToUse(Class<?> targetClass, boolean scopeToGenericCore)
+    private static MethodHandles.Lookup getLookupToUse(Class<?> targetClass, boolean scopeToAzureCore)
         throws Exception {
         try {
             if (MODULE_BASED) {
-                if (!scopeToGenericCore) {
+                if (!scopeToAzureCore) {
                     return MethodHandles.publicLookup();
                 }
 
@@ -159,8 +160,9 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
                 // also use a private proxy lookup to enable all lookup scenarios.
                 String packageName = targetClass.getPackage().getName();
                 if ((boolean) MODULE_IS_OPEN_UNCONDITIONALLY_METHOD_HANDLE.invokeWithArguments(responseModule,
-                    packageName) || (boolean) MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE.invokeWithArguments(
-                    responseModule, packageName, CORE_MODULE)) {
+                    packageName)
+                    || (boolean) MODULE_IS_OPEN_TO_OTHER_MODULE_METHOD_HANDLE.invokeWithArguments(responseModule,
+                        packageName, CORE_MODULE)) {
                     MODULE_ADD_READS_METHOD_HANDLE.invokeWithArguments(CORE_MODULE, responseModule);
                     return performSafePrivateLookupIn(targetClass);
                 }
@@ -183,25 +185,8 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
         }
     }
 
-    @SuppressWarnings("removal")
     private static MethodHandles.Lookup performSafePrivateLookupIn(Class<?> targetClass) throws Throwable {
         // MethodHandles::privateLookupIn() throws SecurityException if denied by the security manager
-        if (System.getSecurityManager() == null) {
-            return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE
-                .invokeExact(targetClass, LOOKUP);
-        } else {
-            return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<MethodHandles.Lookup>) () -> {
-                try {
-                    return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE
-                        .invokeExact(targetClass, LOOKUP);
-                } catch (Throwable throwable) {
-                    if (throwable instanceof Error) {
-                        throw (Error) throwable;
-                    } else {
-                        throw (Exception) throwable;
-                    }
-                }
-            });
-        }
+        return (MethodHandles.Lookup) METHOD_HANDLES_PRIVATE_LOOKUP_IN_METHOD_HANDLE.invokeExact(targetClass, LOOKUP);
     }
 }

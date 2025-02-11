@@ -44,40 +44,65 @@ public final class VMNicInputDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMNicInputDetails model
-            = new VMNicInputDetails().withNicId("uq")
-                .withIpConfigs(Arrays.asList(
-                    new IpConfigInputDetails().withIpConfigName("gzlvdnkfxu").withIsPrimary(true)
-                        .withIsSeletedForFailover(false).withRecoverySubnetName("rmuhapfcq")
-                        .withRecoveryStaticIpAddress("sqxqvp").withRecoveryPublicIpAddressId("uoymgccelvezry")
-                        .withRecoveryLBBackendAddressPoolIds(Arrays.asList("mfe", "kerqwkyh", "ob"))
-                        .withTfoSubnetName("gxedkow").withTfoStaticIpAddress("bqpc").withTfoPublicIpAddressId("kbwcc")
-                        .withTfoLBBackendAddressPoolIds(Arrays.asList("vcdwxlpqekftn", "htjsying", "fq")),
-                    new IpConfigInputDetails().withIpConfigName("mtdh").withIsPrimary(true)
-                        .withIsSeletedForFailover(false).withRecoverySubnetName("gikdgsz")
-                        .withRecoveryStaticIpAddress("kbir").withRecoveryPublicIpAddressId("uzhlhkjoqrv")
-                        .withRecoveryLBBackendAddressPoolIds(Arrays.asList("atjinrvgoupmfiib", "ggjioolvr", "x", "v"))
-                        .withTfoSubnetName("k").withTfoStaticIpAddress("lqwjygvjayvblm").withTfoPublicIpAddressId("k")
-                        .withTfoLBBackendAddressPoolIds(Arrays.asList("bxvvyhg", "opbyrqufegxu", "wz", "bnhlmc")),
-                    new IpConfigInputDetails().withIpConfigName("p").withIsPrimary(false).withIsSeletedForFailover(true)
-                        .withRecoverySubnetName("gbmhrixkwmyi").withRecoveryStaticIpAddress("jvegrhbpnaixexcc")
-                        .withRecoveryPublicIpAddressId("reaxhcexdr")
-                        .withRecoveryLBBackendAddressPoolIds(
-                            Arrays.asList("ahqkg", "tpwijnh", "jsvfycxzbfvoowv", "vmtgjqppy"))
-                        .withTfoSubnetName("tronzmyhgfi").withTfoStaticIpAddress("sxkm").withTfoPublicIpAddressId("a")
-                        .withTfoLBBackendAddressPoolIds(Arrays.asList("rjreafxts", "umh", "glikkxwslolb")),
-                    new IpConfigInputDetails().withIpConfigName("vuzlm").withIsPrimary(false)
-                        .withIsSeletedForFailover(false).withRecoverySubnetName("tgp")
-                        .withRecoveryStaticIpAddress("rpw").withRecoveryPublicIpAddressId("eznoig")
-                        .withRecoveryLBBackendAddressPoolIds(
-                            Arrays.asList("jwmwkpnbs", "zejjoqk", "gfhsxttaugzxn", "aa"))
-                        .withTfoSubnetName("xdtnkdmkqjjlw").withTfoStaticIpAddress("nvrk")
-                        .withTfoPublicIpAddressId("ou").withTfoLBBackendAddressPoolIds(Arrays.asList("rebqaaysjk"))))
-                .withSelectionType("qtnqtt").withRecoveryNetworkSecurityGroupId("lwfffi")
-                .withEnableAcceleratedNetworkingOnRecovery(true).withTfoNetworkSecurityGroupId("pqqmted")
-                .withEnableAcceleratedNetworkingOnTfo(false).withRecoveryNicName("jihy")
-                .withRecoveryNicResourceGroupName("zphv").withReuseExistingNic(true).withTfoNicName("qncygupkvi")
-                .withTfoNicResourceGroupName("dscwxqupevzhf").withTfoReuseExistingNic(true).withTargetNicName("xhojuj");
+        VMNicInputDetails model = new VMNicInputDetails().withNicId("uq")
+            .withIpConfigs(Arrays.asList(
+                new IpConfigInputDetails().withIpConfigName("gzlvdnkfxu")
+                    .withIsPrimary(true)
+                    .withIsSeletedForFailover(false)
+                    .withRecoverySubnetName("rmuhapfcq")
+                    .withRecoveryStaticIpAddress("sqxqvp")
+                    .withRecoveryPublicIpAddressId("uoymgccelvezry")
+                    .withRecoveryLBBackendAddressPoolIds(Arrays.asList("mfe", "kerqwkyh", "ob"))
+                    .withTfoSubnetName("gxedkow")
+                    .withTfoStaticIpAddress("bqpc")
+                    .withTfoPublicIpAddressId("kbwcc")
+                    .withTfoLBBackendAddressPoolIds(Arrays.asList("vcdwxlpqekftn", "htjsying", "fq")),
+                new IpConfigInputDetails().withIpConfigName("mtdh")
+                    .withIsPrimary(true)
+                    .withIsSeletedForFailover(false)
+                    .withRecoverySubnetName("gikdgsz")
+                    .withRecoveryStaticIpAddress("kbir")
+                    .withRecoveryPublicIpAddressId("uzhlhkjoqrv")
+                    .withRecoveryLBBackendAddressPoolIds(Arrays.asList("atjinrvgoupmfiib", "ggjioolvr", "x", "v"))
+                    .withTfoSubnetName("k")
+                    .withTfoStaticIpAddress("lqwjygvjayvblm")
+                    .withTfoPublicIpAddressId("k")
+                    .withTfoLBBackendAddressPoolIds(Arrays.asList("bxvvyhg", "opbyrqufegxu", "wz", "bnhlmc")),
+                new IpConfigInputDetails().withIpConfigName("p")
+                    .withIsPrimary(false)
+                    .withIsSeletedForFailover(true)
+                    .withRecoverySubnetName("gbmhrixkwmyi")
+                    .withRecoveryStaticIpAddress("jvegrhbpnaixexcc")
+                    .withRecoveryPublicIpAddressId("reaxhcexdr")
+                    .withRecoveryLBBackendAddressPoolIds(
+                        Arrays.asList("ahqkg", "tpwijnh", "jsvfycxzbfvoowv", "vmtgjqppy"))
+                    .withTfoSubnetName("tronzmyhgfi")
+                    .withTfoStaticIpAddress("sxkm")
+                    .withTfoPublicIpAddressId("a")
+                    .withTfoLBBackendAddressPoolIds(Arrays.asList("rjreafxts", "umh", "glikkxwslolb")),
+                new IpConfigInputDetails().withIpConfigName("vuzlm")
+                    .withIsPrimary(false)
+                    .withIsSeletedForFailover(false)
+                    .withRecoverySubnetName("tgp")
+                    .withRecoveryStaticIpAddress("rpw")
+                    .withRecoveryPublicIpAddressId("eznoig")
+                    .withRecoveryLBBackendAddressPoolIds(Arrays.asList("jwmwkpnbs", "zejjoqk", "gfhsxttaugzxn", "aa"))
+                    .withTfoSubnetName("xdtnkdmkqjjlw")
+                    .withTfoStaticIpAddress("nvrk")
+                    .withTfoPublicIpAddressId("ou")
+                    .withTfoLBBackendAddressPoolIds(Arrays.asList("rebqaaysjk"))))
+            .withSelectionType("qtnqtt")
+            .withRecoveryNetworkSecurityGroupId("lwfffi")
+            .withEnableAcceleratedNetworkingOnRecovery(true)
+            .withTfoNetworkSecurityGroupId("pqqmted")
+            .withEnableAcceleratedNetworkingOnTfo(false)
+            .withRecoveryNicName("jihy")
+            .withRecoveryNicResourceGroupName("zphv")
+            .withReuseExistingNic(true)
+            .withTfoNicName("qncygupkvi")
+            .withTfoNicResourceGroupName("dscwxqupevzhf")
+            .withTfoReuseExistingNic(true)
+            .withTargetNicName("xhojuj");
         model = BinaryData.fromObject(model).toObject(VMNicInputDetails.class);
         Assertions.assertEquals("uq", model.nicId());
         Assertions.assertEquals("gzlvdnkfxu", model.ipConfigs().get(0).ipConfigName());

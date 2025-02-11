@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class NamedValueSecretContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NamedValueSecretContractInner model =
-            BinaryData.fromString("{\"value\":\"dstrkzxsgtz\"}").toObject(NamedValueSecretContractInner.class);
+        NamedValueSecretContractInner model
+            = BinaryData.fromString("{\"value\":\"dstrkzxsgtz\"}").toObject(NamedValueSecretContractInner.class);
         Assertions.assertEquals("dstrkzxsgtz", model.value());
     }
 

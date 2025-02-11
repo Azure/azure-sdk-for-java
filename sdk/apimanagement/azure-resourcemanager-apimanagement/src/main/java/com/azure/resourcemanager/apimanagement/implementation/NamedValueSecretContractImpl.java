@@ -12,8 +12,7 @@ public final class NamedValueSecretContractImpl implements NamedValueSecretContr
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    NamedValueSecretContractImpl(
-        NamedValueSecretContractInner innerObject,
+    NamedValueSecretContractImpl(NamedValueSecretContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

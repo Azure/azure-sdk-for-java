@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.databoxedge.fluent.models.JobInner;
 
-/** An instance of this class provides access to all the operations defined in OperationsStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsStatusClient.
+ */
 public interface OperationsStatusClient {
     /**
      * Gets the details of a specified job on a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The job name.
      * @param resourceGroupName The resource group name.
@@ -29,7 +31,7 @@ public interface OperationsStatusClient {
 
     /**
      * Gets the details of a specified job on a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The job name.
      * @param resourceGroupName The resource group name.

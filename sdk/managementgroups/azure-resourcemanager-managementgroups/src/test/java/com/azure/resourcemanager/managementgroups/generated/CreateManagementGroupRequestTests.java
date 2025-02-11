@@ -7,29 +7,29 @@ package com.azure.resourcemanager.managementgroups.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.managementgroups.models.CreateManagementGroupDetails;
 import com.azure.resourcemanager.managementgroups.models.CreateManagementGroupRequest;
+import com.azure.resourcemanager.managementgroups.models.CreateParentGroupInfo;
 import org.junit.jupiter.api.Assertions;
 
 public final class CreateManagementGroupRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateManagementGroupRequest model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"sdkf\",\"properties\":{\"tenantId\":\"bhtqqrolfpfpsa\",\"displayName\":\"bquxigjy\",\"details\":{\"version\":161079646,\"updatedTime\":\"2021-11-28T08:08:08Z\",\"updatedBy\":\"fhrtxilnerkujysv\"},\"children\":[{\"type\":\"/subscriptions\",\"id\":\"awrlyx\",\"name\":\"kcprbnw\",\"displayName\":\"gjvtbv\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"dnrujqguhmuouqfp\",\"name\":\"zw\",\"displayName\":\"g\",\"children\":[]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"uizga\",\"name\":\"ufizuckyf\",\"displayName\":\"rfidfvzwdz\",\"children\":[]}]},\"id\":\"tymw\",\"type\":\"hwxmnteiwa\"}")
-                .toObject(CreateManagementGroupRequest.class);
-        Assertions.assertEquals("sdkf", model.name());
-        Assertions.assertEquals("bquxigjy", model.displayName());
+        CreateManagementGroupRequest model = BinaryData.fromString(
+            "{\"name\":\"hrk\",\"properties\":{\"tenantId\":\"gujjugwdkcglh\",\"displayName\":\"azjdyggd\",\"details\":{\"version\":1916189356,\"updatedTime\":\"2021-08-21T20:33:35Z\",\"updatedBy\":\"uofqwe\",\"parent\":{\"id\":\"menevfyexfwh\",\"name\":\"cibvyvdcsitynn\",\"displayName\":\"mdectehfiqscjey\"}},\"children\":[{\"type\":\"/subscriptions\",\"id\":\"kgqhcjrefovg\",\"name\":\"qsl\",\"displayName\":\"yvxyqjp\",\"children\":[{\"type\":\"/subscriptions\",\"id\":\"ngj\",\"name\":\"cczsq\",\"displayName\":\"hvmdajvnysounq\",\"children\":[{}]},{\"type\":\"/subscriptions\",\"id\":\"eupfhyhltrpm\",\"name\":\"jmcmatuokthfu\",\"displayName\":\"aodsfcpkv\",\"children\":[{},{}]},{\"type\":\"/subscriptions\",\"id\":\"zmyzydagf\",\"name\":\"xbezyiuokktwh\",\"displayName\":\"xw\",\"children\":[{},{}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"bsureximo\",\"name\":\"ocfs\",\"displayName\":\"s\",\"children\":[{},{},{},{}]}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"tki\",\"name\":\"xhqyudxorrqnb\",\"displayName\":\"czvyifq\",\"children\":[{\"type\":\"/subscriptions\",\"id\":\"sllr\",\"name\":\"vdfwatkpn\",\"displayName\":\"lexxbczwtru\",\"children\":[{},{},{}]},{\"type\":\"Microsoft.Management/managementGroups\",\"id\":\"j\",\"name\":\"ovm\",\"displayName\":\"kacspkw\",\"children\":[{},{},{},{}]}]}]},\"id\":\"dobpxjmflbvvn\",\"type\":\"ciwwzjuqkhr\"}")
+            .toObject(CreateManagementGroupRequest.class);
+        Assertions.assertEquals("hrk", model.name());
+        Assertions.assertEquals("azjdyggd", model.displayName());
+        Assertions.assertEquals("menevfyexfwh", model.details().parent().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateManagementGroupRequest model =
-            new CreateManagementGroupRequest()
-                .withName("sdkf")
-                .withDisplayName("bquxigjy")
-                .withDetails(new CreateManagementGroupDetails());
+        CreateManagementGroupRequest model = new CreateManagementGroupRequest().withName("hrk")
+            .withDisplayName("azjdyggd")
+            .withDetails(
+                new CreateManagementGroupDetails().withParent(new CreateParentGroupInfo().withId("menevfyexfwh")));
         model = BinaryData.fromObject(model).toObject(CreateManagementGroupRequest.class);
-        Assertions.assertEquals("sdkf", model.name());
-        Assertions.assertEquals("bquxigjy", model.displayName());
+        Assertions.assertEquals("hrk", model.name());
+        Assertions.assertEquals("azjdyggd", model.displayName());
+        Assertions.assertEquals("menevfyexfwh", model.details().parent().id());
     }
 }

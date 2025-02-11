@@ -5,61 +5,61 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The service resource properties.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "serviceKind",
-    defaultImpl = ServiceResourceProperties.class)
-@JsonTypeName("ServiceResourceProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Stateful", value = StatefulServiceProperties.class),
-    @JsonSubTypes.Type(name = "Stateless", value = StatelessServiceProperties.class) })
 @Fluent
 public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
     /*
+     * The kind of service (Stateless or Stateful).
+     */
+    private ServiceKind serviceKind = ServiceKind.fromString("ServiceResourceProperties");
+
+    /*
      * The current deployment or provisioning state, which only appears in the response
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The name of the service type
      */
-    @JsonProperty(value = "serviceTypeName")
     private String serviceTypeName;
 
     /*
      * Describes how the service is partitioned.
      */
-    @JsonProperty(value = "partitionDescription")
     private PartitionSchemeDescription partitionDescription;
 
     /*
      * The activation Mode of the service package
      */
-    @JsonProperty(value = "servicePackageActivationMode")
     private ArmServicePackageActivationMode servicePackageActivationMode;
 
     /*
-     * Dns name used for the service. If this is specified, then the service can be accessed via its DNS name instead
-     * of service name.
+     * Dns name used for the service. If this is specified, then the service can be accessed via its DNS name instead of
+     * service name.
      */
-    @JsonProperty(value = "serviceDnsName")
     private String serviceDnsName;
 
     /**
      * Creates an instance of ServiceResourceProperties class.
      */
     public ServiceResourceProperties() {
+    }
+
+    /**
+     * Get the serviceKind property: The kind of service (Stateless or Stateful).
+     * 
+     * @return the serviceKind value.
+     */
+    public ServiceKind serviceKind() {
+        return this.serviceKind;
     }
 
     /**
@@ -70,6 +70,18 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ServiceResourceProperties object itself.
+     */
+    ServiceResourceProperties withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
     }
 
     /**
@@ -208,9 +220,121 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (partitionDescription() != null) {
             partitionDescription().validate();
         }
+        if (correlationScheme() != null) {
+            correlationScheme().forEach(e -> e.validate());
+        }
+        if (serviceLoadMetrics() != null) {
+            serviceLoadMetrics().forEach(e -> e.validate());
+        }
+        if (servicePlacementPolicies() != null) {
+            servicePlacementPolicies().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("placementConstraints", placementConstraints());
+        jsonWriter.writeArrayField("correlationScheme", correlationScheme(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceLoadMetrics", serviceLoadMetrics(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("servicePlacementPolicies", servicePlacementPolicies(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultMoveCost", defaultMoveCost() == null ? null : defaultMoveCost().toString());
+        jsonWriter.writeStringField("serviceKind", this.serviceKind == null ? null : this.serviceKind.toString());
+        jsonWriter.writeStringField("serviceTypeName", this.serviceTypeName);
+        jsonWriter.writeJsonField("partitionDescription", this.partitionDescription);
+        jsonWriter.writeStringField("servicePackageActivationMode",
+            this.servicePackageActivationMode == null ? null : this.servicePackageActivationMode.toString());
+        jsonWriter.writeStringField("serviceDnsName", this.serviceDnsName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceResourceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceResourceProperties.
+     */
+    public static ServiceResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("serviceKind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Stateful".equals(discriminatorValue)) {
+                    return StatefulServiceProperties.fromJson(readerToUse.reset());
+                } else if ("Stateless".equals(discriminatorValue)) {
+                    return StatelessServiceProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ServiceResourceProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceResourceProperties deserializedServiceResourceProperties = new ServiceResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("placementConstraints".equals(fieldName)) {
+                    deserializedServiceResourceProperties.withPlacementConstraints(reader.getString());
+                } else if ("correlationScheme".equals(fieldName)) {
+                    List<ServiceCorrelationDescription> correlationScheme
+                        = reader.readArray(reader1 -> ServiceCorrelationDescription.fromJson(reader1));
+                    deserializedServiceResourceProperties.withCorrelationScheme(correlationScheme);
+                } else if ("serviceLoadMetrics".equals(fieldName)) {
+                    List<ServiceLoadMetricDescription> serviceLoadMetrics
+                        = reader.readArray(reader1 -> ServiceLoadMetricDescription.fromJson(reader1));
+                    deserializedServiceResourceProperties.withServiceLoadMetrics(serviceLoadMetrics);
+                } else if ("servicePlacementPolicies".equals(fieldName)) {
+                    List<ServicePlacementPolicyDescription> servicePlacementPolicies
+                        = reader.readArray(reader1 -> ServicePlacementPolicyDescription.fromJson(reader1));
+                    deserializedServiceResourceProperties.withServicePlacementPolicies(servicePlacementPolicies);
+                } else if ("defaultMoveCost".equals(fieldName)) {
+                    deserializedServiceResourceProperties.withDefaultMoveCost(MoveCost.fromString(reader.getString()));
+                } else if ("serviceKind".equals(fieldName)) {
+                    deserializedServiceResourceProperties.serviceKind = ServiceKind.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedServiceResourceProperties.provisioningState = reader.getString();
+                } else if ("serviceTypeName".equals(fieldName)) {
+                    deserializedServiceResourceProperties.serviceTypeName = reader.getString();
+                } else if ("partitionDescription".equals(fieldName)) {
+                    deserializedServiceResourceProperties.partitionDescription
+                        = PartitionSchemeDescription.fromJson(reader);
+                } else if ("servicePackageActivationMode".equals(fieldName)) {
+                    deserializedServiceResourceProperties.servicePackageActivationMode
+                        = ArmServicePackageActivationMode.fromString(reader.getString());
+                } else if ("serviceDnsName".equals(fieldName)) {
+                    deserializedServiceResourceProperties.serviceDnsName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceResourceProperties;
+        });
     }
 }

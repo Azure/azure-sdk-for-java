@@ -14,44 +14,37 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dnsresolver.fluent.models.InboundEndpointInner;
 import com.azure.resourcemanager.dnsresolver.models.InboundEndpointPatch;
 
-/** An instance of this class provides access to all the operations defined in InboundEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InboundEndpointsClient.
+ */
 public interface InboundEndpointsClient {
     /**
      * Creates or updates an inbound endpoint for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of describes an inbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String dnsResolverName,
-        String inboundEndpointName,
-        InboundEndpointInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
+    SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginCreateOrUpdate(String resourceGroupName,
+        String dnsResolverName, String inboundEndpointName, InboundEndpointInner parameters);
 
     /**
      * Creates or updates an inbound endpoint for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -59,43 +52,13 @@ public interface InboundEndpointsClient {
      * @return the {@link SyncPoller} for polling of describes an inbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String dnsResolverName,
-        String inboundEndpointName,
-        InboundEndpointInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginCreateOrUpdate(String resourceGroupName,
+        String dnsResolverName, String inboundEndpointName, InboundEndpointInner parameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
      * Creates or updates an inbound endpoint for a DNS resolver.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an inbound endpoint for a DNS resolver.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    InboundEndpointInner createOrUpdate(
-        String resourceGroupName,
-        String dnsResolverName,
-        String inboundEndpointName,
-        InboundEndpointInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
-
-    /**
-     * Creates or updates an inbound endpoint for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
@@ -106,20 +69,20 @@ public interface InboundEndpointsClient {
      * @return describes an inbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InboundEndpointInner createOrUpdate(
-        String resourceGroupName, String dnsResolverName, String inboundEndpointName, InboundEndpointInner parameters);
+    InboundEndpointInner createOrUpdate(String resourceGroupName, String dnsResolverName, String inboundEndpointName,
+        InboundEndpointInner parameters);
 
     /**
      * Creates or updates an inbound endpoint for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -127,46 +90,34 @@ public interface InboundEndpointsClient {
      * @return describes an inbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InboundEndpointInner createOrUpdate(
-        String resourceGroupName,
-        String dnsResolverName,
-        String inboundEndpointName,
-        InboundEndpointInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    InboundEndpointInner createOrUpdate(String resourceGroupName, String dnsResolverName, String inboundEndpointName,
+        InboundEndpointInner parameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Updates an inbound endpoint for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
      * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of describes an inbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginUpdate(
-        String resourceGroupName,
-        String dnsResolverName,
-        String inboundEndpointName,
-        InboundEndpointPatch parameters,
-        String ifMatch);
+    SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginUpdate(String resourceGroupName,
+        String dnsResolverName, String inboundEndpointName, InboundEndpointPatch parameters);
 
     /**
      * Updates an inbound endpoint for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -174,39 +125,13 @@ public interface InboundEndpointsClient {
      * @return the {@link SyncPoller} for polling of describes an inbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginUpdate(
-        String resourceGroupName,
-        String dnsResolverName,
-        String inboundEndpointName,
-        InboundEndpointPatch parameters,
-        String ifMatch,
+    SyncPoller<PollResult<InboundEndpointInner>, InboundEndpointInner> beginUpdate(String resourceGroupName,
+        String dnsResolverName, String inboundEndpointName, InboundEndpointPatch parameters, String ifMatch,
         Context context);
 
     /**
      * Updates an inbound endpoint for a DNS resolver.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes an inbound endpoint for a DNS resolver.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    InboundEndpointInner update(
-        String resourceGroupName,
-        String dnsResolverName,
-        String inboundEndpointName,
-        InboundEndpointPatch parameters,
-        String ifMatch);
-
-    /**
-     * Updates an inbound endpoint for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
@@ -217,18 +142,18 @@ public interface InboundEndpointsClient {
      * @return describes an inbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InboundEndpointInner update(
-        String resourceGroupName, String dnsResolverName, String inboundEndpointName, InboundEndpointPatch parameters);
+    InboundEndpointInner update(String resourceGroupName, String dnsResolverName, String inboundEndpointName,
+        InboundEndpointPatch parameters);
 
     /**
      * Updates an inbound endpoint for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -236,39 +161,32 @@ public interface InboundEndpointsClient {
      * @return describes an inbound endpoint for a DNS resolver.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InboundEndpointInner update(
-        String resourceGroupName,
-        String dnsResolverName,
-        String inboundEndpointName,
-        InboundEndpointPatch parameters,
-        String ifMatch,
-        Context context);
+    InboundEndpointInner update(String resourceGroupName, String dnsResolverName, String inboundEndpointName,
+        InboundEndpointPatch parameters, String ifMatch, Context context);
 
     /**
      * Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
+        String inboundEndpointName);
 
     /**
      * Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -276,27 +194,12 @@ public interface InboundEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsResolverName,
+        String inboundEndpointName, String ifMatch, Context context);
 
     /**
      * Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch);
-
-    /**
-     * Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
@@ -309,24 +212,40 @@ public interface InboundEndpointsClient {
 
     /**
      * Deletes an inbound endpoint for a DNS resolver. WARNING: This operation cannot be undone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch, Context context);
+    void delete(String resourceGroupName, String dnsResolverName, String inboundEndpointName, String ifMatch,
+        Context context);
 
     /**
      * Gets properties of an inbound endpoint for a DNS resolver.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsResolverName The name of the DNS resolver.
+     * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an inbound endpoint for a DNS resolver along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<InboundEndpointInner> getWithResponse(String resourceGroupName, String dnsResolverName,
+        String inboundEndpointName, Context context);
+
+    /**
+     * Gets properties of an inbound endpoint for a DNS resolver.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
@@ -339,38 +258,22 @@ public interface InboundEndpointsClient {
     InboundEndpointInner get(String resourceGroupName, String dnsResolverName, String inboundEndpointName);
 
     /**
-     * Gets properties of an inbound endpoint for a DNS resolver.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsResolverName The name of the DNS resolver.
-     * @param inboundEndpointName The name of the inbound endpoint for the DNS resolver.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an inbound endpoint for a DNS resolver along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InboundEndpointInner> getWithResponse(
-        String resourceGroupName, String dnsResolverName, String inboundEndpointName, Context context);
-
-    /**
      * Lists inbound endpoints for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on inbound endpoints for a DNS resolver as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InboundEndpointInner> list(String resourceGroupName, String dnsResolverName);
 
     /**
      * Lists inbound endpoints for a DNS resolver.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsResolverName The name of the DNS resolver.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -379,9 +282,9 @@ public interface InboundEndpointsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on inbound endpoints for a DNS resolver as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<InboundEndpointInner> list(
-        String resourceGroupName, String dnsResolverName, Integer top, Context context);
+    PagedIterable<InboundEndpointInner> list(String resourceGroupName, String dnsResolverName, Integer top,
+        Context context);
 }

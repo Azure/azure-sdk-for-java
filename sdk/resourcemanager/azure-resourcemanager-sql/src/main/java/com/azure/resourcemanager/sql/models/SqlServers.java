@@ -23,49 +23,86 @@ import java.util.List;
 
 /** Entry point to SQL Server management API. */
 @Fluent
-public interface SqlServers
-    extends SupportsCreating<SqlServer.DefinitionStages.Blank>,
-        SupportsListing<SqlServer>,
-        SupportsListingByResourceGroup<SqlServer>,
-        SupportsGettingByResourceGroup<SqlServer>,
-        SupportsGettingById<SqlServer>,
-        SupportsDeletingById,
-        SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<SqlServer>,
-        SupportsBatchDeletion,
-        HasManager<SqlServerManager> {
+public interface SqlServers extends SupportsCreating<SqlServer.DefinitionStages.Blank>, SupportsListing<SqlServer>,
+    SupportsListingByResourceGroup<SqlServer>, SupportsGettingByResourceGroup<SqlServer>,
+    SupportsGettingById<SqlServer>, SupportsDeletingById, SupportsDeletingByResourceGroup,
+    SupportsBatchCreation<SqlServer>, SupportsBatchDeletion, HasManager<SqlServerManager> {
 
-    /** @return the SQL Server Firewall Rules API entry point */
+    /**
+     * Gets the API entry point of the SQL Server Firewall Rules.
+     *
+     * @return the SQL Server Firewall Rules API entry point
+     */
     SqlFirewallRuleOperations firewallRules();
 
-    /** @return the SQL Server VirtualNetwork Rules API entry point */
+    /**
+     * Gets the API entry point of the SQL Server VirtualNetwork Rules.
+     *
+     * @return the SQL Server VirtualNetwork Rules API entry point
+     */
     SqlVirtualNetworkRuleOperations virtualNetworkRules();
 
-    /** @return the SQL Server DNS aliases API entry point */
+    /**
+     * Gets the API entry point of the SQL Server DNS aliases.
+     *
+     * @return the SQL Server DNS aliases API entry point
+     */
     SqlServerDnsAliasOperations dnsAliases();
 
-    /** @return the SQL Failover Group API entry point */
+    /**
+     * Gets the API entry point of the SQL Failover Group.
+     *
+     * @return the SQL Failover Group API entry point
+     */
     SqlFailoverGroupOperations failoverGroups();
 
-    /** @return the SQL Server Key entry point */
+    /**
+     * Gets the entry point of the SQL Server Key.
+     *
+     * @return the SQL Server Key entry point
+     */
     SqlServerKeyOperations serverKeys();
 
-    /** @return the SQL Encryption Protector entry point */
+    /**
+     * Gets the entry point of the SQL Encryption Protector.
+     *
+     * @return the SQL Encryption Protector entry point
+     */
     SqlEncryptionProtectorOperations encryptionProtectors();
 
-    /** @return entry point to manage SQL Server Security Alert Policy */
+    /**
+     * Gets entry point to manage SQL Server Security Alert Policy.
+     *
+     * @return entry point to manage SQL Server Security Alert Policy
+     */
     SqlServerSecurityAlertPolicyOperations serverSecurityAlertPolicies();
 
-    /** @return the SQL Sync Group entry point */
+    /**
+     * Gets the entry point of the SQL Sync Group.
+     *
+     * @return the SQL Sync Group entry point
+     */
     SqlSyncGroupOperations syncGroups();
 
-    /** @return the SQL Sync Group entry point */
+    /**
+     * Gets the entry point of the SQL Sync Group.
+     *
+     * @return the SQL Sync Group entry point
+     */
     SqlSyncMemberOperations syncMembers();
 
-    /** @return the SQL Server Elastic Pools API entry point */
+    /**
+     * Gets the API entry point of the SQL Server Elastic Pools.
+     *
+     * @return the SQL Server Elastic Pools API entry point
+     */
     SqlElasticPoolOperations elasticPools();
 
-    /** @return the SQL Server Database API entry point */
+    /**
+     * Gets the API entry point of the SQL Server Database.
+     *
+     * @return the SQL Server Database API entry point
+     */
     SqlDatabaseOperations databases();
 
     /**

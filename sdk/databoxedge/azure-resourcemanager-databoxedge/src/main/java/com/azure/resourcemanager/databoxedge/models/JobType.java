@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the job. */
+/**
+ * The type of the job.
+ */
 public final class JobType extends ExpandableStringEnum<JobType> {
-    /** Static value Invalid for JobType. */
+    /**
+     * Static value Invalid for JobType.
+     */
     public static final JobType INVALID = fromString("Invalid");
 
-    /** Static value ScanForUpdates for JobType. */
+    /**
+     * Static value ScanForUpdates for JobType.
+     */
     public static final JobType SCAN_FOR_UPDATES = fromString("ScanForUpdates");
 
-    /** Static value DownloadUpdates for JobType. */
+    /**
+     * Static value DownloadUpdates for JobType.
+     */
     public static final JobType DOWNLOAD_UPDATES = fromString("DownloadUpdates");
 
-    /** Static value InstallUpdates for JobType. */
+    /**
+     * Static value InstallUpdates for JobType.
+     */
     public static final JobType INSTALL_UPDATES = fromString("InstallUpdates");
 
-    /** Static value RefreshShare for JobType. */
+    /**
+     * Static value RefreshShare for JobType.
+     */
     public static final JobType REFRESH_SHARE = fromString("RefreshShare");
 
-    /** Static value RefreshContainer for JobType. */
+    /**
+     * Static value RefreshContainer for JobType.
+     */
     public static final JobType REFRESH_CONTAINER = fromString("RefreshContainer");
 
     /**
      * Creates a new instance of JobType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class JobType extends ExpandableStringEnum<JobType> {
 
     /**
      * Creates or finds a JobType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobType.
      */
-    @JsonCreator
     public static JobType fromString(String name) {
         return fromString(name, JobType.class);
     }
 
     /**
      * Gets known JobType values.
-     *
+     * 
      * @return known JobType values.
      */
     public static Collection<JobType> values() {

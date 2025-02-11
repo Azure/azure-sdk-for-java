@@ -69,8 +69,8 @@ public final class TextAnalyticsActions {
      * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setRecognizeEntitiesActions(RecognizeEntitiesAction... recognizeEntitiesActions) {
-        this.recognizeEntitiesActions = recognizeEntitiesActions == null ? null
-            : Arrays.asList(recognizeEntitiesActions);
+        this.recognizeEntitiesActions
+            = recognizeEntitiesActions == null ? null : Arrays.asList(recognizeEntitiesActions);
         return this;
     }
 
@@ -90,10 +90,10 @@ public final class TextAnalyticsActions {
      *
      * @return The {@code TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setRecognizeLinkedEntitiesActions(
-        RecognizeLinkedEntitiesAction... recognizeLinkedEntitiesActions) {
-        this.recognizeLinkedEntitiesActions = recognizeLinkedEntitiesActions == null ? null
-            : Arrays.asList(recognizeLinkedEntitiesActions);
+    public TextAnalyticsActions
+        setRecognizeLinkedEntitiesActions(RecognizeLinkedEntitiesAction... recognizeLinkedEntitiesActions) {
+        this.recognizeLinkedEntitiesActions
+            = recognizeLinkedEntitiesActions == null ? null : Arrays.asList(recognizeLinkedEntitiesActions);
         return this;
     }
 
@@ -113,10 +113,10 @@ public final class TextAnalyticsActions {
      *
      * @return The {@code TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setRecognizePiiEntitiesActions(
-        RecognizePiiEntitiesAction... recognizePiiEntitiesActions) {
-        this.recognizePiiEntitiesActions = recognizePiiEntitiesActions == null ? null
-            : Arrays.asList(recognizePiiEntitiesActions);
+    public TextAnalyticsActions
+        setRecognizePiiEntitiesActions(RecognizePiiEntitiesAction... recognizePiiEntitiesActions) {
+        this.recognizePiiEntitiesActions
+            = recognizePiiEntitiesActions == null ? null : Arrays.asList(recognizePiiEntitiesActions);
         return this;
     }
 
@@ -136,10 +136,10 @@ public final class TextAnalyticsActions {
      *
      * @return The {@code TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setAnalyzeHealthcareEntitiesActions(
-        AnalyzeHealthcareEntitiesAction... analyzeHealthcareEntitiesActions) {
-        this.analyzeHealthcareEntitiesActions = analyzeHealthcareEntitiesActions == null ? null
-            : Arrays.asList(analyzeHealthcareEntitiesActions);
+    public TextAnalyticsActions
+        setAnalyzeHealthcareEntitiesActions(AnalyzeHealthcareEntitiesAction... analyzeHealthcareEntitiesActions) {
+        this.analyzeHealthcareEntitiesActions
+            = analyzeHealthcareEntitiesActions == null ? null : Arrays.asList(analyzeHealthcareEntitiesActions);
         return this;
     }
 
@@ -160,8 +160,8 @@ public final class TextAnalyticsActions {
      * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setExtractKeyPhrasesActions(ExtractKeyPhrasesAction... extractKeyPhrasesActions) {
-        this.extractKeyPhrasesActions = extractKeyPhrasesActions == null ? null
-            : Arrays.asList(extractKeyPhrasesActions);
+        this.extractKeyPhrasesActions
+            = extractKeyPhrasesActions == null ? null : Arrays.asList(extractKeyPhrasesActions);
         return this;
     }
 
@@ -206,10 +206,10 @@ public final class TextAnalyticsActions {
      *
      * @return The {@code TextAnalyticsActions} object itself.
      */
-    public TextAnalyticsActions setRecognizeCustomEntitiesActions(
-        RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
-        this.recognizeCustomEntitiesActions = recognizeCustomEntitiesActions == null ? null
-            : Arrays.asList(recognizeCustomEntitiesActions);
+    public TextAnalyticsActions
+        setRecognizeCustomEntitiesActions(RecognizeCustomEntitiesAction... recognizeCustomEntitiesActions) {
+        this.recognizeCustomEntitiesActions
+            = recognizeCustomEntitiesActions == null ? null : Arrays.asList(recognizeCustomEntitiesActions);
         return this;
     }
 
@@ -235,8 +235,8 @@ public final class TextAnalyticsActions {
      * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setSingleLabelClassifyActions(SingleLabelClassifyAction... singleLabelClassifyActions) {
-        this.singleLabelClassifyActions = singleLabelClassifyActions == null ? null
-            : Arrays.asList(singleLabelClassifyActions);
+        this.singleLabelClassifyActions
+            = singleLabelClassifyActions == null ? null : Arrays.asList(singleLabelClassifyActions);
         return this;
     }
 
@@ -262,8 +262,8 @@ public final class TextAnalyticsActions {
      * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setMultiLabelClassifyActions(MultiLabelClassifyAction... multiLabelClassifyActions) {
-        this.multiLabelClassifyActions = multiLabelClassifyActions == null ? null
-            : Arrays.asList(multiLabelClassifyActions);
+        this.multiLabelClassifyActions
+            = multiLabelClassifyActions == null ? null : Arrays.asList(multiLabelClassifyActions);
         return this;
     }
 
@@ -284,8 +284,8 @@ public final class TextAnalyticsActions {
      * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setAbstractiveSummaryActions(AbstractiveSummaryAction... abstractiveSummaryActions) {
-        this.abstractiveSummaryActions = abstractiveSummaryActions == null ? null
-            : Arrays.asList(abstractiveSummaryActions);
+        this.abstractiveSummaryActions
+            = abstractiveSummaryActions == null ? null : Arrays.asList(abstractiveSummaryActions);
         return this;
     }
 
@@ -306,8 +306,8 @@ public final class TextAnalyticsActions {
      * @return The {@code TextAnalyticsActions} object itself.
      */
     public TextAnalyticsActions setExtractiveSummaryActions(ExtractiveSummaryAction... extractiveSummaryActions) {
-        this.extractiveSummaryActions = extractiveSummaryActions == null ? null
-            : Arrays.asList(extractiveSummaryActions);
+        this.extractiveSummaryActions
+            = extractiveSummaryActions == null ? null : Arrays.asList(extractiveSummaryActions);
         return this;
     }
 }

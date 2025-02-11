@@ -5,45 +5,48 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.UserEntityBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.UserState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters supplied to the Update User operation. */
+/**
+ * Parameters supplied to the Update User operation.
+ */
 @Fluent
 public final class UserUpdateParametersProperties extends UserEntityBaseParameters {
     /*
      * Email address. Must not be empty and must be unique within the service instance.
      */
-    @JsonProperty(value = "email")
     private String email;
 
     /*
      * User Password.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * First name.
      */
-    @JsonProperty(value = "firstName")
     private String firstName;
 
     /*
      * Last name.
      */
-    @JsonProperty(value = "lastName")
     private String lastName;
 
-    /** Creates an instance of UserUpdateParametersProperties class. */
+    /**
+     * Creates an instance of UserUpdateParametersProperties class.
+     */
     public UserUpdateParametersProperties() {
     }
 
     /**
      * Get the email property: Email address. Must not be empty and must be unique within the service instance.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -52,7 +55,7 @@ public final class UserUpdateParametersProperties extends UserEntityBaseParamete
 
     /**
      * Set the email property: Email address. Must not be empty and must be unique within the service instance.
-     *
+     * 
      * @param email the email value to set.
      * @return the UserUpdateParametersProperties object itself.
      */
@@ -63,7 +66,7 @@ public final class UserUpdateParametersProperties extends UserEntityBaseParamete
 
     /**
      * Get the password property: User Password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -72,7 +75,7 @@ public final class UserUpdateParametersProperties extends UserEntityBaseParamete
 
     /**
      * Set the password property: User Password.
-     *
+     * 
      * @param password the password value to set.
      * @return the UserUpdateParametersProperties object itself.
      */
@@ -83,7 +86,7 @@ public final class UserUpdateParametersProperties extends UserEntityBaseParamete
 
     /**
      * Get the firstName property: First name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -92,7 +95,7 @@ public final class UserUpdateParametersProperties extends UserEntityBaseParamete
 
     /**
      * Set the firstName property: First name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the UserUpdateParametersProperties object itself.
      */
@@ -103,7 +106,7 @@ public final class UserUpdateParametersProperties extends UserEntityBaseParamete
 
     /**
      * Get the lastName property: Last name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -112,7 +115,7 @@ public final class UserUpdateParametersProperties extends UserEntityBaseParamete
 
     /**
      * Set the lastName property: Last name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the UserUpdateParametersProperties object itself.
      */
@@ -121,21 +124,27 @@ public final class UserUpdateParametersProperties extends UserEntityBaseParamete
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserUpdateParametersProperties withState(UserState state) {
         super.withState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserUpdateParametersProperties withNote(String note) {
         super.withNote(note);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserUpdateParametersProperties withIdentities(List<UserIdentityContractInner> identities) {
         super.withIdentities(identities);
@@ -144,11 +153,70 @@ public final class UserUpdateParametersProperties extends UserEntityBaseParamete
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (identities() != null) {
+            identities().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("note", note());
+        jsonWriter.writeArrayField("identities", identities(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("email", this.email);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserUpdateParametersProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserUpdateParametersProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserUpdateParametersProperties.
+     */
+    public static UserUpdateParametersProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserUpdateParametersProperties deserializedUserUpdateParametersProperties
+                = new UserUpdateParametersProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("state".equals(fieldName)) {
+                    deserializedUserUpdateParametersProperties.withState(UserState.fromString(reader.getString()));
+                } else if ("note".equals(fieldName)) {
+                    deserializedUserUpdateParametersProperties.withNote(reader.getString());
+                } else if ("identities".equals(fieldName)) {
+                    List<UserIdentityContractInner> identities
+                        = reader.readArray(reader1 -> UserIdentityContractInner.fromJson(reader1));
+                    deserializedUserUpdateParametersProperties.withIdentities(identities);
+                } else if ("email".equals(fieldName)) {
+                    deserializedUserUpdateParametersProperties.email = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedUserUpdateParametersProperties.password = reader.getString();
+                } else if ("firstName".equals(fieldName)) {
+                    deserializedUserUpdateParametersProperties.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedUserUpdateParametersProperties.lastName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserUpdateParametersProperties;
+        });
     }
 }

@@ -29,21 +29,9 @@ Add following test dependencies to POM at `sdk/<service>/azure-resourcemanager-<
   <version>2.15.0</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-resources;dependency} -->
   <scope>test</scope>
 </dependency>
-<dependency>
-  <groupId>org.junit.jupiter</groupId>
-  <artifactId>junit-jupiter-engine</artifactId>
-  <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
-  <scope>test</scope>
-</dependency>
-<dependency>
-  <groupId>org.slf4j</groupId>
-  <artifactId>slf4j-simple</artifactId>
-  <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
-  <scope>test</scope>
-</dependency>
 ```
 
-- `azure-core-test` and `junit-jupiter-engine` for test framework.
+- `azure-core-test` for test framework.
 - `azure-identity` for authorization.
 - `azure-resourcemanager-resources` for SDK to manage resource groups.
 - One might add other required libraries in `test` scope.
@@ -58,7 +46,7 @@ to update the versions in POM.
 
 ## Add Bicep Script for Test Environment
 
-Add a [bicep](https://github.com/Azure/bicep) script at `sdk/<service>/test-resources.bicep` ([example](https://github.com/azure/azure-sdk-for-java/blob/main/sdk/databricks/test-resources.bicep)).
+Add a [bicep](https://github.com/Azure/bicep) script at `sdk/<service>/test-resources.bicep` ([example](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/databricks/test-resources.bicep)).
 
 No change to the bicep script is required.
 
@@ -67,7 +55,7 @@ No change to the bicep script is required.
 
 ## Add Live Tests
 
-Add live tests ([example](https://github.com/azure/azure-sdk-for-java/blob/main/sdk/databricks/azure-resourcemanager-databricks/src/test/java/com/azure/resourcemanager/databricks/DatabricksTests.java)).
+Add live tests ([example](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/databricks/azure-resourcemanager-databricks/src/test/java/com/azure/resourcemanager/databricks/DatabricksTests.java)).
 
 - `@LiveOnly` make it a live test, without recording and playback.
 - It uses the `AZURE_RESOURCE_GROUP_NAME` environment variable if available.

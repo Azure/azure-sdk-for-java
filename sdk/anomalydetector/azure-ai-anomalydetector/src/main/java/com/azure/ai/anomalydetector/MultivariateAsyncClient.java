@@ -55,7 +55,8 @@ public final class MultivariateAsyncClient {
      * resultId value that the BatchDetectAnomaly API returns.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     resultId: String (Required)
      *     summary (Required): {
@@ -107,7 +108,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param resultId ID of a batch detection result.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -115,7 +117,10 @@ public final class MultivariateAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detection results for the resultId value along with {@link Response} on successful completion of
+     * @return multivariate Anomaly Detection Result
+     *
+     * For asynchronous inference, get a multivariate anomaly detection result based on the
+     * resultId value that the BatchDetectAnomaly API returns along with {@link Response} on successful completion of
      * {@link Mono}.
      */
     @Generated
@@ -142,7 +147,8 @@ public final class MultivariateAsyncClient {
      * modelInfo object.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dataSource: String (Required)
      *     dataSchema: String(OneTable/MultiTable) (Optional)
@@ -188,11 +194,13 @@ public final class MultivariateAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -243,7 +251,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param modelInfo Model information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -274,7 +283,8 @@ public final class MultivariateAsyncClient {
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -325,7 +335,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -366,7 +377,8 @@ public final class MultivariateAsyncClient {
      * and variables used in the model.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     modelId: String (Required)
      *     createdTime: OffsetDateTime (Required)
@@ -417,7 +429,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     }
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param modelId Model identifier.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -425,7 +438,9 @@ public final class MultivariateAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return detailed information about the multivariate model, including the training status
+     * @return multivariate Model
+     *
+     * Get detailed information about the multivariate model, including the training status
      * and variables used in the model along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -445,18 +460,21 @@ public final class MultivariateAsyncClient {
      * Storage folder or points to a CSV file in Azure Blob Storage.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     dataSource: String (Required)
      *     topContributorCount: Integer (Optional)
      *     startTime: OffsetDateTime (Required)
      *     endTime: OffsetDateTime (Required)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     resultId: String (Required)
      *     summary (Required): {
@@ -508,7 +526,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param modelId Model identifier.
      * @param options Request of multivariate anomaly detection.
@@ -536,7 +555,8 @@ public final class MultivariateAsyncClient {
      * immediately in the response body.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     variables (Required): [
      *          (Required){
@@ -551,11 +571,13 @@ public final class MultivariateAsyncClient {
      *     ]
      *     topContributorCount: Integer (Optional)
      * }
-     * }</pre>
+     * }
+     * </pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>{@code
+     * <pre>
+     * {@code
      * {
      *     variableStates (Optional): [
      *          (Optional){
@@ -594,7 +616,8 @@ public final class MultivariateAsyncClient {
      *         }
      *     ]
      * }
-     * }</pre>
+     * }
+     * </pre>
      *
      * @param modelId Model identifier.
      * @param options Request of the last detection.
@@ -625,7 +648,10 @@ public final class MultivariateAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detection results for the resultId value on successful completion of {@link Mono}.
+     * @return multivariate Anomaly Detection Result
+     *
+     * For asynchronous inference, get a multivariate anomaly detection result based on the
+     * resultId value that the BatchDetectAnomaly API returns on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -781,7 +807,9 @@ public final class MultivariateAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information about the multivariate model, including the training status
+     * @return multivariate Model
+     *
+     * Get detailed information about the multivariate model, including the training status
      * and variables used in the model on successful completion of {@link Mono}.
      */
     @Generated

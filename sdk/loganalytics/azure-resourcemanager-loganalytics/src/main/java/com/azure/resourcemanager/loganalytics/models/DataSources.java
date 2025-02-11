@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DataSources. */
+/**
+ * Resource collection API of DataSources.
+ */
 public interface DataSources {
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -22,12 +24,12 @@ public interface DataSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String dataSourceName,
+        Context context);
 
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -39,7 +41,7 @@ public interface DataSources {
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -49,12 +51,12 @@ public interface DataSources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a datasource instance along with {@link Response}.
      */
-    Response<DataSource> getWithResponse(
-        String resourceGroupName, String workspaceName, String dataSourceName, Context context);
+    Response<DataSource> getWithResponse(String resourceGroupName, String workspaceName, String dataSourceName,
+        Context context);
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
@@ -67,7 +69,7 @@ public interface DataSources {
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -75,13 +77,13 @@ public interface DataSources {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     PagedIterable<DataSource> listByWorkspace(String resourceGroupName, String workspaceName, String filter);
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param filter The filter to apply on the operation.
@@ -91,14 +93,14 @@ public interface DataSources {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the first page of data source instances in a workspace with the link to the next page as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
-    PagedIterable<DataSource> listByWorkspace(
-        String resourceGroupName, String workspaceName, String filter, String skiptoken, Context context);
+    PagedIterable<DataSource> listByWorkspace(String resourceGroupName, String workspaceName, String filter,
+        String skiptoken, Context context);
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,7 +111,7 @@ public interface DataSources {
 
     /**
      * Gets a datasource instance.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,7 +123,7 @@ public interface DataSources {
 
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,7 +133,7 @@ public interface DataSources {
 
     /**
      * Deletes a data source instance.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +145,7 @@ public interface DataSources {
 
     /**
      * Begins definition for a new DataSource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DataSource definition.
      */

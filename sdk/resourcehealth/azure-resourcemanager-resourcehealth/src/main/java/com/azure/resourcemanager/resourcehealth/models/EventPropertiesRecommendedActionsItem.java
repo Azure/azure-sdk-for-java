@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Recommended action for the service health event. */
+/**
+ * Recommended action for the service health event.
+ */
 @Fluent
-public final class EventPropertiesRecommendedActionsItem {
+public final class EventPropertiesRecommendedActionsItem
+    implements JsonSerializable<EventPropertiesRecommendedActionsItem> {
     /*
      * Recommended action group Id for the service health event.
      */
-    @JsonProperty(value = "groupId")
     private Integer groupId;
 
     /*
      * Recommended action text
      */
-    @JsonProperty(value = "actionText")
     private String actionText;
 
-    /** Creates an instance of EventPropertiesRecommendedActionsItem class. */
+    /**
+     * Creates an instance of EventPropertiesRecommendedActionsItem class.
+     */
     public EventPropertiesRecommendedActionsItem() {
     }
 
     /**
      * Get the groupId property: Recommended action group Id for the service health event.
-     *
+     * 
      * @return the groupId value.
      */
     public Integer groupId() {
@@ -37,7 +44,7 @@ public final class EventPropertiesRecommendedActionsItem {
 
     /**
      * Set the groupId property: Recommended action group Id for the service health event.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the EventPropertiesRecommendedActionsItem object itself.
      */
@@ -48,7 +55,7 @@ public final class EventPropertiesRecommendedActionsItem {
 
     /**
      * Get the actionText property: Recommended action text.
-     *
+     * 
      * @return the actionText value.
      */
     public String actionText() {
@@ -57,7 +64,7 @@ public final class EventPropertiesRecommendedActionsItem {
 
     /**
      * Set the actionText property: Recommended action text.
-     *
+     * 
      * @param actionText the actionText value to set.
      * @return the EventPropertiesRecommendedActionsItem object itself.
      */
@@ -68,9 +75,49 @@ public final class EventPropertiesRecommendedActionsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("groupId", this.groupId);
+        jsonWriter.writeStringField("actionText", this.actionText);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventPropertiesRecommendedActionsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventPropertiesRecommendedActionsItem if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventPropertiesRecommendedActionsItem.
+     */
+    public static EventPropertiesRecommendedActionsItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventPropertiesRecommendedActionsItem deserializedEventPropertiesRecommendedActionsItem
+                = new EventPropertiesRecommendedActionsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupId".equals(fieldName)) {
+                    deserializedEventPropertiesRecommendedActionsItem.groupId = reader.getNullable(JsonReader::getInt);
+                } else if ("actionText".equals(fieldName)) {
+                    deserializedEventPropertiesRecommendedActionsItem.actionText = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventPropertiesRecommendedActionsItem;
+        });
     }
 }

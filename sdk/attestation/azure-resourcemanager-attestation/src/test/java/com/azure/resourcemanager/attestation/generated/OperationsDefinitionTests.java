@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationsDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationsDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"tbmufpo\",\"display\":{\"provider\":\"izhwlrxy\",\"resource\":\"soqijg\",\"operation\":\"mbpazlobcufpdzn\",\"description\":\"t\"}}")
-                .toObject(OperationsDefinition.class);
+        OperationsDefinition model = BinaryData.fromString(
+            "{\"name\":\"tbmufpo\",\"display\":{\"provider\":\"izhwlrxy\",\"resource\":\"soqijg\",\"operation\":\"mbpazlobcufpdzn\",\"description\":\"t\"}}")
+            .toObject(OperationsDefinition.class);
         Assertions.assertEquals("tbmufpo", model.name());
         Assertions.assertEquals("izhwlrxy", model.display().provider());
         Assertions.assertEquals("soqijg", model.display().resource());
@@ -26,15 +24,11 @@ public final class OperationsDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationsDefinition model =
-            new OperationsDefinition()
-                .withName("tbmufpo")
-                .withDisplay(
-                    new OperationsDisplayDefinition()
-                        .withProvider("izhwlrxy")
-                        .withResource("soqijg")
-                        .withOperation("mbpazlobcufpdzn")
-                        .withDescription("t"));
+        OperationsDefinition model = new OperationsDefinition().withName("tbmufpo")
+            .withDisplay(new OperationsDisplayDefinition().withProvider("izhwlrxy")
+                .withResource("soqijg")
+                .withOperation("mbpazlobcufpdzn")
+                .withDescription("t"));
         model = BinaryData.fromObject(model).toObject(OperationsDefinition.class);
         Assertions.assertEquals("tbmufpo", model.name());
         Assertions.assertEquals("izhwlrxy", model.display().provider());

@@ -5,29 +5,31 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Authentication configuration information.
  */
 @Fluent
-public final class ServiceAuthenticationConfigurationInfo {
+public final class ServiceAuthenticationConfigurationInfo
+    implements JsonSerializable<ServiceAuthenticationConfigurationInfo> {
     /*
      * The authority url for the service
      */
-    @JsonProperty(value = "authority")
     private String authority;
 
     /*
      * The audience url for the service
      */
-    @JsonProperty(value = "audience")
     private String audience;
 
     /*
      * If the SMART on FHIR proxy is enabled
      */
-    @JsonProperty(value = "smartProxyEnabled")
     private Boolean smartProxyEnabled;
 
     /**
@@ -102,5 +104,49 @@ public final class ServiceAuthenticationConfigurationInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authority", this.authority);
+        jsonWriter.writeStringField("audience", this.audience);
+        jsonWriter.writeBooleanField("smartProxyEnabled", this.smartProxyEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceAuthenticationConfigurationInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceAuthenticationConfigurationInfo if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceAuthenticationConfigurationInfo.
+     */
+    public static ServiceAuthenticationConfigurationInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceAuthenticationConfigurationInfo deserializedServiceAuthenticationConfigurationInfo
+                = new ServiceAuthenticationConfigurationInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authority".equals(fieldName)) {
+                    deserializedServiceAuthenticationConfigurationInfo.authority = reader.getString();
+                } else if ("audience".equals(fieldName)) {
+                    deserializedServiceAuthenticationConfigurationInfo.audience = reader.getString();
+                } else if ("smartProxyEnabled".equals(fieldName)) {
+                    deserializedServiceAuthenticationConfigurationInfo.smartProxyEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceAuthenticationConfigurationInfo;
+        });
     }
 }

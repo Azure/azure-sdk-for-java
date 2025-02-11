@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.managednetworkfabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Action type. Example: Permit | Deny | Continue. */
+/**
+ * Action type. Example: Permit | Deny | Continue.
+ */
 public final class RoutePolicyActionType extends ExpandableStringEnum<RoutePolicyActionType> {
-    /** Static value Permit for RoutePolicyActionType. */
+    /**
+     * Static value Permit for RoutePolicyActionType.
+     */
     public static final RoutePolicyActionType PERMIT = fromString("Permit");
 
-    /** Static value Deny for RoutePolicyActionType. */
+    /**
+     * Static value Deny for RoutePolicyActionType.
+     */
     public static final RoutePolicyActionType DENY = fromString("Deny");
 
-    /** Static value Continue for RoutePolicyActionType. */
+    /**
+     * Static value Continue for RoutePolicyActionType.
+     */
     public static final RoutePolicyActionType CONTINUE = fromString("Continue");
 
     /**
      * Creates a new instance of RoutePolicyActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class RoutePolicyActionType extends ExpandableStringEnum<RoutePolic
 
     /**
      * Creates or finds a RoutePolicyActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RoutePolicyActionType.
      */
-    @JsonCreator
     public static RoutePolicyActionType fromString(String name) {
         return fromString(name, RoutePolicyActionType.class);
     }
 
     /**
      * Gets known RoutePolicyActionType values.
-     *
+     * 
      * @return known RoutePolicyActionType values.
      */
     public static Collection<RoutePolicyActionType> values() {

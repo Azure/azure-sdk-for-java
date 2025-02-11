@@ -12,5 +12,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
  */
 public interface IBreadSlice extends Indexable, Executable<IBreadSlice> {
     IBreadSlice withAnotherSliceFromStore(Executable<IBreadSlice> breadFetcher);
+
     IBreadSlice withNewOrder(Creatable<IOrder> order);
 }

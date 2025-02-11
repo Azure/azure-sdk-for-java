@@ -24,7 +24,8 @@ public class AzurePostgreSqlTableDataset extends Dataset {
     private String type = "AzurePostgreSqlTable";
 
     /*
-     * The table name of the Azure PostgreSQL database which includes both schema and table. Type: string (or Expression with resultType string).
+     * The table name of the Azure PostgreSQL database which includes both schema and table. Type: string (or Expression
+     * with resultType string).
      */
     private Object tableName;
 

@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"gpbtoqcjmklj\"}").toObject(PrivateEndpoint.class);
-        Assertions.assertEquals("gpbtoqcjmklj", model.id());
+        PrivateEndpoint model = BinaryData.fromString("{\"id\":\"xw\"}").toObject(PrivateEndpoint.class);
+        Assertions.assertEquals("xw", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpoint model = new PrivateEndpoint().withId("gpbtoqcjmklj");
+        PrivateEndpoint model = new PrivateEndpoint().withId("xw");
         model = BinaryData.fromObject(model).toObject(PrivateEndpoint.class);
-        Assertions.assertEquals("gpbtoqcjmklj", model.id());
+        Assertions.assertEquals("xw", model.id());
     }
 }

@@ -5,40 +5,48 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Scheduling configuration for a given alert processing rule. */
+/**
+ * Scheduling configuration for a given alert processing rule.
+ */
 @Fluent
-public final class Schedule {
+public final class Schedule implements JsonSerializable<Schedule> {
     /*
      * Scheduling effective from time. Date-Time in ISO-8601 format without timezone suffix.
      */
-    @JsonProperty(value = "effectiveFrom")
     private String effectiveFrom;
 
     /*
      * Scheduling effective until time. Date-Time in ISO-8601 format without timezone suffix.
      */
-    @JsonProperty(value = "effectiveUntil")
     private String effectiveUntil;
 
     /*
      * Scheduling time zone.
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * List of recurrences.
      */
-    @JsonProperty(value = "recurrences")
     private List<Recurrence> recurrences;
+
+    /**
+     * Creates an instance of Schedule class.
+     */
+    public Schedule() {
+    }
 
     /**
      * Get the effectiveFrom property: Scheduling effective from time. Date-Time in ISO-8601 format without timezone
      * suffix.
-     *
+     * 
      * @return the effectiveFrom value.
      */
     public String effectiveFrom() {
@@ -48,7 +56,7 @@ public final class Schedule {
     /**
      * Set the effectiveFrom property: Scheduling effective from time. Date-Time in ISO-8601 format without timezone
      * suffix.
-     *
+     * 
      * @param effectiveFrom the effectiveFrom value to set.
      * @return the Schedule object itself.
      */
@@ -60,7 +68,7 @@ public final class Schedule {
     /**
      * Get the effectiveUntil property: Scheduling effective until time. Date-Time in ISO-8601 format without timezone
      * suffix.
-     *
+     * 
      * @return the effectiveUntil value.
      */
     public String effectiveUntil() {
@@ -70,7 +78,7 @@ public final class Schedule {
     /**
      * Set the effectiveUntil property: Scheduling effective until time. Date-Time in ISO-8601 format without timezone
      * suffix.
-     *
+     * 
      * @param effectiveUntil the effectiveUntil value to set.
      * @return the Schedule object itself.
      */
@@ -81,7 +89,7 @@ public final class Schedule {
 
     /**
      * Get the timeZone property: Scheduling time zone.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -90,7 +98,7 @@ public final class Schedule {
 
     /**
      * Set the timeZone property: Scheduling time zone.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the Schedule object itself.
      */
@@ -101,7 +109,7 @@ public final class Schedule {
 
     /**
      * Get the recurrences property: List of recurrences.
-     *
+     * 
      * @return the recurrences value.
      */
     public List<Recurrence> recurrences() {
@@ -110,7 +118,7 @@ public final class Schedule {
 
     /**
      * Set the recurrences property: List of recurrences.
-     *
+     * 
      * @param recurrences the recurrences value to set.
      * @return the Schedule object itself.
      */
@@ -121,12 +129,58 @@ public final class Schedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recurrences() != null) {
             recurrences().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("effectiveFrom", this.effectiveFrom);
+        jsonWriter.writeStringField("effectiveUntil", this.effectiveUntil);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeArrayField("recurrences", this.recurrences, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Schedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Schedule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Schedule.
+     */
+    public static Schedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Schedule deserializedSchedule = new Schedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("effectiveFrom".equals(fieldName)) {
+                    deserializedSchedule.effectiveFrom = reader.getString();
+                } else if ("effectiveUntil".equals(fieldName)) {
+                    deserializedSchedule.effectiveUntil = reader.getString();
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedSchedule.timeZone = reader.getString();
+                } else if ("recurrences".equals(fieldName)) {
+                    List<Recurrence> recurrences = reader.readArray(reader1 -> Recurrence.fromJson(reader1));
+                    deserializedSchedule.recurrences = recurrences;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSchedule;
+        });
     }
 }

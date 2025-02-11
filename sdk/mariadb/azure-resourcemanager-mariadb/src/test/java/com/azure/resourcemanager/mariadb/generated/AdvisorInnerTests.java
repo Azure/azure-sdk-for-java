@@ -10,16 +10,14 @@ import com.azure.resourcemanager.mariadb.fluent.models.AdvisorInner;
 public final class AdvisorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AdvisorInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":\"dataongmtsa\",\"id\":\"jcbpwxqpsrknft\",\"name\":\"uvriuhprwm\",\"type\":\"yvxqtayriwwroy\"}")
-                .toObject(AdvisorInner.class);
+        AdvisorInner model = BinaryData.fromString(
+            "{\"properties\":\"datak\",\"id\":\"baliourqhakauha\",\"name\":\"hsfwxosowzxcug\",\"type\":\"cjooxdjebwpucwwf\"}")
+            .toObject(AdvisorInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AdvisorInner model = new AdvisorInner().withProperties("dataongmtsa");
+        AdvisorInner model = new AdvisorInner().withProperties("datak");
         model = BinaryData.fromObject(model).toObject(AdvisorInner.class);
     }
 }

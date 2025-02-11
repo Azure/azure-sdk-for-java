@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Smart group state. */
+/**
+ * Smart group state.
+ */
 public final class State extends ExpandableStringEnum<State> {
-    /** Static value New for State. */
+    /**
+     * Static value New for State.
+     */
     public static final State NEW = fromString("New");
 
-    /** Static value Acknowledged for State. */
+    /**
+     * Static value Acknowledged for State.
+     */
     public static final State ACKNOWLEDGED = fromString("Acknowledged");
 
-    /** Static value Closed for State. */
+    /**
+     * Static value Closed for State.
+     */
     public static final State CLOSED = fromString("Closed");
 
     /**
+     * Creates a new instance of State value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public State() {
+    }
+
+    /**
      * Creates or finds a State from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding State.
      */
-    @JsonCreator
     public static State fromString(String name) {
         return fromString(name, State.class);
     }
 
     /**
      * Gets known State values.
-     *
+     * 
      * @return known State values.
      */
     public static Collection<State> values() {

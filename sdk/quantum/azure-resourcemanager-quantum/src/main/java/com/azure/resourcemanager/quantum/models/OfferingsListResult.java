@@ -5,25 +5,27 @@
 package com.azure.resourcemanager.quantum.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quantum.fluent.models.ProviderDescriptionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The response of a list Providers operation.
  */
 @Fluent
-public final class OfferingsListResult {
+public final class OfferingsListResult implements JsonSerializable<OfferingsListResult> {
     /*
      * Result of a list Providers operation.
      */
-    @JsonProperty(value = "value")
     private List<ProviderDescriptionInner> value;
 
     /*
      * Link to the next set of results. Not empty if Value contains incomplete list of Providers.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
@@ -83,5 +85,46 @@ public final class OfferingsListResult {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OfferingsListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OfferingsListResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OfferingsListResult.
+     */
+    public static OfferingsListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OfferingsListResult deserializedOfferingsListResult = new OfferingsListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ProviderDescriptionInner> value
+                        = reader.readArray(reader1 -> ProviderDescriptionInner.fromJson(reader1));
+                    deserializedOfferingsListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOfferingsListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOfferingsListResult;
+        });
     }
 }

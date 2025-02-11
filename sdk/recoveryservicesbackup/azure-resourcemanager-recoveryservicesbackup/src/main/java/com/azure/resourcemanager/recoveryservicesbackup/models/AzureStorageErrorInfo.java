@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Azure storage specific error information.
  */
 @Fluent
-public final class AzureStorageErrorInfo {
+public final class AzureStorageErrorInfo implements JsonSerializable<AzureStorageErrorInfo> {
     /*
      * Error code.
      */
-    @JsonProperty(value = "errorCode")
     private Integer errorCode;
 
     /*
      * Localized error string.
      */
-    @JsonProperty(value = "errorString")
     private String errorString;
 
     /*
      * List of localized recommendations for above error code.
      */
-    @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
     /**
@@ -103,5 +104,49 @@ public final class AzureStorageErrorInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("errorCode", this.errorCode);
+        jsonWriter.writeStringField("errorString", this.errorString);
+        jsonWriter.writeArrayField("recommendations", this.recommendations,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureStorageErrorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureStorageErrorInfo if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureStorageErrorInfo.
+     */
+    public static AzureStorageErrorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureStorageErrorInfo deserializedAzureStorageErrorInfo = new AzureStorageErrorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errorCode".equals(fieldName)) {
+                    deserializedAzureStorageErrorInfo.errorCode = reader.getNullable(JsonReader::getInt);
+                } else if ("errorString".equals(fieldName)) {
+                    deserializedAzureStorageErrorInfo.errorString = reader.getString();
+                } else if ("recommendations".equals(fieldName)) {
+                    List<String> recommendations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureStorageErrorInfo.recommendations = recommendations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureStorageErrorInfo;
+        });
     }
 }

@@ -205,6 +205,7 @@ public final class ContentFilterResultsForChoice implements JsonSerializable<Con
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeJsonField("protected_material_text", this.protectedMaterialText);
         jsonWriter.writeJsonField("protected_material_code", this.protectedMaterialCode);
+        jsonWriter.writeJsonField("ungrounded_material", this.ungroundedMaterial);
         return jsonWriter.writeEndObject();
     }
 
@@ -245,11 +246,30 @@ public final class ContentFilterResultsForChoice implements JsonSerializable<Con
                 } else if ("protected_material_code".equals(fieldName)) {
                     deserializedContentFilterResultsForChoice.protectedMaterialCode
                         = ContentFilterCitedDetectionResult.fromJson(reader);
+                } else if ("ungrounded_material".equals(fieldName)) {
+                    deserializedContentFilterResultsForChoice.ungroundedMaterial
+                        = ContentFilterCompletionTextSpanResult.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedContentFilterResultsForChoice;
         });
+    }
+
+    /*
+     * Information about detection of ungrounded material.
+     */
+    @Generated
+    private ContentFilterCompletionTextSpanResult ungroundedMaterial;
+
+    /**
+     * Get the ungroundedMaterial property: Information about detection of ungrounded material.
+     *
+     * @return the ungroundedMaterial value.
+     */
+    @Generated
+    public ContentFilterCompletionTextSpanResult getUngroundedMaterial() {
+        return this.ungroundedMaterial;
     }
 }

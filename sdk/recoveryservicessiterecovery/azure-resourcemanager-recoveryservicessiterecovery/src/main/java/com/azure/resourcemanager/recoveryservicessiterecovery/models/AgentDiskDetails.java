@@ -5,41 +5,40 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Agent disk details.
  */
 @Immutable
-public final class AgentDiskDetails {
+public final class AgentDiskDetails implements JsonSerializable<AgentDiskDetails> {
     /*
      * The disk Id.
      */
-    @JsonProperty(value = "diskId", access = JsonProperty.Access.WRITE_ONLY)
     private String diskId;
 
     /*
      * The disk name.
      */
-    @JsonProperty(value = "diskName", access = JsonProperty.Access.WRITE_ONLY)
     private String diskName;
 
     /*
      * A value indicating whether the disk is the OS disk.
      */
-    @JsonProperty(value = "isOSDisk", access = JsonProperty.Access.WRITE_ONLY)
     private String isOSDisk;
 
     /*
      * The disk capacity in bytes.
      */
-    @JsonProperty(value = "capacityInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long capacityInBytes;
 
     /*
      * The lun of disk.
      */
-    @JsonProperty(value = "lunId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer lunId;
 
     /**
@@ -99,5 +98,48 @@ public final class AgentDiskDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AgentDiskDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AgentDiskDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AgentDiskDetails.
+     */
+    public static AgentDiskDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AgentDiskDetails deserializedAgentDiskDetails = new AgentDiskDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("diskId".equals(fieldName)) {
+                    deserializedAgentDiskDetails.diskId = reader.getString();
+                } else if ("diskName".equals(fieldName)) {
+                    deserializedAgentDiskDetails.diskName = reader.getString();
+                } else if ("isOSDisk".equals(fieldName)) {
+                    deserializedAgentDiskDetails.isOSDisk = reader.getString();
+                } else if ("capacityInBytes".equals(fieldName)) {
+                    deserializedAgentDiskDetails.capacityInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("lunId".equals(fieldName)) {
+                    deserializedAgentDiskDetails.lunId = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAgentDiskDetails;
+        });
     }
 }

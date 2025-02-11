@@ -9,6 +9,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import org.slf4j.Logger;
 
@@ -29,23 +30,20 @@ public class AppConfigCustomization extends Customization {
     }
 
     private void customizeSnapshot(ClassCustomization classCustomization) {
-        // Transfer Long to Duration internally
-        classCustomization.getMethod("getRetentionPeriod")
-            .setReturnType("Duration", "")
-            .replaceBody(joinWithNewline(
-                    "if (this.retentionPeriod == null) {",
-                    "    return null;",
-                    "}",
-                    "return Duration.ofSeconds(this.retentionPeriod);"
-                ),
-                Arrays.asList("java.time.Duration"));
+        classCustomization.customizeAst(ast -> {
+            ast.addImport("java.time.Duration");
 
-        classCustomization.getMethod("setRetentionPeriod")
-            .replaceParameters("Duration retentionPeriod")
-            .replaceBody(joinWithNewline(
-                "this.retentionPeriod = retentionPeriod == null ? null : retentionPeriod.getSeconds();",
-                "return this;"
-            ));
+            ast.getClassByName(classCustomization.getClassName()).ifPresent(clazz -> {
+                // Transfer Long to Duration internally
+                clazz.getMethodsByName("getRetentionPeriod").get(0)
+                    .setType("Duration")
+                    .setBody(StaticJavaParser.parseBlock("{ return this.retentionPeriod == null ? null : Duration.ofSeconds(this.retentionPeriod); }"));
+
+                clazz.getMethodsByName("setRetentionPeriod").get(0)
+                    .setParameter(0, new Parameter().setType("Duration").setName("retentionPeriod"))
+                    .setBody(StaticJavaParser.parseBlock("{ this.retentionPeriod = retentionPeriod == null ? null : retentionPeriod.getSeconds(); return this; }"));
+            });
+        });
     }
 
     private void customizeKeyValueFilter(ClassCustomization classCustomization) {

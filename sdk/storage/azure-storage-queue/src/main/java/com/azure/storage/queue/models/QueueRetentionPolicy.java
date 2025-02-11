@@ -24,7 +24,8 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
     private boolean enabled;
 
     /*
-     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than this value will be deleted
+     * Indicates the number of days that metrics or logging or soft-deleted data should be retained. All data older than
+     * this value will be deleted
      */
     private Integer days;
 
@@ -96,7 +97,6 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
      * @param xmlReader The XmlReader being read.
      * @return An instance of QueueRetentionPolicy if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the QueueRetentionPolicy.
      */
     public static QueueRetentionPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -111,7 +111,6 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
      * cases where the model can deserialize from different root element names.
      * @return An instance of QueueRetentionPolicy if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the QueueRetentionPolicy.
      */
     public static QueueRetentionPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

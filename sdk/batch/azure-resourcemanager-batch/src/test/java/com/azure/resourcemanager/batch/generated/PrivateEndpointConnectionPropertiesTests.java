@@ -14,21 +14,22 @@ public final class PrivateEndpointConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Cancelled\",\"privateEndpoint\":{\"id\":\"olthqtrgqjbp\"},\"groupIds\":[\"s\",\"n\",\"gvfcj\",\"wzo\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"felluwfzitonpe\",\"actionsRequired\":\"pjkjlxofpdv\"}}")
+            "{\"provisioningState\":\"Cancelled\",\"privateEndpoint\":{\"id\":\"theotusiv\"},\"groupIds\":[\"cciqihnhungbwjz\"],\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"gxg\",\"actionsRequired\":\"pemvtzfkufubljof\"}}")
             .toObject(PrivateEndpointConnectionProperties.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("felluwfzitonpe", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("gxg", model.privateLinkServiceConnectionState().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateEndpointConnectionProperties model = new PrivateEndpointConnectionProperties()
-            .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateLinkServiceConnectionStatus.APPROVED).withDescription("felluwfzitonpe"));
+        PrivateEndpointConnectionProperties model
+            = new PrivateEndpointConnectionProperties().withPrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateLinkServiceConnectionStatus.DISCONNECTED)
+                    .withDescription("gxg"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
-        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.DISCONNECTED,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("felluwfzitonpe", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("gxg", model.privateLinkServiceConnectionState().description());
     }
 }

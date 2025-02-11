@@ -13,8 +13,8 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    CustomerSubscriptionImpl(
-        CustomerSubscriptionInner innerObject, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    CustomerSubscriptionImpl(CustomerSubscriptionInner innerObject,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -60,24 +60,19 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
     }
 
     public CustomerSubscription create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomerSubscriptions()
-                .createWithResponse(
-                    resourceGroup, registrationName, customerSubscriptionName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomerSubscriptions()
+            .createWithResponse(resourceGroup, registrationName, customerSubscriptionName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomerSubscription create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomerSubscriptions()
-                .createWithResponse(
-                    resourceGroup, registrationName, customerSubscriptionName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomerSubscriptions()
+            .createWithResponse(resourceGroup, registrationName, customerSubscriptionName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -88,22 +83,18 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
     }
 
     public CustomerSubscription refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomerSubscriptions()
-                .getWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomerSubscriptions()
+            .getWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomerSubscription refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomerSubscriptions()
-                .getWithResponse(resourceGroup, registrationName, customerSubscriptionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomerSubscriptions()
+            .getWithResponse(resourceGroup, registrationName, customerSubscriptionName, context)
+            .getValue();
         return this;
     }
 

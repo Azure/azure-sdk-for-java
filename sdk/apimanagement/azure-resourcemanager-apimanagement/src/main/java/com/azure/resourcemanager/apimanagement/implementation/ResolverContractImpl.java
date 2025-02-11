@@ -73,24 +73,20 @@ public final class ResolverContractImpl
     }
 
     public ResolverContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGraphQLApiResolvers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, resolverId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGraphQLApiResolvers()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, resolverId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResolverContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGraphQLApiResolvers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, apiId, resolverId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGraphQLApiResolvers()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, resolverId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -108,55 +104,46 @@ public final class ResolverContractImpl
     }
 
     public ResolverContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGraphQLApiResolvers()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, apiId, resolverId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGraphQLApiResolvers()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, resolverId, updateIfMatch, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResolverContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGraphQLApiResolvers()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, apiId, resolverId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGraphQLApiResolvers()
+            .updateWithResponse(resourceGroupName, serviceName, apiId, resolverId, updateIfMatch, updateParameters,
+                context)
+            .getValue();
         return this;
     }
 
-    ResolverContractImpl(
-        ResolverContractInner innerObject,
+    ResolverContractImpl(ResolverContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.apiId = Utils.getValueFromIdByName(innerObject.id(), "apis");
-        this.resolverId = Utils.getValueFromIdByName(innerObject.id(), "resolvers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.apiId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "apis");
+        this.resolverId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resolvers");
     }
 
     public ResolverContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGraphQLApiResolvers()
-                .getWithResponse(resourceGroupName, serviceName, apiId, resolverId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGraphQLApiResolvers()
+            .getWithResponse(resourceGroupName, serviceName, apiId, resolverId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ResolverContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGraphQLApiResolvers()
-                .getWithResponse(resourceGroupName, serviceName, apiId, resolverId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGraphQLApiResolvers()
+            .getWithResponse(resourceGroupName, serviceName, apiId, resolverId, context)
+            .getValue();
         return this;
     }
 

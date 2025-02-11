@@ -39,7 +39,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MockHttpClient extends NoOpHttpClient {
     private static final HttpHeaders RESPONSE_HEADERS
         = new HttpHeaders().set(HttpHeaderName.DATE, "Fri, 13 Oct 2017 20:33:09 GMT")
-            .set(HttpHeaderName.VIA, "1.1 vegur")
+            .set(HttpHeaderName.VIA, "1.1 via")
             .set(HttpHeaderName.CONNECTION, "keep-alive")
             .set(HttpHeaderName.fromString("X-Processed-Time"), "1.0")
             .set(HttpHeaderName.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")

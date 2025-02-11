@@ -6,38 +6,43 @@ package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A rule governing the accessibility from a specific virtual network. */
+/**
+ * A rule governing the accessibility from a specific virtual network.
+ */
 @Fluent
-public final class VirtualNetworkRule {
+public final class VirtualNetworkRule implements JsonSerializable<VirtualNetworkRule> {
     /*
      * Full resource id of a vnet subnet, such as
      * '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Gets the state of virtual network rule.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * Ignore missing vnet service endpoint or not.
      */
-    @JsonProperty(value = "ignoreMissingVnetServiceEndpoint")
     private Boolean ignoreMissingVnetServiceEndpoint;
 
-    /** Creates an instance of VirtualNetworkRule class. */
+    /**
+     * Creates an instance of VirtualNetworkRule class.
+     */
     public VirtualNetworkRule() {
     }
 
     /**
      * Get the id property: Full resource id of a vnet subnet, such as
      * '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -47,7 +52,7 @@ public final class VirtualNetworkRule {
     /**
      * Set the id property: Full resource id of a vnet subnet, such as
      * '/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/test-vnet/subnets/subnet1'.
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualNetworkRule object itself.
      */
@@ -58,7 +63,7 @@ public final class VirtualNetworkRule {
 
     /**
      * Get the state property: Gets the state of virtual network rule.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -67,7 +72,7 @@ public final class VirtualNetworkRule {
 
     /**
      * Set the state property: Gets the state of virtual network rule.
-     *
+     * 
      * @param state the state value to set.
      * @return the VirtualNetworkRule object itself.
      */
@@ -78,7 +83,7 @@ public final class VirtualNetworkRule {
 
     /**
      * Get the ignoreMissingVnetServiceEndpoint property: Ignore missing vnet service endpoint or not.
-     *
+     * 
      * @return the ignoreMissingVnetServiceEndpoint value.
      */
     public Boolean ignoreMissingVnetServiceEndpoint() {
@@ -87,7 +92,7 @@ public final class VirtualNetworkRule {
 
     /**
      * Set the ignoreMissingVnetServiceEndpoint property: Ignore missing vnet service endpoint or not.
-     *
+     * 
      * @param ignoreMissingVnetServiceEndpoint the ignoreMissingVnetServiceEndpoint value to set.
      * @return the VirtualNetworkRule object itself.
      */
@@ -98,16 +103,59 @@ public final class VirtualNetworkRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model VirtualNetworkRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model VirtualNetworkRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeBooleanField("ignoreMissingVnetServiceEndpoint", this.ignoreMissingVnetServiceEndpoint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkRule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkRule.
+     */
+    public static VirtualNetworkRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkRule deserializedVirtualNetworkRule = new VirtualNetworkRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualNetworkRule.id = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedVirtualNetworkRule.state = reader.getString();
+                } else if ("ignoreMissingVnetServiceEndpoint".equals(fieldName)) {
+                    deserializedVirtualNetworkRule.ignoreMissingVnetServiceEndpoint
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkRule;
+        });
+    }
 }

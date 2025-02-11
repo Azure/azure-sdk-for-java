@@ -10,7 +10,7 @@ package com.azure.resourcemanager.batch.generated;
 public final class PrivateEndpointConnectionListByBatchAccountSamples {
     /*
      * x-ms-original-file:
-     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-02-01/examples/PrivateEndpointConnectionsList.
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2024-07-01/examples/PrivateEndpointConnectionsList.
      * json
      */
     /**
@@ -19,7 +19,7 @@ public final class PrivateEndpointConnectionListByBatchAccountSamples {
      * @param manager Entry point to BatchManager.
      */
     public static void listPrivateEndpointConnections(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager.privateEndpointConnections().listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null,
-            com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections()
+            .listByBatchAccount("default-azurebatch-japaneast", "sampleacct", null, com.azure.core.util.Context.NONE);
     }
 }

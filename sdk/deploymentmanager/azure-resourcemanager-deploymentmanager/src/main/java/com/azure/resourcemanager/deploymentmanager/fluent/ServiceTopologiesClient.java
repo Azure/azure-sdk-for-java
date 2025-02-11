@@ -28,11 +28,8 @@ public interface ServiceTopologiesClient {
      * @return the resource representation of a service topology along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceTopologyResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceTopologyName,
-        ServiceTopologyResourceInner serviceTopologyInfo,
-        Context context);
+    Response<ServiceTopologyResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String serviceTopologyName, ServiceTopologyResourceInner serviceTopologyInfo, Context context);
 
     /**
      * Creates or updates a service topology.
@@ -48,8 +45,8 @@ public interface ServiceTopologiesClient {
      * @return the resource representation of a service topology.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceTopologyResourceInner createOrUpdate(
-        String resourceGroupName, String serviceTopologyName, ServiceTopologyResourceInner serviceTopologyInfo);
+    ServiceTopologyResourceInner createOrUpdate(String resourceGroupName, String serviceTopologyName,
+        ServiceTopologyResourceInner serviceTopologyInfo);
 
     /**
      * Gets the service topology.
@@ -63,8 +60,8 @@ public interface ServiceTopologiesClient {
      * @return the service topology along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceTopologyResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String serviceTopologyName, Context context);
+    Response<ServiceTopologyResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String serviceTopologyName, Context context);
 
     /**
      * Gets the service topology.

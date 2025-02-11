@@ -6,74 +6,43 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.UserContract;
 import com.azure.resourcemanager.apimanagement.models.UserState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class GroupUsersCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"firstName\":\"jwkow\",\"lastName\":\"zkkagvej\",\"email\":\"naphrskmpea\",\"registrationDate\":\"2021-09-17T16:10:59Z\",\"groups\":[{\"displayName\":\"avamzmzfntte\",\"description\":\"ftxyt\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"rjlijkkvbfaehjji\"},{\"displayName\":\"vjqxav\",\"description\":\"dmrac\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"alihhss\"},{\"displayName\":\"ygy\",\"description\":\"cvlavyr\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"myzvtiojtpdr\"},{\"displayName\":\"bxaxoyjyhutwe\",\"description\":\"givkteccxfnatntm\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"mfhjikqcnbd\"}],\"state\":\"deleted\",\"note\":\"h\",\"identities\":[{\"provider\":\"zvrchmyuc\",\"id\":\"mwyvhdiyp\"},{\"provider\":\"qqq\",\"id\":\"brhhvipgt\"},{\"provider\":\"aaoylwhfmkbwe\",\"id\":\"gypjixdmobadydw\"},{\"provider\":\"uwdvclsxdqdc\",\"id\":\"zibixrgsrwxxqkwa\"}]},\"id\":\"gcbgdgosi\",\"name\":\"iqexqwqykmv\",\"type\":\"gflhdhoxur\"}";
 
-        String responseStr =
-            "{\"properties\":{\"firstName\":\"p\",\"lastName\":\"wojdzccq\",\"email\":\"srbfbs\",\"registrationDate\":\"2021-04-01T02:12:46Z\",\"groups\":[{\"displayName\":\"zfbvexrvnh\",\"description\":\"fsnqpvjtshl\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"dzmhwts\"},{\"displayName\":\"ppwfbw\",\"description\":\"txizrfw\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"ungaypxsazbxsnxy\"}],\"state\":\"pending\",\"note\":\"fstmprvgrandzk\",\"identities\":[{\"provider\":\"lpczlq\",\"id\":\"o\"},{\"provider\":\"gmrolhsf\",\"id\":\"k\"},{\"provider\":\"vevwxmnbw\",\"id\":\"a\"},{\"provider\":\"gnpyhtuhalpq\",\"id\":\"dnao\"}]},\"id\":\"exznpny\",\"name\":\"kqjarlazbtgtzpca\",\"type\":\"rmzoujfgt\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        UserContract response = manager.groupUsers()
+            .createWithResponse("wcacwaaqakvokyax", "ratqlreqbrc", "mdts", "zumxucznbabowrcy",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        UserContract response =
-            manager
-                .groupUsers()
-                .createWithResponse(
-                    "olknshgwakptbhm", "glmnlbnatln", "hzzcdkxortdzzvhb", "jk", com.azure.core.util.Context.NONE)
-                .getValue();
-
-        Assertions.assertEquals("p", response.firstName());
-        Assertions.assertEquals("wojdzccq", response.lastName());
-        Assertions.assertEquals("srbfbs", response.email());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-01T02:12:46Z"), response.registrationDate());
-        Assertions.assertEquals(UserState.PENDING, response.state());
-        Assertions.assertEquals("fstmprvgrandzk", response.note());
-        Assertions.assertEquals("lpczlq", response.identities().get(0).provider());
-        Assertions.assertEquals("o", response.identities().get(0).id());
+        Assertions.assertEquals("jwkow", response.firstName());
+        Assertions.assertEquals("zkkagvej", response.lastName());
+        Assertions.assertEquals("naphrskmpea", response.email());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-17T16:10:59Z"), response.registrationDate());
+        Assertions.assertEquals(UserState.DELETED, response.state());
+        Assertions.assertEquals("h", response.note());
+        Assertions.assertEquals("zvrchmyuc", response.identities().get(0).provider());
+        Assertions.assertEquals("mwyvhdiyp", response.identities().get(0).id());
     }
 }

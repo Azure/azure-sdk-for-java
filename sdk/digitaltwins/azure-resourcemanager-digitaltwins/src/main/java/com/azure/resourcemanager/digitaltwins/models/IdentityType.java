@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of managed identity used. */
+/**
+ * The type of managed identity used.
+ */
 public final class IdentityType extends ExpandableStringEnum<IdentityType> {
-    /** Static value SystemAssigned for IdentityType. */
+    /**
+     * Static value SystemAssigned for IdentityType.
+     */
     public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
-    /** Static value UserAssigned for IdentityType. */
+    /**
+     * Static value UserAssigned for IdentityType.
+     */
     public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
 
     /**
      * Creates a new instance of IdentityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
 
     /**
      * Creates or finds a IdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IdentityType.
      */
-    @JsonCreator
     public static IdentityType fromString(String name) {
         return fromString(name, IdentityType.class);
     }
 
     /**
      * Gets known IdentityType values.
-     *
+     * 
      * @return known IdentityType values.
      */
     public static Collection<IdentityType> values() {

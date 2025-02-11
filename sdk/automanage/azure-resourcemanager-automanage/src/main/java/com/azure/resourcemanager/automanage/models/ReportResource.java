@@ -6,44 +6,51 @@ package com.azure.resourcemanager.automanage.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details about the resource processed by the configuration profile assignment. */
+/**
+ * Details about the resource processed by the configuration profile assignment.
+ */
 @Immutable
-public final class ReportResource {
+public final class ReportResource implements JsonSerializable<ReportResource> {
     /*
      * Name of the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * ARM id of the resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Status of the resource.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Error message, if any, returned when deploying the resource.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
 
     /**
+     * Creates an instance of ReportResource class.
+     */
+    public ReportResource() {
+    }
+
+    /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +59,7 @@ public final class ReportResource {
 
     /**
      * Get the id property: ARM id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -61,7 +68,7 @@ public final class ReportResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -70,7 +77,7 @@ public final class ReportResource {
 
     /**
      * Get the status property: Status of the resource.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -79,7 +86,7 @@ public final class ReportResource {
 
     /**
      * Get the error property: Error message, if any, returned when deploying the resource.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -88,9 +95,52 @@ public final class ReportResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReportResource.
+     */
+    public static ReportResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportResource deserializedReportResource = new ReportResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedReportResource.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedReportResource.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedReportResource.type = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedReportResource.status = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedReportResource.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReportResource;
+        });
     }
 }

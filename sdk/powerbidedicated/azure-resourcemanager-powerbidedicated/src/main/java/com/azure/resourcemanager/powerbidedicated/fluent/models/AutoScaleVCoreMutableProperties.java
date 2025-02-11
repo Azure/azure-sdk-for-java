@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.powerbidedicated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An object that represents a set of mutable auto scale v-core resource properties. */
+/**
+ * An object that represents a set of mutable auto scale v-core resource properties.
+ */
 @Fluent
-public class AutoScaleVCoreMutableProperties {
+public class AutoScaleVCoreMutableProperties implements JsonSerializable<AutoScaleVCoreMutableProperties> {
     /*
      * The maximum capacity of an auto scale v-core resource.
      */
-    @JsonProperty(value = "capacityLimit")
     private Integer capacityLimit;
 
-    /** Creates an instance of AutoScaleVCoreMutableProperties class. */
+    /**
+     * Creates an instance of AutoScaleVCoreMutableProperties class.
+     */
     public AutoScaleVCoreMutableProperties() {
     }
 
     /**
      * Get the capacityLimit property: The maximum capacity of an auto scale v-core resource.
-     *
+     * 
      * @return the capacityLimit value.
      */
     public Integer capacityLimit() {
@@ -31,7 +38,7 @@ public class AutoScaleVCoreMutableProperties {
 
     /**
      * Set the capacityLimit property: The maximum capacity of an auto scale v-core resource.
-     *
+     * 
      * @param capacityLimit the capacityLimit value to set.
      * @return the AutoScaleVCoreMutableProperties object itself.
      */
@@ -42,9 +49,46 @@ public class AutoScaleVCoreMutableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("capacityLimit", this.capacityLimit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoScaleVCoreMutableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoScaleVCoreMutableProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoScaleVCoreMutableProperties.
+     */
+    public static AutoScaleVCoreMutableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoScaleVCoreMutableProperties deserializedAutoScaleVCoreMutableProperties
+                = new AutoScaleVCoreMutableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("capacityLimit".equals(fieldName)) {
+                    deserializedAutoScaleVCoreMutableProperties.capacityLimit = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoScaleVCoreMutableProperties;
+        });
     }
 }

@@ -24,12 +24,15 @@ public class SalesforceLinkedService extends LinkedService {
     private String type = "Salesforce";
 
     /*
-     * The URL of Salesforce instance. Default is 'https://login.salesforce.com'. To copy data from sandbox, specify 'https://test.salesforce.com'. To copy data from custom domain, specify, for example, 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
+     * The URL of Salesforce instance. Default is 'https://login.salesforce.com'. To copy data from sandbox, specify
+     * 'https://test.salesforce.com'. To copy data from custom domain, specify, for example,
+     * 'https://[domain].my.salesforce.com'. Type: string (or Expression with resultType string).
      */
     private Object environmentUrl;
 
     /*
-     * The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType string).
+     * The username for Basic authentication of the Salesforce instance. Type: string (or Expression with resultType
+     * string).
      */
     private Object username;
 
@@ -49,7 +52,8 @@ public class SalesforceLinkedService extends LinkedService {
     private Object apiVersion;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

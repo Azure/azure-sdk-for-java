@@ -10,6 +10,12 @@ import com.azure.resourcemanager.logic.models.FlowAccessControlConfiguration;
 import com.azure.resourcemanager.logic.models.FlowAccessControlConfigurationPolicy;
 import com.azure.resourcemanager.logic.models.FlowEndpoints;
 import com.azure.resourcemanager.logic.models.FlowEndpointsConfiguration;
+import com.azure.resourcemanager.logic.models.IpAddress;
+import com.azure.resourcemanager.logic.models.IpAddressRange;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationAccessPolicies;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationAccessPolicy;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationPolicyClaim;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationProviderType;
 import com.azure.resourcemanager.logic.models.ParameterType;
 import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.WorkflowParameter;
@@ -22,77 +28,158 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkflowVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkflowVersionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Accepted\",\"createdTime\":\"2021-11-06T12:54:53Z\",\"changedTime\":\"2020-12-20T14:51:17Z\",\"state\":\"Completed\",\"version\":\"mvvd\",\"accessEndpoint\":\"atkpnp\",\"endpointsConfiguration\":{\"workflow\":{\"outgoingIpAddresses\":[],\"accessEndpointIpAddresses\":[]},\"connector\":{\"outgoingIpAddresses\":[],\"accessEndpointIpAddresses\":[]}},\"accessControl\":{\"triggers\":{\"allowedCallerIpAddresses\":[]},\"contents\":{\"allowedCallerIpAddresses\":[]},\"actions\":{\"allowedCallerIpAddresses\":[]},\"workflowManagement\":{\"allowedCallerIpAddresses\":[]}},\"sku\":{\"name\":\"Shared\",\"plan\":{\"id\":\"lhzdobp\",\"name\":\"mflbv\",\"type\":\"chrkcciwwzjuqk\"}},\"integrationAccount\":{\"id\":\"ajiwkuo\",\"name\":\"skghsauuimj\",\"type\":\"xieduugidyjrr\"},\"definition\":\"datay\",\"parameters\":{\"vfaxkffeiith\":{\"type\":\"Int\",\"value\":\"datacsonpclhoco\",\"metadata\":\"datalkevle\",\"description\":\"zfbuhf\"},\"oenkouknvudwti\":{\"type\":\"String\",\"value\":\"datazy\",\"metadata\":\"datahxmzsbbzoggig\",\"description\":\"wburvjxxjnspydpt\"},\"npiucgygevqznty\":{\"type\":\"Array\",\"value\":\"datadng\",\"metadata\":\"dataocipazyxoeg\",\"description\":\"g\"},\"jzicwifsjt\":{\"type\":\"NotSpecified\",\"value\":\"datap\",\"metadata\":\"datac\",\"description\":\"qjsdpydnfyhxdeo\"}}}")
-                .toObject(WorkflowVersionProperties.class);
-        Assertions.assertEquals(WorkflowState.COMPLETED, model.state());
-        Assertions.assertEquals("ajiwkuo", model.integrationAccount().id());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("vfaxkffeiith").type());
-        Assertions.assertEquals("zfbuhf", model.parameters().get("vfaxkffeiith").description());
+        WorkflowVersionProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Pending\",\"createdTime\":\"2021-10-15T20:11:18Z\",\"changedTime\":\"2021-03-11T02:43:20Z\",\"state\":\"Disabled\",\"version\":\"mbmpaxmodfvuefy\",\"accessEndpoint\":\"bpfvm\",\"endpointsConfiguration\":{\"workflow\":{\"outgoingIpAddresses\":[{\"address\":\"uyfta\"},{\"address\":\"cpwi\"}],\"accessEndpointIpAddresses\":[{\"address\":\"tmnubexkpzksmon\"},{\"address\":\"mquxvypo\"}]},\"connector\":{\"outgoingIpAddresses\":[{\"address\":\"kwhojvpaj\"},{\"address\":\"xysmoc\"}],\"accessEndpointIpAddresses\":[{\"address\":\"qvmkcxo\"},{\"address\":\"pvhelxprg\"}]}},\"accessControl\":{\"triggers\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"ckcb\"}],\"openAuthenticationPolicies\":{\"policies\":{\"ciqibrhosx\":{\"type\":\"AAD\",\"claims\":[{},{}]},\"zoymibmrqyibahw\":{\"type\":\"AAD\",\"claims\":[{},{},{}]},\"dtmhrkwofyyvoqa\":{\"type\":\"AAD\",\"claims\":[{},{},{}]},\"pbtg\":{\"type\":\"AAD\",\"claims\":[{},{},{}]}}}},\"contents\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"enwash\"}],\"openAuthenticationPolicies\":{\"policies\":{\"xwbpokulpiuj\":{\"type\":\"AAD\",\"claims\":[{},{},{}]},\"pqiiobyuqe\":{\"type\":\"AAD\",\"claims\":[{},{},{},{}]}}}},\"actions\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"qwcciuqg\"}],\"openAuthenticationPolicies\":{\"policies\":{\"fbtkuwhhmhyk\":{\"type\":\"AAD\",\"claims\":[{},{}]},\"fnndl\":{\"type\":\"AAD\",\"claims\":[{}]}}}},\"workflowManagement\":{\"allowedCallerIpAddresses\":[{\"addressRange\":\"o\"},{\"addressRange\":\"kcdyhbpk\"},{\"addressRange\":\"wdreqnovvqfovl\"}],\"openAuthenticationPolicies\":{\"policies\":{\"yrs\":{\"type\":\"AAD\",\"claims\":[{},{},{},{}]},\"g\":{\"type\":\"AAD\",\"claims\":[{},{},{}]}}}}},\"sku\":{\"name\":\"Basic\",\"plan\":{\"id\":\"aeaeneqnzarrw\",\"name\":\"uu\",\"type\":\"fqka\"}},\"integrationAccount\":{\"id\":\"iipfpubj\",\"name\":\"wwiftohqkvpuv\",\"type\":\"gplsaknynf\"},\"definition\":\"datan\",\"parameters\":{\"xiy\":{\"type\":\"SecureString\",\"value\":\"datapxodlqiyntorzih\",\"metadata\":\"dataosjswsr\",\"description\":\"lyzrpzbchckqqzqi\"}}}")
+            .toObject(WorkflowVersionProperties.class);
+        Assertions.assertEquals(WorkflowState.DISABLED, model.state());
+        Assertions.assertEquals("uyfta",
+            model.endpointsConfiguration().workflow().outgoingIpAddresses().get(0).address());
+        Assertions.assertEquals("tmnubexkpzksmon",
+            model.endpointsConfiguration().workflow().accessEndpointIpAddresses().get(0).address());
+        Assertions.assertEquals("kwhojvpaj",
+            model.endpointsConfiguration().connector().outgoingIpAddresses().get(0).address());
+        Assertions.assertEquals("qvmkcxo",
+            model.endpointsConfiguration().connector().accessEndpointIpAddresses().get(0).address());
+        Assertions.assertEquals("ckcb",
+            model.accessControl().triggers().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.accessControl().triggers().openAuthenticationPolicies().policies().get("ciqibrhosx").type());
+        Assertions.assertEquals("enwash",
+            model.accessControl().contents().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.accessControl().contents().openAuthenticationPolicies().policies().get("xwbpokulpiuj").type());
+        Assertions.assertEquals("qwcciuqg",
+            model.accessControl().actions().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.accessControl().actions().openAuthenticationPolicies().policies().get("fbtkuwhhmhyk").type());
+        Assertions.assertEquals("o",
+            model.accessControl().workflowManagement().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.accessControl().workflowManagement().openAuthenticationPolicies().policies().get("yrs").type());
+        Assertions.assertEquals("iipfpubj", model.integrationAccount().id());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("xiy").type());
+        Assertions.assertEquals("lyzrpzbchckqqzqi", model.parameters().get("xiy").description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkflowVersionProperties model =
-            new WorkflowVersionProperties()
-                .withState(WorkflowState.COMPLETED)
+        WorkflowVersionProperties model
+            = new WorkflowVersionProperties().withState(WorkflowState.DISABLED)
                 .withEndpointsConfiguration(
                     new FlowEndpointsConfiguration()
-                        .withWorkflow(
-                            new FlowEndpoints()
-                                .withOutgoingIpAddresses(Arrays.asList())
-                                .withAccessEndpointIpAddresses(Arrays.asList()))
+                        .withWorkflow(new FlowEndpoints()
+                            .withOutgoingIpAddresses(Arrays.asList(new IpAddress().withAddress("uyfta"),
+                                new IpAddress().withAddress("cpwi")))
+                            .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress().withAddress("tmnubexkpzksmon"),
+                                new IpAddress().withAddress("mquxvypo"))))
                         .withConnector(
                             new FlowEndpoints()
-                                .withOutgoingIpAddresses(Arrays.asList())
-                                .withAccessEndpointIpAddresses(Arrays.asList())))
+                                .withOutgoingIpAddresses(Arrays.asList(new IpAddress().withAddress("kwhojvpaj"),
+                                    new IpAddress().withAddress("xysmoc")))
+                                .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress().withAddress("qvmkcxo"),
+                                    new IpAddress().withAddress("pvhelxprg")))))
                 .withAccessControl(
                     new FlowAccessControlConfiguration()
-                        .withTriggers(
-                            new FlowAccessControlConfigurationPolicy().withAllowedCallerIpAddresses(Arrays.asList()))
-                        .withContents(
-                            new FlowAccessControlConfigurationPolicy().withAllowedCallerIpAddresses(Arrays.asList()))
-                        .withActions(
-                            new FlowAccessControlConfigurationPolicy().withAllowedCallerIpAddresses(Arrays.asList()))
+                        .withTriggers(new FlowAccessControlConfigurationPolicy()
+                            .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange().withAddressRange("ckcb")))
+                            .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies().withPolicies(mapOf(
+                                "ciqibrhosx",
+                                new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                    .withClaims(Arrays.asList(
+                                        new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim())),
+                                "zoymibmrqyibahw",
+                                new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                    .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                                        new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim())),
+                                "dtmhrkwofyyvoqa",
+                                new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                    .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                                        new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim())),
+                                "pbtg",
+                                new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                    .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                                        new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim()))))))
+                        .withContents(new FlowAccessControlConfigurationPolicy()
+                            .withAllowedCallerIpAddresses(
+                                Arrays.asList(new IpAddressRange().withAddressRange("enwash")))
+                            .withOpenAuthenticationPolicies(
+                                new OpenAuthenticationAccessPolicies().withPolicies(mapOf("xwbpokulpiuj",
+                                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                        .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                                            new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim())),
+                                    "pqiiobyuqe",
+                                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                        .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                                            new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim(),
+                                            new OpenAuthenticationPolicyClaim()))))))
+                        .withActions(new FlowAccessControlConfigurationPolicy()
+                            .withAllowedCallerIpAddresses(
+                                Arrays.asList(new IpAddressRange().withAddressRange("qwcciuqg")))
+                            .withOpenAuthenticationPolicies(
+                                new OpenAuthenticationAccessPolicies().withPolicies(mapOf("fbtkuwhhmhyk",
+                                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                        .withClaims(Arrays.asList(
+                                            new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim())),
+                                    "fnndl",
+                                    new OpenAuthenticationAccessPolicy().withType(OpenAuthenticationProviderType.AAD)
+                                        .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim()))))))
                         .withWorkflowManagement(
-                            new FlowAccessControlConfigurationPolicy().withAllowedCallerIpAddresses(Arrays.asList())))
-                .withIntegrationAccount(new ResourceReference().withId("ajiwkuo"))
-                .withDefinition("datay")
-                .withParameters(
-                    mapOf(
-                        "vfaxkffeiith",
-                        new WorkflowParameter()
-                            .withType(ParameterType.INT)
-                            .withValue("datacsonpclhoco")
-                            .withMetadata("datalkevle")
-                            .withDescription("zfbuhf"),
-                        "oenkouknvudwti",
-                        new WorkflowParameter()
-                            .withType(ParameterType.STRING)
-                            .withValue("datazy")
-                            .withMetadata("datahxmzsbbzoggig")
-                            .withDescription("wburvjxxjnspydpt"),
-                        "npiucgygevqznty",
-                        new WorkflowParameter()
-                            .withType(ParameterType.ARRAY)
-                            .withValue("datadng")
-                            .withMetadata("dataocipazyxoeg")
-                            .withDescription("g"),
-                        "jzicwifsjt",
-                        new WorkflowParameter()
-                            .withType(ParameterType.NOT_SPECIFIED)
-                            .withValue("datap")
-                            .withMetadata("datac")
-                            .withDescription("qjsdpydnfyhxdeo")));
+                            new FlowAccessControlConfigurationPolicy()
+                                .withAllowedCallerIpAddresses(Arrays.asList(
+                                    new IpAddressRange().withAddressRange("o"),
+                                    new IpAddressRange().withAddressRange("kcdyhbpk"),
+                                    new IpAddressRange().withAddressRange("wdreqnovvqfovl")))
+                                .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()
+                                    .withPolicies(mapOf("yrs", new OpenAuthenticationAccessPolicy()
+                                        .withType(OpenAuthenticationProviderType.AAD)
+                                        .withClaims(Arrays.asList(
+                                            new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim(),
+                                            new OpenAuthenticationPolicyClaim(), new OpenAuthenticationPolicyClaim())),
+                                        "g",
+                                        new OpenAuthenticationAccessPolicy()
+                                            .withType(OpenAuthenticationProviderType.AAD)
+                                            .withClaims(Arrays.asList(new OpenAuthenticationPolicyClaim(),
+                                                new OpenAuthenticationPolicyClaim(),
+                                                new OpenAuthenticationPolicyClaim())))))))
+                .withIntegrationAccount(new ResourceReference().withId("iipfpubj"))
+                .withDefinition("datan")
+                .withParameters(mapOf("xiy",
+                    new WorkflowParameter().withType(ParameterType.SECURE_STRING)
+                        .withValue("datapxodlqiyntorzih")
+                        .withMetadata("dataosjswsr")
+                        .withDescription("lyzrpzbchckqqzqi")));
         model = BinaryData.fromObject(model).toObject(WorkflowVersionProperties.class);
-        Assertions.assertEquals(WorkflowState.COMPLETED, model.state());
-        Assertions.assertEquals("ajiwkuo", model.integrationAccount().id());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("vfaxkffeiith").type());
-        Assertions.assertEquals("zfbuhf", model.parameters().get("vfaxkffeiith").description());
+        Assertions.assertEquals(WorkflowState.DISABLED, model.state());
+        Assertions.assertEquals("uyfta",
+            model.endpointsConfiguration().workflow().outgoingIpAddresses().get(0).address());
+        Assertions.assertEquals("tmnubexkpzksmon",
+            model.endpointsConfiguration().workflow().accessEndpointIpAddresses().get(0).address());
+        Assertions.assertEquals("kwhojvpaj",
+            model.endpointsConfiguration().connector().outgoingIpAddresses().get(0).address());
+        Assertions.assertEquals("qvmkcxo",
+            model.endpointsConfiguration().connector().accessEndpointIpAddresses().get(0).address());
+        Assertions.assertEquals("ckcb",
+            model.accessControl().triggers().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.accessControl().triggers().openAuthenticationPolicies().policies().get("ciqibrhosx").type());
+        Assertions.assertEquals("enwash",
+            model.accessControl().contents().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.accessControl().contents().openAuthenticationPolicies().policies().get("xwbpokulpiuj").type());
+        Assertions.assertEquals("qwcciuqg",
+            model.accessControl().actions().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.accessControl().actions().openAuthenticationPolicies().policies().get("fbtkuwhhmhyk").type());
+        Assertions.assertEquals("o",
+            model.accessControl().workflowManagement().allowedCallerIpAddresses().get(0).addressRange());
+        Assertions.assertEquals(OpenAuthenticationProviderType.AAD,
+            model.accessControl().workflowManagement().openAuthenticationPolicies().policies().get("yrs").type());
+        Assertions.assertEquals("iipfpubj", model.integrationAccount().id());
+        Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("xiy").type());
+        Assertions.assertEquals("lyzrpzbchckqqzqi", model.parameters().get("xiy").description());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

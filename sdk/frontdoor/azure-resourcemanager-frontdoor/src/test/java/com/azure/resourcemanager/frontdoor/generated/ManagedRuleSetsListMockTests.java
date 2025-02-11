@@ -22,7 +22,7 @@ public final class ManagedRuleSetsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"sttex\",\"ruleSetId\":\"qpwcyyufmh\",\"ruleSetType\":\"nc\",\"ruleSetVersion\":\"mqspkcdqzhlctdd\",\"ruleGroups\":[{\"ruleGroupName\":\"dyfpchrqbnj\",\"description\":\"cgegydcwbo\",\"rules\":[{}]}]},\"location\":\"mvqqolih\",\"tags\":{\"oq\":\"iouaubrjt\",\"rzpasccbiuimzdly\":\"fuojrngif\",\"fdvruz\":\"dfqwmkyoq\"},\"id\":\"lzo\",\"name\":\"hpc\",\"type\":\"fnmdxotn\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"vwf\",\"ruleSetId\":\"ayxonsupeujl\",\"ruleSetType\":\"nh\",\"ruleSetVersion\":\"sqltnzo\",\"ruleGroups\":[{\"ruleGroupName\":\"xgnxfyqonmpqoxwd\",\"description\":\"dbxiqx\",\"rules\":[{}]},{\"ruleGroupName\":\"bimhtmwwinhe\",\"description\":\"qpofvwbc\",\"rules\":[{},{}]},{\"ruleGroupName\":\"b\",\"description\":\"bwvqvxkdi\",\"rules\":[{},{}]}]},\"location\":\"heb\",\"tags\":{\"izvcjfe\":\"wbzuwfmdurage\",\"ggbqi\":\"isdju\",\"m\":\"kxkbsazgakgacyr\",\"pv\":\"dmspof\"},\"id\":\"hryl\",\"name\":\"iofrzgbzjedmstk\",\"type\":\"nlvxbcuii\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,7 +34,7 @@ public final class ManagedRuleSetsListMockTests {
         PagedIterable<ManagedRuleSetDefinition> response
             = manager.managedRuleSets().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mvqqolih", response.iterator().next().location());
-        Assertions.assertEquals("iouaubrjt", response.iterator().next().tags().get("oq"));
+        Assertions.assertEquals("heb", response.iterator().next().location());
+        Assertions.assertEquals("wbzuwfmdurage", response.iterator().next().tags().get("izvcjfe"));
     }
 }

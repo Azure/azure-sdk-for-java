@@ -6,74 +6,43 @@ package com.azure.resourcemanager.managednetworkfabric.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager;
 import com.azure.resourcemanager.managednetworkfabric.models.CommunityActionTypes;
 import com.azure.resourcemanager.managednetworkfabric.models.IpExtendedCommunity;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class IpExtendedCommunitiesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"configurationState\":\"ErrorProvisioning\",\"provisioningState\":\"Updating\",\"administrativeState\":\"MAT\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":8880320550954967024,\"routeTargets\":[\"aujbfomfbozpj\",\"xefppq\",\"wdnnjjthpsnxebyc\"]},{\"action\":\"Deny\",\"sequenceNumber\":7875316579641726370,\"routeTargets\":[\"xubnn\"]},{\"action\":\"Deny\",\"sequenceNumber\":7308374102330148260,\"routeTargets\":[\"cxnouspdyzssjl\",\"ykdygjvgs\",\"jlf\",\"h\"]},{\"action\":\"Deny\",\"sequenceNumber\":1052579675599113124,\"routeTargets\":[\"xcrbcrgyoimm\",\"szzcctvk\"]}],\"annotation\":\"nhtvagw\"},\"location\":\"wcnvpnyldjdkjvdr\",\"tags\":{\"nrjlqdoqejexf\":\"kxiox\",\"drklpdyehjrwc\":\"lhuhdkubgyw\",\"yw\":\"lvxboc\"},\"id\":\"fvuhzmolhveolngs\",\"name\":\"mhwdxqupyml\",\"type\":\"klmnjqzmqynhitr\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"configurationState\":\"Provisioned\",\"provisioningState\":\"Updating\",\"administrativeState\":\"RMA\",\"ipExtendedCommunityRules\":[{\"action\":\"Permit\",\"sequenceNumber\":3554242738223001924,\"routeTargets\":[\"njuvtz\",\"j\",\"dlxbaeyocpkv\",\"tjfdzfmnpbdrc\"]}],\"annotation\":\"jxnnnoz\"},\"location\":\"h\",\"tags\":{\"amqobqehs\":\"u\",\"syzfeoctrzjw\":\"sht\"},\"id\":\"zwckzebmbvwdxgyy\",\"name\":\"mxqzl\",\"type\":\"l\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<IpExtendedCommunity> response
+            = manager.ipExtendedCommunities().listByResourceGroup("efpubaldjcgldryv", com.azure.core.util.Context.NONE);
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<IpExtendedCommunity> response =
-            manager.ipExtendedCommunities().listByResourceGroup("qwssyd", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("h", response.iterator().next().location());
-        Assertions.assertEquals("u", response.iterator().next().tags().get("amqobqehs"));
-        Assertions
-            .assertEquals(
-                CommunityActionTypes.PERMIT, response.iterator().next().ipExtendedCommunityRules().get(0).action());
-        Assertions
-            .assertEquals(
-                3554242738223001924L, response.iterator().next().ipExtendedCommunityRules().get(0).sequenceNumber());
-        Assertions
-            .assertEquals("njuvtz", response.iterator().next().ipExtendedCommunityRules().get(0).routeTargets().get(0));
-        Assertions.assertEquals("jxnnnoz", response.iterator().next().annotation());
+        Assertions.assertEquals("wcnvpnyldjdkjvdr", response.iterator().next().location());
+        Assertions.assertEquals("kxiox", response.iterator().next().tags().get("nrjlqdoqejexf"));
+        Assertions.assertEquals(CommunityActionTypes.PERMIT,
+            response.iterator().next().ipExtendedCommunityRules().get(0).action());
+        Assertions.assertEquals(8880320550954967024L,
+            response.iterator().next().ipExtendedCommunityRules().get(0).sequenceNumber());
+        Assertions.assertEquals("aujbfomfbozpj",
+            response.iterator().next().ipExtendedCommunityRules().get(0).routeTargets().get(0));
+        Assertions.assertEquals("nhtvagw", response.iterator().next().annotation());
     }
 }

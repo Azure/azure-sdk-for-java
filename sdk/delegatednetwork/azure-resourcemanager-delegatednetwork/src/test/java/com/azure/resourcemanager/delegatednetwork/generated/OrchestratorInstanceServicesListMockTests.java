@@ -6,74 +6,45 @@ package com.azure.resourcemanager.delegatednetwork.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager;
 import com.azure.resourcemanager.delegatednetwork.models.Orchestrator;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorKind;
 import com.azure.resourcemanager.delegatednetwork.models.ResourceIdentityType;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class OrchestratorInstanceServicesListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"resourceGuid\":\"mclfplphoxuscr\",\"provisioningState\":\"Succeeded\",\"orchestratorAppId\":\"ye\",\"orchestratorTenantId\":\"bjtazqugxywpmu\",\"clusterRootCA\":\"fjz\",\"apiServerEndpoint\":\"qkqujidsu\",\"privateLinkResourceId\":\"nobglaocq\",\"controllerDetails\":{\"id\":\"ccm\"}},\"kind\":\"Kubernetes\",\"identity\":{\"principalId\":\"xy\",\"tenantId\":\"moyrxvwfudwpz\",\"type\":\"None\"},\"location\":\"hdzhlrqj\",\"tags\":{\"pycanuzbpz\":\"kfrlhrxsbky\"},\"id\":\"afkuwb\",\"name\":\"rnwb\",\"type\":\"ehhseyvjusrts\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceGuid\":\"deoj\",\"provisioningState\":\"Failed\",\"orchestratorAppId\":\"khsmtxpsiebt\",\"orchestratorTenantId\":\"vpesapskrdqmhjjd\",\"clusterRootCA\":\"ldwkyzxuutkn\",\"apiServerEndpoint\":\"scwsv\",\"privateLinkResourceId\":\"otogtwrupqs\",\"controllerDetails\":{\"id\":\"nmic\"}},\"kind\":\"Kubernetes\",\"identity\":{\"principalId\":\"eoveilovnotyf\",\"tenantId\":\"cnjbkcnxdhbt\",\"type\":\"SystemAssigned\"},\"location\":\"h\",\"tags\":{\"t\":\"nv\",\"crpab\":\"qnermclfplphoxu\",\"sbj\":\"ye\",\"wfqkquj\":\"azqugxywpmueefj\"},\"id\":\"dsuyonobgla\",\"name\":\"cq\",\"type\":\"tcc\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DelegatedNetworkManager manager = DelegatedNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<Orchestrator> response
+            = manager.orchestratorInstanceServices().list(com.azure.core.util.Context.NONE);
 
-        DelegatedNetworkManager manager =
-            DelegatedNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<Orchestrator> response =
-            manager.orchestratorInstanceServices().list(com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("h", response.iterator().next().location());
-        Assertions.assertEquals("nv", response.iterator().next().tags().get("t"));
+        Assertions.assertEquals("hdzhlrqj", response.iterator().next().location());
+        Assertions.assertEquals("kfrlhrxsbky", response.iterator().next().tags().get("pycanuzbpz"));
         Assertions.assertEquals(OrchestratorKind.KUBERNETES, response.iterator().next().kind());
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
-        Assertions.assertEquals("khsmtxpsiebt", response.iterator().next().properties().orchestratorAppId());
-        Assertions.assertEquals("vpesapskrdqmhjjd", response.iterator().next().properties().orchestratorTenantId());
-        Assertions.assertEquals("ldwkyzxuutkn", response.iterator().next().properties().clusterRootCA());
-        Assertions.assertEquals("scwsv", response.iterator().next().properties().apiServerEndpoint());
-        Assertions.assertEquals("otogtwrupqs", response.iterator().next().properties().privateLinkResourceId());
-        Assertions.assertEquals("nmic", response.iterator().next().properties().controllerDetails().id());
+        Assertions.assertEquals(ResourceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("ye", response.iterator().next().properties().orchestratorAppId());
+        Assertions.assertEquals("bjtazqugxywpmu", response.iterator().next().properties().orchestratorTenantId());
+        Assertions.assertEquals("fjz", response.iterator().next().properties().clusterRootCA());
+        Assertions.assertEquals("qkqujidsu", response.iterator().next().properties().apiServerEndpoint());
+        Assertions.assertEquals("nobglaocq", response.iterator().next().properties().privateLinkResourceId());
+        Assertions.assertEquals("ccm", response.iterator().next().properties().controllerDetails().id());
     }
 }

@@ -5,63 +5,110 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.AadDataConnector;
 import com.azure.resourcemanager.securityinsights.models.AatpDataConnector;
 import com.azure.resourcemanager.securityinsights.models.AscDataConnector;
 import com.azure.resourcemanager.securityinsights.models.AwsCloudTrailDataConnector;
-import com.azure.resourcemanager.securityinsights.models.AwsS3DataConnector;
-import com.azure.resourcemanager.securityinsights.models.CodelessApiPollingDataConnector;
-import com.azure.resourcemanager.securityinsights.models.CodelessUiDataConnector;
-import com.azure.resourcemanager.securityinsights.models.Dynamics365DataConnector;
-import com.azure.resourcemanager.securityinsights.models.IoTDataConnector;
+import com.azure.resourcemanager.securityinsights.models.DataConnectorKind;
 import com.azure.resourcemanager.securityinsights.models.McasDataConnector;
 import com.azure.resourcemanager.securityinsights.models.MdatpDataConnector;
-import com.azure.resourcemanager.securityinsights.models.MstiDataConnector;
-import com.azure.resourcemanager.securityinsights.models.MtpDataConnector;
-import com.azure.resourcemanager.securityinsights.models.Office365ProjectDataConnector;
-import com.azure.resourcemanager.securityinsights.models.OfficeAtpDataConnector;
 import com.azure.resourcemanager.securityinsights.models.OfficeDataConnector;
-import com.azure.resourcemanager.securityinsights.models.OfficeIrmDataConnector;
-import com.azure.resourcemanager.securityinsights.models.OfficePowerBIDataConnector;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.TIDataConnector;
-import com.azure.resourcemanager.securityinsights.models.TiTaxiiDataConnector;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Data connector. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = DataConnectorInner.class)
-@JsonTypeName("DataConnector")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureActiveDirectory", value = AadDataConnector.class),
-    @JsonSubTypes.Type(name = "MicrosoftThreatIntelligence", value = MstiDataConnector.class),
-    @JsonSubTypes.Type(name = "MicrosoftThreatProtection", value = MtpDataConnector.class),
-    @JsonSubTypes.Type(name = "AzureAdvancedThreatProtection", value = AatpDataConnector.class),
-    @JsonSubTypes.Type(name = "AzureSecurityCenter", value = AscDataConnector.class),
-    @JsonSubTypes.Type(name = "AmazonWebServicesCloudTrail", value = AwsCloudTrailDataConnector.class),
-    @JsonSubTypes.Type(name = "AmazonWebServicesS3", value = AwsS3DataConnector.class),
-    @JsonSubTypes.Type(name = "MicrosoftCloudAppSecurity", value = McasDataConnector.class),
-    @JsonSubTypes.Type(name = "Dynamics365", value = Dynamics365DataConnector.class),
-    @JsonSubTypes.Type(name = "OfficeATP", value = OfficeAtpDataConnector.class),
-    @JsonSubTypes.Type(name = "Office365Project", value = Office365ProjectDataConnector.class),
-    @JsonSubTypes.Type(name = "OfficePowerBI", value = OfficePowerBIDataConnector.class),
-    @JsonSubTypes.Type(name = "OfficeIRM", value = OfficeIrmDataConnector.class),
-    @JsonSubTypes.Type(name = "MicrosoftDefenderAdvancedThreatProtection", value = MdatpDataConnector.class),
-    @JsonSubTypes.Type(name = "Office365", value = OfficeDataConnector.class),
-    @JsonSubTypes.Type(name = "ThreatIntelligence", value = TIDataConnector.class),
-    @JsonSubTypes.Type(name = "ThreatIntelligenceTaxii", value = TiTaxiiDataConnector.class),
-    @JsonSubTypes.Type(name = "IOT", value = IoTDataConnector.class),
-    @JsonSubTypes.Type(name = "GenericUI", value = CodelessUiDataConnector.class),
-    @JsonSubTypes.Type(name = "APIPolling", value = CodelessApiPollingDataConnector.class)
-})
+/**
+ * Data connector.
+ */
 @Fluent
 public class DataConnectorInner extends ResourceWithEtag {
-    /** {@inheritDoc} */
+    /*
+     * The data connector kind
+     */
+    private DataConnectorKind kind = DataConnectorKind.fromString("DataConnector");
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DataConnectorInner class.
+     */
+    public DataConnectorInner() {
+    }
+
+    /**
+     * Get the kind property: The data connector kind.
+     * 
+     * @return the kind value.
+     */
+    public DataConnectorKind kind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataConnectorInner withEtag(String etag) {
         super.withEtag(etag);
@@ -70,11 +117,97 @@ public class DataConnectorInner extends ResourceWithEtag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataConnectorInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataConnectorInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataConnectorInner.
+     */
+    public static DataConnectorInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureActiveDirectory".equals(discriminatorValue)) {
+                    return AadDataConnector.fromJson(readerToUse.reset());
+                } else if ("AzureAdvancedThreatProtection".equals(discriminatorValue)) {
+                    return AatpDataConnector.fromJson(readerToUse.reset());
+                } else if ("AzureSecurityCenter".equals(discriminatorValue)) {
+                    return AscDataConnector.fromJson(readerToUse.reset());
+                } else if ("AmazonWebServicesCloudTrail".equals(discriminatorValue)) {
+                    return AwsCloudTrailDataConnector.fromJson(readerToUse.reset());
+                } else if ("MicrosoftCloudAppSecurity".equals(discriminatorValue)) {
+                    return McasDataConnector.fromJson(readerToUse.reset());
+                } else if ("MicrosoftDefenderAdvancedThreatProtection".equals(discriminatorValue)) {
+                    return MdatpDataConnector.fromJson(readerToUse.reset());
+                } else if ("ThreatIntelligence".equals(discriminatorValue)) {
+                    return TIDataConnector.fromJson(readerToUse.reset());
+                } else if ("Office365".equals(discriminatorValue)) {
+                    return OfficeDataConnector.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static DataConnectorInner fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataConnectorInner deserializedDataConnectorInner = new DataConnectorInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDataConnectorInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataConnectorInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataConnectorInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDataConnectorInner.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDataConnectorInner.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDataConnectorInner.kind = DataConnectorKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataConnectorInner;
+        });
     }
 }

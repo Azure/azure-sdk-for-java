@@ -12,46 +12,40 @@ import org.junit.jupiter.api.Assertions;
 public final class UserInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserInfo model =
-            BinaryData
-                .fromString(
-                    "{\"firstName\":\"fmppe\",\"lastName\":\"vmgxsab\",\"companyName\":\"qduujitcjczdz\",\"emailAddress\":\"ndhkrw\",\"companyInfo\":{\"domain\":\"ppdsbdkvwrwj\",\"business\":\"usnhutje\",\"employeesNumber\":\"mrldhu\",\"state\":\"zzd\",\"country\":\"qxhocdgeablgphut\"}}")
-                .toObject(UserInfo.class);
-        Assertions.assertEquals("fmppe", model.firstName());
-        Assertions.assertEquals("vmgxsab", model.lastName());
-        Assertions.assertEquals("qduujitcjczdz", model.companyName());
-        Assertions.assertEquals("ndhkrw", model.emailAddress());
-        Assertions.assertEquals("ppdsbdkvwrwj", model.companyInfo().domain());
-        Assertions.assertEquals("usnhutje", model.companyInfo().business());
-        Assertions.assertEquals("mrldhu", model.companyInfo().employeesNumber());
-        Assertions.assertEquals("zzd", model.companyInfo().state());
-        Assertions.assertEquals("qxhocdgeablgphut", model.companyInfo().country());
+        UserInfo model = BinaryData.fromString(
+            "{\"firstName\":\"soodqxhcrmnoh\",\"lastName\":\"ckwhds\",\"companyName\":\"fiyipjxsqwpgrj\",\"emailAddress\":\"norcjxvsnbyxqab\",\"companyInfo\":{\"domain\":\"cpc\",\"business\":\"hurzafblj\",\"employeesNumber\":\"pbtoqcjmkl\",\"state\":\"vbqid\",\"country\":\"ajzyul\"}}")
+            .toObject(UserInfo.class);
+        Assertions.assertEquals("soodqxhcrmnoh", model.firstName());
+        Assertions.assertEquals("ckwhds", model.lastName());
+        Assertions.assertEquals("fiyipjxsqwpgrj", model.companyName());
+        Assertions.assertEquals("norcjxvsnbyxqab", model.emailAddress());
+        Assertions.assertEquals("cpc", model.companyInfo().domain());
+        Assertions.assertEquals("hurzafblj", model.companyInfo().business());
+        Assertions.assertEquals("pbtoqcjmkl", model.companyInfo().employeesNumber());
+        Assertions.assertEquals("vbqid", model.companyInfo().state());
+        Assertions.assertEquals("ajzyul", model.companyInfo().country());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserInfo model =
-            new UserInfo()
-                .withFirstName("fmppe")
-                .withLastName("vmgxsab")
-                .withCompanyName("qduujitcjczdz")
-                .withEmailAddress("ndhkrw")
-                .withCompanyInfo(
-                    new CompanyInfo()
-                        .withDomain("ppdsbdkvwrwj")
-                        .withBusiness("usnhutje")
-                        .withEmployeesNumber("mrldhu")
-                        .withState("zzd")
-                        .withCountry("qxhocdgeablgphut"));
+        UserInfo model = new UserInfo().withFirstName("soodqxhcrmnoh")
+            .withLastName("ckwhds")
+            .withCompanyName("fiyipjxsqwpgrj")
+            .withEmailAddress("norcjxvsnbyxqab")
+            .withCompanyInfo(new CompanyInfo().withDomain("cpc")
+                .withBusiness("hurzafblj")
+                .withEmployeesNumber("pbtoqcjmkl")
+                .withState("vbqid")
+                .withCountry("ajzyul"));
         model = BinaryData.fromObject(model).toObject(UserInfo.class);
-        Assertions.assertEquals("fmppe", model.firstName());
-        Assertions.assertEquals("vmgxsab", model.lastName());
-        Assertions.assertEquals("qduujitcjczdz", model.companyName());
-        Assertions.assertEquals("ndhkrw", model.emailAddress());
-        Assertions.assertEquals("ppdsbdkvwrwj", model.companyInfo().domain());
-        Assertions.assertEquals("usnhutje", model.companyInfo().business());
-        Assertions.assertEquals("mrldhu", model.companyInfo().employeesNumber());
-        Assertions.assertEquals("zzd", model.companyInfo().state());
-        Assertions.assertEquals("qxhocdgeablgphut", model.companyInfo().country());
+        Assertions.assertEquals("soodqxhcrmnoh", model.firstName());
+        Assertions.assertEquals("ckwhds", model.lastName());
+        Assertions.assertEquals("fiyipjxsqwpgrj", model.companyName());
+        Assertions.assertEquals("norcjxvsnbyxqab", model.emailAddress());
+        Assertions.assertEquals("cpc", model.companyInfo().domain());
+        Assertions.assertEquals("hurzafblj", model.companyInfo().business());
+        Assertions.assertEquals("pbtoqcjmkl", model.companyInfo().employeesNumber());
+        Assertions.assertEquals("vbqid", model.companyInfo().state());
+        Assertions.assertEquals("ajzyul", model.companyInfo().country());
     }
 }

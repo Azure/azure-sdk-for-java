@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.OperationDetailInner;
 
-/** An instance of this class provides access to all the operations defined in MapsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MapsClient.
+ */
 public interface MapsClient {
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps as paginated response with {@link PagedIterable}.
@@ -24,7 +26,7 @@ public interface MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,7 +38,7 @@ public interface MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the set of operations available for Maps as paginated response with {@link PagedIterable}.
@@ -46,7 +48,7 @@ public interface MapsClient {
 
     /**
      * List operations available for the Maps Resource Provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

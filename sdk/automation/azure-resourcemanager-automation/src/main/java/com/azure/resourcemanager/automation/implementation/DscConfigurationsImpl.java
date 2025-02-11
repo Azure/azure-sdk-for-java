@@ -21,26 +21,37 @@ public final class DscConfigurationsImpl implements DscConfigurations {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public DscConfigurationsImpl(
-        DscConfigurationsClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public DscConfigurationsImpl(DscConfigurationsClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName,
+        String configurationName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, automationAccountName, configurationName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String configurationName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, configurationName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String configurationName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, automationAccountName, configurationName, context);
+    public Response<DscConfiguration> getWithResponse(String resourceGroupName, String automationAccountName,
+        String configurationName, Context context) {
+        Response<DscConfigurationInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, automationAccountName, configurationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DscConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DscConfiguration get(String resourceGroupName, String automationAccountName, String configurationName) {
-        DscConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, automationAccountName, configurationName);
+        DscConfigurationInner inner
+            = this.serviceClient().get(resourceGroupName, automationAccountName, configurationName);
         if (inner != null) {
             return new DscConfigurationImpl(inner, this.manager());
         } else {
@@ -48,27 +59,23 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
     }
 
-    public Response<DscConfiguration> getWithResponse(
-        String resourceGroupName, String automationAccountName, String configurationName, Context context) {
-        Response<DscConfigurationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, configurationName, context);
+    public Response<DscConfiguration> createOrUpdateWithResponse(String resourceGroupName, String automationAccountName,
+        String configurationName, String parameters, Context context) {
+        Response<DscConfigurationInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, automationAccountName, configurationName, parameters,
+                context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DscConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DscConfiguration createOrUpdate(
-        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
-        DscConfigurationInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(resourceGroupName, automationAccountName, configurationName, parameters);
+    public DscConfiguration createOrUpdate(String resourceGroupName, String automationAccountName,
+        String configurationName, String parameters) {
+        DscConfigurationInner inner = this.serviceClient()
+            .createOrUpdate(resourceGroupName, automationAccountName, configurationName, parameters);
         if (inner != null) {
             return new DscConfigurationImpl(inner, this.manager());
         } else {
@@ -76,197 +83,115 @@ public final class DscConfigurationsImpl implements DscConfigurations {
         }
     }
 
-    public Response<DscConfiguration> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
-        String parameters,
-        Context context) {
-        Response<DscConfigurationInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, automationAccountName, configurationName, parameters, context);
+    public Response<DscConfiguration> updateWithResponse(String resourceGroupName, String automationAccountName,
+        String configurationName, String parameters, Context context) {
+        Response<DscConfigurationInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, automationAccountName, configurationName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DscConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<DscConfiguration> updateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
-        String parameters,
-        Context context) {
-        Response<DscConfigurationInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, automationAccountName, configurationName, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DscConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<String> getContentWithResponse(String resourceGroupName, String automationAccountName,
+        String configurationName, Context context) {
+        return this.serviceClient()
+            .getContentWithResponse(resourceGroupName, automationAccountName, configurationName, context);
     }
 
     public String getContent(String resourceGroupName, String automationAccountName, String configurationName) {
         return this.serviceClient().getContent(resourceGroupName, automationAccountName, configurationName);
     }
 
-    public Response<String> getContentWithResponse(
-        String resourceGroupName, String automationAccountName, String configurationName, Context context) {
-        return this
-            .serviceClient()
-            .getContentWithResponse(resourceGroupName, automationAccountName, configurationName, context);
+    public PagedIterable<DscConfiguration> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
+        PagedIterable<DscConfigurationInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DscConfigurationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DscConfiguration> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
-        PagedIterable<DscConfigurationInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new DscConfigurationImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<DscConfiguration> listByAutomationAccount(
-        String resourceGroupName,
-        String automationAccountName,
-        String filter,
-        Integer skip,
-        Integer top,
-        String inlinecount,
-        Context context) {
-        PagedIterable<DscConfigurationInner> inner =
-            this
-                .serviceClient()
-                .listByAutomationAccount(
-                    resourceGroupName, automationAccountName, filter, skip, top, inlinecount, context);
-        return Utils.mapPage(inner, inner1 -> new DscConfigurationImpl(inner1, this.manager()));
+    public PagedIterable<DscConfiguration> listByAutomationAccount(String resourceGroupName,
+        String automationAccountName, String filter, Integer skip, Integer top, String inlinecount, Context context) {
+        PagedIterable<DscConfigurationInner> inner = this.serviceClient()
+            .listByAutomationAccount(resourceGroupName, automationAccountName, filter, skip, top, inlinecount, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DscConfigurationImpl(inner1, this.manager()));
     }
 
     public DscConfiguration getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String configurationName = Utils.getValueFromIdByName(id, "configurations");
+        String configurationName = ResourceManagerUtils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, automationAccountName, configurationName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, automationAccountName, configurationName, Context.NONE)
             .getValue();
     }
 
     public Response<DscConfiguration> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String configurationName = Utils.getValueFromIdByName(id, "configurations");
+        String configurationName = ResourceManagerUtils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, configurationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String configurationName = Utils.getValueFromIdByName(id, "configurations");
+        String configurationName = ResourceManagerUtils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, automationAccountName, configurationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String configurationName = Utils.getValueFromIdByName(id, "configurations");
+        String configurationName = ResourceManagerUtils.getValueFromIdByName(id, "configurations");
         if (configurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'configurations'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, configurationName, context);
     }

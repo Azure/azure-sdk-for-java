@@ -18,7 +18,8 @@ public final class DeploymentsListByDeviceGroupSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void deploymentsListByDeviceGroup(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.deployments().listByDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1", null,
-            null, null, null, com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .listByDeviceGroup("MyResourceGroup1", "MyCatalog1", "MyProduct1", "myDeviceGroup1", null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

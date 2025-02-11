@@ -99,15 +99,15 @@ public class AvroReaderTests {
 
         /* Normal use case. */
         assertNextMatches(StepVerifier.create(
-                new AvroReaderFactory().getAvroReader(FluxUtil.readFile(fileChannel)).read().map(AvroObject::getObject)),
-            consumer, 10)
-            .verifyComplete();
+            new AvroReaderFactory().getAvroReader(FluxUtil.readFile(fileChannel)).read().map(AvroObject::getObject)),
+            consumer, 10).verifyComplete();
 
         /* Special use case for Changefeed - parse header and block separate. */
-        assertNextMatches(StepVerifier.create(new AvroReaderFactory().getAvroReader(FluxUtil.readFile(fileChannel),
+        assertNextMatches(StepVerifier.create(new AvroReaderFactory()
+            .getAvroReader(FluxUtil.readFile(fileChannel),
                 FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size()), blockOffset, -1)
-            .read().map(AvroObject::getObject)), consumer, 10)
-            .verifyComplete();
+            .read()
+            .map(AvroObject::getObject)), consumer, 10).verifyComplete();
     }
 
     private static Stream<Arguments> parseSupplier() {
@@ -120,8 +120,7 @@ public class AvroReaderTests {
         record.put("$record", "Test");
         record.put("f", 5L);
 
-        return Stream.of(
-            Arguments.of(0, 57, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
+        return Stream.of(Arguments.of(0, 57, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
             Arguments.of(1, 60, createConsumer(o -> assertTrue((boolean) o))),
             Arguments.of(2, 59, createConsumer(o -> assertEquals("adsfasdf09809dsf-=adsf", o))),
             Arguments.of(3, 58, createConsumer(o -> bytesEqual(o, "12345abcd".getBytes(StandardCharsets.UTF_8)))),
@@ -135,7 +134,7 @@ public class AvroReaderTests {
             Arguments.of(11, 84, createConsumer(o -> assertEquals(map, o))),
             Arguments.of(12, 77, createConsumer(o -> assertInstanceOf(AvroNullSchema.Null.class, o))),
             Arguments.of(13, 129, createConsumer(o -> assertEquals(record, o)))
-            /* TODO (gapra) : Not necessary for QQ or CF but case 14 tests the ability to reference named types as a type in a record. */
+        /* TODO (gapra) : Not necessary for QQ or CF but case 14 tests the ability to reference named types as a type in a record. */
         );
     }
 
@@ -155,10 +154,9 @@ public class AvroReaderTests {
         assertArraysEqual(expected, actualBytes);
     }
 
-
     /* This test checks that different chunk sizes still result in validly parsed files. */
     @ParameterizedTest
-    @ValueSource(ints = {1, 36, 78, 157})
+    @ValueSource(ints = { 1, 36, 78, 157 })
     public void parseChunkSize(int chunkSize) throws IOException {
         AsynchronousFileChannel fileChannel = openChannel(13);
         Map<String, Object> record = new HashMap<>();
@@ -166,73 +164,97 @@ public class AvroReaderTests {
         record.put("f", 5L);
 
         /* Normal use case. */
-        assertNextMatches(StepVerifier.create(
-            new AvroReaderFactory().getAvroReader(FluxUtil.readFile(fileChannel, chunkSize, 0, 157)).read()
-                .map(AvroObject::getObject)), o -> assertEquals(record, o), 10)
-            .verifyComplete();
+        assertNextMatches(
+            StepVerifier.create(new AvroReaderFactory().getAvroReader(FluxUtil.readFile(fileChannel, chunkSize, 0, 157))
+                .read()
+                .map(AvroObject::getObject)),
+            o -> assertEquals(record, o), 10).verifyComplete();
 
         /* Special use case for Changefeed - parse header and block separate. */
-        assertNextMatches(StepVerifier.create(new AvroReaderFactory().getAvroReader(FluxUtil.readFile(fileChannel),
-                FluxUtil.readFile(fileChannel, chunkSize, 129, fileChannel.size()), 129L, -1L).read()
-            .map(AvroObject::getObject)), o -> assertEquals(record, o), 10)
-            .verifyComplete();
+        assertNextMatches(StepVerifier.create(new AvroReaderFactory()
+            .getAvroReader(FluxUtil.readFile(fileChannel),
+                FluxUtil.readFile(fileChannel, chunkSize, 129, fileChannel.size()), 129L, -1L)
+            .read()
+            .map(AvroObject::getObject)), o -> assertEquals(record, o), 10).verifyComplete();
     }
 
     /* TODO (gapra) : Download a CF file with a single record and add a test with that, validate all parts of map are correct. Also chunk the file. */
     @Test
     public void parseCfLarge() throws IOException {
         /* Normal use case. */
-        assertNextMatches(StepVerifier.create(new AvroReaderFactory().getAvroReader(
-                    FluxUtil.readFile(openChannel("changefeed_large.avro"))).read().map(AvroObject::getObject)
-                .map(o -> (String) ((Map<String, Object>) o).get("subject")).index()),
-            t -> assertEquals(LARGE_AVRO_PATH + t.getT1(), t.getT2()), 1000)
-            .verifyComplete();
+        assertNextMatches(StepVerifier
+            .create(new AvroReaderFactory().getAvroReader(FluxUtil.readFile(openChannel("changefeed_large.avro")))
+                .read()
+                .map(AvroObject::getObject)
+                .map(o -> (String) ((Map<String, Object>) o).get("subject"))
+                .index()),
+            t -> assertEquals(LARGE_AVRO_PATH + t.getT1(), t.getT2()), 1000).verifyComplete();
     }
 
     @ParameterizedTest
-    @CsvSource({"1953,1000", "67686,881", "133529,762", "199372,643", "265215,524", "331058,405", "396901,286",
-        "462744,167", "528587,48", "555167,0"})
+    @CsvSource({
+        "1953,1000",
+        "67686,881",
+        "133529,762",
+        "199372,643",
+        "265215,524",
+        "331058,405",
+        "396901,286",
+        "462744,167",
+        "528587,48",
+        "555167,0" })
     public void parseCfLargeBlockOffset(int blockOffset, int numObjects) throws IOException {
         AsynchronousFileChannel fileChannel = openChannel("changefeed_large.avro");
 
         /* Special use case for Changefeed - parse header and block separate. */
-        assertNextMatches(StepVerifier.create(new AvroReaderFactory().getAvroReader(
-                    FluxUtil.readFile(fileChannel, 0, 5 * 1024),
-                    FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size()), blockOffset, -1L).read()
+        assertNextMatches(
+            StepVerifier.create(new AvroReaderFactory()
+                .getAvroReader(FluxUtil.readFile(fileChannel, 0, 5 * 1024),
+                    FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size()), blockOffset, -1L)
+                .read()
                 .map(AvroObject::getObject)
                 .map(o -> (String) ((Map<String, Object>) o).get("subject"))
                 .index()
                 .map(tuple2 -> Tuples.of(tuple2.getT1() + 1000 - numObjects, tuple2.getT2()))),
-            t -> assertEquals(LARGE_AVRO_PATH + t.getT1(), t.getT2()), numObjects)
-            .verifyComplete();
+            t -> assertEquals(LARGE_AVRO_PATH + t.getT1(), t.getT2()), numObjects).verifyComplete();
     }
 
     @ParameterizedTest
-    @CsvSource({"1953,1,999", "67686,35,846", "133529,57,705", "199372,0,643", "265215,51,473", "331058,0,405",
-        "396901,11,275", "462744,68,99", "528587,41,7", "555167,0,0"})
+    @CsvSource({
+        "1953,1,999",
+        "67686,35,846",
+        "133529,57,705",
+        "199372,0,643",
+        "265215,51,473",
+        "331058,0,405",
+        "396901,11,275",
+        "462744,68,99",
+        "528587,41,7",
+        "555167,0,0" })
     public void parseCfLargeFilterIndex(int blockOffset, int filterIndex, int numObjects) throws IOException {
         AsynchronousFileChannel fileChannel = openChannel("changefeed_large.avro");
 
         /* Special use case for Changefeed - parse header and block separate. */
-        assertNextMatches(StepVerifier.create(new AvroReaderFactory().getAvroReader(
-                    FluxUtil.readFile(fileChannel, 0, 5 * 1024),
+        assertNextMatches(
+            StepVerifier.create(new AvroReaderFactory()
+                .getAvroReader(FluxUtil.readFile(fileChannel, 0, 5 * 1024),
                     FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size()), blockOffset, filterIndex)
-                .read().map(AvroObject::getObject).map(o -> (String) ((Map<String, Object>) o).get("subject")).index()
+                .read()
+                .map(AvroObject::getObject)
+                .map(o -> (String) ((Map<String, Object>) o).get("subject"))
+                .index()
                 .map(tuple2 -> Tuples.of(tuple2.getT1() + 1000 - numObjects, tuple2.getT2()))),
-            t -> assertEquals(LARGE_AVRO_PATH + t.getT1(), t.getT2()), numObjects)
-            .verifyComplete();
+            t -> assertEquals(LARGE_AVRO_PATH + t.getT1(), t.getT2()), numObjects).verifyComplete();
     }
 
     @Test
     public void parseCfSmall() throws IOException {
-        Path path = new File(getClass().getClassLoader().getResource("changefeed_small.avro").getFile())
-            .toPath();
+        Path path = new File(getClass().getClassLoader().getResource("changefeed_small.avro").getFile()).toPath();
 
         try (AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)) {
             /* Normal use case. */
-            StepVerifier.create(new AvroReaderFactory().getAvroReader(FluxUtil.readFile(fileChannel))
-                    .read()
-                    .map(AvroObject::getObject))
+            StepVerifier.create(
+                new AvroReaderFactory().getAvroReader(FluxUtil.readFile(fileChannel)).read().map(AvroObject::getObject))
                 .assertNext(AvroReaderTests::verifyChangefeedEvent)
                 .verifyComplete();
         }
@@ -281,8 +303,10 @@ public class AvroReaderTests {
 
     @Test
     public void parseQqSmall() throws IOException {
-        StepVerifier.create(new AvroReaderFactory().getAvroReader(FluxUtil.readFile(openChannel("query_small.avro")))
-                .read().map(AvroObject::getObject))
+        StepVerifier
+            .create(new AvroReaderFactory().getAvroReader(FluxUtil.readFile(openChannel("query_small.avro")))
+                .read()
+                .map(AvroObject::getObject))
             .assertNext(AvroReaderTests::containsConsumer)
             .assertNext(o -> progressMatchesConsumer(o, 1024, 1024))
             .assertNext(o -> endMatchesConsumer(o, 1024))
@@ -291,8 +315,10 @@ public class AvroReaderTests {
 
     @Test
     public void parseQqLarge() throws IOException {
-        StepVerifier.create(new AvroReaderFactory().getAvroReader(FluxUtil.readFile(openChannel("query_large.avro")))
-                .read().map(AvroObject::getObject))
+        StepVerifier
+            .create(new AvroReaderFactory().getAvroReader(FluxUtil.readFile(openChannel("query_large.avro")))
+                .read()
+                .map(AvroObject::getObject))
             .assertNext(AvroReaderTests::containsConsumer)
             .assertNext(o -> progressMatchesConsumer(o, 4194304, 16384000))
             .assertNext(AvroReaderTests::containsConsumer)
@@ -327,8 +353,8 @@ public class AvroReaderTests {
         assertTrue(map.isEmpty());
     }
 
-    private static <T> StepVerifier.Step<T> assertNextMatches(StepVerifier.FirstStep<T> firstStep,
-        Consumer<T> consumer, int count) {
+    private static <T> StepVerifier.Step<T> assertNextMatches(StepVerifier.FirstStep<T> firstStep, Consumer<T> consumer,
+        int count) {
         if (count == 0) {
             return firstStep;
         }

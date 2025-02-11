@@ -171,6 +171,9 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
          * the larger the noisier.
          */
         public static final FaceAttributeType NOISE = FaceAttributeType.NOISE;
+
+        private ModelDetection01() {
+        }
     }
 
     /**
@@ -194,6 +197,9 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
          * 'uncertain'. Value returns a boolean 'noseAndMouthCovered' indicating whether nose and mouth are covered.
          */
         public static final FaceAttributeType MASK = FaceAttributeType.MASK;
+
+        private ModelDetection03() {
+        }
     }
 
     /**
@@ -210,6 +216,9 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
          * detection_03, and recognition models recognition_03 or recognition_04.
          */
         public static final FaceAttributeType QUALITY_FOR_RECOGNITION = FaceAttributeType.QUALITY_FOR_RECOGNITION;
+
+        private ModelRecognition03() {
+        }
     }
 
     /**
@@ -226,5 +235,8 @@ public final class FaceAttributeType extends ExpandableStringEnum<FaceAttributeT
          * detection_03, and recognition models recognition_03 or recognition_04.
          */
         public static final FaceAttributeType QUALITY_FOR_RECOGNITION = FaceAttributeType.QUALITY_FOR_RECOGNITION;
+
+        private ModelRecognition04() {
+        }
     }
 }

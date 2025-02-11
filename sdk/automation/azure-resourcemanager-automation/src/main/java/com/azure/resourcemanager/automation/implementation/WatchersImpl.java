@@ -21,10 +21,22 @@ public final class WatchersImpl implements Watchers {
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    public WatchersImpl(
-        WatchersClient innerClient, com.azure.resourcemanager.automation.AutomationManager serviceManager) {
+    public WatchersImpl(WatchersClient innerClient,
+        com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Watcher> getWithResponse(String resourceGroupName, String automationAccountName, String watcherName,
+        Context context) {
+        Response<WatcherInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, watcherName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WatcherImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Watcher get(String resourceGroupName, String automationAccountName, String watcherName) {
@@ -36,169 +48,118 @@ public final class WatchersImpl implements Watchers {
         }
     }
 
-    public Response<Watcher> getWithResponse(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
-        Response<WatcherInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, automationAccountName, watcherName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WatcherImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, String watcherName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }
 
     public void delete(String resourceGroupName, String automationAccountName, String watcherName) {
         this.serviceClient().delete(resourceGroupName, automationAccountName, watcherName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, automationAccountName, watcherName, context);
+    public Response<Void> startWithResponse(String resourceGroupName, String automationAccountName, String watcherName,
+        Context context) {
+        return this.serviceClient().startWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }
 
     public void start(String resourceGroupName, String automationAccountName, String watcherName) {
         this.serviceClient().start(resourceGroupName, automationAccountName, watcherName);
     }
 
-    public Response<Void> startWithResponse(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
-        return this.serviceClient().startWithResponse(resourceGroupName, automationAccountName, watcherName, context);
+    public Response<Void> stopWithResponse(String resourceGroupName, String automationAccountName, String watcherName,
+        Context context) {
+        return this.serviceClient().stopWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }
 
     public void stop(String resourceGroupName, String automationAccountName, String watcherName) {
         this.serviceClient().stop(resourceGroupName, automationAccountName, watcherName);
     }
 
-    public Response<Void> stopWithResponse(
-        String resourceGroupName, String automationAccountName, String watcherName, Context context) {
-        return this.serviceClient().stopWithResponse(resourceGroupName, automationAccountName, watcherName, context);
-    }
-
     public PagedIterable<Watcher> listByAutomationAccount(String resourceGroupName, String automationAccountName) {
-        PagedIterable<WatcherInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
-        return Utils.mapPage(inner, inner1 -> new WatcherImpl(inner1, this.manager()));
+        PagedIterable<WatcherInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WatcherImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Watcher> listByAutomationAccount(
-        String resourceGroupName, String automationAccountName, String filter, Context context) {
-        PagedIterable<WatcherInner> inner =
-            this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new WatcherImpl(inner1, this.manager()));
+    public PagedIterable<Watcher> listByAutomationAccount(String resourceGroupName, String automationAccountName,
+        String filter, Context context) {
+        PagedIterable<WatcherInner> inner
+            = this.serviceClient().listByAutomationAccount(resourceGroupName, automationAccountName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WatcherImpl(inner1, this.manager()));
     }
 
     public Watcher getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String watcherName = Utils.getValueFromIdByName(id, "watchers");
+        String watcherName = ResourceManagerUtils.getValueFromIdByName(id, "watchers");
         if (watcherName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, watcherName, Context.NONE).getValue();
     }
 
     public Response<Watcher> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String watcherName = Utils.getValueFromIdByName(id, "watchers");
+        String watcherName = ResourceManagerUtils.getValueFromIdByName(id, "watchers");
         if (watcherName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
         }
         return this.getWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String watcherName = Utils.getValueFromIdByName(id, "watchers");
+        String watcherName = ResourceManagerUtils.getValueFromIdByName(id, "watchers");
         if (watcherName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, automationAccountName, watcherName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String automationAccountName = Utils.getValueFromIdByName(id, "automationAccounts");
+        String automationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "automationAccounts");
         if (automationAccountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'automationAccounts'.", id)));
         }
-        String watcherName = Utils.getValueFromIdByName(id, "watchers");
+        String watcherName = ResourceManagerUtils.getValueFromIdByName(id, "watchers");
         if (watcherName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'watchers'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, automationAccountName, watcherName, context);
     }

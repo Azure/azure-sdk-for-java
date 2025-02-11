@@ -6,7 +6,7 @@ import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.UUIDIdDomain;
-import com.azure.spring.data.cosmos.exception.CosmosAccessException;
+import com.azure.spring.data.cosmos.exception.CosmosNotFoundException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.UUIDIdDomainRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
@@ -140,7 +140,7 @@ public class UUIDIdDomainRepositoryIT {
         Assert.assertEquals(0, this.repository.count());
     }
 
-    @Test(expected = CosmosAccessException.class)
+    @Test(expected = CosmosNotFoundException.class)
     public void testDeleteByIdShouldFailIfNothingToDelete() {
         this.repository.deleteAll();
         this.repository.deleteById(DOMAIN_1.getNumber());
@@ -153,7 +153,7 @@ public class UUIDIdDomainRepositoryIT {
         Assert.assertEquals(1, this.repository.count());
     }
 
-    @Test(expected = CosmosAccessException.class)
+    @Test(expected = CosmosNotFoundException.class)
     public void testDeleteShouldFailIfNothingToDelete() {
         this.repository.deleteAll();
         this.repository.delete(DOMAIN_1);

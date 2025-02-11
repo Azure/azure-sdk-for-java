@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The object that describes the operations. */
+/**
+ * The object that describes the operations.
+ */
 @Fluent
-public final class OperationMetadataDisplay {
+public final class OperationMetadataDisplay implements JsonSerializable<OperationMetadataDisplay> {
     /*
      * Friendly name of the resource provider
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * Resource type on which the operation is performed.
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
     /*
      * Operation type: read, write, delete, listKeys/action, etc.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * Friendly name of the operation
      */
-    @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of OperationMetadataDisplay class. */
+    /**
+     * Creates an instance of OperationMetadataDisplay class.
+     */
     public OperationMetadataDisplay() {
     }
 
     /**
      * Get the provider property: Friendly name of the resource provider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class OperationMetadataDisplay {
 
     /**
      * Set the provider property: Friendly name of the resource provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the OperationMetadataDisplay object itself.
      */
@@ -60,7 +64,7 @@ public final class OperationMetadataDisplay {
 
     /**
      * Get the resource property: Resource type on which the operation is performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -69,7 +73,7 @@ public final class OperationMetadataDisplay {
 
     /**
      * Set the resource property: Resource type on which the operation is performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the OperationMetadataDisplay object itself.
      */
@@ -80,7 +84,7 @@ public final class OperationMetadataDisplay {
 
     /**
      * Get the operation property: Operation type: read, write, delete, listKeys/action, etc.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -89,7 +93,7 @@ public final class OperationMetadataDisplay {
 
     /**
      * Set the operation property: Operation type: read, write, delete, listKeys/action, etc.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the OperationMetadataDisplay object itself.
      */
@@ -100,7 +104,7 @@ public final class OperationMetadataDisplay {
 
     /**
      * Get the description property: Friendly name of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class OperationMetadataDisplay {
 
     /**
      * Set the description property: Friendly name of the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the OperationMetadataDisplay object itself.
      */
@@ -120,9 +124,54 @@ public final class OperationMetadataDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationMetadataDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationMetadataDisplay if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationMetadataDisplay.
+     */
+    public static OperationMetadataDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationMetadataDisplay deserializedOperationMetadataDisplay = new OperationMetadataDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedOperationMetadataDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedOperationMetadataDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedOperationMetadataDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedOperationMetadataDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationMetadataDisplay;
+        });
     }
 }

@@ -33,6 +33,34 @@ public final class FaceAdministrationClientImpl {
     }
 
     /**
+     * Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
+     */
+    private final String largeFaceListId;
+
+    /**
+     * Gets Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
+     * 
+     * @return the largeFaceListId value.
+     */
+    public String getLargeFaceListId() {
+        return this.largeFaceListId;
+    }
+
+    /**
+     * ID of the container.
+     */
+    private final String largePersonGroupId;
+
+    /**
+     * Gets ID of the container.
+     * 
+     * @return the largePersonGroupId value.
+     */
+    public String getLargePersonGroupId() {
+        return this.largePersonGroupId;
+    }
+
+    /**
      * Service version.
      */
     private final FaceServiceVersion serviceVersion;
@@ -107,11 +135,15 @@ public final class FaceAdministrationClientImpl {
      * 
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://{resource-name}.cognitiveservices.azure.com).
+     * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
+     * @param largePersonGroupId ID of the container.
      * @param serviceVersion Service version.
      */
-    public FaceAdministrationClientImpl(String endpoint, FaceServiceVersion serviceVersion) {
+    public FaceAdministrationClientImpl(String endpoint, String largeFaceListId, String largePersonGroupId,
+        FaceServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, largeFaceListId, largePersonGroupId,
+            serviceVersion);
     }
 
     /**
@@ -120,10 +152,14 @@ public final class FaceAdministrationClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://{resource-name}.cognitiveservices.azure.com).
+     * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
+     * @param largePersonGroupId ID of the container.
      * @param serviceVersion Service version.
      */
-    public FaceAdministrationClientImpl(HttpPipeline httpPipeline, String endpoint, FaceServiceVersion serviceVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
+    public FaceAdministrationClientImpl(HttpPipeline httpPipeline, String endpoint, String largeFaceListId,
+        String largePersonGroupId, FaceServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, largeFaceListId,
+            largePersonGroupId, serviceVersion);
     }
 
     /**
@@ -133,13 +169,17 @@ public final class FaceAdministrationClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      * https://{resource-name}.cognitiveservices.azure.com).
+     * @param largeFaceListId Valid character is letter in lower case or digit or '-' or '_', maximum length is 64.
+     * @param largePersonGroupId ID of the container.
      * @param serviceVersion Service version.
      */
     public FaceAdministrationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        FaceServiceVersion serviceVersion) {
+        String largeFaceListId, String largePersonGroupId, FaceServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
+        this.largeFaceListId = largeFaceListId;
+        this.largePersonGroupId = largePersonGroupId;
         this.serviceVersion = serviceVersion;
         this.largeFaceLists = new LargeFaceListsImpl(this);
         this.largePersonGroups = new LargePersonGroupsImpl(this);

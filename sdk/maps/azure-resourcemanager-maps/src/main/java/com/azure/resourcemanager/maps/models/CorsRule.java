@@ -6,27 +6,34 @@ package com.azure.resourcemanager.maps.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Specifies a CORS rule for the Map Account. */
+/**
+ * Specifies a CORS rule for the Map Account.
+ */
 @Fluent
-public final class CorsRule {
+public final class CorsRule implements JsonSerializable<CorsRule> {
     /*
      * Required if CorsRule element is present. A list of origin domains that will be allowed via CORS, or "*" to allow
      * all domains
      */
-    @JsonProperty(value = "allowedOrigins", required = true)
     private List<String> allowedOrigins;
 
-    /** Creates an instance of CorsRule class. */
+    /**
+     * Creates an instance of CorsRule class.
+     */
     public CorsRule() {
     }
 
     /**
      * Get the allowedOrigins property: Required if CorsRule element is present. A list of origin domains that will be
      * allowed via CORS, or "*" to allow all domains.
-     *
+     * 
      * @return the allowedOrigins value.
      */
     public List<String> allowedOrigins() {
@@ -36,7 +43,7 @@ public final class CorsRule {
     /**
      * Set the allowedOrigins property: Required if CorsRule element is present. A list of origin domains that will be
      * allowed via CORS, or "*" to allow all domains.
-     *
+     * 
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsRule object itself.
      */
@@ -47,16 +54,54 @@ public final class CorsRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (allowedOrigins() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property allowedOrigins in model CorsRule"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property allowedOrigins in model CorsRule"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CorsRule.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allowedOrigins", this.allowedOrigins,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CorsRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CorsRule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CorsRule.
+     */
+    public static CorsRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CorsRule deserializedCorsRule = new CorsRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allowedOrigins".equals(fieldName)) {
+                    List<String> allowedOrigins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCorsRule.allowedOrigins = allowedOrigins;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCorsRule;
+        });
+    }
 }

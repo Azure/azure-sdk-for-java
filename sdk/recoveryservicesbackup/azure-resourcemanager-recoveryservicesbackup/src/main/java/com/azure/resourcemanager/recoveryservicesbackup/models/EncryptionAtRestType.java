@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class EncryptionAtRestType extends ExpandableStringEnum<EncryptionA
      * @param name a name to look for.
      * @return the corresponding EncryptionAtRestType.
      */
-    @JsonCreator
     public static EncryptionAtRestType fromString(String name) {
         return fromString(name, EncryptionAtRestType.class);
     }

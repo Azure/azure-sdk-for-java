@@ -38,9 +38,9 @@ public final class CapacityPoolInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -48,9 +48,9 @@ public final class CapacityPoolInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of CapacityPoolInner class.
@@ -86,13 +86,13 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -106,13 +106,13 @@ public final class CapacityPoolInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -215,6 +215,31 @@ public final class CapacityPoolInner extends Resource {
      */
     public Float utilizedThroughputMibps() {
         return this.innerProperties() == null ? null : this.innerProperties().utilizedThroughputMibps();
+    }
+
+    /**
+     * Get the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
+     * will be accepted as input only for manual qosType pool with Flexible service level.
+     * 
+     * @return the customThroughputMibps value.
+     */
+    public Float customThroughputMibps() {
+        return this.innerProperties() == null ? null : this.innerProperties().customThroughputMibps();
+    }
+
+    /**
+     * Set the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
+     * will be accepted as input only for manual qosType pool with Flexible service level.
+     * 
+     * @param customThroughputMibps the customThroughputMibps value to set.
+     * @return the CapacityPoolInner object itself.
+     */
+    public CapacityPoolInner withCustomThroughputMibps(Float customThroughputMibps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolProperties();
+        }
+        this.innerProperties().withCustomThroughputMibps(customThroughputMibps);
+        return this;
     }
 
     /**

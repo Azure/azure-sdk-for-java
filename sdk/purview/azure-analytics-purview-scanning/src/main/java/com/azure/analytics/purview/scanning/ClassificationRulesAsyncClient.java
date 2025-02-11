@@ -19,14 +19,17 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous PurviewScanningClient type. */
+/**
+ * Initializes a new instance of the asynchronous PurviewScanningClient type.
+ */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ClassificationRulesAsyncClient {
-    @Generated private final ClassificationRulesImpl serviceClient;
+    @Generated
+    private final ClassificationRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ClassificationRulesAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -36,16 +39,18 @@ public final class ClassificationRulesAsyncClient {
 
     /**
      * Get a classification rule.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(System/Custom) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -62,35 +67,38 @@ public final class ClassificationRulesAsyncClient {
 
     /**
      * Creates or Updates a classification rule.
-     *
-     * <p><strong>Header Parameters</strong>
-     *
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values: "application/json".</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
      * </table>
-     *
      * You can add these to a request with {@link RequestOptions#addHeader}
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(System/Custom) (Required)
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(System/Custom) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -101,23 +109,25 @@ public final class ClassificationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
-            String classificationRuleName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String classificationRuleName,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateWithResponseAsync(classificationRuleName, requestOptions);
     }
 
     /**
      * Deletes a classification rule.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(System/Custom) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -134,16 +144,18 @@ public final class ClassificationRulesAsyncClient {
 
     /**
      * List classification rules in Account.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(System/Custom) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -159,16 +171,18 @@ public final class ClassificationRulesAsyncClient {
 
     /**
      * Lists the rule versions of a classification rule.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     id: String (Optional)
      *     name: String (Optional)
+     *     kind: String(System/Custom) (Required)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -179,17 +193,17 @@ public final class ClassificationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listVersionsByClassificationRuleName(
-            String classificationRuleName, RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listVersionsByClassificationRuleName(String classificationRuleName,
+        RequestOptions requestOptions) {
         return this.serviceClient.listVersionsByClassificationRuleNameAsync(classificationRuleName, requestOptions);
     }
 
     /**
      * Sets Classification Action on a specific classification rule version.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     scanResultId: String (Optional)
      *     startTime: OffsetDateTime (Optional)
@@ -211,8 +225,9 @@ public final class ClassificationRulesAsyncClient {
      *         ]
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param classificationRuleName The classificationRuleName parameter.
      * @param classificationRuleVersion The classificationRuleVersion parameter.
      * @param action The action parameter. Allowed values: "Keep", "Delete".
@@ -225,12 +240,9 @@ public final class ClassificationRulesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> tagClassificationVersionWithResponse(
-            String classificationRuleName,
-            int classificationRuleVersion,
-            String action,
-            RequestOptions requestOptions) {
-        return this.serviceClient.tagClassificationVersionWithResponseAsync(
-                classificationRuleName, classificationRuleVersion, action, requestOptions);
+    public Mono<Response<BinaryData>> tagClassificationVersionWithResponse(String classificationRuleName,
+        int classificationRuleVersion, String action, RequestOptions requestOptions) {
+        return this.serviceClient.tagClassificationVersionWithResponseAsync(classificationRuleName,
+            classificationRuleVersion, action, requestOptions);
     }
 }

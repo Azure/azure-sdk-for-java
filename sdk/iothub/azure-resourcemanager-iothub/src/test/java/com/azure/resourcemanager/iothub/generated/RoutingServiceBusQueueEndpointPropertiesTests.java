@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RoutingServiceBusQueueEndpointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoutingServiceBusQueueEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"pazyxoegukg\",\"connectionString\":\"piu\",\"endpointUri\":\"ygevqzntypmrbpiz\",\"entityPath\":\"r\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"ydnfyhxdeoejz\"},\"name\":\"cwif\",\"subscriptionId\":\"ttgzfbis\",\"resourceGroup\":\"bkh\"}")
-                .toObject(RoutingServiceBusQueueEndpointProperties.class);
+        RoutingServiceBusQueueEndpointProperties model = BinaryData.fromString(
+            "{\"id\":\"pazyxoegukg\",\"connectionString\":\"piu\",\"endpointUri\":\"ygevqzntypmrbpiz\",\"entityPath\":\"r\",\"authenticationType\":\"identityBased\",\"identity\":{\"userAssignedIdentity\":\"ydnfyhxdeoejz\"},\"name\":\"cwif\",\"subscriptionId\":\"ttgzfbis\",\"resourceGroup\":\"bkh\"}")
+            .toObject(RoutingServiceBusQueueEndpointProperties.class);
         Assertions.assertEquals("pazyxoegukg", model.id());
         Assertions.assertEquals("piu", model.connectionString());
         Assertions.assertEquals("ygevqzntypmrbpiz", model.endpointUri());
@@ -31,9 +29,8 @@ public final class RoutingServiceBusQueueEndpointPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoutingServiceBusQueueEndpointProperties model =
-            new RoutingServiceBusQueueEndpointProperties()
-                .withId("pazyxoegukg")
+        RoutingServiceBusQueueEndpointProperties model
+            = new RoutingServiceBusQueueEndpointProperties().withId("pazyxoegukg")
                 .withConnectionString("piu")
                 .withEndpointUri("ygevqzntypmrbpiz")
                 .withEntityPath("r")

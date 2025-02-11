@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Metadata Sync Config properties. */
+/**
+ * Metadata Sync Config properties.
+ */
 @Fluent
-public final class MetadataSyncConfigProperties {
+public final class MetadataSyncConfigProperties implements JsonSerializable<MetadataSyncConfigProperties> {
     /*
      * Indicates whether the metadata sync is enabled or disabled
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * The Sync Interval in minutes.
      */
-    @JsonProperty(value = "syncIntervalInMinutes")
     private Integer syncIntervalInMinutes;
 
-    /** Creates an instance of MetadataSyncConfigProperties class. */
+    /**
+     * Creates an instance of MetadataSyncConfigProperties class.
+     */
     public MetadataSyncConfigProperties() {
     }
 
     /**
      * Get the enabled property: Indicates whether the metadata sync is enabled or disabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -37,7 +43,7 @@ public final class MetadataSyncConfigProperties {
 
     /**
      * Set the enabled property: Indicates whether the metadata sync is enabled or disabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the MetadataSyncConfigProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class MetadataSyncConfigProperties {
 
     /**
      * Get the syncIntervalInMinutes property: The Sync Interval in minutes.
-     *
+     * 
      * @return the syncIntervalInMinutes value.
      */
     public Integer syncIntervalInMinutes() {
@@ -57,7 +63,7 @@ public final class MetadataSyncConfigProperties {
 
     /**
      * Set the syncIntervalInMinutes property: The Sync Interval in minutes.
-     *
+     * 
      * @param syncIntervalInMinutes the syncIntervalInMinutes value to set.
      * @return the MetadataSyncConfigProperties object itself.
      */
@@ -68,9 +74,49 @@ public final class MetadataSyncConfigProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeNumberField("syncIntervalInMinutes", this.syncIntervalInMinutes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetadataSyncConfigProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetadataSyncConfigProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MetadataSyncConfigProperties.
+     */
+    public static MetadataSyncConfigProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetadataSyncConfigProperties deserializedMetadataSyncConfigProperties = new MetadataSyncConfigProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedMetadataSyncConfigProperties.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("syncIntervalInMinutes".equals(fieldName)) {
+                    deserializedMetadataSyncConfigProperties.syncIntervalInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetadataSyncConfigProperties;
+        });
     }
 }

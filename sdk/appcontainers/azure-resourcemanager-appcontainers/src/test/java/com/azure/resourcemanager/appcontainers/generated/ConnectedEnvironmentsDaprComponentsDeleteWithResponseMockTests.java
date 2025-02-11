@@ -28,7 +28,7 @@ public final class ConnectedEnvironmentsDaprComponentsDeleteWithResponseMockTest
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.connectedEnvironmentsDaprComponents()
-            .deleteWithResponse("hkwfbkgozxwop", "bydpizqaclnapxb", "yg", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("nwpiwxeiicrm", "e", "kldmaxxijv", com.azure.core.util.Context.NONE);
 
     }
 }

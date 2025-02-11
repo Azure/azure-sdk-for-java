@@ -24,10 +24,9 @@ class DetectFunctionWithBinaryAndParametersAsync extends DetectAsyncFunction {
     }
 
     @Override
-    public Mono<List<FaceDetectionResult>> executeAsync(
-        FaceDetectionModel detectionModel, FaceRecognitionModel recognitionModel, boolean returnFaceId,
-        List<FaceAttributeType> returnFaceAttributes, Boolean returnFaceLandmarks, Boolean returnRecognitionModel,
-        Integer faceIdTimeToLive) {
+    public Mono<List<FaceDetectionResult>> executeAsync(FaceDetectionModel detectionModel,
+        FaceRecognitionModel recognitionModel, boolean returnFaceId, List<FaceAttributeType> returnFaceAttributes,
+        Boolean returnFaceLandmarks, Boolean returnRecognitionModel, Integer faceIdTimeToLive) {
         return mFaceAsyncClient.detect(mImageContent, detectionModel, recognitionModel, returnFaceId,
             returnFaceAttributes, returnFaceLandmarks, returnRecognitionModel, faceIdTimeToLive);
     }

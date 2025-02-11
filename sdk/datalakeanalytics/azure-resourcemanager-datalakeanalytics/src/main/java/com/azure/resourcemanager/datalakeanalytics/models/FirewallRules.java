@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FirewallRules. */
+/**
+ * Resource collection API of FirewallRules.
+ */
 public interface FirewallRules {
     /**
      * Lists the Data Lake Analytics firewall rules within the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface FirewallRules {
 
     /**
      * Lists the Data Lake Analytics firewall rules within the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface FirewallRules {
 
     /**
      * Gets the specified Data Lake Analytics firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to retrieve.
@@ -47,12 +49,12 @@ public interface FirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Data Lake Analytics firewall rule along with {@link Response}.
      */
-    Response<FirewallRule> getWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context);
+    Response<FirewallRule> getWithResponse(String resourceGroupName, String accountName, String firewallRuleName,
+        Context context);
 
     /**
      * Gets the specified Data Lake Analytics firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to retrieve.
@@ -65,7 +67,7 @@ public interface FirewallRules {
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to delete.
@@ -75,12 +77,12 @@ public interface FirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String firewallRuleName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String firewallRuleName,
+        Context context);
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param firewallRuleName The name of the firewall rule to delete.
@@ -92,7 +94,7 @@ public interface FirewallRules {
 
     /**
      * Gets the specified Data Lake Analytics firewall rule.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface FirewallRules {
 
     /**
      * Gets the specified Data Lake Analytics firewall rule.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface FirewallRules {
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Analytics account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface FirewallRules {
 
     /**
      * Deletes the specified firewall rule from the specified Data Lake Analytics account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface FirewallRules {
 
     /**
      * Begins definition for a new FirewallRule resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FirewallRule definition.
      */

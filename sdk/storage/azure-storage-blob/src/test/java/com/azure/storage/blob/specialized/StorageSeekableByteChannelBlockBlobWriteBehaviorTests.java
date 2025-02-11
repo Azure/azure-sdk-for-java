@@ -38,9 +38,10 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
         map.put("fizz", "buzz");
         return map;
     }
+
     private StorageSeekableByteChannelBlockBlobWriteBehavior getSimpleBehavior(BlockBlobClient client) {
-        return new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null,
-            null, null, StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, null);
+        return new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null, null,
+            StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, null);
     }
 
     @ParameterizedTest
@@ -50,27 +51,24 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
         // Given
         BlockBlobClient client = Mockito.mock(BlockBlobClient.class);
         // and: "Block blob behavior"
-        StorageSeekableByteChannelBlockBlobWriteBehavior behavior =
-            new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null,
-                conditions, StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, null);
+        StorageSeekableByteChannelBlockBlobWriteBehavior behavior
+            = new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null, conditions,
+                StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, null);
 
         // when: "WriteBehavior.write() called"
         behavior.write(DATA.getDefaultData(), offset);
 
         // and: "mockito verification capture"
-        ArgumentCaptor<BlockBlobStageBlockOptions> optionsCaptor =
-            ArgumentCaptor.forClass(BlockBlobStageBlockOptions.class);
-        Mockito.verify(client, times(1)).stageBlockWithResponse(optionsCaptor.capture(),
-            isNull(), isNull());
+        ArgumentCaptor<BlockBlobStageBlockOptions> optionsCaptor
+            = ArgumentCaptor.forClass(BlockBlobStageBlockOptions.class);
+        Mockito.verify(client, times(1)).stageBlockWithResponse(optionsCaptor.capture(), isNull(), isNull());
 
         // then: "Expected BlockBlobClient upload parameters given"
         assertEquals(optionsCaptor.getValue().getLeaseId(), conditions == null ? null : "foo");
     }
 
     private static Stream<Arguments> writeBehaviorWriteCallsToClientCorrectlySupplier() {
-        return Stream.of(
-            Arguments.of(0, null),
-            Arguments.of(50, null),
+        return Stream.of(Arguments.of(0, null), Arguments.of(50, null),
             Arguments.of(0, new BlobRequestConditions().setLeaseId("foo")));
     }
 
@@ -79,8 +77,8 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
     public void writeBehaviorCommitsWithCorrectSettings(BlobHttpHeaders headers, Map<String, String> metadata,
         Map<String, String> tags, AccessTier tier, BlobRequestConditions conditions) throws IOException {
         BlockBlobClient client = Mockito.mock(BlockBlobClient.class);
-        StorageSeekableByteChannelBlockBlobWriteBehavior behavior =
-            new StorageSeekableByteChannelBlockBlobWriteBehavior(client, headers, metadata, tags, tier, conditions,
+        StorageSeekableByteChannelBlockBlobWriteBehavior behavior
+            = new StorageSeekableByteChannelBlockBlobWriteBehavior(client, headers, metadata, tags, tier, conditions,
                 StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, null);
 
         // Three writes
@@ -92,11 +90,10 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
         behavior.commit(0);
 
         // mockito verification capture
-        ArgumentCaptor<BlockBlobCommitBlockListOptions> optionsCaptor =
-            ArgumentCaptor.forClass(BlockBlobCommitBlockListOptions.class);
+        ArgumentCaptor<BlockBlobCommitBlockListOptions> optionsCaptor
+            = ArgumentCaptor.forClass(BlockBlobCommitBlockListOptions.class);
         Mockito.verify(client, times(3)).stageBlockWithResponse(any(), any(), any());
-        Mockito.verify(client, times(1)).commitBlockListWithResponse(optionsCaptor.capture(),
-            isNull(), isNull());
+        Mockito.verify(client, times(1)).commitBlockListWithResponse(optionsCaptor.capture(), isNull(), isNull());
 
         // Expected commit options
         assertEquals(headers, optionsCaptor.getValue().getHeaders());
@@ -111,8 +108,7 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
         return Stream.of(Arguments.of(null, null, null, null, null),
             Arguments.of(new BlobHttpHeaders(), null, null, null, null),
             Arguments.of(null, testStringMap(), null, null, null),
-            Arguments.of(null, null, testStringMap(), null, null),
-            Arguments.of(null, null, null, AccessTier.HOT, null),
+            Arguments.of(null, null, testStringMap(), null, null), Arguments.of(null, null, null, AccessTier.HOT, null),
             Arguments.of(null, null, null, null, new BlobRequestConditions()));
     }
 
@@ -123,9 +119,9 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
 
         // Behavior set to overwrite
         BlockBlobClient client = Mockito.mock(BlockBlobClient.class);
-        StorageSeekableByteChannelBlockBlobWriteBehavior behavior =
-            new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null,
-                null, StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, blocks);
+        StorageSeekableByteChannelBlockBlobWriteBehavior behavior
+            = new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null, null,
+                StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.OVERWRITE, blocks);
 
         // Three writes
         behavior.write(DATA.getDefaultData(), 0);
@@ -136,11 +132,10 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
         behavior.commit(0);
 
         // Mockito verification capture
-        ArgumentCaptor<BlockBlobCommitBlockListOptions> optionsCaptor =
-            ArgumentCaptor.forClass(BlockBlobCommitBlockListOptions.class);
+        ArgumentCaptor<BlockBlobCommitBlockListOptions> optionsCaptor
+            = ArgumentCaptor.forClass(BlockBlobCommitBlockListOptions.class);
         Mockito.verify(client, times(3)).stageBlockWithResponse(any(), any(), any());
-        Mockito.verify(client, times(1)).commitBlockListWithResponse(optionsCaptor.capture(),
-            isNull(), isNull());
+        Mockito.verify(client, times(1)).commitBlockListWithResponse(optionsCaptor.capture(), isNull(), isNull());
 
         // Expected three writes and appropriate blocklist
         assertEquals(3, optionsCaptor.getValue().getBase64BlockIds().size());
@@ -154,9 +149,9 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
 
         // Behavior set to append
         BlockBlobClient client = Mockito.mock(BlockBlobClient.class);
-        StorageSeekableByteChannelBlockBlobWriteBehavior behavior =
-            new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null,
-                null, StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.APPEND, blocks);
+        StorageSeekableByteChannelBlockBlobWriteBehavior behavior
+            = new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null, null,
+                StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.APPEND, blocks);
 
         // Three writes
         behavior.write(DATA.getDefaultData(), 0);
@@ -167,11 +162,10 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
         behavior.commit(0);
 
         // Mockito verification capture
-        ArgumentCaptor<BlockBlobCommitBlockListOptions> optionsCaptor =
-            ArgumentCaptor.forClass(BlockBlobCommitBlockListOptions.class);
+        ArgumentCaptor<BlockBlobCommitBlockListOptions> optionsCaptor
+            = ArgumentCaptor.forClass(BlockBlobCommitBlockListOptions.class);
         Mockito.verify(client, times(3)).stageBlockWithResponse(any(), any(), any());
-        Mockito.verify(client, times(1)).commitBlockListWithResponse(optionsCaptor.capture(),
-            isNull(), isNull());
+        Mockito.verify(client, times(1)).commitBlockListWithResponse(optionsCaptor.capture(), isNull(), isNull());
 
         // Expected three writes and appropriate blocklist
         assertEquals(blocks.size() + 3, optionsCaptor.getValue().getBase64BlockIds().size());
@@ -186,9 +180,9 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
 
         // Behavior set to prepend
         BlockBlobClient client = Mockito.mock(BlockBlobClient.class);
-        StorageSeekableByteChannelBlockBlobWriteBehavior behavior =
-            new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null,
-                null, StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.PREPEND, blocks);
+        StorageSeekableByteChannelBlockBlobWriteBehavior behavior
+            = new StorageSeekableByteChannelBlockBlobWriteBehavior(client, null, null, null, null, null,
+                StorageSeekableByteChannelBlockBlobWriteBehavior.WriteMode.PREPEND, blocks);
 
         // Three writes
         behavior.write(DATA.getDefaultData(), 0);
@@ -199,11 +193,10 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
         behavior.commit(0);
 
         // Mockito verification capture
-        ArgumentCaptor<BlockBlobCommitBlockListOptions> optionsCaptor =
-            ArgumentCaptor.forClass(BlockBlobCommitBlockListOptions.class);
+        ArgumentCaptor<BlockBlobCommitBlockListOptions> optionsCaptor
+            = ArgumentCaptor.forClass(BlockBlobCommitBlockListOptions.class);
         Mockito.verify(client, times(3)).stageBlockWithResponse(any(), any(), any());
-        Mockito.verify(client, times(1)).commitBlockListWithResponse(optionsCaptor.capture(),
-            isNull(), isNull());
+        Mockito.verify(client, times(1)).commitBlockListWithResponse(optionsCaptor.capture(), isNull(), isNull());
 
         // Expected three writes and appropriate blocklist
         assertEquals(blocks.size() + 3, optionsCaptor.getValue().getBase64BlockIds().size());
@@ -213,16 +206,16 @@ public class StorageSeekableByteChannelBlockBlobWriteBehaviorTests extends BlobT
 
     @Test
     public void writeBehaviorSeekUnsupported() {
-        StorageSeekableByteChannelBlockBlobWriteBehavior behavior =
-            getSimpleBehavior(Mockito.mock(BlockBlobClient.class));
+        StorageSeekableByteChannelBlockBlobWriteBehavior behavior
+            = getSimpleBehavior(Mockito.mock(BlockBlobClient.class));
 
         assertThrows(UnsupportedOperationException.class, () -> behavior.assertCanSeek(10));
     }
 
     @Test
     public void writeBehaviorTruncateUnsupported() {
-        StorageSeekableByteChannelBlockBlobWriteBehavior behavior =
-            getSimpleBehavior(Mockito.mock(BlockBlobClient.class));
+        StorageSeekableByteChannelBlockBlobWriteBehavior behavior
+            = getSimpleBehavior(Mockito.mock(BlockBlobClient.class));
 
         assertThrows(UnsupportedOperationException.class, () -> behavior.resize(10));
     }

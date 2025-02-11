@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.timeseriesinsights.generated;
 
-/** Samples for AccessPolicies Get. */
+/**
+ * Samples for AccessPolicies Get.
+ */
 public final class AccessPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/AccessPoliciesGet.json
+     * x-ms-original-file:
+     * specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/
+     * AccessPoliciesGet.json
      */
     /**
      * Sample code: AccessPoliciesGet.
-     *
+     * 
      * @param manager Entry point to TimeSeriesInsightsManager.
      */
-    public static void accessPoliciesGet(
-        com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
+    public static void
+        accessPoliciesGet(com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
         manager.accessPolicies().getWithResponse("rg1", "env1", "ap1", com.azure.core.util.Context.NONE);
     }
 }

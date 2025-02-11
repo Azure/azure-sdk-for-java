@@ -256,8 +256,8 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
                 .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
                 .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
                 .httpClient(httpRequest -> {
-                    assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT)
-                        .contains("aNewApplication"));
+                    assertTrue(
+                        httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("aNewApplication"));
                     return Mono.just(new MockHttpResponse(httpRequest, 400));
                 })
                 .buildClient();
@@ -284,7 +284,7 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
     public void getEndpointAtClientInstance() {
         ConfigurationClientBuilder configurationClientBuilder
             = new ConfigurationClientBuilder().connectionString(FAKE_CONNECTION_STRING)
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)));
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)));
         final ConfigurationClient client = configurationClientBuilder.buildClient();
         final ConfigurationAsyncClient asyncClient = configurationClientBuilder.buildAsyncClient();
         assertEquals("https://localhost:8080", client.getEndpoint());

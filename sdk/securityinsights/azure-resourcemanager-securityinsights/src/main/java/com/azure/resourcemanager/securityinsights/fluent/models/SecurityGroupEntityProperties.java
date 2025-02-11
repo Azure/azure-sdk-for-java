@@ -5,34 +5,54 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
-/** SecurityGroup entity property bag. */
+/**
+ * SecurityGroup entity property bag.
+ */
 @Immutable
 public final class SecurityGroupEntityProperties extends EntityCommonProperties {
     /*
      * The group distinguished name
      */
-    @JsonProperty(value = "distinguishedName", access = JsonProperty.Access.WRITE_ONLY)
     private String distinguishedName;
 
     /*
      * A single-value attribute that is the unique identifier for the object, assigned by active directory.
      */
-    @JsonProperty(value = "objectGuid", access = JsonProperty.Access.WRITE_ONLY)
     private UUID objectGuid;
 
     /*
      * The SID attribute is a single-value attribute that specifies the security identifier (SID) of the group
      */
-    @JsonProperty(value = "sid", access = JsonProperty.Access.WRITE_ONLY)
     private String sid;
+
+    /*
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
+     */
+    private String friendlyName;
+
+    /*
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
+     */
+    private Map<String, Object> additionalData;
+
+    /**
+     * Creates an instance of SecurityGroupEntityProperties class.
+     */
+    public SecurityGroupEntityProperties() {
+    }
 
     /**
      * Get the distinguishedName property: The group distinguished name.
-     *
+     * 
      * @return the distinguishedName value.
      */
     public String distinguishedName() {
@@ -42,7 +62,7 @@ public final class SecurityGroupEntityProperties extends EntityCommonProperties 
     /**
      * Get the objectGuid property: A single-value attribute that is the unique identifier for the object, assigned by
      * active directory.
-     *
+     * 
      * @return the objectGuid value.
      */
     public UUID objectGuid() {
@@ -52,7 +72,7 @@ public final class SecurityGroupEntityProperties extends EntityCommonProperties 
     /**
      * Get the sid property: The SID attribute is a single-value attribute that specifies the security identifier (SID)
      * of the group.
-     *
+     * 
      * @return the sid value.
      */
     public String sid() {
@@ -60,12 +80,79 @@ public final class SecurityGroupEntityProperties extends EntityCommonProperties 
     }
 
     /**
+     * Get the friendlyName property: The graph item display name which is a short humanly readable description of the
+     * graph item instance. This property is optional and might be system generated.
+     * 
+     * @return the friendlyName value.
+     */
+    @Override
+    public String friendlyName() {
+        return this.friendlyName;
+    }
+
+    /**
+     * Get the additionalData property: A bag of custom fields that should be part of the entity and will be presented
+     * to the user.
+     * 
+     * @return the additionalData value.
+     */
+    @Override
+    public Map<String, Object> additionalData() {
+        return this.additionalData;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityGroupEntityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityGroupEntityProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityGroupEntityProperties.
+     */
+    public static SecurityGroupEntityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityGroupEntityProperties deserializedSecurityGroupEntityProperties
+                = new SecurityGroupEntityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalData".equals(fieldName)) {
+                    Map<String, Object> additionalData = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedSecurityGroupEntityProperties.additionalData = additionalData;
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedSecurityGroupEntityProperties.friendlyName = reader.getString();
+                } else if ("distinguishedName".equals(fieldName)) {
+                    deserializedSecurityGroupEntityProperties.distinguishedName = reader.getString();
+                } else if ("objectGuid".equals(fieldName)) {
+                    deserializedSecurityGroupEntityProperties.objectGuid
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("sid".equals(fieldName)) {
+                    deserializedSecurityGroupEntityProperties.sid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityGroupEntityProperties;
+        });
     }
 }

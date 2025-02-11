@@ -5,33 +5,42 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Azure query for the update configuration. */
+/**
+ * Azure query for the update configuration.
+ */
 @Fluent
-public final class AzureQueryProperties {
+public final class AzureQueryProperties implements JsonSerializable<AzureQueryProperties> {
     /*
      * List of Subscription or Resource Group ARM Ids.
      */
-    @JsonProperty(value = "scope")
     private List<String> scope;
 
     /*
      * List of locations to scope the query to.
      */
-    @JsonProperty(value = "locations")
     private List<String> locations;
 
     /*
      * Tag settings for the VM.
      */
-    @JsonProperty(value = "tagSettings")
     private TagSettingsProperties tagSettings;
 
     /**
+     * Creates an instance of AzureQueryProperties class.
+     */
+    public AzureQueryProperties() {
+    }
+
+    /**
      * Get the scope property: List of Subscription or Resource Group ARM Ids.
-     *
+     * 
      * @return the scope value.
      */
     public List<String> scope() {
@@ -40,7 +49,7 @@ public final class AzureQueryProperties {
 
     /**
      * Set the scope property: List of Subscription or Resource Group ARM Ids.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the AzureQueryProperties object itself.
      */
@@ -51,7 +60,7 @@ public final class AzureQueryProperties {
 
     /**
      * Get the locations property: List of locations to scope the query to.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -60,7 +69,7 @@ public final class AzureQueryProperties {
 
     /**
      * Set the locations property: List of locations to scope the query to.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the AzureQueryProperties object itself.
      */
@@ -71,7 +80,7 @@ public final class AzureQueryProperties {
 
     /**
      * Get the tagSettings property: Tag settings for the VM.
-     *
+     * 
      * @return the tagSettings value.
      */
     public TagSettingsProperties tagSettings() {
@@ -80,7 +89,7 @@ public final class AzureQueryProperties {
 
     /**
      * Set the tagSettings property: Tag settings for the VM.
-     *
+     * 
      * @param tagSettings the tagSettings value to set.
      * @return the AzureQueryProperties object itself.
      */
@@ -91,12 +100,56 @@ public final class AzureQueryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tagSettings() != null) {
             tagSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("scope", this.scope, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("locations", this.locations, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("tagSettings", this.tagSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureQueryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureQueryProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureQueryProperties.
+     */
+    public static AzureQueryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureQueryProperties deserializedAzureQueryProperties = new AzureQueryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    List<String> scope = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureQueryProperties.scope = scope;
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureQueryProperties.locations = locations;
+                } else if ("tagSettings".equals(fieldName)) {
+                    deserializedAzureQueryProperties.tagSettings = TagSettingsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureQueryProperties;
+        });
     }
 }

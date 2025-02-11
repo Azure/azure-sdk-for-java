@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for DataSources Delete. */
+/**
+ * Samples for DataSources Delete.
+ */
 public final class DataSourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataSourcesDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataSourcesDelete.json
      */
     /**
      * Sample code: DataSourcesDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataSourcesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .dataSources()
+        manager.dataSources()
             .deleteWithResponse("OIAutoRest5123", "AzTest9724", "AzTestDS774", com.azure.core.util.Context.NONE);
     }
 }

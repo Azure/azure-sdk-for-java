@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Status of the scheduled action. */
+/**
+ * Status of the scheduled action.
+ */
 public final class ScheduledActionStatus extends ExpandableStringEnum<ScheduledActionStatus> {
-    /** Static value Disabled for ScheduledActionStatus. */
+    /**
+     * Static value Disabled for ScheduledActionStatus.
+     */
     public static final ScheduledActionStatus DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for ScheduledActionStatus. */
+    /**
+     * Static value Enabled for ScheduledActionStatus.
+     */
     public static final ScheduledActionStatus ENABLED = fromString("Enabled");
 
-    /** Static value Expired for ScheduledActionStatus. */
+    /**
+     * Static value Expired for ScheduledActionStatus.
+     */
     public static final ScheduledActionStatus EXPIRED = fromString("Expired");
 
     /**
      * Creates a new instance of ScheduledActionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ScheduledActionStatus extends ExpandableStringEnum<ScheduledA
 
     /**
      * Creates or finds a ScheduledActionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScheduledActionStatus.
      */
-    @JsonCreator
     public static ScheduledActionStatus fromString(String name) {
         return fromString(name, ScheduledActionStatus.class);
     }
 
     /**
      * Gets known ScheduledActionStatus values.
-     *
+     * 
      * @return known ScheduledActionStatus values.
      */
     public static Collection<ScheduledActionStatus> values() {

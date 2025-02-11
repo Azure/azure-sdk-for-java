@@ -19,15 +19,22 @@ import java.util.List;
 public interface DisasterRecoveryPairingAuthorizationRule
     extends HasName, HasInnerModel<AuthorizationRuleInner>, HasManager<EventHubsManager> {
     /**
+     * Gets rights associated with the rule.
+     *
      * @return rights associated with the rule
      */
     List<AccessRights> rights();
 
     /**
+     * Gets an observable that emits a single entity containing access keys (primary and secondary).
+     *
      * @return an observable that emits a single entity containing access keys (primary and secondary)
      */
     Mono<DisasterRecoveryPairingAuthorizationKey> getKeysAsync();
+
     /**
+     * Gets entity containing access keys (primary and secondary).
+     *
      * @return entity containing access keys (primary and secondary)
      */
     DisasterRecoveryPairingAuthorizationKey getKeys();

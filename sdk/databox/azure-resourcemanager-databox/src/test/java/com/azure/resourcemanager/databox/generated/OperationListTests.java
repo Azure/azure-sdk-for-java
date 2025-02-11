@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"quvgjxpybczme\",\"display\":{\"provider\":\"zopbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"},\"properties\":\"dataownoizhw\",\"origin\":\"xybqsoqij\",\"isDataAction\":true},{\"name\":\"bpazlobcufpdzn\",\"display\":{\"provider\":\"cqqjnqglhqgn\",\"resource\":\"ooojywifsqe\",\"operation\":\"agdfmglzlh\",\"description\":\"rifkwm\"},\"properties\":\"dataktsizntocipaou\",\"origin\":\"psqucmpoyf\",\"isDataAction\":true},{\"name\":\"gknygjofjddeqs\",\"display\":{\"provider\":\"upewnwreitjzy\",\"resource\":\"usarhmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"properties\":\"datatxukcdmp\",\"origin\":\"cryuan\",\"isDataAction\":false}],\"nextLink\":\"zdxtayrlhmwhf\"}")
-                .toObject(OperationList.class);
+        OperationList model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"display\":{\"provider\":\"zopbsphrupidgs\",\"resource\":\"bejhphoycmsxa\",\"operation\":\"hdxbmtqio\",\"description\":\"zehtbmu\"},\"properties\":\"dataownoizhw\",\"origin\":\"xybqsoqij\",\"isDataAction\":true},{\"name\":\"bpazlobcufpdzn\",\"display\":{\"provider\":\"cqqjnqglhqgn\",\"resource\":\"ooojywifsqe\",\"operation\":\"agdfmglzlh\",\"description\":\"rifkwm\"},\"properties\":\"dataktsizntocipaou\",\"origin\":\"psqucmpoyf\",\"isDataAction\":true},{\"name\":\"gknygjofjddeqs\",\"display\":{\"provider\":\"upewnwreitjzy\",\"resource\":\"usarhmofc\",\"operation\":\"smy\",\"description\":\"kdtmlxhekuk\"},\"properties\":\"datatxukcdmp\",\"origin\":\"cryuan\",\"isDataAction\":false}],\"nextLink\":\"zdxtayrlhmwhf\"}")
+            .toObject(OperationList.class);
         Assertions.assertEquals("zdxtayrlhmwhf", model.nextLink());
     }
 

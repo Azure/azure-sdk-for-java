@@ -10,11 +10,9 @@ import com.azure.resourcemanager.hanaonazure.models.Display;
 public final class DisplayTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Display model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"whfpmrqobmtu\",\"resource\":\"nryrtihf\",\"operation\":\"ijbpzvgnwzsymgl\",\"description\":\"fcyzkohdbihanufh\",\"origin\":\"bj\"}")
-                .toObject(Display.class);
+        Display model = BinaryData.fromString(
+            "{\"provider\":\"whfpmrqobmtu\",\"resource\":\"nryrtihf\",\"operation\":\"ijbpzvgnwzsymgl\",\"description\":\"fcyzkohdbihanufh\",\"origin\":\"bj\"}")
+            .toObject(Display.class);
     }
 
     @org.junit.jupiter.api.Test

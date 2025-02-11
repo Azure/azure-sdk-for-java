@@ -6,42 +6,47 @@ package com.azure.resourcemanager.edgeorder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.edgeorder.fluent.models.AddressProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Return order item request body. */
+/**
+ * Return order item request body.
+ */
 @Fluent
-public final class ReturnOrderItemDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReturnOrderItemDetails.class);
-
+public final class ReturnOrderItemDetails implements JsonSerializable<ReturnOrderItemDetails> {
     /*
      * customer return address.
      */
-    @JsonProperty(value = "returnAddress")
     private AddressProperties returnAddress;
 
     /*
      * Return Reason.
      */
-    @JsonProperty(value = "returnReason", required = true)
     private String returnReason;
 
     /*
      * Service tag (located on the bottom-right corner of the device)
      */
-    @JsonProperty(value = "serviceTag")
     private String serviceTag;
 
     /*
      * Shipping Box required
      */
-    @JsonProperty(value = "shippingBoxRequired")
     private Boolean shippingBoxRequired;
 
     /**
+     * Creates an instance of ReturnOrderItemDetails class.
+     */
+    public ReturnOrderItemDetails() {
+    }
+
+    /**
      * Get the returnAddress property: customer return address.
-     *
+     * 
      * @return the returnAddress value.
      */
     public AddressProperties returnAddress() {
@@ -50,7 +55,7 @@ public final class ReturnOrderItemDetails {
 
     /**
      * Set the returnAddress property: customer return address.
-     *
+     * 
      * @param returnAddress the returnAddress value to set.
      * @return the ReturnOrderItemDetails object itself.
      */
@@ -61,7 +66,7 @@ public final class ReturnOrderItemDetails {
 
     /**
      * Get the returnReason property: Return Reason.
-     *
+     * 
      * @return the returnReason value.
      */
     public String returnReason() {
@@ -70,7 +75,7 @@ public final class ReturnOrderItemDetails {
 
     /**
      * Set the returnReason property: Return Reason.
-     *
+     * 
      * @param returnReason the returnReason value to set.
      * @return the ReturnOrderItemDetails object itself.
      */
@@ -81,7 +86,7 @@ public final class ReturnOrderItemDetails {
 
     /**
      * Get the serviceTag property: Service tag (located on the bottom-right corner of the device).
-     *
+     * 
      * @return the serviceTag value.
      */
     public String serviceTag() {
@@ -90,7 +95,7 @@ public final class ReturnOrderItemDetails {
 
     /**
      * Set the serviceTag property: Service tag (located on the bottom-right corner of the device).
-     *
+     * 
      * @param serviceTag the serviceTag value to set.
      * @return the ReturnOrderItemDetails object itself.
      */
@@ -101,7 +106,7 @@ public final class ReturnOrderItemDetails {
 
     /**
      * Get the shippingBoxRequired property: Shipping Box required.
-     *
+     * 
      * @return the shippingBoxRequired value.
      */
     public Boolean shippingBoxRequired() {
@@ -110,7 +115,7 @@ public final class ReturnOrderItemDetails {
 
     /**
      * Set the shippingBoxRequired property: Shipping Box required.
-     *
+     * 
      * @param shippingBoxRequired the shippingBoxRequired value to set.
      * @return the ReturnOrderItemDetails object itself.
      */
@@ -121,7 +126,7 @@ public final class ReturnOrderItemDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -129,10 +134,57 @@ public final class ReturnOrderItemDetails {
             returnAddress().validate();
         }
         if (returnReason() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property returnReason in model ReturnOrderItemDetails"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property returnReason in model ReturnOrderItemDetails"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReturnOrderItemDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("returnReason", this.returnReason);
+        jsonWriter.writeJsonField("returnAddress", this.returnAddress);
+        jsonWriter.writeStringField("serviceTag", this.serviceTag);
+        jsonWriter.writeBooleanField("shippingBoxRequired", this.shippingBoxRequired);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReturnOrderItemDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReturnOrderItemDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReturnOrderItemDetails.
+     */
+    public static ReturnOrderItemDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReturnOrderItemDetails deserializedReturnOrderItemDetails = new ReturnOrderItemDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("returnReason".equals(fieldName)) {
+                    deserializedReturnOrderItemDetails.returnReason = reader.getString();
+                } else if ("returnAddress".equals(fieldName)) {
+                    deserializedReturnOrderItemDetails.returnAddress = AddressProperties.fromJson(reader);
+                } else if ("serviceTag".equals(fieldName)) {
+                    deserializedReturnOrderItemDetails.serviceTag = reader.getString();
+                } else if ("shippingBoxRequired".equals(fieldName)) {
+                    deserializedReturnOrderItemDetails.shippingBoxRequired = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReturnOrderItemDetails;
+        });
     }
 }

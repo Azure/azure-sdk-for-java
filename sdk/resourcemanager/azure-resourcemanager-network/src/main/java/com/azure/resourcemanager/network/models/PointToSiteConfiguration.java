@@ -111,6 +111,7 @@ public interface PointToSiteConfiguration extends HasInnerModel<VpnClientConfigu
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withSstpOnly();
+
             /**
              * Specifies that only IKEv2 VPN tunnel type will be used.
              *
@@ -138,11 +139,8 @@ public interface PointToSiteConfiguration extends HasInnerModel<VpnClientConfigu
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttachAndAzureCertificate<ParentT>
-            extends WithAttach<ParentT>,
-                WithTunnelType<ParentT>,
-                WithAzureCertificate<ParentT>,
-                WithRevokedCertificate<ParentT> {
+        interface WithAttachAndAzureCertificate<ParentT> extends WithAttach<ParentT>, WithTunnelType<ParentT>,
+            WithAzureCertificate<ParentT>, WithRevokedCertificate<ParentT> {
         }
     }
 
@@ -152,10 +150,8 @@ public interface PointToSiteConfiguration extends HasInnerModel<VpnClientConfigu
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
     interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAuthenticationType<ParentT>,
-            DefinitionStages.WithAddressPool<ParentT>,
-            DefinitionStages.WithAttachAndAzureCertificate<ParentT> {
+        extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAuthenticationType<ParentT>,
+        DefinitionStages.WithAddressPool<ParentT>, DefinitionStages.WithAttachAndAzureCertificate<ParentT> {
     }
 
     /** Grouping of point-to-site configuration update stages. */
@@ -246,11 +242,7 @@ public interface PointToSiteConfiguration extends HasInnerModel<VpnClientConfigu
     }
 
     /** The entirety of a subnet update as part of a network update. */
-    interface Update
-        extends UpdateStages.WithAddressPool,
-            UpdateStages.WithAuthenticationType,
-            UpdateStages.WithRevokedCertificate,
-            UpdateStages.WithTunnelType,
-            Settable<VirtualNetworkGateway.Update> {
+    interface Update extends UpdateStages.WithAddressPool, UpdateStages.WithAuthenticationType,
+        UpdateStages.WithRevokedCertificate, UpdateStages.WithTunnelType, Settable<VirtualNetworkGateway.Update> {
     }
 }

@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Describes a list of server certificates referenced by common name that are used to secure the cluster.
  */
 @Fluent
-public final class ServerCertificateCommonNames {
+public final class ServerCertificateCommonNames implements JsonSerializable<ServerCertificateCommonNames> {
     /*
      * The list of server certificates referenced by common name that are used to secure the cluster.
      */
-    @JsonProperty(value = "commonNames")
     private List<ServerCertificateCommonName> commonNames;
 
     /*
      * The local certificate store location.
      */
-    @JsonProperty(value = "x509StoreName")
     private StoreName x509StoreName;
 
     /**
@@ -82,5 +84,46 @@ public final class ServerCertificateCommonNames {
         if (commonNames() != null) {
             commonNames().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("commonNames", this.commonNames, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("x509StoreName", this.x509StoreName == null ? null : this.x509StoreName.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerCertificateCommonNames from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerCertificateCommonNames if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerCertificateCommonNames.
+     */
+    public static ServerCertificateCommonNames fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerCertificateCommonNames deserializedServerCertificateCommonNames = new ServerCertificateCommonNames();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commonNames".equals(fieldName)) {
+                    List<ServerCertificateCommonName> commonNames
+                        = reader.readArray(reader1 -> ServerCertificateCommonName.fromJson(reader1));
+                    deserializedServerCertificateCommonNames.commonNames = commonNames;
+                } else if ("x509StoreName".equals(fieldName)) {
+                    deserializedServerCertificateCommonNames.x509StoreName = StoreName.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerCertificateCommonNames;
+        });
     }
 }

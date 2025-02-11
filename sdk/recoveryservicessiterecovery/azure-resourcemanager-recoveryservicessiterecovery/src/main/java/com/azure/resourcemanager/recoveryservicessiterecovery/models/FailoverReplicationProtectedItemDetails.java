@@ -5,66 +5,64 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Failover details for a replication protected item.
  */
 @Fluent
-public final class FailoverReplicationProtectedItemDetails {
+public final class FailoverReplicationProtectedItemDetails
+    implements JsonSerializable<FailoverReplicationProtectedItemDetails> {
     /*
      * The name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The friendly name.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * The test Vm name.
      */
-    @JsonProperty(value = "testVmName")
     private String testVmName;
 
     /*
      * The test Vm friendly name.
      */
-    @JsonProperty(value = "testVmFriendlyName")
     private String testVmFriendlyName;
 
     /*
      * The network connection status.
      */
-    @JsonProperty(value = "networkConnectionStatus")
     private String networkConnectionStatus;
 
     /*
      * The network friendly name.
      */
-    @JsonProperty(value = "networkFriendlyName")
     private String networkFriendlyName;
 
     /*
      * The network subnet.
      */
-    @JsonProperty(value = "subnet")
     private String subnet;
 
     /*
      * The recovery point Id.
      */
-    @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
     /*
      * The recovery point time.
      */
-    @JsonProperty(value = "recoveryPointTime")
     private OffsetDateTime recoveryPointTime;
 
     /**
@@ -259,5 +257,70 @@ public final class FailoverReplicationProtectedItemDetails {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("testVmName", this.testVmName);
+        jsonWriter.writeStringField("testVmFriendlyName", this.testVmFriendlyName);
+        jsonWriter.writeStringField("networkConnectionStatus", this.networkConnectionStatus);
+        jsonWriter.writeStringField("networkFriendlyName", this.networkFriendlyName);
+        jsonWriter.writeStringField("subnet", this.subnet);
+        jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("recoveryPointTime",
+            this.recoveryPointTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recoveryPointTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailoverReplicationProtectedItemDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailoverReplicationProtectedItemDetails if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FailoverReplicationProtectedItemDetails.
+     */
+    public static FailoverReplicationProtectedItemDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailoverReplicationProtectedItemDetails deserializedFailoverReplicationProtectedItemDetails
+                = new FailoverReplicationProtectedItemDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.name = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.friendlyName = reader.getString();
+                } else if ("testVmName".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.testVmName = reader.getString();
+                } else if ("testVmFriendlyName".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.testVmFriendlyName = reader.getString();
+                } else if ("networkConnectionStatus".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.networkConnectionStatus = reader.getString();
+                } else if ("networkFriendlyName".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.networkFriendlyName = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.subnet = reader.getString();
+                } else if ("recoveryPointId".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.recoveryPointId = reader.getString();
+                } else if ("recoveryPointTime".equals(fieldName)) {
+                    deserializedFailoverReplicationProtectedItemDetails.recoveryPointTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailoverReplicationProtectedItemDetails;
+        });
     }
 }

@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.fluent.models.PrivateEndpointConnectionInner;
 
-/** Resource collection API of WebPubSubPrivateEndpointConnections. */
+/**
+ * Resource collection API of WebPubSubPrivateEndpointConnections.
+ */
 public interface WebPubSubPrivateEndpointConnections {
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,7 +27,7 @@ public interface WebPubSubPrivateEndpointConnections {
 
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -38,9 +40,9 @@ public interface WebPubSubPrivateEndpointConnections {
 
     /**
      * Get the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -49,14 +51,14 @@ public interface WebPubSubPrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private endpoint connection along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String privateEndpointConnectionName, String resourceGroupName, String resourceName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String privateEndpointConnectionName, String resourceGroupName,
+        String resourceName, Context context);
 
     /**
      * Get the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,9 +70,9 @@ public interface WebPubSubPrivateEndpointConnections {
 
     /**
      * Update the state of specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The resource of private endpoint and its properties.
@@ -80,18 +82,14 @@ public interface WebPubSubPrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection to an azure resource along with {@link Response}.
      */
-    Response<PrivateEndpointConnection> updateWithResponse(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters,
-        Context context);
+    Response<PrivateEndpointConnection> updateWithResponse(String privateEndpointConnectionName,
+        String resourceGroupName, String resourceName, PrivateEndpointConnectionInner parameters, Context context);
 
     /**
      * Update the state of specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The resource of private endpoint and its properties.
@@ -100,17 +98,14 @@ public interface WebPubSubPrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection to an azure resource.
      */
-    PrivateEndpointConnection update(
-        String privateEndpointConnectionName,
-        String resourceGroupName,
-        String resourceName,
-        PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnection update(String privateEndpointConnectionName, String resourceGroupName,
+        String resourceName, PrivateEndpointConnectionInner parameters);
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,9 +116,9 @@ public interface WebPubSubPrivateEndpointConnections {
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.subscription.fluent.models.LocationInner;
 public final class LocationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocationInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"pewnw\",\"subscriptionId\":\"itjz\",\"name\":\"lusarh\",\"displayName\":\"fcqhsmyurkd\",\"latitude\":\"lx\",\"longitude\":\"kuksjtxukcdm\"}")
-                .toObject(LocationInner.class);
+        LocationInner model = BinaryData.fromString(
+            "{\"id\":\"pewnw\",\"subscriptionId\":\"itjz\",\"name\":\"lusarh\",\"displayName\":\"fcqhsmyurkd\",\"latitude\":\"lx\",\"longitude\":\"kuksjtxukcdm\"}")
+            .toObject(LocationInner.class);
     }
 
     @org.junit.jupiter.api.Test

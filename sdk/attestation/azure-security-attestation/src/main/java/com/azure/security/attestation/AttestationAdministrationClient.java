@@ -140,7 +140,6 @@ public final class AttestationAdministrationClient {
         return asyncClient.getAttestationPolicy(attestationType, options).block();
     }
 
-
     /**
      * Retrieves the current policy for an attestation type.
      * <p>
@@ -176,7 +175,8 @@ public final class AttestationAdministrationClient {
      * @return the attestation policy expressed as a string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse<String> getAttestationPolicyWithResponse(AttestationType attestationType, AttestationTokenValidationOptions validationOptions, Context context) {
+    public AttestationResponse<String> getAttestationPolicyWithResponse(AttestationType attestationType,
+        AttestationTokenValidationOptions validationOptions, Context context) {
         return asyncClient.getAttestationPolicyWithResponse(attestationType, validationOptions, context).block();
     }
 
@@ -270,7 +270,8 @@ public final class AttestationAdministrationClient {
      * @return {@link PolicyResult} expressing the result of the attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse<PolicyResult> setAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
+    public AttestationResponse<PolicyResult> setAttestationPolicyWithResponse(AttestationType attestationType,
+        AttestationPolicySetOptions options, Context context) {
         return asyncClient.setAttestationPolicyWithResponse(attestationType, options, context).block();
     }
 
@@ -389,10 +390,10 @@ public final class AttestationAdministrationClient {
      * @return {@link PolicyResult} expressing the result of the attestation operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse<PolicyResult> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
+    public AttestationResponse<PolicyResult> resetAttestationPolicyWithResponse(AttestationType attestationType,
+        AttestationPolicySetOptions options, Context context) {
         return asyncClient.resetAttestationPolicyWithResponse(attestationType, options, context).block();
     }
-
 
     /**
      * Retrieves the current set of attestation policy signing certificates for this instance.
@@ -425,7 +426,6 @@ public final class AttestationAdministrationClient {
     public AttestationSignerCollection listPolicyManagementCertificates() {
         return asyncClient.listPolicyManagementCertificates().block();
     }
-
 
     /**
      * Retrieves the current set of attestation policy signing certificates for this instance.
@@ -460,7 +460,8 @@ public final class AttestationAdministrationClient {
      * @return the attestation policy expressed as a string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse<AttestationSignerCollection> listPolicyManagementCertificatesWithResponse(AttestationTokenValidationOptions tokenValidationOptions, Context context) {
+    public AttestationResponse<AttestationSignerCollection> listPolicyManagementCertificatesWithResponse(
+        AttestationTokenValidationOptions tokenValidationOptions, Context context) {
         return asyncClient.listPolicyManagementCertificatesWithResponse(tokenValidationOptions, context).block();
     }
 
@@ -499,7 +500,8 @@ public final class AttestationAdministrationClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyCertificatesModificationResult addPolicyManagementCertificate(PolicyManagementCertificateOptions options) {
+    public PolicyCertificatesModificationResult
+        addPolicyManagementCertificate(PolicyManagementCertificateOptions options) {
         return asyncClient.addPolicyManagementCertificate(options).block();
     }
 
@@ -537,7 +539,8 @@ public final class AttestationAdministrationClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse<PolicyCertificatesModificationResult> addPolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
+    public AttestationResponse<PolicyCertificatesModificationResult>
+        addPolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
         return asyncClient.addPolicyManagementCertificateWithResponse(options, context).block();
     }
 
@@ -577,7 +580,8 @@ public final class AttestationAdministrationClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyCertificatesModificationResult deletePolicyManagementCertificate(PolicyManagementCertificateOptions options) {
+    public PolicyCertificatesModificationResult
+        deletePolicyManagementCertificate(PolicyManagementCertificateOptions options) {
         return asyncClient.deletePolicyManagementCertificate(options).block();
     }
 
@@ -619,7 +623,8 @@ public final class AttestationAdministrationClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AttestationResponse<PolicyCertificatesModificationResult> deletePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
+    public AttestationResponse<PolicyCertificatesModificationResult>
+        deletePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
         return asyncClient.deletePolicyManagementCertificateWithResponse(options, context).block();
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -16,6 +15,11 @@ public final class Origin extends ExpandableStringEnum<Origin> {
      * Static value Full for Origin.
      */
     public static final Origin FULL = fromString("Full");
+
+    /**
+     * Static value Customer On-Demand for Origin.
+     */
+    public static final Origin CUSTOMER_ON_DEMAND = fromString("Customer On-Demand");
 
     /**
      * Creates a new instance of Origin value.
@@ -32,7 +36,6 @@ public final class Origin extends ExpandableStringEnum<Origin> {
      * @param name a name to look for.
      * @return the corresponding Origin.
      */
-    @JsonCreator
     public static Origin fromString(String name) {
         return fromString(name, Origin.class);
     }
