@@ -3,8 +3,8 @@
 
 package com.azure.v2.core.http.rest;
 
-import com.azure.v2.core.util.IterableStream;
-import com.azure.v2.core.util.paging.PageRetrieverSync;
+import com.azure.v2.core.utils.IterableStream;
+import com.azure.v2.core.utils.paging.PageRetrieverSync;
 
 import java.util.ArrayList;
 import java.util.function.BiFunction;
@@ -86,7 +86,7 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.core.http.rest.PagedIterable.instantiation -->
      * <!-- end com.azure.core.http.rest.PagedIterable.instantiation -->
-    
+
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */

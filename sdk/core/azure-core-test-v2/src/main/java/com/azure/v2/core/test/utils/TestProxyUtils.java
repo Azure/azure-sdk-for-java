@@ -7,7 +7,7 @@ import com.azure.v2.core.test.models.CustomMatcher;
 import com.azure.v2.core.test.models.TestProxyRequestMatcher;
 import com.azure.v2.core.test.models.TestProxySanitizer;
 import com.azure.v2.core.test.models.TestProxySanitizerType;
-import com.azure.v2.core.util.CoreUtils;
+import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;

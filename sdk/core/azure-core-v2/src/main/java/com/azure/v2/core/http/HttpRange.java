@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.http;
 
-import com.azure.v2.core.annotation.Immutable;
+import com.azure.v2.core.annotations.Immutable;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 

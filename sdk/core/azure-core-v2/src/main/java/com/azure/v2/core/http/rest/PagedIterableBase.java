@@ -3,10 +3,10 @@
 
 package com.azure.v2.core.http.rest;
 
-import com.azure.v2.core.util.CoreUtils;
-import com.azure.v2.core.util.IterableStream;
-import com.azure.v2.core.util.paging.ContinuablePagedIterable;
-import com.azure.v2.core.util.paging.PageRetrieverSync;
+import com.azure.v2.core.utils.CoreUtils;
+import com.azure.v2.core.utils.IterableStream;
+import com.azure.v2.core.utils.paging.ContinuablePagedIterable;
+import com.azure.v2.core.utils.paging.PageRetrieverSync;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;

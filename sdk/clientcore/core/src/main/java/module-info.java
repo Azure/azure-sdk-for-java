@@ -29,7 +29,7 @@ module io.clientcore.core {
     exports io.clientcore.core.utils.auth;
     exports io.clientcore.core.utils.binarydata;
     exports io.clientcore.core.utils.configuration;
-    exports io.clientcore.core.utils.serializer;
+    exports io.clientcore.core.utils.serializers;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
     uses io.clientcore.core.serialization.json.JsonProvider;

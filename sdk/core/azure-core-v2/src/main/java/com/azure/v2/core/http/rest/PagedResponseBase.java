@@ -5,7 +5,7 @@ package com.azure.v2.core.http.rest;
 
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
-import com.azure.v2.core.util.IterableStream;
+import com.azure.v2.core.utils.IterableStream;
 
 import io.clientcore.core.utils.binarydata.BinaryData;
 import java.util.List;

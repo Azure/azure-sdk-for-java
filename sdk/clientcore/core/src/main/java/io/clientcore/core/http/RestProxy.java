@@ -9,7 +9,7 @@ import io.clientcore.core.implementation.http.rest.RestProxyImpl;
 import io.clientcore.core.implementation.http.rest.SwaggerInterfaceParser;
 import io.clientcore.core.implementation.http.rest.SwaggerMethodParser;
 import io.clientcore.core.implementation.utils.JsonSerializer;
-import io.clientcore.core.utils.serializer.ObjectSerializer;
+import io.clientcore.core.utils.serializers.ObjectSerializer;
 import io.clientcore.core.implementation.utils.XmlSerializer;
 
 import java.lang.reflect.InvocationHandler;

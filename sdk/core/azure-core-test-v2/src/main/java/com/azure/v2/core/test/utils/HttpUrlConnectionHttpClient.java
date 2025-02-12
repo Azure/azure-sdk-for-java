@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.test.utils;
 
-import com.azure.v2.core.util.ProgressReporter;
+import com.azure.v2.core.utils.ProgressReporter;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;

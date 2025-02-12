@@ -63,7 +63,7 @@ public class EventGridSystemEventsCustomization extends Customization {
         customizeAcsRouterEvents(customization, logger);
         customizeAcsRecordingFileStatusUpdatedEventDataDuration(customization, logger);
         customizeStorageDirectoryDeletedEventData(customization, logger);
-        customizeAcsMessageEventData(customization, logger);
+        customizeAcsMessageEventDataAndInheritingClasses(customization, logger);
         generateSystemEventNames(customization, logger);
     }
 
@@ -232,20 +232,27 @@ public class EventGridSystemEventsCustomization extends Customization {
         classCustomization.getMethod("getRecursive").rename("isRecursive").setReturnType("Boolean", "Boolean.getBoolean(%s)");
     }
 
-    public void customizeAcsMessageEventData(LibraryCustomization customization, Logger logger) {
+    public void customizeAcsMessageEventDataAndInheritingClasses(LibraryCustomization customization, Logger logger) {
         PackageCustomization packageModels = customization.getPackage("com.azure.messaging.eventgrid.systemevents");
-        ClassCustomization classCustomization = packageModels.getClass("AcsMessageEventData");
-        classCustomization.addImports("com.azure.core.models.ResponseError");
-        classCustomization.customizeAst(comp -> {
-            ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsMessageEventData").get();
-            // Fix up the getError method to always return a ResponseError.
-            clazz.getMethodsByName("getError").forEach(m -> {
-                m.setType("ResponseError")
-                    .setBody(parseBlock("{ return new ResponseError(this.error.getChannelCode(), this.error.getChannelMessage()); }"))
-                    .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the error property: The channel error code and message."))))
-                        .addBlockTag("return", "the error value."));
+        List<String> classNames = Arrays.asList(
+            "AcsMessageEventData",
+            "AcsMessageDeliveryStatusUpdatedEventData",
+            "AcsMessageReceivedEventData"
+        );
+        for (String className : classNames) {
+            ClassCustomization classCustomization = packageModels.getClass(className);
+            classCustomization.addImports("com.azure.core.models.ResponseError");
+            classCustomization.customizeAst(comp -> {
+                ClassOrInterfaceDeclaration clazz = comp.getClassByName(className).get();
+                // Fix up the getError method to always return a ResponseError.
+                clazz.getMethodsByName("getError").forEach(m -> {
+                    m.setType("ResponseError")
+                        .setBody(parseBlock("{ return new ResponseError(this.error.getChannelCode(), this.error.getChannelMessage()); }"))
+                        .setJavadocComment(new Javadoc(new JavadocDescription(List.of(new JavadocSnippet("Get the error property: The channel error code and message."))))
+                            .addBlockTag("return", "the error value."));
+                });
             });
-        });
+        }
     }
 
     public static String getConstantName(String name) {

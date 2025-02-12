@@ -13,7 +13,7 @@ import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.serializer.SerializationFormat;
+import io.clientcore.core.utils.serializers.SerializationFormat;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

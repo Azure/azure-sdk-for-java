@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.implementation.http;
 
-import com.azure.v2.core.util.CoreUtils;
+import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.utils.UriBuilder;
 
 import java.net.URI;

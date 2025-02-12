@@ -5,9 +5,9 @@ package com.azure.v2.core.http.policy;
 
 import io.clientcore.core.http.pipeline.HttpPipelineOrder;
 import io.clientcore.core.utils.configuration.Configuration;
-import com.azure.v2.core.util.CoreUtils;
-import com.azure.v2.core.util.ServiceVersion;
-import com.azure.v2.core.util.UserAgentUtil;
+import com.azure.v2.core.utils.CoreUtils;
+import com.azure.v2.core.utils.ServiceVersion;
+import com.azure.v2.core.utils.UserAgentUtil;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;

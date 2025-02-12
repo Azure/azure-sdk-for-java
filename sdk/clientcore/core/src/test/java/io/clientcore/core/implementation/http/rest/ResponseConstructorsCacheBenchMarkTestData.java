@@ -13,7 +13,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.core.utils.binarydata.BinaryData;
 import io.clientcore.core.implementation.utils.JsonSerializer;
-import io.clientcore.core.utils.serializer.ObjectSerializer;
+import io.clientcore.core.utils.serializers.ObjectSerializer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

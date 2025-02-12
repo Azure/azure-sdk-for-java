@@ -5,7 +5,7 @@ package io.clientcore.core.utils.binarydata;
 
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.serializer.ObjectSerializer;
+import io.clientcore.core.utils.serializers.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;

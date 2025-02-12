@@ -6,7 +6,7 @@ package io.clientcore.core.utils.binarydata;
 import io.clientcore.core.implementation.utils.SliceInputStream;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.serializer.ObjectSerializer;
+import io.clientcore.core.utils.serializers.ObjectSerializer;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;

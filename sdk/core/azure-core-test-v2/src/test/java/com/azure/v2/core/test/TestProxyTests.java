@@ -5,12 +5,12 @@ package com.azure.v2.core.test;
 
 import com.azure.v2.core.test.annotation.DoNotRecord;
 import com.azure.v2.core.test.annotation.RecordWithoutRequestBody;
-import com.azure.v2.core.test.utils.TestProxyTestServer;
 import com.azure.v2.core.test.implementation.TestingHelpers;
 import com.azure.v2.core.test.models.CustomMatcher;
 import com.azure.v2.core.test.models.TestProxySanitizer;
 import com.azure.v2.core.test.models.TestProxySanitizerType;
 import com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient;
+import com.azure.v2.core.test.utils.TestProxyTestServer;
 import com.azure.v2.core.test.utils.TestProxyUtils;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;

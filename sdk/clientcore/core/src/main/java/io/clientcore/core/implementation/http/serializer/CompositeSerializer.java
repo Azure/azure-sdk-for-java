@@ -3,8 +3,8 @@
 package io.clientcore.core.implementation.http.serializer;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.serializer.ObjectSerializer;
-import io.clientcore.core.utils.serializer.SerializationFormat;
+import io.clientcore.core.utils.serializers.ObjectSerializer;
+import io.clientcore.core.utils.serializers.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;

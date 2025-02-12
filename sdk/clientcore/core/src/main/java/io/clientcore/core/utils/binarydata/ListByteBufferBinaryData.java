@@ -7,7 +7,7 @@ import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.implementation.utils.IterableOfByteBuffersInputStream;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.serializer.ObjectSerializer;
+import io.clientcore.core.utils.serializers.ObjectSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;

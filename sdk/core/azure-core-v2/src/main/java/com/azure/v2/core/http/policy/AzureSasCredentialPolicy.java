@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.http.policy;
 
-import com.azure.v2.core.credential.AzureSasCredential;
+import com.azure.v2.core.credentials.AzureSasCredential;
 import io.clientcore.core.http.pipeline.HttpCredentialPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.http.models.HttpRequest;

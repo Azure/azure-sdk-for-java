@@ -28,8 +28,8 @@ import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.binarydata.BinaryData;
 import io.clientcore.core.utils.binarydata.InputStreamBinaryData;
-import io.clientcore.core.utils.serializer.ObjectSerializer;
-import io.clientcore.core.utils.serializer.SerializationFormat;
+import io.clientcore.core.utils.serializers.ObjectSerializer;
+import io.clientcore.core.utils.serializers.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
