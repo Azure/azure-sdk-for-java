@@ -105,9 +105,10 @@ public final class ValidationUtil {
         if (subscription != null) {
             for (int i = 0; i < subscription.length(); i++) {
                 if (!isValidSubscriptionCharacter(subscription.charAt(i))) {
-                    throw logger.logExceptionAsError(new IllegalArgumentException(
-                        "Invalid subscription ID provided. You can locate your subscription ID by following the instructions"
-                            + " listed here: https://learn.microsoft.com/azure/azure-portal/get-subscription-tenant-id"));
+                    throw logger.logExceptionAsError(new IllegalArgumentException("Invalid subscription: "
+                        + subscription + " provided. If this is the name of a subscription, use its ID instead."
+                        + " You can locate your subscription ID by following the instructions"
+                        + " listed here: https://learn.microsoft.com/azure/azure-portal/get-subscription-tenant-id"));
                 }
             }
         }
@@ -133,7 +134,8 @@ public final class ValidationUtil {
             || (c >= '0' && c <= '9')
             || (c == '.')
             || (c == '-')
-            || (c == '_');
+            || (c == '_')
+            || (c == ' ');
     }
 
     public static Path validateSecretFile(File file, ClientLogger logger) {
