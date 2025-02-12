@@ -152,19 +152,19 @@ public class AzureCliCredentialTest {
     }
 
     @ParameterizedTest
-    @ValueSource(
-        strings = {
-            "test",
-            "TEST",
-            "Test123",
-            "sub-123",
-            "sub_456",
-            "sub.name",
-            "123456",
-            "a.b-c_d",
-            "A.B-C_D",
-            "0-9a-zA-Z_",
-            "valid.subscription" })
+    @ValueSource(strings = {
+        "test",
+        "TEST",
+        "Test123",
+        "sub-123",
+        "sub_456",
+        "sub.name",
+        "123456",
+        "a.b-c_d",
+        "A.B-C_D",
+        "0-9a-zA-Z_",
+        "valid.subscription",
+        " " })
     public void testSubscriptionAccepted(String subscription) {
         // Setup
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default");
