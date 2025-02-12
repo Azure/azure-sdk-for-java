@@ -21,17 +21,17 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.55.0</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.55.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.8</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
+      <version>1.15.9</version> <!-- {x-version-update;com.azure:azure-core-http-netty;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.12.7</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+      <version>1.12.8</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
