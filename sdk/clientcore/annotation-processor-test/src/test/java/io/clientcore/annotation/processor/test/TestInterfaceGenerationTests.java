@@ -11,7 +11,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
 import java.nio.charset.StandardCharsets;
 import org.junit.jupiter.api.Test;
 
