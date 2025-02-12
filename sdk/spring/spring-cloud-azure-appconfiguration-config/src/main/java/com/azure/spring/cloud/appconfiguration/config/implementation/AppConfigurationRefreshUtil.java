@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.Context;
@@ -53,13 +55,13 @@ public class AppConfigurationRefreshUtil {
 
                 AppConfigurationStoreMonitoring monitor = connection.getMonitoring();
                 
-                boolean pushRefreshEnabled = false;
+                boolean pushRefresh = false;
                 PushNotification notification = monitor.getPushNotification();
-                if (notification.getPrimaryToken() != null
-                    || notification.getSecondaryToken() != null) {
-                    pushRefreshEnabled = true;
+                if ((notification.getPrimaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))
+                    || (notification.getSecondaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
+                    pushRefresh = true;
                 }
-                Context context = new Context("refresh", true).addData("pushRefreshEnabled", pushRefreshEnabled);
+                Context context = new Context("refresh", true).addData(PUSH_REFRESH, pushRefresh);
 
                 List<AppConfigurationReplicaClient> clients = clientFactory.getAvailableClients(originEndpoint);
 

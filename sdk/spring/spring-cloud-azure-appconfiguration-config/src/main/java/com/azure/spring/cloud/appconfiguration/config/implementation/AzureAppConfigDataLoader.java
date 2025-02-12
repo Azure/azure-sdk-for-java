@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -76,14 +77,14 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
             boolean reloadFailed = false;
 
-            boolean pushRefreshEnabled = false;
+            boolean pushRefresh = false;
             PushNotification notification = resource.getMonitoring().getPushNotification();
-            if (notification.getPrimaryToken() != null
-                || notification.getSecondaryToken() != null) {
-                pushRefreshEnabled = true;
+            if ((notification.getPrimaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))
+                || (notification.getSecondaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
+                pushRefresh = true;
             }
-            requestContext = new Context("refresh", resource.isRefresh()).addData("pushRefreshEnabled",
-                pushRefreshEnabled);
+            requestContext = new Context("refresh", resource.isRefresh()).addData(PUSH_REFRESH,
+                pushRefresh);
 
             // Feature Management needs to be set in the last config store.
 
