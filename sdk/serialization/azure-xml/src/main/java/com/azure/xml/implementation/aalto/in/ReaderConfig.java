@@ -122,8 +122,8 @@ public final class ReaderConfig extends CommonConfig {
     private String mXmlDeclEncoding = null;
     private int mXmlDeclStandalone = STANDALONE_UNKNOWN;
 
-    private XMLReporter mReporter;
-    private XMLResolver mResolver;
+    private final XMLReporter mReporter;
+    private final XMLResolver mResolver;
 
     /*
     /**********************************************************************
@@ -203,21 +203,6 @@ public final class ReaderConfig extends CommonConfig {
 
     /*
     /**********************************************************************
-    /* Additional configuration setters
-    /**********************************************************************
-     */
-
-    // // Stax:
-
-    public void setXMLReporter(XMLReporter r) {
-        mReporter = r;
-    }
-
-    public void setXMLResolver(XMLResolver r) {
-        mResolver = r;
-    }
-    /*
-    /**********************************************************************
     /* Common accessors from CommonConfig
     /**********************************************************************
      */
@@ -291,10 +276,6 @@ public final class ReaderConfig extends CommonConfig {
 
     public XMLReporter getXMLReporter() {
         return mReporter;
-    }
-
-    public XMLResolver getXMLResolver() {
-        return mResolver;
     }
 
     // // // Stax standard properties

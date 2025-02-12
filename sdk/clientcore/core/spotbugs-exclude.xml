@@ -411,6 +411,9 @@
   </Match>
   <Match>
     <Bug pattern="XXE_XMLSTREAMREADER" />
-    <Class name="io.clientcore.core.serialization.xml.XmlReader" />
+    <Or>
+      <Class name="io.clientcore.core.serialization.xml.XmlReader" />
+      <Class name="io.clientcore.core.serialization.xml.implementation.JavaWrapperXmlInputFactoryFacade" />
+    </Or>
   </Match>
 </FindBugsFilter>
