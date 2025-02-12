@@ -26,40 +26,45 @@ public class ShareFileCreateSymbolicLinkOptions {
         return metadata;
     }
 
-    public void setMetadata(Map<String, String> metadata) {
+    public ShareFileCreateSymbolicLinkOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
     }
 
     public OffsetDateTime getFileCreationTime() {
         return fileCreationTime;
     }
 
-    public void setFileCreationTime(OffsetDateTime fileCreationTime) {
+    public ShareFileCreateSymbolicLinkOptions setFileCreationTime(OffsetDateTime fileCreationTime) {
         this.fileCreationTime = fileCreationTime;
+        return this;
     }
 
     public OffsetDateTime getFileLastWriteTime() {
         return fileLastWriteTime;
     }
 
-    public void setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
+    public ShareFileCreateSymbolicLinkOptions setFileLastWriteTime(OffsetDateTime fileLastWriteTime) {
         this.fileLastWriteTime = fileLastWriteTime;
+        return this;
     }
 
     public String getOwner() {
         return owner;
     }
 
-    public void setOwner(String owner) {
+    public ShareFileCreateSymbolicLinkOptions setOwner(String owner) {
         this.owner = owner;
+        return this;
     }
 
     public String getGroup() {
         return group;
     }
 
-    public void setGroup(String group) {
+    public ShareFileCreateSymbolicLinkOptions setGroup(String group) {
         this.group = group;
+        return this;
     }
 
     public ShareRequestConditions getRequestConditions() {

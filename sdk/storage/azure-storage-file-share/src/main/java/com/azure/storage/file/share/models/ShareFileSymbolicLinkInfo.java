@@ -1,9 +1,11 @@
 package com.azure.storage.file.share.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.storage.file.share.FileSmbProperties;
 
 import java.time.OffsetDateTime;
 
+@Immutable
 public class ShareFileSymbolicLinkInfo {
 
     private final String eTag;

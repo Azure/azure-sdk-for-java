@@ -3415,7 +3415,7 @@ public class ShareFileAsyncClient {
         }
     }
 
-    public Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(String linkText, ShareRequestConditions requestConditions, Context context) {
+    Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(String linkText, ShareRequestConditions requestConditions, Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureFileStorageClient.getFiles()
             .createSymbolicLinkWithResponseAsync(shareName, filePath, linkText, null, null,null, null, null,
@@ -3435,7 +3435,7 @@ public class ShareFileAsyncClient {
         }
     }
 
-    public Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse(Context context){
+    Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse(Context context){
         context = context == null ? Context.NONE : context;
         return this.azureFileStorageClient.getFiles()
             .getSymbolicLinkWithResponseAsync(shareName, filePath, null, null, null, context)
