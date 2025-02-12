@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.implementation;
 
-import com.azure.v2.core.util.CoreUtils;
+import com.azure.v2.core.utils.CoreUtils;
 
 import java.io.IOException;
 import java.util.Objects;

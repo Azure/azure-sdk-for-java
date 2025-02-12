@@ -7,11 +7,11 @@ import com.azure.v2.core.test.junitextensions.TestContextManagerParameterResolve
 import com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient;
 import com.azure.v2.core.test.utils.TestProxyManager;
 import com.azure.v2.core.test.utils.TestResourceNamer;
-import com.azure.v2.core.util.CoreUtils;
+import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.HttpClientProvider;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

@@ -3,9 +3,9 @@
 
 package com.azure.v2.core.test.utils.metrics;
 
-import com.azure.v2.core.util.TelemetryAttributes;
-import com.azure.v2.core.util.metrics.LongCounter;
-import io.clientcore.core.util.Context;
+import com.azure.v2.core.utils.TelemetryAttributes;
+import com.azure.v2.core.utils.metrics.LongCounter;
+import io.clientcore.core.utils.Context;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;

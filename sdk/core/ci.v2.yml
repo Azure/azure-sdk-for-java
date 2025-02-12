@@ -10,7 +10,7 @@ trigger:
     include:
       - sdk/core/ci.v2.yml
       - sdk/core/azure-core-v2/
-      - sdk/core/azure-core-test-v2/pom.xml
+      - sdk/core/azure-core-test-v2/
 
 pr:
   branches:
@@ -23,7 +23,7 @@ pr:
     include:
       - sdk/core/ci.v2.yml
       - sdk/core/azure-core-v2/
-      - sdk/core/azure-core-test-v2/pom.xml
+      - sdk/core/azure-core-test-v2/
 
 parameters:
   - name: release_dependsonlivetests

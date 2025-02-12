@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.test.utils.metrics;
 
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 
 import java.util.Map;
 

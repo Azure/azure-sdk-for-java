@@ -8,10 +8,10 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.implementation.util.ImplUtils;
+import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -31,8 +31,8 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RE
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_WAS_LAST_ATTEMPT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_MAX_ATTEMPT_COUNT_KEY;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RETRY_EVENT_NAME;
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
-import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_RETRY_COUNT;
+import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_RETRY_COUNT;
 
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.

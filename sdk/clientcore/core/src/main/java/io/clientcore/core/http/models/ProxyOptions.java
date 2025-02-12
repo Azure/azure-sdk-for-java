@@ -4,12 +4,12 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.auth.BasicChallengeHandler;
-import io.clientcore.core.util.auth.ChallengeHandler;
-import io.clientcore.core.util.auth.DigestChallengeHandler;
-import io.clientcore.core.util.configuration.Configuration;
-import io.clientcore.core.util.configuration.ConfigurationProperty;
-import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
+import io.clientcore.core.utils.auth.BasicChallengeHandler;
+import io.clientcore.core.utils.auth.ChallengeHandler;
+import io.clientcore.core.utils.auth.DigestChallengeHandler;
+import io.clientcore.core.utils.configuration.Configuration;
+import io.clientcore.core.utils.configuration.ConfigurationProperty;
+import io.clientcore.core.utils.configuration.ConfigurationPropertyBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
 
 /**
  * This represents proxy configuration to be used in http clients.

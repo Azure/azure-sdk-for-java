@@ -3,11 +3,11 @@
 
 package com.azure.v2.core.test.utils.metrics;
 
-import com.azure.v2.core.util.TelemetryAttributes;
-import com.azure.v2.core.util.metrics.DoubleHistogram;
-import com.azure.v2.core.util.metrics.LongCounter;
-import com.azure.v2.core.util.metrics.LongGauge;
-import com.azure.v2.core.util.metrics.Meter;
+import com.azure.v2.core.utils.TelemetryAttributes;
+import com.azure.v2.core.utils.metrics.DoubleHistogram;
+import com.azure.v2.core.utils.metrics.LongCounter;
+import com.azure.v2.core.utils.metrics.LongGauge;
+import com.azure.v2.core.utils.metrics.Meter;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

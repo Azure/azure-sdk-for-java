@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.implementation.http;
 
-import com.azure.v2.core.exception.HttpResponseException;
+import com.azure.v2.core.exceptions.HttpResponseException;
 
 import java.lang.reflect.Method;
 

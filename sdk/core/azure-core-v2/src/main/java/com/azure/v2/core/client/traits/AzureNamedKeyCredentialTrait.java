@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.client.traits;
 
-import com.azure.v2.core.credential.AzureNamedKeyCredential;
+import com.azure.v2.core.credentials.AzureNamedKeyCredential;
 
 /**
  * An {@link com.azure.v2.core.client.traits Azure SDK for Java trait} providing a consistent interface for setting

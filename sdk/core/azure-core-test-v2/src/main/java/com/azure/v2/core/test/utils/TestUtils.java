@@ -8,7 +8,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.UriBuilder;
+import io.clientcore.core.utils.UriBuilder;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.IOException;

@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.test.utils;
 
-import io.clientcore.core.util.configuration.ConfigurationSource;
+import io.clientcore.core.utils.configuration.ConfigurationSource;
 
 import java.util.HashMap;
 import java.util.Map;

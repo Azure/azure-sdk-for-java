@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.http.policy;
 
-import com.azure.v2.core.util.CoreUtils;
+import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;

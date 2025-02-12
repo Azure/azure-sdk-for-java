@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.test.utils.metrics;
 
-import com.azure.v2.core.util.TelemetryAttributes;
+import com.azure.v2.core.utils.TelemetryAttributes;
 
 import java.util.Collections;
 import java.util.Map;

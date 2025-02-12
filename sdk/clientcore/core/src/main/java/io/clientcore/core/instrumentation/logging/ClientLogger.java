@@ -3,14 +3,14 @@
 
 package io.clientcore.core.instrumentation.logging;
 
-import io.clientcore.core.annotation.Metadata;
+import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.serialization.json.implementation.DefaultJsonWriter;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import static io.clientcore.core.annotation.TypeConditions.FLUENT;
+import static io.clientcore.core.annotations.TypeConditions.FLUENT;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EVENT_NAME_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_MESSAGE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.EXCEPTION_STACKTRACE_KEY;

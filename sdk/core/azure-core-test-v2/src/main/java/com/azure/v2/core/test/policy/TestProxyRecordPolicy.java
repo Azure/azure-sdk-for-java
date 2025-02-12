@@ -18,8 +18,8 @@ import io.clientcore.core.http.pipeline.HttpPipelineOrder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.binarydata.StringBinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.StringBinaryData;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

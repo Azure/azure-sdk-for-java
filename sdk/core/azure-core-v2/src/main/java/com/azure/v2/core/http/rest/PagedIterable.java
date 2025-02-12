@@ -3,8 +3,8 @@
 
 package com.azure.v2.core.http.rest;
 
-import com.azure.v2.core.util.IterableStream;
-import com.azure.v2.core.util.paging.PageRetrieverSync;
+import com.azure.v2.core.utils.IterableStream;
+import com.azure.v2.core.utils.paging.PageRetrieverSync;
 
 import java.util.ArrayList;
 import java.util.function.BiFunction;

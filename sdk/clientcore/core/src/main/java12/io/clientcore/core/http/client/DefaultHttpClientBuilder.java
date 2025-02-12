@@ -6,8 +6,8 @@ package io.clientcore.core.http.client;
 import io.clientcore.core.http.client.implementation.JdkHttpClientProxySelector;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.SharedExecutorService;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.SharedExecutorService;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import javax.net.ssl.SSLContext;
 import java.io.IOException;
@@ -27,10 +27,10 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 
 import static io.clientcore.core.http.client.implementation.JdkHttpUtils.getDefaultTimeoutFromEnvironment;
-import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_CONNECT_TIMEOUT;
-import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_READ_TIMEOUT;
-import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_RESPONSE_TIMEOUT;
-import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_WRITE_TIMEOUT;
+import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_CONNECT_TIMEOUT;
+import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_READ_TIMEOUT;
+import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_RESPONSE_TIMEOUT;
+import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_WRITE_TIMEOUT;
 
 /**
  * Builder to configure and build an instance of the core {@link HttpClient} type using the JDK

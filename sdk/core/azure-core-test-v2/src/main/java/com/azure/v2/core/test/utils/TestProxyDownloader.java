@@ -5,7 +5,7 @@ package com.azure.v2.core.test.utils;
 
 import com.azure.v2.core.test.implementation.TestingHelpers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.UriBuilder;
+import io.clientcore.core.utils.UriBuilder;
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
 

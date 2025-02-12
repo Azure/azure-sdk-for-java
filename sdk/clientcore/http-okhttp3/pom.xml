@@ -43,7 +43,7 @@
     <javaModulesSurefireArgLine>
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
-      --add-exports io.clientcore.core/io.clientcore.core.implementation.util=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
 
       --add-opens io.clientcore.http.okhttp3/io.clientcore.http.okhttp3=ALL-UNNAMED
       --add-opens io.clientcore.http.okhttp3/io.clientcore.http.okhttp3.implementation=ALL-UNNAMED
