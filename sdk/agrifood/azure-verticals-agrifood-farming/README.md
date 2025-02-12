@@ -36,26 +36,8 @@ Use FarmBeats client library for Python to do the following.
 
 In order to interact with the Azure FarmBeats service, your client must present a Microsoft Entra bearer token to the service.
 
-The best way of providing a bearer token in production is to use `ManagedIdentityCredential` with a [managed identity](https://learn.microsoft.com/entra/identity/managed-identities-azure-resources/overview). To enable development scenarios, construct a `ChainedTokenCredential` with your production credential and the appropriate developer credential. The examples show including an `AzureCliCredential`.
+The best way of providing a bearer token is to use the Azure Identity library. See the [installation instructions](../../../sdk/identity/azure-identity/README.md#include-the-package) to include `azure-identity`. In the examples, `credential` refers to a `TokenCredential`. It's recommended to use a [credential chain](../../../sdk/identity/azure-identity/readme#construct-a-credential-chain).
 
-To use the credentials provided by the Azure Identity library, include the `azure-identity` package. Use the [Bill of Materials (BOM) for the Azure SDK for Java](https://learn.microsoft.com/azure/developer/java/sdk/get-started-maven#add-azure-sdk-for-java-to-an-existing-project), and include the `azure-identity` dependency:
-
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-identity</artifactId>
-</dependency>
-```
-
-##### Example - Create a Credential Chain
-
-```java readme-sample-createCredential
-// Create credential
-ChainedTokenCredential credential = new ChainedTokenCredentialBuilder()
-    .addLast(new ManagedIdentityCredentialBuilder().build())
-    .addLast(new AzureCliCredentialBuilder().build())
-    .build();
-```
 
 ##### Example - Create Parties Client
 
