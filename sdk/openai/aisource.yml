@@ -16,3 +16,5 @@ extends:
       NON_AZURE_OPENAI_KEY: $(OPENAI-API-KEY)
       AZURE_TEST_RUN_LIVE: 'true'
       API_VERSION_GA: '2024-06-01'
+    MatrixFilters:
+      - JavaTestVersion=^(?!1.8).*

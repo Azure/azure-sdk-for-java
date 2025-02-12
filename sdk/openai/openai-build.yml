@@ -1,11 +1,5 @@
 steps:
   - pwsh: |
-      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/"
-      ls $env:PIPELINE_WORKSPACE/.m2/repository/com
-
-      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/azure"
-      ls $env:PIPELINE_WORKSPACE/.m2/repository/com/azure
-
       # Define repository details
       $repoUrl = "https://github.com/openai/openai-java.git"
       $branchName = "release-please--branches--main--changes--next"
@@ -41,18 +35,9 @@ steps:
       $updatedContent = $buildGradleContent -replace 'version\s*=\s*\"([^\"]+)\"', "version = `"$newVersion`""
       Set-Content -Path $buildGradlePath -Value $updatedContent
 
-      Write-Host "gradle --version"
-      gradle --version
-
       # Build the project and publish to the local Maven repository
       Write-Host "Building the project and publishing to the local Maven repository"
       ./gradlew clean build -x test "-Dmaven.repo.local=$env:PIPELINE_WORKSPACE/.m2/repository" publishToMavenLocal
-
-      Write-Host "ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java"
-      ls $env:PIPELINE_WORKSPACE/.m2/repository/com/openai/openai-java
-
-      Write-Host "cat ./../../_temp/openai-java/build/reports/problems/problems-report.html"
-      cat ./../../_temp/openai-java/build/reports/problems/problems-report.html
 
       # Define the path to the external_dependencies.txt file
       $dependenciesFilePath = './../../1/s/eng/versioning/external_dependencies.txt'
