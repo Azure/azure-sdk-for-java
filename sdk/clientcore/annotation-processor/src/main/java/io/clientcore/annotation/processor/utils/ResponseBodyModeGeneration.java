@@ -83,11 +83,9 @@ public final class ResponseBodyModeGeneration {
     }
 
     private static void handleDeserialize(BlockStmt body, String returnTypeName) {
-        body.tryAddImportToParentCompilationUnit(HttpResponseDecodeData.class);
-        body.tryAddImportToParentCompilationUnit(HttpResponseBodyDecoder.class);
         body.addStatement(StaticJavaParser.parseStatement("String returnTypeName = \"" + returnTypeName + "\";"));
         body.addStatement(StaticJavaParser.parseStatement(
-            "Object result = decodeByteArray(response.getBody().toBytes(), response, serializer, returnTypeName);"));
+            "Object result = decodeByteArray(response.getBody().toBytes(), serializer, returnTypeName);"));
         body.addStatement(StaticJavaParser.parseStatement(
             "if (responseBodyMode == ResponseBodyMode.DESERIALIZE)" + "{ BinaryData responseBody = response.getBody();"
                 + "HttpResponseAccessHelper.setValue((HttpResponse<?>) response, result); } else {"
@@ -178,7 +176,7 @@ public final class ResponseBodyModeGeneration {
         } else {
             body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = response.getBody();"));
             body.addStatement(StaticJavaParser
-                .parseStatement("return decodeByteArray(responseBody.toBytes(), response, serializer, methodParser);"));
+                .parseStatement("return decodeByteArray(responseBody.toBytes(), serializer, methodParser);"));
         }
     }
 
