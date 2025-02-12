@@ -199,7 +199,7 @@ public class RedirectPolicyTest {
                 HttpHeaders httpHeader
                     = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/" + requestCount[0]++);
 
-                request.setHttpMethod(HttpMethod.PUT);
+                request.setMethod(HttpMethod.PUT);
 
                 requestCount[0]++;
 
@@ -210,7 +210,7 @@ public class RedirectPolicyTest {
                 HttpHeaders httpHeader
                     = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/" + requestCount[0]++);
 
-                request.setHttpMethod(HttpMethod.POST);
+                request.setMethod(HttpMethod.POST);
 
                 return new MockHttpResponse(request, 308, httpHeader);
             } else {

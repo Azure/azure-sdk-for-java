@@ -204,7 +204,7 @@ public class RestProxyImpl {
 
         final URI uri = uriBuilder.toUri();
         final HttpRequest request
-            = configRequest(new HttpRequest(methodParser.getHttpMethod(), uri), methodParser, serializer, args);
+            = configRequest(new HttpRequest().setMethod(methodParser.getHttpMethod()).setUri(uri), methodParser, serializer, args);
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
 

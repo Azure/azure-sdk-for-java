@@ -200,7 +200,7 @@ public class DefaultHttpClientIT {
             .set(multiValueHeaderName, multiValueHeaderValue);
 
         try (Response<?> response = client
-            .send(new HttpRequest(HttpMethod.GET, uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
+            .send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
             assertEquals(200, response.getStatusCode());
 
             HttpHeaders responseHeaders = response.getHeaders();
@@ -240,7 +240,7 @@ public class DefaultHttpClientIT {
         HttpClient client = new JdkHttpClientBuilder().build();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
-        HttpRequest request = new HttpRequest(HttpMethod.POST, uri(server, "/shortPost"));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST).setUri(uri(server, "/shortPost"));
         request.getHeaders()
             .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)));
         request.setBody(BinaryData.fromString(contentChunk));

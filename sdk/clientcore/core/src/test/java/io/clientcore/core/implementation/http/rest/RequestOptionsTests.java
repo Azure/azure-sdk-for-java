@@ -65,7 +65,7 @@ public class RequestOptionsTests {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, URI.create("http://request.uri"));
 
         RequestOptions options = new RequestOptions().addHeader(new HttpHeader(X_MS_FOO, "bar"))
-            .addRequestCallback(r -> r.setHttpMethod(HttpMethod.GET))
+            .addRequestCallback(r -> r.setMethod(HttpMethod.GET))
             .addRequestCallback(r -> r.setUri("https://request.uri"))
             .addQueryParam("$skipToken", "1")
             .addRequestCallback(r -> r.getHeaders().set(X_MS_FOO, "baz"));

@@ -76,7 +76,8 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
 
     private HttpRequest createRequest() {
         String body = "{\"id\": \"1\", \"name\": \"test\"}";
-        HttpRequest request = new HttpRequest(HttpMethod.PATCH, uri).setBody(BinaryData.fromString(body));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.PATCH).setUri(uri)
+            .setBody(BinaryData.fromString(body));
         request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.length()));
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "clientcore-stress");
         request.getHeaders()

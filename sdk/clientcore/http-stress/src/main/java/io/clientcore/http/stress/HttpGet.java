@@ -141,7 +141,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private HttpRequest createRequest() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "clientcore-stress");
         request.getHeaders()
             .set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
