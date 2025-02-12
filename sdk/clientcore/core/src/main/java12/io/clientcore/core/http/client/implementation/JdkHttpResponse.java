@@ -6,7 +6,7 @@ package io.clientcore.core.http.client.implementation;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 /**
  * Base response class for JDK with implementations for response metadata.

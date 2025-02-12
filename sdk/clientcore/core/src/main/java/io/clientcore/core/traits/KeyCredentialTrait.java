@@ -6,7 +6,7 @@ package io.clientcore.core.traits;
 import io.clientcore.core.credentials.KeyCredential;
 
 /**
- * A {@link io.clientcore.core.models.traits trait} providing a consistent interface for setting {@link KeyCredential}.
+ * A {@link io.clientcore.core.traits trait} providing a consistent interface for setting {@link KeyCredential}.
  * Refer to the
  * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a> documentation for more details on
  * proper usage of the {@link KeyCredential} type.
@@ -14,7 +14,7 @@ import io.clientcore.core.credentials.KeyCredential;
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue to
  * return the concrete type, rather than the trait type.
  *
- * @see io.clientcore.core.models.traits
+ * @see io.clientcore.core.traits
  * @see KeyCredential
  */
 public interface KeyCredentialTrait<T extends KeyCredentialTrait<T>> {

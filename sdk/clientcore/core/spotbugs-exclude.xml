@@ -88,14 +88,14 @@
     <Or>
       <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderScanner" />
-      <Class name="io.clientcore.core.util.auth.AuthorizationChallengeHandlerTests" />
+      <Class name="io.clientcore.core.utils.auth.AuthorizationChallengeHandlerTests" />
     </Or>
   </Match>
   <Match>
     <Bug pattern="DMI_RANDOM_USED_ONLY_ONCE" />
     <Or>
       <Class name="io.clientcore.core.http.pipeline.HttpPipelinePolicyTests$SyncPolicy" />
-      <Class name="io.clientcore.core.util.TestUtils" />
+      <Class name="io.clientcore.core.utils.TestUtils" />
     </Or>
   </Match>
   <Match>
@@ -129,8 +129,8 @@
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
-      <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
-      <Class name="io.clientcore.core.util.serializer.JsonSerializerTests" />
+      <Class name="io.clientcore.core.utils.binarydata.BinaryDataTest" />
+      <Class name="io.clientcore.core.utils.serializer.JsonSerializerTests" />
     </Or>
   </Match>
   <Match>
@@ -223,7 +223,7 @@
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
     <Or>
       <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
-      <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
+      <Class name="io.clientcore.core.utils.binarydata.BinaryDataTest" />
     </Or>
   </Match>
   <Match>
@@ -247,7 +247,7 @@
       <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStreamTests" />
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
       <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
-      <Class name="io.clientcore.core.util.binarydata.BinaryDataTest" />
+      <Class name="io.clientcore.core.utils.binarydata.BinaryDataTest" />
     </Or>
   </Match>
   <Match>
@@ -277,8 +277,8 @@
       <Class name="io.clientcore.core.implementation.utils.JsonSerializer" />
       <Class name="io.clientcore.core.implementation.utils.XmlSerializer" />
       <Class name="io.clientcore.core.serialization.json.implementation.DefaultJsonReader" />
-      <Class name="io.clientcore.core.util.TestUtils" />
-      <Class name="io.clientcore.core.util.serializer.MockSerializer" />
+      <Class name="io.clientcore.core.utils.TestUtils" />
+      <Class name="io.clientcore.core.utils.serializer.MockSerializer" />
     </Or>
   </Match>
   <Match>
@@ -295,7 +295,7 @@
   </Match>
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_INFERRED" />
-    <Class name="io.clientcore.core.util.UnionTests" />
+    <Class name="io.clientcore.core.utils.UnionTests" />
   </Match>
   <Match>
     <Bug pattern="RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT" />
@@ -375,8 +375,8 @@
       <Class name="io.clientcore.core.serialization.json.implementation.DefaultJsonWriterContractTests" />
       <Class name="io.clientcore.core.serialization.xml.DefaultXmlWriterContractTests" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderConfig$EncodingContext" />
-      <Class name="io.clientcore.core.util.binarydata.BinaryDataTest$BinaryDataAsProperty" />
-      <Class name="io.clientcore.core.util.serializer.JsonSerializerTests$DateTimeWrapper" />
+      <Class name="io.clientcore.core.utils.binarydata.BinaryDataTest$BinaryDataAsProperty" />
+      <Class name="io.clientcore.core.utils.serializer.JsonSerializerTests$DateTimeWrapper" />
     </Or>
   </Match>
   <Match>

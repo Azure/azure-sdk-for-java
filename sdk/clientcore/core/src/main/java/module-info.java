@@ -18,19 +18,18 @@ module io.clientcore.core {
     exports io.clientcore.core.http.exceptions;
     exports io.clientcore.core.http.models;
     exports io.clientcore.core.http.pipeline;
-    exports io.clientcore.core.models.traits;
+    exports io.clientcore.core.instrumentation;
+    exports io.clientcore.core.instrumentation.logging;
+    exports io.clientcore.core.instrumentation.metrics;
+    exports io.clientcore.core.instrumentation.tracing;
     exports io.clientcore.core.serialization.json;
     exports io.clientcore.core.serialization.xml;
+    exports io.clientcore.core.traits;
     exports io.clientcore.core.utils;
+    exports io.clientcore.core.utils.auth;
     exports io.clientcore.core.utils.binarydata;
     exports io.clientcore.core.utils.configuration;
     exports io.clientcore.core.utils.serializer;
-    exports io.clientcore.core.utils.auth;
-    exports io.clientcore.core.instrumentation;
-    exports io.clientcore.core.instrumentation.tracing;
-    exports io.clientcore.core.instrumentation.logging;
-    exports io.clientcore.core.instrumentation.metrics;
-    exports io.clientcore.core.traits;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
     uses io.clientcore.core.serialization.json.JsonProvider;
