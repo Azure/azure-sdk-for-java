@@ -86,7 +86,7 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.core.http.rest.PagedIterable.instantiation -->
      * <!-- end com.azure.core.http.rest.PagedIterable.instantiation -->
-
+    
      * @param firstPageRetriever Supplier that retrieves the first page
      * @param nextPageRetriever Function that retrieves the next page given a continuation token
      */
