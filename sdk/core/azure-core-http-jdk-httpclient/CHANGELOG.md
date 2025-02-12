@@ -1,5 +1,13 @@
 # Release History
 
+## 1.0.1 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.0` to `1.55.1`.
+
 ## 1.0.0 (2025-02-06)
 
 Initial GA of `azure-core-http-jdk-httpclient`.
