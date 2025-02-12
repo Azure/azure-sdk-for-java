@@ -398,7 +398,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             if (!isContentTypeSetInHeaders) {
                 setContentTypeHeader(body, contentType);
             }
-            if ("io.clientcore.core.util.binarydata.BinaryData".equals(parameterType)) {
+            if ("io.clientcore.core.utils.binarydata.BinaryData".equals(parameterType)) {
                 body.tryAddImportToParentCompilationUnit(BinaryData.class);
                 body.addStatement(
                     StaticJavaParser.parseStatement("BinaryData binaryData = (BinaryData) " + parameterName + ";"));
