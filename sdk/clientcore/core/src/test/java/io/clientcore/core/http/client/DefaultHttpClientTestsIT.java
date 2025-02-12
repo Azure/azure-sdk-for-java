@@ -3,6 +3,7 @@
 
 package io.clientcore.core.http.client;
 
+import io.clientcore.core.implementation.http.client.DefaultHttpClientProvider;
 import io.clientcore.core.shared.HttpClientTests;
 import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.LocalTestServer;
@@ -12,7 +13,7 @@ import org.junit.jupiter.api.condition.DisabledForJreRange;
 import org.junit.jupiter.api.condition.JRE;
 
 /**
- * Tests for the {@link DefaultHttpClient} class.
+ * Tests for the {@link io.clientcore.core.implementation.http.client.DefaultHttpClient} class.
  * <p>
  * Now that the default HttpClient, and related code, are using multi-release JARs this must be an integration test as
  * the full JAR must be available to use the multi-release code.

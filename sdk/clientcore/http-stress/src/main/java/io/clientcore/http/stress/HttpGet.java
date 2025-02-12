@@ -4,7 +4,7 @@
 package io.clientcore.http.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import io.clientcore.core.http.client.DefaultHttpClientBuilder;
+import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
@@ -156,7 +156,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());
         } else {
-            builder.httpClient(new DefaultHttpClientBuilder().build());
+            builder.httpClient(new JdkHttpClientBuilder().build());
         }
         return builder;
     }

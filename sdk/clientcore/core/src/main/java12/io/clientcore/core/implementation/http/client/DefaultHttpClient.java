@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.client;
+package io.clientcore.core.implementation.http.client;
 
-import io.clientcore.core.http.client.implementation.InputStreamTimeoutResponseSubscriber;
-import io.clientcore.core.http.client.implementation.JdkHttpRequest;
-import io.clientcore.core.http.client.implementation.JdkHttpResponse;
+import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
@@ -27,7 +25,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static io.clientcore.core.http.client.implementation.JdkHttpUtils.fromJdkHttpHeaders;
+import static io.clientcore.core.implementation.http.client.JdkHttpUtils.fromJdkHttpHeaders;
 import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
@@ -41,7 +39,8 @@ import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStre
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
 class DefaultHttpClient implements HttpClient {
-    private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(
+        io.clientcore.core.implementation.http.client.DefaultHttpClient.class);
 
     private final Set<String> restrictedHeaders;
     private final Duration writeTimeout;

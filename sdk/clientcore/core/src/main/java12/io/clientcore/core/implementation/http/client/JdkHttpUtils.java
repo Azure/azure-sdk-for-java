@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package io.clientcore.core.http.client.implementation;
+package io.clientcore.core.implementation.http.client;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -18,14 +18,14 @@ import java.util.concurrent.TimeUnit;
 /**
  * Utility class for JDK HttpClient.
  */
-public final class JdkHttpUtils {
+final class JdkHttpUtils {
     /**
      * Converts the given JDK Http headers to clientcore Http header.
      *
      * @param headers the JDK Http headers
      * @return the clientcore Http headers
      */
-    public static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
+    static HttpHeaders fromJdkHttpHeaders(java.net.http.HttpHeaders headers) {
         final HttpHeaders httpHeaders = new HttpHeaders((int) (headers.map().size() / 0.75F));
 
         for (Map.Entry<String, List<String>> kvp : headers.map().entrySet()) {
@@ -48,7 +48,7 @@ public final class JdkHttpUtils {
      * @return The size of the buffers.
      * @throws IllegalStateException If the size of the buffers is greater than {@link Integer#MAX_VALUE}.
      */
-    public static int getSizeOfBuffers(List<ByteBuffer> buffers) {
+    static int getSizeOfBuffers(List<ByteBuffer> buffers) {
         long size = 0;
         for (ByteBuffer buffer : buffers) {
             size += buffer.remaining();
@@ -68,7 +68,7 @@ public final class JdkHttpUtils {
      * @param timeoutMillis The timeout in milliseconds.
      * @return The scheduled future for the task.
      */
-    public static ScheduledFuture<?> scheduleTimeoutTask(Runnable task, long timeoutMillis) {
+    static ScheduledFuture<?> scheduleTimeoutTask(Runnable task, long timeoutMillis) {
         return SharedExecutorService.getInstance().schedule(task, timeoutMillis, TimeUnit.MILLISECONDS);
     }
 
@@ -86,7 +86,7 @@ public final class JdkHttpUtils {
      * @param logger A {@link ClientLogger} to log exceptions.
      * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
      */
-    public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
+    static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
         Duration defaultTimeout, ClientLogger logger) {
         String environmentTimeout = configuration.get(timeoutPropertyName);
 

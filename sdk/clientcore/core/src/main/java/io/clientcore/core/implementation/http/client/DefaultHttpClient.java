@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.client;
+package io.clientcore.core.implementation.http.client;
 
+import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -12,7 +13,7 @@ import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.Set;
 
-import static io.clientcore.core.http.client.DefaultHttpClientBuilder.ERROR_MESSAGE;
+import static io.clientcore.core.http.client.JdkHttpClientBuilder.ERROR_MESSAGE;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.

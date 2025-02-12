@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.client.implementation;
+package io.clientcore.core.implementation.http.client;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.utils.binarydata.BinaryData;
@@ -18,7 +18,7 @@ import static java.net.http.HttpRequest.BodyPublishers.noBody;
 /**
  * Utility class for BodyPublisher.
  */
-public final class BodyPublisherUtils {
+final class BodyPublisherUtils {
     private BodyPublisherUtils() {
     }
 
@@ -30,7 +30,7 @@ public final class BodyPublisherUtils {
      * @param writeTimeout write timeout
      * @return the request BodyPublisher
      */
-    public static HttpRequest.BodyPublisher toBodyPublisher(io.clientcore.core.http.models.HttpRequest request,
+    static HttpRequest.BodyPublisher toBodyPublisher(io.clientcore.core.http.models.HttpRequest request,
         Duration writeTimeout) {
         // TODO (alzimmer): Handle write timeouts.
         BinaryData body = request.getBody();

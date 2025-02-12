@@ -3,7 +3,6 @@
 
 package io.clientcore.core.http.annotations;
 
-import io.clientcore.core.http.exceptions.HttpExceptionType;
 import io.clientcore.core.http.exceptions.HttpResponseException;
 
 import java.lang.annotation.Repeatable;
@@ -14,9 +13,8 @@ import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
- * The {@link HttpExceptionType} that is thrown or returned when one of the status codes is returned from a REST API. Multiple
- * annotations can be used. When no codes are listed that exception is always thrown or returned if it is reached
- * during evaluation, this should be treated as a default case. If no default case is annotated the fall through
+ * Multiple annotations can be used. When no codes are listed that exception is always thrown or returned if it is
+ * reached during evaluation, this should be treated as a default case. If no default case is annotated the fall through
  * exception is {@link HttpResponseException}.
  *
  * <p><strong>Example:</strong></p>
@@ -56,14 +54,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(METHOD)
 @Repeatable(UnexpectedResponseExceptionDetails.class)
 public @interface UnexpectedResponseExceptionDetail {
-    /**
-     * The name of the {@link HttpExceptionType} of an {@link HttpResponseException} that should be thrown/returned when
-     * the API returns an unrecognized status code.
-     *
-     * @return The {@link HttpExceptionType} that should be thrown/returned, represented as a {@link String}.
-     */
-    String exceptionTypeName() default "";
-
     /**
      * HTTP status codes which trigger the {@link HttpResponseException} to be thrown or returned. If no status codes
      * are listed the exception is always thrown or returned.

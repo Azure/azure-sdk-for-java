@@ -26,13 +26,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tests {@link DefaultHttpClientBuilder}.
+ * Tests {@link JdkHttpClientBuilder}.
  * <p>
  * Now that the default HttpClient, and related code, are using multi-release JARs this must be an integration test as
  * the full JAR must be available to use the multi-release code.
  */
 @DisabledForJreRange(max = JRE.JAVA_11)
-public class DefaultHttpClientBuilderIT {
+public class JdkHttpClientBuilderIT {
     private static final String PROXY_USERNAME = "foo";
     private static final String PROXY_PASSWORD = "bar";
     private static final String PROXY_USER_INFO = PROXY_USERNAME + ":" + PROXY_PASSWORD + "@";
@@ -76,7 +76,7 @@ public class DefaultHttpClientBuilderIT {
             new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort())).setCredentials(PROXY_USERNAME,
                 PROXY_PASSWORD);
 
-        HttpClient httpClient = new DefaultHttpClientBuilder().proxy(clientProxyOptions).build();
+        HttpClient httpClient = new JdkHttpClientBuilder().proxy(clientProxyOptions).build();
 
         final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
@@ -93,7 +93,7 @@ public class DefaultHttpClientBuilderIT {
                     "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
                 .put("java.net.useSystemProxies", "true")).build();
 
-        HttpClient httpClient = new DefaultHttpClientBuilder().configuration(configuration).build();
+        HttpClient httpClient = new JdkHttpClientBuilder().configuration(configuration).build();
 
         final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
@@ -111,7 +111,7 @@ public class DefaultHttpClientBuilderIT {
                 .putProperty("http.proxy.password", PROXY_PASSWORD)
                 .build();
 
-        HttpClient httpClient = new DefaultHttpClientBuilder().configuration(configuration).build();
+        HttpClient httpClient = new JdkHttpClientBuilder().configuration(configuration).build();
 
         final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
@@ -123,14 +123,14 @@ public class DefaultHttpClientBuilderIT {
     @Test
     public void buildWithNullProxyAddress() {
         ProxyOptions mockPoxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, null);
-        assertThrows(NullPointerException.class, () -> new DefaultHttpClientBuilder().proxy(mockPoxyOptions));
+        assertThrows(NullPointerException.class, () -> new JdkHttpClientBuilder().proxy(mockPoxyOptions));
     }
 
     @Test
     public void buildWithNullProxyType() {
         ProxyOptions mockPoxyOptions
             = new ProxyOptions(null, new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
-        assertThrows(NullPointerException.class, () -> new DefaultHttpClientBuilder().proxy(mockPoxyOptions));
+        assertThrows(NullPointerException.class, () -> new JdkHttpClientBuilder().proxy(mockPoxyOptions));
     }
 
     @Test
@@ -138,7 +138,7 @@ public class DefaultHttpClientBuilderIT {
         ProxyOptions clientProxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP,
             new InetSocketAddress(proxyEndpoint.getHost(), proxyEndpoint.getPort()));
 
-        HttpClient httpClient = new DefaultHttpClientBuilder().proxy(clientProxyOptions).build();
+        HttpClient httpClient = new JdkHttpClientBuilder().proxy(clientProxyOptions).build();
 
         final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 

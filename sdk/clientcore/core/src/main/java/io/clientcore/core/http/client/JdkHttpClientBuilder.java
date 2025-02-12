@@ -13,11 +13,18 @@ import java.time.Duration;
 import java.util.concurrent.Executor;
 
 /**
- * Builder to configure and build an instance of the core {@link HttpClient} type using the JDK
- * HttpURLConnection, first introduced in JDK 1.1.
+ * Builder to configure and build an instance of the JDK {@code HttpClient} introduced in Java 11.
+ * <p>
+ * Due to the JDK preventing some headers from being sent on requests, Java 12 is required to create an instance of this
+ * {@link HttpClient} implementation.
+ * <p>
+ * This class leverages multi-release JAR functionality. If the JDK version is 11 or lower, this class will throw an
+ * {@link UnsupportedOperationException} when any method is invoked. This same issue will also happen if the application
+ * using this functionality is running Java 12 or later but doesn't have {@code Multi-Release: true} in its
+ * {@code META-INF/MANIFEST.MF} file.
  */
-public class DefaultHttpClientBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClientBuilder.class);
+public class JdkHttpClientBuilder {
+    private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
 
     static final String ERROR_MESSAGE = "Usage of DefaultHttpClient is only available when using Java 12 or "
         + "higher. For support with Java 11 or lower, please including a dependency on io.clientcore:http-okhttp3.";
@@ -25,7 +32,7 @@ public class DefaultHttpClientBuilder {
     /**
      * Creates DefaultHttpClientBuilder.
      */
-    public DefaultHttpClientBuilder() {
+    public JdkHttpClientBuilder() {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
@@ -41,7 +48,7 @@ public class DefaultHttpClientBuilder {
      * @throws ClassCastException if {@code httpClientBuilder} isn't an instance of {@code HttpClient.Builder}
      * @throws NullPointerException if {@code httpClientBuilder} is null
      */
-    public DefaultHttpClientBuilder(Object httpClientBuilder) {
+    public JdkHttpClientBuilder(Object httpClientBuilder) {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
@@ -55,10 +62,10 @@ public class DefaultHttpClientBuilder {
      * {@code HttpClient.Builder} was used, the executor from the existing builder will be used.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
-     * @return the updated {@link DefaultHttpClientBuilder} object
+     * @return the updated {@link JdkHttpClientBuilder} object
      * @throws NullPointerException if {@code executor} is null
      */
-    public DefaultHttpClientBuilder executor(Executor executor) {
+    public JdkHttpClientBuilder executor(Executor executor) {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
@@ -78,9 +85,9 @@ public class DefaultHttpClientBuilder {
      * The default connection timeout is 10 seconds.
      *
      * @param connectionTimeout the connection timeout
-     * @return the updated {@link DefaultHttpClientBuilder} object
+     * @return the updated {@link JdkHttpClientBuilder} object
      */
-    public DefaultHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
+    public JdkHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
@@ -98,9 +105,9 @@ public class DefaultHttpClientBuilder {
      * used.
      *
      * @param writeTimeout Write operation timeout duration.
-     * @return The updated {@link DefaultHttpClientBuilder} object.
+     * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public DefaultHttpClientBuilder writeTimeout(Duration writeTimeout) {
+    public JdkHttpClientBuilder writeTimeout(Duration writeTimeout) {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
@@ -116,9 +123,9 @@ public class DefaultHttpClientBuilder {
      * responseTimeout} will be used.
      *
      * @param responseTimeout Response timeout duration.
-     * @return The updated {@link DefaultHttpClientBuilder} object.
+     * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public DefaultHttpClientBuilder responseTimeout(Duration responseTimeout) {
+    public JdkHttpClientBuilder responseTimeout(Duration responseTimeout) {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
@@ -135,9 +142,9 @@ public class DefaultHttpClientBuilder {
      * readTimeout} will be used.
      *
      * @param readTimeout Read timeout duration.
-     * @return The updated {@link DefaultHttpClientBuilder} object.
+     * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public DefaultHttpClientBuilder readTimeout(Duration readTimeout) {
+    public JdkHttpClientBuilder readTimeout(Duration readTimeout) {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
@@ -159,10 +166,10 @@ public class DefaultHttpClientBuilder {
      * <!-- end io.clientcore.core.http.client.DefaultHttpClientBuilder.proxy#ProxyOptions -->
      *
      * @param proxyOptions The proxy configuration to use.
-     * @return the updated {@link DefaultHttpClientBuilder} object
+     * @return the updated {@link JdkHttpClientBuilder} object
      * @throws NullPointerException If {@code proxyOptions} is not null and the proxy type or address is not set.
      */
-    public DefaultHttpClientBuilder proxy(ProxyOptions proxyOptions) {
+    public JdkHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
@@ -170,9 +177,9 @@ public class DefaultHttpClientBuilder {
      * Sets the {@link SSLContext} to be used when opening secure connections.
      *
      * @param sslContext The SSL context to be used.
-     * @return The updated {@link DefaultHttpClientBuilder} object.
+     * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public DefaultHttpClientBuilder sslContext(SSLContext sslContext) {
+    public JdkHttpClientBuilder sslContext(SSLContext sslContext) {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 
@@ -180,9 +187,9 @@ public class DefaultHttpClientBuilder {
      * Sets the configuration store that is used during construction of the HTTP client.
      *
      * @param configuration The configuration store used to
-     * @return The updated {@link DefaultHttpClientBuilder} object.
+     * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public DefaultHttpClientBuilder configuration(Configuration configuration) {
+    public JdkHttpClientBuilder configuration(Configuration configuration) {
         throw LOGGER.logThrowableAsError(new UnsupportedOperationException(ERROR_MESSAGE));
     }
 

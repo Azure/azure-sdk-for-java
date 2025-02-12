@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.client;
 
-import io.clientcore.core.http.client.implementation.JdkHttpClientProxySelector;
+import io.clientcore.core.implementation.http.client.JdkHttpClientProxySelector;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
@@ -26,18 +26,25 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import static io.clientcore.core.http.client.implementation.JdkHttpUtils.getDefaultTimeoutFromEnvironment;
+import static io.clientcore.core.implementation.http.client.JdkHttpUtils.getDefaultTimeoutFromEnvironment;
 import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_CONNECT_TIMEOUT;
 import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_READ_TIMEOUT;
 import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_RESPONSE_TIMEOUT;
 import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_WRITE_TIMEOUT;
 
 /**
- * Builder to configure and build an instance of the core {@link HttpClient} type using the JDK
- * HttpURLConnection, first introduced in JDK 1.1.
+ * Builder to configure and build an instance of the JDK {@code HttpClient} introduced in Java 11.
+ * <p>
+ * Due to the JDK preventing some headers from being sent on requests, Java 12 is required to create an instance of this
+ * {@link HttpClient} implementation.
+ * <p>
+ * This class leverages multi-release JAR functionality. If the JDK version is 11 or lower, this class will throw an
+ * {@link UnsupportedOperationException} when any method is invoked. This same issue will also happen if the application
+ * using this functionality is running Java 12 or later but doesn't have {@code Multi-Release: true} in its
+ * {@code META-INF/MANIFEST.MF} file.
  */
-public class DefaultHttpClientBuilder {
-    private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClientBuilder.class);
+public class JdkHttpClientBuilder {
+    private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClientBuilder.class);
 
     private static final Duration MINIMUM_TIMEOUT = Duration.ofMillis(1);
     private static final Duration DEFAULT_CONNECTION_TIMEOUT;
@@ -86,7 +93,7 @@ public class DefaultHttpClientBuilder {
     /**
      * Creates DefaultHttpClientBuilder.
      */
-    public DefaultHttpClientBuilder() {
+    public JdkHttpClientBuilder() {
         this.executor = SharedExecutorService.getInstance();
     }
 
@@ -102,7 +109,7 @@ public class DefaultHttpClientBuilder {
      * @throws ClassCastException if {@code httpClientBuilder} isn't an instance of {@code HttpClient.Builder}
      * @throws NullPointerException if {@code httpClientBuilder} is null
      */
-    public DefaultHttpClientBuilder(Object httpClientBuilder) {
+    public JdkHttpClientBuilder(Object httpClientBuilder) {
         this.httpClientBuilder = (java.net.http.HttpClient.Builder) Objects.requireNonNull(httpClientBuilder,
             "'httpClientBuilder' cannot be null.");
     }
@@ -117,10 +124,10 @@ public class DefaultHttpClientBuilder {
      * {@link java.net.http.HttpClient.Builder} was used, the executor from the existing builder will be used.
      *
      * @param executor the executor to be used for asynchronous and dependent tasks
-     * @return the updated {@link DefaultHttpClientBuilder} object
+     * @return the updated {@link JdkHttpClientBuilder} object
      * @throws NullPointerException if {@code executor} is null
      */
-    public DefaultHttpClientBuilder executor(Executor executor) {
+    public JdkHttpClientBuilder executor(Executor executor) {
         this.executor = Objects.requireNonNull(executor, "executor can not be null");
         return this;
     }
@@ -141,9 +148,9 @@ public class DefaultHttpClientBuilder {
      * The default connection timeout is 10 seconds.
      *
      * @param connectionTimeout the connection timeout
-     * @return the updated {@link DefaultHttpClientBuilder} object
+     * @return the updated {@link JdkHttpClientBuilder} object
      */
-    public DefaultHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
+    public JdkHttpClientBuilder connectionTimeout(Duration connectionTimeout) {
         // setConnectionTimeout can be null
         this.connectionTimeout = connectionTimeout;
         return this;
@@ -163,9 +170,9 @@ public class DefaultHttpClientBuilder {
      * used.
      *
      * @param writeTimeout Write operation timeout duration.
-     * @return The updated {@link DefaultHttpClientBuilder} object.
+     * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public DefaultHttpClientBuilder writeTimeout(Duration writeTimeout) {
+    public JdkHttpClientBuilder writeTimeout(Duration writeTimeout) {
         this.writeTimeout = writeTimeout;
         return this;
     }
@@ -182,9 +189,9 @@ public class DefaultHttpClientBuilder {
      * responseTimeout} will be used.
      *
      * @param responseTimeout Response timeout duration.
-     * @return The updated {@link DefaultHttpClientBuilder} object.
+     * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public DefaultHttpClientBuilder responseTimeout(Duration responseTimeout) {
+    public JdkHttpClientBuilder responseTimeout(Duration responseTimeout) {
         this.responseTimeout = responseTimeout;
         return this;
     }
@@ -202,9 +209,9 @@ public class DefaultHttpClientBuilder {
      * readTimeout} will be used.
      *
      * @param readTimeout Read timeout duration.
-     * @return The updated {@link DefaultHttpClientBuilder} object.
+     * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public DefaultHttpClientBuilder readTimeout(Duration readTimeout) {
+    public JdkHttpClientBuilder readTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
         return this;
     }
@@ -227,10 +234,10 @@ public class DefaultHttpClientBuilder {
      * <!-- end io.clientcore.core.http.client.DefaultHttpClientBuilder.proxy#ProxyOptions -->
      *
      * @param proxyOptions The proxy configuration to use.
-     * @return the updated {@link DefaultHttpClientBuilder} object
+     * @return the updated {@link JdkHttpClientBuilder} object
      * @throws NullPointerException If {@code proxyOptions} is not null and the proxy type or address is not set.
      */
-    public DefaultHttpClientBuilder proxy(ProxyOptions proxyOptions) {
+    public JdkHttpClientBuilder proxy(ProxyOptions proxyOptions) {
         if (proxyOptions != null) {
             Objects.requireNonNull(proxyOptions.getType(), "Proxy type is required.");
             Objects.requireNonNull(proxyOptions.getAddress(), "Proxy address is required.");
@@ -245,9 +252,9 @@ public class DefaultHttpClientBuilder {
      * Sets the {@link SSLContext} to be used when opening secure connections.
      *
      * @param sslContext The SSL context to be used.
-     * @return The updated {@link DefaultHttpClientBuilder} object.
+     * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public DefaultHttpClientBuilder sslContext(SSLContext sslContext) {
+    public JdkHttpClientBuilder sslContext(SSLContext sslContext) {
         this.sslContext = sslContext;
         return this;
     }
@@ -256,9 +263,9 @@ public class DefaultHttpClientBuilder {
      * Sets the configuration store that is used during construction of the HTTP client.
      *
      * @param configuration The configuration store used to
-     * @return The updated {@link DefaultHttpClientBuilder} object.
+     * @return The updated {@link JdkHttpClientBuilder} object.
      */
-    public DefaultHttpClientBuilder configuration(Configuration configuration) {
+    public JdkHttpClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
         return this;
     }
@@ -306,7 +313,7 @@ public class DefaultHttpClientBuilder {
             }
         }
 
-        return new DefaultHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
+        return new io.clientcore.core.implementation.http.client.DefaultHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
             writeTimeout, responseTimeout, readTimeout);
     }
 

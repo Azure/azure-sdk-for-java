@@ -60,7 +60,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
 
     private static void setRequestIdHeader(HttpRequest request, HttpHeaderName requestIdHeaderName) {
         HttpHeaders headers = request.getHeaders();
-        String requestId = headers.getValue(requestIdHeaderName);
+        String requestId = headers.get(requestIdHeaderName).getValue();
         if (requestId == null) {
             headers.set(requestIdHeaderName, CoreUtils.randomUuid().toString());
         }

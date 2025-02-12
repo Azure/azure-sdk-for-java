@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for {@link DefaultHttpClient}.
+ * Tests for {@link io.clientcore.core.implementation.http.client.DefaultHttpClient}.
  * <p>
  * Now that the default HttpClient, and related code, are using multi-release JARs this must be an integration test as
  * the full JAR must be available to use the multi-release code.
@@ -152,7 +152,7 @@ public class DefaultHttpClientIT {
 
     @Test
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() throws IOException {
-        HttpClient client = new DefaultHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
 
         try (Response<?> response = doRequest(client, "/error")) {
             assertEquals(500, response.getStatusCode());
@@ -167,7 +167,7 @@ public class DefaultHttpClientIT {
     @Test
     public void testConcurrentRequests() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
-        HttpClient client = new DefaultHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
 
         ForkJoinPool pool = new ForkJoinPool();
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
@@ -188,7 +188,7 @@ public class DefaultHttpClientIT {
 
     @Test
     public void validateHeadersReturnAsIs() throws IOException {
-        HttpClient client = new DefaultHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
 
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
@@ -219,7 +219,7 @@ public class DefaultHttpClientIT {
 
     @Test
     public void testBufferedResponse() throws IOException {
-        HttpClient client = new DefaultHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
 
         try (Response<?> response = getResponse(client, "/short", Context.none())) {
             assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
@@ -228,7 +228,7 @@ public class DefaultHttpClientIT {
 
     @Test
     public void testEmptyBufferResponse() throws IOException {
-        HttpClient client = new DefaultHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
 
         try (Response<?> response = getResponse(client, "/empty", Context.none())) {
             assertEquals(0L, response.getBody().toBytes().length);
@@ -237,7 +237,7 @@ public class DefaultHttpClientIT {
 
     @Test
     public void testRequestBodyPost() throws IOException {
-        HttpClient client = new DefaultHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, uri(server, "/shortPost"));
@@ -257,7 +257,7 @@ public class DefaultHttpClientIT {
         // Initialize the SSL context with a trust manager that trusts all certificates.
         sslContext.init(null, new TrustManager[] { new InsecureTrustManager() }, null);
 
-        HttpClient httpClient = new DefaultHttpClientBuilder().sslContext(sslContext).build();
+        HttpClient httpClient = new JdkHttpClientBuilder().sslContext(sslContext).build();
 
         try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri(server, "/short")))) {
             TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());

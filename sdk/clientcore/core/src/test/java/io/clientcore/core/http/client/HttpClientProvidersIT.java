@@ -21,6 +21,6 @@ public class HttpClientProvidersIT {
     public void testNoProvider() {
         HttpClient httpClient = HttpClient.getSharedInstance();
 
-        assertInstanceOf(DefaultHttpClient.class, httpClient);
+        assertInstanceOf(io.clientcore.core.implementation.http.client.DefaultHttpClient.class, httpClient);
     }
 }

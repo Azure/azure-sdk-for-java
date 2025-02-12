@@ -114,13 +114,6 @@ public final class OkHttpToCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
-    public Map<String, String> toMap() {
-        convertIfNeeded();
-
-        return coreHeaders.toMap();
-    }
-
-    @Override
     public Iterator<HttpHeader> iterator() {
         convertIfNeeded();
 

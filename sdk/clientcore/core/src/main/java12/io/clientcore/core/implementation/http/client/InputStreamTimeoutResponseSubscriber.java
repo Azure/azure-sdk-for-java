@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.client.implementation;
+package io.clientcore.core.implementation.http.client;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +27,7 @@ import java.util.concurrent.Semaphore;
  * emitted by the subscription. This is needed to offer better reliability when reading the response in cases where the
  * server is either slow to respond or the connection has dropped without a signal from the server.
  */
-public final class InputStreamTimeoutResponseSubscriber extends InputStream
+final class InputStreamTimeoutResponseSubscriber extends InputStream
     implements HttpResponse.BodySubscriber<InputStream> {
     // Sentinel values to indicate completion.
     private static final ByteBuffer LAST_BUFFER = ByteBuffer.wrap(new byte[0]);
@@ -53,7 +53,7 @@ public final class InputStreamTimeoutResponseSubscriber extends InputStream
      *
      * @param readTimeout The timeout for reading each value emitted by the subscription.
      */
-    public InputStreamTimeoutResponseSubscriber(long readTimeout) {
+    InputStreamTimeoutResponseSubscriber(long readTimeout) {
         // Use a queue size of 2 to allow for the in-process list of buffers and the sentinel value.
         // onComplete happens after onNext which will result in two items in the queue.
         // All other states are invalid if there are more than two items in the queue.

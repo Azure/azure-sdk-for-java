@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package io.clientcore.core.http.client.implementation;
+package io.clientcore.core.implementation.http.client;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -24,7 +24,7 @@ import static java.net.http.HttpRequest.BodyPublishers.noBody;
  * us to set all headers at once. And given that the headers are backed by a {@link TreeMap} it reduces the number of
  * String comparisons performed.
  */
-public final class JdkHttpRequest extends HttpRequest {
+final class JdkHttpRequest extends HttpRequest {
     private final BodyPublisher bodyPublisher;
     private final String method;
     private final URI uri;
@@ -40,7 +40,7 @@ public final class JdkHttpRequest extends HttpRequest {
      * @param writeTimeout The write timeout of the request.
      * @param responseTimeout The response timeout of the request.
      */
-    public JdkHttpRequest(io.clientcore.core.http.models.HttpRequest coreRequest, Set<String> restrictedHeaders,
+    JdkHttpRequest(io.clientcore.core.http.models.HttpRequest coreRequest, Set<String> restrictedHeaders,
         ClientLogger logger, Duration writeTimeout, Duration responseTimeout) {
         HttpMethod method = coreRequest.getHttpMethod();
 
