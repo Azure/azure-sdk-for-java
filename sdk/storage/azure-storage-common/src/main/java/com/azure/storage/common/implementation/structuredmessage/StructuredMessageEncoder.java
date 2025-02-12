@@ -14,24 +14,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * temp comment to allow building
+ * Encoder for structured messages with support for segmenting and CRC64 checksums.
  */
 public class StructuredMessageEncoder {
-    /**
-     * temp comment to allow building
-     */
     private static final int DEFAULT_MESSAGE_VERSION = 1;
-    /**
-     * temp comment to allow building
-     */
     private static final int V1_HEADER_LENGTH = 13;
-    /**
-     * temp comment to allow building
-     */
     private static final int V1_SEGMENT_HEADER_LENGTH = 10;
-    /**
-     * temp comment to allow building
-     */
     private static final int CRC64_LENGTH = 8;
 
     private final int messageVersion;
@@ -49,10 +37,12 @@ public class StructuredMessageEncoder {
     private final Map<Integer, Long> segmentCRC64s;
 
     /**
-     * temp comment to allow building
+     * Constructs a new StructuredMessageEncoder.
      * @param contentLength The length of the content to be encoded.
      * @param segmentSize The size of each segment.
      * @param structuredMessageFlags The structuredMessageFlags to be set.
+     * @throws IllegalArgumentException If the segment size is less than 1, the content length is less than 1, or the
+     * number of segments is greater than {@link java.lang.Short#MAX_VALUE}.
      */
     public StructuredMessageEncoder(int contentLength, int segmentSize, StructuredMessageFlags structuredMessageFlags) {
         if (segmentSize < 1) {
@@ -127,16 +117,19 @@ public class StructuredMessageEncoder {
     }
 
     /**
-     * temp comment to allow building
+     * Encodes the given buffer into a structured message format.
+     *
      * @param unencodedBuffer The buffer to be encoded.
      * @return The encoded buffer.
      * @throws IOException If an error occurs while encoding the buffer.
+     * @throws IllegalArgumentException If the buffer length exceeds the content length, or the content has already been
+     * encoded.
      */
     public ByteBuffer encode(ByteBuffer unencodedBuffer) throws IOException {
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
         if (currentContentOffset == contentLength) {
-            throw new IllegalStateException("Content has already been encoded.");
+            throw new IllegalArgumentException("Content has already been encoded.");
         }
 
         if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
@@ -255,7 +248,8 @@ public class StructuredMessageEncoder {
     }
 
     /**
-     * temp comment to allow building
+     * Returns the length of the message.
+     *
      * @return The length of the message.
      */
     public int getMessageLength() {
