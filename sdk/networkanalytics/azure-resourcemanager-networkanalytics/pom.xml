@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Network Analytics Management</name>
-  <description>Please note, this package has been deprecated and will no longer be maintained.</description>
+  <description>Please note, this package has been deprecated and will no longer be maintained after 03/14/2025.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
