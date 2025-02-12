@@ -66,14 +66,15 @@ az keyvault create --resource-group <your-resource-group-name> --name <your-key-
 ```
 
 ## Key concepts
-### Jar Signer
-The JCA library provides support for Java Archive (JAR) signing, ensuring the integrity and authenticity of JAR files using certificates stored in Azure Key Vault.
-
 ### SSL/TLS and mTLS
 The JCA library supports SSL/TLS and mTLS (Mutual TLS) to enhance security in secure communication channels. It enables applications to securely retrieve certificates from Azure Key Vault and use them for TLS-related operations.
 
-### Exposed Env Options
-JCA library support to configure the following options:
+### Jar Signer
+The JCA library provides support for Java Archive (JAR) signing, ensuring the integrity and authenticity of JAR files using certificates stored in Azure Key Vault.
+
+## Examples
+### Exposed Options
+The JCA library supports configuring the following options:
 * `azure.keyvault.uri`: The Azure Key Vault endpoint to retrieve certificates.
 * `azure.keyvault.aadAuthenticationUrl`: The authentication URL for Microsoft Entra ID.
 * `azure.keyvault.tenantId`: The Microsoft Entra ID tenant ID required for authentication.
@@ -85,8 +86,15 @@ JCA library support to configure the following options:
 * `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
 * `azure.keyvault.jca.certificates-refresh-interval(-in-ms)`: The refresh interval time.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
+You can configure these properties using:
+```java
+System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
+```
+or as a JVM argument:
+```shell
+-Dazure.keyvault.uri=<your-azure-keyvault-uri>
+```
 
-## Examples
 ### SSL/TLS
 #### Server side SSL
 If you are looking to integrate the JCA provider to create an SSLServerSocket see the example below.
@@ -279,6 +287,23 @@ System.out.println(result);
 ```
 
 Note if you want to use Azure managed identity, you should set the value of `azure.keyvault.uri`, and the rest of the parameters would be `null`.
+
+### Jarsigner
+You can use the JCA provider to sign JAR files using certificates stored in Azure Key Vault by the following commands:
+```bash
+ jarsigner   -keystore NONE -storetype AzureKeyVault \
+             -signedjar signerjar.jar ${PARAM_YOUR_JAR_FILE_PATH} "${CERT_NAME}" \
+             -verbose  -storepass "" \
+             -providerName AzureKeyVault \
+             -providerClass com.azure.security.keyvault.jca.KeyVaultJcaProvider \
+             -J--module-path="${PARAM_JCA_PROVIDER_JAR_PATH}" \
+             -J--add-modules="com.azure.security.keyvault.jca" \
+             -J-Dazure.keyvault.uri=${KEYVAULT_URL} \
+             -J-Dazure.keyvault.tenant-id=${TENANT} \
+             -J-Dazure.keyvault.client-id=${CLIENT_ID} \
+             -J-Dazure.keyvault.client-secret=${CLIENT_SECRET}
+```
+You can find completed steps [here](#using-jarsigner-with-azure-key-vault-jca)
 
 ### File-System certificates
 You can load the certificate in the file system as a trusted certificate by configure the following properties.
