@@ -15,31 +15,32 @@ pr:
     # any excludes here. The reason being is that we can't access
     # pr->paths->exclude. These are paths only, not individual files
     exclude:
-    - sdk/batch/microsoft-azure-batch/
-    - sdk/boms
-    - sdk/cosmos
-    - sdk/cognitiveservices/ms-azure-cs-autosuggest/
-    - sdk/cognitiveservices/ms-azure-cs-computervision/
-    - sdk/cognitiveservices/ms-azure-cs-contentmoderator/
-    - sdk/cognitiveservices/ms-azure-cs-customimagesearch/
-    - sdk/cognitiveservices/ms-azure-cs-customsearch/
-    - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/
-    - sdk/cognitiveservices/ms-azure-cs-customvision-training/
-    - sdk/cognitiveservices/ms-azure-cs-entitysearch/
-    - sdk/cognitiveservices/ms-azure-cs-faceapi/
-    - sdk/cognitiveservices/ms-azure-cs-imagesearch/
-    - sdk/cognitiveservices/ms-azure-cs-luis-authoring/
-    - sdk/cognitiveservices/ms-azure-cs-luis-runtime/
-    - sdk/cognitiveservices/ms-azure-cs-newssearch/
-    - sdk/cognitiveservices/ms-azure-cs-qnamaker/
-    - sdk/cognitiveservices/ms-azure-cs-spellcheck/
-    - sdk/cognitiveservices/ms-azure-cs-videosearch/
-    - sdk/cognitiveservices/ms-azure-cs-visualsearch/
-    - sdk/cognitiveservices/ms-azure-cs-websearch/
-    - sdk/eventhubs/microsoft-azure-eventhubs/
-    - sdk/eventhubs/microsoft-azure-eventhubs-eph/
-    - sdk/mediaservices/microsoft-azure-media/
-    - sdk/servicebus/microsoft-azure-servicebus/
+    - sdk/batch/microsoft-azure-batch/ # track 1
+    - sdk/boms # pom only release pipeline
+    - sdk/cosmos # emulator tests
+    - sdk/e2e # no pipeline, nothing to build
+    - sdk/cognitiveservices/ms-azure-cs-autosuggest/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-computervision/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-contentmoderator/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customimagesearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customsearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customvision-training/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-entitysearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-faceapi/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-imagesearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-luis-authoring/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-luis-runtime/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-newssearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-qnamaker/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-spellcheck/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-videosearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-visualsearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-websearch/ # track 1
+    - sdk/eventhubs/microsoft-azure-eventhubs/ # track 1
+    - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
+    - sdk/mediaservices/microsoft-azure-media/ # track 1
+    - sdk/servicebus/microsoft-azure-servicebus/ # track 1
     - sdk/spring
 
 parameters:
@@ -57,29 +58,30 @@ extends:
     # See pr->paths->exclude comment above. Anything added/removed there
     # needs to be added/removed here.
     ExcludePaths:
-      - sdk/batch/microsoft-azure-batch/
-      - sdk/boms
-      - sdk/cosmos
-      - sdk/cognitiveservices/ms-azure-cs-autosuggest/
-      - sdk/cognitiveservices/ms-azure-cs-computervision/
-      - sdk/cognitiveservices/ms-azure-cs-contentmoderator/
-      - sdk/cognitiveservices/ms-azure-cs-customimagesearch/
-      - sdk/cognitiveservices/ms-azure-cs-customsearch/
-      - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/
-      - sdk/cognitiveservices/ms-azure-cs-customvision-training/
-      - sdk/cognitiveservices/ms-azure-cs-entitysearch/
-      - sdk/cognitiveservices/ms-azure-cs-faceapi/
-      - sdk/cognitiveservices/ms-azure-cs-imagesearch/
-      - sdk/cognitiveservices/ms-azure-cs-luis-authoring/
-      - sdk/cognitiveservices/ms-azure-cs-luis-runtime/
-      - sdk/cognitiveservices/ms-azure-cs-newssearch/
-      - sdk/cognitiveservices/ms-azure-cs-qnamaker/
-      - sdk/cognitiveservices/ms-azure-cs-spellcheck/
-      - sdk/cognitiveservices/ms-azure-cs-videosearch/
-      - sdk/cognitiveservices/ms-azure-cs-visualsearch/
-      - sdk/cognitiveservices/ms-azure-cs-websearch/
-      - sdk/eventhubs/microsoft-azure-eventhubs/
-      - sdk/eventhubs/microsoft-azure-eventhubs-eph/
-      - sdk/mediaservices/microsoft-azure-media/
-      - sdk/servicebus/microsoft-azure-servicebus/
-      - sdk/spring
+    - sdk/batch/microsoft-azure-batch/ # track 1
+    - sdk/boms # pom only release pipeline
+    - sdk/cosmos # emulator tests
+    - sdk/e2e # no pipeline, nothing to build
+    - sdk/cognitiveservices/ms-azure-cs-autosuggest/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-computervision/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-contentmoderator/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customimagesearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customsearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customvision-training/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-entitysearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-faceapi/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-imagesearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-luis-authoring/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-luis-runtime/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-newssearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-qnamaker/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-spellcheck/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-videosearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-visualsearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-websearch/ # track 1
+    - sdk/eventhubs/microsoft-azure-eventhubs/ # track 1
+    - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
+    - sdk/mediaservices/microsoft-azure-media/ # track 1
+    - sdk/servicebus/microsoft-azure-servicebus/ # track 1
+    - sdk/spring
