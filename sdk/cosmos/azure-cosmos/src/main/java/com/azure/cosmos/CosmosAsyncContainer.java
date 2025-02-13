@@ -146,6 +146,10 @@ public class CosmosAsyncContainer {
     private CosmosAsyncScripts scripts;
     private IFaultInjectorProvider faultInjectorProvider;
 
+    protected CosmosAsyncContainer(CosmosAsyncContainer toBeWrappedContainer) {
+        this(toBeWrappedContainer.getId(), toBeWrappedContainer.getDatabase());
+    }
+
     CosmosAsyncContainer(String id, CosmosAsyncDatabase database) {
         this.id = id;
         this.database = database;
