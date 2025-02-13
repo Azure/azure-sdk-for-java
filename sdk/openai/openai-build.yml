@@ -39,6 +39,9 @@ steps:
       # Update the version in the build.gradle.kts file
       $updatedContent = $buildGradleContent -replace 'version\s*=\s*\"([^\"]+)\"', "version = `"$newVersion`""
       Set-Content -Path $buildGradlePath -Value $updatedContent
+      
+      # Export the new version to be used in subsequent steps
+      Write-Output "::set-output name=newVersion::$newVersion"
     displayName: Find current version and update to SNAPSHOT
     workingDirectory: $(Agent.TempDirectory)
 
@@ -54,7 +57,7 @@ steps:
       $dependenciesFilePath = "eng/versioning/external_dependencies.txt"
 
       # Update the version in the external_dependencies.txt file
-      $newVersionInExternalDependenciesFile = "com.openai:openai-java;$newVersion"
+      $newVersionInExternalDependenciesFile = "com.openai:openai-java;$env:newVersion"
       $dependenciesContent = Get-Content -Path $dependenciesFilePath -Raw
       $updatedDependenciesContent = $dependenciesContent -replace 'com.openai:openai-java;[0-9.]+', $newVersionInExternalDependenciesFile
       Write-Host "Updated the version in the external_dependencies.txt file: $updatedDependenciesContent"
