@@ -17,7 +17,7 @@ steps:
 
   - pwsh: |
       # Define the path to the build.gradle.kts file
-      $buildGradlePath = './build.gradle.kts'
+      $buildGradlePath = "$(Agent.TempDirectory)/openai-java/build.gradle.kts"
 
       # Read the contents of the build.gradle.kts file
       $buildGradleContent = Get-Content -Path $buildGradlePath
@@ -44,13 +44,14 @@ steps:
 
   - pwsh: |
       Write-Host "Building the project and publishing to the local Maven repository"
+      cd "$(Agent.TempDirectory)/openai-java"
       ./gradlew clean build -x test "-Dmaven.repo.local=$env:PIPELINE_WORKSPACE/.m2/repository" publishToMavenLocal
     displayName: Build the project and publish to the local Maven repository
     workingDirectory: $(Agent.TempDirectory)
 
   - pwsh: |        
       # Define the path to the external_dependencies.txt file
-      $dependenciesFilePath = './../../1/s/eng/versioning/external_dependencies.txt'
+      $dependenciesFilePath = "$(Agent.TempDirectory)/../../1/s/eng/versioning/external_dependencies.txt"
 
       # Update the version in the external_dependencies.txt file
       $newVersionInExternalDependenciesFile = "com.openai:openai-java;$newVersion"
@@ -60,7 +61,7 @@ steps:
       Set-Content -Path $dependenciesFilePath -Value $updatedDependenciesContent
 
       Write-Host "Running the version update script"
-      cd ../../1/s/
+      cd "$(Agent.TempDirectory)/../../1/s/"
       python eng/versioning/update_versions.py --bt client --ut external_dependency --sr
     displayName: Update external_dependencies.txt and run version update script
     workingDirectory: $(Agent.TempDirectory)
