@@ -52,12 +52,12 @@ public final class CurrentConditions implements JsonSerializable<CurrentConditio
     private WeatherUnitDetails temperature;
 
     /*
-     * RealFeelâ„¢ Temperature being returned.
+     * RealFeel™ Temperature being returned.
      */
     private WeatherUnitDetails realFeelTemperature;
 
     /*
-     * RealFeelâ„¢ Temperature being returned. Describes what the temperature really feels like in the shade.
+     * RealFeel™ Temperature being returned. Describes what the temperature really feels like in the shade.
      */
     private WeatherUnitDetails realFeelTemperatureShade;
 
@@ -256,7 +256,7 @@ public final class CurrentConditions implements JsonSerializable<CurrentConditio
     }
 
     /**
-     * Get the realFeelTemperature property: RealFeelâ„¢ Temperature being returned.
+     * Get the realFeelTemperature property: RealFeel™ Temperature being returned.
      *
      * @return the realFeelTemperature value.
      */
@@ -265,7 +265,7 @@ public final class CurrentConditions implements JsonSerializable<CurrentConditio
     }
 
     /**
-     * Get the realFeelTemperatureShade property: RealFeelâ„¢ Temperature being returned. Describes what the temperature
+     * Get the realFeelTemperatureShade property: RealFeel™ Temperature being returned. Describes what the temperature
      * really feels like in the shade.
      *
      * @return the realFeelTemperatureShade value.

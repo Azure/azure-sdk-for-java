@@ -80,7 +80,7 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
      *
      * @return the timestamp value.
      */
-    public String getTimestamp() {
+    public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
 

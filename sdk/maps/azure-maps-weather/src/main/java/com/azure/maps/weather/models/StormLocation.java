@@ -188,7 +188,8 @@ public final class StormLocation implements JsonSerializable<StormLocation> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dateTime", this.timestamp);
+        jsonWriter.writeStringField("dateTime",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
         jsonWriter.writeJsonField("location", this.coordinates);
         jsonWriter.writeJsonField("maxWindGust", this.maxWindGust);
         jsonWriter.writeJsonField("sustainedWind", this.sustainedWind);
