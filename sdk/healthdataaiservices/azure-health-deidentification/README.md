@@ -1,22 +1,17 @@
-# Azure Deidentification client library for Java
+# Azure Health Data Services de-identification service client library for Java
 
-Azure Deidentification client library for Java.
-
-This package contains Microsoft Azure Deidentification client library which is a managed service that enables users to tag, redact, or surrogate health data.
-
-## Documentation
-
-Various documentation is available to help you get started
-
-- [API reference documentation][docs]
-- [Product documentation][product_documentation]
+This package contains a client library for the de-identification service in Azure Health Data Services which 
+enables users to tag, redact, or surrogate health data containing Protected Health Information (PHI).
+For more on service functionality and important usage considerations, see [the de-identification service overview][product_documentation].
 
 ## Getting started
 
 ### Prerequisites
 
-- [Java Development Kit (JDK)][jdk] with version 8 or above
-- [Azure Subscription][azure_subscription]
+- Install the [Java Development Kit (JDK)][jdk] with version 8 or above.
+- Have an [Azure Subscription][azure_subscription].
+- [Deploy the de-identification service][deid_quickstart].
+- [Configure Azure role-based access control (RBAC)][deid_rbac] for the operations you will perform.
 
 ### Adding the package to your product
 
@@ -31,128 +26,159 @@ Various documentation is available to help you get started
 [//]: # ({x-version-update-end})
 
 ### Authentication
+Both the asynchronous and synchronous clients can be created by using `DeidentificationClientBuilder`. Invoking `buildClient`
+will create the synchronous client, while invoking `buildAsyncClient` will create its asynchronous counterpart.
 
-[Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
+You will need a **service URL** to instantiate a client object. You can find the service URL for a particular resource
+in the [Azure portal][azure_portal], or using the [Azure CLI][azure_cli]:
+```bash
+# Get the service URL for the resource
+az deidservice show --name "<resource-name>" --resource-group "<resource-group-name>" --query "properties.serviceUrl"
+```
+
+The [Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
+You can use `DefaultAzureCredential` to automatically find the best credential to use at runtime.
+
+```java readme-sample-create-client
+DeidentificationClient deidentificationClient = new DeidentificationClientBuilder()
+    .endpoint("endpoint")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
+```
 
 ## Key concepts
-### Operation Modes:
+### De-identification operations:
+Given an input text, the de-identification service can perform three main operations:
+- `Tag` returns the category and location within the text of detected PHI entities.
+- `Redact` returns output text where detected PHI entities are replaced with placeholder text. For example `John` replaced with `[name]`.
+- `Surrogate` returns output text where detected PHI entities are replaced with realistic replacement values. For example, `My name is John Smith` could become `My name is Tom Jones`.
 
-- Tag: Will return a structure of offset and length with the PHI category of the related text spans.
-- Redact: Will return output text with placeholder stubbed text. ex. `[name]`
-- Surrogate: Will return output text with synthetic replacements.
-    - `My name is John Smith`
-    - `My name is Tom Jones`
+### Available endpoints
+There are two ways to interact with the de-identification service. You can send text directly, or you can create jobs 
+to de-identify documents in Azure Storage.
+
+You can de-identify text directly using the `DeidentificationClient`:
+```java com.azure.health.deidentification.generated.deidentifytext.deidentifytext
+DeidentificationResult response
+    = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
+        .setOperation(DeidentificationOperationType.REDACT)
+        .setCustomizations(new DeidentificationCustomizationOptions().setRedactionFormat("[{type}]")));
+```
+
+To de-identify documents in Azure Storage, see [Tutorial: Configure Azure Storage to de-identify documents][deid_configure_storage]
+for prerequisites and configuration options. 
+
+The client exposes a `beginDeidentifyDocuments` method that returns a `SyncPoller` or `PollerFlux` instance.
+Callers should wait for the operation to be completed by calling `getFinalResult()`:
+
+```java com.azure.health.deidentification.generated.deidentifydocuments.createadeidentificationjob
+SyncPoller<DeidentificationJob, DeidentificationJob> response
+    = deidentificationClient.beginDeidentifyDocuments("job_smith_documents_1",
+        new DeidentificationJob(
+            new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "documents/"),
+            new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "_output/")
+                .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
+                    .setCustomizations(
+                        new DeidentificationJobCustomizationOptions().setRedactionFormat("[{type}]")));
+```
 
 ## Examples
 
-The following sections provide several code snippets covering some of the most common Azure Deidentification client use cases, including:
+The following sections provide several code snippets covering some of the most common client use cases, including:
 
-- [Create a `DeidentificationClient`](#create-a-deidentificationclient)
-- [Call the deidentification endpoint](#calling-deidentification-endpoint)
-- [Create a Deidentification Job](#creating-deidentification-job)
-- [Process a Deidentification Job](#process-deidentification-job)
-- [List all Deidentification Jobs](#list-deidentification-jobs)
-- [List completed files within a Deidentification Job](#list-completed-files)
+- [Create a client](#create-a-deidentificationclient)
+- [De-identify text](#de-identify-text)
+- [Begin a job to de-identify documents in Azure Storage](#begin-a-job-to-de-identify-documents-in-azure-storage)
+- [Get the status of a de-identification job](#get-the-status-of-a-de-identification-job)
+- [List all de-identification jobs](#list-all-de-identification-jobs)
+- [List all documents in a de-identification job](#list-all-documents-in-a-de-identification-job)
 
 ### Create a `DeidentificationClient`
 
-Create a `DeidentificationClient` using the `DEID_SERVICE_ENDPOINT` environment variable.
-
-```java com.azure.health.deidentification.readme
-DeidentificationClientBuilder deidentificationClientbuilder = new DeidentificationClientBuilder()
-    .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
-    .httpClient(HttpClient.createDefault())
-    .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-
-DeidentificationClient deidentificationClient = deidentificationClientbuilder.buildClient();
+```java readme-sample-create-client
+DeidentificationClient deidentificationClient = new DeidentificationClientBuilder()
+    .endpoint("endpoint")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
-### Calling `Deidentification` endpoint
+### De-identify text
 
-Calling the realtime endpoint with some input text.
-
-```java com.azure.health.deidentification.sync.helloworld
-String inputText = "Hello, my name is John Smith.";
-DeidentificationContent content = new DeidentificationContent(inputText);
-
-DeidentificationResult result = deidentificationClient.deidentifyText(content);
-
-System.out.println("Deidentified output: " + result.getOutputText());
-// Deidentified output: Hello, my name is Harley Billiard.
-```
-### Creating Deidentification Job
-
-Create a Deidentification Job using `STORAGE_ACCOUNT_NAME` and `STORAGE_CONTAINER_NAME` environment variables to 
-deidentify all files in the storage container.
-
-```java com.azure.health.deidentification.sync.createjob.create
-String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
-String jobName = "MyJob-" + Instant.now().toEpochMilli();
-String outputFolder = "output_patient_1/";
-String inputPrefix = "example_patient_1/";
-SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageLocation, inputPrefix);
-
-DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
-job.setOperation(DeidentificationOperationType.SURROGATE);
-
-```
-### Process Deidentification Job
-
-Create and poll job until it is completed.
-
-```java com.azure.health.deidentification.sync.createjob.process
-DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
-    .waitForCompletion()
-    .getValue();
-System.out.println(jobName + " - " + result.getStatus());
-// MyJob-1719953889301 - Succeeded
+```java com.azure.health.deidentification.generated.deidentifytext.deidentifytext
+DeidentificationResult response
+    = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
+        .setOperation(DeidentificationOperationType.REDACT)
+        .setCustomizations(new DeidentificationCustomizationOptions().setRedactionFormat("[{type}]")));
 ```
 
-### List Deidentification Jobs
+### Begin a job to de-identify documents in Azure Storage
 
-List and process deidentification jobs
-
-```java com.azure.health.deidentification.sync.listjobs
-PagedIterable<DeidentificationJob> jobs = deidentificationClient.listJobs();
-for (DeidentificationJob currentJob : jobs) {
-    System.out.println(currentJob.getName() + " - " + currentJob.getStatus());
-    // MyJob-1719953889301 - Succeeded
-}
+```java com.azure.health.deidentification.generated.deidentifydocuments.createadeidentificationjob
+SyncPoller<DeidentificationJob, DeidentificationJob> response
+    = deidentificationClient.beginDeidentifyDocuments("job_smith_documents_1",
+        new DeidentificationJob(
+            new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "documents/"),
+            new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "_output/")
+                .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
+                    .setCustomizations(
+                        new DeidentificationJobCustomizationOptions().setRedactionFormat("[{type}]")));
 ```
 
-### List completed files
+### Get the status of a de-identification job
+
+```java com.azure.health.deidentification.generated.getjob.getadeidentificationjob
+DeidentificationJob response = deidentificationClient.getJob("job_smith_documents_1");
+```
+
+### List all de-identification jobs
+
+```java com.azure.health.deidentification.generated.listjobs.listdeidentificationjobs
+PagedIterable<DeidentificationJob> response = deidentificationClient
+    .listJobs();
+```
+
+### List all documents in a de-identification job
 
 List the files which are completed by a job.
 
-```java com.azure.health.deidentification.sync.listcompletedfiles
-PagedIterable<DeidentificationDocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
+```java com.azure.health.deidentification.generated.listjobdocuments.listprocesseddocumentswithinajob
+PagedIterable<DeidentificationDocumentDetails> response
+    = deidentificationClient.listJobDocuments("job_smith_documents_1");
+```
 
-for (DeidentificationDocumentDetails currentFile : reports) {
-    System.out.println(currentFile.getId() + " - " + currentFile.getOutput().getLocation());
+## Troubleshooting
+A `DeidentificationClient` raises `HttpResponseException` [exceptions][http_response_exception]. For example, if you
+provide an invalid service URL an `HttpResponseException` would be raised with an error indicating the failure cause.
+In the following code snippet, the error is handled
+gracefully by catching the exception and display the additional information about the error.
+
+```java readme-sample-handlingException
+try {
+    DeidentificationContent content = new DeidentificationContent("input text");
+    deidentificationClient.deidentifyText(content);
+} catch (HttpResponseException e) {
+    System.out.println(e.getMessage());
+    // Do something with the exception
 }
 ```
 
-
-
-## Troubleshooting
-
 ## Next steps
+See the [samples][samples] for several code snippets illustrating common patterns used in the de-identification service
+Java SDK. For more extensive documentation, see the [de-identification service documentation][product_documentation].
 
 ## Contributing
-
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
-1. Fork it
-1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Commit your changes (`git commit -am 'Add some feature'`)
-1. Push to the branch (`git push origin my-new-feature`)
-1. Create new Pull Request
-
 <!-- LINKS -->
-[product_documentation]: https://azure.microsoft.com/services/
-[docs]: https://azure.github.io/azure-sdk-for-java/
+[product_documentation]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/
+[docs]: https://learn.microsoft.com/java/api/overview/azure/health-deidentification
 [jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
-[azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
-
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fhealthdataaiservices%2Fazure-health-deidentification%2FREADME.png)
+[deid_quickstart]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/quickstart
+[deid_rbac]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/manage-access-rbac
+[deid_configure_storage]: https://learn.microsoft.com/azure/healthcare-apis/deidentification/configure-storage
+[azure_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
+[azure_cli]: https://learn.microsoft.com/cli/azure/healthcareapis/deidservice?view=azure-cli-latest
+[azure_portal]: https://ms.portal.azure.com
+[http_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
+[samples]: src/samples/README.md
