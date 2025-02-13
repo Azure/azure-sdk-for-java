@@ -4,20 +4,22 @@
 
 package com.azure.maps.weather.models;
 
-import com.azure.core.util.ExpandableEnum;
 import com.fasterxml.jackson.annotation.JsonValue;
-
+import com.azure.core.util.ExpandableEnum;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * Defines values for DailyDuration.
  */
 public final class DailyDuration implements ExpandableEnum<Integer> {
     private static final Map<Integer, DailyDuration> VALUES = new ConcurrentHashMap<>();
+
+    private static final Function<Integer, DailyDuration> NEW_INSTANCE = DailyDuration::new;
 
     /**
      * 1 day.
@@ -65,15 +67,19 @@ public final class DailyDuration implements ExpandableEnum<Integer> {
      *
      * @param value a value to look for.
      * @return the corresponding DailyDuration.
+     * @throws IllegalArgumentException if value is null.
      */
     public static DailyDuration fromValue(Integer value) {
-        return VALUES.computeIfAbsent(value, DailyDuration::new);
+        if (value == null) {
+            throw new IllegalArgumentException("'value' cannot be null.");
+        }
+        return VALUES.computeIfAbsent(value, NEW_INSTANCE);
     }
 
     /**
      * Gets known DailyDuration values.
      *
-     * @return known DailyDuration values.
+     * @return Known DailyDuration values.
      */
     public static Collection<DailyDuration> values() {
         return new ArrayList<>(VALUES.values());

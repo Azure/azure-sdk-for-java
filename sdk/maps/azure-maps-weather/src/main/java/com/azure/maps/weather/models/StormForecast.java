@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -13,7 +14,6 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import com.azure.core.models.GeoPosition;
 
 /**
  * Government-issued storm forecast.
@@ -48,23 +48,19 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
 
     /*
      * Possible status values include:<ul><li>Cyclonic storm</li><li>Deep
-     * depression</li><li>Depression</li><li>Extremely severe cyclonic
-     * storm</li><li>Hurricane category (1-5)</li><li>Intense tropical
-     * cyclone</li><li>Moderate tropical storm</li><li>Post-tropical
-     * cyclone</li><li>Potential tropical cyclone</li><li>Severe cyclonic
-     * storm</li><li>Severe tropical storm</li><li>Subtropical</li><li>Super
-     * cyclonic storm</li><li>Tropical cyclone</li><li>Tropical cyclone category
-     * (1-5)</li><li>Tropical depression</li><li>Tropical
-     * disturbance</li><li>Tropical storm</li><li>Typhoon</li><li>Very intense
-     * tropical cyclone</li><li>Very severe cyclonic storm</li><li>Very strong
-     * typhoon</li><li>Violent typhoon</li></ul>
+     * depression</li><li>Depression</li><li>Extremely severe cyclonic storm</li><li>Hurricane category
+     * (1-5)</li><li>Intense tropical cyclone</li><li>Moderate tropical storm</li><li>Post-tropical
+     * cyclone</li><li>Potential tropical cyclone</li><li>Severe cyclonic storm</li><li>Severe tropical
+     * storm</li><li>Subtropical</li><li>Super cyclonic storm</li><li>Tropical cyclone</li><li>Tropical cyclone category
+     * (1-5)</li><li>Tropical depression</li><li>Tropical disturbance</li><li>Tropical
+     * storm</li><li>Typhoon</li><li>Very intense tropical cyclone</li><li>Very severe cyclonic storm</li><li>Very
+     * strong typhoon</li><li>Violent typhoon</li></ul>
      */
     private String status;
 
     /*
-     * Contains information about the forecast window for the storm during the
-     * specified time period (not the entire cone). If windowGeometry=true in the
-     * request, this object will include geoJSON details for window geometry.
+     * Contains information about the forecast window for the storm during the specified time period (not the entire
+     * cone). If windowGeometry=true in the request, this object will include geoJSON details for window geometry.
      */
     private WeatherWindow weatherWindow;
 
@@ -80,18 +76,16 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
     }
 
     /**
-     * Get the timestamp property: Datetime the forecast is valid, displayed in
-     * ISO8601 format.
+     * Get the timestamp property: Datetime the forecast is valid, displayed in ISO8601 format.
      *
      * @return the timestamp value.
      */
-    public OffsetDateTime getTimestamp() {
+    public String getTimestamp() {
         return this.timestamp;
     }
 
     /**
-     * Get the initializedTimestamp property: Datetime the forecast was created,
-     * displayed in ISO8601 format.
+     * Get the initializedTimestamp property: Datetime the forecast was created, displayed in ISO8601 format.
      *
      * @return the initializedTimestamp value.
      */
@@ -109,8 +103,7 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
     }
 
     /**
-     * Get the maxWindGust property: Maximum wind gust speed associated with the
-     * storm. May be NULL.
+     * Get the maxWindGust property: Maximum wind gust speed associated with the storm. May be NULL.
      *
      * @return the maxWindGust value.
      */
@@ -119,8 +112,7 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
     }
 
     /**
-     * Get the sustainedWind property: Maximum sustained wind speed associated with
-     * the storm. May be NULL.
+     * Get the sustainedWind property: Maximum sustained wind speed associated with the storm. May be NULL.
      *
      * @return the sustainedWind value.
      */
@@ -129,26 +121,16 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
     }
 
     /**
-     * Get the status property: Possible status values
-     * include:&lt;ul&gt;&lt;li&gt;Cyclonic
-     * storm&lt;/li&gt;&lt;li&gt;Deep
-     * depression&lt;/li&gt;&lt;li&gt;Depression&lt;/li&gt;&lt;li&gt;Extremely
-     * severe
-     * cyclonic storm&lt;/li&gt;&lt;li&gt;Hurricane category
-     * (1-5)&lt;/li&gt;&lt;li&gt;Intense tropical
-     * cyclone&lt;/li&gt;&lt;li&gt;Moderate tropical
-     * storm&lt;/li&gt;&lt;li&gt;Post-tropical
-     * cyclone&lt;/li&gt;&lt;li&gt;Potential tropical
-     * cyclone&lt;/li&gt;&lt;li&gt;Severe cyclonic
-     * storm&lt;/li&gt;&lt;li&gt;Severe tropical
-     * storm&lt;/li&gt;&lt;li&gt;Subtropical&lt;/li&gt;&lt;li&gt;Super
-     * cyclonic storm&lt;/li&gt;&lt;li&gt;Tropical
-     * cyclone&lt;/li&gt;&lt;li&gt;Tropical cyclone category
+     * Get the status property: Possible status values include:&lt;ul&gt;&lt;li&gt;Cyclonic
+     * storm&lt;/li&gt;&lt;li&gt;Deep depression&lt;/li&gt;&lt;li&gt;Depression&lt;/li&gt;&lt;li&gt;Extremely severe
+     * cyclonic storm&lt;/li&gt;&lt;li&gt;Hurricane category (1-5)&lt;/li&gt;&lt;li&gt;Intense tropical
+     * cyclone&lt;/li&gt;&lt;li&gt;Moderate tropical storm&lt;/li&gt;&lt;li&gt;Post-tropical
+     * cyclone&lt;/li&gt;&lt;li&gt;Potential tropical cyclone&lt;/li&gt;&lt;li&gt;Severe cyclonic
+     * storm&lt;/li&gt;&lt;li&gt;Severe tropical storm&lt;/li&gt;&lt;li&gt;Subtropical&lt;/li&gt;&lt;li&gt;Super
+     * cyclonic storm&lt;/li&gt;&lt;li&gt;Tropical cyclone&lt;/li&gt;&lt;li&gt;Tropical cyclone category
      * (1-5)&lt;/li&gt;&lt;li&gt;Tropical depression&lt;/li&gt;&lt;li&gt;Tropical
-     * disturbance&lt;/li&gt;&lt;li&gt;Tropical
-     * storm&lt;/li&gt;&lt;li&gt;Typhoon&lt;/li&gt;&lt;li&gt;Very intense
-     * tropical cyclone&lt;/li&gt;&lt;li&gt;Very severe cyclonic
-     * storm&lt;/li&gt;&lt;li&gt;Very strong
+     * disturbance&lt;/li&gt;&lt;li&gt;Tropical storm&lt;/li&gt;&lt;li&gt;Typhoon&lt;/li&gt;&lt;li&gt;Very intense
+     * tropical cyclone&lt;/li&gt;&lt;li&gt;Very severe cyclonic storm&lt;/li&gt;&lt;li&gt;Very strong
      * typhoon&lt;/li&gt;&lt;li&gt;Violent typhoon&lt;/li&gt;&lt;/ul&gt;.
      *
      * @return the status value.
@@ -158,10 +140,8 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
     }
 
     /**
-     * Get the weatherWindow property: Contains information about the forecast
-     * window for the storm during the specified
-     * time period (not the entire cone). If windowGeometry=true in the request,
-     * this object will include geoJSON
+     * Get the weatherWindow property: Contains information about the forecast window for the storm during the specified
+     * time period (not the entire cone). If windowGeometry=true in the request, this object will include geoJSON
      * details for window geometry.
      *
      * @return the weatherWindow value.
@@ -171,8 +151,7 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
     }
 
     /**
-     * Get the windRadiiSummary property: Displayed when details=true or
-     * radiiGeometry=true in the request.
+     * Get the windRadiiSummary property: Displayed when details=true or radiiGeometry=true in the request.
      *
      * @return the windRadiiSummary value.
      */
@@ -203,9 +182,8 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
      * Reads an instance of StormForecast from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of StormForecast if the JsonReader was pointing to an
-     *         instance of it, or null if it was
-     *         pointing to JSON null.
+     * @return An instance of StormForecast if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the StormForecast.
      */
     public static StormForecast fromJson(JsonReader jsonReader) throws IOException {

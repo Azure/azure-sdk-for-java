@@ -4,39 +4,41 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.util.ExpandableEnum;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 /**
  * Quarter of the day.
  */
 public final class DayQuarter implements ExpandableEnum<Integer> {
+
     private static final Map<Integer, DayQuarter> VALUES = new ConcurrentHashMap<>();
+
+    private static final Function<Integer, DayQuarter> NEW_INSTANCE = DayQuarter::new;
 
     /**
      * 7:00 am - 1:00 pm / 7:00- 13:00.
      */
-    public static final DayQuarter FIRST_QUARTER = fromValue(1);
+    public static final DayQuarter FIRST_QUARTER = fromValue(0);
 
     /**
      * 1:00 pm - 7:00 pm/ 13:00- 19:00.
      */
-    public static final DayQuarter SECOND_QUARTER = fromValue(2);
+    public static final DayQuarter SECOND_QUARTER = fromValue(1);
 
     /**
      * 7:00 pm - 1:00 am/ 19:00 - 01:00.
      */
-    public static final DayQuarter THIRD_QUARTER = fromValue(3);
+    public static final DayQuarter THIRD_QUARTER = fromValue(2);
 
     /**
      * 1:00 am - 7:00 am/ 01:00 - 07:00.
      */
-    public static final DayQuarter FORTH_QUARTER = fromValue(4);
+    public static final DayQuarter FORTH_QUARTER = fromValue(3);
 
     private final Integer value;
 
@@ -49,15 +51,19 @@ public final class DayQuarter implements ExpandableEnum<Integer> {
      *
      * @param value a value to look for.
      * @return the corresponding DayQuarter.
+     * @throws IllegalArgumentException if value is null.
      */
     public static DayQuarter fromValue(Integer value) {
-        return VALUES.computeIfAbsent(value, DayQuarter::new);
+        if (value == null) {
+            throw new IllegalArgumentException("'value' cannot be null.");
+        }
+        return VALUES.computeIfAbsent(value, NEW_INSTANCE);
     }
 
     /**
      * Gets known DayQuarter values.
      *
-     * @return known DayQuarter values.
+     * @return Known DayQuarter values.
      */
     public static Collection<DayQuarter> values() {
         return new ArrayList<>(VALUES.values());
@@ -74,7 +80,6 @@ public final class DayQuarter implements ExpandableEnum<Integer> {
     }
 
     @Override
-    @JsonValue
     public String toString() {
         return Objects.toString(this.value);
     }
@@ -87,5 +92,9 @@ public final class DayQuarter implements ExpandableEnum<Integer> {
     @Override
     public int hashCode() {
         return Objects.hashCode(this.value);
+    }
+
+    int toInt() {
+        return Integer.parseInt(toString());
     }
 }

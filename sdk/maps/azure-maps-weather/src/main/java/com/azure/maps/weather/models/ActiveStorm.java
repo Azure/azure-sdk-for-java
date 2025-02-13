@@ -80,8 +80,7 @@ public final class ActiveStorm implements JsonSerializable<ActiveStorm> {
     }
 
     /**
-     * Get the isSubtropical property: True when the depression is classified as a
-     * subtropical cyclone.
+     * Get the isSubtropical property: True when the depression is classified as a subtropical cyclone.
      *
      * @return the isSubtropical value.
      */
@@ -90,8 +89,7 @@ public final class ActiveStorm implements JsonSerializable<ActiveStorm> {
     }
 
     /**
-     * Get the govId property: Government storm ID. This will match the depression
-     * number.
+     * Get the govId property: Government storm ID. This will match the depression number.
      *
      * @return the govId value.
      */
@@ -118,9 +116,8 @@ public final class ActiveStorm implements JsonSerializable<ActiveStorm> {
      * Reads an instance of ActiveStorm from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ActiveStorm if the JsonReader was pointing to an
-     *         instance of it, or null if it was
-     *         pointing to JSON null.
+     * @return An instance of ActiveStorm if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the ActiveStorm.
      */
     public static ActiveStorm fromJson(JsonReader jsonReader) throws IOException {
