@@ -7,7 +7,11 @@ import com.azure.core.annotation.Fluent;
 /** An interface representing a model's ability to require server name indication. */
 @Fluent
 public interface HasServerNameIndication {
-    /** @return true if server name indication (SNI) is required, else false. */
+    /**
+     * Checks whether server name indication (SNI) is required.
+     *
+     * @return true if server name indication (SNI) is required, else false.
+     */
     boolean requiresServerNameIndication();
 
     /** Grouping of definition stages involving requiring the server name indication. */

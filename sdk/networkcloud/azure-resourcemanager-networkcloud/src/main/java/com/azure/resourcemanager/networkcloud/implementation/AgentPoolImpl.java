@@ -19,6 +19,7 @@ import com.azure.resourcemanager.networkcloud.models.AgentPoolUpgradeSettings;
 import com.azure.resourcemanager.networkcloud.models.AttachedNetworkConfiguration;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.KubernetesLabel;
+import com.azure.resourcemanager.networkcloud.models.NodePoolAdministratorConfigurationPatch;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -210,9 +211,9 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
         com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.kubernetesClusterName = Utils.getValueFromIdByName(innerObject.id(), "kubernetesClusters");
-        this.agentPoolName = Utils.getValueFromIdByName(innerObject.id(), "agentPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.kubernetesClusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "kubernetesClusters");
+        this.agentPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "agentPools");
     }
 
     public AgentPool refresh() {
@@ -309,6 +310,12 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
             this.updateAgentPoolUpdateParameters.withUpgradeSettings(upgradeSettings);
             return this;
         }
+    }
+
+    public AgentPoolImpl
+        withAdministratorConfiguration(NodePoolAdministratorConfigurationPatch administratorConfiguration) {
+        this.updateAgentPoolUpdateParameters.withAdministratorConfiguration(administratorConfiguration);
+        return this;
     }
 
     public AgentPoolImpl withCount(Long count) {

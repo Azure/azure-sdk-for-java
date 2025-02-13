@@ -5,36 +5,37 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Authentication configuration information.
  */
 @Fluent
-public final class FhirServiceAuthenticationConfiguration {
+public final class FhirServiceAuthenticationConfiguration
+    implements JsonSerializable<FhirServiceAuthenticationConfiguration> {
     /*
      * The authority url for the service
      */
-    @JsonProperty(value = "authority")
     private String authority;
 
     /*
      * The audience url for the service
      */
-    @JsonProperty(value = "audience")
     private String audience;
 
     /*
      * If the SMART on FHIR proxy is enabled
      */
-    @JsonProperty(value = "smartProxyEnabled")
     private Boolean smartProxyEnabled;
 
     /*
      * The array of identity provider configurations for SMART on FHIR authentication.
      */
-    @JsonProperty(value = "smartIdentityProviders")
     private List<SmartIdentityProviderConfiguration> smartIdentityProviders;
 
     /**
@@ -135,5 +136,55 @@ public final class FhirServiceAuthenticationConfiguration {
         if (smartIdentityProviders() != null) {
             smartIdentityProviders().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authority", this.authority);
+        jsonWriter.writeStringField("audience", this.audience);
+        jsonWriter.writeBooleanField("smartProxyEnabled", this.smartProxyEnabled);
+        jsonWriter.writeArrayField("smartIdentityProviders", this.smartIdentityProviders,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirServiceAuthenticationConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirServiceAuthenticationConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FhirServiceAuthenticationConfiguration.
+     */
+    public static FhirServiceAuthenticationConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirServiceAuthenticationConfiguration deserializedFhirServiceAuthenticationConfiguration
+                = new FhirServiceAuthenticationConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authority".equals(fieldName)) {
+                    deserializedFhirServiceAuthenticationConfiguration.authority = reader.getString();
+                } else if ("audience".equals(fieldName)) {
+                    deserializedFhirServiceAuthenticationConfiguration.audience = reader.getString();
+                } else if ("smartProxyEnabled".equals(fieldName)) {
+                    deserializedFhirServiceAuthenticationConfiguration.smartProxyEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("smartIdentityProviders".equals(fieldName)) {
+                    List<SmartIdentityProviderConfiguration> smartIdentityProviders
+                        = reader.readArray(reader1 -> SmartIdentityProviderConfiguration.fromJson(reader1));
+                    deserializedFhirServiceAuthenticationConfiguration.smartIdentityProviders = smartIdentityProviders;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFhirServiceAuthenticationConfiguration;
+        });
     }
 }

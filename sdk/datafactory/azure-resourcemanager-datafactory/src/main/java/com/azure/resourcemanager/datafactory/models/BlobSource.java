@@ -161,7 +161,6 @@ public final class BlobSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

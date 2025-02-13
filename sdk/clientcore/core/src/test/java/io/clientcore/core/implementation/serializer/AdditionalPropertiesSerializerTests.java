@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.serializer;
 
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public class AdditionalPropertiesSerializerTests {
         foo.additionalProperties().put("a.b", "c.d");
         foo.additionalProperties().put("properties.bar", "barbar");
 
-        String serialized = new String(new DefaultJsonSerializer().serializeToBytes(foo));
+        String serialized = new String(new JsonSerializer().serializeToBytes(foo));
 
         assertEquals(
             "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}",
@@ -44,7 +44,7 @@ public class AdditionalPropertiesSerializerTests {
     public void canDeserializeAdditionalProperties() throws IOException {
         String wireValue
             = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
-        Foo deserialized = new DefaultJsonSerializer().deserializeFromBytes(wireValue.getBytes(), Foo.class);
+        Foo deserialized = new JsonSerializer().deserializeFromBytes(wireValue.getBytes(), Foo.class);
 
         assertNotNull(deserialized.additionalProperties());
         assertEquals("baz", deserialized.additionalProperties().get("bar"));
@@ -70,7 +70,7 @@ public class AdditionalPropertiesSerializerTests {
         foo.additionalProperties().put("a.b", "c.d");
         foo.additionalProperties().put("properties.bar", "barbar");
 
-        String serialized = new String(new DefaultJsonSerializer().serializeToBytes(foo));
+        String serialized = new String(new JsonSerializer().serializeToBytes(foo));
 
         assertEquals(
             "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}",
@@ -81,7 +81,7 @@ public class AdditionalPropertiesSerializerTests {
     public void canDeserializeAdditionalPropertiesThroughInheritance() throws IOException {
         String wireValue
             = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
-        FooChild deserialized = new DefaultJsonSerializer().deserializeFromBytes(wireValue.getBytes(), FooChild.class);
+        FooChild deserialized = new JsonSerializer().deserializeFromBytes(wireValue.getBytes(), FooChild.class);
 
         // Check additional properties are populated
         assertNotNull(deserialized.additionalProperties());
@@ -131,7 +131,7 @@ public class AdditionalPropertiesSerializerTests {
         nestedFoo.additionalProperties().put("name", "Sushi");
         foo.additionalProperties().put("foo", nestedFoo);
 
-        String serialized = new String(new DefaultJsonSerializer().serializeToBytes(foo));
+        String serialized = new String(new JsonSerializer().serializeToBytes(foo));
 
         assertEquals(
             "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"foo\":{\"bar\":\"bye.world\",\"additionalProperties\":{\"name\":\"Sushi\"}},\"properties.bar\":\"barbar\"}}",

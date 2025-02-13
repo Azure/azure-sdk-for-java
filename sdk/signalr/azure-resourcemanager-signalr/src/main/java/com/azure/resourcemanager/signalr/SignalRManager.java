@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -30,7 +30,6 @@ import com.azure.resourcemanager.signalr.implementation.SignalRCustomDomainsImpl
 import com.azure.resourcemanager.signalr.implementation.SignalRManagementClientBuilder;
 import com.azure.resourcemanager.signalr.implementation.SignalRPrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.signalr.implementation.SignalRPrivateLinkResourcesImpl;
-import com.azure.resourcemanager.signalr.implementation.SignalRReplicasImpl;
 import com.azure.resourcemanager.signalr.implementation.SignalRSharedPrivateLinkResourcesImpl;
 import com.azure.resourcemanager.signalr.implementation.SignalRsImpl;
 import com.azure.resourcemanager.signalr.implementation.UsagesImpl;
@@ -39,7 +38,6 @@ import com.azure.resourcemanager.signalr.models.SignalRCustomCertificates;
 import com.azure.resourcemanager.signalr.models.SignalRCustomDomains;
 import com.azure.resourcemanager.signalr.models.SignalRPrivateEndpointConnections;
 import com.azure.resourcemanager.signalr.models.SignalRPrivateLinkResources;
-import com.azure.resourcemanager.signalr.models.SignalRReplicas;
 import com.azure.resourcemanager.signalr.models.SignalRSharedPrivateLinkResources;
 import com.azure.resourcemanager.signalr.models.SignalRs;
 import com.azure.resourcemanager.signalr.models.Usages;
@@ -68,8 +66,6 @@ public final class SignalRManager {
     private SignalRPrivateEndpointConnections signalRPrivateEndpointConnections;
 
     private SignalRPrivateLinkResources signalRPrivateLinkResources;
-
-    private SignalRReplicas signalRReplicas;
 
     private SignalRSharedPrivateLinkResources signalRSharedPrivateLinkResources;
 
@@ -237,7 +233,7 @@ public final class SignalRManager {
                 .append("-")
                 .append("com.azure.resourcemanager.signalr")
                 .append("/")
-                .append("1.0.0-beta.9");
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -270,7 +266,7 @@ public final class SignalRManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -368,18 +364,6 @@ public final class SignalRManager {
                 = new SignalRPrivateLinkResourcesImpl(clientObject.getSignalRPrivateLinkResources(), this);
         }
         return signalRPrivateLinkResources;
-    }
-
-    /**
-     * Gets the resource collection API of SignalRReplicas. It manages Replica.
-     * 
-     * @return Resource collection API of SignalRReplicas.
-     */
-    public SignalRReplicas signalRReplicas() {
-        if (this.signalRReplicas == null) {
-            this.signalRReplicas = new SignalRReplicasImpl(clientObject.getSignalRReplicas(), this);
-        }
-        return signalRReplicas;
     }
 
     /**

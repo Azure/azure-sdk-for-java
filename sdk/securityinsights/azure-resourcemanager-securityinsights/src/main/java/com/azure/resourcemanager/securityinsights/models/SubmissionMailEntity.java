@@ -9,7 +9,6 @@ import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.fluent.models.EntityInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.SubmissionMailEntityProperties;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -20,11 +19,11 @@ import java.util.UUID;
  * Represents a submission mail entity.
  */
 @Immutable
-public final class SubmissionMailEntity extends EntityInner {
+public final class SubmissionMailEntity extends Entity {
     /*
      * The kind of the entity.
      */
-    private EntityKind kind = EntityKind.SUBMISSION_MAIL;
+    private EntityKindEnum kind = EntityKindEnum.SUBMISSION_MAIL;
 
     /*
      * Submission mail entity properties
@@ -63,7 +62,7 @@ public final class SubmissionMailEntity extends EntityInner {
      * @return the kind value.
      */
     @Override
-    public EntityKind kind() {
+    public EntityKindEnum kind() {
         return this.kind;
     }
 
@@ -275,7 +274,7 @@ public final class SubmissionMailEntity extends EntityInner {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedSubmissionMailEntity.systemData = SystemData.fromJson(reader);
                 } else if ("kind".equals(fieldName)) {
-                    deserializedSubmissionMailEntity.kind = EntityKind.fromString(reader.getString());
+                    deserializedSubmissionMailEntity.kind = EntityKindEnum.fromString(reader.getString());
                 } else if ("properties".equals(fieldName)) {
                     deserializedSubmissionMailEntity.innerProperties = SubmissionMailEntityProperties.fromJson(reader);
                 } else {

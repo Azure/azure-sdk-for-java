@@ -13,12 +13,12 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.ServerSentEventUtils;
-import io.clientcore.core.util.ServerSentResult;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.binarydata.FileBinaryData;
-import io.clientcore.core.util.binarydata.InputStreamBinaryData;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.ServerSentEventUtils;
+import io.clientcore.core.utils.ServerSentResult;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.FileBinaryData;
+import io.clientcore.core.utils.binarydata.InputStreamBinaryData;
 import io.clientcore.http.okhttp3.implementation.OkHttpFileRequestBody;
 import io.clientcore.http.okhttp3.implementation.OkHttpInputStreamRequestBody;
 import io.clientcore.http.okhttp3.implementation.OkHttpResponse;
@@ -37,8 +37,8 @@ import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
-import static io.clientcore.core.util.ServerSentEventUtils.attemptRetry;
+import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
+import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 
 /**
  * HttpClient implementation for OkHttp.

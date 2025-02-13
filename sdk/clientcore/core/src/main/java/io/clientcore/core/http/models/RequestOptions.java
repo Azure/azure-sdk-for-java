@@ -3,12 +3,13 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.http.annotation.QueryParam;
+import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.rest.UriEscapers;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.Context;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.instrumentation.InstrumentationContext;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.Context;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -103,7 +104,7 @@ import java.util.function.Consumer;
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUri&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setHttpMethod&#40;HttpMethod.POST&#41;
- *         .setBody&#40;BinaryData.fromString&#40;requestBodyData&#41;&#41;
+ *         .setBody&#40;requestBodyData&#41;
  *         .getHeaders&#40;&#41;.set&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.rest.requestoptions.postrequest -->
@@ -119,6 +120,7 @@ public final class RequestOptions {
     private ResponseBodyMode responseBodyMode;
     private boolean locked;
     private ClientLogger logger;
+    private InstrumentationContext instrumentationContext;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
@@ -324,6 +326,26 @@ public final class RequestOptions {
     }
 
     /**
+     * Adds a key-value pair to the request context associated with this request.
+     *
+     * @param key The key to add to the context.
+     * @param value The value to add to the context.
+     * @return The updated {@link RequestOptions} object.
+     *
+     * @see #setContext(Context)
+     */
+    public RequestOptions putContext(Object key, Object value) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set context."));
+        }
+
+        this.context = this.context.put(key, value);
+
+        return this;
+    }
+
+    /**
      * Sets the configuration indicating how the body of the resulting HTTP response should be handled. If {@code null},
      * the response body will be handled based on the content type of the response.
      *
@@ -387,5 +409,34 @@ public final class RequestOptions {
      */
     public static RequestOptions none() {
         return NONE;
+    }
+
+    /**
+     * Gets the {@link InstrumentationContext} used to instrument the request.
+     *
+     * @return The {@link InstrumentationContext} used to instrument the request.
+     */
+    public InstrumentationContext getInstrumentationContext() {
+        return instrumentationContext;
+    }
+
+    /**
+     * Sets the {@link InstrumentationContext} used to instrument the request.
+     *
+     * @param instrumentationContext The {@link InstrumentationContext} used to instrument the request.
+     *
+     * @return The updated {@link RequestOptions} object.
+     *
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
+     */
+    public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "This instance of RequestOptions is immutable. Cannot set instrumentation context."));
+        }
+
+        this.instrumentationContext = instrumentationContext;
+
+        return this;
     }
 }

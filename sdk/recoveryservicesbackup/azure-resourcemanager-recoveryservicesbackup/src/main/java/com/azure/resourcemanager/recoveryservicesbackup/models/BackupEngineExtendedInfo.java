@@ -5,60 +5,58 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Additional information on backup engine.
  */
 @Fluent
-public final class BackupEngineExtendedInfo {
+public final class BackupEngineExtendedInfo implements JsonSerializable<BackupEngineExtendedInfo> {
     /*
      * Database name of backup engine.
      */
-    @JsonProperty(value = "databaseName")
     private String databaseName;
 
     /*
      * Number of protected items in the backup engine.
      */
-    @JsonProperty(value = "protectedItemsCount")
     private Integer protectedItemsCount;
 
     /*
      * Number of protected servers in the backup engine.
      */
-    @JsonProperty(value = "protectedServersCount")
     private Integer protectedServersCount;
 
     /*
      * Number of disks in the backup engine.
      */
-    @JsonProperty(value = "diskCount")
     private Integer diskCount;
 
     /*
      * Disk space used in the backup engine.
      */
-    @JsonProperty(value = "usedDiskSpace")
     private Double usedDiskSpace;
 
     /*
      * Disk space currently available in the backup engine.
      */
-    @JsonProperty(value = "availableDiskSpace")
     private Double availableDiskSpace;
 
     /*
      * Last refresh time in the backup engine.
      */
-    @JsonProperty(value = "refreshedAt")
     private OffsetDateTime refreshedAt;
 
     /*
      * Protected instances in the backup engine.
      */
-    @JsonProperty(value = "azureProtectedInstances")
     private Integer azureProtectedInstances;
 
     /**
@@ -233,5 +231,65 @@ public final class BackupEngineExtendedInfo {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeNumberField("protectedItemsCount", this.protectedItemsCount);
+        jsonWriter.writeNumberField("protectedServersCount", this.protectedServersCount);
+        jsonWriter.writeNumberField("diskCount", this.diskCount);
+        jsonWriter.writeNumberField("usedDiskSpace", this.usedDiskSpace);
+        jsonWriter.writeNumberField("availableDiskSpace", this.availableDiskSpace);
+        jsonWriter.writeStringField("refreshedAt",
+            this.refreshedAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.refreshedAt));
+        jsonWriter.writeNumberField("azureProtectedInstances", this.azureProtectedInstances);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupEngineExtendedInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupEngineExtendedInfo if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupEngineExtendedInfo.
+     */
+    public static BackupEngineExtendedInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupEngineExtendedInfo deserializedBackupEngineExtendedInfo = new BackupEngineExtendedInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedBackupEngineExtendedInfo.databaseName = reader.getString();
+                } else if ("protectedItemsCount".equals(fieldName)) {
+                    deserializedBackupEngineExtendedInfo.protectedItemsCount = reader.getNullable(JsonReader::getInt);
+                } else if ("protectedServersCount".equals(fieldName)) {
+                    deserializedBackupEngineExtendedInfo.protectedServersCount = reader.getNullable(JsonReader::getInt);
+                } else if ("diskCount".equals(fieldName)) {
+                    deserializedBackupEngineExtendedInfo.diskCount = reader.getNullable(JsonReader::getInt);
+                } else if ("usedDiskSpace".equals(fieldName)) {
+                    deserializedBackupEngineExtendedInfo.usedDiskSpace = reader.getNullable(JsonReader::getDouble);
+                } else if ("availableDiskSpace".equals(fieldName)) {
+                    deserializedBackupEngineExtendedInfo.availableDiskSpace = reader.getNullable(JsonReader::getDouble);
+                } else if ("refreshedAt".equals(fieldName)) {
+                    deserializedBackupEngineExtendedInfo.refreshedAt = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("azureProtectedInstances".equals(fieldName)) {
+                    deserializedBackupEngineExtendedInfo.azureProtectedInstances
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupEngineExtendedInfo;
+        });
     }
 }

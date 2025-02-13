@@ -1,6 +1,6 @@
 # Azure AI Search libraries for Java
 
-Azure AI Search ([formerly known as "Azure Cognitive Search"](https://docs.microsoft.com/azure/search/whats-new#new-service-name))
+Azure AI Search ([formerly known as "Azure Cognitive Search"](https://learn.microsoft.com/azure/search/whats-new#new-service-name))
 is a search-as-a-service cloud solution that gives developers APIs and tools for adding a rich search experience over 
 private, heterogeneous content in web, mobile, and enterprise applications. Your code or a tool invokes data ingestion
 (indexing) to create and load an index. Optionally, you can add cognitive skills to apply AI processes during indexing. 
@@ -33,4 +33,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact 
 [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fsearch%2FREADME.png)
+

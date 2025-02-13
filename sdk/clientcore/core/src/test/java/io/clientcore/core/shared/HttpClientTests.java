@@ -3,22 +3,22 @@
 
 package io.clientcore.core.shared;
 
-import io.clientcore.core.annotation.ServiceInterface;
+import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.RestProxy;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.HeaderParam;
-import io.clientcore.core.http.annotation.HostParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
-import io.clientcore.core.http.annotation.PathParam;
-import io.clientcore.core.http.annotation.QueryParam;
-import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.HeaderParam;
+import io.clientcore.core.http.annotations.HostParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.annotations.PathParam;
+import io.clientcore.core.http.annotations.QueryParam;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.exception.HttpResponseException;
+import io.clientcore.core.http.exceptions.HttpResponseException;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -26,18 +26,19 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
-import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.util.UriBuilder;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.Context;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.binarydata.ByteArrayBinaryData;
-import io.clientcore.core.util.binarydata.ByteBufferBinaryData;
-import io.clientcore.core.util.binarydata.InputStreamBinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.Context;
+import io.clientcore.core.utils.UriBuilder;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.ByteArrayBinaryData;
+import io.clientcore.core.utils.binarydata.ByteBufferBinaryData;
+import io.clientcore.core.utils.binarydata.InputStreamBinaryData;
+import io.clientcore.core.utils.serializers.ObjectSerializer;
+import io.clientcore.core.utils.serializers.SerializationFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -78,7 +79,7 @@ import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.implementation.util.ImplUtils.bomAwareToString;
+import static io.clientcore.core.implementation.utils.ImplUtils.bomAwareToString;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -429,6 +430,11 @@ public abstract class HttpClientTests {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        @Override
+        public boolean supportsFormat(SerializationFormat format) {
+            return false;
         }
     }
 
@@ -1486,12 +1492,12 @@ public abstract class HttpClientTests {
 
         // Order in which policies applied will be the order in which they added to builder
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-            .policies(new HttpLoggingPolicy(
-                new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
+            .addPolicy(new HttpInstrumentationPolicy(new HttpInstrumentationOptions()
+                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
             .build();
 
         Response<HttpBinJSON> response
-            = RestProxy.create(BinaryDataUploadService.class, httpPipeline, new DefaultJsonSerializer())
+            = RestProxy.create(BinaryDataUploadService.class, httpPipeline, new JsonSerializer())
                 .put(getServerUri(isSecure()), data, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
@@ -1737,7 +1743,7 @@ public abstract class HttpClientTests {
     }
 
     /**
-     * Tests that eagerly converting implementation HTTP headers to azure-core Headers is done.
+     * Tests that eagerly converting implementation HTTP headers to Client Core Headers is done.
      */
     @Test
     public void canRecognizeServerSentEvent() throws IOException {
@@ -2113,7 +2119,7 @@ public abstract class HttpClientTests {
     protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
 
-        return RestProxy.create(serviceClass, httpPipeline, new DefaultJsonSerializer());
+        return RestProxy.create(serviceClass, httpPipeline, new JsonSerializer());
     }
 
     private static void assertMatchWithHttpOrHttps(String uri1, String uri2) {

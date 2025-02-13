@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExportFormat. */
+/**
+ * Defines values for ExportFormat.
+ */
 public final class ExportFormat extends ExpandableStringEnum<ExportFormat> {
-    /** Static value swagger-link for ExportFormat. */
+    /**
+     * Static value swagger-link for ExportFormat.
+     */
     public static final ExportFormat SWAGGER_LINK = fromString("swagger-link");
 
-    /** Static value wsdl-link for ExportFormat. */
+    /**
+     * Static value wsdl-link for ExportFormat.
+     */
     public static final ExportFormat WSDL_LINK = fromString("wsdl-link");
 
-    /** Static value wadl-link for ExportFormat. */
+    /**
+     * Static value wadl-link for ExportFormat.
+     */
     public static final ExportFormat WADL_LINK = fromString("wadl-link");
 
-    /** Static value openapi-link for ExportFormat. */
+    /**
+     * Static value openapi-link for ExportFormat.
+     */
     public static final ExportFormat OPENAPI_LINK = fromString("openapi-link");
 
-    /** Static value openapi+json-link for ExportFormat. */
+    /**
+     * Static value openapi+json-link for ExportFormat.
+     */
     public static final ExportFormat OPENAPI_JSON_LINK = fromString("openapi+json-link");
 
     /**
      * Creates a new instance of ExportFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class ExportFormat extends ExpandableStringEnum<ExportFormat> {
 
     /**
      * Creates or finds a ExportFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExportFormat.
      */
-    @JsonCreator
     public static ExportFormat fromString(String name) {
         return fromString(name, ExportFormat.class);
     }
 
     /**
      * Gets known ExportFormat values.
-     *
+     * 
      * @return known ExportFormat values.
      */
     public static Collection<ExportFormat> values() {

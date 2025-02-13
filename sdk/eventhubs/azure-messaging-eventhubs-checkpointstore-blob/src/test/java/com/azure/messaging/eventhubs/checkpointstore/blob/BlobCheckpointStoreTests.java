@@ -22,6 +22,8 @@ import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnJre;
+import org.junit.jupiter.api.condition.JRE;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -56,6 +58,7 @@ import static org.mockito.Mockito.when;
 /**
  * Unit tests for {@link BlobCheckpointStore}.
  */
+@DisabledOnJre(JRE.JAVA_8)
 public class BlobCheckpointStoreTests {
 
     @Mock

@@ -3,16 +3,16 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.annotation.ServiceInterface;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.FormParam;
-import io.clientcore.core.http.annotation.HeaderParam;
-import io.clientcore.core.http.annotation.HostParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
-import io.clientcore.core.http.annotation.PathParam;
-import io.clientcore.core.http.annotation.QueryParam;
-import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.exception.HttpExceptionType;
+import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.FormParam;
+import io.clientcore.core.http.annotations.HeaderParam;
+import io.clientcore.core.http.annotations.HostParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.annotations.PathParam;
+import io.clientcore.core.http.annotations.QueryParam;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.http.exceptions.HttpExceptionType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -21,14 +21,14 @@ import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.implementation.util.Base64Uri;
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
-import io.clientcore.core.implementation.util.UriBuilder;
+import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
+import io.clientcore.core.utils.Base64Uri;
+import io.clientcore.core.utils.DateTimeRfc1123;
+import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.core.models.SimpleClass;
-import io.clientcore.core.util.Context;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.utils.Context;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -57,7 +57,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SwaggerMethodParserTests {
-    private static final ObjectSerializer DEFAULT_SERIALIZER = new DefaultJsonSerializer();
+    private static final CompositeSerializer DEFAULT_SERIALIZER
+        = new CompositeSerializer(Arrays.asList(new JsonSerializer()));
 
     @ServiceInterface(name = "OperationMethods", host = "https://raw.host.com")
     interface OperationMethods {

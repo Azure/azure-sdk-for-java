@@ -15,27 +15,38 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 public interface VirtualNetworkLink
     extends ExternalChildResource<VirtualNetworkLink, PrivateDnsZone>, HasInnerModel<VirtualNetworkLinkInner> {
     /**
+     * Gets the ETag of the virtual network link.
+     *
      * @return the ETag of the virtual network link.
      */
     String etag();
 
     /**
+     * Gets the id of referenced virtual network.
+     *
      * @return the id of referenced virtual network.
      */
     String referencedVirtualNetworkId();
 
     /**
+     * Checks whether auto-registration of virtual machine records in the virtual network
+     * gets enabled in the private DNS zone.
+     *
      * @return whether auto-registration of virtual machine records in the virtual network
      * gets enabled in the private DNS zone.
      */
     boolean isAutoRegistrationEnabled();
 
     /**
+     * Gets the status of the virtual network link to the private DNS zone.
+     *
      * @return the status of the virtual network link to the private DNS zone.
      */
     VirtualNetworkLinkState virtualNetworkLinkState();
 
     /**
+     * Gets the provisioning state of the virtual network link.
+     *
      * @return the provisioning state of the virtual network link.
      */
     ProvisioningState provisioningState();

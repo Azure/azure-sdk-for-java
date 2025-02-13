@@ -22,7 +22,7 @@ public final class ResourceRecommendationBaseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceRecommendationBaseListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ufubl\",\"value\":[{\"properties\":{\"category\":\"Cost\",\"impact\":\"Low\",\"impactedField\":\"aeqjhqjbasvms\",\"impactedValue\":\"qulngsntnbybkzgc\",\"lastUpdated\":\"2021-05-07T11:10:21Z\",\"metadata\":{\"jdous\":\"dataxxwr\",\"xbnjbiksq\":\"datacqvkocrcjdkwtn\",\"ainqpjwnzlljfm\":\"datagls\",\"vmgxsab\":\"datapee\"},\"recommendationTypeId\":\"qduujitcjczdz\",\"shortDescription\":{\"problem\":\"dhkrwpdappdsbdk\",\"solution\":\"rwjfe\"},\"suppressionIds\":[\"c13f32b8-d2fa-4d70-b469-81e0a577ef1b\",\"45ca269b-31e1-452b-a64f-6b74ab382928\",\"e7cd66a3-dda5-4300-83f8-938004538dea\",\"7255a6c2-82a4-4596-ac17-2c8377670933\"],\"extendedProperties\":{\"rl\":\"tjelt\",\"geablgphuticndvk\":\"hugjzzdatqxhoc\",\"ftyxolniw\":\"ozwyiftyhxhuro\",\"ryplwckbasyypn\":\"wcukjfkgiawxk\"},\"resourceMetadata\":{\"resourceId\":\"sgcbac\",\"source\":\"ejk\",\"action\":{\"wyqkgfgibm\":\"datanqgoulzndli\",\"qsrxybzqqed\":\"datadgak\",\"iqfouflmmnkz\":\"dataytb\",\"wtmutduq\":\"datamodmglougpb\"},\"singular\":\"ap\",\"plural\":\"wgcu\"},\"description\":\"tumkdosvqwhbm\",\"label\":\"bbjfddgmbmbexp\",\"learnMoreLink\":\"htqqrolfp\",\"potentialBenefits\":\"s\",\"actions\":[{\"gjyjgzjaoyfhrtxi\":\"dataqux\",\"rkujy\":\"datan\"},{\"juvf\":\"datal\",\"jkcpr\":\"dataawrlyx\",\"nruj\":\"datanwbxgjvtbvpyssz\"}],\"remediation\":{\"uitnwuiz\":\"datahmuouqfprwzwbn\",\"x\":\"dataa\",\"hr\":\"datafizuckyf\",\"zwdzuh\":\"dataidf\"},\"exposedMetadataProperties\":{\"wxmnteiwao\":\"datawisdkft\",\"fsrpymzidnse\":\"datavkmijcmmxdcuf\",\"yc\":\"datacxtbzsg\",\"mdwzjeiachboo\":\"datasne\"}},\"id\":\"flnrosfqpteehzz\",\"name\":\"ypyqrimzinp\",\"type\":\"swjdkirso\"},{\"properties\":{\"category\":\"HighAvailability\",\"impact\":\"Low\",\"impactedField\":\"mnoh\",\"impactedValue\":\"ckwhds\",\"lastUpdated\":\"2021-07-22T01:38:16Z\",\"metadata\":{\"jxsqwpgrjbz\":\"datai\"},\"recommendationTypeId\":\"rcjxvsnbyxqabn\",\"shortDescription\":{\"problem\":\"pcyshu\",\"solution\":\"afbljjgpbtoqcjmk\"},\"suppressionIds\":[\"9c1e3d24-cfef-42cd-b289-38d9dc535e42\"],\"extendedProperties\":{\"pku\":\"qidtqajzyu\",\"gqexzlocxs\":\"jkrlkhbzhfepg\"},\"resourceMetadata\":{\"resourceId\":\"ierhhbcsglummaj\",\"source\":\"aodxo\",\"action\":{\"kajionpim\":\"datadxkqpx\",\"txgcpodgmaajr\":\"dataxg\",\"lwhijcoejctbzaq\":\"datavdjwzrlovm\"},\"singular\":\"sycbkbfk\",\"plural\":\"kdkexxp\"},\"description\":\"fmxa\",\"label\":\"fjpgddtocjjxhvp\",\"learnMoreLink\":\"uexhdzx\",\"potentialBenefits\":\"qeojnxqbzvddntw\",\"actions\":[{\"hcffcyddglmjthjq\":\"datacbtwnpzaoqvuh\",\"hix\":\"datawpyeicxmqciwqvh\",\"og\":\"dataigdtopbob\"}],\"remediation\":{\"a\":\"dataw\"},\"exposedMetadataProperties\":{\"iotkftutqxl\":\"datahrzayvvtpgvdf\",\"mi\":\"datagxlefgugnxkrxd\",\"abhjybi\":\"datatthzrvqd\"}},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"}]}")
+            "{\"nextLink\":\"ufubl\",\"value\":[{\"properties\":{\"category\":\"Cost\",\"impact\":\"Low\",\"impactedField\":\"aeqjhqjbasvms\",\"impactedValue\":\"qulngsntnbybkzgc\",\"lastUpdated\":\"2021-05-07T11:10:21Z\",\"metadata\":{\"jdous\":\"dataxxwr\",\"xbnjbiksq\":\"datacqvkocrcjdkwtn\",\"ainqpjwnzlljfm\":\"datagls\",\"vmgxsab\":\"datapee\"},\"recommendationTypeId\":\"qduujitcjczdz\",\"shortDescription\":{\"problem\":\"dhkrwpdappdsbdk\",\"solution\":\"rwjfe\"},\"suppressionIds\":[\"cf861f59-54b4-4f32-b15b-132581e90998\",\"f3591c80-7825-4739-94b5-5f29b359dfd1\",\"ffb90a62-3cb3-46ff-9461-f82e651957ff\",\"1e95b12a-cec3-4ebc-8283-7a88298f4953\"],\"extendedProperties\":{\"rl\":\"tjelt\",\"geablgphuticndvk\":\"hugjzzdatqxhoc\",\"ftyxolniw\":\"ozwyiftyhxhuro\",\"ryplwckbasyypn\":\"wcukjfkgiawxk\"},\"resourceMetadata\":{\"resourceId\":\"sgcbac\",\"source\":\"ejk\",\"action\":{\"wyqkgfgibm\":\"datanqgoulzndli\",\"qsrxybzqqed\":\"datadgak\",\"iqfouflmmnkz\":\"dataytb\",\"wtmutduq\":\"datamodmglougpb\"},\"singular\":\"ap\",\"plural\":\"wgcu\"},\"description\":\"tumkdosvqwhbm\",\"label\":\"bbjfddgmbmbexp\",\"learnMoreLink\":\"htqqrolfp\",\"potentialBenefits\":\"s\",\"actions\":[{\"gjyjgzjaoyfhrtxi\":\"dataqux\",\"rkujy\":\"datan\"},{\"juvf\":\"datal\",\"jkcpr\":\"dataawrlyx\",\"nruj\":\"datanwbxgjvtbvpyssz\"}],\"remediation\":{\"uitnwuiz\":\"datahmuouqfprwzwbn\",\"x\":\"dataa\",\"hr\":\"datafizuckyf\",\"zwdzuh\":\"dataidf\"},\"exposedMetadataProperties\":{\"wxmnteiwao\":\"datawisdkft\",\"fsrpymzidnse\":\"datavkmijcmmxdcuf\",\"yc\":\"datacxtbzsg\",\"mdwzjeiachboo\":\"datasne\"}},\"id\":\"flnrosfqpteehzz\",\"name\":\"ypyqrimzinp\",\"type\":\"swjdkirso\"},{\"properties\":{\"category\":\"HighAvailability\",\"impact\":\"Low\",\"impactedField\":\"mnoh\",\"impactedValue\":\"ckwhds\",\"lastUpdated\":\"2021-07-22T01:38:16Z\",\"metadata\":{\"jxsqwpgrjbz\":\"datai\"},\"recommendationTypeId\":\"rcjxvsnbyxqabn\",\"shortDescription\":{\"problem\":\"pcyshu\",\"solution\":\"afbljjgpbtoqcjmk\"},\"suppressionIds\":[\"40f7c3ce-7323-4cfa-a559-713939d9530e\"],\"extendedProperties\":{\"pku\":\"qidtqajzyu\",\"gqexzlocxs\":\"jkrlkhbzhfepg\"},\"resourceMetadata\":{\"resourceId\":\"ierhhbcsglummaj\",\"source\":\"aodxo\",\"action\":{\"kajionpim\":\"datadxkqpx\",\"txgcpodgmaajr\":\"dataxg\",\"lwhijcoejctbzaq\":\"datavdjwzrlovm\"},\"singular\":\"sycbkbfk\",\"plural\":\"kdkexxp\"},\"description\":\"fmxa\",\"label\":\"fjpgddtocjjxhvp\",\"learnMoreLink\":\"uexhdzx\",\"potentialBenefits\":\"qeojnxqbzvddntw\",\"actions\":[{\"hcffcyddglmjthjq\":\"datacbtwnpzaoqvuh\",\"hix\":\"datawpyeicxmqciwqvh\",\"og\":\"dataigdtopbob\"}],\"remediation\":{\"a\":\"dataw\"},\"exposedMetadataProperties\":{\"iotkftutqxl\":\"datahrzayvvtpgvdf\",\"mi\":\"datagxlefgugnxkrxd\",\"abhjybi\":\"datatthzrvqd\"}},\"id\":\"ehoqfbowskan\",\"name\":\"ktzlcuiywg\",\"type\":\"ywgndrv\"}]}")
             .toObject(ResourceRecommendationBaseListResult.class);
         Assertions.assertEquals("ufubl", model.nextLink());
         Assertions.assertEquals(Category.COST, model.value().get(0).category());
@@ -33,7 +33,7 @@ public final class ResourceRecommendationBaseListResultTests {
         Assertions.assertEquals("qduujitcjczdz", model.value().get(0).recommendationTypeId());
         Assertions.assertEquals("dhkrwpdappdsbdk", model.value().get(0).shortDescription().problem());
         Assertions.assertEquals("rwjfe", model.value().get(0).shortDescription().solution());
-        Assertions.assertEquals(UUID.fromString("c13f32b8-d2fa-4d70-b469-81e0a577ef1b"),
+        Assertions.assertEquals(UUID.fromString("cf861f59-54b4-4f32-b15b-132581e90998"),
             model.value().get(0).suppressionIds().get(0));
         Assertions.assertEquals("tjelt", model.value().get(0).extendedProperties().get("rl"));
         Assertions.assertEquals("sgcbac", model.value().get(0).resourceMetadata().resourceId());
@@ -59,10 +59,10 @@ public final class ResourceRecommendationBaseListResultTests {
                         "datagls", "vmgxsab", "datapee"))
                     .withRecommendationTypeId("qduujitcjczdz")
                     .withShortDescription(new ShortDescription().withProblem("dhkrwpdappdsbdk").withSolution("rwjfe"))
-                    .withSuppressionIds(Arrays.asList(UUID.fromString("c13f32b8-d2fa-4d70-b469-81e0a577ef1b"),
-                        UUID.fromString("45ca269b-31e1-452b-a64f-6b74ab382928"),
-                        UUID.fromString("e7cd66a3-dda5-4300-83f8-938004538dea"),
-                        UUID.fromString("7255a6c2-82a4-4596-ac17-2c8377670933")))
+                    .withSuppressionIds(Arrays.asList(UUID.fromString("cf861f59-54b4-4f32-b15b-132581e90998"),
+                        UUID.fromString("f3591c80-7825-4739-94b5-5f29b359dfd1"),
+                        UUID.fromString("ffb90a62-3cb3-46ff-9461-f82e651957ff"),
+                        UUID.fromString("1e95b12a-cec3-4ebc-8283-7a88298f4953")))
                     .withExtendedProperties(mapOf("rl", "tjelt", "geablgphuticndvk", "hugjzzdatqxhoc", "ftyxolniw",
                         "ozwyiftyhxhuro", "ryplwckbasyypn", "wcukjfkgiawxk"))
                     .withResourceMetadata(new ResourceMetadata().withResourceId("sgcbac")
@@ -89,7 +89,7 @@ public final class ResourceRecommendationBaseListResultTests {
                     .withMetadata(mapOf("jxsqwpgrjbz", "datai"))
                     .withRecommendationTypeId("rcjxvsnbyxqabn")
                     .withShortDescription(new ShortDescription().withProblem("pcyshu").withSolution("afbljjgpbtoqcjmk"))
-                    .withSuppressionIds(Arrays.asList(UUID.fromString("9c1e3d24-cfef-42cd-b289-38d9dc535e42")))
+                    .withSuppressionIds(Arrays.asList(UUID.fromString("40f7c3ce-7323-4cfa-a559-713939d9530e")))
                     .withExtendedProperties(mapOf("pku", "qidtqajzyu", "gqexzlocxs", "jkrlkhbzhfepg"))
                     .withResourceMetadata(new ResourceMetadata().withResourceId("ierhhbcsglummaj")
                         .withSource("aodxo")
@@ -116,7 +116,7 @@ public final class ResourceRecommendationBaseListResultTests {
         Assertions.assertEquals("qduujitcjczdz", model.value().get(0).recommendationTypeId());
         Assertions.assertEquals("dhkrwpdappdsbdk", model.value().get(0).shortDescription().problem());
         Assertions.assertEquals("rwjfe", model.value().get(0).shortDescription().solution());
-        Assertions.assertEquals(UUID.fromString("c13f32b8-d2fa-4d70-b469-81e0a577ef1b"),
+        Assertions.assertEquals(UUID.fromString("cf861f59-54b4-4f32-b15b-132581e90998"),
             model.value().get(0).suppressionIds().get(0));
         Assertions.assertEquals("tjelt", model.value().get(0).extendedProperties().get("rl"));
         Assertions.assertEquals("sgcbac", model.value().get(0).resourceMetadata().resourceId());

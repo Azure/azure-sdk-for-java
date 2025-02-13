@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Authorization login request contract. */
+/**
+ * Authorization login request contract.
+ */
 @Fluent
-public final class AuthorizationLoginRequestContract {
+public final class AuthorizationLoginRequestContract implements JsonSerializable<AuthorizationLoginRequestContract> {
     /*
      * The redirect URL after login has completed.
      */
-    @JsonProperty(value = "postLoginRedirectUrl")
     private String postLoginRedirectUrl;
 
-    /** Creates an instance of AuthorizationLoginRequestContract class. */
+    /**
+     * Creates an instance of AuthorizationLoginRequestContract class.
+     */
     public AuthorizationLoginRequestContract() {
     }
 
     /**
      * Get the postLoginRedirectUrl property: The redirect URL after login has completed.
-     *
+     * 
      * @return the postLoginRedirectUrl value.
      */
     public String postLoginRedirectUrl() {
@@ -31,7 +38,7 @@ public final class AuthorizationLoginRequestContract {
 
     /**
      * Set the postLoginRedirectUrl property: The redirect URL after login has completed.
-     *
+     * 
      * @param postLoginRedirectUrl the postLoginRedirectUrl value to set.
      * @return the AuthorizationLoginRequestContract object itself.
      */
@@ -42,9 +49,46 @@ public final class AuthorizationLoginRequestContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("postLoginRedirectUrl", this.postLoginRedirectUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationLoginRequestContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationLoginRequestContract if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthorizationLoginRequestContract.
+     */
+    public static AuthorizationLoginRequestContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationLoginRequestContract deserializedAuthorizationLoginRequestContract
+                = new AuthorizationLoginRequestContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("postLoginRedirectUrl".equals(fieldName)) {
+                    deserializedAuthorizationLoginRequestContract.postLoginRedirectUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationLoginRequestContract;
+        });
     }
 }

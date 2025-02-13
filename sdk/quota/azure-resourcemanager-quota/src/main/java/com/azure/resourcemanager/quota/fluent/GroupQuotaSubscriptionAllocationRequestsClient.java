@@ -8,11 +8,11 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.quota.fluent.models.QuotaAllocationRequestStatusInner;
+import com.azure.resourcemanager.quota.fluent.models.SubscriptionQuotaAllocationsListInner;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -20,12 +20,119 @@ import com.azure.resourcemanager.quota.fluent.models.QuotaAllocationRequestStatu
  */
 public interface GroupQuotaSubscriptionAllocationRequestsClient {
     /**
+     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
+     * with 202 response and status polling API.
+     * 
+     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
+     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
+     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
+     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
+     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
+     * 
+     * @param managementGroupId Management Group Id.
+     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
+     * Microsoft.Compute resource provider supports this API.
+     * @param location The name of the Azure region.
+     * @param allocateQuotaRequest Quota requests payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of subscription quota list.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SubscriptionQuotaAllocationsListInner>, SubscriptionQuotaAllocationsListInner> beginUpdate(
+        String managementGroupId, String groupQuotaName, String resourceProviderName, String location,
+        SubscriptionQuotaAllocationsListInner allocateQuotaRequest);
+
+    /**
+     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
+     * with 202 response and status polling API.
+     * 
+     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
+     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
+     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
+     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
+     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
+     * 
+     * @param managementGroupId Management Group Id.
+     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
+     * Microsoft.Compute resource provider supports this API.
+     * @param location The name of the Azure region.
+     * @param allocateQuotaRequest Quota requests payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of subscription quota list.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SubscriptionQuotaAllocationsListInner>, SubscriptionQuotaAllocationsListInner> beginUpdate(
+        String managementGroupId, String groupQuotaName, String resourceProviderName, String location,
+        SubscriptionQuotaAllocationsListInner allocateQuotaRequest, Context context);
+
+    /**
+     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
+     * with 202 response and status polling API.
+     * 
+     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
+     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
+     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
+     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
+     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
+     * 
+     * @param managementGroupId Management Group Id.
+     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
+     * Microsoft.Compute resource provider supports this API.
+     * @param location The name of the Azure region.
+     * @param allocateQuotaRequest Quota requests payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription quota list.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubscriptionQuotaAllocationsListInner update(String managementGroupId, String groupQuotaName,
+        String resourceProviderName, String location, SubscriptionQuotaAllocationsListInner allocateQuotaRequest);
+
+    /**
+     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
+     * with 202 response and status polling API.
+     * 
+     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
+     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
+     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
+     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
+     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
+     * 
+     * @param managementGroupId Management Group Id.
+     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
+     * Microsoft.Compute resource provider supports this API.
+     * @param location The name of the Azure region.
+     * @param allocateQuotaRequest Quota requests payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription quota list.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubscriptionQuotaAllocationsListInner update(String managementGroupId, String groupQuotaName,
+        String resourceProviderName, String location, SubscriptionQuotaAllocationsListInner allocateQuotaRequest,
+        Context context);
+
+    /**
      * Get the status of the quota allocation request for the subscriptionId.
      * 
      * Get the quota allocation request status for the subscriptionId by allocationId.
      * 
      * @param managementGroupId Management Group Id.
      * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
+     * Microsoft.Compute resource provider supports this API.
      * @param allocationId Request Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +142,7 @@ public interface GroupQuotaSubscriptionAllocationRequestsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<QuotaAllocationRequestStatusInner> getWithResponse(String managementGroupId, String groupQuotaName,
-        String allocationId, Context context);
+        String resourceProviderName, String allocationId, Context context);
 
     /**
      * Get the status of the quota allocation request for the subscriptionId.
@@ -44,6 +151,8 @@ public interface GroupQuotaSubscriptionAllocationRequestsClient {
      * 
      * @param managementGroupId Management Group Id.
      * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
+     * Microsoft.Compute resource provider supports this API.
      * @param allocationId Request Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,7 +160,8 @@ public interface GroupQuotaSubscriptionAllocationRequestsClient {
      * @return the quota allocation request status for the subscriptionId by allocationId.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotaAllocationRequestStatusInner get(String managementGroupId, String groupQuotaName, String allocationId);
+    QuotaAllocationRequestStatusInner get(String managementGroupId, String groupQuotaName, String resourceProviderName,
+        String allocationId);
 
     /**
      * Get all the quotaAllocationRequests for a resourceProvider/location.
@@ -103,213 +213,4 @@ public interface GroupQuotaSubscriptionAllocationRequestsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<QuotaAllocationRequestStatusInner> list(String managementGroupId, String groupQuotaName,
         String resourceProviderName, String filter, Context context);
-
-    /**
-     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
-     * to check the status using Async polling as standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * 
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota.
-     * 
-     * @param managementGroupId Management Group Id.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param resourceName Resource name.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the subscription quota allocation status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProxyResource>, ProxyResource> beginCreateOrUpdate(String managementGroupId,
-        String groupQuotaName, String resourceProviderName, String resourceName,
-        QuotaAllocationRequestStatusInner allocateQuotaRequest);
-
-    /**
-     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
-     * to check the status using Async polling as standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * 
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota.
-     * 
-     * @param managementGroupId Management Group Id.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param resourceName Resource name.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the subscription quota allocation status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ProxyResource>, ProxyResource> beginCreateOrUpdate(String managementGroupId,
-        String groupQuotaName, String resourceProviderName, String resourceName,
-        QuotaAllocationRequestStatusInner allocateQuotaRequest, Context context);
-
-    /**
-     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
-     * to check the status using Async polling as standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * 
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota.
-     * 
-     * @param managementGroupId Management Group Id.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param resourceName Resource name.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription quota allocation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ProxyResource createOrUpdate(String managementGroupId, String groupQuotaName, String resourceProviderName,
-        String resourceName, QuotaAllocationRequestStatusInner allocateQuotaRequest);
-
-    /**
-     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
-     * to check the status using Async polling as standards defined at -
-     * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-     * 
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota.
-     * 
-     * @param managementGroupId Management Group Id.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param resourceName Resource name.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription quota allocation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ProxyResource createOrUpdate(String managementGroupId, String groupQuotaName, String resourceProviderName,
-        String resourceName, QuotaAllocationRequestStatusInner allocateQuotaRequest, Context context);
-
-    /**
-     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
-     * with 202 response and status polling API.
-     * 
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
-     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
-     * 
-     * @param managementGroupId Management Group Id.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param resourceName Resource name.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the subscription quota allocation status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<QuotaAllocationRequestStatusInner>, QuotaAllocationRequestStatusInner> beginUpdate(
-        String managementGroupId, String groupQuotaName, String resourceProviderName, String resourceName,
-        QuotaAllocationRequestStatusInner allocateQuotaRequest);
-
-    /**
-     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
-     * with 202 response and status polling API.
-     * 
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
-     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
-     * 
-     * @param managementGroupId Management Group Id.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param resourceName Resource name.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the subscription quota allocation status.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<QuotaAllocationRequestStatusInner>, QuotaAllocationRequestStatusInner> beginUpdate(
-        String managementGroupId, String groupQuotaName, String resourceProviderName, String resourceName,
-        QuotaAllocationRequestStatusInner allocateQuotaRequest, Context context);
-
-    /**
-     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
-     * with 202 response and status polling API.
-     * 
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
-     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
-     * 
-     * @param managementGroupId Management Group Id.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param resourceName Resource name.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription quota allocation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotaAllocationRequestStatusInner update(String managementGroupId, String groupQuotaName,
-        String resourceProviderName, String resourceName, QuotaAllocationRequestStatusInner allocateQuotaRequest);
-
-    /**
-     * Request to assign quota from group quota to a specific Subscription. This request will use Asynchronous pattern
-     * with 202 response and status polling API.
-     * 
-     * Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
-     * reduce the quota allocated to subscription to give back the unused quota ( quota &gt;= usages) to the groupQuota.
-     * So, this API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can
-     * be assigned to another subscriptions in the GroupQuota. User can collect unused quotas from multiple
-     * subscriptions within the groupQuota and assign the groupQuota to the subscription, where it's needed.
-     * 
-     * @param managementGroupId Management Group Id.
-     * @param groupQuotaName The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-     * @param resourceProviderName The resource provider name, such as - Microsoft.Compute. Currently only
-     * Microsoft.Compute resource provider supports this API.
-     * @param resourceName Resource name.
-     * @param allocateQuotaRequest Quota requests payload.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the subscription quota allocation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    QuotaAllocationRequestStatusInner update(String managementGroupId, String groupQuotaName,
-        String resourceProviderName, String resourceName, QuotaAllocationRequestStatusInner allocateQuotaRequest,
-        Context context);
 }

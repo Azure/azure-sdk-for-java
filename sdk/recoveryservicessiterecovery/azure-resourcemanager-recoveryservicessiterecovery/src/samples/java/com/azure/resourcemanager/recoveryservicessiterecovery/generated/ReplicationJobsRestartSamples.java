@@ -20,7 +20,8 @@ public final class ReplicationJobsRestartSamples {
      */
     public static void
         restartsTheSpecifiedJob(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationJobs().restart("vault1", "resourceGroupPS1", "0664564c-353e-401a-ab0c-722257c10e25",
-            com.azure.core.util.Context.NONE);
+        manager.replicationJobs()
+            .restart("vault1", "resourceGroupPS1", "0664564c-353e-401a-ab0c-722257c10e25",
+                com.azure.core.util.Context.NONE);
     }
 }

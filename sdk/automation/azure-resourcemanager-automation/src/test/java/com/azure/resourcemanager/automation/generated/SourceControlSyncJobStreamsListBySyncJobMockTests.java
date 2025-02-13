@@ -35,7 +35,7 @@ public final class SourceControlSyncJobStreamsListBySyncJobMockTests {
 
         PagedIterable<SourceControlSyncJobStream> response = manager.sourceControlSyncJobStreams()
             .listBySyncJob("vwffcvvyezslp", "xgcbdsvalpnpt", "trkxgpazwu",
-                UUID.fromString("7b2814c3-c8b9-4777-9451-1c832b749bb8"), "x", com.azure.core.util.Context.NONE);
+                UUID.fromString("35ff8d79-4430-4384-bdcf-e3ab95d1f850"), "x", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("mfaewzgi", response.iterator().next().sourceControlSyncJobStreamId());
         Assertions.assertEquals("jpxpqhttqhnmhkre", response.iterator().next().summary());

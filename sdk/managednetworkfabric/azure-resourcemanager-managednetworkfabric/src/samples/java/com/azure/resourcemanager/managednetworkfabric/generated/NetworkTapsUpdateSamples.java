@@ -14,48 +14,43 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for NetworkTaps Update. */
+/**
+ * Samples for NetworkTaps Update.
+ */
 public final class NetworkTapsUpdateSamples {
     /*
-     * x-ms-original-file: specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/NetworkTaps_Update_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/managednetworkfabric/resource-manager/Microsoft.ManagedNetworkFabric/stable/2023-06-15/examples/
+     * NetworkTaps_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: NetworkTaps_Update_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ManagedNetworkFabricManager.
      */
     public static void networkTapsUpdateMaximumSetGen(
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager manager) {
-        NetworkTap resource =
-            manager
-                .networkTaps()
-                .getByResourceGroupWithResponse("example-rg", "example-networkTap", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        NetworkTap resource = manager.networkTaps()
+            .getByResourceGroupWithResponse("example-rg", "example-networkTap", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key6024", "fakeTokenPlaceholder"))
             .withPollingType(PollingType.PULL)
-            .withDestinationsForUpdate(
-                Arrays
-                    .asList(
-                        new NetworkTapPatchableParametersDestinationsItem()
-                            .withName("example-destinaionName")
-                            .withDestinationType(DestinationType.ISOLATION_DOMAIN)
-                            .withDestinationId(
-                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsloationDomains/example-l3Domain/internalNetworks/example-internalNetwork")
-                            .withIsolationDomainProperties(
-                                new IsolationDomainProperties()
-                                    .withEncapsulation(Encapsulation.NONE)
-                                    .withNeighborGroupIds(
-                                        Arrays
-                                            .asList(
-                                                "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup")))
-                            .withDestinationTapRuleId(
-                                "/subscriptions/xxxx-xxxx-xxxx-xxxx/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-destinationTapRule")))
+            .withDestinationsForUpdate(Arrays.asList(new NetworkTapPatchableParametersDestinationsItem()
+                .withName("example-destinaionName")
+                .withDestinationType(DestinationType.ISOLATION_DOMAIN)
+                .withDestinationId(
+                    "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/l3IsloationDomains/example-l3Domain/internalNetworks/example-internalNetwork")
+                .withIsolationDomainProperties(new IsolationDomainProperties().withEncapsulation(Encapsulation.NONE)
+                    .withNeighborGroupIds(Arrays.asList(
+                        "/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup")))
+                .withDestinationTapRuleId(
+                    "/subscriptions/xxxx-xxxx-xxxx-xxxx/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-destinationTapRule")))
             .withAnnotation("annotation1")
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

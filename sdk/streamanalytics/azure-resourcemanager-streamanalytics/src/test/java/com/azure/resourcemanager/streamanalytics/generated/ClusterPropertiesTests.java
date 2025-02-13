@@ -5,13 +5,13 @@
 package com.azure.resourcemanager.streamanalytics.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.streamanalytics.models.ClusterProperties;
+import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterProperties;
 
 public final class ClusterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterProperties model = BinaryData.fromString(
-            "{\"createdDate\":\"2021-01-04T18:35:03Z\",\"clusterId\":\"ctyqik\",\"provisioningState\":\"Failed\",\"capacityAllocated\":2077643232,\"capacityAssigned\":779451406}")
+            "{\"createdDate\":\"2021-01-08T07:37:25Z\",\"clusterId\":\"v\",\"provisioningState\":\"InProgress\",\"capacityAllocated\":340667292,\"capacityAssigned\":8313214}")
             .toObject(ClusterProperties.class);
     }
 

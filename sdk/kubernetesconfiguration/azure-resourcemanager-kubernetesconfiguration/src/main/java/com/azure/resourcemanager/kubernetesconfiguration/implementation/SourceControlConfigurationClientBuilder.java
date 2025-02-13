@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the SourceControlConfigurationClientImpl type. */
+/**
+ * A builder for creating a new instance of the SourceControlConfigurationClientImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { SourceControlConfigurationClientImpl.class })
 public final class SourceControlConfigurationClientBuilder {
     /*
@@ -24,7 +26,7 @@ public final class SourceControlConfigurationClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the SourceControlConfigurationClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class SourceControlConfigurationClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the SourceControlConfigurationClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class SourceControlConfigurationClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the SourceControlConfigurationClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class SourceControlConfigurationClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the SourceControlConfigurationClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class SourceControlConfigurationClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the SourceControlConfigurationClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class SourceControlConfigurationClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the SourceControlConfigurationClientBuilder.
      */
@@ -115,7 +117,7 @@ public final class SourceControlConfigurationClientBuilder {
 
     /**
      * Builds an instance of SourceControlConfigurationClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of SourceControlConfigurationClientImpl.
      */
     public SourceControlConfigurationClientImpl buildClient() {

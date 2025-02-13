@@ -7,39 +7,21 @@ package com.azure.resourcemanager.synapse.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.synapse.models.ManagedIdentity;
 import com.azure.resourcemanager.synapse.models.ResourceIdentityType;
-import com.azure.resourcemanager.synapse.models.UserAssignedManagedIdentity;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class ManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"c\",\"tenantId\":\"1185b137-d5c9-4519-8090-20a6441b26ca\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"nwm\":{\"clientId\":\"158cc437-d982-4223-95ed-a388559b7ce5\",\"principalId\":\"5cc29763-78c1-4d33-8020-5f4b98cb7e3b\"},\"vpdvjdhttzae\":{\"clientId\":\"c86377e8-2a5b-41f1-81c2-091ffba8b0f8\",\"principalId\":\"57eb69e6-0661-4d89-a11b-663c31dd52fb\"},\"x\":{\"clientId\":\"e57790e6-288b-4554-b5d3-f396bdebf6d4\",\"principalId\":\"20db2897-3bb7-49ec-ab5e-8db5f2432572\"},\"hrphkmcrjdqn\":{\"clientId\":\"c9708997-8dbf-40c5-bb1c-90bc64a43075\",\"principalId\":\"e0f28001-c74e-4a9c-8683-5de7c2a3934f\"}}}")
+            "{\"principalId\":\"yrneizjcpeo\",\"tenantId\":\"4085e026-7c97-47da-a3cd-da9dd8cf754a\",\"type\":\"None\"}")
             .toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentity model = new ManagedIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
-            .withUserAssignedIdentities(
-                mapOf("nwm", new UserAssignedManagedIdentity(), "vpdvjdhttzae", new UserAssignedManagedIdentity(), "x",
-                    new UserAssignedManagedIdentity(), "hrphkmcrjdqn", new UserAssignedManagedIdentity()));
+        ManagedIdentity model = new ManagedIdentity().withType(ResourceIdentityType.NONE);
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.type());
     }
 }

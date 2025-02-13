@@ -108,41 +108,38 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.DraModel
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.DraModelProperties;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.IdentityModel;
 
-/** Samples for Dra Create. */
+/**
+ * Samples for Dra Create.
+ */
 public final class DraCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Dra_Create.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Dra_Create.json
      */
     /**
      * Sample code: Dra_Create.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draCreate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .dras()
+        manager.dras()
             .define("M")
             .withExistingReplicationFabric("rgrecoveryservicesdatareplication", "wPR")
-            .withProperties(
-                new DraModelProperties()
-                    .withMachineId("envzcoijbqhtrpncbjbhk")
-                    .withMachineName("y")
-                    .withAuthenticationIdentity(
-                        new IdentityModel()
-                            .withTenantId("joclkkdovixwapephhxaqtefubhhmq")
-                            .withApplicationId("cwktzrwajuvfyyymfstpey")
-                            .withObjectId("khsiaqfbpuhp")
-                            .withAudience("dkjobanyqgzenivyxhvavottpc")
-                            .withAadAuthority("bubwwbowfhdmujrt"))
-                    .withResourceAccessIdentity(
-                        new IdentityModel()
-                            .withTenantId("joclkkdovixwapephhxaqtefubhhmq")
-                            .withApplicationId("cwktzrwajuvfyyymfstpey")
-                            .withObjectId("khsiaqfbpuhp")
-                            .withAudience("dkjobanyqgzenivyxhvavottpc")
-                            .withAadAuthority("bubwwbowfhdmujrt"))
-                    .withCustomProperties(new DraModelCustomProperties()))
+            .withProperties(new DraModelProperties().withMachineId("envzcoijbqhtrpncbjbhk")
+                .withMachineName("y")
+                .withAuthenticationIdentity(new IdentityModel().withTenantId("joclkkdovixwapephhxaqtefubhhmq")
+                    .withApplicationId("cwktzrwajuvfyyymfstpey")
+                    .withObjectId("khsiaqfbpuhp")
+                    .withAudience("dkjobanyqgzenivyxhvavottpc")
+                    .withAadAuthority("bubwwbowfhdmujrt"))
+                .withResourceAccessIdentity(new IdentityModel().withTenantId("joclkkdovixwapephhxaqtefubhhmq")
+                    .withApplicationId("cwktzrwajuvfyyymfstpey")
+                    .withObjectId("khsiaqfbpuhp")
+                    .withAudience("dkjobanyqgzenivyxhvavottpc")
+                    .withAadAuthority("bubwwbowfhdmujrt"))
+                .withCustomProperties(new DraModelCustomProperties()))
             .create();
     }
 }
@@ -151,14 +148,18 @@ public final class DraCreateSamples {
 ### Dra_Delete
 
 ```java
-/** Samples for Dra Delete. */
+/**
+ * Samples for Dra Delete.
+ */
 public final class DraDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Dra_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Dra_Delete.json
      */
     /**
      * Sample code: Dra_Delete.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draDelete(
@@ -171,20 +172,23 @@ public final class DraDeleteSamples {
 ### Dra_Get
 
 ```java
-/** Samples for Dra Get. */
+/**
+ * Samples for Dra Get.
+ */
 public final class DraGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Dra_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Dra_Get.json
      */
     /**
      * Sample code: Dra_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .dras()
+        manager.dras()
             .getWithResponse("rgrecoveryservicesdatareplication", "wPR", "M", com.azure.core.util.Context.NONE);
     }
 }
@@ -193,14 +197,18 @@ public final class DraGetSamples {
 ### Dra_List
 
 ```java
-/** Samples for Dra List. */
+/**
+ * Samples for Dra List.
+ */
 public final class DraListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Dra_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Dra_List.json
      */
     /**
      * Sample code: Dra_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draList(
@@ -213,22 +221,25 @@ public final class DraListSamples {
 ### DraOperationStatus_Get
 
 ```java
-/** Samples for DraOperationStatus Get. */
+/**
+ * Samples for DraOperationStatus Get.
+ */
 public final class DraOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/DraOperationStatus_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/DraOperationStatus_Get.json
      */
     /**
      * Sample code: DraOperationStatus_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draOperationStatusGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .draOperationStatus()
-            .getWithResponse(
-                "rgrecoveryservicesdatareplication", "wPR", "M", "dadsqwcq", com.azure.core.util.Context.NONE);
+        manager.draOperationStatus()
+            .getWithResponse("rgrecoveryservicesdatareplication", "wPR", "M", "dadsqwcq",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -239,27 +250,28 @@ public final class DraOperationStatusGetSamples {
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.EmailConfigurationModelProperties;
 import java.util.Arrays;
 
-/** Samples for EmailConfiguration Create. */
+/**
+ * Samples for EmailConfiguration Create.
+ */
 public final class EmailConfigurationCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/EmailConfiguration_Create.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/EmailConfiguration_Create.json
      */
     /**
      * Sample code: EmailConfiguration_Create.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void emailConfigurationCreate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .emailConfigurations()
+        manager.emailConfigurations()
             .define("0")
             .withExistingReplicationVault("rgrecoveryservicesdatareplication", "4")
-            .withProperties(
-                new EmailConfigurationModelProperties()
-                    .withSendToOwners(true)
-                    .withCustomEmailAddresses(Arrays.asList("ketvbducyailcny"))
-                    .withLocale("vpnjxjvdqtebnucyxiyrjiko"))
+            .withProperties(new EmailConfigurationModelProperties().withSendToOwners(true)
+                .withCustomEmailAddresses(Arrays.asList("ketvbducyailcny"))
+                .withLocale("vpnjxjvdqtebnucyxiyrjiko"))
             .create();
     }
 }
@@ -268,20 +280,23 @@ public final class EmailConfigurationCreateSamples {
 ### EmailConfiguration_Get
 
 ```java
-/** Samples for EmailConfiguration Get. */
+/**
+ * Samples for EmailConfiguration Get.
+ */
 public final class EmailConfigurationGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/EmailConfiguration_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/EmailConfiguration_Get.json
      */
     /**
      * Sample code: EmailConfiguration_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void emailConfigurationGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .emailConfigurations()
+        manager.emailConfigurations()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "0", com.azure.core.util.Context.NONE);
     }
 }
@@ -290,14 +305,18 @@ public final class EmailConfigurationGetSamples {
 ### EmailConfiguration_List
 
 ```java
-/** Samples for EmailConfiguration List. */
+/**
+ * Samples for EmailConfiguration List.
+ */
 public final class EmailConfigurationListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/EmailConfiguration_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/EmailConfiguration_List.json
      */
     /**
      * Sample code: EmailConfiguration_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void emailConfigurationList(
@@ -310,20 +329,23 @@ public final class EmailConfigurationListSamples {
 ### Event_Get
 
 ```java
-/** Samples for Event Get. */
+/**
+ * Samples for Event Get.
+ */
 public final class EventGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Event_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Event_Get.json
      */
     /**
      * Sample code: Event_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void eventGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .events()
+        manager.events()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "231CIG", com.azure.core.util.Context.NONE);
     }
 }
@@ -332,25 +354,24 @@ public final class EventGetSamples {
 ### Event_List
 
 ```java
-/** Samples for Event List. */
+/**
+ * Samples for Event List.
+ */
 public final class EventListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Event_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Event_List.json
      */
     /**
      * Sample code: Event_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void eventList(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .events()
-            .list(
-                "rgrecoveryservicesdatareplication",
-                "4",
-                "wbglupjzvkirtgnnyasxom",
-                "cxtufi",
+        manager.events()
+            .list("rgrecoveryservicesdatareplication", "4", "wbglupjzvkirtgnnyasxom", "cxtufi",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -364,20 +385,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.FabricMo
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Fabric Create. */
+/**
+ * Samples for Fabric Create.
+ */
 public final class FabricCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Fabric_Create.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Fabric_Create.json
      */
     /**
      * Sample code: Fabric_Create.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricCreate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .fabrics()
+        manager.fabrics()
             .define("wPR")
             .withRegion("tqygutlpob")
             .withExistingResourceGroup("rgrecoveryservicesdatareplication")
@@ -403,14 +427,18 @@ public final class FabricCreateSamples {
 ### Fabric_Delete
 
 ```java
-/** Samples for Fabric Delete. */
+/**
+ * Samples for Fabric Delete.
+ */
 public final class FabricDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Fabric_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Fabric_Delete.json
      */
     /**
      * Sample code: Fabric_Delete.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricDelete(
@@ -423,22 +451,25 @@ public final class FabricDeleteSamples {
 ### Fabric_GetByResourceGroup
 
 ```java
-/** Samples for Fabric GetByResourceGroup. */
+/**
+ * Samples for Fabric GetByResourceGroup.
+ */
 public final class FabricGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Fabric_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Fabric_Get.json
      */
     /**
      * Sample code: Fabric_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .fabrics()
-            .getByResourceGroupWithResponse(
-                "rgrecoveryservicesdatareplication", "wPR", com.azure.core.util.Context.NONE);
+        manager.fabrics()
+            .getByResourceGroupWithResponse("rgrecoveryservicesdatareplication", "wPR",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -446,14 +477,18 @@ public final class FabricGetByResourceGroupSamples {
 ### Fabric_List
 
 ```java
-/** Samples for Fabric List. */
+/**
+ * Samples for Fabric List.
+ */
 public final class FabricListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Fabric_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Fabric_ListBySubscription.json
      */
     /**
      * Sample code: Fabric_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricListBySubscription(
@@ -466,20 +501,23 @@ public final class FabricListSamples {
 ### Fabric_ListByResourceGroup
 
 ```java
-/** Samples for Fabric ListByResourceGroup. */
+/**
+ * Samples for Fabric ListByResourceGroup.
+ */
 public final class FabricListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Fabric_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Fabric_List.json
      */
     /**
      * Sample code: Fabric_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricList(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .fabrics()
+        manager.fabrics()
             .listByResourceGroup("rgrecoveryservicesdatareplication", "mjzsxwwmtvd", com.azure.core.util.Context.NONE);
     }
 }
@@ -494,26 +532,27 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.FabricMo
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Fabric Update. */
+/**
+ * Samples for Fabric Update.
+ */
 public final class FabricUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Fabric_Update.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Fabric_Update.json
      */
     /**
      * Sample code: Fabric_Update.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricUpdate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        FabricModel resource =
-            manager
-                .fabrics()
-                .getByResourceGroupWithResponse(
-                    "rgrecoveryservicesdatareplication", "wPR", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        FabricModel resource = manager.fabrics()
+            .getByResourceGroupWithResponse("rgrecoveryservicesdatareplication", "wPR",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key6664", "fakeTokenPlaceholder"))
             .withProperties(new FabricModelProperties().withCustomProperties(new FabricModelCustomProperties()))
             .apply();
@@ -536,20 +575,23 @@ public final class FabricUpdateSamples {
 ### FabricOperationsStatus_Get
 
 ```java
-/** Samples for FabricOperationsStatus Get. */
+/**
+ * Samples for FabricOperationsStatus Get.
+ */
 public final class FabricOperationsStatusGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/FabricOperationsStatus_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/FabricOperationsStatus_Get.json
      */
     /**
      * Sample code: FabricOperationsStatus_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void fabricOperationsStatusGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .fabricOperationsStatus()
+        manager.fabricOperationsStatus()
             .getWithResponse("rgrecoveryservicesdatareplication", "wPR", "dvfwerv", com.azure.core.util.Context.NONE);
     }
 }
@@ -558,14 +600,18 @@ public final class FabricOperationsStatusGetSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void operationsList(
@@ -581,20 +627,23 @@ public final class OperationsListSamples {
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.PolicyModelCustomProperties;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.PolicyModelProperties;
 
-/** Samples for Policy Create. */
+/**
+ * Samples for Policy Create.
+ */
 public final class PolicyCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Policy_Create.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Policy_Create.json
      */
     /**
      * Sample code: Policy_Create.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyCreate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .policies()
+        manager.policies()
             .define("fafqwc")
             .withExistingReplicationVault("rgrecoveryservicesdatareplication", "4")
             .withProperties(new PolicyModelProperties().withCustomProperties(new PolicyModelCustomProperties()))
@@ -606,20 +655,23 @@ public final class PolicyCreateSamples {
 ### Policy_Delete
 
 ```java
-/** Samples for Policy Delete. */
+/**
+ * Samples for Policy Delete.
+ */
 public final class PolicyDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Policy_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Policy_Delete.json
      */
     /**
      * Sample code: Policy_Delete.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyDelete(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .policies()
+        manager.policies()
             .delete("rgrecoveryservicesdatareplication", "4", "wqfscsdv", com.azure.core.util.Context.NONE);
     }
 }
@@ -628,20 +680,23 @@ public final class PolicyDeleteSamples {
 ### Policy_Get
 
 ```java
-/** Samples for Policy Get. */
+/**
+ * Samples for Policy Get.
+ */
 public final class PolicyGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Policy_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Policy_Get.json
      */
     /**
      * Sample code: Policy_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .policies()
+        manager.policies()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "wdqsacasc", com.azure.core.util.Context.NONE);
     }
 }
@@ -650,14 +705,18 @@ public final class PolicyGetSamples {
 ### Policy_List
 
 ```java
-/** Samples for Policy List. */
+/**
+ * Samples for Policy List.
+ */
 public final class PolicyListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Policy_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Policy_List.json
      */
     /**
      * Sample code: Policy_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyList(
@@ -670,22 +729,25 @@ public final class PolicyListSamples {
 ### PolicyOperationStatus_Get
 
 ```java
-/** Samples for PolicyOperationStatus Get. */
+/**
+ * Samples for PolicyOperationStatus Get.
+ */
 public final class PolicyOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/PolicyOperationStatus_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/PolicyOperationStatus_Get.json
      */
     /**
      * Sample code: PolicyOperationStatus_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void policyOperationStatusGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .policyOperationStatus()
-            .getWithResponse(
-                "rgrecoveryservicesdatareplication", "4", "xczxcwec", "wdqfsdxv", com.azure.core.util.Context.NONE);
+        manager.policyOperationStatus()
+            .getWithResponse("rgrecoveryservicesdatareplication", "4", "xczxcwec", "wdqfsdxv",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -696,27 +758,28 @@ public final class PolicyOperationStatusGetSamples {
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.ProtectedItemModelCustomProperties;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.ProtectedItemModelProperties;
 
-/** Samples for ProtectedItem Create. */
+/**
+ * Samples for ProtectedItem Create.
+ */
 public final class ProtectedItemCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ProtectedItem_Create.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ProtectedItem_Create.json
      */
     /**
      * Sample code: ProtectedItem_Create.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemCreate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .protectedItems()
+        manager.protectedItems()
             .define("d")
             .withExistingReplicationVault("rgrecoveryservicesdatareplication", "4")
-            .withProperties(
-                new ProtectedItemModelProperties()
-                    .withPolicyName("tjoeiynplt")
-                    .withReplicationExtensionName("jwxdo")
-                    .withCustomProperties(new ProtectedItemModelCustomProperties()))
+            .withProperties(new ProtectedItemModelProperties().withPolicyName("tjoeiynplt")
+                .withReplicationExtensionName("jwxdo")
+                .withCustomProperties(new ProtectedItemModelCustomProperties()))
             .create();
     }
 }
@@ -725,20 +788,23 @@ public final class ProtectedItemCreateSamples {
 ### ProtectedItem_Delete
 
 ```java
-/** Samples for ProtectedItem Delete. */
+/**
+ * Samples for ProtectedItem Delete.
+ */
 public final class ProtectedItemDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ProtectedItem_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ProtectedItem_Delete.json
      */
     /**
      * Sample code: ProtectedItem_Delete.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemDelete(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .protectedItems()
+        manager.protectedItems()
             .delete("rgrecoveryservicesdatareplication", "4", "d", true, com.azure.core.util.Context.NONE);
     }
 }
@@ -747,20 +813,23 @@ public final class ProtectedItemDeleteSamples {
 ### ProtectedItem_Get
 
 ```java
-/** Samples for ProtectedItem Get. */
+/**
+ * Samples for ProtectedItem Get.
+ */
 public final class ProtectedItemGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ProtectedItem_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ProtectedItem_Get.json
      */
     /**
      * Sample code: ProtectedItem_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .protectedItems()
+        manager.protectedItems()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "d", com.azure.core.util.Context.NONE);
     }
 }
@@ -769,14 +838,18 @@ public final class ProtectedItemGetSamples {
 ### ProtectedItem_List
 
 ```java
-/** Samples for ProtectedItem List. */
+/**
+ * Samples for ProtectedItem List.
+ */
 public final class ProtectedItemListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ProtectedItem_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ProtectedItem_List.json
      */
     /**
      * Sample code: ProtectedItem_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemList(
@@ -793,28 +866,26 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.P
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.PlannedFailoverModelCustomProperties;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.PlannedFailoverModelProperties;
 
-/** Samples for ProtectedItem PlannedFailover. */
+/**
+ * Samples for ProtectedItem PlannedFailover.
+ */
 public final class ProtectedItemPlannedFailoverSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ProtectedItem_PlannedFailover.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ProtectedItem_PlannedFailover.json
      */
     /**
      * Sample code: ProtectedItem_PlannedFailover.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemPlannedFailover(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .protectedItems()
-            .plannedFailover(
-                "rgrecoveryservicesdatareplication",
-                "4",
-                "d",
-                new PlannedFailoverModelInner()
-                    .withProperties(
-                        new PlannedFailoverModelProperties()
-                            .withCustomProperties(new PlannedFailoverModelCustomProperties())),
+        manager.protectedItems()
+            .plannedFailover("rgrecoveryservicesdatareplication", "4", "d",
+                new PlannedFailoverModelInner().withProperties(new PlannedFailoverModelProperties()
+                    .withCustomProperties(new PlannedFailoverModelCustomProperties())),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -823,22 +894,25 @@ public final class ProtectedItemPlannedFailoverSamples {
 ### ProtectedItemOperationStatus_Get
 
 ```java
-/** Samples for ProtectedItemOperationStatus Get. */
+/**
+ * Samples for ProtectedItemOperationStatus Get.
+ */
 public final class ProtectedItemOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ProtectedItemOperationStatus_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ProtectedItemOperationStatus_Get.json
      */
     /**
      * Sample code: ProtectedItemOperationStatus_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void protectedItemOperationStatusGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .protectedItemOperationStatus()
-            .getWithResponse(
-                "rgrecoveryservicesdatareplication", "4", "d", "wdqacsc", com.azure.core.util.Context.NONE);
+        manager.protectedItemOperationStatus()
+            .getWithResponse("rgrecoveryservicesdatareplication", "4", "d", "wdqacsc",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -846,20 +920,23 @@ public final class ProtectedItemOperationStatusGetSamples {
 ### RecoveryPoints_Get
 
 ```java
-/** Samples for RecoveryPoints Get. */
+/**
+ * Samples for RecoveryPoints Get.
+ */
 public final class RecoveryPointsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/RecoveryPoints_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/RecoveryPoints_Get.json
      */
     /**
      * Sample code: RecoveryPoints_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void recoveryPointsGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .recoveryPoints()
+        manager.recoveryPoints()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "d", "1X", com.azure.core.util.Context.NONE);
     }
 }
@@ -868,14 +945,18 @@ public final class RecoveryPointsGetSamples {
 ### RecoveryPoints_List
 
 ```java
-/** Samples for RecoveryPoints List. */
+/**
+ * Samples for RecoveryPoints List.
+ */
 public final class RecoveryPointsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/RecoveryPoints_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/RecoveryPoints_List.json
      */
     /**
      * Sample code: RecoveryPoints_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void recoveryPointsList(
@@ -891,25 +972,27 @@ public final class RecoveryPointsListSamples {
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.ReplicationExtensionModelCustomProperties;
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.ReplicationExtensionModelProperties;
 
-/** Samples for ReplicationExtension Create. */
+/**
+ * Samples for ReplicationExtension Create.
+ */
 public final class ReplicationExtensionCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ReplicationExtension_Create.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ReplicationExtension_Create.json
      */
     /**
      * Sample code: ReplicationExtension_Create.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void replicationExtensionCreate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .replicationExtensions()
+        manager.replicationExtensions()
             .define("g16yjJ")
             .withExistingReplicationVault("rgrecoveryservicesdatareplication", "4")
-            .withProperties(
-                new ReplicationExtensionModelProperties()
-                    .withCustomProperties(new ReplicationExtensionModelCustomProperties()))
+            .withProperties(new ReplicationExtensionModelProperties()
+                .withCustomProperties(new ReplicationExtensionModelCustomProperties()))
             .create();
     }
 }
@@ -918,20 +1001,23 @@ public final class ReplicationExtensionCreateSamples {
 ### ReplicationExtension_Delete
 
 ```java
-/** Samples for ReplicationExtension Delete. */
+/**
+ * Samples for ReplicationExtension Delete.
+ */
 public final class ReplicationExtensionDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ReplicationExtension_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ReplicationExtension_Delete.json
      */
     /**
      * Sample code: ReplicationExtension_Delete.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void replicationExtensionDelete(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .replicationExtensions()
+        manager.replicationExtensions()
             .delete("rgrecoveryservicesdatareplication", "4", "g16yjJ", com.azure.core.util.Context.NONE);
     }
 }
@@ -940,20 +1026,23 @@ public final class ReplicationExtensionDeleteSamples {
 ### ReplicationExtension_Get
 
 ```java
-/** Samples for ReplicationExtension Get. */
+/**
+ * Samples for ReplicationExtension Get.
+ */
 public final class ReplicationExtensionGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ReplicationExtension_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ReplicationExtension_Get.json
      */
     /**
      * Sample code: ReplicationExtension_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void replicationExtensionGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .replicationExtensions()
+        manager.replicationExtensions()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "g16yjJ", com.azure.core.util.Context.NONE);
     }
 }
@@ -962,20 +1051,23 @@ public final class ReplicationExtensionGetSamples {
 ### ReplicationExtension_List
 
 ```java
-/** Samples for ReplicationExtension List. */
+/**
+ * Samples for ReplicationExtension List.
+ */
 public final class ReplicationExtensionListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/ReplicationExtension_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/ReplicationExtension_List.json
      */
     /**
      * Sample code: ReplicationExtension_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void replicationExtensionList(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .replicationExtensions()
+        manager.replicationExtensions()
             .list("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
     }
 }
@@ -986,22 +1078,24 @@ public final class ReplicationExtensionListSamples {
 ```java
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.CheckNameAvailabilityModel;
 
-/** Samples for ResourceProvider CheckNameAvailability. */
+/**
+ * Samples for ResourceProvider CheckNameAvailability.
+ */
 public final class ResourceProviderCheckNameAvailabilityS {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/CheckNameAvailability.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/CheckNameAvailability.json
      */
     /**
      * Sample code: CheckNameAvailability.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void checkNameAvailability(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .resourceProviders()
-            .checkNameAvailabilityWithResponse(
-                "trfqtbtmusswpibw",
+        manager.resourceProviders()
+            .checkNameAvailabilityWithResponse("trfqtbtmusswpibw",
                 new CheckNameAvailabilityModel().withName("updkdcixs").withType("gngmcancdauwhdixjjvqnfkvqc"),
                 com.azure.core.util.Context.NONE);
     }
@@ -1015,32 +1109,29 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.D
 import com.azure.resourcemanager.recoveryservicesdatareplication.models.DeploymentPreflightResource;
 import java.util.Arrays;
 
-/** Samples for ResourceProvider DeploymentPreflight. */
+/**
+ * Samples for ResourceProvider DeploymentPreflight.
+ */
 public final class ResourceProviderDeploymentPreflightSam {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/DeploymentPreflight.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/DeploymentPreflight.json
      */
     /**
      * Sample code: DeploymentPreflight.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void deploymentPreflight(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .resourceProviders()
-            .deploymentPreflightWithResponse(
-                "rgrecoveryservicesdatareplication",
-                "kjoiahxljomjcmvabaobumg",
+        manager.resourceProviders()
+            .deploymentPreflightWithResponse("rgrecoveryservicesdatareplication", "kjoiahxljomjcmvabaobumg",
                 new DeploymentPreflightModelInner()
-                    .withResources(
-                        Arrays
-                            .asList(
-                                new DeploymentPreflightResource()
-                                    .withName("xtgugoflfc")
-                                    .withType("nsnaptduolqcxsikrewvgjbxqpt")
-                                    .withLocation("cbsgtxkjdzwbyp")
-                                    .withApiVersion("otihymhvzblycdoxo"))),
+                    .withResources(Arrays.asList(new DeploymentPreflightResource().withName("xtgugoflfc")
+                        .withType("nsnaptduolqcxsikrewvgjbxqpt")
+                        .withLocation("cbsgtxkjdzwbyp")
+                        .withApiVersion("otihymhvzblycdoxo"))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1054,20 +1145,23 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.VaultMod
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Vault Create. */
+/**
+ * Samples for Vault Create.
+ */
 public final class VaultCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Vault_Create.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Vault_Create.json
      */
     /**
      * Sample code: Vault_Create.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultCreate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .define("4")
             .withRegion("eck")
             .withExistingResourceGroup("rgrecoveryservicesdatareplication")
@@ -1093,14 +1187,18 @@ public final class VaultCreateSamples {
 ### Vault_Delete
 
 ```java
-/** Samples for Vault Delete. */
+/**
+ * Samples for Vault Delete.
+ */
 public final class VaultDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Vault_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Vault_Delete.json
      */
     /**
      * Sample code: Vault_Delete.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultDelete(
@@ -1113,20 +1211,23 @@ public final class VaultDeleteSamples {
 ### Vault_GetByResourceGroup
 
 ```java
-/** Samples for Vault GetByResourceGroup. */
+/**
+ * Samples for Vault GetByResourceGroup.
+ */
 public final class VaultGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Vault_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Vault_Get.json
      */
     /**
      * Sample code: Vault_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .getByResourceGroupWithResponse("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE);
     }
 }
@@ -1135,14 +1236,18 @@ public final class VaultGetByResourceGroupSamples {
 ### Vault_List
 
 ```java
-/** Samples for Vault List. */
+/**
+ * Samples for Vault List.
+ */
 public final class VaultListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Vault_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Vault_ListBySubscription.json
      */
     /**
      * Sample code: Vault_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultListBySubscription(
@@ -1155,20 +1260,23 @@ public final class VaultListSamples {
 ### Vault_ListByResourceGroup
 
 ```java
-/** Samples for Vault ListByResourceGroup. */
+/**
+ * Samples for Vault ListByResourceGroup.
+ */
 public final class VaultListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Vault_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Vault_List.json
      */
     /**
      * Sample code: Vault_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultList(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .vaults()
+        manager.vaults()
             .listByResourceGroup("rgrecoveryservicesdatareplication", "mwculdaqndp", com.azure.core.util.Context.NONE);
     }
 }
@@ -1183,26 +1291,26 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.VaultMod
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Vault Update. */
+/**
+ * Samples for Vault Update.
+ */
 public final class VaultUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Vault_Update.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Vault_Update.json
      */
     /**
      * Sample code: Vault_Update.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultUpdate(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        VaultModel resource =
-            manager
-                .vaults()
-                .getByResourceGroupWithResponse(
-                    "rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
+        VaultModel resource = manager.vaults()
+            .getByResourceGroupWithResponse("rgrecoveryservicesdatareplication", "4", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("key8872", "fakeTokenPlaceholder"))
             .withProperties(new VaultModelProperties().withVaultType(ReplicationVaultType.DISASTER_RECOVERY))
             .apply();
@@ -1225,20 +1333,23 @@ public final class VaultUpdateSamples {
 ### VaultOperationStatus_Get
 
 ```java
-/** Samples for VaultOperationStatus Get. */
+/**
+ * Samples for VaultOperationStatus Get.
+ */
 public final class VaultOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/VaultOperationStatus_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/VaultOperationStatus_Get.json
      */
     /**
      * Sample code: VaultOperationStatus_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void vaultOperationStatusGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .vaultOperationStatus()
+        manager.vaultOperationStatus()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "vsdvwe", com.azure.core.util.Context.NONE);
     }
 }
@@ -1247,20 +1358,23 @@ public final class VaultOperationStatusGetSamples {
 ### Workflow_Get
 
 ```java
-/** Samples for Workflow Get. */
+/**
+ * Samples for Workflow Get.
+ */
 public final class WorkflowGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Workflow_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Workflow_Get.json
      */
     /**
      * Sample code: Workflow_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void workflowGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .workflows()
+        manager.workflows()
             .getWithResponse("rgrecoveryservicesdatareplication", "4", "ZGH4y", com.azure.core.util.Context.NONE);
     }
 }
@@ -1269,25 +1383,24 @@ public final class WorkflowGetSamples {
 ### Workflow_List
 
 ```java
-/** Samples for Workflow List. */
+/**
+ * Samples for Workflow List.
+ */
 public final class WorkflowListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Workflow_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Workflow_List.json
      */
     /**
      * Sample code: Workflow_List.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void workflowList(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .workflows()
-            .list(
-                "rgrecoveryservicesdatareplication",
-                "4",
-                "mnebpgmjcitjleipnttx",
-                "rdavrzbethhslmkqgajontnxsue",
+        manager.workflows()
+            .list("rgrecoveryservicesdatareplication", "4", "mnebpgmjcitjleipnttx", "rdavrzbethhslmkqgajontnxsue",
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -1296,22 +1409,25 @@ public final class WorkflowListSamples {
 ### WorkflowOperationStatus_Get
 
 ```java
-/** Samples for WorkflowOperationStatus Get. */
+/**
+ * Samples for WorkflowOperationStatus Get.
+ */
 public final class WorkflowOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/WorkflowOperationStatus_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/WorkflowOperationStatus_Get.json
      */
     /**
      * Sample code: WorkflowOperationStatus_Get.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void workflowOperationStatusGet(
         com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager manager) {
-        manager
-            .workflowOperationStatus()
-            .getWithResponse(
-                "rgrecoveryservicesdatareplication", "4", "ZGH4y", "wdqcxc", com.azure.core.util.Context.NONE);
+        manager.workflowOperationStatus()
+            .getWithResponse("rgrecoveryservicesdatareplication", "4", "ZGH4y", "wdqcxc",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

@@ -32,78 +32,6 @@ public final class DomainAssetResource extends AssetResource {
     @Generated
     private final DomainAsset asset;
 
-    /*
-     * The caller provided unique name for the resource.
-     */
-    @Generated
-    private String name;
-
-    /*
-     * The name that can be used for display purposes.
-     */
-    @Generated
-    private String displayName;
-
-    /*
-     * Global UUID for the asset.
-     */
-    @Generated
-    private String uuid;
-
-    /*
-     * The date this asset was first added to this workspace.
-     */
-    @Generated
-    private OffsetDateTime createdDate;
-
-    /*
-     * The date this asset was last updated for this workspace.
-     */
-    @Generated
-    private OffsetDateTime updatedDate;
-
-    /*
-     * The state property.
-     */
-    @Generated
-    private AssetState state;
-
-    /*
-     * An optional customer provided identifier for this asset.
-     */
-    @Generated
-    private String externalId;
-
-    /*
-     * Customer labels assigned to this asset.
-     */
-    @Generated
-    private List<String> labels;
-
-    /*
-     * An indicator of whether this asset represents a wildcard rollup of assets on this domain.
-     */
-    @Generated
-    private Boolean wildcard;
-
-    /*
-     * The name of the DiscoGroup that brought added this asset to the workspace.
-     */
-    @Generated
-    private String discoGroupName;
-
-    /*
-     * The history of how this asset was pulled into the workspace through the discovery process.
-     */
-    @Generated
-    private List<AuditTrailItem> auditTrail;
-
-    /*
-     * The reason property.
-     */
-    @Generated
-    private String reason;
-
     /**
      * Creates an instance of DomainAssetResource class.
      *
@@ -133,140 +61,6 @@ public final class DomainAssetResource extends AssetResource {
     @Generated
     public DomainAsset getAsset() {
         return this.asset;
-    }
-
-    /**
-     * Get the name property: The caller provided unique name for the resource.
-     *
-     * @return the name value.
-     */
-    @Generated
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Get the displayName property: The name that can be used for display purposes.
-     *
-     * @return the displayName value.
-     */
-    @Generated
-    @Override
-    public String getDisplayName() {
-        return this.displayName;
-    }
-
-    /**
-     * Get the uuid property: Global UUID for the asset.
-     *
-     * @return the uuid value.
-     */
-    @Generated
-    @Override
-    public String getUuid() {
-        return this.uuid;
-    }
-
-    /**
-     * Get the createdDate property: The date this asset was first added to this workspace.
-     *
-     * @return the createdDate value.
-     */
-    @Generated
-    @Override
-    public OffsetDateTime getCreatedDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the updatedDate property: The date this asset was last updated for this workspace.
-     *
-     * @return the updatedDate value.
-     */
-    @Generated
-    @Override
-    public OffsetDateTime getUpdatedDate() {
-        return this.updatedDate;
-    }
-
-    /**
-     * Get the state property: The state property.
-     *
-     * @return the state value.
-     */
-    @Generated
-    @Override
-    public AssetState getState() {
-        return this.state;
-    }
-
-    /**
-     * Get the externalId property: An optional customer provided identifier for this asset.
-     *
-     * @return the externalId value.
-     */
-    @Generated
-    @Override
-    public String getExternalId() {
-        return this.externalId;
-    }
-
-    /**
-     * Get the labels property: Customer labels assigned to this asset.
-     *
-     * @return the labels value.
-     */
-    @Generated
-    @Override
-    public List<String> getLabels() {
-        return this.labels;
-    }
-
-    /**
-     * Get the wildcard property: An indicator of whether this asset represents a wildcard rollup of assets on this
-     * domain.
-     *
-     * @return the wildcard value.
-     */
-    @Generated
-    @Override
-    public Boolean isWildcard() {
-        return this.wildcard;
-    }
-
-    /**
-     * Get the discoGroupName property: The name of the DiscoGroup that brought added this asset to the workspace.
-     *
-     * @return the discoGroupName value.
-     */
-    @Generated
-    @Override
-    public String getDiscoGroupName() {
-        return this.discoGroupName;
-    }
-
-    /**
-     * Get the auditTrail property: The history of how this asset was pulled into the workspace through the discovery
-     * process.
-     *
-     * @return the auditTrail value.
-     */
-    @Generated
-    @Override
-    public List<AuditTrailItem> getAuditTrail() {
-        return this.auditTrail;
-    }
-
-    /**
-     * Get the reason property: The reason property.
-     *
-     * @return the reason value.
-     */
-    @Generated
-    @Override
-    public String getReason() {
-        return this.reason;
     }
 
     /**
@@ -363,18 +157,18 @@ public final class DomainAssetResource extends AssetResource {
             }
             DomainAssetResource deserializedDomainAssetResource = new DomainAssetResource(asset);
             deserializedDomainAssetResource.setId(id);
-            deserializedDomainAssetResource.name = name;
-            deserializedDomainAssetResource.displayName = displayName;
-            deserializedDomainAssetResource.uuid = uuid;
-            deserializedDomainAssetResource.createdDate = createdDate;
-            deserializedDomainAssetResource.updatedDate = updatedDate;
-            deserializedDomainAssetResource.state = state;
-            deserializedDomainAssetResource.externalId = externalId;
-            deserializedDomainAssetResource.labels = labels;
-            deserializedDomainAssetResource.wildcard = wildcard;
-            deserializedDomainAssetResource.discoGroupName = discoGroupName;
-            deserializedDomainAssetResource.auditTrail = auditTrail;
-            deserializedDomainAssetResource.reason = reason;
+            deserializedDomainAssetResource.setName(name);
+            deserializedDomainAssetResource.setDisplayName(displayName);
+            deserializedDomainAssetResource.setUuid(uuid);
+            deserializedDomainAssetResource.setCreatedDate(createdDate);
+            deserializedDomainAssetResource.setUpdatedDate(updatedDate);
+            deserializedDomainAssetResource.setState(state);
+            deserializedDomainAssetResource.setExternalId(externalId);
+            deserializedDomainAssetResource.setLabels(labels);
+            deserializedDomainAssetResource.setWildcard(wildcard);
+            deserializedDomainAssetResource.setDiscoGroupName(discoGroupName);
+            deserializedDomainAssetResource.setAuditTrail(auditTrail);
+            deserializedDomainAssetResource.setReason(reason);
             deserializedDomainAssetResource.kind = kind;
             return deserializedDomainAssetResource;
         });

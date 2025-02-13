@@ -5,19 +5,19 @@ package io.clientcore.core.implementation.serializer;
 
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.MockHttpResponseDecodeData;
-import io.clientcore.core.http.exception.HttpExceptionType;
-import io.clientcore.core.http.exception.HttpResponseException;
+import io.clientcore.core.http.exceptions.HttpExceptionType;
+import io.clientcore.core.http.exceptions.HttpResponseException;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
+import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
-import io.clientcore.core.implementation.util.Base64Uri;
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.utils.Base64Uri;
+import io.clientcore.core.utils.DateTimeRfc1123;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.util.TestUtils.assertArraysEqual;
+import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -45,7 +45,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests {@link HttpResponseBodyDecoder}.
  */
 public class HttpResponseBodyDecoderTests {
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+    private static final CompositeSerializer SERIALIZER = new CompositeSerializer(Arrays.asList(new JsonSerializer()));
 
     private static final HttpRequest GET_REQUEST = new HttpRequest(HttpMethod.GET, "https://localhost");
     private static final HttpRequest HEAD_REQUEST = new HttpRequest(HttpMethod.HEAD, "https://localhost");
@@ -99,12 +99,12 @@ public class HttpResponseBodyDecoderTests {
 
     @Test
     public void exceptionInErrorDeserializationReturnsException() {
-        ObjectSerializer ioExceptionThrower = new DefaultJsonSerializer() {
+        CompositeSerializer ioExceptionThrower = new CompositeSerializer(Arrays.asList(new JsonSerializer() {
             @Override
             public <T> T deserializeFromBytes(byte[] bytes, Type type) {
                 throw new UncheckedIOException(new IOException());
             }
-        };
+        }));
 
         HttpResponseDecodeData noExpectedStatusCodes
             = new MockHttpResponseDecodeData(new UnexpectedExceptionInformation(null, null));
@@ -186,13 +186,13 @@ public class HttpResponseBodyDecoderTests {
         ParameterizedType stringList = mockParameterizedType(List.class, String.class);
         HttpResponseDecodeData stringListDecodeData
             = new MockHttpResponseDecodeData(200, stringList, String.class, true);
-        List<String> list = Arrays.asList("hello", "azure");
+        List<String> list = Arrays.asList("hello", "world");
         Response<?> stringListResponse = new MockHttpResponse(GET_REQUEST, 200, list);
 
         ParameterizedType mapStringString = mockParameterizedType(Map.class, String.class, String.class);
         HttpResponseDecodeData mapStringStringDecodeData
             = new MockHttpResponseDecodeData(200, mapStringString, String.class, true);
-        Map<String, String> map = Collections.singletonMap("hello", "azure");
+        Map<String, String> map = Collections.singletonMap("hello", "world");
         Response<?> mapStringStringResponse = new MockHttpResponse(GET_REQUEST, 200, map);
 
         return Stream.of(Arguments.of(stringResponse, stringDecodeData, "hello"),

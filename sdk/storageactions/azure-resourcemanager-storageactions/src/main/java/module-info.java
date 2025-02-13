@@ -10,6 +10,6 @@ module com.azure.resourcemanager.storageactions {
     exports com.azure.resourcemanager.storageactions.fluent.models;
     exports com.azure.resourcemanager.storageactions.models;
 
-    opens com.azure.resourcemanager.storageactions.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.storageactions.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.storageactions.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.storageactions.models to com.azure.core;
 }

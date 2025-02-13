@@ -41,6 +41,9 @@ parameters:
   - name: ServiceConnection
     type: string
     default: ''
+  - name: PreTestRunSteps
+    type: object
+    default: [ ]
 
 steps:
   - task: Maven@4
@@ -58,7 +61,7 @@ steps:
       publishJUnitResults: false
       goals: 'install'
     env:
-      AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+      VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'), ne(variables['FirstTestOverrideRan'], 'true'))
 
   - task: PythonScript@0
@@ -80,8 +83,10 @@ steps:
       publishJUnitResults: false
       goals: 'clean install'
     env:
-      AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+      VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
+
+  - ${{ parameters.PreTestRunSteps }}
 
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     # Remove preceeding "1." in the version specified by $(JavaTestVersion)
@@ -176,6 +181,8 @@ steps:
       publishJUnitResults: false
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
+  - ${{ parameters.PreTestRunSteps }}
+
   - ${{ if eq('true', parameters.UseFederatedAuth) }}:
     - ${{ if eq(parameters.IsLiveTest, 'true') }}:
       - pwsh: |
@@ -244,6 +251,24 @@ steps:
   - ${{ else }}:
     - template: /eng/pipelines/templates/steps/retain-test-logs.yml
     - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
+
+  # The name of a test case in the results file isn't helpful in the web view.
+  # Update it to include the breadcrumb namespace and the type.
+  - pwsh: |
+      echo "Current directory: $(get-location)"
+      Get-ChildItem "TEST-*.xml" -Recurse | ForEach-Object {
+      echo "Updating $($_.Name)"
+      [xml]$xml = Get-Content $_.FullName
+      $xml.SelectNodes("//testcase") | ForEach-Object {
+          $parts = $_.classname -split '\.'
+          $shortClassname = (($parts[0..($parts.Length -2)] | ForEach-Object { $_[0] }) -join ".") + ".$($parts[-1])"
+          $_.name = "$shortClassname.$($_.name)"
+          }
+          $xml.Save($_.FullName)
+      }
+    displayName: 'Update test case names for reporting'
+    condition: always()
+    workingDirectory: $(System.DefaultWorkingDirectory)/sdk
 
   - task: PublishTestResults@2
     condition: always()

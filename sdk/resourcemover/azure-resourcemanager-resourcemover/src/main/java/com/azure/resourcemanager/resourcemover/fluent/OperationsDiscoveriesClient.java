@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.OperationsDiscoveryCollectionInner;
 
-/** An instance of this class provides access to all the operations defined in OperationsDiscoveriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsDiscoveriesClient.
+ */
 public interface OperationsDiscoveriesClient {
     /**
      * The get operation.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,7 +28,7 @@ public interface OperationsDiscoveriesClient {
 
     /**
      * The get operation.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of ClientDiscovery details.

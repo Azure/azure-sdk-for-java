@@ -5,50 +5,54 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateParametersContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Email Template Update Contract properties. */
+/**
+ * Email Template Update Contract properties.
+ */
 @Fluent
-public final class EmailTemplateUpdateParameterProperties {
+public final class EmailTemplateUpdateParameterProperties
+    implements JsonSerializable<EmailTemplateUpdateParameterProperties> {
     /*
      * Subject of the Template.
      */
-    @JsonProperty(value = "subject")
     private String subject;
 
     /*
      * Title of the Template.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Description of the Email Template.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Email Template Body. This should be a valid XDocument
      */
-    @JsonProperty(value = "body")
     private String body;
 
     /*
      * Email Template Parameter values.
      */
-    @JsonProperty(value = "parameters")
     private List<EmailTemplateParametersContractProperties> parameters;
 
-    /** Creates an instance of EmailTemplateUpdateParameterProperties class. */
+    /**
+     * Creates an instance of EmailTemplateUpdateParameterProperties class.
+     */
     public EmailTemplateUpdateParameterProperties() {
     }
 
     /**
      * Get the subject property: Subject of the Template.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -57,7 +61,7 @@ public final class EmailTemplateUpdateParameterProperties {
 
     /**
      * Set the subject property: Subject of the Template.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the EmailTemplateUpdateParameterProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class EmailTemplateUpdateParameterProperties {
 
     /**
      * Get the title property: Title of the Template.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -77,7 +81,7 @@ public final class EmailTemplateUpdateParameterProperties {
 
     /**
      * Set the title property: Title of the Template.
-     *
+     * 
      * @param title the title value to set.
      * @return the EmailTemplateUpdateParameterProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class EmailTemplateUpdateParameterProperties {
 
     /**
      * Get the description property: Description of the Email Template.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -97,7 +101,7 @@ public final class EmailTemplateUpdateParameterProperties {
 
     /**
      * Set the description property: Description of the Email Template.
-     *
+     * 
      * @param description the description value to set.
      * @return the EmailTemplateUpdateParameterProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class EmailTemplateUpdateParameterProperties {
 
     /**
      * Get the body property: Email Template Body. This should be a valid XDocument.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
@@ -117,7 +121,7 @@ public final class EmailTemplateUpdateParameterProperties {
 
     /**
      * Set the body property: Email Template Body. This should be a valid XDocument.
-     *
+     * 
      * @param body the body value to set.
      * @return the EmailTemplateUpdateParameterProperties object itself.
      */
@@ -128,7 +132,7 @@ public final class EmailTemplateUpdateParameterProperties {
 
     /**
      * Get the parameters property: Email Template Parameter values.
-     *
+     * 
      * @return the parameters value.
      */
     public List<EmailTemplateParametersContractProperties> parameters() {
@@ -137,7 +141,7 @@ public final class EmailTemplateUpdateParameterProperties {
 
     /**
      * Set the parameters property: Email Template Parameter values.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the EmailTemplateUpdateParameterProperties object itself.
      */
@@ -149,12 +153,63 @@ public final class EmailTemplateUpdateParameterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parameters() != null) {
             parameters().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subject", this.subject);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("body", this.body);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailTemplateUpdateParameterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailTemplateUpdateParameterProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EmailTemplateUpdateParameterProperties.
+     */
+    public static EmailTemplateUpdateParameterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmailTemplateUpdateParameterProperties deserializedEmailTemplateUpdateParameterProperties
+                = new EmailTemplateUpdateParameterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subject".equals(fieldName)) {
+                    deserializedEmailTemplateUpdateParameterProperties.subject = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedEmailTemplateUpdateParameterProperties.title = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedEmailTemplateUpdateParameterProperties.description = reader.getString();
+                } else if ("body".equals(fieldName)) {
+                    deserializedEmailTemplateUpdateParameterProperties.body = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    List<EmailTemplateParametersContractProperties> parameters
+                        = reader.readArray(reader1 -> EmailTemplateParametersContractProperties.fromJson(reader1));
+                    deserializedEmailTemplateUpdateParameterProperties.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmailTemplateUpdateParameterProperties;
+        });
     }
 }

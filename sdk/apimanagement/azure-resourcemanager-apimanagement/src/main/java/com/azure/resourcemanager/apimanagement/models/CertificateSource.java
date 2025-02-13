@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Certificate Source. */
+/**
+ * Certificate Source.
+ */
 public final class CertificateSource extends ExpandableStringEnum<CertificateSource> {
-    /** Static value Managed for CertificateSource. */
+    /**
+     * Static value Managed for CertificateSource.
+     */
     public static final CertificateSource MANAGED = fromString("Managed");
 
-    /** Static value KeyVault for CertificateSource. */
+    /**
+     * Static value KeyVault for CertificateSource.
+     */
     public static final CertificateSource KEY_VAULT = fromString("KeyVault");
 
-    /** Static value Custom for CertificateSource. */
+    /**
+     * Static value Custom for CertificateSource.
+     */
     public static final CertificateSource CUSTOM = fromString("Custom");
 
-    /** Static value BuiltIn for CertificateSource. */
+    /**
+     * Static value BuiltIn for CertificateSource.
+     */
     public static final CertificateSource BUILT_IN = fromString("BuiltIn");
 
     /**
      * Creates a new instance of CertificateSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class CertificateSource extends ExpandableStringEnum<CertificateSou
 
     /**
      * Creates or finds a CertificateSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CertificateSource.
      */
-    @JsonCreator
     public static CertificateSource fromString(String name) {
         return fromString(name, CertificateSource.class);
     }
 
     /**
      * Gets known CertificateSource values.
-     *
+     * 
      * @return known CertificateSource values.
      */
     public static Collection<CertificateSource> values() {

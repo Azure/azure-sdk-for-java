@@ -58,9 +58,7 @@ public class AzureEventHubsKafkaAutoConfiguration {
 
     @Bean
     @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
-    static KafkaPropertiesBeanPostProcessor kafkaPropertiesBeanPostProcessor(
-            ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
-        return new KafkaPropertiesBeanPostProcessor(connectionStringProvider);
+    static KafkaPropertiesBeanPostProcessor kafkaPropertiesBeanPostProcessor() {
+        return new KafkaPropertiesBeanPostProcessor();
     }
-
 }

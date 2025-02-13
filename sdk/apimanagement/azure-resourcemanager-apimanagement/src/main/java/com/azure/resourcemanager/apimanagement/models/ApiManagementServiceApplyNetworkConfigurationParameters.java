@@ -5,26 +5,34 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameter supplied to the Apply Network configuration operation. */
+/**
+ * Parameter supplied to the Apply Network configuration operation.
+ */
 @Fluent
-public final class ApiManagementServiceApplyNetworkConfigurationParameters {
+public final class ApiManagementServiceApplyNetworkConfigurationParameters
+    implements JsonSerializable<ApiManagementServiceApplyNetworkConfigurationParameters> {
     /*
      * Location of the Api Management service to update for a multi-region service. For a service deployed in a single
      * region, this parameter is not required.
      */
-    @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of ApiManagementServiceApplyNetworkConfigurationParameters class. */
+    /**
+     * Creates an instance of ApiManagementServiceApplyNetworkConfigurationParameters class.
+     */
     public ApiManagementServiceApplyNetworkConfigurationParameters() {
     }
 
     /**
      * Get the location property: Location of the Api Management service to update for a multi-region service. For a
      * service deployed in a single region, this parameter is not required.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -34,7 +42,7 @@ public final class ApiManagementServiceApplyNetworkConfigurationParameters {
     /**
      * Set the location property: Location of the Api Management service to update for a multi-region service. For a
      * service deployed in a single region, this parameter is not required.
-     *
+     * 
      * @param location the location value to set.
      * @return the ApiManagementServiceApplyNetworkConfigurationParameters object itself.
      */
@@ -45,9 +53,47 @@ public final class ApiManagementServiceApplyNetworkConfigurationParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementServiceApplyNetworkConfigurationParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementServiceApplyNetworkConfigurationParameters if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiManagementServiceApplyNetworkConfigurationParameters.
+     */
+    public static ApiManagementServiceApplyNetworkConfigurationParameters fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementServiceApplyNetworkConfigurationParameters deserializedApiManagementServiceApplyNetworkConfigurationParameters
+                = new ApiManagementServiceApplyNetworkConfigurationParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedApiManagementServiceApplyNetworkConfigurationParameters.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementServiceApplyNetworkConfigurationParameters;
+        });
     }
 }

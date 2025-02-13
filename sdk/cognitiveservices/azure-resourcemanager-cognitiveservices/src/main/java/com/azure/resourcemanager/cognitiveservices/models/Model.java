@@ -11,25 +11,32 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.ModelInner;
  */
 public interface Model {
     /**
-     * Gets the model property: Model Metadata.
+     * Gets the model property: Cognitive Services account Model.
      * 
      * @return the model value.
      */
     AccountModel model();
 
     /**
-     * Gets the kind property: The Kind of the Model.
+     * Gets the kind property: The kind (type) of cognitive service account.
      * 
      * @return the kind value.
      */
     String kind();
 
     /**
-     * Gets the skuName property: The SKU of the Model.
+     * Gets the skuName property: The name of SKU.
      * 
      * @return the skuName value.
      */
     String skuName();
+
+    /**
+     * Gets the description property: The description of the model.
+     * 
+     * @return the description value.
+     */
+    String description();
 
     /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.ModelInner object.

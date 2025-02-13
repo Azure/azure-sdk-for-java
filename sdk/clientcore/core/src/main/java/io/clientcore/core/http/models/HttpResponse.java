@@ -4,13 +4,15 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.util.function.Function;
 
 /**
  * The response of an {@link HttpRequest}.
+ *
+ * @param <T> The type of the response value.
  */
 public class HttpResponse<T> implements Response<T> {
     private boolean isValueDeserialized = false;

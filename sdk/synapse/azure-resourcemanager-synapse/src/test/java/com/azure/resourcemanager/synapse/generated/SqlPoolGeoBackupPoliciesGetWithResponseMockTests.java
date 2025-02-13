@@ -23,7 +23,7 @@ public final class SqlPoolGeoBackupPoliciesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"jtdrhutf\"},\"kind\":\"a\",\"location\":\"xopgehpadkmd\",\"id\":\"gssz\",\"name\":\"vctkbbx\",\"type\":\"harls\"}";
+            = "{\"properties\":{\"state\":\"Disabled\",\"storageType\":\"qyd\"},\"kind\":\"q\",\"location\":\"wa\",\"id\":\"uwdxvqzxoebwgj\",\"name\":\"bibanbau\",\"type\":\"wtzvpakloz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class SqlPoolGeoBackupPoliciesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GeoBackupPolicy response = manager.sqlPoolGeoBackupPolicies()
-            .getWithResponse("tnp", "facqo", "cqrq", GeoBackupPolicyName.DEFAULT, com.azure.core.util.Context.NONE)
+            .getWithResponse("glzrs", "bklrxh", "nltce", GeoBackupPolicyName.DEFAULT, com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(GeoBackupPolicyState.DISABLED, response.state());

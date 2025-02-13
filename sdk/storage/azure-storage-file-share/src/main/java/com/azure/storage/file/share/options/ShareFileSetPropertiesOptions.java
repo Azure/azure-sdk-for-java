@@ -4,6 +4,7 @@ package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
@@ -18,8 +19,11 @@ public class ShareFileSetPropertiesOptions {
     private FileSmbProperties smbProperties;
     private ShareFilePermission filePermissions;
     private ShareRequestConditions requestConditions;
+    private FilePosixProperties posixProperties;
 
     /**
+     * Creates a new instance of {@link ShareFileSetPropertiesOptions}.
+     *
      * @param sizeInBytes Specifies the new size for the file share in bytes. If the specified byte value is less than the
      * current size of the file, then all ranges above the specified byte value are cleared.
      */
@@ -28,6 +32,8 @@ public class ShareFileSetPropertiesOptions {
     }
 
     /**
+     * Gets the new size for the file share.
+     *
      * @return Gets the new size for the file share.
      */
     public long getSizeInBytes() {
@@ -35,6 +41,8 @@ public class ShareFileSetPropertiesOptions {
     }
 
     /**
+     * Gets the file's http headers.
+     *
      * @return the file's http headers.
      */
     public ShareFileHttpHeaders getHttpHeaders() {
@@ -52,6 +60,8 @@ public class ShareFileSetPropertiesOptions {
     }
 
     /**
+     * Gets the optional SMB properties to set on the destination file or directory.
+     *
      * @return Optional SMB properties to set on the destination file or directory. The only properties that are
      * considered are file attributes, file creation time, file last write time, and file permission key. The rest are
      * ignored.
@@ -61,6 +71,8 @@ public class ShareFileSetPropertiesOptions {
     }
 
     /**
+     * Sets the optional SMB properties to set on the destination file or directory.
+     *
      * @param smbProperties Optional SMB properties to set on the destination file or directory. The only properties
      * that are  considered are file attributes, file creation time, file last write time, and file permission key. The
      * rest are ignored.
@@ -108,6 +120,28 @@ public class ShareFileSetPropertiesOptions {
      */
     public ShareFileSetPropertiesOptions setRequestConditions(ShareRequestConditions requestConditions) {
         this.requestConditions = requestConditions;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @return {@link FilePosixProperties}
+     */
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @param posixProperties {@link FilePosixProperties}
+     * @return The updated options.
+     */
+    public ShareFileSetPropertiesOptions setPosixProperties(FilePosixProperties posixProperties) {
+        this.posixProperties = posixProperties;
         return this;
     }
 }

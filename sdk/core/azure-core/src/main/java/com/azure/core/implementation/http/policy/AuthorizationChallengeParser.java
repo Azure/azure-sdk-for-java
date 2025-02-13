@@ -111,8 +111,7 @@ public final class AuthorizationChallengeParser {
                 String key = pair.substring(0, equalsIndex).trim();
 
                 if (key.equals(parameter)) {
-                    String value = pair.substring(equalsIndex + 1).replace("\"", "").trim();
-                    return value;
+                    return pair.substring(equalsIndex + 1).replace("\"", "").trim();
                 }
             }
         }

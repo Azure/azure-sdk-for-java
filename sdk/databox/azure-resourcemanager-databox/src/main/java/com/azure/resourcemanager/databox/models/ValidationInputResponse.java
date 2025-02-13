@@ -19,8 +19,7 @@ public class ValidationInputResponse implements JsonSerializable<ValidationInput
     /*
      * Identifies the type of validation response.
      */
-    private ValidationInputDiscriminator validationType
-        = ValidationInputDiscriminator.fromString("ValidationInputResponse");
+    private ValidationInputDiscriminator validationType;
 
     /*
      * Error code and message of validation response.

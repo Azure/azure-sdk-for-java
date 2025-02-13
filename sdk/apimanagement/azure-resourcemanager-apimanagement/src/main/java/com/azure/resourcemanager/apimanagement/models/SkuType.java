@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Name of the Sku. */
+/**
+ * Name of the Sku.
+ */
 public final class SkuType extends ExpandableStringEnum<SkuType> {
-    /** Static value Developer for SkuType. */
+    /**
+     * Static value Developer for SkuType.
+     */
     public static final SkuType DEVELOPER = fromString("Developer");
 
-    /** Static value Standard for SkuType. */
+    /**
+     * Static value Standard for SkuType.
+     */
     public static final SkuType STANDARD = fromString("Standard");
 
-    /** Static value Premium for SkuType. */
+    /**
+     * Static value Premium for SkuType.
+     */
     public static final SkuType PREMIUM = fromString("Premium");
 
-    /** Static value Basic for SkuType. */
+    /**
+     * Static value Basic for SkuType.
+     */
     public static final SkuType BASIC = fromString("Basic");
 
-    /** Static value Consumption for SkuType. */
+    /**
+     * Static value Consumption for SkuType.
+     */
     public static final SkuType CONSUMPTION = fromString("Consumption");
 
-    /** Static value Isolated for SkuType. */
+    /**
+     * Static value Isolated for SkuType.
+     */
     public static final SkuType ISOLATED = fromString("Isolated");
 
     /**
      * Creates a new instance of SkuType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class SkuType extends ExpandableStringEnum<SkuType> {
 
     /**
      * Creates or finds a SkuType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SkuType.
      */
-    @JsonCreator
     public static SkuType fromString(String name) {
         return fromString(name, SkuType.class);
     }
 
     /**
      * Gets known SkuType values.
-     *
+     * 
      * @return known SkuType values.
      */
     public static Collection<SkuType> values() {

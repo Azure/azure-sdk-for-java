@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.largeinstance.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Specifies the operating system settings for the Azure Large Instance.
  */
 @Fluent
-public final class OsProfile {
+public final class OsProfile implements JsonSerializable<OsProfile> {
     /*
      * Specifies the host OS name of the Azure Large Instance.
      */
-    @JsonProperty(value = "computerName")
     private String computerName;
 
     /*
      * This property allows you to specify the type of the OS.
      */
-    @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private String osType;
 
     /*
      * Specifies version of operating system.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * Specifies the SSH public key used to access the operating system.
      */
-    @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
 
     /**
@@ -106,5 +106,48 @@ public final class OsProfile {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computerName", this.computerName);
+        jsonWriter.writeStringField("sshPublicKey", this.sshPublicKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OsProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OsProfile if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the OsProfile.
+     */
+    public static OsProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OsProfile deserializedOsProfile = new OsProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computerName".equals(fieldName)) {
+                    deserializedOsProfile.computerName = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedOsProfile.osType = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedOsProfile.version = reader.getString();
+                } else if ("sshPublicKey".equals(fieldName)) {
+                    deserializedOsProfile.sshPublicKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOsProfile;
+        });
     }
 }

@@ -37,23 +37,23 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
 
     public PagedIterable<BareMetalMachine> list() {
         PagedIterable<BareMetalMachineInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
     public PagedIterable<BareMetalMachine> list(Context context) {
         PagedIterable<BareMetalMachineInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
     public PagedIterable<BareMetalMachine> listByResourceGroup(String resourceGroupName) {
         PagedIterable<BareMetalMachineInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
     public PagedIterable<BareMetalMachine> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<BareMetalMachineInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BareMetalMachineImpl(inner1, this.manager()));
     }
 
     public Response<BareMetalMachine> getByResourceGroupWithResponse(String resourceGroupName,
@@ -77,12 +77,23 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
         }
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String bareMetalMachineName) {
-        this.serviceClient().delete(resourceGroupName, bareMetalMachineName);
+    public OperationStatusResult deleteByResourceGroup(String resourceGroupName, String bareMetalMachineName) {
+        OperationStatusResultInner inner = this.serviceClient().delete(resourceGroupName, bareMetalMachineName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String resourceGroupName, String bareMetalMachineName, Context context) {
-        this.serviceClient().delete(resourceGroupName, bareMetalMachineName, context);
+    public OperationStatusResult delete(String resourceGroupName, String bareMetalMachineName, Context context) {
+        OperationStatusResultInner inner
+            = this.serviceClient().delete(resourceGroupName, bareMetalMachineName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public OperationStatusResult cordon(String resourceGroupName, String bareMetalMachineName) {
@@ -289,12 +300,12 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
     }
 
     public BareMetalMachine getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String bareMetalMachineName = Utils.getValueFromIdByName(id, "bareMetalMachines");
+        String bareMetalMachineName = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalMachines");
         if (bareMetalMachineName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachines'.", id)));
@@ -303,12 +314,12 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
     }
 
     public Response<BareMetalMachine> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String bareMetalMachineName = Utils.getValueFromIdByName(id, "bareMetalMachines");
+        String bareMetalMachineName = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalMachines");
         if (bareMetalMachineName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachines'.", id)));
@@ -316,32 +327,32 @@ public final class BareMetalMachinesImpl implements BareMetalMachines {
         return this.getByResourceGroupWithResponse(resourceGroupName, bareMetalMachineName, context);
     }
 
-    public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String bareMetalMachineName = Utils.getValueFromIdByName(id, "bareMetalMachines");
+        String bareMetalMachineName = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalMachines");
         if (bareMetalMachineName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachines'.", id)));
         }
-        this.delete(resourceGroupName, bareMetalMachineName, Context.NONE);
+        return this.delete(resourceGroupName, bareMetalMachineName, Context.NONE);
     }
 
-    public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+    public OperationStatusResult deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String bareMetalMachineName = Utils.getValueFromIdByName(id, "bareMetalMachines");
+        String bareMetalMachineName = ResourceManagerUtils.getValueFromIdByName(id, "bareMetalMachines");
         if (bareMetalMachineName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'bareMetalMachines'.", id)));
         }
-        this.delete(resourceGroupName, bareMetalMachineName, context);
+        return this.delete(resourceGroupName, bareMetalMachineName, context);
     }
 
     private BareMetalMachinesClient serviceClient() {

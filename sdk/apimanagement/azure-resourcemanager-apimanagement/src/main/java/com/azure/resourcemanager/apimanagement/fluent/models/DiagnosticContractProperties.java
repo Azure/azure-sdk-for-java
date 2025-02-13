@@ -6,84 +6,82 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
 import com.azure.resourcemanager.apimanagement.models.HttpCorrelationProtocol;
 import com.azure.resourcemanager.apimanagement.models.OperationNameFormat;
 import com.azure.resourcemanager.apimanagement.models.PipelineDiagnosticSettings;
 import com.azure.resourcemanager.apimanagement.models.SamplingSettings;
 import com.azure.resourcemanager.apimanagement.models.Verbosity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Diagnostic Entity Properties. */
+/**
+ * Diagnostic Entity Properties.
+ */
 @Fluent
-public final class DiagnosticContractProperties {
+public final class DiagnosticContractProperties implements JsonSerializable<DiagnosticContractProperties> {
     /*
      * Specifies for what type of messages sampling settings should not apply.
      */
-    @JsonProperty(value = "alwaysLog")
     private AlwaysLog alwaysLog;
 
     /*
      * Resource Id of a target logger.
      */
-    @JsonProperty(value = "loggerId", required = true)
     private String loggerId;
 
     /*
      * Sampling settings for Diagnostic.
      */
-    @JsonProperty(value = "sampling")
     private SamplingSettings sampling;
 
     /*
      * Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
      */
-    @JsonProperty(value = "frontend")
     private PipelineDiagnosticSettings frontend;
 
     /*
      * Diagnostic settings for incoming/outgoing HTTP messages to the Backend
      */
-    @JsonProperty(value = "backend")
     private PipelineDiagnosticSettings backend;
 
     /*
      * Log the ClientIP. Default is false.
      */
-    @JsonProperty(value = "logClientIp")
     private Boolean logClientIp;
 
     /*
      * Sets correlation protocol to use for Application Insights diagnostics.
      */
-    @JsonProperty(value = "httpCorrelationProtocol")
     private HttpCorrelationProtocol httpCorrelationProtocol;
 
     /*
      * The verbosity level applied to traces emitted by trace policies.
      */
-    @JsonProperty(value = "verbosity")
     private Verbosity verbosity;
 
     /*
      * The format of the Operation Name for Application Insights telemetries. Default is Name.
      */
-    @JsonProperty(value = "operationNameFormat")
     private OperationNameFormat operationNameFormat;
 
     /*
      * Emit custom metrics via emit-metric policy. Applicable only to Application Insights diagnostic settings.
      */
-    @JsonProperty(value = "metrics")
     private Boolean metrics;
 
-    /** Creates an instance of DiagnosticContractProperties class. */
+    /**
+     * Creates an instance of DiagnosticContractProperties class.
+     */
     public DiagnosticContractProperties() {
     }
 
     /**
      * Get the alwaysLog property: Specifies for what type of messages sampling settings should not apply.
-     *
+     * 
      * @return the alwaysLog value.
      */
     public AlwaysLog alwaysLog() {
@@ -92,7 +90,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Set the alwaysLog property: Specifies for what type of messages sampling settings should not apply.
-     *
+     * 
      * @param alwaysLog the alwaysLog value to set.
      * @return the DiagnosticContractProperties object itself.
      */
@@ -103,7 +101,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Get the loggerId property: Resource Id of a target logger.
-     *
+     * 
      * @return the loggerId value.
      */
     public String loggerId() {
@@ -112,7 +110,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Set the loggerId property: Resource Id of a target logger.
-     *
+     * 
      * @param loggerId the loggerId value to set.
      * @return the DiagnosticContractProperties object itself.
      */
@@ -123,7 +121,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Get the sampling property: Sampling settings for Diagnostic.
-     *
+     * 
      * @return the sampling value.
      */
     public SamplingSettings sampling() {
@@ -132,7 +130,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Set the sampling property: Sampling settings for Diagnostic.
-     *
+     * 
      * @param sampling the sampling value to set.
      * @return the DiagnosticContractProperties object itself.
      */
@@ -143,7 +141,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Get the frontend property: Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
-     *
+     * 
      * @return the frontend value.
      */
     public PipelineDiagnosticSettings frontend() {
@@ -152,7 +150,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Set the frontend property: Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
-     *
+     * 
      * @param frontend the frontend value to set.
      * @return the DiagnosticContractProperties object itself.
      */
@@ -163,7 +161,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Get the backend property: Diagnostic settings for incoming/outgoing HTTP messages to the Backend.
-     *
+     * 
      * @return the backend value.
      */
     public PipelineDiagnosticSettings backend() {
@@ -172,7 +170,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Set the backend property: Diagnostic settings for incoming/outgoing HTTP messages to the Backend.
-     *
+     * 
      * @param backend the backend value to set.
      * @return the DiagnosticContractProperties object itself.
      */
@@ -183,7 +181,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Get the logClientIp property: Log the ClientIP. Default is false.
-     *
+     * 
      * @return the logClientIp value.
      */
     public Boolean logClientIp() {
@@ -192,7 +190,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Set the logClientIp property: Log the ClientIP. Default is false.
-     *
+     * 
      * @param logClientIp the logClientIp value to set.
      * @return the DiagnosticContractProperties object itself.
      */
@@ -203,7 +201,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Get the httpCorrelationProtocol property: Sets correlation protocol to use for Application Insights diagnostics.
-     *
+     * 
      * @return the httpCorrelationProtocol value.
      */
     public HttpCorrelationProtocol httpCorrelationProtocol() {
@@ -212,7 +210,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Set the httpCorrelationProtocol property: Sets correlation protocol to use for Application Insights diagnostics.
-     *
+     * 
      * @param httpCorrelationProtocol the httpCorrelationProtocol value to set.
      * @return the DiagnosticContractProperties object itself.
      */
@@ -223,7 +221,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Get the verbosity property: The verbosity level applied to traces emitted by trace policies.
-     *
+     * 
      * @return the verbosity value.
      */
     public Verbosity verbosity() {
@@ -232,7 +230,7 @@ public final class DiagnosticContractProperties {
 
     /**
      * Set the verbosity property: The verbosity level applied to traces emitted by trace policies.
-     *
+     * 
      * @param verbosity the verbosity value to set.
      * @return the DiagnosticContractProperties object itself.
      */
@@ -244,7 +242,7 @@ public final class DiagnosticContractProperties {
     /**
      * Get the operationNameFormat property: The format of the Operation Name for Application Insights telemetries.
      * Default is Name.
-     *
+     * 
      * @return the operationNameFormat value.
      */
     public OperationNameFormat operationNameFormat() {
@@ -254,7 +252,7 @@ public final class DiagnosticContractProperties {
     /**
      * Set the operationNameFormat property: The format of the Operation Name for Application Insights telemetries.
      * Default is Name.
-     *
+     * 
      * @param operationNameFormat the operationNameFormat value to set.
      * @return the DiagnosticContractProperties object itself.
      */
@@ -266,7 +264,7 @@ public final class DiagnosticContractProperties {
     /**
      * Get the metrics property: Emit custom metrics via emit-metric policy. Applicable only to Application Insights
      * diagnostic settings.
-     *
+     * 
      * @return the metrics value.
      */
     public Boolean metrics() {
@@ -276,7 +274,7 @@ public final class DiagnosticContractProperties {
     /**
      * Set the metrics property: Emit custom metrics via emit-metric policy. Applicable only to Application Insights
      * diagnostic settings.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the DiagnosticContractProperties object itself.
      */
@@ -287,13 +285,14 @@ public final class DiagnosticContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (loggerId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property loggerId in model DiagnosticContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property loggerId in model DiagnosticContractProperties"));
         }
         if (sampling() != null) {
             sampling().validate();
@@ -307,4 +306,72 @@ public final class DiagnosticContractProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiagnosticContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("loggerId", this.loggerId);
+        jsonWriter.writeStringField("alwaysLog", this.alwaysLog == null ? null : this.alwaysLog.toString());
+        jsonWriter.writeJsonField("sampling", this.sampling);
+        jsonWriter.writeJsonField("frontend", this.frontend);
+        jsonWriter.writeJsonField("backend", this.backend);
+        jsonWriter.writeBooleanField("logClientIp", this.logClientIp);
+        jsonWriter.writeStringField("httpCorrelationProtocol",
+            this.httpCorrelationProtocol == null ? null : this.httpCorrelationProtocol.toString());
+        jsonWriter.writeStringField("verbosity", this.verbosity == null ? null : this.verbosity.toString());
+        jsonWriter.writeStringField("operationNameFormat",
+            this.operationNameFormat == null ? null : this.operationNameFormat.toString());
+        jsonWriter.writeBooleanField("metrics", this.metrics);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticContractProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiagnosticContractProperties.
+     */
+    public static DiagnosticContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticContractProperties deserializedDiagnosticContractProperties = new DiagnosticContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loggerId".equals(fieldName)) {
+                    deserializedDiagnosticContractProperties.loggerId = reader.getString();
+                } else if ("alwaysLog".equals(fieldName)) {
+                    deserializedDiagnosticContractProperties.alwaysLog = AlwaysLog.fromString(reader.getString());
+                } else if ("sampling".equals(fieldName)) {
+                    deserializedDiagnosticContractProperties.sampling = SamplingSettings.fromJson(reader);
+                } else if ("frontend".equals(fieldName)) {
+                    deserializedDiagnosticContractProperties.frontend = PipelineDiagnosticSettings.fromJson(reader);
+                } else if ("backend".equals(fieldName)) {
+                    deserializedDiagnosticContractProperties.backend = PipelineDiagnosticSettings.fromJson(reader);
+                } else if ("logClientIp".equals(fieldName)) {
+                    deserializedDiagnosticContractProperties.logClientIp = reader.getNullable(JsonReader::getBoolean);
+                } else if ("httpCorrelationProtocol".equals(fieldName)) {
+                    deserializedDiagnosticContractProperties.httpCorrelationProtocol
+                        = HttpCorrelationProtocol.fromString(reader.getString());
+                } else if ("verbosity".equals(fieldName)) {
+                    deserializedDiagnosticContractProperties.verbosity = Verbosity.fromString(reader.getString());
+                } else if ("operationNameFormat".equals(fieldName)) {
+                    deserializedDiagnosticContractProperties.operationNameFormat
+                        = OperationNameFormat.fromString(reader.getString());
+                } else if ("metrics".equals(fieldName)) {
+                    deserializedDiagnosticContractProperties.metrics = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticContractProperties;
+        });
+    }
 }

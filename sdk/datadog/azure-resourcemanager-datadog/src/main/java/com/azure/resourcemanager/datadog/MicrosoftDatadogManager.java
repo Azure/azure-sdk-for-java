@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -46,7 +46,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to MicrosoftDatadogManager. */
+/**
+ * Entry point to MicrosoftDatadogManager.
+ */
 public final class MicrosoftDatadogManager {
     private MarketplaceAgreements marketplaceAgreements;
 
@@ -76,7 +78,7 @@ public final class MicrosoftDatadogManager {
 
     /**
      * Creates an instance of MicrosoftDatadog service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the MicrosoftDatadog service API instance.
@@ -89,7 +91,7 @@ public final class MicrosoftDatadogManager {
 
     /**
      * Creates an instance of MicrosoftDatadog service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the MicrosoftDatadog service API instance.
@@ -102,14 +104,16 @@ public final class MicrosoftDatadogManager {
 
     /**
      * Gets a Configurable instance that can be used to create MicrosoftDatadogManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new MicrosoftDatadogManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -181,8 +185,8 @@ public final class MicrosoftDatadogManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -224,7 +228,7 @@ public final class MicrosoftDatadogManager {
                 .append("-")
                 .append("com.azure.resourcemanager.datadog")
                 .append("/")
-                .append("1.0.0");
+                .append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -257,7 +261,7 @@ public final class MicrosoftDatadogManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -272,7 +276,7 @@ public final class MicrosoftDatadogManager {
 
     /**
      * Gets the resource collection API of MarketplaceAgreements.
-     *
+     * 
      * @return Resource collection API of MarketplaceAgreements.
      */
     public MarketplaceAgreements marketplaceAgreements() {
@@ -284,7 +288,7 @@ public final class MicrosoftDatadogManager {
 
     /**
      * Gets the resource collection API of CreationSupporteds.
-     *
+     * 
      * @return Resource collection API of CreationSupporteds.
      */
     public CreationSupporteds creationSupporteds() {
@@ -296,7 +300,7 @@ public final class MicrosoftDatadogManager {
 
     /**
      * Gets the resource collection API of Monitors. It manages DatadogMonitorResource.
-     *
+     * 
      * @return Resource collection API of Monitors.
      */
     public Monitors monitors() {
@@ -308,7 +312,7 @@ public final class MicrosoftDatadogManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -320,7 +324,7 @@ public final class MicrosoftDatadogManager {
 
     /**
      * Gets the resource collection API of TagRules. It manages MonitoringTagRules.
-     *
+     * 
      * @return Resource collection API of TagRules.
      */
     public TagRules tagRules() {
@@ -332,7 +336,7 @@ public final class MicrosoftDatadogManager {
 
     /**
      * Gets the resource collection API of SingleSignOnConfigurations. It manages DatadogSingleSignOnResource.
-     *
+     * 
      * @return Resource collection API of SingleSignOnConfigurations.
      */
     public SingleSignOnConfigurations singleSignOnConfigurations() {
@@ -345,7 +349,7 @@ public final class MicrosoftDatadogManager {
 
     /**
      * Gets the resource collection API of MonitoredSubscriptions. It manages MonitoredSubscriptionProperties.
-     *
+     * 
      * @return Resource collection API of MonitoredSubscriptions.
      */
     public MonitoredSubscriptions monitoredSubscriptions() {
@@ -359,7 +363,7 @@ public final class MicrosoftDatadogManager {
     /**
      * Gets wrapped service client MicrosoftDatadogClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client MicrosoftDatadogClient.
      */
     public MicrosoftDatadogClient serviceClient() {

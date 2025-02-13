@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.hybridconnectivity.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -35,99 +36,117 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the HybridConnectivityManagementApiImpl type. */
+/**
+ * Initializes a new instance of the HybridConnectivityManagementApiImpl type.
+ */
 @ServiceClient(builder = HybridConnectivityManagementApiBuilder.class)
 public final class HybridConnectivityManagementApiImpl implements HybridConnectivityManagementApi {
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The EndpointsClient object to access its operations. */
+    /**
+     * The EndpointsClient object to access its operations.
+     */
     private final EndpointsClient endpoints;
 
     /**
      * Gets the EndpointsClient object to access its operations.
-     *
+     * 
      * @return the EndpointsClient object.
      */
     public EndpointsClient getEndpoints() {
         return this.endpoints;
     }
 
-    /** The ServiceConfigurationsClient object to access its operations. */
+    /**
+     * The ServiceConfigurationsClient object to access its operations.
+     */
     private final ServiceConfigurationsClient serviceConfigurations;
 
     /**
      * Gets the ServiceConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the ServiceConfigurationsClient object.
      */
     public ServiceConfigurationsClient getServiceConfigurations() {
@@ -136,7 +155,7 @@ public final class HybridConnectivityManagementApiImpl implements HybridConnecti
 
     /**
      * Initializes an instance of HybridConnectivityManagementApi client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -157,7 +176,7 @@ public final class HybridConnectivityManagementApiImpl implements HybridConnecti
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -166,7 +185,7 @@ public final class HybridConnectivityManagementApiImpl implements HybridConnecti
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -176,7 +195,7 @@ public final class HybridConnectivityManagementApiImpl implements HybridConnecti
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -194,7 +213,7 @@ public final class HybridConnectivityManagementApiImpl implements HybridConnecti
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -257,7 +276,7 @@ public final class HybridConnectivityManagementApiImpl implements HybridConnecti
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

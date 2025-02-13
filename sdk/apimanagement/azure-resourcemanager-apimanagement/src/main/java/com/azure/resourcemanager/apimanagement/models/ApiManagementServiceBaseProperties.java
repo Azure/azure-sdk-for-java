@@ -5,123 +5,112 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Base Properties of an API Management service resource description. */
+/**
+ * Base Properties of an API Management service resource description.
+ */
 @Fluent
-public class ApiManagementServiceBaseProperties {
+public class ApiManagementServiceBaseProperties implements JsonSerializable<ApiManagementServiceBaseProperties> {
     /*
      * Email address from which the notification will be sent.
      */
-    @JsonProperty(value = "notificationSenderEmail")
     private String notificationSenderEmail;
 
     /*
      * The current provisioning state of the API Management service which can be one of the following:
      * Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * The provisioning state of the API Management service, which is targeted by the long running operation started on
      * the service.
      */
-    @JsonProperty(value = "targetProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String targetProvisioningState;
 
     /*
-     * Creation UTC date of the API Management service.The date conforms to the following format:
-     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+     * Creation UTC date of the API Management service.The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ`
+     * as specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "createdAtUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAtUtc;
 
     /*
      * Gateway URL of the API Management service.
      */
-    @JsonProperty(value = "gatewayUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String gatewayUrl;
 
     /*
      * Gateway URL of the API Management service in the Default Region.
      */
-    @JsonProperty(value = "gatewayRegionalUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String gatewayRegionalUrl;
 
     /*
      * Publisher portal endpoint Url of the API Management service.
      */
-    @JsonProperty(value = "portalUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String portalUrl;
 
     /*
      * Management API endpoint URL of the API Management service.
      */
-    @JsonProperty(value = "managementApiUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String managementApiUrl;
 
     /*
      * SCM endpoint URL of the API Management service.
      */
-    @JsonProperty(value = "scmUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String scmUrl;
 
     /*
      * DEveloper Portal endpoint URL of the API Management service.
      */
-    @JsonProperty(value = "developerPortalUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String developerPortalUrl;
 
     /*
      * Custom hostname configuration of the API Management service.
      */
-    @JsonProperty(value = "hostnameConfigurations")
     private List<HostnameConfiguration> hostnameConfigurations;
 
     /*
      * Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
      * Basic, Standard, Premium and Isolated SKU.
      */
-    @JsonProperty(value = "publicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> publicIpAddresses;
 
     /*
-     * Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed in
-     * an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated SKU.
+     * Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed in an
+     * Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated SKU.
      */
-    @JsonProperty(value = "privateIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> privateIpAddresses;
 
     /*
      * Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region.
      * Supported only for Developer and Premium SKU being deployed in Virtual Network.
      */
-    @JsonProperty(value = "publicIpAddressId")
     private String publicIpAddressId;
 
     /*
-     * Whether or not public endpoint access is allowed for this API Management service.  Value is optional but if
-     * passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
-     * Default value is 'Enabled'
+     * Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed
+     * in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method. Default
+     * value is 'Enabled'
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * Virtual network configuration of the API Management service.
      */
-    @JsonProperty(value = "virtualNetworkConfiguration")
     private VirtualNetworkConfiguration virtualNetworkConfiguration;
 
     /*
      * Additional datacenter locations of the API Management service.
      */
-    @JsonProperty(value = "additionalLocations")
     private List<AdditionalLocation> additionalLocations;
 
     /*
@@ -147,88 +136,82 @@ public class ApiManagementServiceBaseProperties {
      * `Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TLS_RSA_WITH_AES_128_CBC_SHA256`:`false`. The
      * default value is `true` for them.</br> Note: The following ciphers can't be disabled since they are required by
      * internal platform components:
-     * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
+     * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,
+     * TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+     * TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,
+     * TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,
+     * TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256
      */
-    @JsonProperty(value = "customProperties")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> customProperties;
 
     /*
-     * List of Certificates that need to be installed in the API Management service. Max supported certificates that
-     * can be installed is 10.
+     * List of Certificates that need to be installed in the API Management service. Max supported certificates that can
+     * be installed is 10.
      */
-    @JsonProperty(value = "certificates")
     private List<CertificateConfiguration> certificates;
 
     /*
-     * Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented
-     * on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on
-     * the gateway.
+     * Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on
+     * each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the
+     * gateway.
      */
-    @JsonProperty(value = "enableClientCertificate")
     private Boolean enableClientCertificate;
 
     /*
      * Property can be used to enable NAT Gateway for this API Management service.
      */
-    @JsonProperty(value = "natGatewayState")
     private NatGatewayState natGatewayState;
 
     /*
      * Outbound public IPV4 address prefixes associated with NAT Gateway deployed service. Available only for Premium
      * SKU on stv2 platform.
      */
-    @JsonProperty(value = "outboundPublicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> outboundPublicIpAddresses;
 
     /*
-     * Property only valid for an Api Management service deployed in multiple locations. This can be used to disable
-     * the gateway in master region.
+     * Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the
+     * gateway in master region.
      */
-    @JsonProperty(value = "disableGateway")
     private Boolean disableGateway;
 
     /*
      * The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API
      * Management service is not part of any Virtual Network, External means the API Management deployment is set up
-     * inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment
-     * is setup inside a Virtual Network having an Intranet Facing Endpoint only.
+     * inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management deployment is
+     * setup inside a Virtual Network having an Intranet Facing Endpoint only.
      */
-    @JsonProperty(value = "virtualNetworkType")
     private VirtualNetworkType virtualNetworkType;
 
     /*
      * Control Plane Apis version constraint for the API Management service.
      */
-    @JsonProperty(value = "apiVersionConstraint")
     private ApiVersionConstraint apiVersionConstraint;
 
     /*
      * Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all
      * other properties will be ignored.
      */
-    @JsonProperty(value = "restore")
     private Boolean restore;
 
     /*
      * List of Private Endpoint Connections of this service.
      */
-    @JsonProperty(value = "privateEndpointConnections")
     private List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections;
 
     /*
      * Compute Platform Version running the service in this location.
      */
-    @JsonProperty(value = "platformVersion", access = JsonProperty.Access.WRITE_ONLY)
     private PlatformVersion platformVersion;
 
-    /** Creates an instance of ApiManagementServiceBaseProperties class. */
+    /**
+     * Creates an instance of ApiManagementServiceBaseProperties class.
+     */
     public ApiManagementServiceBaseProperties() {
     }
 
     /**
      * Get the notificationSenderEmail property: Email address from which the notification will be sent.
-     *
+     * 
      * @return the notificationSenderEmail value.
      */
     public String notificationSenderEmail() {
@@ -237,7 +220,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Set the notificationSenderEmail property: Email address from which the notification will be sent.
-     *
+     * 
      * @param notificationSenderEmail the notificationSenderEmail value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -249,7 +232,7 @@ public class ApiManagementServiceBaseProperties {
     /**
      * Get the provisioningState property: The current provisioning state of the API Management service which can be one
      * of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -257,9 +240,21 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the provisioningState property: The current provisioning state of the API Management service which can be one
+     * of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Get the targetProvisioningState property: The provisioning state of the API Management service, which is targeted
      * by the long running operation started on the service.
-     *
+     * 
      * @return the targetProvisioningState value.
      */
     public String targetProvisioningState() {
@@ -267,9 +262,21 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the targetProvisioningState property: The provisioning state of the API Management service, which is targeted
+     * by the long running operation started on the service.
+     * 
+     * @param targetProvisioningState the targetProvisioningState value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withTargetProvisioningState(String targetProvisioningState) {
+        this.targetProvisioningState = targetProvisioningState;
+        return this;
+    }
+
+    /**
      * Get the createdAtUtc property: Creation UTC date of the API Management service.The date conforms to the following
      * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the createdAtUtc value.
      */
     public OffsetDateTime createdAtUtc() {
@@ -277,8 +284,20 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the createdAtUtc property: Creation UTC date of the API Management service.The date conforms to the following
+     * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
+     * 
+     * @param createdAtUtc the createdAtUtc value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withCreatedAtUtc(OffsetDateTime createdAtUtc) {
+        this.createdAtUtc = createdAtUtc;
+        return this;
+    }
+
+    /**
      * Get the gatewayUrl property: Gateway URL of the API Management service.
-     *
+     * 
      * @return the gatewayUrl value.
      */
     public String gatewayUrl() {
@@ -286,8 +305,19 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the gatewayUrl property: Gateway URL of the API Management service.
+     * 
+     * @param gatewayUrl the gatewayUrl value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withGatewayUrl(String gatewayUrl) {
+        this.gatewayUrl = gatewayUrl;
+        return this;
+    }
+
+    /**
      * Get the gatewayRegionalUrl property: Gateway URL of the API Management service in the Default Region.
-     *
+     * 
      * @return the gatewayRegionalUrl value.
      */
     public String gatewayRegionalUrl() {
@@ -295,8 +325,19 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the gatewayRegionalUrl property: Gateway URL of the API Management service in the Default Region.
+     * 
+     * @param gatewayRegionalUrl the gatewayRegionalUrl value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withGatewayRegionalUrl(String gatewayRegionalUrl) {
+        this.gatewayRegionalUrl = gatewayRegionalUrl;
+        return this;
+    }
+
+    /**
      * Get the portalUrl property: Publisher portal endpoint Url of the API Management service.
-     *
+     * 
      * @return the portalUrl value.
      */
     public String portalUrl() {
@@ -304,8 +345,19 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the portalUrl property: Publisher portal endpoint Url of the API Management service.
+     * 
+     * @param portalUrl the portalUrl value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withPortalUrl(String portalUrl) {
+        this.portalUrl = portalUrl;
+        return this;
+    }
+
+    /**
      * Get the managementApiUrl property: Management API endpoint URL of the API Management service.
-     *
+     * 
      * @return the managementApiUrl value.
      */
     public String managementApiUrl() {
@@ -313,8 +365,19 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the managementApiUrl property: Management API endpoint URL of the API Management service.
+     * 
+     * @param managementApiUrl the managementApiUrl value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withManagementApiUrl(String managementApiUrl) {
+        this.managementApiUrl = managementApiUrl;
+        return this;
+    }
+
+    /**
      * Get the scmUrl property: SCM endpoint URL of the API Management service.
-     *
+     * 
      * @return the scmUrl value.
      */
     public String scmUrl() {
@@ -322,8 +385,19 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the scmUrl property: SCM endpoint URL of the API Management service.
+     * 
+     * @param scmUrl the scmUrl value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withScmUrl(String scmUrl) {
+        this.scmUrl = scmUrl;
+        return this;
+    }
+
+    /**
      * Get the developerPortalUrl property: DEveloper Portal endpoint URL of the API Management service.
-     *
+     * 
      * @return the developerPortalUrl value.
      */
     public String developerPortalUrl() {
@@ -331,8 +405,19 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the developerPortalUrl property: DEveloper Portal endpoint URL of the API Management service.
+     * 
+     * @param developerPortalUrl the developerPortalUrl value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withDeveloperPortalUrl(String developerPortalUrl) {
+        this.developerPortalUrl = developerPortalUrl;
+        return this;
+    }
+
+    /**
      * Get the hostnameConfigurations property: Custom hostname configuration of the API Management service.
-     *
+     * 
      * @return the hostnameConfigurations value.
      */
     public List<HostnameConfiguration> hostnameConfigurations() {
@@ -341,7 +426,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Set the hostnameConfigurations property: Custom hostname configuration of the API Management service.
-     *
+     * 
      * @param hostnameConfigurations the hostnameConfigurations value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -354,7 +439,7 @@ public class ApiManagementServiceBaseProperties {
     /**
      * Get the publicIpAddresses property: Public Static Load Balanced IP addresses of the API Management service in
      * Primary region. Available only for Basic, Standard, Premium and Isolated SKU.
-     *
+     * 
      * @return the publicIpAddresses value.
      */
     public List<String> publicIpAddresses() {
@@ -362,10 +447,22 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the publicIpAddresses property: Public Static Load Balanced IP addresses of the API Management service in
+     * Primary region. Available only for Basic, Standard, Premium and Isolated SKU.
+     * 
+     * @param publicIpAddresses the publicIpAddresses value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withPublicIpAddresses(List<String> publicIpAddresses) {
+        this.publicIpAddresses = publicIpAddresses;
+        return this;
+    }
+
+    /**
      * Get the privateIpAddresses property: Private Static Load Balanced IP addresses of the API Management service in
      * Primary region which is deployed in an Internal Virtual Network. Available only for Basic, Standard, Premium and
      * Isolated SKU.
-     *
+     * 
      * @return the privateIpAddresses value.
      */
     public List<String> privateIpAddresses() {
@@ -373,10 +470,23 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the privateIpAddresses property: Private Static Load Balanced IP addresses of the API Management service in
+     * Primary region which is deployed in an Internal Virtual Network. Available only for Basic, Standard, Premium and
+     * Isolated SKU.
+     * 
+     * @param privateIpAddresses the privateIpAddresses value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withPrivateIpAddresses(List<String> privateIpAddresses) {
+        this.privateIpAddresses = privateIpAddresses;
+        return this;
+    }
+
+    /**
      * Get the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
      * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
      * Network.
-     *
+     * 
      * @return the publicIpAddressId value.
      */
     public String publicIpAddressId() {
@@ -387,7 +497,7 @@ public class ApiManagementServiceBaseProperties {
      * Set the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
      * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
      * Network.
-     *
+     * 
      * @param publicIpAddressId the publicIpAddressId value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -400,7 +510,7 @@ public class ApiManagementServiceBaseProperties {
      * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
      * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
      * are the exclusive access method. Default value is 'Enabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -411,7 +521,7 @@ public class ApiManagementServiceBaseProperties {
      * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
      * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
      * are the exclusive access method. Default value is 'Enabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -422,7 +532,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Get the virtualNetworkConfiguration property: Virtual network configuration of the API Management service.
-     *
+     * 
      * @return the virtualNetworkConfiguration value.
      */
     public VirtualNetworkConfiguration virtualNetworkConfiguration() {
@@ -431,7 +541,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Set the virtualNetworkConfiguration property: Virtual network configuration of the API Management service.
-     *
+     * 
      * @param virtualNetworkConfiguration the virtualNetworkConfiguration value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -443,7 +553,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Get the additionalLocations property: Additional datacenter locations of the API Management service.
-     *
+     * 
      * @return the additionalLocations value.
      */
     public List<AdditionalLocation> additionalLocations() {
@@ -452,7 +562,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Set the additionalLocations property: Additional datacenter locations of the API Management service.
-     *
+     * 
      * @param additionalLocations the additionalLocations value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -485,7 +595,7 @@ public class ApiManagementServiceBaseProperties {
      * default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they are
      * required by internal platform components:
      * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
-     *
+     * 
      * @return the customProperties value.
      */
     public Map<String, String> customProperties() {
@@ -516,7 +626,7 @@ public class ApiManagementServiceBaseProperties {
      * default value is `true` for them.&lt;/br&gt; Note: The following ciphers can't be disabled since they are
      * required by internal platform components:
      * TLS_AES_256_GCM_SHA384,TLS_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256,TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256.
-     *
+     * 
      * @param customProperties the customProperties value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -528,7 +638,7 @@ public class ApiManagementServiceBaseProperties {
     /**
      * Get the certificates property: List of Certificates that need to be installed in the API Management service. Max
      * supported certificates that can be installed is 10.
-     *
+     * 
      * @return the certificates value.
      */
     public List<CertificateConfiguration> certificates() {
@@ -538,7 +648,7 @@ public class ApiManagementServiceBaseProperties {
     /**
      * Set the certificates property: List of Certificates that need to be installed in the API Management service. Max
      * supported certificates that can be installed is 10.
-     *
+     * 
      * @param certificates the certificates value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -551,7 +661,7 @@ public class ApiManagementServiceBaseProperties {
      * Get the enableClientCertificate property: Property only meant to be used for Consumption SKU Service. This
      * enforces a client certificate to be presented on each request to the gateway. This also enables the ability to
      * authenticate the certificate in the policy on the gateway.
-     *
+     * 
      * @return the enableClientCertificate value.
      */
     public Boolean enableClientCertificate() {
@@ -562,7 +672,7 @@ public class ApiManagementServiceBaseProperties {
      * Set the enableClientCertificate property: Property only meant to be used for Consumption SKU Service. This
      * enforces a client certificate to be presented on each request to the gateway. This also enables the ability to
      * authenticate the certificate in the policy on the gateway.
-     *
+     * 
      * @param enableClientCertificate the enableClientCertificate value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -573,7 +683,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Get the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
-     *
+     * 
      * @return the natGatewayState value.
      */
     public NatGatewayState natGatewayState() {
@@ -582,7 +692,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Set the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
-     *
+     * 
      * @param natGatewayState the natGatewayState value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -594,7 +704,7 @@ public class ApiManagementServiceBaseProperties {
     /**
      * Get the outboundPublicIpAddresses property: Outbound public IPV4 address prefixes associated with NAT Gateway
      * deployed service. Available only for Premium SKU on stv2 platform.
-     *
+     * 
      * @return the outboundPublicIpAddresses value.
      */
     public List<String> outboundPublicIpAddresses() {
@@ -602,9 +712,21 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the outboundPublicIpAddresses property: Outbound public IPV4 address prefixes associated with NAT Gateway
+     * deployed service. Available only for Premium SKU on stv2 platform.
+     * 
+     * @param outboundPublicIpAddresses the outboundPublicIpAddresses value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withOutboundPublicIpAddresses(List<String> outboundPublicIpAddresses) {
+        this.outboundPublicIpAddresses = outboundPublicIpAddresses;
+        return this;
+    }
+
+    /**
      * Get the disableGateway property: Property only valid for an Api Management service deployed in multiple
      * locations. This can be used to disable the gateway in master region.
-     *
+     * 
      * @return the disableGateway value.
      */
     public Boolean disableGateway() {
@@ -614,7 +736,7 @@ public class ApiManagementServiceBaseProperties {
     /**
      * Set the disableGateway property: Property only valid for an Api Management service deployed in multiple
      * locations. This can be used to disable the gateway in master region.
-     *
+     * 
      * @param disableGateway the disableGateway value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -628,7 +750,7 @@ public class ApiManagementServiceBaseProperties {
      * None (Default Value) means the API Management service is not part of any Virtual Network, External means the API
      * Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means
      * that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.
-     *
+     * 
      * @return the virtualNetworkType value.
      */
     public VirtualNetworkType virtualNetworkType() {
@@ -640,7 +762,7 @@ public class ApiManagementServiceBaseProperties {
      * None (Default Value) means the API Management service is not part of any Virtual Network, External means the API
      * Management deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means
      * that API Management deployment is setup inside a Virtual Network having an Intranet Facing Endpoint only.
-     *
+     * 
      * @param virtualNetworkType the virtualNetworkType value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -651,7 +773,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Get the apiVersionConstraint property: Control Plane Apis version constraint for the API Management service.
-     *
+     * 
      * @return the apiVersionConstraint value.
      */
     public ApiVersionConstraint apiVersionConstraint() {
@@ -660,7 +782,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Set the apiVersionConstraint property: Control Plane Apis version constraint for the API Management service.
-     *
+     * 
      * @param apiVersionConstraint the apiVersionConstraint value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -672,7 +794,7 @@ public class ApiManagementServiceBaseProperties {
     /**
      * Get the restore property: Undelete Api Management Service if it was previously soft-deleted. If this flag is
      * specified and set to True all other properties will be ignored.
-     *
+     * 
      * @return the restore value.
      */
     public Boolean restore() {
@@ -682,7 +804,7 @@ public class ApiManagementServiceBaseProperties {
     /**
      * Set the restore property: Undelete Api Management Service if it was previously soft-deleted. If this flag is
      * specified and set to True all other properties will be ignored.
-     *
+     * 
      * @param restore the restore value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -693,7 +815,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Get the privateEndpointConnections property: List of Private Endpoint Connections of this service.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections() {
@@ -702,7 +824,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Set the privateEndpointConnections property: List of Private Endpoint Connections of this service.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
@@ -714,7 +836,7 @@ public class ApiManagementServiceBaseProperties {
 
     /**
      * Get the platformVersion property: Compute Platform Version running the service in this location.
-     *
+     * 
      * @return the platformVersion value.
      */
     public PlatformVersion platformVersion() {
@@ -722,8 +844,19 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Set the platformVersion property: Compute Platform Version running the service in this location.
+     * 
+     * @param platformVersion the platformVersion value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    ApiManagementServiceBaseProperties withPlatformVersion(PlatformVersion platformVersion) {
+        this.platformVersion = platformVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -745,5 +878,140 @@ public class ApiManagementServiceBaseProperties {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("notificationSenderEmail", this.notificationSenderEmail);
+        jsonWriter.writeArrayField("hostnameConfigurations", this.hostnameConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("publicIpAddressId", this.publicIpAddressId);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("virtualNetworkConfiguration", this.virtualNetworkConfiguration);
+        jsonWriter.writeArrayField("additionalLocations", this.additionalLocations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("customProperties", this.customProperties,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("certificates", this.certificates, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableClientCertificate", this.enableClientCertificate);
+        jsonWriter.writeStringField("natGatewayState",
+            this.natGatewayState == null ? null : this.natGatewayState.toString());
+        jsonWriter.writeBooleanField("disableGateway", this.disableGateway);
+        jsonWriter.writeStringField("virtualNetworkType",
+            this.virtualNetworkType == null ? null : this.virtualNetworkType.toString());
+        jsonWriter.writeJsonField("apiVersionConstraint", this.apiVersionConstraint);
+        jsonWriter.writeBooleanField("restore", this.restore);
+        jsonWriter.writeArrayField("privateEndpointConnections", this.privateEndpointConnections,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementServiceBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementServiceBaseProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiManagementServiceBaseProperties.
+     */
+    public static ApiManagementServiceBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementServiceBaseProperties deserializedApiManagementServiceBaseProperties
+                = new ApiManagementServiceBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("notificationSenderEmail".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.notificationSenderEmail = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.provisioningState = reader.getString();
+                } else if ("targetProvisioningState".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.targetProvisioningState = reader.getString();
+                } else if ("createdAtUtc".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.createdAtUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("gatewayUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.gatewayUrl = reader.getString();
+                } else if ("gatewayRegionalUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.gatewayRegionalUrl = reader.getString();
+                } else if ("portalUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.portalUrl = reader.getString();
+                } else if ("managementApiUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.managementApiUrl = reader.getString();
+                } else if ("scmUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.scmUrl = reader.getString();
+                } else if ("developerPortalUrl".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.developerPortalUrl = reader.getString();
+                } else if ("hostnameConfigurations".equals(fieldName)) {
+                    List<HostnameConfiguration> hostnameConfigurations
+                        = reader.readArray(reader1 -> HostnameConfiguration.fromJson(reader1));
+                    deserializedApiManagementServiceBaseProperties.hostnameConfigurations = hostnameConfigurations;
+                } else if ("publicIPAddresses".equals(fieldName)) {
+                    List<String> publicIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiManagementServiceBaseProperties.publicIpAddresses = publicIpAddresses;
+                } else if ("privateIPAddresses".equals(fieldName)) {
+                    List<String> privateIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiManagementServiceBaseProperties.privateIpAddresses = privateIpAddresses;
+                } else if ("publicIpAddressId".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.publicIpAddressId = reader.getString();
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.publicNetworkAccess
+                        = PublicNetworkAccess.fromString(reader.getString());
+                } else if ("virtualNetworkConfiguration".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.virtualNetworkConfiguration
+                        = VirtualNetworkConfiguration.fromJson(reader);
+                } else if ("additionalLocations".equals(fieldName)) {
+                    List<AdditionalLocation> additionalLocations
+                        = reader.readArray(reader1 -> AdditionalLocation.fromJson(reader1));
+                    deserializedApiManagementServiceBaseProperties.additionalLocations = additionalLocations;
+                } else if ("customProperties".equals(fieldName)) {
+                    Map<String, String> customProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApiManagementServiceBaseProperties.customProperties = customProperties;
+                } else if ("certificates".equals(fieldName)) {
+                    List<CertificateConfiguration> certificates
+                        = reader.readArray(reader1 -> CertificateConfiguration.fromJson(reader1));
+                    deserializedApiManagementServiceBaseProperties.certificates = certificates;
+                } else if ("enableClientCertificate".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.enableClientCertificate
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("natGatewayState".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.natGatewayState
+                        = NatGatewayState.fromString(reader.getString());
+                } else if ("outboundPublicIPAddresses".equals(fieldName)) {
+                    List<String> outboundPublicIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiManagementServiceBaseProperties.outboundPublicIpAddresses
+                        = outboundPublicIpAddresses;
+                } else if ("disableGateway".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.disableGateway
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("virtualNetworkType".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.virtualNetworkType
+                        = VirtualNetworkType.fromString(reader.getString());
+                } else if ("apiVersionConstraint".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.apiVersionConstraint
+                        = ApiVersionConstraint.fromJson(reader);
+                } else if ("restore".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.restore = reader.getNullable(JsonReader::getBoolean);
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections
+                        = reader.readArray(reader1 -> RemotePrivateEndpointConnectionWrapper.fromJson(reader1));
+                    deserializedApiManagementServiceBaseProperties.privateEndpointConnections
+                        = privateEndpointConnections;
+                } else if ("platformVersion".equals(fieldName)) {
+                    deserializedApiManagementServiceBaseProperties.platformVersion
+                        = PlatformVersion.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementServiceBaseProperties;
+        });
     }
 }

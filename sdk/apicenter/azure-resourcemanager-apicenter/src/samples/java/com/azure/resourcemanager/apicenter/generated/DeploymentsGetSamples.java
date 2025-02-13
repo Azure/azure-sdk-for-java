@@ -18,7 +18,8 @@ public final class DeploymentsGetSamples {
      * @param manager Entry point to ApiCenterManager.
      */
     public static void deploymentsGet(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager.deployments().getWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
-            com.azure.core.util.Context.NONE);
+        manager.deployments()
+            .getWithResponse("contoso-resources", "contoso", "default", "echo-api", "production",
+                com.azure.core.util.Context.NONE);
     }
 }

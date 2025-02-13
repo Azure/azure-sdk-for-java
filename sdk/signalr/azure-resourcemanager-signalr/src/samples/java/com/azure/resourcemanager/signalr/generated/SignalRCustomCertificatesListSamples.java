@@ -9,8 +9,7 @@ package com.azure.resourcemanager.signalr.generated;
  */
 public final class SignalRCustomCertificatesListSamples {
     /*
-     * x-ms-original-file:
-     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/
      * SignalRCustomCertificates_List.json
      */
     /**

@@ -63,7 +63,6 @@ public final class DatasetDebugResource extends SubResourceDebugResource {
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() == null) {
             throw LOGGER.atError()
                 .log(

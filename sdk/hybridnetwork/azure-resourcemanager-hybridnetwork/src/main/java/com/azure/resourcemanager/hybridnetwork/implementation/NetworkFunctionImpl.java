@@ -138,8 +138,8 @@ public final class NetworkFunctionImpl implements NetworkFunction, NetworkFuncti
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.networkFunctionName = Utils.getValueFromIdByName(innerObject.id(), "networkFunctions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.networkFunctionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "networkFunctions");
     }
 
     public NetworkFunction refresh() {

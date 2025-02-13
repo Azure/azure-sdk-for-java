@@ -430,7 +430,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         InternalObjectNode internalObjectNode = new InternalObjectNode();
         String uuid = UUID.randomUUID().toString();
         internalObjectNode.setId(uuid);
-        internalObjectNode.set("mypk", uuid, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        internalObjectNode.set("mypk", uuid);
         return internalObjectNode;
     }
 

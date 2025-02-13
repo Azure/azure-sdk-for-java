@@ -16,13 +16,15 @@ import com.azure.resourcemanager.managednetworkfabric.fluent.models.InternalNetw
 import com.azure.resourcemanager.managednetworkfabric.models.InternalNetworkPatch;
 import com.azure.resourcemanager.managednetworkfabric.models.UpdateAdministrativeState;
 
-/** An instance of this class provides access to all the operations defined in InternalNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InternalNetworksClient.
+ */
 public interface InternalNetworksClient {
     /**
      * Creates InternalNetwork for Layer3 Isolation Domain for communication of compute within and across racks.
-     *
-     * <p>Creates InternalNetwork PUT method.
-     *
+     * 
+     * Creates InternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -38,9 +40,9 @@ public interface InternalNetworksClient {
 
     /**
      * Creates InternalNetwork for Layer3 Isolation Domain for communication of compute within and across racks.
-     *
-     * <p>Creates InternalNetwork PUT method.
-     *
+     * 
+     * Creates InternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -57,9 +59,9 @@ public interface InternalNetworksClient {
 
     /**
      * Creates InternalNetwork for Layer3 Isolation Domain for communication of compute within and across racks.
-     *
-     * <p>Creates InternalNetwork PUT method.
-     *
+     * 
+     * Creates InternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -75,9 +77,9 @@ public interface InternalNetworksClient {
 
     /**
      * Creates InternalNetwork for Layer3 Isolation Domain for communication of compute within and across racks.
-     *
-     * <p>Creates InternalNetwork PUT method.
-     *
+     * 
+     * Creates InternalNetwork PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -94,9 +96,9 @@ public interface InternalNetworksClient {
 
     /**
      * Retrieves details of InternalNetworks using GET method.
-     *
-     * <p>Gets a InternalNetworks.
-     *
+     * 
+     * Gets a InternalNetworks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -112,9 +114,9 @@ public interface InternalNetworksClient {
 
     /**
      * Retrieves details of InternalNetworks using GET method.
-     *
-     * <p>Gets a InternalNetworks.
-     *
+     * 
+     * Gets a InternalNetworks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -128,9 +130,9 @@ public interface InternalNetworksClient {
 
     /**
      * API to update certain properties of the InternalNetworks resources.
-     *
-     * <p>Updates a InternalNetworks.
-     *
+     * 
+     * Updates a InternalNetworks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -146,9 +148,9 @@ public interface InternalNetworksClient {
 
     /**
      * API to update certain properties of the InternalNetworks resources.
-     *
-     * <p>Updates a InternalNetworks.
-     *
+     * 
+     * Updates a InternalNetworks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -165,9 +167,9 @@ public interface InternalNetworksClient {
 
     /**
      * API to update certain properties of the InternalNetworks resources.
-     *
-     * <p>Updates a InternalNetworks.
-     *
+     * 
+     * Updates a InternalNetworks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -183,9 +185,9 @@ public interface InternalNetworksClient {
 
     /**
      * API to update certain properties of the InternalNetworks resources.
-     *
-     * <p>Updates a InternalNetworks.
-     *
+     * 
+     * Updates a InternalNetworks.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -202,9 +204,9 @@ public interface InternalNetworksClient {
 
     /**
      * Deletes a InternalNetworks.
-     *
-     * <p>Implements InternalNetworks DELETE method.
-     *
+     * 
+     * Implements InternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -219,9 +221,9 @@ public interface InternalNetworksClient {
 
     /**
      * Deletes a InternalNetworks.
-     *
-     * <p>Implements InternalNetworks DELETE method.
-     *
+     * 
+     * Implements InternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -237,9 +239,9 @@ public interface InternalNetworksClient {
 
     /**
      * Deletes a InternalNetworks.
-     *
-     * <p>Implements InternalNetworks DELETE method.
-     *
+     * 
+     * Implements InternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -252,9 +254,9 @@ public interface InternalNetworksClient {
 
     /**
      * Deletes a InternalNetworks.
-     *
-     * <p>Implements InternalNetworks DELETE method.
-     *
+     * 
+     * Implements InternalNetworks DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -268,9 +270,9 @@ public interface InternalNetworksClient {
 
     /**
      * Executes list operation to display list of all internal networks
-     *
-     * <p>Displays InternalNetworks list by resource group GET method.
-     *
+     * 
+     * Displays InternalNetworks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,9 +285,9 @@ public interface InternalNetworksClient {
 
     /**
      * Executes list operation to display list of all internal networks
-     *
-     * <p>Displays InternalNetworks list by resource group GET method.
-     *
+     * 
+     * Displays InternalNetworks list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param context The context to associate with this operation.
@@ -300,9 +302,9 @@ public interface InternalNetworksClient {
 
     /**
      * Executes the operation to the underlying resources.
-     *
-     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
-     *
+     * 
+     * Update Administrative state of InternalNetworks on resources referred by their resource ids.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -319,9 +321,9 @@ public interface InternalNetworksClient {
 
     /**
      * Executes the operation to the underlying resources.
-     *
-     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
-     *
+     * 
+     * Update Administrative state of InternalNetworks on resources referred by their resource ids.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -339,9 +341,9 @@ public interface InternalNetworksClient {
 
     /**
      * Executes the operation to the underlying resources.
-     *
-     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
-     *
+     * 
+     * Update Administrative state of InternalNetworks on resources referred by their resource ids.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -357,9 +359,9 @@ public interface InternalNetworksClient {
 
     /**
      * Executes the operation to the underlying resources.
-     *
-     * <p>Update Administrative state of InternalNetworks on resources referred by their resource ids.
-     *
+     * 
+     * Update Administrative state of InternalNetworks on resources referred by their resource ids.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -376,9 +378,9 @@ public interface InternalNetworksClient {
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
-     *
-     * <p>Update BGP state for internalNetwork. Allowed only on edge devices.
-     *
+     * 
+     * Update BGP state for internalNetwork. Allowed only on edge devices.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -395,9 +397,9 @@ public interface InternalNetworksClient {
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
-     *
-     * <p>Update BGP state for internalNetwork. Allowed only on edge devices.
-     *
+     * 
+     * Update BGP state for internalNetwork. Allowed only on edge devices.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -415,9 +417,9 @@ public interface InternalNetworksClient {
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
-     *
-     * <p>Update BGP state for internalNetwork. Allowed only on edge devices.
-     *
+     * 
+     * Update BGP state for internalNetwork. Allowed only on edge devices.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -433,9 +435,9 @@ public interface InternalNetworksClient {
 
     /**
      * Executes the operation to the underlying resources for updating BGP state on edge devices.
-     *
-     * <p>Update BGP state for internalNetwork. Allowed only on edge devices.
-     *
+     * 
+     * Update BGP state for internalNetwork. Allowed only on edge devices.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -452,9 +454,9 @@ public interface InternalNetworksClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD administrative state for internalNetwork.
-     *
+     * 
+     * Update Static Route BFD administrative state for internalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -471,9 +473,9 @@ public interface InternalNetworksClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD administrative state for internalNetwork.
-     *
+     * 
+     * Update Static Route BFD administrative state for internalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -491,9 +493,9 @@ public interface InternalNetworksClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD administrative state for internalNetwork.
-     *
+     * 
+     * Update Static Route BFD administrative state for internalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.
@@ -509,9 +511,9 @@ public interface InternalNetworksClient {
 
     /**
      * Implements the operation to the underlying resources.
-     *
-     * <p>Update Static Route BFD administrative state for internalNetwork.
-     *
+     * 
+     * Update Static Route BFD administrative state for internalNetwork.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param l3IsolationDomainName Name of the L3 Isolation Domain.
      * @param internalNetworkName Name of the Internal Network.

@@ -156,6 +156,34 @@ public final class LiveMetricsRestAPIsForClientSDKs {
             @BodyParam("application/json") MonitoringDataPoint monitoringDataPoint,
             @HeaderParam("Accept") String accept, Context context);
 
+        @Post("/QuickPulseService.svc/ping")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ServiceErrorException.class)
+        ResponseBase<IsSubscribedHeaders, CollectionConfigurationInfo> isSubscribedSync(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @QueryParam("ikey") String ikey, @HeaderParam("x-ms-qps-transmission-time") Long transmissionTime,
+            @HeaderParam("x-ms-qps-machine-name") String machineName,
+            @HeaderParam("x-ms-qps-instance-name") String instanceName,
+            @HeaderParam("x-ms-qps-stream-id") String streamId, @HeaderParam("x-ms-qps-role-name") String roleName,
+            @HeaderParam("x-ms-qps-invariant-version") String invariantVersion,
+            @HeaderParam("x-ms-qps-configuration-etag") String configurationEtag,
+            @BodyParam("application/json") MonitoringDataPoint monitoringDataPoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/QuickPulseService.svc/ping")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ServiceErrorException.class)
+        Response<CollectionConfigurationInfo> isSubscribedNoCustomHeadersSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("ikey") String ikey,
+            @HeaderParam("x-ms-qps-transmission-time") Long transmissionTime,
+            @HeaderParam("x-ms-qps-machine-name") String machineName,
+            @HeaderParam("x-ms-qps-instance-name") String instanceName,
+            @HeaderParam("x-ms-qps-stream-id") String streamId, @HeaderParam("x-ms-qps-role-name") String roleName,
+            @HeaderParam("x-ms-qps-invariant-version") String invariantVersion,
+            @HeaderParam("x-ms-qps-configuration-etag") String configurationEtag,
+            @BodyParam("application/json") MonitoringDataPoint monitoringDataPoint,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Post("/QuickPulseService.svc/post")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceErrorException.class)
@@ -170,6 +198,26 @@ public final class LiveMetricsRestAPIsForClientSDKs {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ServiceErrorException.class)
         Mono<Response<CollectionConfigurationInfo>> publishNoCustomHeaders(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("ikey") String ikey,
+            @HeaderParam("x-ms-qps-configuration-etag") String configurationEtag,
+            @HeaderParam("x-ms-qps-transmission-time") Long transmissionTime,
+            @BodyParam("application/json") List<MonitoringDataPoint> monitoringDataPoints,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/QuickPulseService.svc/post")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ServiceErrorException.class)
+        ResponseBase<PublishHeaders, CollectionConfigurationInfo> publishSync(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("ikey") String ikey,
+            @HeaderParam("x-ms-qps-configuration-etag") String configurationEtag,
+            @HeaderParam("x-ms-qps-transmission-time") Long transmissionTime,
+            @BodyParam("application/json") List<MonitoringDataPoint> monitoringDataPoints,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/QuickPulseService.svc/post")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ServiceErrorException.class)
+        Response<CollectionConfigurationInfo> publishNoCustomHeadersSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @QueryParam("ikey") String ikey,
             @HeaderParam("x-ms-qps-configuration-etag") String configurationEtag,
             @HeaderParam("x-ms-qps-transmission-time") Long transmissionTime,
@@ -391,6 +439,111 @@ public final class LiveMetricsRestAPIsForClientSDKs {
     }
 
     /**
+     * Determine whether there is any subscription to the metrics and documents.
+     * 
+     * @param endpoint The endpoint of the Live Metrics service.
+     * @param ikey The instrumentation key of the target Application Insights component for which the client checks
+     * whether there's any subscription to it.
+     * @param transmissionTime Timestamp when the client transmits the metrics and documents to Live Metrics. A 8-byte
+     * long type of ticks.
+     * @param machineName Computer name where Application Insights SDK lives. Live Metrics uses machine name with
+     * instance name as a backup.
+     * @param instanceName Service instance name where Application Insights SDK lives. Live Metrics uses machine name
+     * with instance name as a backup.
+     * @param streamId Identifies an Application Insights SDK as trusted agent to report metrics and documents.
+     * @param roleName Cloud role name of the service.
+     * @param invariantVersion Version/generation of the data contract (MonitoringDataPoint) between the client and Live
+     * Metrics.
+     * @param configurationEtag An encoded string that indicates whether the collection configuration is changed.
+     * @param monitoringDataPoint Data contract between Application Insights client SDK and Live Metrics.
+     * /QuickPulseService.svc/ping uses this as a backup source of machine name, instance name and invariant version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the collection configuration - a customizable description of performance counters, metrics,
+     * and full telemetry documents to be collected by the client SDK along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<IsSubscribedHeaders, CollectionConfigurationInfo> isSubscribedWithResponse(String endpoint,
+        String ikey, Long transmissionTime, String machineName, String instanceName, String streamId, String roleName,
+        String invariantVersion, String configurationEtag, MonitoringDataPoint monitoringDataPoint, Context context) {
+        final String accept = "application/json";
+        return service.isSubscribedSync(endpoint, this.getApiVersion(), ikey, transmissionTime, machineName,
+            instanceName, streamId, roleName, invariantVersion, configurationEtag, monitoringDataPoint, accept,
+            context);
+    }
+
+    /**
+     * Determine whether there is any subscription to the metrics and documents.
+     * 
+     * @param endpoint The endpoint of the Live Metrics service.
+     * @param ikey The instrumentation key of the target Application Insights component for which the client checks
+     * whether there's any subscription to it.
+     * @param transmissionTime Timestamp when the client transmits the metrics and documents to Live Metrics. A 8-byte
+     * long type of ticks.
+     * @param machineName Computer name where Application Insights SDK lives. Live Metrics uses machine name with
+     * instance name as a backup.
+     * @param instanceName Service instance name where Application Insights SDK lives. Live Metrics uses machine name
+     * with instance name as a backup.
+     * @param streamId Identifies an Application Insights SDK as trusted agent to report metrics and documents.
+     * @param roleName Cloud role name of the service.
+     * @param invariantVersion Version/generation of the data contract (MonitoringDataPoint) between the client and Live
+     * Metrics.
+     * @param configurationEtag An encoded string that indicates whether the collection configuration is changed.
+     * @param monitoringDataPoint Data contract between Application Insights client SDK and Live Metrics.
+     * /QuickPulseService.svc/ping uses this as a backup source of machine name, instance name and invariant version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the collection configuration - a customizable description of performance counters, metrics,
+     * and full telemetry documents to be collected by the client SDK.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CollectionConfigurationInfo isSubscribed(String endpoint, String ikey, Long transmissionTime,
+        String machineName, String instanceName, String streamId, String roleName, String invariantVersion,
+        String configurationEtag, MonitoringDataPoint monitoringDataPoint) {
+        return isSubscribedWithResponse(endpoint, ikey, transmissionTime, machineName, instanceName, streamId, roleName,
+            invariantVersion, configurationEtag, monitoringDataPoint, Context.NONE).getValue();
+    }
+
+    /**
+     * Determine whether there is any subscription to the metrics and documents.
+     * 
+     * @param endpoint The endpoint of the Live Metrics service.
+     * @param ikey The instrumentation key of the target Application Insights component for which the client checks
+     * whether there's any subscription to it.
+     * @param transmissionTime Timestamp when the client transmits the metrics and documents to Live Metrics. A 8-byte
+     * long type of ticks.
+     * @param machineName Computer name where Application Insights SDK lives. Live Metrics uses machine name with
+     * instance name as a backup.
+     * @param instanceName Service instance name where Application Insights SDK lives. Live Metrics uses machine name
+     * with instance name as a backup.
+     * @param streamId Identifies an Application Insights SDK as trusted agent to report metrics and documents.
+     * @param roleName Cloud role name of the service.
+     * @param invariantVersion Version/generation of the data contract (MonitoringDataPoint) between the client and Live
+     * Metrics.
+     * @param configurationEtag An encoded string that indicates whether the collection configuration is changed.
+     * @param monitoringDataPoint Data contract between Application Insights client SDK and Live Metrics.
+     * /QuickPulseService.svc/ping uses this as a backup source of machine name, instance name and invariant version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the collection configuration - a customizable description of performance counters, metrics,
+     * and full telemetry documents to be collected by the client SDK along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CollectionConfigurationInfo> isSubscribedNoCustomHeadersWithResponse(String endpoint, String ikey,
+        Long transmissionTime, String machineName, String instanceName, String streamId, String roleName,
+        String invariantVersion, String configurationEtag, MonitoringDataPoint monitoringDataPoint, Context context) {
+        final String accept = "application/json";
+        return service.isSubscribedNoCustomHeadersSync(endpoint, this.getApiVersion(), ikey, transmissionTime,
+            machineName, instanceName, streamId, roleName, invariantVersion, configurationEtag, monitoringDataPoint,
+            accept, context);
+    }
+
+    /**
      * Publish live metrics to the Live Metrics service when there is an active subscription to the metrics.
      * 
      * @param endpoint The endpoint of the Live Metrics service.
@@ -543,5 +696,83 @@ public final class LiveMetricsRestAPIsForClientSDKs {
         final String accept = "application/json";
         return service.publishNoCustomHeaders(endpoint, this.getApiVersion(), ikey, configurationEtag, transmissionTime,
             monitoringDataPoints, accept, context);
+    }
+
+    /**
+     * Publish live metrics to the Live Metrics service when there is an active subscription to the metrics.
+     * 
+     * @param endpoint The endpoint of the Live Metrics service.
+     * @param ikey The instrumentation key of the target Application Insights component for which the client checks
+     * whether there's any subscription to it.
+     * @param configurationEtag An encoded string that indicates whether the collection configuration is changed.
+     * @param transmissionTime Timestamp when the client transmits the metrics and documents to Live Metrics. A 8-byte
+     * long type of ticks.
+     * @param monitoringDataPoints Data contract between the client and Live Metrics. /QuickPulseService.svc/ping uses
+     * this as a backup source of machine name, instance name and invariant version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the collection configuration - a customizable description of performance counters, metrics,
+     * and full telemetry documents to be collected by the client SDK along with {@link ResponseBase}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ResponseBase<PublishHeaders, CollectionConfigurationInfo> publishWithResponse(String endpoint, String ikey,
+        String configurationEtag, Long transmissionTime, List<MonitoringDataPoint> monitoringDataPoints,
+        Context context) {
+        final String accept = "application/json";
+        return service.publishSync(endpoint, this.getApiVersion(), ikey, configurationEtag, transmissionTime,
+            monitoringDataPoints, accept, context);
+    }
+
+    /**
+     * Publish live metrics to the Live Metrics service when there is an active subscription to the metrics.
+     * 
+     * @param endpoint The endpoint of the Live Metrics service.
+     * @param ikey The instrumentation key of the target Application Insights component for which the client checks
+     * whether there's any subscription to it.
+     * @param configurationEtag An encoded string that indicates whether the collection configuration is changed.
+     * @param transmissionTime Timestamp when the client transmits the metrics and documents to Live Metrics. A 8-byte
+     * long type of ticks.
+     * @param monitoringDataPoints Data contract between the client and Live Metrics. /QuickPulseService.svc/ping uses
+     * this as a backup source of machine name, instance name and invariant version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the collection configuration - a customizable description of performance counters, metrics,
+     * and full telemetry documents to be collected by the client SDK.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CollectionConfigurationInfo publish(String endpoint, String ikey, String configurationEtag,
+        Long transmissionTime, List<MonitoringDataPoint> monitoringDataPoints) {
+        return publishWithResponse(endpoint, ikey, configurationEtag, transmissionTime, monitoringDataPoints,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Publish live metrics to the Live Metrics service when there is an active subscription to the metrics.
+     * 
+     * @param endpoint The endpoint of the Live Metrics service.
+     * @param ikey The instrumentation key of the target Application Insights component for which the client checks
+     * whether there's any subscription to it.
+     * @param configurationEtag An encoded string that indicates whether the collection configuration is changed.
+     * @param transmissionTime Timestamp when the client transmits the metrics and documents to Live Metrics. A 8-byte
+     * long type of ticks.
+     * @param monitoringDataPoints Data contract between the client and Live Metrics. /QuickPulseService.svc/ping uses
+     * this as a backup source of machine name, instance name and invariant version.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ServiceErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the collection configuration - a customizable description of performance counters, metrics,
+     * and full telemetry documents to be collected by the client SDK along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CollectionConfigurationInfo> publishNoCustomHeadersWithResponse(String endpoint, String ikey,
+        String configurationEtag, Long transmissionTime, List<MonitoringDataPoint> monitoringDataPoints,
+        Context context) {
+        final String accept = "application/json";
+        return service.publishNoCustomHeadersSync(endpoint, this.getApiVersion(), ikey, configurationEtag,
+            transmissionTime, monitoringDataPoints, accept, context);
     }
 }

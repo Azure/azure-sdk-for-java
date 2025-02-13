@@ -8,11 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
 import com.azure.resourcemanager.networkcloud.models.HybridAksPluginType;
 import com.azure.resourcemanager.networkcloud.models.TrunkedNetworkDetailedStatus;
 import com.azure.resourcemanager.networkcloud.models.TrunkedNetworkProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -23,37 +26,44 @@ import java.util.Map;
 @Fluent
 public final class TrunkedNetworkInner extends Resource {
     /*
-     * ExtendedLocation represents the Azure custom location where the resource will be created.
-     *
      * The extended location of the cluster associated with the resource.
      */
-    @JsonProperty(value = "extendedLocation", required = true)
     private ExtendedLocation extendedLocation;
 
     /*
-     * TrunkedNetworkProperties represents properties of the trunked network.
-     *
      * The list of the resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private TrunkedNetworkProperties innerProperties = new TrunkedNetworkProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TrunkedNetworkInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of TrunkedNetworkInner class.
+     */
     public TrunkedNetworkInner() {
     }
 
     /**
-     * Get the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Get the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -61,11 +71,8 @@ public final class TrunkedNetworkInner extends Resource {
     }
 
     /**
-     * Set the extendedLocation property: ExtendedLocation represents the Azure custom location where the resource will
-     * be created.
-     *
-     * <p>The extended location of the cluster associated with the resource.
-     *
+     * Set the extendedLocation property: The extended location of the cluster associated with the resource.
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the TrunkedNetworkInner object itself.
      */
@@ -75,10 +82,8 @@ public final class TrunkedNetworkInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: TrunkedNetworkProperties represents properties of the trunked network.
-     *
-     * <p>The list of the resource properties.
-     *
+     * Get the innerProperties property: The list of the resource properties.
+     * 
      * @return the innerProperties value.
      */
     private TrunkedNetworkProperties innerProperties() {
@@ -87,21 +92,55 @@ public final class TrunkedNetworkInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TrunkedNetworkInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TrunkedNetworkInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -111,7 +150,7 @@ public final class TrunkedNetworkInner extends Resource {
     /**
      * Get the associatedResourceIds property: The list of resource IDs for the other Microsoft.NetworkCloud resources
      * that have attached this network.
-     *
+     * 
      * @return the associatedResourceIds value.
      */
     public List<String> associatedResourceIds() {
@@ -120,7 +159,7 @@ public final class TrunkedNetworkInner extends Resource {
 
     /**
      * Get the clusterId property: The resource ID of the Network Cloud cluster this trunked network is associated with.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -129,7 +168,7 @@ public final class TrunkedNetworkInner extends Resource {
 
     /**
      * Get the detailedStatus property: The more detailed status of the trunked network.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public TrunkedNetworkDetailedStatus detailedStatus() {
@@ -138,7 +177,7 @@ public final class TrunkedNetworkInner extends Resource {
 
     /**
      * Get the detailedStatusMessage property: The descriptive message about the current detailed status.
-     *
+     * 
      * @return the detailedStatusMessage value.
      */
     public String detailedStatusMessage() {
@@ -148,7 +187,7 @@ public final class TrunkedNetworkInner extends Resource {
     /**
      * Get the hybridAksClustersAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list
      * of Hybrid AKS cluster resource IDs that are associated with this trunked network.
-     *
+     * 
      * @return the hybridAksClustersAssociatedIds value.
      */
     public List<String> hybridAksClustersAssociatedIds() {
@@ -158,7 +197,7 @@ public final class TrunkedNetworkInner extends Resource {
     /**
      * Get the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
      * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
-     *
+     * 
      * @return the hybridAksPluginType value.
      */
     public HybridAksPluginType hybridAksPluginType() {
@@ -168,7 +207,7 @@ public final class TrunkedNetworkInner extends Resource {
     /**
      * Set the hybridAksPluginType property: Field Deprecated. The field was previously optional, now it will have no
      * defined behavior and will be ignored. The network plugin type for Hybrid AKS.
-     *
+     * 
      * @param hybridAksPluginType the hybridAksPluginType value to set.
      * @return the TrunkedNetworkInner object itself.
      */
@@ -183,7 +222,7 @@ public final class TrunkedNetworkInner extends Resource {
     /**
      * Get the interfaceName property: The default interface name for this trunked network in the virtual machine. This
      * name can be overridden by the name supplied in the network attachment configuration of that virtual machine.
-     *
+     * 
      * @return the interfaceName value.
      */
     public String interfaceName() {
@@ -193,7 +232,7 @@ public final class TrunkedNetworkInner extends Resource {
     /**
      * Set the interfaceName property: The default interface name for this trunked network in the virtual machine. This
      * name can be overridden by the name supplied in the network attachment configuration of that virtual machine.
-     *
+     * 
      * @param interfaceName the interfaceName value to set.
      * @return the TrunkedNetworkInner object itself.
      */
@@ -208,7 +247,7 @@ public final class TrunkedNetworkInner extends Resource {
     /**
      * Get the isolationDomainIds property: The list of resource IDs representing the Network Fabric isolation domains.
      * It can be any combination of l2IsolationDomain and l3IsolationDomain resources.
-     *
+     * 
      * @return the isolationDomainIds value.
      */
     public List<String> isolationDomainIds() {
@@ -218,7 +257,7 @@ public final class TrunkedNetworkInner extends Resource {
     /**
      * Set the isolationDomainIds property: The list of resource IDs representing the Network Fabric isolation domains.
      * It can be any combination of l2IsolationDomain and l3IsolationDomain resources.
-     *
+     * 
      * @param isolationDomainIds the isolationDomainIds value to set.
      * @return the TrunkedNetworkInner object itself.
      */
@@ -232,7 +271,7 @@ public final class TrunkedNetworkInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the trunked network.
-     *
+     * 
      * @return the provisioningState value.
      */
     public TrunkedNetworkProvisioningState provisioningState() {
@@ -243,7 +282,7 @@ public final class TrunkedNetworkInner extends Resource {
      * Get the virtualMachinesAssociatedIds property: Field Deprecated. These fields will be empty/omitted. The list of
      * virtual machine resource IDs, excluding any Hybrid AKS virtual machines, that are currently using this trunked
      * network.
-     *
+     * 
      * @return the virtualMachinesAssociatedIds value.
      */
     public List<String> virtualMachinesAssociatedIds() {
@@ -252,7 +291,7 @@ public final class TrunkedNetworkInner extends Resource {
 
     /**
      * Get the vlans property: The list of vlans that are selected from the isolation domains for trunking.
-     *
+     * 
      * @return the vlans value.
      */
     public List<Long> vlans() {
@@ -261,7 +300,7 @@ public final class TrunkedNetworkInner extends Resource {
 
     /**
      * Set the vlans property: The list of vlans that are selected from the isolation domains for trunking.
-     *
+     * 
      * @param vlans the vlans value to set.
      * @return the TrunkedNetworkInner object itself.
      */
@@ -275,23 +314,80 @@ public final class TrunkedNetworkInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (extendedLocation() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property extendedLocation in model TrunkedNetworkInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property extendedLocation in model TrunkedNetworkInner"));
         } else {
             extendedLocation().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model TrunkedNetworkInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model TrunkedNetworkInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TrunkedNetworkInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("extendedLocation", this.extendedLocation);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrunkedNetworkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrunkedNetworkInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrunkedNetworkInner.
+     */
+    public static TrunkedNetworkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrunkedNetworkInner deserializedTrunkedNetworkInner = new TrunkedNetworkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTrunkedNetworkInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTrunkedNetworkInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTrunkedNetworkInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedTrunkedNetworkInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedTrunkedNetworkInner.withTags(tags);
+                } else if ("extendedLocation".equals(fieldName)) {
+                    deserializedTrunkedNetworkInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedTrunkedNetworkInner.innerProperties = TrunkedNetworkProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedTrunkedNetworkInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrunkedNetworkInner;
+        });
+    }
 }

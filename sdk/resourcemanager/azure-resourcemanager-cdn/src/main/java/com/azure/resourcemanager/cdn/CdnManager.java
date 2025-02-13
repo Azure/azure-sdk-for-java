@@ -92,6 +92,8 @@ public final class CdnManager extends Manager<CdnManagementClient> {
     }
 
     /**
+     * Gets entry point to CDN manager profile management.
+     *
      * @return entry point to CDN manager profile management
      */
     public CdnProfiles profiles() {

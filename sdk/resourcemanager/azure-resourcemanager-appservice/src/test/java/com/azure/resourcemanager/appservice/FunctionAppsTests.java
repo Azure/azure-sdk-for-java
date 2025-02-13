@@ -325,7 +325,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .withAppSetting("WEBSITE_RUN_FROM_PACKAGE", FUNCTION_APP_PACKAGE_URL)
             .create();
         Assertions.assertNotNull(functionApp1);
-        Assertions.assertFalse(functionApp1.alwaysOn());
+        Assertions.assertTrue(functionApp1.alwaysOn());
         AppServicePlan plan1 = appServiceManager.appServicePlans().getById(functionApp1.appServicePlanId());
         Assertions.assertNotNull(plan1);
         Assertions.assertEquals(new PricingTier(SkuName.ELASTIC_PREMIUM.toString(), "EP1"), plan1.pricingTier());

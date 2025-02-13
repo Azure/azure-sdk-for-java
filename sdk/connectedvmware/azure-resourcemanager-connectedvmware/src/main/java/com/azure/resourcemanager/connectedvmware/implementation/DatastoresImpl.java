@@ -58,31 +58,31 @@ public final class DatastoresImpl implements Datastores {
 
     public PagedIterable<Datastore> list() {
         PagedIterable<DatastoreInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Datastore> list(Context context) {
         PagedIterable<DatastoreInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Datastore> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DatastoreInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Datastore> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<DatastoreInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DatastoreImpl(inner1, this.manager()));
     }
 
     public Datastore getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String datastoreName = Utils.getValueFromIdByName(id, "datastores");
+        String datastoreName = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (datastoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
@@ -91,12 +91,12 @@ public final class DatastoresImpl implements Datastores {
     }
 
     public Response<Datastore> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String datastoreName = Utils.getValueFromIdByName(id, "datastores");
+        String datastoreName = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (datastoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
@@ -105,12 +105,12 @@ public final class DatastoresImpl implements Datastores {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String datastoreName = Utils.getValueFromIdByName(id, "datastores");
+        String datastoreName = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (datastoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));
@@ -120,12 +120,12 @@ public final class DatastoresImpl implements Datastores {
     }
 
     public void deleteByIdWithResponse(String id, Boolean force, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String datastoreName = Utils.getValueFromIdByName(id, "datastores");
+        String datastoreName = ResourceManagerUtils.getValueFromIdByName(id, "datastores");
         if (datastoreName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'datastores'.", id)));

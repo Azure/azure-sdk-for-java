@@ -3,11 +3,11 @@
 
 package io.clientcore.core.http;
 
-import io.clientcore.core.annotation.ServiceInterface;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.HeaderParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
-import io.clientcore.core.http.annotation.PathParam;
+import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.HeaderParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -16,8 +16,8 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link RestProxy}.
  */
 public class RestProxyTests {
-    @ServiceInterface(name = "myService", host = "https://azure.com")
+    @ServiceInterface(name = "myService", host = "https://somecloud.com")
     interface TestInterface {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<Void> testMethod(@BodyParam("application/octet-stream") ByteBuffer request,
@@ -71,7 +71,7 @@ public class RestProxyTests {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         byte[] bytes = "hello".getBytes();
         try (Response<Void> response
             = testInterface.testMethod(ByteBuffer.wrap(bytes), "application/json", (long) bytes.length)) {
@@ -86,8 +86,7 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)
             .build();
-    
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
     
         streamResponse.close();
@@ -102,7 +101,7 @@ public class RestProxyTests {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         Response<Void> response = testInterface.testMethod(data, "application/json", contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -131,7 +130,7 @@ public class RestProxyTests {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
         Class<? extends BinaryData> expectedContentClazz = data.getClass();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         Response<Void> response = testInterface.testMethod(data, ContentType.APPLICATION_JSON, contentLength);
 
         assertEquals(200, response.getStatusCode());
@@ -146,7 +145,7 @@ public class RestProxyTests {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
         testInterface.testMethodReturnsVoid();
 
@@ -205,14 +204,14 @@ public class RestProxyTests {
     @Test
     public void doesNotChangeEncodedPath() throws IOException {
         String nextLinkUri
-            = "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
+            = "https://management.somecloud.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient((request) -> {
             assertEquals(nextLinkUri, request.getUri().toString());
 
             return new MockHttpResponse(null, 200);
         }).build();
 
-        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new DefaultJsonSerializer());
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
         testInterface.testListNext(nextLinkUri).close();
     }

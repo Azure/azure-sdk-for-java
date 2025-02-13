@@ -12,14 +12,14 @@ public final class ServerlessSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerlessSettings model
-            = BinaryData.fromString("{\"connectionTimeoutInSeconds\":2062903356}").toObject(ServerlessSettings.class);
-        Assertions.assertEquals(2062903356, model.connectionTimeoutInSeconds());
+            = BinaryData.fromString("{\"connectionTimeoutInSeconds\":689960691}").toObject(ServerlessSettings.class);
+        Assertions.assertEquals(689960691, model.connectionTimeoutInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerlessSettings model = new ServerlessSettings().withConnectionTimeoutInSeconds(2062903356);
+        ServerlessSettings model = new ServerlessSettings().withConnectionTimeoutInSeconds(689960691);
         model = BinaryData.fromObject(model).toObject(ServerlessSettings.class);
-        Assertions.assertEquals(2062903356, model.connectionTimeoutInSeconds());
+        Assertions.assertEquals(689960691, model.connectionTimeoutInSeconds());
     }
 }

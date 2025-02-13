@@ -19,8 +19,8 @@ public final class MonitorsVmHostPayloadSamples {
      */
     public static void monitorsVmHostPayloadMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -34,7 +34,7 @@ public final class MonitorsVmHostPayloadSamples {
      */
     public static void monitorsVmHostPayloadMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.monitors().vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
-            com.azure.core.util.Context.NONE);
+        manager.monitors()
+            .vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
     }
 }

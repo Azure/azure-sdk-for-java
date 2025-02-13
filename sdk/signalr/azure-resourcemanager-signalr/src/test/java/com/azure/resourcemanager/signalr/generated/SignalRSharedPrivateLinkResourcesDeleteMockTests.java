@@ -28,7 +28,7 @@ public final class SignalRSharedPrivateLinkResourcesDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.signalRSharedPrivateLinkResources()
-            .delete("e", "oyzbamwineofvf", "akpoldtvevbo", com.azure.core.util.Context.NONE);
+            .delete("yfqi", "gxhnpomyqwcabv", "ui", com.azure.core.util.Context.NONE);
 
     }
 }

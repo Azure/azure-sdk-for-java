@@ -20,11 +20,13 @@ import com.azure.resourcemanager.apimanagement.models.TenantAccessGetResponse;
 import com.azure.resourcemanager.apimanagement.models.TenantAccessListSecretsResponse;
 import com.azure.resourcemanager.apimanagement.models.TenantAccessUpdateResponse;
 
-/** An instance of this class provides access to all the operations defined in TenantAccessClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TenantAccessClient.
+ */
 public interface TenantAccessClient {
     /**
      * Returns list of access infos - for Git and Management endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +39,7 @@ public interface TenantAccessClient {
 
     /**
      * Returns list of access infos - for Git and Management endpoints.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter Not used.
@@ -53,7 +55,7 @@ public interface TenantAccessClient {
 
     /**
      * Tenant access metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -69,7 +71,7 @@ public interface TenantAccessClient {
 
     /**
      * Tenant access metadata.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -82,7 +84,7 @@ public interface TenantAccessClient {
 
     /**
      * Get tenant access information details without secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -98,7 +100,7 @@ public interface TenantAccessClient {
 
     /**
      * Get tenant access information details without secrets.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -112,12 +114,12 @@ public interface TenantAccessClient {
 
     /**
      * Update tenant access information details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Parameters supplied to retrieve the Tenant Access Information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,12 +133,12 @@ public interface TenantAccessClient {
 
     /**
      * Update tenant access information details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Parameters supplied to retrieve the Tenant Access Information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -149,12 +151,12 @@ public interface TenantAccessClient {
 
     /**
      * Update tenant access information details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Parameters supplied to retrieve the Tenant Access Information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -168,12 +170,12 @@ public interface TenantAccessClient {
 
     /**
      * Update tenant access information details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param parameters Parameters supplied to retrieve the Tenant Access Information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -186,7 +188,7 @@ public interface TenantAccessClient {
 
     /**
      * Regenerate primary access key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -202,7 +204,7 @@ public interface TenantAccessClient {
 
     /**
      * Regenerate primary access key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -215,7 +217,7 @@ public interface TenantAccessClient {
 
     /**
      * Regenerate secondary access key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -231,7 +233,7 @@ public interface TenantAccessClient {
 
     /**
      * Regenerate secondary access key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -244,7 +246,7 @@ public interface TenantAccessClient {
 
     /**
      * Get tenant access information details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.
@@ -260,7 +262,7 @@ public interface TenantAccessClient {
 
     /**
      * Get tenant access information details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param accessName The identifier of the Access configuration.

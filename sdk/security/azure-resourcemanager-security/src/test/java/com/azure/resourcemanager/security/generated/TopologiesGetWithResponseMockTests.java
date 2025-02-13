@@ -20,7 +20,7 @@ public final class TopologiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"calculatedDateTime\":\"2021-12-03T16:53:46Z\",\"topologyResources\":[{\"resourceId\":\"yio\",\"severity\":\"qgqs\",\"recommendationsExist\":true,\"networkZones\":\"efeombo\",\"topologyScore\":1397425058,\"location\":\"fuakqsjymcfvvzc\",\"parents\":[{}],\"children\":[{},{},{}]},{\"resourceId\":\"tc\",\"severity\":\"nbpkfnxrlncmlzvv\",\"recommendationsExist\":true,\"networkZones\":\"fhqsa\",\"topologyScore\":712234866,\"location\":\"revfwcbawapn\",\"parents\":[{}],\"children\":[{},{}]},{\"resourceId\":\"kmzv\",\"severity\":\"qxfblsxy\",\"recommendationsExist\":false,\"networkZones\":\"od\",\"topologyScore\":876052992,\"location\":\"ef\",\"parents\":[{},{},{}],\"children\":[{},{},{},{}]},{\"resourceId\":\"rvbbnasgfyxhsxcg\",\"severity\":\"m\",\"recommendationsExist\":false,\"networkZones\":\"cnxskeh\",\"topologyScore\":308289690,\"location\":\"azufl\",\"parents\":[{}],\"children\":[{},{},{}]}]},\"location\":\"hpdnc\",\"id\":\"kqrgiv\",\"name\":\"h\",\"type\":\"nimjlyhbjfnmmib\"}";
+            = "{\"properties\":{\"calculatedDateTime\":\"2021-03-31T09:21:09Z\",\"topologyResources\":[{\"resourceId\":\"fgfiij\",\"severity\":\"kw\",\"recommendationsExist\":false,\"networkZones\":\"s\",\"topologyScore\":1136398440,\"location\":\"azfpxgnmqvzvlu\",\"parents\":[{}],\"children\":[{}]}]},\"location\":\"ssscyvai\",\"id\":\"ppuacvfyeowp\",\"name\":\"fxtjdhsoym\",\"type\":\"pvtyqfttehdpbouj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class TopologiesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TopologyResource response = manager.topologies()
-            .getWithResponse("cvt", "yhpbiln", "zyjbuwuuusyd", com.azure.core.util.Context.NONE)
+            .getWithResponse("xwjyofgwhnk", "tlwljssmcts", "ldkpwolgisu", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

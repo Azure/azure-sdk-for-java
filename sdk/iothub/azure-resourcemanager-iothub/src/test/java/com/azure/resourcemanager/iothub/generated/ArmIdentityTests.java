@@ -16,8 +16,7 @@ public final class ArmIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ArmIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"glcuhxwtctyqi\",\"tenantId\":\"bbovplwzbhvgyugu\",\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{\"nkjzkdeslpvlop\":{\"principalId\":\"ss\",\"clientId\":\"ukkfplgmgs\"},\"iuebbaumny\":{\"principalId\":\"yighxpk\",\"clientId\":\"zb\"},\"bckhsmtxpsi\":{\"principalId\":\"ped\",\"clientId\":\"jn\"}}}")
+            "{\"principalId\":\"glcuhxwtctyqi\",\"tenantId\":\"bbovplwzbhvgyugu\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"nkjzkdeslpvlop\":{\"principalId\":\"ss\",\"clientId\":\"ukkfplgmgs\"},\"iuebbaumny\":{\"principalId\":\"yighxpk\",\"clientId\":\"zb\"},\"bckhsmtxpsi\":{\"principalId\":\"ped\",\"clientId\":\"jn\"}}}")
             .toObject(ArmIdentity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }

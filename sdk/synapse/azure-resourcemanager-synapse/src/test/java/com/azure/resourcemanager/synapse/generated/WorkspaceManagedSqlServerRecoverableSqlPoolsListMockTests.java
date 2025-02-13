@@ -21,7 +21,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"edition\":\"jjzgxqgqw\",\"serviceLevelObjective\":\"rhgtvhv\",\"elasticPoolName\":\"qykbkkt\",\"lastAvailableBackupDate\":\"2021-10-16T22:29:02Z\"},\"id\":\"ejogmkor\",\"name\":\"vmvm\",\"type\":\"ofnqhlbs\"}]}";
+            = "{\"value\":[{\"properties\":{\"edition\":\"ulwwtrjmeqkvyhz\",\"serviceLevelObjective\":\"poyu\",\"elasticPoolName\":\"uensn\",\"lastAvailableBackupDate\":\"2021-01-12T07:26:14Z\"},\"id\":\"phmpoejnglpwsada\",\"name\":\"jsumxpezcoio\",\"type\":\"jrmfqzwqd\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<RecoverableSqlPool> response = manager.workspaceManagedSqlServerRecoverableSqlPools()
-            .list("laat", "p", com.azure.core.util.Context.NONE);
+            .list("dyarikeejdp", "fhtwmmkfqb", com.azure.core.util.Context.NONE);
 
     }
 }

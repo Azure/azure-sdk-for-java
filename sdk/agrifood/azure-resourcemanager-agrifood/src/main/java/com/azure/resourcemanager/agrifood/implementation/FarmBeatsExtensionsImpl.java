@@ -30,7 +30,7 @@ public final class FarmBeatsExtensionsImpl implements FarmBeatsExtensions {
 
     public PagedIterable<FarmBeatsExtension> list() {
         PagedIterable<FarmBeatsExtensionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new FarmBeatsExtensionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FarmBeatsExtensionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FarmBeatsExtension> list(List<String> farmBeatsExtensionIds,
@@ -39,16 +39,7 @@ public final class FarmBeatsExtensionsImpl implements FarmBeatsExtensions {
         PagedIterable<FarmBeatsExtensionInner> inner = this.serviceClient()
             .list(farmBeatsExtensionIds, farmBeatsExtensionNames, extensionCategories, publisherIds, maxPageSize,
                 context);
-        return Utils.mapPage(inner, inner1 -> new FarmBeatsExtensionImpl(inner1, this.manager()));
-    }
-
-    public FarmBeatsExtension get(String farmBeatsExtensionId) {
-        FarmBeatsExtensionInner inner = this.serviceClient().get(farmBeatsExtensionId);
-        if (inner != null) {
-            return new FarmBeatsExtensionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FarmBeatsExtensionImpl(inner1, this.manager()));
     }
 
     public Response<FarmBeatsExtension> getWithResponse(String farmBeatsExtensionId, Context context) {
@@ -56,6 +47,15 @@ public final class FarmBeatsExtensionsImpl implements FarmBeatsExtensions {
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FarmBeatsExtensionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public FarmBeatsExtension get(String farmBeatsExtensionId) {
+        FarmBeatsExtensionInner inner = this.serviceClient().get(farmBeatsExtensionId);
+        if (inner != null) {
+            return new FarmBeatsExtensionImpl(inner, this.manager());
         } else {
             return null;
         }

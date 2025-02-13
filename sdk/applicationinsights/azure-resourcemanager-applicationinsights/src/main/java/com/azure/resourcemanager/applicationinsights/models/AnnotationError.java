@@ -5,25 +5,58 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.exception.AdditionalInfo;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Error associated with trying to create annotation with Id that already exist. */
+/**
+ * Error associated with trying to create annotation with Id that already exist.
+ */
 @Immutable
 public final class AnnotationError extends ManagementError {
     /*
      * Inner error
      */
-    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private InnerError innererror;
 
-    /** Creates an instance of AnnotationError class. */
+    /*
+     * Additional info for the error.
+     */
+    private List<AdditionalInfo> additionalInfo;
+
+    /*
+     * Details for the error.
+     */
+    private List<ManagementError> details;
+
+    /*
+     * The target of the error.
+     */
+    private String target;
+
+    /*
+     * The error message parsed from the body of the http error response.
+     */
+    private String message;
+
+    /*
+     * The error code parsed from the body of the http error response.
+     */
+    private String code;
+
+    /**
+     * Creates an instance of AnnotationError class.
+     */
     public AnnotationError() {
     }
 
     /**
      * Get the innererror property: Inner error.
-     *
+     * 
      * @return the innererror value.
      */
     public InnerError getInnererror() {
@@ -31,13 +64,128 @@ public final class AnnotationError extends ManagementError {
     }
 
     /**
+     * Get the additionalInfo property: Additional info for the error.
+     * 
+     * @return the additionalInfo value.
+     */
+    @Override
+    public List<AdditionalInfo> getAdditionalInfo() {
+        return this.additionalInfo;
+    }
+
+    /**
+     * Get the details property: Details for the error.
+     * 
+     * @return the details value.
+     */
+    @Override
+    public List<ManagementError> getDetails() {
+        return this.details;
+    }
+
+    /**
+     * Get the target property: The target of the error.
+     * 
+     * @return the target value.
+     */
+    @Override
+    public String getTarget() {
+        return this.target;
+    }
+
+    /**
+     * Get the message property: The error message parsed from the body of the http error response.
+     * 
+     * @return the message value.
+     */
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
+
+    /**
+     * Get the code property: The error code parsed from the body of the http error response.
+     * 
+     * @return the code value.
+     */
+    @Override
+    public String getCode() {
+        return this.code;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (getInnererror() != null) {
             getInnererror().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnnotationError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnnotationError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AnnotationError.
+     */
+    public static AnnotationError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonReader bufferedReader = reader.bufferObject();
+            bufferedReader.nextToken();
+            while (bufferedReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = bufferedReader.getFieldName();
+                bufferedReader.nextToken();
+
+                if ("error".equals(fieldName)) {
+                    return readManagementError(bufferedReader);
+                } else {
+                    bufferedReader.skipChildren();
+                }
+            }
+            return readManagementError(bufferedReader.reset());
+        });
+    }
+
+    private static AnnotationError readManagementError(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnnotationError deserializedAnnotationError = new AnnotationError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedAnnotationError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedAnnotationError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedAnnotationError.target = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<ManagementError> details = reader.readArray(reader1 -> ManagementError.fromJson(reader1));
+                    deserializedAnnotationError.details = details;
+                } else if ("additionalInfo".equals(fieldName)) {
+                    List<AdditionalInfo> additionalInfo = reader.readArray(reader1 -> AdditionalInfo.fromJson(reader1));
+                    deserializedAnnotationError.additionalInfo = additionalInfo;
+                } else if ("innererror".equals(fieldName)) {
+                    deserializedAnnotationError.innererror = InnerError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnnotationError;
+        });
     }
 }

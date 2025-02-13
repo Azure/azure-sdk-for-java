@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.dashboard.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -43,7 +42,6 @@ public final class StartTlsPolicy extends ExpandableStringEnum<StartTlsPolicy> {
      * @param name a name to look for.
      * @return the corresponding StartTlsPolicy.
      */
-    @JsonCreator
     public static StartTlsPolicy fromString(String name) {
         return fromString(name, StartTlsPolicy.class);
     }

@@ -11,18 +11,16 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicelinker.models.AuthInfoBase;
 import com.azure.resourcemanager.servicelinker.models.ClientType;
-import com.azure.resourcemanager.servicelinker.models.ConfigurationInfo;
-import com.azure.resourcemanager.servicelinker.models.PublicNetworkSolution;
 import com.azure.resourcemanager.servicelinker.models.SecretStore;
 import com.azure.resourcemanager.servicelinker.models.TargetServiceBase;
 import com.azure.resourcemanager.servicelinker.models.VNetSolution;
 import java.io.IOException;
 
 /**
- * The properties of the Linker.
+ * The properties of the linker.
  */
 @Fluent
-public class LinkerProperties implements JsonSerializable<LinkerProperties> {
+public final class LinkerProperties implements JsonSerializable<LinkerProperties> {
     /*
      * The target service properties
      */
@@ -57,16 +55,6 @@ public class LinkerProperties implements JsonSerializable<LinkerProperties> {
      * connection scope in source service.
      */
     private String scope;
-
-    /*
-     * The network solution.
-     */
-    private PublicNetworkSolution publicNetworkSolution;
-
-    /*
-     * The connection information consumed by applications, including secrets, connection strings.
-     */
-    private ConfigurationInfo configurationInfo;
 
     /**
      * Creates an instance of LinkerProperties class.
@@ -144,17 +132,6 @@ public class LinkerProperties implements JsonSerializable<LinkerProperties> {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state.
-     * 
-     * @param provisioningState the provisioningState value to set.
-     * @return the LinkerProperties object itself.
-     */
-    LinkerProperties withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
      * Get the vNetSolution property: The VNet solution.
      * 
      * @return the vNetSolution value.
@@ -215,48 +192,6 @@ public class LinkerProperties implements JsonSerializable<LinkerProperties> {
     }
 
     /**
-     * Get the publicNetworkSolution property: The network solution.
-     * 
-     * @return the publicNetworkSolution value.
-     */
-    public PublicNetworkSolution publicNetworkSolution() {
-        return this.publicNetworkSolution;
-    }
-
-    /**
-     * Set the publicNetworkSolution property: The network solution.
-     * 
-     * @param publicNetworkSolution the publicNetworkSolution value to set.
-     * @return the LinkerProperties object itself.
-     */
-    public LinkerProperties withPublicNetworkSolution(PublicNetworkSolution publicNetworkSolution) {
-        this.publicNetworkSolution = publicNetworkSolution;
-        return this;
-    }
-
-    /**
-     * Get the configurationInfo property: The connection information consumed by applications, including secrets,
-     * connection strings.
-     * 
-     * @return the configurationInfo value.
-     */
-    public ConfigurationInfo configurationInfo() {
-        return this.configurationInfo;
-    }
-
-    /**
-     * Set the configurationInfo property: The connection information consumed by applications, including secrets,
-     * connection strings.
-     * 
-     * @param configurationInfo the configurationInfo value to set.
-     * @return the LinkerProperties object itself.
-     */
-    public LinkerProperties withConfigurationInfo(ConfigurationInfo configurationInfo) {
-        this.configurationInfo = configurationInfo;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -274,12 +209,6 @@ public class LinkerProperties implements JsonSerializable<LinkerProperties> {
         if (secretStore() != null) {
             secretStore().validate();
         }
-        if (publicNetworkSolution() != null) {
-            publicNetworkSolution().validate();
-        }
-        if (configurationInfo() != null) {
-            configurationInfo().validate();
-        }
     }
 
     /**
@@ -294,8 +223,6 @@ public class LinkerProperties implements JsonSerializable<LinkerProperties> {
         jsonWriter.writeJsonField("vNetSolution", this.vNetSolution);
         jsonWriter.writeJsonField("secretStore", this.secretStore);
         jsonWriter.writeStringField("scope", this.scope);
-        jsonWriter.writeJsonField("publicNetworkSolution", this.publicNetworkSolution);
-        jsonWriter.writeJsonField("configurationInfo", this.configurationInfo);
         return jsonWriter.writeEndObject();
     }
 
@@ -328,10 +255,6 @@ public class LinkerProperties implements JsonSerializable<LinkerProperties> {
                     deserializedLinkerProperties.secretStore = SecretStore.fromJson(reader);
                 } else if ("scope".equals(fieldName)) {
                     deserializedLinkerProperties.scope = reader.getString();
-                } else if ("publicNetworkSolution".equals(fieldName)) {
-                    deserializedLinkerProperties.publicNetworkSolution = PublicNetworkSolution.fromJson(reader);
-                } else if ("configurationInfo".equals(fieldName)) {
-                    deserializedLinkerProperties.configurationInfo = ConfigurationInfo.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

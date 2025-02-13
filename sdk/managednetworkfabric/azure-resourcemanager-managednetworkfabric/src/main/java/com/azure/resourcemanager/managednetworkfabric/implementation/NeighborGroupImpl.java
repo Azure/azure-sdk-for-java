@@ -155,8 +155,8 @@ public final class NeighborGroupImpl implements NeighborGroup, NeighborGroup.Def
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.neighborGroupName = Utils.getValueFromIdByName(innerObject.id(), "neighborGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.neighborGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "neighborGroups");
     }
 
     public NeighborGroup refresh() {

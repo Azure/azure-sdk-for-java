@@ -127,9 +127,10 @@ public final class ClusterPrincipalAssignmentImpl
         com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.principalAssignmentName = Utils.getValueFromIdByName(innerObject.id(), "principalAssignments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.principalAssignmentName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "principalAssignments");
     }
 
     public ClusterPrincipalAssignment refresh() {

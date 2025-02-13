@@ -19,6 +19,8 @@ public interface DeploymentSlotBase<FluentT> extends WebAppBase, Updatable<Deplo
     interface UpdateStages {
         /**
          * A deployment slot update allowing runtime version to be specified.
+         *
+         * @param <FluentT> the type of the resource
          */
         interface WithRuntimeVersion<FluentT> {
             /**
@@ -44,6 +46,8 @@ public interface DeploymentSlotBase<FluentT> extends WebAppBase, Updatable<Deplo
 
         /**
          * A deployment slot update allowing docker image source to be specified.
+         *
+         * @param <FluentT> the type of the resource
          */
         interface WithDockerContainerImage<FluentT> {
             /**
@@ -71,6 +75,8 @@ public interface DeploymentSlotBase<FluentT> extends WebAppBase, Updatable<Deplo
 
         /**
          * A deployment slot update allowing docker hub credentials to be set.
+         *
+         * @param <FluentT> the type of the resource
          */
         interface WithCredentials<FluentT> {
             /**
@@ -85,6 +91,8 @@ public interface DeploymentSlotBase<FluentT> extends WebAppBase, Updatable<Deplo
         /**
          * A deployment slot update allowing docker startup command to be specified.
          * This will replace the "CMD" section in the Dockerfile.
+         *
+         * @param <FluentT> the type of the resource
          */
         interface WithStartUpCommand<FluentT> {
             /**
@@ -97,7 +105,11 @@ public interface DeploymentSlotBase<FluentT> extends WebAppBase, Updatable<Deplo
         }
     }
 
-    /** The template for a web app update operation, containing all the settings that can be modified. */
+    /**
+     * The template for a web app update operation, containing all the settings that can be modified.
+     *
+     * @param <FluentT> the type of the resource
+     */
     interface Update<FluentT> extends Appliable<FluentT>, WebAppBase.Update<FluentT>,
         UpdateStages.WithRuntimeVersion<FluentT>, UpdateStages.WithDockerContainerImage<FluentT>,
         UpdateStages.WithStartUpCommand<FluentT>, UpdateStages.WithCredentials<FluentT> {

@@ -17,7 +17,9 @@ import java.io.IOException;
 @Fluent
 public final class RunQueryOrderBy implements JsonSerializable<RunQueryOrderBy> {
     /*
-     * Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are PipelineName, RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status; for trigger runs are TriggerName, TriggerRunTimestamp and Status.
+     * Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are PipelineName,
+     * RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status; for
+     * trigger runs are TriggerName, TriggerRunTimestamp and Status.
      */
     private RunQueryOrderByField orderBy;
 

@@ -5,87 +5,85 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties that contain a workbook. */
+/**
+ * Properties that contain a workbook.
+ */
 @Fluent
-public final class WorkbookProperties {
+public final class WorkbookProperties implements JsonSerializable<WorkbookProperties> {
     /*
      * The user-defined name (display name) of the workbook.
      */
-    @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
      * Configuration of this particular workbook. Configuration data is a string containing valid JSON
      */
-    @JsonProperty(value = "serializedData", required = true)
     private String serializedData;
 
     /*
      * Workbook schema version format, like 'Notebook/1.0', which should match the workbook in serializedData
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Date and time in UTC of the last modification that was made to this workbook definition.
      */
-    @JsonProperty(value = "timeModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeModified;
 
     /*
      * Workbook category, as defined by the user at creation time.
      */
-    @JsonProperty(value = "category", required = true)
     private String category;
 
     /*
      * Being deprecated, please use the other tags field
      */
-    @JsonProperty(value = "tags")
     private List<String> tags;
 
     /*
      * Unique user id of the specific user that owns this workbook.
      */
-    @JsonProperty(value = "userId", access = JsonProperty.Access.WRITE_ONLY)
     private String userId;
 
     /*
      * ResourceId for a source resource.
      */
-    @JsonProperty(value = "sourceId")
     private String sourceId;
 
     /*
      * The resourceId to the storage account when bring your own storage is used
      */
-    @JsonProperty(value = "storageUri")
     private String storageUri;
 
     /*
      * The description of the workbook.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The unique revision id for this workbook definition
      */
-    @JsonProperty(value = "revision", access = JsonProperty.Access.WRITE_ONLY)
     private String revision;
 
-    /** Creates an instance of WorkbookProperties class. */
+    /**
+     * Creates an instance of WorkbookProperties class.
+     */
     public WorkbookProperties() {
     }
 
     /**
      * Get the displayName property: The user-defined name (display name) of the workbook.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -94,7 +92,7 @@ public final class WorkbookProperties {
 
     /**
      * Set the displayName property: The user-defined name (display name) of the workbook.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the WorkbookProperties object itself.
      */
@@ -106,7 +104,7 @@ public final class WorkbookProperties {
     /**
      * Get the serializedData property: Configuration of this particular workbook. Configuration data is a string
      * containing valid JSON.
-     *
+     * 
      * @return the serializedData value.
      */
     public String serializedData() {
@@ -116,7 +114,7 @@ public final class WorkbookProperties {
     /**
      * Set the serializedData property: Configuration of this particular workbook. Configuration data is a string
      * containing valid JSON.
-     *
+     * 
      * @param serializedData the serializedData value to set.
      * @return the WorkbookProperties object itself.
      */
@@ -128,7 +126,7 @@ public final class WorkbookProperties {
     /**
      * Get the version property: Workbook schema version format, like 'Notebook/1.0', which should match the workbook in
      * serializedData.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -138,7 +136,7 @@ public final class WorkbookProperties {
     /**
      * Set the version property: Workbook schema version format, like 'Notebook/1.0', which should match the workbook in
      * serializedData.
-     *
+     * 
      * @param version the version value to set.
      * @return the WorkbookProperties object itself.
      */
@@ -150,7 +148,7 @@ public final class WorkbookProperties {
     /**
      * Get the timeModified property: Date and time in UTC of the last modification that was made to this workbook
      * definition.
-     *
+     * 
      * @return the timeModified value.
      */
     public OffsetDateTime timeModified() {
@@ -159,7 +157,7 @@ public final class WorkbookProperties {
 
     /**
      * Get the category property: Workbook category, as defined by the user at creation time.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -168,7 +166,7 @@ public final class WorkbookProperties {
 
     /**
      * Set the category property: Workbook category, as defined by the user at creation time.
-     *
+     * 
      * @param category the category value to set.
      * @return the WorkbookProperties object itself.
      */
@@ -179,7 +177,7 @@ public final class WorkbookProperties {
 
     /**
      * Get the tags property: Being deprecated, please use the other tags field.
-     *
+     * 
      * @return the tags value.
      */
     public List<String> tags() {
@@ -188,7 +186,7 @@ public final class WorkbookProperties {
 
     /**
      * Set the tags property: Being deprecated, please use the other tags field.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WorkbookProperties object itself.
      */
@@ -199,7 +197,7 @@ public final class WorkbookProperties {
 
     /**
      * Get the userId property: Unique user id of the specific user that owns this workbook.
-     *
+     * 
      * @return the userId value.
      */
     public String userId() {
@@ -208,7 +206,7 @@ public final class WorkbookProperties {
 
     /**
      * Get the sourceId property: ResourceId for a source resource.
-     *
+     * 
      * @return the sourceId value.
      */
     public String sourceId() {
@@ -217,7 +215,7 @@ public final class WorkbookProperties {
 
     /**
      * Set the sourceId property: ResourceId for a source resource.
-     *
+     * 
      * @param sourceId the sourceId value to set.
      * @return the WorkbookProperties object itself.
      */
@@ -228,7 +226,7 @@ public final class WorkbookProperties {
 
     /**
      * Get the storageUri property: The resourceId to the storage account when bring your own storage is used.
-     *
+     * 
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -237,7 +235,7 @@ public final class WorkbookProperties {
 
     /**
      * Set the storageUri property: The resourceId to the storage account when bring your own storage is used.
-     *
+     * 
      * @param storageUri the storageUri value to set.
      * @return the WorkbookProperties object itself.
      */
@@ -248,7 +246,7 @@ public final class WorkbookProperties {
 
     /**
      * Get the description property: The description of the workbook.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -257,7 +255,7 @@ public final class WorkbookProperties {
 
     /**
      * Set the description property: The description of the workbook.
-     *
+     * 
      * @param description the description value to set.
      * @return the WorkbookProperties object itself.
      */
@@ -268,7 +266,7 @@ public final class WorkbookProperties {
 
     /**
      * Get the revision property: The unique revision id for this workbook definition.
-     *
+     * 
      * @return the revision value.
      */
     public String revision() {
@@ -277,23 +275,90 @@ public final class WorkbookProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property displayName in model WorkbookProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property displayName in model WorkbookProperties"));
         }
         if (serializedData() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property serializedData in model WorkbookProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serializedData in model WorkbookProperties"));
         }
         if (category() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property category in model WorkbookProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property category in model WorkbookProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(WorkbookProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("serializedData", this.serializedData);
+        jsonWriter.writeStringField("category", this.category);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeArrayField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("sourceId", this.sourceId);
+        jsonWriter.writeStringField("storageUri", this.storageUri);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkbookProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkbookProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WorkbookProperties.
+     */
+    public static WorkbookProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkbookProperties deserializedWorkbookProperties = new WorkbookProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedWorkbookProperties.displayName = reader.getString();
+                } else if ("serializedData".equals(fieldName)) {
+                    deserializedWorkbookProperties.serializedData = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedWorkbookProperties.category = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedWorkbookProperties.version = reader.getString();
+                } else if ("timeModified".equals(fieldName)) {
+                    deserializedWorkbookProperties.timeModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("tags".equals(fieldName)) {
+                    List<String> tags = reader.readArray(reader1 -> reader1.getString());
+                    deserializedWorkbookProperties.tags = tags;
+                } else if ("userId".equals(fieldName)) {
+                    deserializedWorkbookProperties.userId = reader.getString();
+                } else if ("sourceId".equals(fieldName)) {
+                    deserializedWorkbookProperties.sourceId = reader.getString();
+                } else if ("storageUri".equals(fieldName)) {
+                    deserializedWorkbookProperties.storageUri = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedWorkbookProperties.description = reader.getString();
+                } else if ("revision".equals(fieldName)) {
+                    deserializedWorkbookProperties.revision = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkbookProperties;
+        });
+    }
 }

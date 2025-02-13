@@ -5,54 +5,52 @@
 package com.azure.resourcemanager.sphere.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The properties of device.
  */
 @Fluent
-public final class DeviceProperties {
+public final class DeviceProperties implements JsonSerializable<DeviceProperties> {
     /*
      * Device ID
      */
-    @JsonProperty(value = "deviceId")
     private String deviceId;
 
     /*
      * SKU of the chip
      */
-    @JsonProperty(value = "chipSku", access = JsonProperty.Access.WRITE_ONLY)
     private String chipSku;
 
     /*
      * OS version available for installation when update requested
      */
-    @JsonProperty(value = "lastAvailableOsVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String lastAvailableOsVersion;
 
     /*
      * OS version running on device when update requested
      */
-    @JsonProperty(value = "lastInstalledOsVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String lastInstalledOsVersion;
 
     /*
      * Time when update requested and new OS version available
      */
-    @JsonProperty(value = "lastOsUpdateUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastOsUpdateUtc;
 
     /*
      * Time when update was last requested
      */
-    @JsonProperty(value = "lastUpdateRequestUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdateRequestUtc;
 
     /*
      * The status of the last operation.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -141,5 +139,55 @@ public final class DeviceProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceProperties.
+     */
+    public static DeviceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceProperties deserializedDeviceProperties = new DeviceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedDeviceProperties.deviceId = reader.getString();
+                } else if ("chipSku".equals(fieldName)) {
+                    deserializedDeviceProperties.chipSku = reader.getString();
+                } else if ("lastAvailableOsVersion".equals(fieldName)) {
+                    deserializedDeviceProperties.lastAvailableOsVersion = reader.getString();
+                } else if ("lastInstalledOsVersion".equals(fieldName)) {
+                    deserializedDeviceProperties.lastInstalledOsVersion = reader.getString();
+                } else if ("lastOsUpdateUtc".equals(fieldName)) {
+                    deserializedDeviceProperties.lastOsUpdateUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdateRequestUtc".equals(fieldName)) {
+                    deserializedDeviceProperties.lastUpdateRequestUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedDeviceProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceProperties;
+        });
     }
 }

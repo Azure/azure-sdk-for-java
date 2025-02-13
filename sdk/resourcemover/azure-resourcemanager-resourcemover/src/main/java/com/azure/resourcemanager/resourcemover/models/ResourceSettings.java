@@ -5,57 +5,51 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets or sets the resource settings. */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "resourceType",
-    defaultImpl = ResourceSettings.class)
-@JsonTypeName("ResourceSettings")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Microsoft.Compute/virtualMachines", value = VirtualMachineResourceSettings.class),
-    @JsonSubTypes.Type(name = "Microsoft.Compute/availabilitySets", value = AvailabilitySetResourceSettings.class),
-    @JsonSubTypes.Type(name = "Microsoft.Network/virtualNetworks", value = VirtualNetworkResourceSettings.class),
-    @JsonSubTypes.Type(name = "Microsoft.Network/networkInterfaces", value = NetworkInterfaceResourceSettings.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Network/networkSecurityGroups",
-        value = NetworkSecurityGroupResourceSettings.class),
-    @JsonSubTypes.Type(name = "Microsoft.Network/loadBalancers", value = LoadBalancerResourceSettings.class),
-    @JsonSubTypes.Type(name = "Microsoft.Sql/servers", value = SqlServerResourceSettings.class),
-    @JsonSubTypes.Type(name = "Microsoft.Sql/servers/elasticPools", value = SqlElasticPoolResourceSettings.class),
-    @JsonSubTypes.Type(name = "Microsoft.Sql/servers/databases", value = SqlDatabaseResourceSettings.class),
-    @JsonSubTypes.Type(name = "resourceGroups", value = ResourceGroupResourceSettings.class),
-    @JsonSubTypes.Type(name = "Microsoft.Network/publicIPAddresses", value = PublicIpAddressResourceSettings.class),
-    @JsonSubTypes.Type(name = "Microsoft.KeyVault/vaults", value = KeyVaultResourceSettings.class),
-    @JsonSubTypes.Type(
-        name = "Microsoft.Compute/diskEncryptionSets",
-        value = DiskEncryptionSetResourceSettings.class) })
+/**
+ * Gets or sets the resource settings.
+ */
 @Fluent
-public class ResourceSettings {
+public class ResourceSettings implements JsonSerializable<ResourceSettings> {
+    /*
+     * The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
+     */
+    private String resourceType = "ResourceSettings";
+
     /*
      * Gets or sets the target Resource name.
      */
-    @JsonProperty(value = "targetResourceName")
     private String targetResourceName;
 
     /*
      * Gets or sets the target resource group name.
      */
-    @JsonProperty(value = "targetResourceGroupName")
     private String targetResourceGroupName;
 
-    /** Creates an instance of ResourceSettings class. */
+    /**
+     * Creates an instance of ResourceSettings class.
+     */
     public ResourceSettings() {
     }
 
     /**
+     * Get the resourceType property: The resource type. For example, the value can be
+     * Microsoft.Compute/virtualMachines.
+     * 
+     * @return the resourceType value.
+     */
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
      * Get the targetResourceName property: Gets or sets the target Resource name.
-     *
+     * 
      * @return the targetResourceName value.
      */
     public String targetResourceName() {
@@ -64,7 +58,7 @@ public class ResourceSettings {
 
     /**
      * Set the targetResourceName property: Gets or sets the target Resource name.
-     *
+     * 
      * @param targetResourceName the targetResourceName value to set.
      * @return the ResourceSettings object itself.
      */
@@ -75,7 +69,7 @@ public class ResourceSettings {
 
     /**
      * Get the targetResourceGroupName property: Gets or sets the target resource group name.
-     *
+     * 
      * @return the targetResourceGroupName value.
      */
     public String targetResourceGroupName() {
@@ -84,7 +78,7 @@ public class ResourceSettings {
 
     /**
      * Set the targetResourceGroupName property: Gets or sets the target resource group name.
-     *
+     * 
      * @param targetResourceGroupName the targetResourceGroupName value to set.
      * @return the ResourceSettings object itself.
      */
@@ -95,9 +89,100 @@ public class ResourceSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeStringField("targetResourceName", this.targetResourceName);
+        jsonWriter.writeStringField("targetResourceGroupName", this.targetResourceGroupName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSettings.
+     */
+    public static ResourceSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("resourceType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Microsoft.Compute/virtualMachines".equals(discriminatorValue)) {
+                    return VirtualMachineResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Compute/availabilitySets".equals(discriminatorValue)) {
+                    return AvailabilitySetResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Network/virtualNetworks".equals(discriminatorValue)) {
+                    return VirtualNetworkResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Network/networkInterfaces".equals(discriminatorValue)) {
+                    return NetworkInterfaceResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Network/networkSecurityGroups".equals(discriminatorValue)) {
+                    return NetworkSecurityGroupResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Network/loadBalancers".equals(discriminatorValue)) {
+                    return LoadBalancerResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Sql/servers".equals(discriminatorValue)) {
+                    return SqlServerResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Sql/servers/elasticPools".equals(discriminatorValue)) {
+                    return SqlElasticPoolResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Sql/servers/databases".equals(discriminatorValue)) {
+                    return SqlDatabaseResourceSettings.fromJson(readerToUse.reset());
+                } else if ("resourceGroups".equals(discriminatorValue)) {
+                    return ResourceGroupResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Network/publicIPAddresses".equals(discriminatorValue)) {
+                    return PublicIpAddressResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.KeyVault/vaults".equals(discriminatorValue)) {
+                    return KeyVaultResourceSettings.fromJson(readerToUse.reset());
+                } else if ("Microsoft.Compute/diskEncryptionSets".equals(discriminatorValue)) {
+                    return DiskEncryptionSetResourceSettings.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ResourceSettings fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSettings deserializedResourceSettings = new ResourceSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedResourceSettings.resourceType = reader.getString();
+                } else if ("targetResourceName".equals(fieldName)) {
+                    deserializedResourceSettings.targetResourceName = reader.getString();
+                } else if ("targetResourceGroupName".equals(fieldName)) {
+                    deserializedResourceSettings.targetResourceGroupName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSettings;
+        });
     }
 }

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.maps.generated;
 
-/** Samples for Maps ListOperations. */
+/**
+ * Samples for Maps ListOperations.
+ */
 public final class MapsListOperationsSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/GetOperations.json
+     * x-ms-original-file:
+     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/GetOperations.json
      */
     /**
      * Sample code: Get Operations.
-     *
+     * 
      * @param manager Entry point to AzureMapsManager.
      */
     public static void getOperations(com.azure.resourcemanager.maps.AzureMapsManager manager) {

@@ -21,17 +21,23 @@ import java.util.List;
 public interface AuthorizationRule<RuleT extends AuthorizationRule<RuleT>>
     extends NestedResource, HasInnerModel<AuthorizationRuleInner>, HasManager<EventHubsManager>, Refreshable<RuleT> {
     /**
+     * Gets rights associated with the authorization rule.
+     *
      * @return rights associated with the authorization rule
      */
     List<AccessRights> rights();
 
     /**
+     * Gets a representation of the deferred computation.
+     *
      * @return a representation of the deferred computation of this call,
      * returning access keys (primary, secondary) and the connection strings
      */
     Mono<EventHubAuthorizationKey> getKeysAsync();
 
     /**
+     * Gets the access keys (primary, secondary) and the connection strings.
+     *
      * @return the access keys (primary, secondary) and the connection strings
      */
     EventHubAuthorizationKey getKeys();

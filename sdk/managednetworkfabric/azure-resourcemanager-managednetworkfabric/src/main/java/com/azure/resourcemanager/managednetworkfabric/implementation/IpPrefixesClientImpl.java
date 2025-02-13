@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IpPrefixesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IpPrefixesClient.
+ */
 public final class IpPrefixesClientImpl implements IpPrefixesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IpPrefixesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of IpPrefixesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IpPrefixesClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -140,9 +146,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -183,9 +189,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -226,9 +232,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -247,9 +253,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -270,9 +276,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -289,9 +295,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -309,9 +315,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -328,9 +334,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -349,9 +355,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -367,9 +373,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Create an IP Prefix.
-     *
-     * <p>Implements IP Prefix PUT method.
-     *
+     * 
+     * Implements IP Prefix PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body Request payload.
@@ -386,9 +392,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Gets an IP Prefix.
-     *
-     * <p>Implements IP Prefix GET method.
-     *
+     * 
+     * Implements IP Prefix GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -424,9 +430,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Gets an IP Prefix.
-     *
-     * <p>Implements IP Prefix GET method.
-     *
+     * 
+     * Implements IP Prefix GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param context The context to associate with this operation.
@@ -461,9 +467,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Gets an IP Prefix.
-     *
-     * <p>Implements IP Prefix GET method.
-     *
+     * 
+     * Implements IP Prefix GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -479,9 +485,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Gets an IP Prefix.
-     *
-     * <p>Implements IP Prefix GET method.
-     *
+     * 
+     * Implements IP Prefix GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param context The context to associate with this operation.
@@ -498,9 +504,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Gets an IP Prefix.
-     *
-     * <p>Implements IP Prefix GET method.
-     *
+     * 
+     * Implements IP Prefix GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -515,9 +521,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -558,9 +564,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -601,9 +607,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -622,9 +628,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -645,9 +651,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -664,9 +670,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -684,9 +690,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -703,9 +709,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -724,9 +730,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -742,9 +748,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Updates the IP Prefix.
-     *
-     * <p>API to update certain properties of the IP Prefix resource.
-     *
+     * 
+     * API to update certain properties of the IP Prefix resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param body IP Prefix properties to update.
@@ -761,9 +767,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -797,9 +803,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param context The context to associate with this operation.
@@ -834,9 +840,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -853,9 +859,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param context The context to associate with this operation.
@@ -875,9 +881,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -892,9 +898,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param context The context to associate with this operation.
@@ -911,9 +917,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -928,9 +934,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param context The context to associate with this operation.
@@ -947,9 +953,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -963,9 +969,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Deletes the IP Prefix.
-     *
-     * <p>Implements IP Prefix DELETE method.
-     *
+     * 
+     * Implements IP Prefix DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param ipPrefixName Name of the IP Prefix.
      * @param context The context to associate with this operation.
@@ -980,9 +986,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by resource group.
-     *
-     * <p>Implements IpPrefixes list by resource group GET method.
-     *
+     * 
+     * Implements IpPrefixes list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1014,9 +1020,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by resource group.
-     *
-     * <p>Implements IpPrefixes list by resource group GET method.
-     *
+     * 
+     * Implements IpPrefixes list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1050,9 +1056,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by resource group.
-     *
-     * <p>Implements IpPrefixes list by resource group GET method.
-     *
+     * 
+     * Implements IpPrefixes list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1067,9 +1073,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by resource group.
-     *
-     * <p>Implements IpPrefixes list by resource group GET method.
-     *
+     * 
+     * Implements IpPrefixes list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1085,9 +1091,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by resource group.
-     *
-     * <p>Implements IpPrefixes list by resource group GET method.
-     *
+     * 
+     * Implements IpPrefixes list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1101,9 +1107,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by resource group.
-     *
-     * <p>Implements IpPrefixes list by resource group GET method.
-     *
+     * 
+     * Implements IpPrefixes list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1118,9 +1124,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by subscription.
-     *
-     * <p>Implements IpPrefixes list by subscription GET method.
-     *
+     * 
+     * Implements IpPrefixes list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IP Prefixes along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1146,9 +1152,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by subscription.
-     *
-     * <p>Implements IpPrefixes list by subscription GET method.
-     *
+     * 
+     * Implements IpPrefixes list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1176,9 +1182,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by subscription.
-     *
-     * <p>Implements IpPrefixes list by subscription GET method.
-     *
+     * 
+     * Implements IpPrefixes list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IP Prefixes as paginated response with {@link PagedFlux}.
@@ -1191,9 +1197,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by subscription.
-     *
-     * <p>Implements IpPrefixes list by subscription GET method.
-     *
+     * 
+     * Implements IpPrefixes list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1208,9 +1214,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by subscription.
-     *
-     * <p>Implements IpPrefixes list by subscription GET method.
-     *
+     * 
+     * Implements IpPrefixes list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IP Prefixes as paginated response with {@link PagedIterable}.
@@ -1222,9 +1228,9 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * List IpPrefixes by subscription.
-     *
-     * <p>Implements IpPrefixes list by subscription GET method.
-     *
+     * 
+     * Implements IpPrefixes list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1238,9 +1244,8 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1266,9 +1271,8 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1294,9 +1298,8 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1322,9 +1325,8 @@ public final class IpPrefixesClientImpl implements IpPrefixesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

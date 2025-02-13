@@ -5,10 +5,10 @@ package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.SharedExecutorService;
-import io.clientcore.core.util.auth.ChallengeHandler;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.SharedExecutorService;
+import io.clientcore.core.utils.auth.ChallengeHandler;
+import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.okhttp3.implementation.OkHttpProxySelector;
 import io.clientcore.http.okhttp3.implementation.ProxyAuthenticator;
 import okhttp3.ConnectionPool;

@@ -35,7 +35,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
     /**
      * Get the baseType property: Name of item (B section) if any. If telemetry data is derived straight from this, this
      * should be null.
-     *
+     * 
      * @return the baseType value.
      */
     public String getBaseType() {
@@ -45,7 +45,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
     /**
      * Set the baseType property: Name of item (B section) if any. If telemetry data is derived straight from this, this
      * should be null.
-     *
+     * 
      * @param baseType the baseType value to set.
      * @return the MonitorBase object itself.
      */
@@ -56,7 +56,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
 
     /**
      * Get the baseData property: The data payload for the telemetry request.
-     *
+     * 
      * @return the baseData value.
      */
     public MonitorDomain getBaseData() {
@@ -65,7 +65,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
 
     /**
      * Set the baseData property: The data payload for the telemetry request.
-     *
+     * 
      * @param baseData the baseData value to set.
      * @return the MonitorBase object itself.
      */
@@ -87,7 +87,7 @@ public final class MonitorBase implements JsonSerializable<MonitorBase> {
 
     /**
      * Reads an instance of MonitorBase from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of MonitorBase if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.

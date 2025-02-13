@@ -11,12 +11,12 @@ import java.util.Objects;
  * A range replace substitution is a substitution that replaces a range of characters in a String with the supplied
  * value. This type of substitution is commonly used for host and path replacements where the Swagger interface will
  * have a definition such as {@code @Host("{uri}")} which will be replaced with a value such as
- * {@code https://myhost.com}.
+ * {@code https://somecloud.com}.
  * <p>
  * Before the introduction of this replacement {@link String#replace(CharSequence, CharSequence)} was used which would
  * generate a {@code Pattern} to perform replacing.
  */
-public class RangeReplaceSubstitution extends Substitution {
+class RangeReplaceSubstitution extends Substitution {
     private final List<Range> ranges;
 
     /**
@@ -29,7 +29,7 @@ public class RangeReplaceSubstitution extends Substitution {
      * taking place.
      * @param substitutionBase The string that will have its ranges substituted.
      */
-    public RangeReplaceSubstitution(String uriParameterName, int methodParameterIndex, boolean shouldEncode,
+    RangeReplaceSubstitution(String uriParameterName, int methodParameterIndex, boolean shouldEncode,
         String substitutionBase) {
         super(uriParameterName, methodParameterIndex, shouldEncode);
         this.ranges = new ArrayList<>();
@@ -48,11 +48,11 @@ public class RangeReplaceSubstitution extends Substitution {
         }
     }
 
-    public List<Range> getRanges() {
+    List<Range> getRanges() {
         return ranges;
     }
 
-    public static final class Range implements Comparable<Range> {
+    static final class Range implements Comparable<Range> {
         private final int start;
         private final int end;
 
@@ -61,15 +61,15 @@ public class RangeReplaceSubstitution extends Substitution {
             this.end = end;
         }
 
-        public int getStart() {
+        int getStart() {
             return start;
         }
 
-        public int getEnd() {
+        int getEnd() {
             return end;
         }
 
-        public int getSize() {
+        int getSize() {
             return end - start;
         }
 

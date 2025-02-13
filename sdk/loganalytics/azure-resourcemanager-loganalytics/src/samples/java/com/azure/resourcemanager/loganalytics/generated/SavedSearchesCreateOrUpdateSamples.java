@@ -7,19 +7,22 @@ package com.azure.resourcemanager.loganalytics.generated;
 import com.azure.resourcemanager.loganalytics.models.Tag;
 import java.util.Arrays;
 
-/** Samples for SavedSearches CreateOrUpdate. */
+/**
+ * Samples for SavedSearches CreateOrUpdate.
+ */
 public final class SavedSearchesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesSavedSearchesCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesSavedSearchesCreateOrUpdate.json
      */
     /**
      * Sample code: SavedSearchCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void savedSearchCreateOrUpdate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .savedSearches()
+        manager.savedSearches()
             .define("00000000-0000-0000-0000-00000000000")
             .withExistingWorkspace("TestRG", "TestWS")
             .withCategory("Saved Search Test Category")

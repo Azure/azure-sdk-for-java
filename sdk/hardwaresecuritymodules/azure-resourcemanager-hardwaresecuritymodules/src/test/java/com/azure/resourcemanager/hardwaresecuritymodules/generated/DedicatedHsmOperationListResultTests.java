@@ -15,43 +15,43 @@ public final class DedicatedHsmOperationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DedicatedHsmOperationListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"ashsfwxos\",\"isDataAction\":false,\"origin\":\"cugicjoox\",\"display\":{\"provider\":\"bwpucwwfvovbv\",\"resource\":\"uecivyhz\",\"operation\":\"uojgj\",\"description\":\"jueiotwmcdytd\"}},{\"name\":\"it\",\"isDataAction\":false,\"origin\":\"awgqwgxhni\",\"display\":{\"provider\":\"fbkp\",\"resource\":\"gklwn\",\"operation\":\"hjdauwhvylwz\",\"description\":\"dhxujznbmpo\"}},{\"name\":\"wpr\",\"isDataAction\":false,\"origin\":\"eualupjmkhf\",\"display\":{\"provider\":\"bcswsrt\",\"resource\":\"iplrbpbewtghfgb\",\"operation\":\"gw\",\"description\":\"vlvqhjkbegi\"}}]}")
+            "{\"value\":[{\"name\":\"quvgjxpybczme\",\"isDataAction\":true,\"origin\":\"opb\",\"display\":{\"provider\":\"rupidgsyb\",\"resource\":\"jhphoyc\",\"operation\":\"xaobhdxbmtqioqjz\",\"description\":\"tbmufpo\"}},{\"name\":\"oizh\",\"isDataAction\":false,\"origin\":\"ybqsoqijg\",\"display\":{\"provider\":\"bpazlobcufpdzn\",\"resource\":\"t\",\"operation\":\"qjnqglhqgnufoooj\",\"description\":\"ifsqesaagdfmg\"}},{\"name\":\"lhjxr\",\"isDataAction\":false,\"origin\":\"mrvktsizntoc\",\"display\":{\"provider\":\"ouajpsqucmpoyf\",\"resource\":\"fogknygjofjdde\",\"operation\":\"rd\",\"description\":\"pewnw\"}}]}")
             .toObject(DedicatedHsmOperationListResult.class);
-        Assertions.assertEquals("ashsfwxos", model.value().get(0).name());
-        Assertions.assertEquals("cugicjoox", model.value().get(0).origin());
-        Assertions.assertEquals("bwpucwwfvovbv", model.value().get(0).display().provider());
-        Assertions.assertEquals("uecivyhz", model.value().get(0).display().resource());
-        Assertions.assertEquals("uojgj", model.value().get(0).display().operation());
-        Assertions.assertEquals("jueiotwmcdytd", model.value().get(0).display().description());
+        Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
+        Assertions.assertEquals("opb", model.value().get(0).origin());
+        Assertions.assertEquals("rupidgsyb", model.value().get(0).display().provider());
+        Assertions.assertEquals("jhphoyc", model.value().get(0).display().resource());
+        Assertions.assertEquals("xaobhdxbmtqioqjz", model.value().get(0).display().operation());
+        Assertions.assertEquals("tbmufpo", model.value().get(0).display().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DedicatedHsmOperationListResult model = new DedicatedHsmOperationListResult().withValue(Arrays.asList(
-            new DedicatedHsmOperationInner().withName("ashsfwxos")
-                .withOrigin("cugicjoox")
-                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("bwpucwwfvovbv")
-                    .withResource("uecivyhz")
-                    .withOperation("uojgj")
-                    .withDescription("jueiotwmcdytd")),
-            new DedicatedHsmOperationInner().withName("it")
-                .withOrigin("awgqwgxhni")
-                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("fbkp")
-                    .withResource("gklwn")
-                    .withOperation("hjdauwhvylwz")
-                    .withDescription("dhxujznbmpo")),
-            new DedicatedHsmOperationInner().withName("wpr")
-                .withOrigin("eualupjmkhf")
-                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("bcswsrt")
-                    .withResource("iplrbpbewtghfgb")
-                    .withOperation("gw")
-                    .withDescription("vlvqhjkbegi"))));
+            new DedicatedHsmOperationInner().withName("quvgjxpybczme")
+                .withOrigin("opb")
+                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("rupidgsyb")
+                    .withResource("jhphoyc")
+                    .withOperation("xaobhdxbmtqioqjz")
+                    .withDescription("tbmufpo")),
+            new DedicatedHsmOperationInner().withName("oizh")
+                .withOrigin("ybqsoqijg")
+                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("bpazlobcufpdzn")
+                    .withResource("t")
+                    .withOperation("qjnqglhqgnufoooj")
+                    .withDescription("ifsqesaagdfmg")),
+            new DedicatedHsmOperationInner().withName("lhjxr")
+                .withOrigin("mrvktsizntoc")
+                .withDisplay(new DedicatedHsmOperationDisplay().withProvider("ouajpsqucmpoyf")
+                    .withResource("fogknygjofjdde")
+                    .withOperation("rd")
+                    .withDescription("pewnw"))));
         model = BinaryData.fromObject(model).toObject(DedicatedHsmOperationListResult.class);
-        Assertions.assertEquals("ashsfwxos", model.value().get(0).name());
-        Assertions.assertEquals("cugicjoox", model.value().get(0).origin());
-        Assertions.assertEquals("bwpucwwfvovbv", model.value().get(0).display().provider());
-        Assertions.assertEquals("uecivyhz", model.value().get(0).display().resource());
-        Assertions.assertEquals("uojgj", model.value().get(0).display().operation());
-        Assertions.assertEquals("jueiotwmcdytd", model.value().get(0).display().description());
+        Assertions.assertEquals("quvgjxpybczme", model.value().get(0).name());
+        Assertions.assertEquals("opb", model.value().get(0).origin());
+        Assertions.assertEquals("rupidgsyb", model.value().get(0).display().provider());
+        Assertions.assertEquals("jhphoyc", model.value().get(0).display().resource());
+        Assertions.assertEquals("xaobhdxbmtqioqjz", model.value().get(0).display().operation());
+        Assertions.assertEquals("tbmufpo", model.value().get(0).display().description());
     }
 }

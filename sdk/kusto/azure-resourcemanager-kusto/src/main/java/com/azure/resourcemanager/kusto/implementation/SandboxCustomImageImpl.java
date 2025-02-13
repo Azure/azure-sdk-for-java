@@ -36,6 +36,10 @@ public final class SandboxCustomImageImpl
         return this.innerModel().languageVersion();
     }
 
+    public String baseImageName() {
+        return this.innerModel().baseImageName();
+    }
+
     public String requirementsFileContent() {
         return this.innerModel().requirementsFileContent();
     }
@@ -110,9 +114,10 @@ public final class SandboxCustomImageImpl
         com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.sandboxCustomImageName = Utils.getValueFromIdByName(innerObject.id(), "sandboxCustomImages");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.sandboxCustomImageName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sandboxCustomImages");
     }
 
     public SandboxCustomImage refresh() {
@@ -138,6 +143,11 @@ public final class SandboxCustomImageImpl
 
     public SandboxCustomImageImpl withLanguageVersion(String languageVersion) {
         this.innerModel().withLanguageVersion(languageVersion);
+        return this;
+    }
+
+    public SandboxCustomImageImpl withBaseImageName(String baseImageName) {
+        this.innerModel().withBaseImageName(baseImageName);
         return this;
     }
 

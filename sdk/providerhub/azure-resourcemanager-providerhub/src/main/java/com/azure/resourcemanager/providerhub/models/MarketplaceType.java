@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.providerhub.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for MarketplaceType. */
+/**
+ * Defines values for MarketplaceType.
+ */
 public enum MarketplaceType {
-    /** Enum value NotSpecified. */
+    /**
+     * Enum value NotSpecified.
+     */
     NOT_SPECIFIED("NotSpecified"),
 
-    /** Enum value AddOn. */
+    /**
+     * Enum value AddOn.
+     */
     ADD_ON("AddOn"),
 
-    /** Enum value Bypass. */
+    /**
+     * Enum value Bypass.
+     */
     BYPASS("Bypass"),
 
-    /** Enum value Store. */
+    /**
+     * Enum value Store.
+     */
     STORE("Store");
 
-    /** The actual serialized value for a MarketplaceType instance. */
+    /**
+     * The actual serialized value for a MarketplaceType instance.
+     */
     private final String value;
 
     MarketplaceType(String value) {
@@ -30,11 +39,10 @@ public enum MarketplaceType {
 
     /**
      * Parses a serialized value to a MarketplaceType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MarketplaceType object, or null if unable to parse.
      */
-    @JsonCreator
     public static MarketplaceType fromString(String value) {
         if (value == null) {
             return null;
@@ -48,8 +56,9 @@ public enum MarketplaceType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -453,6 +453,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the time when the blob was created.
+     *
      * @return the time when the blob was created
      */
     public OffsetDateTime getCreationTime() {
@@ -460,6 +462,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the time when the blob was last modified.
+     *
      * @return the time when the blob was last modified
      */
     public OffsetDateTime getLastModified() {
@@ -467,6 +471,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the eTag of the blob.
+     *
      * @return the eTag of the blob
      */
     public String getETag() {
@@ -474,6 +480,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the size of the blob in bytes.
+     *
      * @return the size of the blob in bytes
      */
     public long getBlobSize() {
@@ -481,6 +489,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the content type of the blob.
+     *
      * @return the content type of the blob
      */
     public String getContentType() {
@@ -488,6 +498,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the MD5 of the blob's content.
+     *
      * @return the MD5 of the blob's content
      */
     public byte[] getContentMd5() {
@@ -495,6 +507,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the content encoding of the blob.
+     *
      * @return the content encoding of the blob
      */
     public String getContentEncoding() {
@@ -502,6 +516,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the content disposition of the blob.
+     *
      * @return the content disposition of the blob
      */
     public String getContentDisposition() {
@@ -509,6 +525,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the content language of the blob.
+     *
      * @return the content language of the blob
      */
     public String getContentLanguage() {
@@ -516,6 +534,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the cache control of the blob.
+     *
      * @return the cache control of the blob
      */
     public String getCacheControl() {
@@ -523,6 +543,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the current sequence number of the page blob. This is only returned for page blobs.
+     *
      * @return the current sequence number of the page blob. This is only returned for page blobs.
      */
     public Long getBlobSequenceNumber() {
@@ -530,6 +552,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the type of the blob.
+     *
      * @return the type of the blob
      */
     public BlobType getBlobType() {
@@ -537,6 +561,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the lease status of the blob.
+     *
      * @return the lease status of the blob
      */
     public LeaseStatusType getLeaseStatus() {
@@ -544,6 +570,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the lease state of the blob.
+     *
      * @return the lease state of the blob
      */
     public LeaseStateType getLeaseState() {
@@ -551,6 +579,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the lease duration of the blob, if the blob is leased.
+     *
      * @return the lease duration if the blob is leased
      */
     public LeaseDurationType getLeaseDuration() {
@@ -558,6 +588,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the identifier of the last copy operation.
+     *
      * @return the identifier of the last copy operation. If this blob hasn't been the target of a copy operation or has
      * been modified since this won't be set.
      */
@@ -566,6 +598,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the status of the last copy operation.
+     *
      * @return the status of the last copy operation. If this blob hasn't been the target of a copy operation or has
      * been modified since this won't be set.
      */
@@ -574,6 +608,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the source blob URL from the last copy operation.
+     *
      * @return the source blob URL from the last copy operation. If this blob hasn't been the target of a copy operation
      * or has been modified since this won't be set.
      */
@@ -582,6 +618,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the progress of the last copy operation.
+     *
      * @return the number of bytes copied and total bytes in the source from the last copy operation (bytes copied/total
      * bytes). If this blob hasn't been the target of a copy operation or has been modified since this won't be set.
      */
@@ -590,6 +628,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the completion time of the last copy operation.
+     *
      * @return the completion time of the last copy operation. If this blob hasn't been the target of a copy operation
      * or has been modified since this won't be set.
      */
@@ -598,6 +638,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the description of the last copy failure.
+     *
      * @return the description of the last copy failure, this is set when the {@link #getCopyStatus() getCopyStatus} is
      * {@link CopyStatusType#FAILED failed} or {@link CopyStatusType#ABORTED aborted}. If this blob hasn't been the
      * target of a copy operation or has been modified since this won't be set.
@@ -607,6 +649,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the status of the blob being encrypted on the server.
+     *
      * @return the status of the blob being encrypted on the server
      */
     public Boolean isServerEncrypted() {
@@ -614,6 +658,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the status of the blob being an incremental copy blob.
+     *
      * @return the status of the blob being an incremental copy blob
      */
     public Boolean isIncrementalCopy() {
@@ -621,6 +667,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the snapshot time of the last successful incremental copy snapshot for this blob.
+     *
      * @return the snapshot time of the last successful incremental copy snapshot for this blob. If this blob isn't an
      * incremental copy blob or incremental copy snapshot or {@link #getCopyStatus() getCopyStatus} isn't {@link
      * CopyStatusType#SUCCESS success} this won't be set.
@@ -630,6 +678,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the access tier of the blob.
+     *
      * @return the tier of the blob. This is only set for Page blobs on a premium storage account or for Block blobs on
      * blob storage or general purpose V2 account.
      */
@@ -638,6 +688,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the status of the tier being inferred for the blob.
+     *
      * @return the status of the tier being inferred for the blob. This is only set for Page blobs on a premium storage
      * account or for Block blobs on blob storage or general purpose V2 account.
      */
@@ -646,6 +698,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the archive status of the blob.
+     *
      * @return the archive status of the blob. This is only for blobs on a blob storage and general purpose v2 account.
      */
     public ArchiveStatus getArchiveStatus() {
@@ -653,6 +707,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the SHA256 of the customer provided encryption key used to encrypt the blob on the server.
+     *
      * @return the key used to encrypt the blob
      */
     public String getEncryptionKeySha256() {
@@ -660,6 +716,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the name of the encryption scope under which the blob is encrypted.
+     *
      * @return The name of the encryption scope under which the blob is encrypted.
      */
     public String getEncryptionScope() {
@@ -667,6 +725,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the time when the access tier for the blob was last changed.
+     *
      * @return the time when the access tier for the blob was last changed
      */
     public OffsetDateTime getAccessTierChangeTime() {
@@ -674,6 +734,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the metadata associated with this blob.
+     *
      * @return the metadata associated with this blob
      */
     public Map<String, String> getMetadata() {
@@ -681,6 +743,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the number of committed blocks in the blob. This is only returned for Append blobs.
+     *
      * @return the number of committed blocks in the blob. This is only returned for Append blobs.
      */
     public Integer getCommittedBlockCount() {
@@ -688,6 +752,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the number of tags associated with the blob.
+     *
      * @return The number of tags associated with the blob.
      */
     public Long getTagCount() {
@@ -695,6 +761,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the version identifier of the blob.
+     *
      * @return the version identifier the blob.
      */
     public String getVersionId() {
@@ -702,6 +770,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the flag indicating whether version identifier points to current version of the blob.
+     *
      * @return the flag indicating whether version identifier points to current version of the blob.
      */
     public Boolean isCurrentVersion() {
@@ -709,6 +779,9 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets a {@link List} that contains information on the object replication policies associated with this blob and
+     * the status of the replication for each policy. Only available when the blob is the source of object replication.
+     *
      * @return a {@link List} that contains information on the object replication policies associated with this blob and
      * the status of the replication for each policy. Only available when the blob is the source of object replication.
      */
@@ -717,14 +790,17 @@ public final class BlobProperties {
     }
 
     /**
-     * @return a {@code String} that identifies the Object Replication Policy which made this blob the destination of a
-     * copy.
+     * Gets a string that identifies the Object Replication Policy which made this blob the destination of a copy.
+     *
+     * @return a string that identifies the Object Replication Policy which made this blob the destination of a copy.
      */
     public String getObjectReplicationDestinationPolicyId() {
         return this.internalProperties.getObjectReplicationDestinationPolicyId();
     }
 
     /**
+     * Gets the {@link RehydratePriority} of the blob if it is in RehydratePending state.
+     *
      * @return The {@link RehydratePriority} of the blob if it is in RehydratePending state.
      */
     public RehydratePriority getRehydratePriority() {
@@ -732,6 +808,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the flag indicating whether this blob has been sealed (marked as read only). This is only returned for
+     * Append blobs.
      * @return the flag indicating whether this blob has been sealed (marked as read only). This is only returned for
      * Append blobs.
      */
@@ -740,13 +818,17 @@ public final class BlobProperties {
     }
 
     /**
-     * @return The date and time the blob was read or written to.
+     * Gets the date and time the blob was last read or written to.
+     *
+     * @return The date and time the blob was last read or written to.
      */
     public OffsetDateTime getLastAccessedTime() {
         return internalProperties.getLastAccessedTime();
     }
 
     /**
+     * Gets the time when the blob is going to expire.
+     *
      * @return the time when the blob is going to expire.
      */
     public OffsetDateTime getExpiresOn() {
@@ -754,6 +836,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the immutability policy of the blob.
+     *
      * @return the immutability policy.
      */
     public BlobImmutabilityPolicy getImmutabilityPolicy() {
@@ -761,6 +845,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the legal hold status of the blob.
+     *
      * @return whether the blob has a legal hold.
      */
     public Boolean hasLegalHold() {
@@ -768,6 +854,8 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the request id.
+     *
      * @return the x-ms-request id header value.
      */
     public String getRequestId() {

@@ -34,6 +34,12 @@ public final class DtmfConfigurations implements JsonSerializable<DtmfConfigurat
     private List<StopTones> stopTones;
 
     /**
+     * Creates a new instance of {@link DtmfConfigurations}.
+     */
+    public DtmfConfigurations() {
+    }
+
+    /**
      * Get the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
      *
      * @return the interToneTimeoutInSeconds value.

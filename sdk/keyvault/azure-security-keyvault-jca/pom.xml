@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-jca</artifactId>
-  <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+  <version>2.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
   <name>JCA Provider for Azure Key Vault</name>
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
@@ -35,6 +35,7 @@
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcpkix-lts8on</artifactId>
       <version>2.73.6</version> <!-- {x-version-update;org.bouncycastle:bcpkix-lts8on;external_dependency} -->
+      <optional>true</optional>
     </dependency>
     <!-- Apache HttpClient -->
     <dependency>
@@ -53,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- SLF4j -->
@@ -93,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.55.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->
@@ -135,6 +136,7 @@
         <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
         <executions>
           <execution>
+            <id>minimize-shade</id>
             <goals>
               <goal>shade</goal>
             </goals>
@@ -142,6 +144,12 @@
               <shadeTestJar>false</shadeTestJar>
               <createSourcesJar>${createSourcesJar}</createSourcesJar>
               <shadeSourcesContent>true</shadeSourcesContent>
+              <minimizeJar>true</minimizeJar>
+              <artifactSet>
+                <includes>
+                  <include>org.bouncycastle:*</include>
+                </includes>
+              </artifactSet>
               <filters>
                 <filter>
                   <artifact>org.bouncycastle:*</artifact>
@@ -152,6 +160,33 @@
                     <exclude>META-INF/services/java.security.Provider</exclude>
                   </excludes>
                 </filter>
+              </filters>
+              <relocations>
+                <relocation>
+                  <pattern>org.bouncycastle</pattern>
+                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.bouncycastle</shadedPattern>
+                </relocation>
+              </relocations>
+              <transformers>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+              </transformers>
+            </configuration>
+          </execution>
+          <execution>
+            <id>full-shade</id>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <shadeTestJar>false</shadeTestJar>
+              <createSourcesJar>${createSourcesJar}</createSourcesJar>
+              <shadeSourcesContent>true</shadeSourcesContent>
+              <artifactSet>
+                <excludes>
+                  <exclude>org.bouncycastle:*</exclude>
+                </excludes>
+              </artifactSet>
+              <filters>
                 <filter>
                   <artifact>com.azure:azure-json</artifact>
                   <excludes>
@@ -180,10 +215,6 @@
                 <relocation>
                   <pattern>org.slf4j</pattern>
                   <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.slf4j</shadedPattern>
-                </relocation>
-                <relocation>
-                  <pattern>org.bouncycastle</pattern>
-                  <shadedPattern>com.azure.security.keyvault.jca.implementation.shaded.org.bouncycastle</shadedPattern>
                 </relocation>
               </relocations>
               <transformers>

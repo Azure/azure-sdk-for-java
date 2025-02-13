@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-/** Samples for DataSources ListByWorkspace. */
+/**
+ * Samples for DataSources ListByWorkspace.
+ */
 public final class DataSourcesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataSourcesListByWorkspace.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataSourcesListByWorkspace.json
      */
     /**
      * Sample code: DataSourcesListByWorkspace.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataSourcesListByWorkspace(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .dataSources()
-            .listByWorkspace(
-                "OIAutoRest5123", "AzTest9724", "kind='WindowsEvent'", null, com.azure.core.util.Context.NONE);
+        manager.dataSources()
+            .listByWorkspace("OIAutoRest5123", "AzTest9724", "kind='WindowsEvent'", null,
+                com.azure.core.util.Context.NONE);
     }
 }

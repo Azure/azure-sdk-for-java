@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.maps.generated;
 
-/** Samples for Creators ListByAccount. */
+/**
+ * Samples for Creators ListByAccount.
+ */
 public final class CreatorsListByAccountSamples {
     /*
-     * x-ms-original-file: specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListMapsCreatorsByAccount.json
+     * x-ms-original-file:
+     * specification/maps/resource-manager/Microsoft.Maps/stable/2023-06-01/examples/ListMapsCreatorsByAccount.json
      */
     /**
      * Sample code: List Creator Resources By Account.
-     *
+     * 
      * @param manager Entry point to AzureMapsManager.
      */
     public static void listCreatorResourcesByAccount(com.azure.resourcemanager.maps.AzureMapsManager manager) {

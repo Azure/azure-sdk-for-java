@@ -14,22 +14,22 @@ public final class PrivateLinkHubInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateLinkHubInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"bnuqqkpik\",\"privateEndpointConnections\":[{\"id\":\"vtq\",\"properties\":{\"privateEndpoint\":{\"id\":\"uynhijg\"},\"privateLinkServiceConnectionState\":{\"status\":\"bfs\",\"description\":\"rbu\",\"actionsRequired\":\"cvpnazzmhjrunmpx\"},\"provisioningState\":\"dbhrbnlankxm\"}},{\"id\":\"k\",\"properties\":{\"privateEndpoint\":{\"id\":\"nbtkcxywnytnr\"},\"privateLinkServiceConnectionState\":{\"status\":\"lqidyby\",\"description\":\"zfcl\",\"actionsRequired\":\"axdbabph\"},\"provisioningState\":\"rqlfktsthsucocmn\"}}]},\"location\":\"yazttbtwwrqpue\",\"tags\":{\"fey\":\"zywbiex\",\"ujwb\":\"eaxib\"},\"id\":\"qwalmuzyoxaepd\",\"name\":\"zjancuxr\",\"type\":\"d\"}")
+            "{\"properties\":{\"provisioningState\":\"yebizikayuh\",\"privateEndpointConnections\":[{\"id\":\"bs\",\"properties\":{\"privateEndpoint\":{\"id\":\"wrv\"},\"privateLinkServiceConnectionState\":{\"status\":\"gmfpgvmp\",\"description\":\"as\",\"actionsRequired\":\"haq\"},\"provisioningState\":\"ss\"}},{\"id\":\"u\",\"properties\":{\"privateEndpoint\":{\"id\":\"srezp\"},\"privateLinkServiceConnectionState\":{\"status\":\"neuyow\",\"description\":\"d\",\"actionsRequired\":\"t\"},\"provisioningState\":\"ib\"}}]},\"location\":\"rcgp\",\"tags\":{\"av\":\"zimejzanlfzx\",\"jq\":\"mbzonokix\",\"rlazszrnw\":\"irgzp\",\"fpwpjylwbt\":\"iin\"},\"id\":\"h\",\"name\":\"lsj\",\"type\":\"dhszfjv\"}")
             .toObject(PrivateLinkHubInner.class);
-        Assertions.assertEquals("yazttbtwwrqpue", model.location());
-        Assertions.assertEquals("zywbiex", model.tags().get("fey"));
-        Assertions.assertEquals("bnuqqkpik", model.provisioningState());
+        Assertions.assertEquals("rcgp", model.location());
+        Assertions.assertEquals("zimejzanlfzx", model.tags().get("av"));
+        Assertions.assertEquals("yebizikayuh", model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkHubInner model = new PrivateLinkHubInner().withLocation("yazttbtwwrqpue")
-            .withTags(mapOf("fey", "zywbiex", "ujwb", "eaxib"))
-            .withProvisioningState("bnuqqkpik");
+        PrivateLinkHubInner model = new PrivateLinkHubInner().withLocation("rcgp")
+            .withTags(mapOf("av", "zimejzanlfzx", "jq", "mbzonokix", "rlazszrnw", "irgzp", "fpwpjylwbt", "iin"))
+            .withProvisioningState("yebizikayuh");
         model = BinaryData.fromObject(model).toObject(PrivateLinkHubInner.class);
-        Assertions.assertEquals("yazttbtwwrqpue", model.location());
-        Assertions.assertEquals("zywbiex", model.tags().get("fey"));
-        Assertions.assertEquals("bnuqqkpik", model.provisioningState());
+        Assertions.assertEquals("rcgp", model.location());
+        Assertions.assertEquals("zimejzanlfzx", model.tags().get("av"));
+        Assertions.assertEquals("yebizikayuh", model.provisioningState());
     }
 
     // Use "Map.of" if available

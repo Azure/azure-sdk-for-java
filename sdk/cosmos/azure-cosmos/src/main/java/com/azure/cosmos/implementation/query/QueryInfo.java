@@ -242,6 +242,21 @@ public final class QueryInfo extends JsonSerializable {
         }
     }
 
+    public void setOrderByExpressions(List<String> orderByExpressions) {
+        this.orderByExpressions = orderByExpressions;
+        super.set("orderByExpressions", orderByExpressions);
+    }
+
+    public void setRewrittenQuery(String rewrittenQuery) {
+        this.rewrittenQuery = rewrittenQuery;
+        super.set("rewrittenQuery", rewrittenQuery);
+    }
+
+    public void setOrderBy(List<SortOrder> orderBy) {
+        this.orderBy = orderBy;
+        super.set("orderBy", orderBy);
+    }
+
     @Override
     public boolean equals(Object o) {
         return super.equals(o);

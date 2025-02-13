@@ -36,8 +36,8 @@ import java.util.Map;
 public final class SignalRCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
-     * SignalR_CreateOrUpdate.json
+     * specification/signalr/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/SignalR_CreateOrUpdate
+     * .json
      */
     /**
      * Sample code: SignalR_CreateOrUpdate.

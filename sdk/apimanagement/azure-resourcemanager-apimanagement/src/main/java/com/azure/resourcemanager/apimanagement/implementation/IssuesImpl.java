@@ -30,14 +30,14 @@ public final class IssuesImpl implements Issues {
 
     public PagedIterable<IssueContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<IssueContractInner> inner = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new IssueContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IssueContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IssueContract> listByService(String resourceGroupName, String serviceName, String filter,
         Integer top, Integer skip, Context context) {
         PagedIterable<IssueContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new IssueContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IssueContractImpl(inner1, this.manager()));
     }
 
     public Response<IssueContract> getWithResponse(String resourceGroupName, String serviceName, String issueId,

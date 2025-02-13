@@ -24,7 +24,8 @@ public class AzureStorageLinkedService extends LinkedService {
     private String type = "AzureStorage";
 
     /*
-     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      */
     private Object connectionString;
 
@@ -34,7 +35,8 @@ public class AzureStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference accountKey;
 
     /*
-     * SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string, SecureString or AzureKeyVaultSecretReference.
+     * SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     private Object sasUri;
 
@@ -44,7 +46,8 @@ public class AzureStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference sasToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private String encryptedCredential;
 

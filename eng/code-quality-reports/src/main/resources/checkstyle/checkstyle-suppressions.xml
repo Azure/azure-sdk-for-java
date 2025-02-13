@@ -40,19 +40,6 @@
   <!-- Don't check for JavaDocPackage or LineLength in samples or tests-->
   <suppress checks="(JavadocPackage|LineLength)" files=".*[/\\](samples|test)[/\\].*\.java"/>
 
-  <!-- To allow using sysout in GraalVM classes as the output is printed out during the build -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.aot.graalvm.support.implementation.GraalVMFeature.java"/>
-
-  <!-- To allow using sysout in GraalVM classes as the output is printed out during the build -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
-            files="com.azure.aot.graalvm.support.netty.implementation.features.*\.java"/>
-
-  <!-- The class is copied from Quarkus and uses the relevant copyright text.
-  Also, this class contains a number of fields that are annotated to be updated in native image. So, these exceptions are needed -->
-  <suppress checks="StaticVariableName|VisibilityModifier|TypeName|Header"
-            files="com.azure.aot.graalvm.support.netty.implementation.features.*\.java"/>
-
   <!-- Suppress LineLength for i18n message properties -->
   <suppress checks="LineLength" files="messages.properties"/>
 
@@ -87,13 +74,6 @@
 
   <!-- Only checks Public Api classes -->
   <suppress checks="com.azure.tools.checkstyle.checks.DenyListedWordsCheck" files=".*[/\\](implementation|test)[/\\].*"/>
-
-  <!-- Checkstyle suppressions for the auto generated Chat Client Implementation -->
-  <suppress checks="com.puppycrawl.tools.checkstyle.checks.indentation.IndentationCheck" files="com.azure.communication.chat.implementation.AzureCommunicationChatServiceImpl.java"/>
-  <!-- Checkstyle suppressions for the auto generated Phone Number Administration Implementation -->
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
-            files="com.azure.communication.common.implementation.HmacAuthenticationPolicy.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.identity.(CommunicationIdentityClient|CommunicationIdentityAsyncClient).java"/>
 
   <!-- Cosmos sdk suppressions -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-cosmos-encryption[/\\]src[/\\]test[/\\]"/>
@@ -168,15 +148,11 @@
 
   <!-- Checkstyle suppressions for azure.spring.cloud.autoconfigure.compatibility package -->
   <suppress checks="MethodName" files="com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureSpringBootVersionVerifier.java"/>
+
+  <!-- Test class for spring-messaging-azure-servicebus module -->
+  <suppress checks="InnerAssignment" files="com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesComparer"/>
+  <suppress checks="InnerAssignment" files="com.azure.spring.messaging.servicebus.implementation.properties.merger.util.TestPropertiesValueInjectHelper.java"/>
   <!-- ### end: Spring related suppression -->
-
-  <!-- Avoiding PagedFlux check if already using RetriableDownloadFlux. -->
-  <!-- Issue: https://github.com/Azure/azure-sdk-for-java/issues/22117 -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" files="com.azure.communication.callingserver.CallingServerAsyncClient"/>
-
-  <!-- Checkstyle suppressions to keep HttpPipelinePolicy in implementation folder. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicyCheck"
-            files="com.azure.communication.callingserver.implementation.RedirectPolicy.java"/>
 
   <!-- Suppress checks for Core Perf package. -->
   <suppress checks="Javadoc" files=".*[/\\]azure-core-perf[/\\].*\.java"/>
@@ -199,9 +175,9 @@
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="ConsoleLogger.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck"
             files="com.azure.sdk.build.tool.*\.java"/>
-
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="io.clientcore.core.json.*" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="io.clientcore.core.http.pipeline.HttpLoggingPolicy" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="io.clientcore.core.http.pipeline.InstrumentationPolicy" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="io.clientcore.core.http.client.DefaultHttpClientBuilder" />
   <suppress checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" files="io.clientcore.core.http.pipeline.HttpRetryPolicy" />
 
@@ -209,4 +185,7 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="io.clientcore.http.okhttp3.OkHttpHttpClientBuilder" />
   <suppress checks="ExternalDependencyExposed" files=".*[/\\]http-stress[/\\].*\.java"/>
   <suppress checks="IllegalImport" files="io.clientcore.http.*.stress"/>
+  <suppress checks="IllegalImport" files="io.clientcore.core.telemetry.*Tests"/>
+  <suppress checks="IllegalImport" files="io.clientcore.core.telemetry.*Benchmarks"/>
+  <suppress checks="IllegalImport" files="io.clientcore.core.http.pipeline.InstrumentationPolicyTests"/>
 </suppressions>

@@ -6,51 +6,51 @@ package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** An azure resource object. */
+/**
+ * An azure resource object.
+ */
 @Fluent
 public class MyWorkbookResource extends Resource {
     /*
      * Identity used for BYOS
      */
-    @JsonProperty(value = "identity")
     private MyWorkbookManagedIdentity identity;
 
     /*
      * Azure resource Id
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Azure resource name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Azure resource type
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Resource etag
      */
-    @JsonProperty(value = "etag")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> etag;
 
-    /** Creates an instance of MyWorkbookResource class. */
+    /**
+     * Creates an instance of MyWorkbookResource class.
+     */
     public MyWorkbookResource() {
     }
 
     /**
      * Get the identity property: Identity used for BYOS.
-     *
+     * 
      * @return the identity value.
      */
     public MyWorkbookManagedIdentity identity() {
@@ -59,7 +59,7 @@ public class MyWorkbookResource extends Resource {
 
     /**
      * Set the identity property: Identity used for BYOS.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the MyWorkbookResource object itself.
      */
@@ -70,7 +70,7 @@ public class MyWorkbookResource extends Resource {
 
     /**
      * Get the id property: Azure resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -79,7 +79,7 @@ public class MyWorkbookResource extends Resource {
 
     /**
      * Set the id property: Azure resource Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the MyWorkbookResource object itself.
      */
@@ -90,7 +90,7 @@ public class MyWorkbookResource extends Resource {
 
     /**
      * Get the name property: Azure resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -99,7 +99,7 @@ public class MyWorkbookResource extends Resource {
 
     /**
      * Set the name property: Azure resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the MyWorkbookResource object itself.
      */
@@ -110,7 +110,7 @@ public class MyWorkbookResource extends Resource {
 
     /**
      * Get the type property: Azure resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -119,7 +119,7 @@ public class MyWorkbookResource extends Resource {
 
     /**
      * Set the type property: Azure resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the MyWorkbookResource object itself.
      */
@@ -130,7 +130,7 @@ public class MyWorkbookResource extends Resource {
 
     /**
      * Get the etag property: Resource etag.
-     *
+     * 
      * @return the etag value.
      */
     public Map<String, String> etag() {
@@ -139,7 +139,7 @@ public class MyWorkbookResource extends Resource {
 
     /**
      * Set the etag property: Resource etag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the MyWorkbookResource object itself.
      */
@@ -148,14 +148,18 @@ public class MyWorkbookResource extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MyWorkbookResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MyWorkbookResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -164,12 +168,69 @@ public class MyWorkbookResource extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeMapField("etag", this.etag, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MyWorkbookResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MyWorkbookResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MyWorkbookResource.
+     */
+    public static MyWorkbookResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MyWorkbookResource deserializedMyWorkbookResource = new MyWorkbookResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedMyWorkbookResource.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMyWorkbookResource.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedMyWorkbookResource.identity = MyWorkbookManagedIdentity.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedMyWorkbookResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMyWorkbookResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMyWorkbookResource.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    Map<String, String> etag = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMyWorkbookResource.etag = etag;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMyWorkbookResource;
+        });
     }
 }

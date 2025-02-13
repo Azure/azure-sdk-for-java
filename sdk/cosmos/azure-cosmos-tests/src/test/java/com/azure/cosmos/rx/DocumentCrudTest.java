@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.TestObject;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -18,7 +17,6 @@ import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.annotations.AfterClass;
@@ -275,7 +273,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
 
         String newPropValue = UUID.randomUUID().toString();
-        docDefinition.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        docDefinition.set("newProp", newPropValue);
 
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         // replace document
@@ -320,7 +318,7 @@ public class DocumentCrudTest extends TestSuiteBase {
             BridgeInternal.getProperties(container.createItem(properties, new CosmosItemRequestOptions()).block());
 
         String newPropValue = UUID.randomUUID().toString();
-        properties.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        properties.set("newProp", newPropValue);
 
         // Replace document
 

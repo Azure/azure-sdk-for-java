@@ -1,6 +1,6 @@
 # Release History
 
-## 1.55.0-beta.1 (Unreleased)
+## 1.56.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.55.1 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty dependencies from `4.1.115.Final` to `4.1.118.Final` to resolve a CVE.
+- Upgraded Netty TcNative dependencies from `2.0.69.Final` to `2.0.70.Final` to resolve a CVE.
+
+## 1.55.0 (2025-02-06)
+
+### Features Added
+
+- Added `azure.core.models.AzureCloud` expandable enum to represent different Azure clouds. ([#43099](https://github.com/Azure/azure-sdk-for-java/pull/43099))
+- Added `CoreUtils.parseAuthenticateHeader` and `AuthenticateChallenge` class for parsing and consuming
+  `WWW-Authenticate` and `Proxy-Authenticate` headers. ([#43714](https://github.com/Azure/azure-sdk-for-java/pull/43714))
+
+### Other Changes
+
+- Removed length restriction on application id in `ClientOptions`. ([#42937](https://github.com/Azure/azure-sdk-for-java/pull/42937))
+
+#### Dependency Updates
+
+- Updated `azure-json` from `1.3.0` to `1.4.0`.
+- Updated `azure-xml` from `1.1.0` to `1.2.0`.
 
 ## 1.54.1 (2024-11-14)
 

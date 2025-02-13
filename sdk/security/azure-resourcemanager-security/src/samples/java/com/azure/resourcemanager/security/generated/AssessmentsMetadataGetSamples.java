@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class AssessmentsMetadataGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/GetAssessmentsMetadata_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2021-06-01/examples/AssessmentsMetadata/
+     * GetAssessmentsMetadata_example.json
      */
     /**
      * Sample code: Get security assessment metadata.

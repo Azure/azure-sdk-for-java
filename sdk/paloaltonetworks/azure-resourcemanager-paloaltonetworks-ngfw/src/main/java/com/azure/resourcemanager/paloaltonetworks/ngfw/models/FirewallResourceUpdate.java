@@ -5,32 +5,31 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * The type used for update operations of the FirewallResource.
  */
 @Fluent
-public final class FirewallResourceUpdate {
+public final class FirewallResourceUpdate implements JsonSerializable<FirewallResourceUpdate> {
     /*
      * The managed service identities assigned to this resource.
      */
-    @JsonProperty(value = "identity")
     private AzureResourceManagerManagedIdentityProperties identity;
 
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The updatable properties of the FirewallResource.
      */
-    @JsonProperty(value = "properties")
     private FirewallResourceUpdateProperties properties;
 
     /**
@@ -111,5 +110,49 @@ public final class FirewallResourceUpdate {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallResourceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallResourceUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallResourceUpdate.
+     */
+    public static FirewallResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallResourceUpdate deserializedFirewallResourceUpdate = new FirewallResourceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedFirewallResourceUpdate.identity
+                        = AzureResourceManagerManagedIdentityProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFirewallResourceUpdate.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFirewallResourceUpdate.properties = FirewallResourceUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallResourceUpdate;
+        });
     }
 }

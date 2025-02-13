@@ -3,12 +3,12 @@
 
 package io.clientcore.core.implementation.serializer;
 
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.json.JsonReader;
-import io.clientcore.core.json.JsonSerializable;
-import io.clientcore.core.json.JsonToken;
-import io.clientcore.core.json.JsonWriter;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonToken;
+import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.utils.serializers.ObjectSerializer;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,11 +17,10 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * Tests that the {@link DefaultJsonSerializer} is able to handle deserializing and serializing
- * {@link JsonSerializable}.
+ * Tests that the {@link JsonSerializer} is able to handle deserializing and serializing {@link JsonSerializable}.
  */
 public class JsonSerializableEndToEndTests {
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
 
     @Test
     public void serialization() throws IOException {

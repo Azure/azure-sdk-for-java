@@ -2016,7 +2016,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2067,7 +2067,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2118,7 +2118,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2165,7 +2165,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2213,7 +2213,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by
@@ -2259,7 +2259,7 @@ public final class WeathersImpl {
      * alert providers. The service can return details such as alert type, category, level and detailed description
      * about the active severe alerts for the requested location, like hurricanes, thunderstorms, lightning, heat waves
      * or forest fires. For more information, see [Request severe weather
-     * alerts](/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
+     * alerts](/azure/azure-maps/how-to-request-weather-data#request-severe-weather-alerts).
      * 
      * @param format Desired format of the response. Only `json` format is supported.
      * @param coordinates The applicable query specified as a comma separated string composed by latitude followed by

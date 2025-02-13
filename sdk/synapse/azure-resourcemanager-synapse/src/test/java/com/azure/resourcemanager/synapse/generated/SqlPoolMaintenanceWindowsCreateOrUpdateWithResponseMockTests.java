@@ -32,20 +32,20 @@ public final class SqlPoolMaintenanceWindowsCreateOrUpdateWithResponseMockTests 
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.sqlPoolMaintenanceWindows()
-            .createOrUpdateWithResponse("ucvkhhwmjpjbw", "unxcqrrihufoih", "piybxvgnzuzpbg", "zc",
+            .createOrUpdateWithResponse("wp", "chgjtnhtukfacih", "bfntumeezbxvq", "bnuvwcg",
                 new MaintenanceWindowsInner().withTimeRanges(Arrays.asList(
-                    new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.THURSDAY)
-                        .withStartTime("kunhdimjuk")
-                        .withDuration("r"),
+                    new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.WEDNESDAY)
+                        .withStartTime("jzwxuqgovsxpwwz")
+                        .withDuration("fmkk"),
+                    new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.WEDNESDAY)
+                        .withStartTime("redmlscgrllcc")
+                        .withDuration("ovjowazhpabacom"),
                     new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.MONDAY)
-                        .withStartTime("gpucdocfq")
-                        .withDuration("wgofmhx"),
-                    new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.TUESDAY)
-                        .withStartTime("vzklkvbgikyjtka")
-                        .withDuration("lbis"),
+                        .withStartTime("gkw")
+                        .withDuration("nsrqor"),
                     new MaintenanceWindowTimeRange().withDayOfWeek(DayOfWeek.SUNDAY)
-                        .withStartTime("zaptuosk")
-                        .withDuration("izjixwfgcd"))),
+                        .withStartTime("mv")
+                        .withDuration("bxeetqujxcxxqn"))),
                 com.azure.core.util.Context.NONE);
 
     }

@@ -6,40 +6,23 @@ package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.quota.fluent.models.GroupQuotasEntityInner;
-import com.azure.resourcemanager.quota.models.AdditionalAttributes;
-import com.azure.resourcemanager.quota.models.EnvironmentType;
-import com.azure.resourcemanager.quota.models.GroupingId;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
-import com.azure.resourcemanager.quota.models.GroupQuotasEntityBase;
+import com.azure.resourcemanager.quota.models.GroupQuotasEntityProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class GroupQuotasEntityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotasEntityInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"hq\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"BillingId\",\"value\":\"pybczmehmtzopb\"},\"environment\":\"NonProduction\"},\"provisioningState\":\"InProgress\"},\"id\":\"idgsybbe\",\"name\":\"hphoycm\",\"type\":\"xaobhdxbmtqioqjz\"}")
+            "{\"properties\":{\"displayName\":\"hq\",\"provisioningState\":\"InProgress\"},\"id\":\"xpyb\",\"name\":\"zm\",\"type\":\"hmtzopbsphrup\"}")
             .toObject(GroupQuotasEntityInner.class);
         Assertions.assertEquals("hq", model.properties().displayName());
-        Assertions.assertEquals(GroupingIdType.BILLING_ID,
-            model.properties().additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("pybczmehmtzopb", model.properties().additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.NON_PRODUCTION,
-            model.properties().additionalAttributes().environment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotasEntityInner model = new GroupQuotasEntityInner().withProperties(new GroupQuotasEntityBase()
-            .withDisplayName("hq")
-            .withAdditionalAttributes(new AdditionalAttributes()
-                .withGroupId(new GroupingId().withGroupingIdType(GroupingIdType.BILLING_ID).withValue("pybczmehmtzopb"))
-                .withEnvironment(EnvironmentType.NON_PRODUCTION)));
+        GroupQuotasEntityInner model
+            = new GroupQuotasEntityInner().withProperties(new GroupQuotasEntityProperties().withDisplayName("hq"));
         model = BinaryData.fromObject(model).toObject(GroupQuotasEntityInner.class);
         Assertions.assertEquals("hq", model.properties().displayName());
-        Assertions.assertEquals(GroupingIdType.BILLING_ID,
-            model.properties().additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("pybczmehmtzopb", model.properties().additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.NON_PRODUCTION,
-            model.properties().additionalAttributes().environment());
     }
 }

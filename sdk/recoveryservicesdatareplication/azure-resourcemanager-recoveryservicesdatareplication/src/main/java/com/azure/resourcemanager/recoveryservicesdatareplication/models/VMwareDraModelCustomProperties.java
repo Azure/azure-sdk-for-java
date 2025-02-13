@@ -6,34 +6,50 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMware DRA model custom properties. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("VMware")
+/**
+ * VMware DRA model custom properties.
+ */
 @Fluent
 public final class VMwareDraModelCustomProperties extends DraModelCustomProperties {
     /*
+     * Gets or sets the instance type.
+     */
+    private String instanceType = "VMware";
+
+    /*
      * Gets or sets the BIOS Id of the DRA machine.
      */
-    @JsonProperty(value = "biosId", required = true)
     private String biosId;
 
     /*
      * Identity model.
      */
-    @JsonProperty(value = "marsAuthenticationIdentity", required = true)
     private IdentityModel marsAuthenticationIdentity;
 
-    /** Creates an instance of VMwareDraModelCustomProperties class. */
+    /**
+     * Creates an instance of VMwareDraModelCustomProperties class.
+     */
     public VMwareDraModelCustomProperties() {
     }
 
     /**
+     * Get the instanceType property: Gets or sets the instance type.
+     * 
+     * @return the instanceType value.
+     */
+    @Override
+    public String instanceType() {
+        return this.instanceType;
+    }
+
+    /**
      * Get the biosId property: Gets or sets the BIOS Id of the DRA machine.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -42,7 +58,7 @@ public final class VMwareDraModelCustomProperties extends DraModelCustomProperti
 
     /**
      * Set the biosId property: Gets or sets the BIOS Id of the DRA machine.
-     *
+     * 
      * @param biosId the biosId value to set.
      * @return the VMwareDraModelCustomProperties object itself.
      */
@@ -53,7 +69,7 @@ public final class VMwareDraModelCustomProperties extends DraModelCustomProperti
 
     /**
      * Get the marsAuthenticationIdentity property: Identity model.
-     *
+     * 
      * @return the marsAuthenticationIdentity value.
      */
     public IdentityModel marsAuthenticationIdentity() {
@@ -62,7 +78,7 @@ public final class VMwareDraModelCustomProperties extends DraModelCustomProperti
 
     /**
      * Set the marsAuthenticationIdentity property: Identity model.
-     *
+     * 
      * @param marsAuthenticationIdentity the marsAuthenticationIdentity value to set.
      * @return the VMwareDraModelCustomProperties object itself.
      */
@@ -73,23 +89,69 @@ public final class VMwareDraModelCustomProperties extends DraModelCustomProperti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (biosId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property biosId in model VMwareDraModelCustomProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property biosId in model VMwareDraModelCustomProperties"));
         }
         if (marsAuthenticationIdentity() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property marsAuthenticationIdentity in model" + " VMwareDraModelCustomProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property marsAuthenticationIdentity in model VMwareDraModelCustomProperties"));
         } else {
             marsAuthenticationIdentity().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VMwareDraModelCustomProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("biosId", this.biosId);
+        jsonWriter.writeJsonField("marsAuthenticationIdentity", this.marsAuthenticationIdentity);
+        jsonWriter.writeStringField("instanceType", this.instanceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareDraModelCustomProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareDraModelCustomProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VMwareDraModelCustomProperties.
+     */
+    public static VMwareDraModelCustomProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareDraModelCustomProperties deserializedVMwareDraModelCustomProperties
+                = new VMwareDraModelCustomProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("biosId".equals(fieldName)) {
+                    deserializedVMwareDraModelCustomProperties.biosId = reader.getString();
+                } else if ("marsAuthenticationIdentity".equals(fieldName)) {
+                    deserializedVMwareDraModelCustomProperties.marsAuthenticationIdentity
+                        = IdentityModel.fromJson(reader);
+                } else if ("instanceType".equals(fieldName)) {
+                    deserializedVMwareDraModelCustomProperties.instanceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareDraModelCustomProperties;
+        });
+    }
 }

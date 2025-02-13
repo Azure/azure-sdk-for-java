@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<FindBugsFilter>
+<FindBugsFilter xmlns="https://github.com/spotbugs/filter/3.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
   <!-- These existing KeyVault Attribute APIs return their super class rather than the actual type. -->
   <Match>
     <Class name="~com\.microsoft\.azure\.keyvault\.requests\.\w+Request"/>
@@ -267,9 +268,7 @@
   <!-- Known issue in autorest where it will generate a variable with a value of null then use it in a not null check.
   https://github.com/Azure/autorest.java/issues/328 -->
   <Match>
-    <Or>
-      <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
-    </Or>
+    <Class name="~com\.microsoft\.azure\.batch\.protocol\.implementation\.[\w]+Impl"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
 
@@ -1713,28 +1712,6 @@
   <Match>
     <Class name="~com\.azure\.messaging\.eventhubs\.perf\.[\w]+Test"/>
     <Bug pattern="BC_UNCONFIRMED_CAST"/>
-  </Match>
-
-  <Match>
-    <Or>
-      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapper"/>
-      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkAlpnApplicationProtocolNegotiatorAlpnWrapperJava8"/>
-      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslJdkSslContext"/>
-      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslSslContext"/>
-    </Or>
-    <Bug pattern="BC_IMPOSSIBLE_CAST"/>
-  </Match>
-  <Match>
-    <Or>
-      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerCodecHttpHttpContentDecompressor"/>
-    </Or>
-    <Bug pattern="CI_CONFUSED_INHERITANCE"/>
-  </Match>
-  <Match>
-    <Or>
-      <Class name="com.azure.aot.graalvm.support.netty.implementation.features.TargetIoNettyHandlerSslOpenSsl"/>
-    </Or>
-    <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 
   <!-- Non Shipped code -->

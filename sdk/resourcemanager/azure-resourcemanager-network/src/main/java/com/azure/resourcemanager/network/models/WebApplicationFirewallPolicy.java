@@ -20,10 +20,18 @@ public interface WebApplicationFirewallPolicy
     extends GroupableResource<NetworkManager, WebApplicationFirewallPolicyInner>,
     Updatable<WebApplicationFirewallPolicy.Update>, Refreshable<WebApplicationFirewallPolicy> {
 
-    /** @return mode of the Web Application Firewall Policy */
+    /**
+     * Gets mode of the Web Application Firewall Policy.
+     *
+     * @return mode of the Web Application Firewall Policy
+     */
     WebApplicationFirewallMode mode();
 
-    /** @return whether request body inspection is enabled */
+    /**
+     * Checks whether request body inspection is enabled.
+     *
+     * @return whether request body inspection is enabled
+     */
     boolean isRequestBodyInspectionEnabled();
 
     /**
@@ -39,16 +47,32 @@ public interface WebApplicationFirewallPolicy
      */
     Integer fileUploadSizeLimitInMb();
 
-    /** @return Web Application Firewall Policy settings */
+    /**
+     * Gets Web Application Firewall Policy settings.
+     *
+     * @return Web Application Firewall Policy settings
+     */
     PolicySettings getPolicySettings();
 
-    /** @return Web Application Firewall managed rules */
+    /**
+     * Gets Web Application Firewall managed rules.
+     *
+     * @return Web Application Firewall managed rules
+     */
     ManagedRulesDefinition getManagedRules();
 
-    /** @return whether this policy is enabled */
+    /**
+     * Checks whether this policy is enabled.
+     *
+     * @return whether this policy is enabled
+     */
     boolean isEnabled();
 
-    /** @return an immutable list of application gateway resource ids associated with this Web Application Firewall Policy */
+    /**
+     * Gets an immutable list of application gateway resource ids associated with this Web Application Firewall Policy.
+     *
+     * @return an immutable list of application gateway resource ids associated with this Web Application Firewall Policy
+     */
     List<String> getAssociatedApplicationGatewayIds();
 
     /**

@@ -48,7 +48,6 @@ public interface HttpClient {
      */
     static HttpClient getSharedInstance() {
         return HttpClientProvider.getProviders()
-            .create(HttpClientProvider::getSharedInstance,
-                HttpClientProvider.GlobalDefaultHttpClient.HTTP_CLIENT::getHttpClient, null);
+            .create(HttpClientProvider::getSharedInstance, new DefaultHttpClientProvider()::getSharedInstance, null);
     }
 }

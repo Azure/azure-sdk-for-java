@@ -5,38 +5,41 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quota.models.QuotaAllocationRequestBase;
 import com.azure.resourcemanager.quota.models.RequestState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
  * The QuotaAllocationRequestStatusProperties model.
  */
 @Fluent
-public final class QuotaAllocationRequestStatusProperties {
+public final class QuotaAllocationRequestStatusProperties
+    implements JsonSerializable<QuotaAllocationRequestStatusProperties> {
     /*
      * The new quota request allocated to subscription.
      */
-    @JsonProperty(value = "requestedResource")
     private QuotaAllocationRequestBase requestedResource;
 
     /*
-     * The request submission time. The date conforms to the following format specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ
+     * The request submission time. The date conforms to the following format specified by the ISO 8601 standard:
+     * yyyy-MM-ddTHH:mm:ssZ
      */
-    @JsonProperty(value = "requestSubmitTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime requestSubmitTime;
 
     /*
      * Request status.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private RequestState provisioningState;
 
     /*
      * Details of the failure.
      */
-    @JsonProperty(value = "faultCode", access = JsonProperty.Access.WRITE_ONLY)
     private String faultCode;
 
     /**
@@ -102,5 +105,51 @@ public final class QuotaAllocationRequestStatusProperties {
         if (requestedResource() != null) {
             requestedResource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("requestedResource", this.requestedResource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaAllocationRequestStatusProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaAllocationRequestStatusProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaAllocationRequestStatusProperties.
+     */
+    public static QuotaAllocationRequestStatusProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaAllocationRequestStatusProperties deserializedQuotaAllocationRequestStatusProperties
+                = new QuotaAllocationRequestStatusProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("requestedResource".equals(fieldName)) {
+                    deserializedQuotaAllocationRequestStatusProperties.requestedResource
+                        = QuotaAllocationRequestBase.fromJson(reader);
+                } else if ("requestSubmitTime".equals(fieldName)) {
+                    deserializedQuotaAllocationRequestStatusProperties.requestSubmitTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedQuotaAllocationRequestStatusProperties.provisioningState
+                        = RequestState.fromString(reader.getString());
+                } else if ("faultCode".equals(fieldName)) {
+                    deserializedQuotaAllocationRequestStatusProperties.faultCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaAllocationRequestStatusProperties;
+        });
     }
 }

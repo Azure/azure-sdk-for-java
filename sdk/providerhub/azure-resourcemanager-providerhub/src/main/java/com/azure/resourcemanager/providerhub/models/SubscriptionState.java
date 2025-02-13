@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SubscriptionState. */
+/**
+ * Defines values for SubscriptionState.
+ */
 public final class SubscriptionState extends ExpandableStringEnum<SubscriptionState> {
-    /** Static value NotDefined for SubscriptionState. */
+    /**
+     * Static value NotDefined for SubscriptionState.
+     */
     public static final SubscriptionState NOT_DEFINED = fromString("NotDefined");
 
-    /** Static value Enabled for SubscriptionState. */
+    /**
+     * Static value Enabled for SubscriptionState.
+     */
     public static final SubscriptionState ENABLED = fromString("Enabled");
 
-    /** Static value Warned for SubscriptionState. */
+    /**
+     * Static value Warned for SubscriptionState.
+     */
     public static final SubscriptionState WARNED = fromString("Warned");
 
-    /** Static value PastDue for SubscriptionState. */
+    /**
+     * Static value PastDue for SubscriptionState.
+     */
     public static final SubscriptionState PAST_DUE = fromString("PastDue");
 
-    /** Static value Disabled for SubscriptionState. */
+    /**
+     * Static value Disabled for SubscriptionState.
+     */
     public static final SubscriptionState DISABLED = fromString("Disabled");
 
-    /** Static value Deleted for SubscriptionState. */
+    /**
+     * Static value Deleted for SubscriptionState.
+     */
     public static final SubscriptionState DELETED = fromString("Deleted");
 
     /**
      * Creates a new instance of SubscriptionState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class SubscriptionState extends ExpandableStringEnum<SubscriptionSt
 
     /**
      * Creates or finds a SubscriptionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SubscriptionState.
      */
-    @JsonCreator
     public static SubscriptionState fromString(String name) {
         return fromString(name, SubscriptionState.class);
     }
 
     /**
      * Gets known SubscriptionState values.
-     *
+     * 
      * @return known SubscriptionState values.
      */
     public static Collection<SubscriptionState> values() {

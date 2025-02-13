@@ -10,8 +10,8 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.synapse.SynapseManager;
-import com.azure.resourcemanager.synapse.models.DesiredState;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModel;
+import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +22,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsGetWithResponseMock
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Enabled\",\"actualState\":\"Enabled\"}},\"id\":\"n\",\"name\":\"fzhrchx\",\"type\":\"wuzdmh\"}";
+            = "{\"properties\":{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Disabled\",\"actualState\":\"Disabled\"}},\"id\":\"bo\",\"name\":\"xvhhyqq\",\"type\":\"gatxgrznmginmtsd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,9 +32,11 @@ public final class WorkspaceManagedIdentitySqlControlSettingsGetWithResponseMock
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedIdentitySqlControlSettingsModel response = manager.workspaceManagedIdentitySqlControlSettings()
-            .getWithResponse("mumm", "kvavucgj", com.azure.core.util.Context.NONE)
+            .getWithResponse("vzm", "ghnysvlpyeuu", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DesiredState.ENABLED, response.grantSqlControlToManagedIdentity().desiredState());
+        Assertions.assertEquals(
+            ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState.DISABLED,
+            response.grantSqlControlToManagedIdentity().desiredState());
     }
 }

@@ -13,13 +13,14 @@ public final class ServerUsageListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServerUsageListResult model = BinaryData.fromString(
-            "{\"value\":[{\"name\":\"em\",\"resourceName\":\"h\",\"displayName\":\"uj\",\"currentValue\":1.9673828924282377,\"limit\":61.87265105214077,\"unit\":\"wculkbaw\",\"nextResetTime\":\"2021-01-10T09:45:55Z\"}],\"nextLink\":\"njwltlwtjjgu\"}")
+            "{\"value\":[{\"name\":\"pdfgkmtdherngbt\",\"resourceName\":\"uahokq\",\"displayName\":\"bkau\",\"currentValue\":33.28571037343065,\"limit\":37.56433108394144,\"unit\":\"wpnulaiywzejyw\",\"nextResetTime\":\"2021-06-24T13:04:54Z\"},{\"name\":\"koj\",\"resourceName\":\"l\",\"displayName\":\"npdwr\",\"currentValue\":54.92209371720976,\"limit\":86.45776975178757,\"unit\":\"snnfhyetefyp\",\"nextResetTime\":\"2021-08-10T19:55:02Z\"}],\"nextLink\":\"tfjgt\"}")
             .toObject(ServerUsageListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerUsageListResult model = new ServerUsageListResult().withValue(Arrays.asList(new ServerUsageInner()));
+        ServerUsageListResult model
+            = new ServerUsageListResult().withValue(Arrays.asList(new ServerUsageInner(), new ServerUsageInner()));
         model = BinaryData.fromObject(model).toObject(ServerUsageListResult.class);
     }
 }

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ContentItems. */
+/**
+ * Resource collection API of ContentItems.
+ */
 public interface ContentItems {
     /**
      * Lists developer portal's content items specified by the provided content type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -26,7 +28,7 @@ public interface ContentItems {
 
     /**
      * Lists developer portal's content items specified by the provided content type.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -41,7 +43,7 @@ public interface ContentItems {
 
     /**
      * Returns the entity state (ETag) version of the developer portal's content item specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -57,7 +59,7 @@ public interface ContentItems {
 
     /**
      * Returns the entity state (ETag) version of the developer portal's content item specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -70,7 +72,7 @@ public interface ContentItems {
 
     /**
      * Returns the developer portal's content item specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -86,7 +88,7 @@ public interface ContentItems {
 
     /**
      * Returns the developer portal's content item specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
@@ -100,13 +102,13 @@ public interface ContentItems {
 
     /**
      * Removes the specified developer portal's content item.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param contentItemId Content item identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -118,13 +120,13 @@ public interface ContentItems {
 
     /**
      * Removes the specified developer portal's content item.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param contentTypeId Content type identifier.
      * @param contentItemId Content item identifier.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -134,7 +136,7 @@ public interface ContentItems {
 
     /**
      * Returns the developer portal's content item specified by its identifier.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -145,7 +147,7 @@ public interface ContentItems {
 
     /**
      * Returns the developer portal's content item specified by its identifier.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,7 +159,7 @@ public interface ContentItems {
 
     /**
      * Removes the specified developer portal's content item.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -167,10 +169,10 @@ public interface ContentItems {
 
     /**
      * Removes the specified developer portal's content item.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -181,7 +183,7 @@ public interface ContentItems {
 
     /**
      * Begins definition for a new ContentItemContract resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ContentItemContract definition.
      */

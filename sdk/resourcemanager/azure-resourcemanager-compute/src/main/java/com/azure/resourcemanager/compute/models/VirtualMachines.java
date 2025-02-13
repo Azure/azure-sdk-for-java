@@ -27,7 +27,11 @@ public interface VirtualMachines
     SupportsCreating<VirtualMachine.DefinitionStages.Blank>, SupportsDeletingById, SupportsDeletingByResourceGroup,
     SupportsBatchCreation<VirtualMachine>, SupportsBatchDeletion, HasManager<ComputeManager> {
 
-    /** @return available virtual machine sizes */
+    /**
+     * Gets available virtual machine sizes.
+     *
+     * @return available virtual machine sizes
+     */
     VirtualMachineSizes sizes();
 
     /**

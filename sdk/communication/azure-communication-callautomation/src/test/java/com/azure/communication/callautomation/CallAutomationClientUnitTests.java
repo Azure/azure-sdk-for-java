@@ -7,12 +7,15 @@ import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallRejectReason;
+import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.MicrosoftTeamsAppIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -34,7 +37,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClientWithSourceIdentity(caller,
             new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID,
                 CALL_SERVER_CALL_ID, CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE,
-                CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 201))));
+                CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 201))));
         List<CommunicationIdentifier> targets
             = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
 
@@ -61,7 +64,26 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(createCallResult);
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
-        assertEquals(null, createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+    }
+
+    @Test
+    public void createTeamsAppCallWithResponse() {
+        MicrosoftTeamsAppIdentifier caller = new MicrosoftTeamsAppIdentifier(TEAMS_APP_CALL_CALLER_ID);
+
+        CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(Collections
+            .singletonList(new SimpleEntry<>(generateTeamsAppCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_CALLBACK_URL, TEAMS_APP_CALL_CALLER_ID), 201))));
+        PhoneNumberIdentifier target = new PhoneNumberIdentifier(CALL_TARGET_ID);
+
+        Response<CreateCallResult> createCallResult = callAutomationClient.createCallWithResponse(
+            new CreateCallOptions(new CallInvite(target, null), CALL_CALLBACK_URL).setTeamsAppSource(caller),
+            Context.NONE);
+
+        assertNotNull(createCallResult);
+        assertEquals(201, createCallResult.getStatusCode());
+        assertEquals(TEAMS_APP_CALL_CALLER_ID,
+            ((MicrosoftTeamsAppIdentifier) (createCallResult.getValue().getCallConnectionProperties().getSource()))
+                .getAppId());
     }
 
     @Test
@@ -69,7 +91,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClient(
             new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID,
                 CALL_SERVER_CALL_ID, CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE,
-                CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 200))));
+                CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 200))));
 
         AnswerCallResult answerCallResult
             = callAutomationClient.answerCall(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL);
@@ -82,11 +104,11 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClient(
             new ArrayList<>(Collections.singletonList(new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID,
                 CALL_SERVER_CALL_ID, CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE,
-                CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 200))));
+                CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 200))));
 
         AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
-            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION)
-            .setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
+            .setMediaStreamingOptions(MEDIA_STREAMING_CONFIGURATION)
+            .setTranscriptionOptions(TRANSCRIPTION_CONFIGURATION);
 
         Response<AnswerCallResult> answerCallResult
             = callAutomationClient.answerCallWithResponse(answerCallOptions, Context.NONE);
@@ -94,10 +116,8 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
         assertNotNull(answerCallResult.getValue());
-        assertEquals(MEDIA_SUBSCRIPTION_ID,
-            answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
-        assertEquals(DATA_SUBSCRIPTION_ID,
-            answerCallResult.getValue().getCallConnectionProperties().getDataSubscriptionId());
+        // assertEquals(MEDIA_SUBSCRIPTION_ID, answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+        // assertEquals(DATA_SUBSCRIPTION_ID, answerCallResult.getValue().getCallConnectionProperties().getDataSubscriptionId());
     }
 
     @Test

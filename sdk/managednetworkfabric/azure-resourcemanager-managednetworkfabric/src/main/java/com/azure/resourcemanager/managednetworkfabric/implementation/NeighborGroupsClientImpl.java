@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NeighborGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NeighborGroupsClient.
+ */
 public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NeighborGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NeighborGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NeighborGroupsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -144,9 +150,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -188,9 +194,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -232,9 +238,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -253,9 +259,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -277,9 +283,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -296,9 +302,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -316,9 +322,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -336,9 +342,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -357,9 +363,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -375,9 +381,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Creates the Neighbor Group.
-     *
-     * <p>Implements the Neighbor Group PUT method.
-     *
+     * 
+     * Implements the Neighbor Group PUT method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Request payload.
@@ -395,9 +401,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,9 +440,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -472,9 +478,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,9 +496,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -509,9 +515,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Retrieves details of neighbor Group using GET method.
-     *
-     * <p>Gets the Neighbor Group.
-     *
+     * 
+     * Gets the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -526,9 +532,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -570,9 +576,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -614,9 +620,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -635,9 +641,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -659,9 +665,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -678,9 +684,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -698,9 +704,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -718,9 +724,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -739,9 +745,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -757,9 +763,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * API to update certain properties of the Neighbor Group Resources.
-     *
-     * <p>Updates the Neighbor Group.
-     *
+     * 
+     * Updates the Neighbor Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param body Neighbor Group properties to update. Only annotations are supported.
@@ -777,9 +783,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -815,9 +821,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -853,9 +859,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -872,9 +878,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -894,9 +900,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -911,9 +917,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -930,9 +936,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -948,9 +954,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -967,9 +973,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -983,9 +989,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Deletes a Neighbor Group.
-     *
-     * <p>Implements Neighbor Group DELETE method.
-     *
+     * 
+     * Implements Neighbor Group DELETE method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param neighborGroupName Name of the Neighbor Group.
      * @param context The context to associate with this operation.
@@ -1000,9 +1006,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by resource group.
-     *
-     * <p>Displays NeighborGroups list by resource group GET method.
-     *
+     * 
+     * Displays NeighborGroups list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1034,9 +1040,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by resource group.
-     *
-     * <p>Displays NeighborGroups list by resource group GET method.
-     *
+     * 
+     * Displays NeighborGroups list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1070,9 +1076,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by resource group.
-     *
-     * <p>Displays NeighborGroups list by resource group GET method.
-     *
+     * 
+     * Displays NeighborGroups list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1087,9 +1093,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by resource group.
-     *
-     * <p>Displays NeighborGroups list by resource group GET method.
-     *
+     * 
+     * Displays NeighborGroups list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1105,9 +1111,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by resource group.
-     *
-     * <p>Displays NeighborGroups list by resource group GET method.
-     *
+     * 
+     * Displays NeighborGroups list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1121,9 +1127,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by resource group.
-     *
-     * <p>Displays NeighborGroups list by resource group GET method.
-     *
+     * 
+     * Displays NeighborGroups list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1138,9 +1144,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by subscription.
-     *
-     * <p>Displays NeighborGroups list by subscription GET method.
-     *
+     * 
+     * Displays NeighborGroups list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Neighbor Group along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1166,9 +1172,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by subscription.
-     *
-     * <p>Displays NeighborGroups list by subscription GET method.
-     *
+     * 
+     * Displays NeighborGroups list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1196,9 +1202,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by subscription.
-     *
-     * <p>Displays NeighborGroups list by subscription GET method.
-     *
+     * 
+     * Displays NeighborGroups list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Neighbor Group as paginated response with {@link PagedFlux}.
@@ -1211,9 +1217,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by subscription.
-     *
-     * <p>Displays NeighborGroups list by subscription GET method.
-     *
+     * 
+     * Displays NeighborGroups list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1228,9 +1234,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by subscription.
-     *
-     * <p>Displays NeighborGroups list by subscription GET method.
-     *
+     * 
+     * Displays NeighborGroups list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Neighbor Group as paginated response with {@link PagedIterable}.
@@ -1242,9 +1248,9 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * List Neighbor Groups by subscription.
-     *
-     * <p>Displays NeighborGroups list by subscription GET method.
-     *
+     * 
+     * Displays NeighborGroups list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1258,9 +1264,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1286,9 +1291,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1314,9 +1318,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1342,9 +1345,8 @@ public final class NeighborGroupsClientImpl implements NeighborGroupsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

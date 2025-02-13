@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -111,13 +110,13 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
         this.set(
             Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION,
-            FeedRangeContinuationVersions.V1,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            FeedRangeContinuationVersions.V1
+        );
 
         this.set(
             Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID,
-            this.getContainerRid(),
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.getContainerRid()
+        );
 
         if (this.compositeContinuationTokens.size() > 0) {
             for (CompositeContinuationToken token : this.compositeContinuationTokens) {
@@ -126,8 +125,8 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
             this.set(
                 Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION,
-                this.compositeContinuationTokens,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.compositeContinuationTokens
+            );
         }
 
         if (this.feedRange != null) {
@@ -269,11 +268,13 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public <T> boolean hasFetchedAllChangesAvailableNow(FeedResponse<T> response) {
+    public <T> boolean hasFetchedAllChanges(FeedResponse<T> responseMessage, Long endLSN) {
+        long lastestLSNFromSessionToken = this.getLatestLsnFromSessionToken(responseMessage.getSessionToken());
+        long lsn = endLSN != null ? endLSN  : lastestLSNFromSessionToken;
         FeedRangeLSNContext feedRangeLSNContext =
             this.updateFeedRangeEndLSNIfAbsent(
                 this.currentToken.getRange(),
-                response.getSessionToken());
+                lsn);
         feedRangeLSNContext.handleLSNFromContinuation(this.currentToken);
 
         // find next token which can fetch more
@@ -282,9 +283,9 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
             this.moveToNextToken();
         } while (
             !this.currentToken.getRange().equals(initialToken) &&
-                this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange()));
+                this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange()));
 
-        return this.hasFetchAllChangesAvailableNowForFeedRange(this.currentToken.getRange());
+        return this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange());
     }
 
     @Override
@@ -340,18 +341,18 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
     private FeedRangeLSNContext updateFeedRangeEndLSNIfAbsent(
         Range<String> targetedRange,
-        String sessionToken) {
+        long endLSN) {
         return this.feedRangeLSNContextMap.computeIfAbsent(
             targetedRange,
             (range) -> {
                 return new FeedRangeLSNContext(
                     targetedRange,
-                    this.getLatestLsnFromSessionToken(sessionToken)
+                    endLSN
                 );
             });
     }
 
-    private boolean hasFetchAllChangesAvailableNowForFeedRange(Range<String> range) {
+    private boolean hasFetchedAllChangesForFeedRange(Range<String> range) {
         return this.feedRangeLSNContextMap.containsKey(range) &&
             this.feedRangeLSNContextMap.get(range).hasCompleted;
     }
@@ -597,7 +598,7 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         public void handleLSNFromContinuation(CompositeContinuationToken compositeContinuationToken) {
             if (!compositeContinuationToken.getRange().equals(this.range)) {
                 throw new IllegalStateException(
-                    "Range in FeedRangeAvailableNowContext is different than the range in the continuationToken");
+                    "Range in FeedRangeLSNContext is different than the range in the continuationToken");
             }
 
             String lsnFromContinuationToken = compositeContinuationToken.getToken();

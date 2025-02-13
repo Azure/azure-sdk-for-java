@@ -96,7 +96,6 @@ public final class DiskRestorePointAttributes extends SubResourceReadOnly {
      */
     @Override
     public void validate() {
-        super.validate();
         if (encryption() != null) {
             encryption().validate();
         }

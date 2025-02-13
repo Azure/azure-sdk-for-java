@@ -5,46 +5,48 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleCreationParameterProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Properties for creating a schedule. */
+/**
+ * Properties for creating a schedule.
+ */
 @Fluent
-public final class ScheduleCreationParameter {
+public final class ScheduleCreationParameter implements JsonSerializable<ScheduleCreationParameter> {
     /*
      * The properties of the schedule.
      */
-    @JsonProperty(value = "properties")
     private ScheduleCreationParameterProperties innerProperties;
 
     /*
      * The name of the virtual machine or environment
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The location of the new virtual machine or environment
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * The tags of the resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ScheduleCreationParameter class. */
+    /**
+     * Creates an instance of ScheduleCreationParameter class.
+     */
     public ScheduleCreationParameter() {
     }
 
     /**
      * Get the innerProperties property: The properties of the schedule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ScheduleCreationParameterProperties innerProperties() {
@@ -53,7 +55,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Get the name property: The name of the virtual machine or environment.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +64,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Set the name property: The name of the virtual machine or environment.
-     *
+     * 
      * @param name the name value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -73,7 +75,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Get the location property: The location of the new virtual machine or environment.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -82,7 +84,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Get the tags property: The tags of the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -91,7 +93,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Set the tags property: The tags of the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -102,7 +104,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Get the status property: The status of the schedule (i.e. Enabled, Disabled).
-     *
+     * 
      * @return the status value.
      */
     public EnableStatus status() {
@@ -111,7 +113,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Set the status property: The status of the schedule (i.e. Enabled, Disabled).
-     *
+     * 
      * @param status the status value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -125,7 +127,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Get the taskType property: The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
-     *
+     * 
      * @return the taskType value.
      */
     public String taskType() {
@@ -134,7 +136,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Set the taskType property: The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
-     *
+     * 
      * @param taskType the taskType value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -149,7 +151,7 @@ public final class ScheduleCreationParameter {
     /**
      * Get the weeklyRecurrence property: If the schedule will occur only some days of the week, specify the weekly
      * recurrence.
-     *
+     * 
      * @return the weeklyRecurrence value.
      */
     public WeekDetails weeklyRecurrence() {
@@ -159,7 +161,7 @@ public final class ScheduleCreationParameter {
     /**
      * Set the weeklyRecurrence property: If the schedule will occur only some days of the week, specify the weekly
      * recurrence.
-     *
+     * 
      * @param weeklyRecurrence the weeklyRecurrence value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -174,7 +176,7 @@ public final class ScheduleCreationParameter {
     /**
      * Get the dailyRecurrence property: If the schedule will occur once each day of the week, specify the daily
      * recurrence.
-     *
+     * 
      * @return the dailyRecurrence value.
      */
     public DayDetails dailyRecurrence() {
@@ -184,7 +186,7 @@ public final class ScheduleCreationParameter {
     /**
      * Set the dailyRecurrence property: If the schedule will occur once each day of the week, specify the daily
      * recurrence.
-     *
+     * 
      * @param dailyRecurrence the dailyRecurrence value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -199,7 +201,7 @@ public final class ScheduleCreationParameter {
     /**
      * Get the hourlyRecurrence property: If the schedule will occur multiple times a day, specify the hourly
      * recurrence.
-     *
+     * 
      * @return the hourlyRecurrence value.
      */
     public HourDetails hourlyRecurrence() {
@@ -209,7 +211,7 @@ public final class ScheduleCreationParameter {
     /**
      * Set the hourlyRecurrence property: If the schedule will occur multiple times a day, specify the hourly
      * recurrence.
-     *
+     * 
      * @param hourlyRecurrence the hourlyRecurrence value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -226,7 +228,7 @@ public final class ScheduleCreationParameter {
      * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
      * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
      * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
-     *
+     * 
      * @return the timeZoneId value.
      */
     public String timeZoneId() {
@@ -238,7 +240,7 @@ public final class ScheduleCreationParameter {
      * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
      * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
      * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
-     *
+     * 
      * @param timeZoneId the timeZoneId value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -252,7 +254,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Get the notificationSettings property: Notification settings.
-     *
+     * 
      * @return the notificationSettings value.
      */
     public NotificationSettings notificationSettings() {
@@ -261,7 +263,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Set the notificationSettings property: Notification settings.
-     *
+     * 
      * @param notificationSettings the notificationSettings value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -275,7 +277,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Get the targetResourceId property: The resource ID to which the schedule belongs.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -284,7 +286,7 @@ public final class ScheduleCreationParameter {
 
     /**
      * Set the targetResourceId property: The resource ID to which the schedule belongs.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -298,12 +300,58 @@ public final class ScheduleCreationParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleCreationParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleCreationParameter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleCreationParameter.
+     */
+    public static ScheduleCreationParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleCreationParameter deserializedScheduleCreationParameter = new ScheduleCreationParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedScheduleCreationParameter.innerProperties
+                        = ScheduleCreationParameterProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedScheduleCreationParameter.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedScheduleCreationParameter.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScheduleCreationParameter.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleCreationParameter;
+        });
     }
 }

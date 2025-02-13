@@ -22,8 +22,9 @@ public final class LocalRulestacksListSecurityServicesSamples {
      */
     public static void localRulestacksListSecurityServicesMinimumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRulestacks().listSecurityServicesWithResponse("rgopenapi", "lrs1",
-            SecurityServicesTypeEnum.fromString("localRulestacks"), null, null, com.azure.core.util.Context.NONE);
+        manager.localRulestacks()
+            .listSecurityServicesWithResponse("rgopenapi", "lrs1",
+                SecurityServicesTypeEnum.fromString("localRulestacks"), null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -38,7 +39,8 @@ public final class LocalRulestacksListSecurityServicesSamples {
      */
     public static void localRulestacksListSecurityServicesMaximumSetGen(
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager manager) {
-        manager.localRulestacks().listSecurityServicesWithResponse("rgopenapi", "lrs1",
-            SecurityServicesTypeEnum.fromString("localRulestacks"), "a6a321", 20, com.azure.core.util.Context.NONE);
+        manager.localRulestacks()
+            .listSecurityServicesWithResponse("rgopenapi", "lrs1",
+                SecurityServicesTypeEnum.fromString("localRulestacks"), "a6a321", 20, com.azure.core.util.Context.NONE);
     }
 }

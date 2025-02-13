@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.ExpandableEnum;
+import io.clientcore.core.utils.ExpandableEnum;
 
 import java.util.Collection;
 import java.util.Map;
@@ -190,16 +190,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
      * {@code Cache-Control}/{@code cache-control}
      */
     public static final HttpHeaderName CACHE_CONTROL = fromString("Cache-Control");
-
-    /**
-     * {@code client-request-id}
-     */
-    public static final HttpHeaderName REQUEST_ID = fromString("Request-Id");
-
-    /**
-     * {@code client-request-id}
-     */
-    public static final HttpHeaderName CLIENT_REQUEST_ID = fromString("client-request-id");
 
     /**
      * {@code traceparent}

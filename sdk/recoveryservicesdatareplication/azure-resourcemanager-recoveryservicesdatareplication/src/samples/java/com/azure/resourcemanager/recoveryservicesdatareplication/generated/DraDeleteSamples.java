@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.recoveryservicesdatareplication.generated;
 
-/** Samples for Dra Delete. */
+/**
+ * Samples for Dra Delete.
+ */
 public final class DraDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-preview/examples/Dra_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesdatareplication/resource-manager/Microsoft.DataReplication/preview/2021-02-16-
+     * preview/examples/Dra_Delete.json
      */
     /**
      * Sample code: Dra_Delete.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesDataReplicationManager.
      */
     public static void draDelete(

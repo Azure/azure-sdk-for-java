@@ -9,6 +9,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.cognitiveservices.models.Usage;
 import java.io.IOException;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public final class UsageListResultInner implements JsonSerializable<UsageListRes
     /*
      * The list of usages for Cognitive Service account.
      */
-    private List<UsageInner> value;
+    private List<Usage> value;
 
     /**
      * Creates an instance of UsageListResultInner class.
@@ -58,7 +59,7 @@ public final class UsageListResultInner implements JsonSerializable<UsageListRes
      * 
      * @return the value value.
      */
-    public List<UsageInner> value() {
+    public List<Usage> value() {
         return this.value;
     }
 
@@ -68,7 +69,7 @@ public final class UsageListResultInner implements JsonSerializable<UsageListRes
      * @param value the value value to set.
      * @return the UsageListResultInner object itself.
      */
-    public UsageListResultInner withValue(List<UsageInner> value) {
+    public UsageListResultInner withValue(List<Usage> value) {
         this.value = value;
         return this;
     }
@@ -113,7 +114,7 @@ public final class UsageListResultInner implements JsonSerializable<UsageListRes
                 if ("nextLink".equals(fieldName)) {
                     deserializedUsageListResultInner.nextLink = reader.getString();
                 } else if ("value".equals(fieldName)) {
-                    List<UsageInner> value = reader.readArray(reader1 -> UsageInner.fromJson(reader1));
+                    List<Usage> value = reader.readArray(reader1 -> Usage.fromJson(reader1));
                     deserializedUsageListResultInner.value = value;
                 } else {
                     reader.skipChildren();

@@ -5,43 +5,49 @@
 package com.azure.resourcemanager.networkcloud.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.networkcloud.models.KeySetUser;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * BareMetalMachineKeySetPatchProperties represents the properties of bare metal machine key set that can be patched.
  */
 @Fluent
-public final class BareMetalMachineKeySetPatchProperties {
+public final class BareMetalMachineKeySetPatchProperties
+    implements JsonSerializable<BareMetalMachineKeySetPatchProperties> {
     /*
      * The date and time after which the users in this key set will be removed from the bare metal machines.
      */
-    @JsonProperty(value = "expiration")
     private OffsetDateTime expiration;
 
     /*
      * The list of IP addresses of jump hosts with management network access from which a login will be allowed for the
      * users.
      */
-    @JsonProperty(value = "jumpHostsAllowed")
     private List<String> jumpHostsAllowed;
 
     /*
      * The unique list of permitted users.
      */
-    @JsonProperty(value = "userList")
     private List<KeySetUser> userList;
 
-    /** Creates an instance of BareMetalMachineKeySetPatchProperties class. */
+    /**
+     * Creates an instance of BareMetalMachineKeySetPatchProperties class.
+     */
     public BareMetalMachineKeySetPatchProperties() {
     }
 
     /**
      * Get the expiration property: The date and time after which the users in this key set will be removed from the
      * bare metal machines.
-     *
+     * 
      * @return the expiration value.
      */
     public OffsetDateTime expiration() {
@@ -51,7 +57,7 @@ public final class BareMetalMachineKeySetPatchProperties {
     /**
      * Set the expiration property: The date and time after which the users in this key set will be removed from the
      * bare metal machines.
-     *
+     * 
      * @param expiration the expiration value to set.
      * @return the BareMetalMachineKeySetPatchProperties object itself.
      */
@@ -63,7 +69,7 @@ public final class BareMetalMachineKeySetPatchProperties {
     /**
      * Get the jumpHostsAllowed property: The list of IP addresses of jump hosts with management network access from
      * which a login will be allowed for the users.
-     *
+     * 
      * @return the jumpHostsAllowed value.
      */
     public List<String> jumpHostsAllowed() {
@@ -73,7 +79,7 @@ public final class BareMetalMachineKeySetPatchProperties {
     /**
      * Set the jumpHostsAllowed property: The list of IP addresses of jump hosts with management network access from
      * which a login will be allowed for the users.
-     *
+     * 
      * @param jumpHostsAllowed the jumpHostsAllowed value to set.
      * @return the BareMetalMachineKeySetPatchProperties object itself.
      */
@@ -84,7 +90,7 @@ public final class BareMetalMachineKeySetPatchProperties {
 
     /**
      * Get the userList property: The unique list of permitted users.
-     *
+     * 
      * @return the userList value.
      */
     public List<KeySetUser> userList() {
@@ -93,7 +99,7 @@ public final class BareMetalMachineKeySetPatchProperties {
 
     /**
      * Set the userList property: The unique list of permitted users.
-     *
+     * 
      * @param userList the userList value to set.
      * @return the BareMetalMachineKeySetPatchProperties object itself.
      */
@@ -104,12 +110,60 @@ public final class BareMetalMachineKeySetPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userList() != null) {
             userList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("expiration",
+            this.expiration == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiration));
+        jsonWriter.writeArrayField("jumpHostsAllowed", this.jumpHostsAllowed,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("userList", this.userList, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BareMetalMachineKeySetPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BareMetalMachineKeySetPatchProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BareMetalMachineKeySetPatchProperties.
+     */
+    public static BareMetalMachineKeySetPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BareMetalMachineKeySetPatchProperties deserializedBareMetalMachineKeySetPatchProperties
+                = new BareMetalMachineKeySetPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expiration".equals(fieldName)) {
+                    deserializedBareMetalMachineKeySetPatchProperties.expiration = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("jumpHostsAllowed".equals(fieldName)) {
+                    List<String> jumpHostsAllowed = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBareMetalMachineKeySetPatchProperties.jumpHostsAllowed = jumpHostsAllowed;
+                } else if ("userList".equals(fieldName)) {
+                    List<KeySetUser> userList = reader.readArray(reader1 -> KeySetUser.fromJson(reader1));
+                    deserializedBareMetalMachineKeySetPatchProperties.userList = userList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBareMetalMachineKeySetPatchProperties;
+        });
     }
 }

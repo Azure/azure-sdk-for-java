@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.SecretInner;
 import com.azure.resourcemanager.devtestlabs.models.SecretFragment;
 
-/** An instance of this class provides access to all the operations defined in SecretsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SecretsClient.
+ */
 public interface SecretsClient {
     /**
      * List secrets in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -32,7 +34,7 @@ public interface SecretsClient {
 
     /**
      * List secrets in a given user profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -52,7 +54,7 @@ public interface SecretsClient {
 
     /**
      * Get secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -70,7 +72,7 @@ public interface SecretsClient {
 
     /**
      * Get secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -85,7 +87,7 @@ public interface SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -102,7 +104,7 @@ public interface SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -120,7 +122,7 @@ public interface SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -137,7 +139,7 @@ public interface SecretsClient {
 
     /**
      * Create or replace an existing secret. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -155,7 +157,7 @@ public interface SecretsClient {
 
     /**
      * Delete secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -172,7 +174,7 @@ public interface SecretsClient {
 
     /**
      * Delete secret.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -186,7 +188,7 @@ public interface SecretsClient {
 
     /**
      * Allows modifying tags of secrets. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -204,7 +206,7 @@ public interface SecretsClient {
 
     /**
      * Allows modifying tags of secrets. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.

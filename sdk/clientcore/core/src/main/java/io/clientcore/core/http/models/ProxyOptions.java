@@ -3,13 +3,13 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.auth.BasicChallengeHandler;
-import io.clientcore.core.util.auth.ChallengeHandler;
-import io.clientcore.core.util.auth.DigestChallengeHandler;
-import io.clientcore.core.util.configuration.Configuration;
-import io.clientcore.core.util.configuration.ConfigurationProperty;
-import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.utils.auth.BasicChallengeHandler;
+import io.clientcore.core.utils.auth.ChallengeHandler;
+import io.clientcore.core.utils.auth.DigestChallengeHandler;
+import io.clientcore.core.utils.configuration.Configuration;
+import io.clientcore.core.utils.configuration.ConfigurationProperty;
+import io.clientcore.core.utils.configuration.ConfigurationPropertyBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -22,7 +22,8 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
+import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
 
 /**
  * This represents proxy configuration to be used in http clients.
@@ -205,8 +206,8 @@ public class ProxyOptions {
      *     <li>Java HTTP</li>
      * </ol>
      *
-     * Azure proxy configurations will be preferred over Java proxy configurations as they are more closely scoped to
-     * the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
+     * Client Core proxy configurations will be preferred over Java proxy configurations as they are more closely scoped
+     * to the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
      *
      * <p>
      * {@code null} will be returned if no proxy was found in the environment.
@@ -229,14 +230,14 @@ public class ProxyOptions {
      * <p>
      * Environment configurations are loaded in this order:
      * <ol>
-     *     <li>Azure HTTPS</li>
-     *     <li>Azure HTTP</li>
+     *     <li>Client Core HTTPS</li>
+     *     <li>Client Core HTTP</li>
      *     <li>Java HTTPS</li>
      *     <li>Java HTTP</li>
      * </ol>
      *
-     * Azure proxy configurations will be preferred over Java proxy configurations as they are more closely scoped to
-     * the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
+     * Client Core proxy configurations will be preferred over Java proxy configurations as they are more closely scoped
+     * to the purpose of the SDK. Additionally, more secure protocols, HTTPS vs HTTP, will be preferred.
      * <p>
      * {@code null} will be returned if no proxy was found in the environment.
      *
@@ -342,7 +343,7 @@ public class ProxyOptions {
 
             return proxyOptions;
         } catch (URISyntaxException ex) {
-            LOGGER.atWarning().addKeyValue("uri", proxyProperty).log(INVALID_PROXY_URI, ex);
+            LOGGER.atWarning().addKeyValue(URL_FULL_KEY, proxyProperty).log(INVALID_PROXY_URI, ex);
             return null;
         }
     }
@@ -491,7 +492,7 @@ public class ProxyOptions {
                 /*
                  * Replace the non-proxy host with the sanitized value.
                  *
-                 * The body of the non-proxy host is quoted to handle scenarios such a '127.0.0.1' or '*.azure.com'
+                 * The body of the non-proxy host is quoted to handle scenarios such a '127.0.0.1' or '*.somecloud.com'
                  * where without quoting the '.' in the string would be treated as the match any character instead of
                  * the literal '.' character.
                  */

@@ -21,7 +21,7 @@ public final class WorkspaceAadAdminsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tenantId\":\"quzxpixhyoipnf\",\"login\":\"gsoscienezfvb\",\"administratorType\":\"n\",\"sid\":\"kbpjnrte\"},\"id\":\"w\",\"name\":\"nthropmdudsyiu\",\"type\":\"ztvktjhffecqko\"}";
+            = "{\"properties\":{\"tenantId\":\"hftpzcrrykll\",\"login\":\"nqanhkigglclwal\",\"administratorType\":\"ubhg\",\"sid\":\"hetxdqcmyctajqz\"},\"id\":\"vale\",\"name\":\"xb\",\"type\":\"biwksde\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,13 +30,12 @@ public final class WorkspaceAadAdminsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        WorkspaceAadAdminInfo response = manager.workspaceAadAdmins()
-            .getWithResponse("gfzdgjfcycrsvl", "yyhigqkzjuqw", com.azure.core.util.Context.NONE)
-            .getValue();
+        WorkspaceAadAdminInfo response
+            = manager.workspaceAadAdmins().getWithResponse("mey", "ajamc", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("quzxpixhyoipnf", response.tenantId());
-        Assertions.assertEquals("gsoscienezfvb", response.login());
-        Assertions.assertEquals("n", response.administratorType());
-        Assertions.assertEquals("kbpjnrte", response.sid());
+        Assertions.assertEquals("hftpzcrrykll", response.tenantId());
+        Assertions.assertEquals("nqanhkigglclwal", response.login());
+        Assertions.assertEquals("ubhg", response.administratorType());
+        Assertions.assertEquals("hetxdqcmyctajqz", response.sid());
     }
 }

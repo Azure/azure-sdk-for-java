@@ -42,17 +42,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GlobalSchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GlobalSchedulesClient.
+ */
 public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GlobalSchedulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of GlobalSchedulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GlobalSchedulesClientImpl(DevTestLabsClientImpl client) {
@@ -167,7 +173,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a subscription.
-     *
+     * 
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -175,8 +181,8 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listSinglePageAsync(String expand, String filter, Integer top,
@@ -200,7 +206,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a subscription.
-     *
+     * 
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -209,8 +215,8 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listSinglePageAsync(String expand, String filter, Integer top,
@@ -234,7 +240,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a subscription.
-     *
+     * 
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -252,7 +258,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedFlux}.
@@ -269,7 +275,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a subscription.
-     *
+     * 
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -289,7 +295,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a list operation as paginated response with {@link PagedIterable}.
@@ -305,7 +311,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a subscription.
-     *
+     * 
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -324,7 +330,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
@@ -333,8 +339,8 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -363,7 +369,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
@@ -373,8 +379,8 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -402,7 +408,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
@@ -423,7 +429,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -443,7 +449,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
@@ -465,7 +471,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -483,7 +489,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * List schedules in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
@@ -503,7 +509,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
@@ -540,7 +546,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
@@ -576,7 +582,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -593,7 +599,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
@@ -611,7 +617,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Get schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -627,7 +633,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -668,7 +674,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -709,7 +715,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -726,7 +732,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -744,7 +750,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -760,7 +766,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -794,7 +800,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param context The context to associate with this operation.
@@ -828,7 +834,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -843,7 +849,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param context The context to associate with this operation.
@@ -859,7 +865,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -873,7 +879,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -914,7 +920,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -955,7 +961,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -972,7 +978,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -990,7 +996,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -1006,7 +1012,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1040,7 +1046,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param context The context to associate with this operation.
@@ -1075,7 +1081,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1092,7 +1098,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param context The context to associate with this operation.
@@ -1112,7 +1118,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1127,7 +1133,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param context The context to associate with this operation.
@@ -1143,7 +1149,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1158,7 +1164,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param context The context to associate with this operation.
@@ -1175,7 +1181,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1189,7 +1195,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param context The context to associate with this operation.
@@ -1204,7 +1210,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -1246,7 +1252,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -1288,7 +1294,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -1308,7 +1314,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -1330,7 +1336,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -1347,7 +1353,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -1365,7 +1371,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -1383,7 +1389,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -1402,7 +1408,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -1417,7 +1423,7 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -1434,14 +1440,13 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1463,15 +1468,14 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
@@ -1491,14 +1495,13 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1520,15 +1523,14 @@ public final class GlobalSchedulesClientImpl implements GlobalSchedulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ScheduleInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

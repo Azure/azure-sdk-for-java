@@ -6,44 +6,55 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.Language;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A class representing the properties of a sandbox custom image object. */
+/**
+ * A class representing the properties of a sandbox custom image object.
+ */
 @Fluent
-public final class SandboxCustomImageProperties {
+public final class SandboxCustomImageProperties implements JsonSerializable<SandboxCustomImageProperties> {
     /*
      * The language name, for example Python.
      */
-    @JsonProperty(value = "language", required = true)
     private Language language;
 
     /*
-     * The version of the language.
+     * The version of the language. Either this property or baseImageName should be specified.
      */
-    @JsonProperty(value = "languageVersion", required = true)
     private String languageVersion;
+
+    /*
+     * The base image name on which the custom image is built on top of. It can be one of the LanguageExtensionImageName
+     * (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom image. Either this property or
+     * languageVersion should be specified.
+     */
+    private String baseImageName;
 
     /*
      * The requirements file content.
      */
-    @JsonProperty(value = "requirementsFileContent")
     private String requirementsFileContent;
 
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of SandboxCustomImageProperties class. */
+    /**
+     * Creates an instance of SandboxCustomImageProperties class.
+     */
     public SandboxCustomImageProperties() {
     }
 
     /**
      * Get the language property: The language name, for example Python.
-     *
+     * 
      * @return the language value.
      */
     public Language language() {
@@ -52,7 +63,7 @@ public final class SandboxCustomImageProperties {
 
     /**
      * Set the language property: The language name, for example Python.
-     *
+     * 
      * @param language the language value to set.
      * @return the SandboxCustomImageProperties object itself.
      */
@@ -62,8 +73,9 @@ public final class SandboxCustomImageProperties {
     }
 
     /**
-     * Get the languageVersion property: The version of the language.
-     *
+     * Get the languageVersion property: The version of the language. Either this property or baseImageName should be
+     * specified.
+     * 
      * @return the languageVersion value.
      */
     public String languageVersion() {
@@ -71,8 +83,9 @@ public final class SandboxCustomImageProperties {
     }
 
     /**
-     * Set the languageVersion property: The version of the language.
-     *
+     * Set the languageVersion property: The version of the language. Either this property or baseImageName should be
+     * specified.
+     * 
      * @param languageVersion the languageVersion value to set.
      * @return the SandboxCustomImageProperties object itself.
      */
@@ -82,8 +95,32 @@ public final class SandboxCustomImageProperties {
     }
 
     /**
+     * Get the baseImageName property: The base image name on which the custom image is built on top of. It can be one
+     * of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom
+     * image. Either this property or languageVersion should be specified.
+     * 
+     * @return the baseImageName value.
+     */
+    public String baseImageName() {
+        return this.baseImageName;
+    }
+
+    /**
+     * Set the baseImageName property: The base image name on which the custom image is built on top of. It can be one
+     * of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom
+     * image. Either this property or languageVersion should be specified.
+     * 
+     * @param baseImageName the baseImageName value to set.
+     * @return the SandboxCustomImageProperties object itself.
+     */
+    public SandboxCustomImageProperties withBaseImageName(String baseImageName) {
+        this.baseImageName = baseImageName;
+        return this;
+    }
+
+    /**
      * Get the requirementsFileContent property: The requirements file content.
-     *
+     * 
      * @return the requirementsFileContent value.
      */
     public String requirementsFileContent() {
@@ -92,7 +129,7 @@ public final class SandboxCustomImageProperties {
 
     /**
      * Set the requirementsFileContent property: The requirements file content.
-     *
+     * 
      * @param requirementsFileContent the requirementsFileContent value to set.
      * @return the SandboxCustomImageProperties object itself.
      */
@@ -103,7 +140,7 @@ public final class SandboxCustomImageProperties {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -112,19 +149,65 @@ public final class SandboxCustomImageProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (language() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property language in model SandboxCustomImageProperties"));
-        }
-        if (languageVersion() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property languageVersion in model SandboxCustomImageProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property language in model SandboxCustomImageProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SandboxCustomImageProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
+        jsonWriter.writeStringField("languageVersion", this.languageVersion);
+        jsonWriter.writeStringField("baseImageName", this.baseImageName);
+        jsonWriter.writeStringField("requirementsFileContent", this.requirementsFileContent);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SandboxCustomImageProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SandboxCustomImageProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SandboxCustomImageProperties.
+     */
+    public static SandboxCustomImageProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SandboxCustomImageProperties deserializedSandboxCustomImageProperties = new SandboxCustomImageProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("language".equals(fieldName)) {
+                    deserializedSandboxCustomImageProperties.language = Language.fromString(reader.getString());
+                } else if ("languageVersion".equals(fieldName)) {
+                    deserializedSandboxCustomImageProperties.languageVersion = reader.getString();
+                } else if ("baseImageName".equals(fieldName)) {
+                    deserializedSandboxCustomImageProperties.baseImageName = reader.getString();
+                } else if ("requirementsFileContent".equals(fieldName)) {
+                    deserializedSandboxCustomImageProperties.requirementsFileContent = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSandboxCustomImageProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSandboxCustomImageProperties;
+        });
+    }
 }

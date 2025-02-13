@@ -21,7 +21,7 @@ public final class UsageInner implements JsonSerializable<UsageInner> {
     /*
      * An enum describing the unit of usage measurement.
      */
-    private String unit = "Count";
+    private final String unit = "Count";
 
     /*
      * The current usage of the resource.
@@ -51,17 +51,6 @@ public final class UsageInner implements JsonSerializable<UsageInner> {
      */
     public String unit() {
         return this.unit;
-    }
-
-    /**
-     * Set the unit property: An enum describing the unit of usage measurement.
-     * 
-     * @param unit the unit value to set.
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withUnit(String unit) {
-        this.unit = unit;
-        return this;
     }
 
     /**

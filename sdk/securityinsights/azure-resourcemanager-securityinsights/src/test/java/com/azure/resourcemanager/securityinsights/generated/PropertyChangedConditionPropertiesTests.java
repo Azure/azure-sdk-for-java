@@ -17,32 +17,32 @@ public final class PropertyChangedConditionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PropertyChangedConditionProperties model = BinaryData.fromString(
-            "{\"conditionType\":\"PropertyChanged\",\"conditionProperties\":{\"propertyName\":\"IncidentOwner\",\"changeType\":\"ChangedFrom\",\"operator\":\"NotEquals\",\"propertyValues\":[\"zlbciphmse\"]}}")
+            "{\"conditionType\":\"PropertyChanged\",\"conditionProperties\":{\"propertyName\":\"IncidentStatus\",\"changeType\":\"ChangedTo\",\"operator\":\"NotStartsWith\",\"propertyValues\":[\"kdasvflyhbxcudch\",\"gsrboldforobw\"]}}")
             .toObject(PropertyChangedConditionProperties.class);
-        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_OWNER,
+        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_STATUS,
             model.conditionProperties().propertyName());
-        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_FROM,
+        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_TO,
             model.conditionProperties().changeType());
-        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_EQUALS,
+        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_STARTS_WITH,
             model.conditionProperties().operator());
-        Assertions.assertEquals("zlbciphmse", model.conditionProperties().propertyValues().get(0));
+        Assertions.assertEquals("kdasvflyhbxcudch", model.conditionProperties().propertyValues().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PropertyChangedConditionProperties model = new PropertyChangedConditionProperties()
             .withConditionProperties(new AutomationRulePropertyValuesChangedCondition()
-                .withPropertyName(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_OWNER)
-                .withChangeType(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_FROM)
-                .withOperator(AutomationRulePropertyConditionSupportedOperator.NOT_EQUALS)
-                .withPropertyValues(Arrays.asList("zlbciphmse")));
+                .withPropertyName(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_STATUS)
+                .withChangeType(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_TO)
+                .withOperator(AutomationRulePropertyConditionSupportedOperator.NOT_STARTS_WITH)
+                .withPropertyValues(Arrays.asList("kdasvflyhbxcudch", "gsrboldforobw")));
         model = BinaryData.fromObject(model).toObject(PropertyChangedConditionProperties.class);
-        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_OWNER,
+        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedPropertyType.INCIDENT_STATUS,
             model.conditionProperties().propertyName());
-        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_FROM,
+        Assertions.assertEquals(AutomationRulePropertyChangedConditionSupportedChangedType.CHANGED_TO,
             model.conditionProperties().changeType());
-        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_EQUALS,
+        Assertions.assertEquals(AutomationRulePropertyConditionSupportedOperator.NOT_STARTS_WITH,
             model.conditionProperties().operator());
-        Assertions.assertEquals("zlbciphmse", model.conditionProperties().propertyValues().get(0));
+        Assertions.assertEquals("kdasvflyhbxcudch", model.conditionProperties().propertyValues().get(0));
     }
 }

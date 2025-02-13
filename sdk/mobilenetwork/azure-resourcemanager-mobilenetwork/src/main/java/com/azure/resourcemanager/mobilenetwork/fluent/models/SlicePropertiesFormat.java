@@ -6,31 +6,32 @@ package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.Snssai;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Network slice properties.
  */
 @Fluent
-public final class SlicePropertiesFormat {
+public final class SlicePropertiesFormat implements JsonSerializable<SlicePropertiesFormat> {
     /*
      * The provisioning state of the network slice resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Single-network slice selection assistance information (S-NSSAI). Unique at the scope of a mobile network.
      */
-    @JsonProperty(value = "snssai", required = true)
     private Snssai snssai;
 
     /*
      * An optional description for this network slice.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -105,4 +106,47 @@ public final class SlicePropertiesFormat {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SlicePropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("snssai", this.snssai);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SlicePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SlicePropertiesFormat if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SlicePropertiesFormat.
+     */
+    public static SlicePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SlicePropertiesFormat deserializedSlicePropertiesFormat = new SlicePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("snssai".equals(fieldName)) {
+                    deserializedSlicePropertiesFormat.snssai = Snssai.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSlicePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSlicePropertiesFormat.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSlicePropertiesFormat;
+        });
+    }
 }

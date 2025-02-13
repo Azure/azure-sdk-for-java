@@ -5,29 +5,40 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Hostname type. */
+/**
+ * Hostname type.
+ */
 public final class HostnameType extends ExpandableStringEnum<HostnameType> {
-    /** Static value Proxy for HostnameType. */
+    /**
+     * Static value Proxy for HostnameType.
+     */
     public static final HostnameType PROXY = fromString("Proxy");
 
-    /** Static value Portal for HostnameType. */
+    /**
+     * Static value Portal for HostnameType.
+     */
     public static final HostnameType PORTAL = fromString("Portal");
 
-    /** Static value Management for HostnameType. */
+    /**
+     * Static value Management for HostnameType.
+     */
     public static final HostnameType MANAGEMENT = fromString("Management");
 
-    /** Static value Scm for HostnameType. */
+    /**
+     * Static value Scm for HostnameType.
+     */
     public static final HostnameType SCM = fromString("Scm");
 
-    /** Static value DeveloperPortal for HostnameType. */
+    /**
+     * Static value DeveloperPortal for HostnameType.
+     */
     public static final HostnameType DEVELOPER_PORTAL = fromString("DeveloperPortal");
 
     /**
      * Creates a new instance of HostnameType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,18 +47,17 @@ public final class HostnameType extends ExpandableStringEnum<HostnameType> {
 
     /**
      * Creates or finds a HostnameType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HostnameType.
      */
-    @JsonCreator
     public static HostnameType fromString(String name) {
         return fromString(name, HostnameType.class);
     }
 
     /**
      * Gets known HostnameType values.
-     *
+     * 
      * @return known HostnameType values.
      */
     public static Collection<HostnameType> values() {

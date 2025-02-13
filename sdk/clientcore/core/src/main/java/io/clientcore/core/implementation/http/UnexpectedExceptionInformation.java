@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.http;
 
-import io.clientcore.core.http.exception.HttpExceptionType;
+import io.clientcore.core.http.exceptions.HttpExceptionType;
 
 /**
  * Contains the information needed to generate an exception type to be thrown or returned when a REST API returns an
@@ -18,6 +18,7 @@ public class UnexpectedExceptionInformation {
      * body.
      *
      * @param exceptionType The type of exception to be thrown.
+     * @param exceptionBodyClass The expected response body class.
      */
     public UnexpectedExceptionInformation(HttpExceptionType exceptionType, Class<?> exceptionBodyClass) {
         this.exceptionType = exceptionType;
@@ -25,12 +26,19 @@ public class UnexpectedExceptionInformation {
     }
 
     /**
+     * Get the exception's response body.
+     *
      * @return The exception's response body.
      */
     public Class<?> getExceptionBodyClass() {
         return exceptionBodyClass;
     }
 
+    /**
+     * Get the exception type.
+     *
+     * @return The exception type.
+     */
     public HttpExceptionType getExceptionType() {
         return exceptionType;
     }
