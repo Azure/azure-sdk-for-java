@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.naming.NamingException;
 
 import org.apache.commons.logging.Log;
-import org.springframework.beans.BeanUtils;
 import org.springframework.boot.BootstrapRegistry.InstanceSupplier;
 import org.springframework.boot.context.config.ConfigDataLocation;
 import org.springframework.boot.context.config.ConfigDataLocationNotFoundException;
