@@ -68,7 +68,7 @@ steps:
 
   - pwsh: |
       # Define the path to the external_dependencies.txt file
-      $dependenciesFilePath = "_work/eng/versioning/external_dependencies.txt"
+      $dependenciesFilePath = "_work/1/s/eng/versioning/external_dependencies.txt"
 
       # Update the version in the external_dependencies.txt file
       $newVersionInExternalDependenciesFile = "com.openai:openai-java;$newVersion"
@@ -77,7 +77,7 @@ steps:
       Write-Host "Updated the version in the external_dependencies.txt file: $updatedDependenciesContent"
       Set-Content -Path $dependenciesFilePath -Value $updatedDependenciesContent
     displayName: Update external_dependencies.txt
-    workingDirectory: $(System.DefaultWorkingDirectory)
+    workingDirectory: $(Agent.TempDirectory)
 
   - task: PythonScript@0
     displayName: 'Update versions for source build'
