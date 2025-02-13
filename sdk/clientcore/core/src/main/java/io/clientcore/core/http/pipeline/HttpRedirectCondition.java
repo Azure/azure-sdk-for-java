@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Information about the request that failed, used to determine whether a redirect should be attempted.
  */
-public final class HttpRequestRedirectCondition {
+public final class HttpRedirectCondition {
     private final Response<?> response;
     private final Set<String> redirectedUris;
     private final int tryCount;
@@ -23,7 +23,7 @@ public final class HttpRequestRedirectCondition {
      * @param tryCount The number of tries that have been attempted.
      * @param redirectedUris The set of URIs that have been attempted redirect.
      */
-    HttpRequestRedirectCondition(Response<?> response, int tryCount, Set<String> redirectedUris) {
+    HttpRedirectCondition(Response<?> response, int tryCount, Set<String> redirectedUris) {
         this.response = response;
         this.tryCount = tryCount;
         this.redirectedUris = redirectedUris == null ? Collections.emptySet() : redirectedUris;

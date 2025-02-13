@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.models;
+package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.pipeline.HttpRequestRetryCondition;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.time.Duration;
@@ -20,7 +21,7 @@ public final class HttpRetryOptions {
     private final Duration baseDelay;
     private final Duration maxDelay;
     private final Duration fixedDelay;
-    private Predicate<HttpRequestRetryCondition> shouldRetryCondition;
+    private Predicate<HttpRetryCondition> shouldRetryCondition;
     private Function<HttpHeaders, Duration> delayFromHeaders;
 
     /**
@@ -103,7 +104,7 @@ public final class HttpRetryOptions {
      *
      * @return The predicate that determines if a retry should be attempted.
      */
-    public Predicate<HttpRequestRetryCondition> getShouldRetryCondition() {
+    public Predicate<HttpRetryCondition> getShouldRetryCondition() {
         return shouldRetryCondition;
     }
 
@@ -117,7 +118,7 @@ public final class HttpRetryOptions {
      * {@link Response}.
      * @return The updated {@link HttpRetryOptions} object.
      */
-    public HttpRetryOptions setShouldRetryCondition(Predicate<HttpRequestRetryCondition> shouldRetryCondition) {
+    public HttpRetryOptions setShouldRetryCondition(Predicate<HttpRetryCondition> shouldRetryCondition) {
         this.shouldRetryCondition = shouldRetryCondition;
         return this;
     }

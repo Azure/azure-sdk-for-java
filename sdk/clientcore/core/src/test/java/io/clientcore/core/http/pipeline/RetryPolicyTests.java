@@ -10,7 +10,6 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import org.junit.jupiter.api.Assertions;

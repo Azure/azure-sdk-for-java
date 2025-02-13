@@ -28,7 +28,7 @@ import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
 /**
  * This represents proxy configuration to be used in http clients.
  */
-public class ProxyOptions {
+public final class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
     private static final String INVALID_PROXY_URI = "URI is invalid and is being ignored.";
 

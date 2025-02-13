@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.models;
+package io.clientcore.core.http.pipeline;
 
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.core.utils.configuration.ConfigurationProperty;

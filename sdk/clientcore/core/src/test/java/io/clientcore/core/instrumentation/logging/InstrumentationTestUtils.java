@@ -38,8 +38,7 @@ public final class InstrumentationTestUtils {
         assertTrue(traceId.matches("[0-9a-f]{32}"));
     }
 
-    public static ClientLogger setupLogLevelAndGetLogger(ClientLogger.LogLevel logLevelToSet,
-        OutputStream logCaptureStream) {
+    public static ClientLogger setupLogLevelAndGetLogger(LogLevel logLevelToSet, OutputStream logCaptureStream) {
         DefaultLogger logger
             = new DefaultLogger(ClientLogger.class.getName(), new PrintStream(logCaptureStream), logLevelToSet);
 

@@ -5,7 +5,6 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;

@@ -8,7 +8,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
-import io.clientcore.core.http.pipeline.HttpPipelineOrder;
+import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 
 /**
@@ -58,7 +58,7 @@ public class AddHeadersPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public final HttpPipelineOrder getOrder() {
-        return HttpPipelineOrder.BETWEEN_RETRY_AND_AUTHENTICATION;
+    public final HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.AFTER_RETRY;
     }
 }

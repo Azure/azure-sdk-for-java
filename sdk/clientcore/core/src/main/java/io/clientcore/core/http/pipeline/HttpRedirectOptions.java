@@ -1,9 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.models;
+package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.pipeline.HttpRequestRedirectCondition;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.EnumSet;
@@ -17,7 +19,7 @@ public final class HttpRedirectOptions {
     private final int maxAttempts;
     private final EnumSet<HttpMethod> allowedRedirectHttpMethods;
     private final HttpHeaderName locationHeader;
-    private Predicate<HttpRequestRedirectCondition> shouldRedirectCondition;
+    private Predicate<HttpRedirectCondition> shouldRedirectCondition;
 
     /**
      * Creates an instance of {@link HttpRedirectOptions}.
@@ -53,7 +55,7 @@ public final class HttpRedirectOptions {
      *
      * @return The predicate that determines if a redirect should be attempted.
      */
-    public Predicate<HttpRequestRedirectCondition> getShouldRedirectCondition() {
+    public Predicate<HttpRedirectCondition> getShouldRedirectCondition() {
         return shouldRedirectCondition;
     }
 
@@ -66,8 +68,7 @@ public final class HttpRedirectOptions {
      * {@link Response}.
      * @return The updated {@link HttpRedirectOptions} object.
      */
-    public HttpRedirectOptions
-        setShouldRedirectCondition(Predicate<HttpRequestRedirectCondition> shouldRedirectCondition) {
+    public HttpRedirectOptions setShouldRedirectCondition(Predicate<HttpRedirectCondition> shouldRedirectCondition) {
         this.shouldRedirectCondition = shouldRedirectCondition;
         return this;
     }

@@ -14,7 +14,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
-import io.clientcore.core.http.pipeline.HttpPipelineOrder;
+import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -241,7 +241,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpPipelineOrder getOrder() {
-        return HttpPipelineOrder.AFTER_INSTRUMENTATION;
+    public HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.AFTER_INSTRUMENTATION;
     }
 }
