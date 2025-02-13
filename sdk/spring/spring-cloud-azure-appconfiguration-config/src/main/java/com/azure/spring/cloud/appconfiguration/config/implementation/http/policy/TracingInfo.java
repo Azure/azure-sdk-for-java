@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation.http.policy;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 
 import org.springframework.util.StringUtils;
 
@@ -28,7 +29,7 @@ public class TracingInfo {
         this.configuration = configuration;
     }
 
-    String getValue(boolean watchRequests) {
+    String getValue(boolean watchRequests, boolean pushRefresh) {
         String track = configuration.get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
         if (track != null && Boolean.valueOf(track)) {
             return "";
@@ -49,6 +50,10 @@ public class TracingInfo {
         }
         if (isKeyVaultConfigured) {
             sb.append(",").append(KEY_VAULT_CONFIGURED_TRACING);
+        }
+        
+        if (pushRefresh) {
+            sb.append(",").append(PUSH_REFRESH);
         }
 
         if (replicaCount > 0) {

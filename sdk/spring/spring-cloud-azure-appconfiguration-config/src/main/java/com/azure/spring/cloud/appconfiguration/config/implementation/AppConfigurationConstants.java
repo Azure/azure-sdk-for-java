@@ -36,6 +36,11 @@ public class AppConfigurationConstants {
      * Constant for tracing if Key Vault is configured for use.
      */
     public static final String KEY_VAULT_CONFIGURED_TRACING = "UsesKeyVault";
+    
+    /**
+     * Constant for tracing if Push Refresh is enabled for the store. 
+     */
+    public static final String PUSH_REFRESH = "PushRefresh";
 
     /**
      * Http Header User Agent

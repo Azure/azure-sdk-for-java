@@ -34,12 +34,13 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.MockitoSession;
 import org.mockito.quality.Strictness;
+import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 
 public class AppConfigurationApplicationSettingPropertySourceTest {
 
@@ -82,6 +83,9 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     @Mock
     private List<ConfigurationSetting> configurationListMock;
     
+    @Mock
+    private Context contextMock;
+    
     private MockitoSession session;
 
     @BeforeAll
@@ -116,10 +120,10 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
     @Test
     public void testPropCanBeInitAndQueried() throws IOException {
         when(configurationListMock.iterator()).thenReturn(testItems.iterator());
-        when(clientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock)
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(null, false);
+        propertySource.initProperties(null, contextMock);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = testItems.stream()
@@ -140,10 +144,10 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         settings.add(slashedProp);
         when(configurationListMock.iterator()).thenReturn(settings.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock)
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock)
             .thenReturn(configurationListMock);
 
-        propertySource.initProperties(null, false);
+        propertySource.initProperties(null, contextMock);
 
         String expectedKeyName = TEST_SLASH_KEY.replace('/', '.');
         String[] actualKeyNames = propertySource.getPropertyNames();
@@ -160,9 +164,9 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         items.add(ITEM_NULL);
         when(configurationListMock.iterator()).thenReturn(items.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock);
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock);
 
-        propertySource.initProperties(null, false);
+        propertySource.initProperties(null, contextMock);
 
         String[] keyNames = propertySource.getPropertyNames();
         String[] expectedKeyNames = items.stream()
@@ -177,9 +181,9 @@ public class AppConfigurationApplicationSettingPropertySourceTest {
         items.add(ITEM_INVALID_JSON);
         when(configurationListMock.iterator()).thenReturn(items.iterator())
             .thenReturn(Collections.emptyIterator());
-        when(clientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(configurationListMock);
+        when(clientMock.listSettings(Mockito.any(), Mockito.any(Context.class))).thenReturn(configurationListMock);
 
-        assertThatThrownBy(() -> propertySource.initProperties(null, false))
+        assertThatThrownBy(() -> propertySource.initProperties(null, contextMock))
             .isInstanceOf(InvalidConfigurationPropertyValueException.class)
             .hasMessageNotContaining(ITEM_INVALID_JSON.getValue());
     }
