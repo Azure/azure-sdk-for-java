@@ -60,7 +60,6 @@ if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
       $projectList += $additionalModule
       $additionalModulesList += $additionalModule
     }
-    }
   }
 }
 
