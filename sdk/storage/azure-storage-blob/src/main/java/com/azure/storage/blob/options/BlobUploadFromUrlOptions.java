@@ -5,6 +5,7 @@ package com.azure.storage.blob.options;
 
 import com.azure.core.http.HttpAuthorization;
 import com.azure.core.util.CoreUtils;
+import com.azure.storage.blob.implementation.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -27,6 +28,7 @@ public class BlobUploadFromUrlOptions {
     private Boolean copySourceBlobProperties;
     private HttpAuthorization sourceAuthorization;
     private BlobCopySourceTagsMode copySourceTags;
+    private FileShareTokenIntent fileShareTokenIntent;
 
     /**
      * Creates a new instance of {@link BlobUploadFromUrlOptions}.
@@ -233,6 +235,26 @@ public class BlobUploadFromUrlOptions {
      */
     public BlobUploadFromUrlOptions setCopySourceTagsMode(BlobCopySourceTagsMode copySourceTags) {
         this.copySourceTags = copySourceTags;
+        return this;
+    }
+
+    /**
+     * Gets the  FileShareTokenIntent for the file share.
+     *
+     * @return the FileShareTokenIntent for the file share.
+     */
+    public FileShareTokenIntent getFileShareTokenIntent() {
+        return fileShareTokenIntent;
+    }
+
+    /**
+     * Sets the FileShareTokenIntent for the file share.
+     *
+     * @param fileShareTokenIntent Used to indicate the intent of the request.
+     * @return The updated options.
+     */
+    public BlobUploadFromUrlOptions setFileShareTokenIntent(FileShareTokenIntent fileShareTokenIntent) {
+        this.fileShareTokenIntent = fileShareTokenIntent;
         return this;
     }
 }
