@@ -17,14 +17,13 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigur
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientFactory;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 
 /**
  * Setup AppConfigurationRefresh when <i>spring.cloud.azure.appconfiguration.enabled</i> is enabled.
  */
 @EnableAsync
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
-@EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
+@EnableConfigurationProperties({ AppConfigurationProperties.class })
 @AutoConfiguration
 @ConditionalOnClass(RefreshEndpoint.class)
 public class AppConfigurationWatchAutoConfiguration {
@@ -37,13 +36,12 @@ public class AppConfigurationWatchAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties, BootstrapContext context) {
+    AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties, BootstrapContext context) {
         AppConfigurationReplicaClientFactory clientFactory = context
             .get(AppConfigurationReplicaClientFactory.class);
         ReplicaLookUp replicaLookUp = context.get(ReplicaLookUp.class);
 
-        return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
-            appProperties.getDefaultMinBackoff(), replicaLookUp, new AppConfigurationRefreshUtil());
+        return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(), replicaLookUp,
+            new AppConfigurationRefreshUtil());
     }
 }

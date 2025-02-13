@@ -10,7 +10,6 @@ import org.springframework.boot.context.config.ConfigDataResource;
 import org.springframework.boot.context.config.Profiles;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
@@ -31,14 +30,12 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
 
     private final AppConfigurationStoreMonitoring monitoring;
 
-    private final AppConfigurationProviderProperties appProperties;
-
     private final boolean isRefresh;
 
     private Duration refreshInterval;
 
-    AzureAppConfigDataResource(ConfigStore configStore, Profiles profiles,
-        AppConfigurationProviderProperties appProperties, boolean isRefresh, Duration refreshInterval) {
+    AzureAppConfigDataResource(ConfigStore configStore, Profiles profiles, boolean isRefresh,
+        Duration refreshInterval) {
         this.configStoreEnabled = configStore.isEnabled();
         this.endpoint = configStore.getEndpoint();
         this.selects = configStore.getSelects();
@@ -46,7 +43,6 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
         this.trimKeyPrefix = configStore.getTrimKeyPrefix();
         this.monitoring = configStore.getMonitoring();
         this.profiles = profiles;
-        this.appProperties = appProperties;
         this.isRefresh = isRefresh;
         this.refreshInterval = refreshInterval;
     }
@@ -129,13 +125,6 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
     }
 
     /**
-     * @return the appProperties
-     */
-    public AppConfigurationProviderProperties getAppProperties() {
-        return appProperties;
-    }
-
-    /**
      * @return the refreshInterval
      */
     public Duration getRefreshInterval() {
@@ -148,5 +137,4 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
     public void setRefreshInterval(Duration refreshInterval) {
         this.refreshInterval = refreshInterval;
     }
-
 }

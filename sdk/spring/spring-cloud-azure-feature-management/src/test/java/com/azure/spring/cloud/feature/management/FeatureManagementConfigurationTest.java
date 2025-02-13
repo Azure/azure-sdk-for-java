@@ -8,6 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import com.azure.spring.cloud.feature.management.filters.PercentageFilter;
+import com.azure.spring.cloud.feature.management.filters.TargetingFilter;
+import com.azure.spring.cloud.feature.management.filters.TimeWindowFilter;
+import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 
 public class FeatureManagementConfigurationTest {
@@ -24,6 +28,9 @@ public class FeatureManagementConfigurationTest {
         CONTEXT_RUNNER.run(context -> {
             assertThat(context).hasSingleBean(FeatureManager.class);
             assertThat(context).doesNotHaveBean(TargetingEvaluationOptions.class);
+            assertThat(context).hasSingleBean(TimeWindowFilter.class);
+            assertThat(context).hasSingleBean(PercentageFilter.class);
+            assertThat(context).doesNotHaveBean(TargetingFilter.class);
         });
     }
 
@@ -32,7 +39,21 @@ public class FeatureManagementConfigurationTest {
         CONTEXT_RUNNER_OPTIONS.run(context -> {
             assertThat(context).hasSingleBean(TargetingEvaluationOptions.class);
             assertThat(context).hasSingleBean(FeatureManager.class);
+            assertThat(context).hasSingleBean(TimeWindowFilter.class);
+            assertThat(context).hasSingleBean(PercentageFilter.class);
+            assertThat(context).doesNotHaveBean(TargetingFilter.class);
         });
     }
 
+    @Test
+    public void featureManagementWithAccessorTest() {
+        CONTEXT_RUNNER.withUserConfiguration(TargetingContextAccessorTestConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(FeatureManager.class);
+                assertThat(context).hasSingleBean(TimeWindowFilter.class);
+                assertThat(context).hasSingleBean(PercentageFilter.class);
+                assertThat(context).hasSingleBean(TargetingContextAccessor.class);
+                assertThat(context).hasSingleBean(TargetingFilter.class);
+            });
+    }
 }

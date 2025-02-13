@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -86,7 +85,7 @@ public class FeatureFlagClientTest {
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals("FakeKey", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
-        assertEquals(0, featureFlagClient.getProperties().size());
+        assertEquals(0, featureFlagClient.getFeatureFlags().size());
     }
 
     @Test
@@ -101,7 +100,7 @@ public class FeatureFlagClientTest {
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
         assertEquals(".appconfig.featureflag/Beta", featureFlagsList.get(0).getFeatureFlags().get(1).getKey());
-        assertEquals(2, featureFlagClient.getProperties().size());
+        assertEquals(2, featureFlagClient.getFeatureFlags().size());
     }
 
     @Test
@@ -116,7 +115,7 @@ public class FeatureFlagClientTest {
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
         assertEquals(".appconfig.featureflag/Beta", featureFlagsList.get(0).getFeatureFlags().get(1).getKey());
-        assertEquals(2, featureFlagClient.getProperties().size());
+        assertEquals(2, featureFlagClient.getFeatureFlags().size());
 
         List<ConfigurationSetting> settings2 = List.of(new FeatureFlagConfigurationSetting("Alpha", true),
             new FeatureFlagConfigurationSetting("Gamma", false));
@@ -128,11 +127,11 @@ public class FeatureFlagClientTest {
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
         assertEquals(".appconfig.featureflag/Gamma", featureFlagsList.get(0).getFeatureFlags().get(1).getKey());
-        assertEquals(3, featureFlagClient.getProperties().size());
-        Map<String, Feature> features = featureFlagClient.getProperties();
-        assertTrue(features.get(".appconfig.featureflag/Alpha").isEnabled());
-        assertTrue(features.get(".appconfig.featureflag/Beta").isEnabled());
-        assertFalse(features.get(".appconfig.featureflag/Gamma").isEnabled());
+        assertEquals(3, featureFlagClient.getFeatureFlags().size());
+        List<Feature> features = featureFlagClient.getFeatureFlags();
+        assertTrue(features.get(0).isEnabled());
+        assertTrue(features.get(1).isEnabled());
+        assertFalse(features.get(2).isEnabled());
     }
 
     @Test
@@ -173,7 +172,7 @@ public class FeatureFlagClientTest {
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/TargetingTest", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
-        assertEquals(1, featureFlagClient.getProperties().size());
+        assertEquals(1, featureFlagClient.getFeatureFlags().size());
     }
     
     @Test
