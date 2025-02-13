@@ -3,9 +3,9 @@
 
 package com.azure.v2.core.implementation;
 
-import com.azure.v2.core.credential.AccessToken;
-import com.azure.v2.core.credential.TokenCredential;
-import com.azure.v2.core.credential.TokenRequestContext;
+import com.azure.v2.core.credentials.AccessToken;
+import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import java.time.Duration;
 import java.time.OffsetDateTime;

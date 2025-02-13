@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.credential.KeyCredential;
+import io.clientcore.core.credentials.KeyCredential;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;

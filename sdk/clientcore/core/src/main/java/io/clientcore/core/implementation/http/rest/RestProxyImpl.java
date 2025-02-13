@@ -3,8 +3,8 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.http.exception.HttpExceptionType;
-import io.clientcore.core.http.exception.HttpResponseException;
+import io.clientcore.core.http.exceptions.HttpExceptionType;
+import io.clientcore.core.http.exceptions.HttpResponseException;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -22,14 +22,14 @@ import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.MalformedValueException;
-import io.clientcore.core.util.Base64Uri;
-import io.clientcore.core.implementation.util.ImplUtils;
-import io.clientcore.core.util.UriBuilder;
+import io.clientcore.core.utils.Base64Uri;
+import io.clientcore.core.implementation.utils.ImplUtils;
+import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.binarydata.InputStreamBinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
-import io.clientcore.core.util.serializer.SerializationFormat;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.InputStreamBinaryData;
+import io.clientcore.core.utils.serializers.ObjectSerializer;
+import io.clientcore.core.utils.serializers.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.implementation;
 
-import com.azure.v2.core.credential.AccessToken;
+import com.azure.v2.core.credentials.AccessToken;
 
 import java.time.OffsetDateTime;
 

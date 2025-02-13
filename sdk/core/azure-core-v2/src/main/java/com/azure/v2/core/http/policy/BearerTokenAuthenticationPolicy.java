@@ -3,9 +3,9 @@
 
 package com.azure.v2.core.http.policy;
 
-import com.azure.v2.core.credential.AccessToken;
-import com.azure.v2.core.credential.TokenCredential;
-import com.azure.v2.core.credential.TokenRequestContext;
+import com.azure.v2.core.credentials.AccessToken;
+import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.implementation.AccessTokenCache;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;

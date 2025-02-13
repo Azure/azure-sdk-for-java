@@ -3,16 +3,16 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.annotation.Metadata;
+import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-import static io.clientcore.core.annotation.TypeConditions.FLUENT;
+import static io.clientcore.core.annotations.TypeConditions.FLUENT;
 
 /**
  * The outgoing HTTP request. This class provides ways to construct it with an {@link HttpMethod}, {@link URI},

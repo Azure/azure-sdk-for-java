@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.http.policy;
 
-import com.azure.v2.core.credential.AzureKeyCredential;
+import com.azure.v2.core.credentials.AzureKeyCredential;
 
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.models.HttpRequest;

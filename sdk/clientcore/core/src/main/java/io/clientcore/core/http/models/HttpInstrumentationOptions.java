@@ -4,9 +4,9 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.instrumentation.InstrumentationOptions;
-import io.clientcore.core.util.configuration.Configuration;
-import io.clientcore.core.util.configuration.ConfigurationProperty;
-import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
+import io.clientcore.core.utils.configuration.Configuration;
+import io.clientcore.core.utils.configuration.ConfigurationProperty;
+import io.clientcore.core.utils.configuration.ConfigurationPropertyBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;

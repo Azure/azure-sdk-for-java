@@ -14,9 +14,9 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.ServerSentEventUtils;
-import io.clientcore.core.util.ServerSentResult;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.ServerSentEventUtils;
+import io.clientcore.core.utils.ServerSentResult;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,9 +33,9 @@ import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.util.ServerSentEventUtils.attemptRetry;
-import static io.clientcore.core.util.ServerSentEventUtils.isTextEventStreamContentType;
-import static io.clientcore.core.util.ServerSentEventUtils.processTextEventStream;
+import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
+import static io.clientcore.core.utils.ServerSentEventUtils.isTextEventStreamContentType;
+import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
