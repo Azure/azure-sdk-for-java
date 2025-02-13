@@ -111,7 +111,7 @@
     <Bug pattern="DM_DEFAULT_ENCODING" />
     <Or>
       <Class name="io.clientcore.core.http.RestProxyTests" />
-      <Class name="io.clientcore.core.http.client.DefaultHttpClientIT" />
+      <Class name="io.clientcore.core.implementation.http.client.DefaultHttpClientIT" />
       <Class name="io.clientcore.core.http.client.SimpleBasicAuthHttpProxyServer" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelinePolicyTests$SyncPolicy" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImplTests" />

@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.client;
+package io.clientcore.core.implementation.http.client;
 
+import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -46,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for {@link io.clientcore.core.implementation.http.client.DefaultHttpClient}.
+ * Tests for {@link DefaultHttpClient}.
  * <p>
  * Now that the default HttpClient, and related code, are using multi-release JARs this must be an integration test as
  * the full JAR must be available to use the multi-release code.
@@ -199,8 +201,9 @@ public class DefaultHttpClientIT {
         HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (Response<?> response = client
-            .send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
+        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri(uri(server, RETURN_HEADERS_AS_IS_PATH))
+            .setHeaders(headers))) {
             assertEquals(200, response.getStatusCode());
 
             HttpHeaders responseHeaders = response.getHeaders();
@@ -259,13 +262,15 @@ public class DefaultHttpClientIT {
 
         HttpClient httpClient = new JdkHttpClientBuilder().sslContext(sslContext).build();
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri(server, "/short")))) {
+        try (Response<?> response
+            = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(httpsUri(server, "/short")))) {
             TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
         }
     }
 
     private static Response<?> getResponse(HttpClient client, String path, Context context) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, path))
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri(uri(server, path))
             .setRequestOptions(new RequestOptions().setContext(context));
 
         return client.send(request);
@@ -299,7 +304,7 @@ public class DefaultHttpClientIT {
     }
 
     private static Response<?> doRequest(HttpClient client, String path) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, path));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path));
 
         return client.send(request);
     }

@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 /**
  * This class handles selecting the proxy during a request.
  */
-final class JdkHttpClientProxySelector extends ProxySelector {
+public final class JdkHttpClientProxySelector extends ProxySelector {
     private final Proxy.Type proxyType;
     private final SocketAddress proxyAddress;
     private final Pattern nonProxyHostsPattern;
@@ -27,7 +27,7 @@ final class JdkHttpClientProxySelector extends ProxySelector {
      * @param proxyAddress The address of the proxy.
      * @param nonProxyHosts The hosts that should not be proxied.
      */
-    JdkHttpClientProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
+    public JdkHttpClientProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
         this.proxyType = proxyType;
         this.proxyAddress = proxyAddress;
         this.nonProxyHostsPattern

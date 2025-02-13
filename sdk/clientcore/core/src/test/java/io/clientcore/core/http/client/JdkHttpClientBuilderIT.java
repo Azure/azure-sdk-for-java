@@ -80,7 +80,7 @@ public class JdkHttpClientBuilderIT {
 
         final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
+        try (Response<?> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceUri))) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -97,7 +97,7 @@ public class JdkHttpClientBuilderIT {
 
         final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
+        try (Response<?> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceUri))) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -115,7 +115,7 @@ public class JdkHttpClientBuilderIT {
 
         final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
+        try (Response<?> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceUri))) {
             assertEquals(200, response.getStatusCode());
         }
     }
@@ -142,7 +142,7 @@ public class JdkHttpClientBuilderIT {
 
         final String serviceUri = "http://localhost:80" + SERVICE_ENDPOINT;
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUri))) {
+        try (Response<?> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceUri))) {
             assertNotNull(response);
         }
     }

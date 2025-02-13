@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class PagedIterableTests {
 
     private final HttpHeaders httpHeaders = new HttpHeaders();
-    private final HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
+    private final HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost");
     private final BinaryData responseBody = BinaryData.empty();
 
     // tests with mocked PagedResponse

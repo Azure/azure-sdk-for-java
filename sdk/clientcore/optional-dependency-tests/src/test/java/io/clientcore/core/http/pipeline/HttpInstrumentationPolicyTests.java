@@ -127,7 +127,7 @@ public class HttpInstrumentationPolicyTests {
             }).build();
 
         long start = System.nanoTime();
-        pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/")).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/")).close();
         long duration = System.nanoTime() - start;
 
         assertNotNull(exporter.getFinishedSpanItems());
@@ -158,7 +158,10 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new MockHttpResponse(request, statusCode))
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param")).close();
+        pipeline
+            .send(new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("https://localhost:8080/path/to/resource?query=param"))
+            .close();
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(1, exporter.getFinishedSpanItems().size());
 
@@ -196,8 +199,8 @@ public class HttpInstrumentationPolicyTests {
                 .build();
 
             long start = System.nanoTime();
-            pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param"))
-                .close();
+            pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("https://localhost:8080/path/to/resource?query=param")).close();
             long duration = System.nanoTime() - start;
 
             assertEquals(2, count.get());
@@ -264,7 +267,7 @@ public class HttpInstrumentationPolicyTests {
                 return new MockHttpResponse(request, 200);
             }).build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/");
         pipeline.send(request).close();
 
         assertTrue(spanContext.get().isValid());
@@ -292,7 +295,7 @@ public class HttpInstrumentationPolicyTests {
             }).build();
 
         try (Scope scope = Span.wrap(parentContext).makeCurrent()) {
-            pipeline.send(new HttpRequest(HttpMethod.POST, "http://localhost/")).close();
+            pipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri("http://localhost/")).close();
         }
 
         assertNotNull(exporter.getFinishedSpanItems());
@@ -335,7 +338,7 @@ public class HttpInstrumentationPolicyTests {
                 return new MockHttpResponse(request, 200);
             }).build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
     }
 
     @Test
@@ -347,7 +350,7 @@ public class HttpInstrumentationPolicyTests {
             }).build();
 
         assertThrows(UncheckedIOException.class,
-            () -> pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/")).close());
+            () -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/")).close());
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(1, exporter.getFinishedSpanItems().size());
 
@@ -373,7 +376,7 @@ public class HttpInstrumentationPolicyTests {
             }).build();
 
         URI url = URI.create("http://localhost/");
-        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(url)).close();
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(0, exporter.getFinishedSpanItems().size());
 
@@ -393,7 +396,7 @@ public class HttpInstrumentationPolicyTests {
             }).build();
 
         URI url = URI.create("http://localhost/");
-        pipeline.send(new HttpRequest(HttpMethod.GET, url)).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(url)).close();
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         assertEquals(0, meterReader.collectAllMetrics().size());
@@ -405,7 +408,7 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://localhost/");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/");
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "test-user-agent");
         pipeline.send(request).close();
 
@@ -446,7 +449,7 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "https://localhost/");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/");
         request.getHeaders().set(CUSTOM_REQUEST_ID, "42");
 
         pipeline.send(request).close();
@@ -471,8 +474,8 @@ public class HttpInstrumentationPolicyTests {
                 .httpClient(request -> new MockHttpResponse(request, 200))
                 .build();
 
-            pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param"))
-                .close();
+            pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("https://localhost:8080/path/to/resource?query=param")).close();
         } finally {
             testSpan.end();
         }
@@ -498,7 +501,8 @@ public class HttpInstrumentationPolicyTests {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setInstrumentationContext(Instrumentation.createInstrumentationContext(testSpan));
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param")
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("https://localhost:8080/path/to/resource?query=param")
             .setRequestOptions(requestOptions)).close();
         testSpan.end();
 
@@ -518,9 +522,8 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
-        pipeline
-            .send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param&key1=value1"))
-            .close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("https://localhost:8080/path/to/resource?query=param&key1=value1")).close();
 
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(1, exporter.getFinishedSpanItems().size());
@@ -545,7 +548,8 @@ public class HttpInstrumentationPolicyTests {
             .httpClient(request -> new MockHttpResponse(request, 200))
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost:8080/path/to/resource?query=param")
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("https://localhost:8080/path/to/resource?query=param")
             .setRequestOptions(requestOptions)).close();
 
         parent.end();

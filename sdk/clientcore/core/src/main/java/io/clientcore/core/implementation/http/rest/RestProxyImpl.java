@@ -203,8 +203,8 @@ public class RestProxyImpl {
         methodParser.setEncodedQueryParameters(args, uriBuilder, serializer);
 
         final URI uri = uriBuilder.toUri();
-        final HttpRequest request
-            = configRequest(new HttpRequest().setMethod(methodParser.getHttpMethod()).setUri(uri), methodParser, serializer, args);
+        final HttpRequest request = configRequest(new HttpRequest().setMethod(methodParser.getHttpMethod()).setUri(uri),
+            methodParser, serializer, args);
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         HttpHeaders httpHeaders = request.getHeaders();
 

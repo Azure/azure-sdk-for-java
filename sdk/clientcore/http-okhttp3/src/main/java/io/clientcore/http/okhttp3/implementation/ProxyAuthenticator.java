@@ -41,7 +41,7 @@ public final class ProxyAuthenticator implements Authenticator {
     /*
      * Proxies use 'CONNECT' as the HTTP method.
      */
-    private static final String PROXY_METHOD = HttpMethod.CONNECT.name();
+    private static final HttpMethod PROXY_METHOD = HttpMethod.CONNECT;
 
     /*
      * Proxies are always the root path.
@@ -106,7 +106,7 @@ public final class ProxyAuthenticator implements Authenticator {
         }
 
         Request.Builder requestBuilder = response.request().newBuilder();
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.valueOf(PROXY_METHOD), PROXY_URI_PATH);
+        HttpRequest httpRequest = new HttpRequest().setMethod(PROXY_METHOD).setUri(PROXY_URI_PATH);
         HttpResponse<?> httpResponse = new HttpResponse<>(httpRequest, response.code(),
             OkHttpResponse.fromOkHttpHeaders(response.headers()), NO_BODY);
         String authorizationHeader;

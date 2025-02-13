@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Utility class for JDK HttpClient.
  */
-final class JdkHttpUtils {
+public final class JdkHttpUtils {
     /**
      * Converts the given JDK Http headers to clientcore Http header.
      *
@@ -86,7 +86,7 @@ final class JdkHttpUtils {
      * @param logger A {@link ClientLogger} to log exceptions.
      * @return Either the environment configured default timeout, {@code defaultTimeoutMillis}, or 0.
      */
-    static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
+    public static Duration getDefaultTimeoutFromEnvironment(Configuration configuration, String timeoutPropertyName,
         Duration defaultTimeout, ClientLogger logger) {
         String environmentTimeout = configuration.get(timeoutPropertyName);
 

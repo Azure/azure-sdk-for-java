@@ -74,7 +74,7 @@ public class HttpInstrumentationLoggingTests {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
 
         HttpPipeline pipeline = createPipeline(new HttpInstrumentationOptions().setHttpLogLevel(detailLevel));
-        HttpRequest request = new HttpRequest(HttpMethod.GET, URI);
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI);
         request.setRequestOptions(new RequestOptions().setLogger(logger));
 
         pipeline.send(request).close();
@@ -1009,7 +1009,7 @@ public class HttpInstrumentationLoggingTests {
 
     private HttpRequest createRequest(HttpMethod method, String url, ClientLogger logger,
         InstrumentationContext context) {
-        HttpRequest request = new HttpRequest(method, url);
+        HttpRequest request = new HttpRequest().setMethod(method).setUri(url);
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer {token}");
         request.setRequestOptions(new RequestOptions().setLogger(logger).setInstrumentationContext(context));

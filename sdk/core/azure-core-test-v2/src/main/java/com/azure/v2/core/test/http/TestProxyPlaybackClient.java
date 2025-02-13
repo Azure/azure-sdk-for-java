@@ -90,7 +90,7 @@ public class TestProxyPlaybackClient implements HttpClient {
         HttpRequest request;
         String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         try {
-            request = new HttpRequest(HttpMethod.POST, proxyUri + "/playback/start")
+            request = new HttpRequest().setMethod(HttpMethod.POST).setUri(proxyUri + "/playback/start")
                 .setBody(BinaryData.fromObject(new RecordFilePayload(recordFile.toString(), assetJsonPath)));
             request.getHeaders()
                 .set(HttpHeaderName.ACCEPT, "application/json")
@@ -166,7 +166,7 @@ public class TestProxyPlaybackClient implements HttpClient {
      * @throws IOException If an error occurs while sending the request.
      */
     public void stopPlayback() throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUri + "/playback/stop");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST).setUri(proxyUri + "/playback/stop");
         request.getHeaders().set(X_RECORDING_ID, xRecordingId);
         sendRequestWithRetries(request).close();
     }

@@ -35,7 +35,8 @@ public class HttpInstrumentationPolicyFallbackTests {
                 .build();
 
         // should not throw
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/"))) {
             assertEquals(200, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().get(TRACESTATE));
             assertNull(response.getRequest().getHeaders().get(TRACEPARENT));
@@ -54,7 +55,8 @@ public class HttpInstrumentationPolicyFallbackTests {
                 .build();
 
         // should not throw
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/"))) {
             assertEquals(statusCode, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().get(TRACESTATE));
             assertNotNull(response.getRequest().getHeaders().get(TRACEPARENT));

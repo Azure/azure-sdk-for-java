@@ -3,8 +3,8 @@
 
 package io.clientcore.core.http.client;
 
-import io.clientcore.core.implementation.http.client.JdkHttpClientProxySelector;
 import io.clientcore.core.http.models.ProxyOptions;
+import io.clientcore.core.implementation.http.client.JdkHttpClientProxySelector;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -79,7 +79,6 @@ public class JdkHttpClientBuilder {
         DEFAULT_RESTRICTED_HEADERS = Set.of("connection", "content-length", "expect", "host", "upgrade");
     }
 
-    private java.net.http.HttpClient.Builder httpClientBuilder;
     private ProxyOptions proxyOptions;
     private Configuration configuration;
     private Executor executor;
@@ -95,23 +94,6 @@ public class JdkHttpClientBuilder {
      */
     public JdkHttpClientBuilder() {
         this.executor = SharedExecutorService.getInstance();
-    }
-
-    /**
-     * Creates DefaultHttpClientBuilder from the builder of an existing JDK HttpClient.Builder.
-     * <p>
-     * This method exists to support multi-release JARs where the JDK HttpClient is only available in Java 11 and later.
-     * But since the baseline requirement is Java 8 there cannot be references to the class, so this method accepts
-     * {@link Object} as a holder. The actual type of the {@link Object} passed must be an instance of
-     * {@code HttpClient.Builder}, otherwise an exception will thrown.
-     *
-     * @param httpClientBuilder the HttpClient builder to use
-     * @throws ClassCastException if {@code httpClientBuilder} isn't an instance of {@code HttpClient.Builder}
-     * @throws NullPointerException if {@code httpClientBuilder} is null
-     */
-    public JdkHttpClientBuilder(Object httpClientBuilder) {
-        this.httpClientBuilder = (java.net.http.HttpClient.Builder) Objects.requireNonNull(httpClientBuilder,
-            "'httpClientBuilder' cannot be null.");
     }
 
     /**
@@ -276,8 +258,7 @@ public class JdkHttpClientBuilder {
      * @return a {@link HttpClient}.
      */
     public HttpClient build() {
-        java.net.http.HttpClient.Builder httpClientBuilder
-            = this.httpClientBuilder == null ? java.net.http.HttpClient.newBuilder() : this.httpClientBuilder;
+        java.net.http.HttpClient.Builder httpClientBuilder = java.net.http.HttpClient.newBuilder();
 
         // Client Core JDK http client supports HTTP 1.1 by default.
         httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);

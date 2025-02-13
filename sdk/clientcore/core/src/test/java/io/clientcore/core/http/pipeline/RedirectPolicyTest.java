@@ -336,14 +336,15 @@ public class RedirectPolicyTest {
                 }
             }).build();
 
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
             assertEquals(200, response.getStatusCode());
             assertEquals(2, attemptCount.get());
         }
     }
 
     private Response<?> sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) {
-        return pipeline.send(new HttpRequest(httpMethod, URI.create("http://localhost/")));
+        return pipeline.send(new HttpRequest().setMethod(httpMethod).setUri(URI.create("http://localhost/")));
     }
 
     static class RecordingHttpClient implements HttpClient {

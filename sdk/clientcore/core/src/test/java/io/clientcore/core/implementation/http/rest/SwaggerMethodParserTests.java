@@ -618,14 +618,12 @@ public class SwaggerMethodParserTests {
         Method notFoundStatusCode = clazz.getDeclaredMethod("notFoundStatusCode");
         Method customDefault = clazz.getDeclaredMethod("customDefault");
 
-        return Stream.of(Arguments.of(noUnexpectedStatusCodes, 500, null),
-            Arguments.of(noUnexpectedStatusCodes, 400, null), Arguments.of(noUnexpectedStatusCodes, 404, null),
-            Arguments.of(notFoundStatusCode, 500, null),
-            Arguments.of(notFoundStatusCode, 400, String.class),
-            Arguments.of(notFoundStatusCode, 404, String.class),
-            Arguments.of(customDefault, 500, Object.class),
-            Arguments.of(customDefault, 400, String.class),
-            Arguments.of(customDefault, 404, String.class));
+        return Stream.of(Arguments.of(noUnexpectedStatusCodes, 500, Object.class),
+            Arguments.of(noUnexpectedStatusCodes, 400, Object.class),
+            Arguments.of(noUnexpectedStatusCodes, 404, Object.class),
+            Arguments.of(notFoundStatusCode, 500, Object.class), Arguments.of(notFoundStatusCode, 400, String.class),
+            Arguments.of(notFoundStatusCode, 404, String.class), Arguments.of(customDefault, 500, Object.class),
+            Arguments.of(customDefault, 400, String.class), Arguments.of(customDefault, 404, String.class));
     }
 
     @ParameterizedTest

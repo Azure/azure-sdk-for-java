@@ -94,7 +94,7 @@ public class TestProxyTests extends TestBase {
 
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port());
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost:" + server.port());
 
         try (Response<?> response = pipeline.send(request)) {
             assertEquals(200, response.getStatusCode());
@@ -128,7 +128,8 @@ public class TestProxyTests extends TestBase {
     public void testMismatch() {
         HttpClient client = interceptorManager.getPlaybackClient();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/first/path");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("http://localhost:" + server.port() + "/first/path");
         RuntimeException thrown = assertThrows(RuntimeException.class, () -> client.send(request).close());
         assertTrue(thrown.getMessage().contains("Uri doesn't match"));
     }
@@ -143,7 +144,8 @@ public class TestProxyTests extends TestBase {
 
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.POST, "http://localhost:" + server.port() + "/first/path")
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri("http://localhost:" + server.port() + "/first/path")
             .setBody(BinaryData.fromString(TEST_DATA));
         request.getHeaders()
             .set(HttpHeaderName.CONTENT_TYPE, "application/json")
@@ -163,7 +165,8 @@ public class TestProxyTests extends TestBase {
 
         testResourceNamer.randomName("test", 10);
         testResourceNamer.now();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/echoheaders");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("http://localhost:" + server.port() + "/echoheaders");
         request.getHeaders()
             .set(HttpHeaderName.fromString("header1"), "value1")
             .set(HttpHeaderName.fromString("header2"), "value2");
@@ -179,7 +182,8 @@ public class TestProxyTests extends TestBase {
         HttpClient client = interceptorManager.getPlaybackClient();
         interceptorManager.addMatchers(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Connection")));
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/first/path");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("http://localhost:" + server.port() + "/first/path");
         // For this test set an Accept header as most HttpClients will use a default which could result in this
         // test being flaky
         request.getHeaders().set(HttpHeaderName.ACCEPT, "*/*");
@@ -214,7 +218,8 @@ public class TestProxyTests extends TestBase {
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/fr/path/1");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("http://localhost:" + server.port() + "/fr/path/1");
         request.getHeaders()
             .set(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY")
             .set(HttpHeaderName.CONTENT_TYPE, "application/json")
@@ -246,7 +251,8 @@ public class TestProxyTests extends TestBase {
             new CustomMatcher().setExcludedHeaders(Arrays.asList("Ocp-Apim-Subscription-Key", "Connection"))));
         HttpClient client = interceptorManager.getPlaybackClient();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/fr/models");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("http://localhost:" + server.port() + "/fr/models");
         request.getHeaders()
             .set(OCP_APIM_SUBSCRIPTION_KEY, "SECRET_API_KEY")
             .set(HttpHeaderName.CONTENT_TYPE, "application/json")
@@ -270,7 +276,8 @@ public class TestProxyTests extends TestBase {
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/fr/path/2");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("http://localhost:" + server.port() + "/fr/path/2");
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
 
         try (Response<?> response = pipeline.send(request)) {
@@ -304,7 +311,8 @@ public class TestProxyTests extends TestBase {
         //        HttpClient client = new HttpURLConnectionHttpClient();
         //        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).policies(interceptorManager.getRecordPolicy()).build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.POST, "http://localhost:" + server.port() + "/post");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri("http://localhost:" + server.port() + "/post");
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/x-www-form-urlencoded");
         request.setBody(BinaryData.fromString("first_value=value&client_secret=aVerySecretSecret&other=value&is=cool"));
 
@@ -335,7 +343,7 @@ public class TestProxyTests extends TestBase {
             = new HttpPipelineBuilder().httpClient(client).addPolicy(interceptorManager.getRecordPolicy()).build();
 
         try (Response<?> response
-            = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port()))) {
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost:" + server.port()))) {
             assertEquals(200, response.getStatusCode());
             HttpHeaders headers = response.getRequest().getHeaders();
             assertNull(headers.get(HttpHeaderName.fromString("x-recording-upstream-base-uri")));
@@ -355,7 +363,8 @@ public class TestProxyTests extends TestBase {
             .addPolicy(interceptorManager.getRecordPolicy())
             .build();
 
-        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/getRedirect");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("http://localhost:" + server.port() + "/getRedirect");
 
         try (Response<?> response = pipeline.send(request)) {
             assertEquals(200, response.getStatusCode());
