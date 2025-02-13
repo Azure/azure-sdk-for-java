@@ -36,6 +36,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -249,6 +250,20 @@ public class AnnotationProcessor extends AbstractProcessor {
                 // If no generic arguments, set the return type to the base type
                 method.setMethodReturnType(fullTypeName);
             }
+        } else if (returnType.getKind() == TypeKind.ARRAY) {
+            ArrayType arrayType = (ArrayType) returnType;
+            TypeMirror componentType = arrayType.getComponentType();
+
+            String componentTypeName;
+            if (componentType.getKind().isPrimitive()) {
+                // Use primitive type name directly (no import needed)
+                componentTypeName = componentType.toString();
+            } else {
+                // Add import for non-primitive types
+                componentTypeName = templateInput.addImport(componentType);
+            }
+
+            method.setMethodReturnType(componentTypeName + "[]");
         } else {
             // For non-declared types (simple types like String, int, etc.)
             String returnTypeShortName = templateInput.addImport(requestMethod.getReturnType());

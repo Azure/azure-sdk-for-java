@@ -42,6 +42,13 @@
     <spotless.skip>true</spotless.skip>
     <revapi.skip>true</revapi.skip>
     <doclint>all,-missing</doclint>
+    <javaModulesSurefireArgLine>
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
+
+      --add-opens io.clientcore.http.okhttp3/io.clientcore.http.okhttp3=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -52,6 +59,31 @@
     </dependency>
 
     <!-- Test dependencies -->
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>core</artifactId>
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.clientcore</groupId>
+      <artifactId>http-okhttp3</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:http-okhttp3;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-server</artifactId>
+      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-server;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-servlet</artifactId>
+      <version>9.4.56.v20240826</version> <!-- {x-version-update;org.eclipse.jetty:jetty-servlet;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>

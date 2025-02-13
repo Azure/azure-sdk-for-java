@@ -192,16 +192,12 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
     void getGeneratedServiceMethods(TemplateInput templateInput) {
         for (HttpRequestContext method : templateInput.getHttpRequestContexts()) {
-            boolean generateInternalOnly = method.getParameters().isEmpty()
-                || method.getParameters()
-                    .stream()
-                    .anyMatch(parameter -> !(parameter.getName().equals("endpoint")
-                        || parameter.getName().equals("apiVersion")));
+            boolean generatePublicOnly = method.getMethodName().contains("Convenience");
+            //            boolean generateInternalOnly = false;
 
-            if (generateInternalOnly) {
-                configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method); // Generate the internal method
-            } else {
+            if (generatePublicOnly) {
                 configurePublicMethod(classBuilder.addMethod(method.getMethodName()), method);
+            } else {
                 configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method);
             }
         }
@@ -280,8 +276,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .orElse("");
 
         if (!"void".equals(method.getMethodReturnType())) {
-            publicMethod
-                .setBody(new BlockStmt().addStatement(new ReturnStmt(method.getMethodName() + "(" + params + ")")));
+            String callerMethodName = method.getMethodName().replace("Convenience", "");
+            publicMethod.setBody(
+                new BlockStmt().addStatement(new ReturnStmt(callerMethodName + "(" + params + ").getValue()")));
         } else {
             publicMethod.setBody(StaticJavaParser.parseBlock("{" + method.getMethodName() + "(" + params + ")}"));
         }
@@ -320,10 +317,25 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(HttpRequest.class);
         body.tryAddImportToParentCompilationUnit(HttpMethod.class);
 
+<<<<<<< HEAD
         body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
         Statement statement
             = StaticJavaParser.parseStatement("HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod."
                 + method.getHttpMethod() + ").setUri(host);");
+=======
+        // Fix for use the URI passed to the method, if provided
+        boolean useProvidedUri = method.getParameters()
+            .stream()
+            .anyMatch(parameter -> "uri".equals(parameter.getName()) && "String".equals(parameter.getShortTypeName()));
+
+        if (useProvidedUri) {
+            body.addStatement(StaticJavaParser.parseStatement("String host = uri + \"/put\";"));
+        } else {
+            body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
+        }
+        Statement statement = StaticJavaParser.parseStatement(
+            "HttpRequest httpRequest = new HttpRequest(HttpMethod." + method.getHttpMethod() + ", host);");
+>>>>>>> 4550b7c63a6 (update for convenience methods + tests update for dynamic port)
         statement.setLineComment("Create the HTTP request");
         body.addStatement(statement);
     }
@@ -389,9 +401,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                         // Set the new type for the variable
                         variable.setType(responseType);
 
-                        // Add cast to the initializer
-                        CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
-                        variable.setInitializer(castExpression);
+                        // Only add a cast if it's NOT a generic type
+                        if (!returnTypeName.startsWith("Response<")) {
+                            CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
+                            variable.setInitializer(castExpression);
+                        }
                     });
                 });
             }
@@ -456,6 +470,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             }
             // Set the content type header if it is not already set in the headers
             if (!isContentTypeSetInHeaders) {
+                body.tryAddImportToParentCompilationUnit(ContentType.class);
                 setContentTypeHeader(body, contentType);
             }
             if ("io.clientcore.core.models.binarydata.BinaryData".equals(parameterType)) {
