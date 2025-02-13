@@ -43,13 +43,24 @@ public class PatchTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "emulator-vnext" }, timeOut = SETUP_TIMEOUT)
+    public void before_PatchTestEmulatorVNext() {
+        assertThat(this.client).isNull();
+        this.client = getClientBuilder()
+            .gatewayMode()
+            .contentResponseOnWriteEnabled(true)
+            .buildClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+    }
+
+    @AfterClass(groups = { "emulator", "emulator-vnext" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
+    @Test(groups = {  "emulator", "emulator-vnext"  }, timeOut = TIMEOUT * 10)
     public void itemConditionalPatchSuccess() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 
@@ -114,7 +125,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(responsePass.getItem()).isEqualTo(patchedItem);
     }
 
-    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
+    @Test(groups = {  "emulator", "emulator-vnext"  }, timeOut = TIMEOUT * 10)
     public void itemPatchSuccess() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
         ToDoActivity testItem1 = ToDoActivity.createRandomItem(this.container);
@@ -167,7 +178,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
-    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
+    @Test(groups = {  "emulator", "emulator-vnext"  }, timeOut = TIMEOUT * 10)
     public void itemPatchContentResponseOnWriteEnabled() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 
@@ -229,7 +240,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
-    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
+    @Test(groups = {  "emulator", "emulator-vnext"  }, timeOut = TIMEOUT)
     public void itemPatchFailure() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
@@ -284,7 +295,7 @@ public class PatchTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
+    @Test(groups = {  "emulator", "emulator-vnext"  }, timeOut = TIMEOUT * 10)
     public void itemPatchSuccessForNullValue() {
         // Null value should be allowed for add, set, and replace
 

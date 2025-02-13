@@ -4,6 +4,7 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -69,7 +70,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
@@ -83,7 +84,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollectionWithTTL(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
@@ -100,7 +101,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT)
     public void createCollectionWithCompositeIndexAndSpatialSpec() throws InterruptedException {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -178,7 +179,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
@@ -193,7 +194,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollectionWithTTL(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
@@ -211,7 +212,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection_DoesntExist(String collectionName) throws Exception {
 
         Mono<CosmosContainerResponse> readObservable = database
@@ -224,7 +225,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         validateFailure(readObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void deleteCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
@@ -238,7 +239,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         validateSuccess(deleteObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void replaceCollection(String collectionName) throws InterruptedException  {
         // create a collection
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
@@ -261,7 +262,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void replaceCollectionWithTTL(String collectionName) throws InterruptedException {
         // create a collection
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
@@ -294,6 +295,20 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosAsyncClient client1 = getClientBuilder().buildAsyncClient();
         CosmosAsyncClient client2 = getClientBuilder().buildAsyncClient();
 
+        doSessionTokenConsistencyCollectionDeleteCreateSameName(client1, client2);
+    }
+
+    @Test(groups = { "emulator-vnext" }, timeOut = 10 * TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
+    public void sessionTokenConsistencyCollectionDeleteCreateSameNameEmulatorVNext()
+        CosmosAsyncClient client1 = getClientBuilder()..buildAsyncClient();
+    client1
+        CosmosAsyncClient client2 = getClientBuilder().gatewayMode().buildAsyncClient();
+
+        doSessionTokenConsistencyCollectionDeleteCreateSameName(client1, client2);
+    }
+
+
+    private static void doSessionTokenConsistencyCollectionDeleteCreateSameName(CosmosAsyncClient client1, CosmosAsyncClient client2) {
         String dbId = CosmosDatabaseForTest.generateId();
         String collectionId = "coll";
         CosmosAsyncDatabase db = null;
@@ -358,7 +373,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator", "emulator-vnext"}, timeOut = TIMEOUT)
     public void replaceProvisionedThroughput(){
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
         database.createContainer(
@@ -386,7 +401,15 @@ public class CollectionCrudTest extends TestSuiteBase {
         database = createDatabase(client, databaseId);
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "emulator-vnext" }, timeOut = SETUP_TIMEOUT)
+    public void before_CollectionCrudTestEmulatorVNext() {
+        client = getClientBuilder()
+            .gatewayMode()
+            .buildAsyncClient();
+        database = createDatabase(client, databaseId);
+    }
+
+    @AfterClass(groups = { "emulator", "emulator-vnext" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(database);
         safeClose(client);

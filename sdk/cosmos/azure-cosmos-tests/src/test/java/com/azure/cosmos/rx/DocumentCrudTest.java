@@ -58,7 +58,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void createDocument(String documentId) throws InterruptedException {
 
         InternalObjectNode properties = getDocumentDefinition(documentId);
@@ -72,7 +72,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void createDocument_AlreadyExists(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
@@ -84,7 +84,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateItemFailure(createObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void createDocumentTimeout(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
         Mono<CosmosItemResponse<InternalObjectNode>> createObservable = container.createItem(docDefinition, new CosmosItemRequestOptions()).timeout(Duration.ofNanos(10));
@@ -92,7 +92,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateItemFailure(createObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void readDocument(String documentId) throws InterruptedException {
 
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
@@ -113,7 +113,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void timestamp(String documentId) throws Exception {
         Instant before = Instant.now();
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
@@ -135,7 +135,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         assertThat(readDocument.getTimestamp()).isBeforeOrEqualTo(after);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void readDocument_DoesntExist(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
 
@@ -158,7 +158,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateItemFailure(readObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocument(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
 
@@ -188,7 +188,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateItemFailure(readObservable, notFoundValidator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocumentUsingEntity(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
 
@@ -217,7 +217,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateItemFailure(readObservable, notFoundValidator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocument_undefinedPK(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = new InternalObjectNode();
         docDefinition.setId(documentId);
@@ -244,7 +244,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateItemFailure(readObservable, notFoundValidator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocument_DoesntExist(String documentId) throws InterruptedException {
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
 
@@ -265,7 +265,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateItemFailure(deleteObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void replaceDocument(String documentId) throws InterruptedException {
         // create a document
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
@@ -292,7 +292,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(replaceObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void upsertDocument_CreateDocument(String documentId) throws Throwable {
         // create a document
         InternalObjectNode docDefinition = getDocumentDefinition(documentId);
@@ -310,7 +310,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(upsertObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void upsertDocument_ReplaceDocument(String documentId) throws Throwable {
 
         InternalObjectNode properties = getDocumentDefinition(documentId);
@@ -334,7 +334,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT)
     public void upsertDocument_ReplaceDocumentWithPartitionKey() throws Throwable {
         TestObject item = TestObject.create();
         CosmosItemResponse<TestObject> response = container.createItem(item,  new PartitionKey(item.getMypk()), new CosmosItemRequestOptions()).block();
@@ -347,7 +347,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         assertThat(replaceResponse.getItem()).isEqualTo(item);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator", "emulator-vnext"}, timeOut = TIMEOUT)
     public void typedItems() throws Throwable {
         String docId = "1234";
         String partitionKey = UUID.randomUUID().toString();
@@ -384,7 +384,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         compareTestObjs(newTestObject, resultObject);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator", "emulator-vnext"}, timeOut = TIMEOUT)
     public void deleteAllItemsByPartitionKey() throws Exception {
         String pkValue1 = UUID.randomUUID().toString();
         String pkValue2 = UUID.randomUUID().toString();
@@ -447,7 +447,17 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.container = createCollection(this.client, databaseIdForTest, getCollectionDefinition());
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "emulator-vnext" }, timeOut = SETUP_TIMEOUT)
+    public void before_DocumentCrudTestEmulatorVNext() {
+        assertThat(this.client).isNull();
+        this.client = getClientBuilder()
+            .gatewayMode()
+            .buildAsyncClient();
+        this.database = createDatabase(this.client, databaseIdForTest);
+        this.container = createCollection(this.client, databaseIdForTest, getCollectionDefinition());
+    }
+
+    @AfterClass(groups = { "emulator", "emulator-vnext" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(this.database);
         assertThat(this.client).isNotNull();
