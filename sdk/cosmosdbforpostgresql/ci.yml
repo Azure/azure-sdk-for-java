@@ -14,6 +14,8 @@ trigger:
       - sdk/cosmosdbforpostgresql/pom.xml
       - sdk/cosmosdbforpostgresql/azure-resourcemanager-cosmosdbforpostgresql/pom.xml
 
+# JRS - Test, will not be checked in
+
 pr:
   branches:
     include:
