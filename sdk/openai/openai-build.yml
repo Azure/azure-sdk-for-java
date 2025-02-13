@@ -68,7 +68,7 @@ steps:
 
   - pwsh: |
       # Define the path to the external_dependencies.txt file
-      $dependenciesFilePath = "eng/versioning/external_dependencies.txt"
+      $dependenciesFilePath = "_work/eng/versioning/external_dependencies.txt"
 
       # Update the version in the external_dependencies.txt file
       $newVersionInExternalDependenciesFile = "com.openai:openai-java;$newVersion"
