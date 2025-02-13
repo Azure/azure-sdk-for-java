@@ -126,7 +126,7 @@ while (true) {
 
     String body = "Hello, this is server.";
     String response =
-    "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
+        "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
 
     out.write(response);
     out.flush();
@@ -160,20 +160,20 @@ SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketF
 
 PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
     RegistryBuilder.<ConnectionSocketFactory>create()
-                   .register("https", sslConnectionSocketFactory)
-                   .build());
+        .register("https", sslConnectionSocketFactory)
+        .build());
 
 String result = null;
 
 try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
     HttpGet httpGet = new HttpGet("https://localhost:8765");
     ResponseHandler<String> responseHandler = (HttpResponse response) -> {
-    int status = response.getStatusLine().getStatusCode();
-    String result1 = "Not success";
-    if (status == 200) {
-        result1 = EntityUtils.toString(response.getEntity());
-    }
-    return result1;
+        int status = response.getStatusLine().getStatusCode();
+        String result1 = "Not success";
+        if (status == 200) {
+            result1 = EntityUtils.toString(response.getEntity());
+        }
+        return result1;
     };
     result = client.execute(httpGet, responseHandler);
 } catch (IOException ioe) {
@@ -224,7 +224,7 @@ while (true) {
 
     String body = "Hello, this is server.";
     String response =
-    "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
+        "HTTP/1.1 200 OK\r\n" + "Content-Type: text/plain\r\n" + "Content-Length: " + body.getBytes("UTF-8").length + "\r\n" + "Connection: close\r\n" + "\r\n" + body;
 
     out.write(response);
     out.flush();
@@ -264,20 +264,20 @@ SSLConnectionSocketFactory sslConnectionSocketFactory = new SSLConnectionSocketF
 
 PoolingHttpClientConnectionManager manager = new PoolingHttpClientConnectionManager(
     RegistryBuilder.<ConnectionSocketFactory>create()
-                   .register("https", sslConnectionSocketFactory)
-                   .build());
+        .register("https", sslConnectionSocketFactory)
+        .build());
 
 String result = null;
 
 try (CloseableHttpClient client = HttpClients.custom().setConnectionManager(manager).build()) {
     HttpGet httpGet = new HttpGet("https://localhost:8765");
     ResponseHandler<String> responseHandler = (HttpResponse response) -> {
-    int status = response.getStatusLine().getStatusCode();
-    String result1 = "Not success";
-    if (status == 200) {
-        result1 = EntityUtils.toString(response.getEntity());
-    }
-    return result1;
+        int status = response.getStatusLine().getStatusCode();
+        String result1 = "Not success";
+        if (status == 200) {
+            result1 = EntityUtils.toString(response.getEntity());
+        }
+        return result1;
     };
     result = client.execute(httpGet, responseHandler);
 } catch (IOException ioe) {
