@@ -24,6 +24,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketHandshakeException;
 
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
@@ -66,8 +67,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
             messageHandler.accept(deserialized);
         } finally {
-            compositeByteBuf.release();
-            compositeByteBuf.clear();
+            release(compositeByteBuf);
         }
     }
 
@@ -106,8 +106,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             handshakeFuture.setFailure(cause);
         }
         ctx.close();
-        compositeByteBuf.release();
-        compositeByteBuf.clear();
+        release(compositeByteBuf);
     }
 
     /**
@@ -172,15 +171,20 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
     }
 
     private void publishBuffer() {
+        final ByteBuffer[] nioBuffers = compositeByteBuf.nioBuffers();
+
+        if (nioBuffers.length == 0) {
+            return;
+        }
+
         try {
-            final BinaryData data = BinaryData.fromListByteBuffer(Arrays.asList(compositeByteBuf.nioBuffers()));
+            final BinaryData data = BinaryData.fromListByteBuffer(Arrays.asList(nioBuffers));
             final String collected = data.toString();
             final WebPubSubMessage deserialized = messageDecoder.decode(collected);
 
             messageHandler.accept(deserialized);
         } finally {
-            compositeByteBuf.release();
-            compositeByteBuf.clear();
+            release(compositeByteBuf);
         }
     }
 
@@ -199,5 +203,12 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     CloseWebSocketFrame getServerCloseWebSocketFrame() {
         return this.serverCloseWebSocketFrame;
+    }
+
+    private static void release(CompositeByteBuf buffer) {
+        if (buffer.refCnt() > 0) {
+            buffer.release();
+            buffer.clear();
+        }
     }
 }
