@@ -88,10 +88,9 @@ class AppConfigurationReplicaClient {
      * @param label String value of the watch key, use \0 for null.
      * @return The first returned configuration.
      */
-    ConfigurationSetting getWatchKey(String key, String label, boolean isRefresh)
+    ConfigurationSetting getWatchKey(String key, String label, Context context)
         throws HttpResponseException {
         try {
-            Context context = new Context("refresh", isRefresh);
             ConfigurationSetting selector = new ConfigurationSetting().setKey(key).setLabel(label);
             ConfigurationSetting watchKey = NormalizeNull
                 .normalizeNullLabel(
@@ -111,11 +110,10 @@ class AppConfigurationReplicaClient {
      * @param settingSelector Information on which setting to pull. i.e. number of results, key value...
      * @return List of Configuration Settings.
      */
-    List<ConfigurationSetting> listSettings(SettingSelector settingSelector, boolean isRefresh)
+    List<ConfigurationSetting> listSettings(SettingSelector settingSelector, Context context)
         throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
-            Context context = new Context("refresh", isRefresh);
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector, context);
             settings.forEach(setting -> {
                 configurationSettings.add(NormalizeNull.normalizeNullLabel(setting));
@@ -130,11 +128,11 @@ class AppConfigurationReplicaClient {
         }
     }
 
-    FeatureFlags listFeatureFlags(SettingSelector settingSelector, boolean isRefresh) throws HttpResponseException {
+    FeatureFlags listFeatureFlags(SettingSelector settingSelector, Context context)
+        throws HttpResponseException {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         List<MatchConditions> checks = new ArrayList<>();
         try {
-            Context context = new Context("refresh", isRefresh);
             client.listConfigurationSettings(settingSelector, context).streamByPage().forEach(pagedResponse -> {
                 checks.add(
                     new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
@@ -155,12 +153,11 @@ class AppConfigurationReplicaClient {
         }
     }
 
-    List<ConfigurationSetting> listSettingSnapshot(String snapshotName, boolean isRefresh) {
+    List<ConfigurationSetting> listSettingSnapshot(String snapshotName, Context context) {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
             // Because Spring always refreshes all we still have to load snapshots on refresh to build the property
             // sources.
-            Context context = new Context("refresh", isRefresh);
             ConfigurationSnapshot snapshot = client.getSnapshotWithResponse(snapshotName, null, context).getValue();
             if (!SnapshotComposition.KEY.equals(snapshot.getSnapshotComposition())) {
                 throw new IllegalArgumentException("Snapshot " + snapshotName + " needs to be of type Key.");
@@ -177,8 +174,7 @@ class AppConfigurationReplicaClient {
         }
     }
 
-    boolean checkWatchKeys(SettingSelector settingSelector, boolean isRefresh) {
-        Context context = new Context("refresh", false);
+    boolean checkWatchKeys(SettingSelector settingSelector, Context context) {
         List<PagedResponse<ConfigurationSetting>> results = client.listConfigurationSettings(settingSelector, context)
             .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != 304).toList();
         return results.size() > 0;

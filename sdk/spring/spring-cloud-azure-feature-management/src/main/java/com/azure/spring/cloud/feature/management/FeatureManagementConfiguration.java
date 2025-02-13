@@ -2,13 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management;
 
+import org.springframework.beans.BeansException;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
+import org.springframework.lang.NonNull;
 
 import com.azure.spring.cloud.feature.management.filters.PercentageFilter;
 import com.azure.spring.cloud.feature.management.filters.TargetingFilter;
@@ -23,7 +26,9 @@ import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOp
  */
 @Configuration
 @EnableConfigurationProperties({ FeatureManagementConfigProperties.class, FeatureManagementProperties.class })
-class FeatureManagementConfiguration {
+class FeatureManagementConfiguration implements ApplicationContextAware {
+
+    private ApplicationContext appContext;
 
     /**
      * Creates Feature Manager
@@ -34,9 +39,14 @@ class FeatureManagementConfiguration {
      * @return FeatureManager
      */
     @Bean
-    FeatureManager featureManager(ApplicationContext context,
-        FeatureManagementProperties featureManagementConfigurations, FeatureManagementConfigProperties properties) {
-        return new FeatureManager(context, featureManagementConfigurations, properties);
+    FeatureManager featureManager(FeatureManagementProperties featureManagementConfigurations,
+        FeatureManagementConfigProperties properties) {
+        return new FeatureManager(appContext, featureManagementConfigurations, properties);
+    }
+
+    @Override
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
+        this.appContext = applicationContext;
     }
     
     @Bean(name = "Microsoft.TimeWindow")

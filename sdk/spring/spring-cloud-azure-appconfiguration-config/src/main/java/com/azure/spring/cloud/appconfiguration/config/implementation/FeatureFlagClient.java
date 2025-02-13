@@ -26,6 +26,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -64,7 +65,7 @@ class FeatureFlagClient {
      *
      */
     List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
-        String[] labelFilter, boolean isRefresh) {
+        String[] labelFilter, Context context) {
         List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
 
         String keyFilter = SELECT_ALL_FEATURE_FLAGS;
@@ -79,7 +80,7 @@ class FeatureFlagClient {
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
 
-            FeatureFlags features = replicaClient.listFeatureFlags(settingSelector, isRefresh);
+            FeatureFlags features = replicaClient.listFeatureFlags(settingSelector, context);
             loadedFeatureFlags.addAll(proccessFeatureFlags(features, keyFilter));
         }
         return loadedFeatureFlags;

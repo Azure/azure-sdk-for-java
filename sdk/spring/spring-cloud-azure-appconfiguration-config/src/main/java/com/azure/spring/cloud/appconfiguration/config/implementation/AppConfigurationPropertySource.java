@@ -10,6 +10,7 @@ import java.util.Set;
 import org.springframework.boot.context.properties.source.InvalidConfigurationPropertyValueException;
 import org.springframework.core.env.EnumerablePropertySource;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.ConfigurationClient;
 
 /**
@@ -51,5 +52,5 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
         return String.join(",", labelFilters);
     }
 
-    protected abstract void initProperties(List<String> trim, boolean isRefresh) throws InvalidConfigurationPropertyValueException;
+    protected abstract void initProperties(List<String> trim, Context context) throws InvalidConfigurationPropertyValueException;
 }
