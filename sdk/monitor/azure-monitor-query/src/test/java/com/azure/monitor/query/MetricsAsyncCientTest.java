@@ -1,36 +1,37 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 package com.azure.monitor.query;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricsQueryResourcesOptions;
 import com.azure.monitor.query.models.MetricsQueryResourcesResult;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-/**
- * Unit tests for {@link MetricsClient}.
- */
-public class MetricsClientTest extends MetricsClientTestBase {
+public class MetricsAsyncCientTest extends MetricsClientTestBase {
+
+    private static final Logger log = LoggerFactory.getLogger(MetricsAsyncCientTest.class);
 
     @Test
-    public void testMetricsBatchQuery() {
-        MetricsClient metricsClient
+    public void testMetricsAsyncBatchQuery() {
+        MetricsAsyncClient metricsClient
             = clientBuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .buildClient();
+                .buildAsyncClient();
         String resourceId
             = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2", FAKE_RESOURCE_ID);
         resourceId = resourceId.substring(resourceId.indexOf("/subscriptions"));
@@ -45,41 +46,24 @@ public class MetricsClientTest extends MetricsClientTestBase {
             .setTop(10)
             .setTimeInterval(new QueryTimeInterval(OffsetDateTime.now().minusDays(1), OffsetDateTime.now()));
 
-        MetricsQueryResourcesResult metricsQueryResults
+        Response<MetricsQueryResourcesResult> metricsQueryResults
             = metricsClient
                 .queryResourcesWithResponse(Arrays.asList(resourceId), Arrays.asList("HttpIncomingRequestCount"),
-                    "microsoft.appconfiguration/configurationstores", options, Context.NONE)
-                .getValue();
-        assertEquals(1, metricsQueryResults.getMetricsQueryResults().size());
-        assertEquals(1, metricsQueryResults.getMetricsQueryResults().get(0).getMetrics().size());
-        MetricResult metricResult = metricsQueryResults.getMetricsQueryResults().get(0).getMetrics().get(0);
+                    "microsoft.appconfiguration/configurationstores", options)
+                .block();
+
+        assertEquals(1, metricsQueryResults.getValue().getMetricsQueryResults().size());
+        assertEquals(1, metricsQueryResults.getValue().getMetricsQueryResults().get(0).getMetrics().size());
+        MetricResult metricResult = metricsQueryResults.getValue().getMetricsQueryResults().get(0).getMetrics().get(0);
         assertEquals("HttpIncomingRequestCount", metricResult.getMetricName());
         assertFalse(CoreUtils.isNullOrEmpty(metricResult.getTimeSeries()));
     }
 
     @Test
-    public void testMetricsBatchQueryDifferentResourceTypes() {
-        MetricsClient metricsBatchQueryClient
-            = clientBuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .buildClient();
-        String resourceId1
-            = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_1", FAKE_RESOURCE_ID);
-        String resourceId2
-            = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2", FAKE_RESOURCE_ID);
-        String updatedResource1 = resourceId1.substring(resourceId1.indexOf("/subscriptions"));
-        String updatedResource2 = resourceId2.substring(resourceId2.indexOf("/subscriptions"));
-
-        assertThrows(HttpResponseException.class,
-            () -> metricsBatchQueryClient.queryResources(Arrays.asList(updatedResource1, updatedResource2),
-                Arrays.asList("Successful Requests"), " Microsoft.Eventhub/Namespaces"));
-
-    }
-
-    @Test
     public void testQueryResourcesReturnsNonNullResourceId() {
-        MetricsClient metricsClient
+        MetricsAsyncClient metricsClient
             = clientBuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .buildClient();
+                .buildAsyncClient();
         String resourceId
             = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2", FAKE_RESOURCE_ID);
         resourceId = resourceId.substring(resourceId.indexOf("/subscriptions"));
@@ -97,10 +81,11 @@ public class MetricsClientTest extends MetricsClientTestBase {
         MetricsQueryResourcesResult metricsQueryResults
             = metricsClient
                 .queryResourcesWithResponse(Arrays.asList(resourceId), Arrays.asList("HttpIncomingRequestCount"),
-                    "microsoft.appconfiguration/configurationstores", options, Context.NONE)
+                    "microsoft.appconfiguration/configurationstores", options)
+                .block()
                 .getValue();
 
-        assertNotNull(metricsQueryResults.getMetricsQueryResults().get(0).getResourceId());
+        assertEquals(1, metricsQueryResults.getMetricsQueryResults().size());
         assertEquals(resourceId, metricsQueryResults.getMetricsQueryResults().get(0).getResourceId());
     }
 
