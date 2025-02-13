@@ -55,8 +55,14 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
 
         int total = 0;
 
-        for (final RntbdToken token : this.tokens.values()) {
-            total += token.computeLength();
+        for (final Map.Entry<T, RntbdToken> entry : this.tokens.entrySet()) {
+            if (entry.getKey() == RntbdConstants.RntbdRequestHeader.TransportRequestID
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.ReplicaPath
+            ) {
+                continue;
+            }
+
+            total += entry.getValue().computeLength();
         }
 
         return total;
@@ -156,6 +162,8 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
                 || entry.getKey() == RntbdConstants.RntbdRequestHeader.DocumentName
                 || entry.getKey() == RntbdConstants.RntbdRequestHeader.AuthorizationToken
                 || entry.getKey() == RntbdConstants.RntbdRequestHeader.Date
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.TransportRequestID
+                || entry.getKey() == RntbdConstants.RntbdRequestHeader.ReplicaPath
             ) {
                 continue;
             }

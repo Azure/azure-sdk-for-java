@@ -333,9 +333,7 @@ public class Configs {
                     .forClient()
                     .sslProvider(SslContext.defaultClientProvider());
 
-            if (serverCertVerificationDisabled) {
-                sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
-            }
+            sslContextBuilder.trustManager(InsecureTrustManagerFactory.INSTANCE); // disable cert verification
 
             if (http2Enabled) {
                 sslContextBuilder

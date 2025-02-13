@@ -3436,6 +3436,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
 
+            request.useThinProxy = Configs.isThinClientEnabled() && request.useGatewayMode ? true : false;
+            request.useThinProxy = true;
             DocumentServiceRequestContext requestContext = request.requestContext;
 
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(

@@ -5,6 +5,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,22 +24,38 @@ public class ThinClientReproMain {
                 .endpoint(System.getProperty("COSMOS.ENDPOINT"))
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
+                .userAgentSuffix("fabianmThinClientProxyTest")
                 .buildAsyncClient();
 
-            CosmosAsyncContainer container = client.getDatabase("NehaTestDb").getContainer("NehaTestContainer");
+            CosmosAsyncContainer container = client.getDatabase("HashV2Small1").getContainer("HashV2Small1");
+            CosmosContainerResponse containerResponse = container.read().block();
+            System.out.println("Container RID: " + containerResponse.getProperties().getResourceId());
             ObjectMapper mapper = new ObjectMapper();
             ObjectNode doc = mapper.createObjectNode();
             String idValue = UUID.randomUUID().toString();
             doc.put("id", idValue);
             System.out.println("Document to be ingested - " + doc.toPrettyString());
-            CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
-            System.out.println("CREATE DIAGNOSTICS: " + createResponse.getDiagnostics());
+
+            while (true) {
+                try {
+                    CosmosItemResponse<ObjectNode> createResponse = container.readItem(
+                        "HelloWorld",
+                        new PartitionKey("HelloWorld"),
+                        ObjectNode.class).block(); // container.createItem(doc).block();
+                    System.out.println("CREATE DIAGNOSTICS: " + createResponse.getDiagnostics());
+                    break;
+                } catch (CosmosException cosmosError) {
+                    System.out.println("COSMOS ERROR: " + cosmosError.getStatusCode() + "/" + cosmosError.getShortMessage());
+                    Thread.sleep(10_000);
+                }
+            }
+
             CosmosItemResponse<ObjectNode> response = container.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
             System.out.println("READ DIAGNOSTICS: " + response.getDiagnostics());
             ObjectNode readDoc = response.getItem();
 
             System.out.println("Document read - " + readDoc.toPrettyString());
-        } catch (CosmosException cosmosException) {
+        } catch (CosmosException | InterruptedException cosmosException) {
             System.out.println("COSMOS ERROR: " + cosmosException);
         }
     }

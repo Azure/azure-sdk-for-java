@@ -3,21 +3,26 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdFramer;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
-import com.azure.cosmos.models.FeedRange;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +36,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Used internally to provide functionality to communicate and process response from THINCLIENT in the Azure Cosmos DB database service.
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
+
+    private static final Logger logger = LoggerFactory.getLogger(ThinClientStoreModel.class);
 
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
@@ -82,7 +89,37 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
     @Override
     public URI getRootUri(RxDocumentServiceRequest request) {
         //var uri = this.globalEndpointManager.resolveServiceEndpoint(request).getThinClientLocationEndpoint();
-        return URI.create("https://chukangzhongstagesignoff-eastus2.documents-staging.windows-ppe.net:10650/");
+        return URI.create("https://57.155.105.105:10650/"); // https://chukangzhongstagesignoff-eastus2.documents-staging.windows-ppe.net:10650/
+    }
+
+    @Override
+    public StoreResponse unwrapToStoreResponse(RxDocumentServiceRequest request, int statusCode, HttpHeaders headers, ByteBuf content) {
+        if (content == null) {
+            return super.unwrapToStoreResponse(request, statusCode, headers, null);
+        }
+
+        Instant decodeStartTime = Instant.now();
+
+        if (RntbdFramer.canDecodeHead(content)) {
+
+            final RntbdResponse response = RntbdResponse.decode(content);
+
+            if (response != null) {
+                response.setDecodeEndTime(Instant.now());
+                response.setDecodeStartTime(decodeStartTime);
+
+                return super.unwrapToStoreResponse(
+                    request,
+                    response.getStatus().code(),
+                    new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
+                    response.getContent()
+                );
+            }
+
+            return super.unwrapToStoreResponse(request, statusCode, headers, null);
+        }
+
+        throw new IllegalStateException("Invalid rntbd response");
     }
 
     @Override
@@ -98,17 +135,14 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         //request.properties.put(EFFECTIVE_PARTITION_KEY, epk);
         //request.properties.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
         request.getHeaders().put(EFFECTIVE_PARTITION_KEY, epk);
-        request.getHeaders().put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
-        request.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, "xFNeANpWheM=");
+        request.getHeaders().put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "tiagonapoli-cdb-test"); // "chukangzhongstagesignoff"
+        request.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, "cLklAJU8SN0=");
         // todo - neharao1: no concept of a replica / service endpoint that can be passed
         RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
 
         // todo - neharao1: validate what HTTP headers are needed - for now have put default ThinClient HTTP headers
         // todo - based on fabianm comment - thinClient also takes op type and resource type headers as HTTP headers
         HttpHeaders headers = this.getHttpHeaders();
-        headers.set(EFFECTIVE_PARTITION_KEY, epk);
-        headers.set(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
-        headers.set(WFConstants.BackendHeaders.COLLECTION_RID, "xFNeANpWheM=");
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
         // todo: neharao1 - validate whether Java heap buffer is okay v/s Direct buffer
@@ -123,7 +157,9 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         return new HttpRequest(
             HttpMethod.POST,
             //requestUri,
-            URI.create("https://chukangzhongstagesignoff-eastus2.documents-staging.windows-ppe.net:10650/"),
+            //https://thinclient-performancetests-eastus2.documents-staging.windows-ppe.net:10650
+            //https://cdb-ms-stage-eastus2-fe2-sql.eastus2.cloudapp.azure.com:10650
+            URI.create("https://57.155.105.105:10650/"), // https://127.0.0.1:10650/ //https://chukangzhongstagesignoff-eastus2.documents-staging.windows-ppe.net:10650/ // thinclient-performancetests-eastus2.documents-staging.windows-ppe.net  cdb-ms-stage-eastus2-fe2-sql.eastus2.cloudapp.azure.com
             //requestUri.getPort(),
             10650,
             headers,

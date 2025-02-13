@@ -5,8 +5,11 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.guava27.Strings;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.netty.buffer.ByteBuf;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.UUID;
 
@@ -15,7 +18,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
 
 public final class RntbdRequest {
-
+    private final static Logger logger = LoggerFactory.getLogger(RntbdRequest.class);
     private static final byte[] EMPTY_BYTE_ARRAY = {};
 
     private final RntbdRequestFrame frame;
@@ -78,24 +81,32 @@ public final class RntbdRequest {
 
     public void encode(final ByteBuf out) {
 
+        final int effectivePayloadSize = this.payload != null && this.payload.length > 0 ? this.payload.length + 4 : 0;
         final int expectedLength = RntbdRequestFrame.LENGTH + this.headers.computeLength();
         final int start = out.writerIndex();
 
+        logger.error("RntbdRequest.encode Start {}, ExpectedLength {} + payload length {}", start, expectedLength, effectivePayloadSize);
         out.writeIntLE(expectedLength);
         this.frame.encode(out);
+        logger.error("After frame WriteIndex {}", out.writerIndex());
         this.headers.encode(out);
-
+        logger.error("After headers WriteIndex {}", out.writerIndex());
         final int observedLength = out.writerIndex() - start;
 
-        checkState(observedLength == expectedLength,
+        /*checkState(observedLength == expectedLength,
             "encoding error: {\"expectedLength\": %s, \"observedLength\": %s}",
             expectedLength,
-            observedLength);
+            observedLength);*/
 
         if (this.payload.length > 0) {
             out.writeIntLE(this.payload.length);
             out.writeBytes(this.payload);
+            logger.error("After payload of length {} WriteIndex {}", this.payload.length, out.writerIndex());
+        } else {
+            logger.error("NO PAYLOAD");
         }
+
+
     }
 
     public static RntbdRequest from(final RntbdRequestArgs args) {
