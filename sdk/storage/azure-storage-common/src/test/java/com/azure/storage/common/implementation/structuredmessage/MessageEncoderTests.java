@@ -222,19 +222,19 @@ public class MessageEncoderTests {
 
     @Test
     public void segmentSizeLessThanOne() {
-        assertThrows(IllegalArgumentException.class, () -> new StructuredMessageEncoder(10, 0,
-            StructuredMessageFlags.NONE));
+        assertThrows(IllegalArgumentException.class,
+            () -> new StructuredMessageEncoder(10, 0, StructuredMessageFlags.NONE));
     }
 
     @Test
     public void contentLengthLessThanOne() {
-        assertThrows(IllegalArgumentException.class, () -> new StructuredMessageEncoder(0, 10,
-            StructuredMessageFlags.NONE));
+        assertThrows(IllegalArgumentException.class,
+            () -> new StructuredMessageEncoder(0, 10, StructuredMessageFlags.NONE));
     }
 
     @Test
     public void testNumSegmentsExceedsMaxValue() {
-        assertThrows(IllegalArgumentException.class, () -> new StructuredMessageEncoder(Integer.MAX_VALUE, 1,
-            StructuredMessageFlags.NONE));
+        assertThrows(IllegalArgumentException.class,
+            () -> new StructuredMessageEncoder(Integer.MAX_VALUE, 1, StructuredMessageFlags.NONE));
     }
 }
