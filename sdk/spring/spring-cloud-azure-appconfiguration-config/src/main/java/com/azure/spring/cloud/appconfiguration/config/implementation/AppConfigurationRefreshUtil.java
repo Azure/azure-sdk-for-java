@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -9,13 +10,16 @@ import java.util.Map.Entry;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlagState;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
 
 public class AppConfigurationRefreshUtil {
@@ -50,6 +54,14 @@ public class AppConfigurationRefreshUtil {
                 clientFactory.setCurrentConfigStoreClient(originEndpoint, originEndpoint);
 
                 AppConfigurationStoreMonitoring monitor = connection.getMonitoring();
+                
+                boolean pushRefresh = false;
+                PushNotification notification = monitor.getPushNotification();
+                if ((notification.getPrimaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))
+                    || (notification.getSecondaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
+                    pushRefresh = true;
+                }
+                Context context = new Context("refresh", true).addData(PUSH_REFRESH, pushRefresh);
 
                 List<AppConfigurationReplicaClient> clients = clientFactory.getAvailableClients(originEndpoint);
 
@@ -57,7 +69,7 @@ public class AppConfigurationRefreshUtil {
                     for (AppConfigurationReplicaClient client : clients) {
                         try {
                             refreshWithTime(client, StateHolder.getState(originEndpoint), monitor.getRefreshInterval(),
-                                eventData, replicaLookUp);
+                                eventData, replicaLookUp, context);
                             if (eventData.getDoRefresh()) {
                                 clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
                                 return eventData;
@@ -81,7 +93,7 @@ public class AppConfigurationRefreshUtil {
                     for (AppConfigurationReplicaClient client : clients) {
                         try {
                             refreshWithTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(originEndpoint),
-                                monitor.getFeatureFlagRefreshInterval(), eventData, replicaLookUp);
+                                monitor.getFeatureFlagRefreshInterval(), eventData, replicaLookUp, context);
                             if (eventData.getDoRefresh()) {
                                 clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
                                 return eventData;
@@ -115,10 +127,10 @@ public class AppConfigurationRefreshUtil {
      * @param originEndpoint config store origin endpoint
      * @return A refresh should be triggered.
      */
-    static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint) {
+    static boolean refreshStoreCheck(AppConfigurationReplicaClient client, String originEndpoint, Context context) {
         RefreshEventData eventData = new RefreshEventData();
         if (StateHolder.getLoadState(originEndpoint)) {
-            refreshWithoutTime(client, StateHolder.getState(originEndpoint).getWatchKeys(), eventData);
+            refreshWithoutTime(client, StateHolder.getState(originEndpoint).getWatchKeys(), eventData, context);
         }
         return eventData.getDoRefresh();
     }
@@ -131,12 +143,12 @@ public class AppConfigurationRefreshUtil {
      * @return true if a refresh should be triggered.
      */
     static boolean refreshStoreFeatureFlagCheck(Boolean featureStoreEnabled,
-        AppConfigurationReplicaClient client) {
+        AppConfigurationReplicaClient client, Context context) {
         RefreshEventData eventData = new RefreshEventData();
         String endpoint = client.getEndpoint();
 
         if (featureStoreEnabled && StateHolder.getStateFeatureFlag(endpoint) != null) {
-            refreshWithoutTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(endpoint), eventData);
+            refreshWithoutTimeFeatureFlags(client, StateHolder.getStateFeatureFlag(endpoint), eventData, context);
         } else {
             LOGGER.debug("Skipping feature flag refresh check for " + endpoint);
         }
@@ -151,10 +163,10 @@ public class AppConfigurationRefreshUtil {
      * @param eventData Info for this refresh event.
      */
     private static void refreshWithTime(AppConfigurationReplicaClient client, State state, Duration refreshInterval,
-        RefreshEventData eventData, ReplicaLookUp replicaLookUp) throws AppConfigurationStatusException {
+        RefreshEventData eventData, ReplicaLookUp replicaLookUp, Context context) throws AppConfigurationStatusException {
         if (Instant.now().isAfter(state.getNextRefreshCheck())) {
             replicaLookUp.updateAutoFailoverEndpoints();
-            refreshWithoutTime(client, state.getWatchKeys(), eventData);
+            refreshWithoutTime(client, state.getWatchKeys(), eventData, context);
 
             StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
         }
@@ -168,9 +180,9 @@ public class AppConfigurationRefreshUtil {
      * @param eventData Refresh event info
      */
     private static void refreshWithoutTime(AppConfigurationReplicaClient client, List<ConfigurationSetting> watchKeys,
-        RefreshEventData eventData) throws AppConfigurationStatusException {
+        RefreshEventData eventData, Context context) throws AppConfigurationStatusException {
         for (ConfigurationSetting watchKey : watchKeys) {
-            ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel(), true);
+            ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel(), context);
 
             // If there is no result, etag will be considered empty.
             // A refresh will trigger once the selector returns a value.
@@ -184,14 +196,14 @@ public class AppConfigurationRefreshUtil {
     }
 
     private static void refreshWithTimeFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagState state,
-        Duration refreshInterval, RefreshEventData eventData, ReplicaLookUp replicaLookUp)
+        Duration refreshInterval, RefreshEventData eventData, ReplicaLookUp replicaLookUp, Context context)
         throws AppConfigurationStatusException {
         Instant date = Instant.now();
         if (date.isAfter(state.getNextRefreshCheck())) {
             replicaLookUp.updateAutoFailoverEndpoints();
 
             for (FeatureFlags featureFlags : state.getWatchKeys()) {
-                if (client.checkWatchKeys(featureFlags.getSettingSelector(), true)) {
+                if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
                     String eventDataInfo = ".appconfig.featureflag/*";
 
                     // Only one refresh Event needs to be call to update all of the
@@ -209,10 +221,10 @@ public class AppConfigurationRefreshUtil {
     }
 
     private static void refreshWithoutTimeFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagState watchKeys,
-        RefreshEventData eventData) throws AppConfigurationStatusException {
+        RefreshEventData eventData, Context context) throws AppConfigurationStatusException {
 
         for (FeatureFlags featureFlags : watchKeys.getWatchKeys()) {
-            if (client.checkWatchKeys(featureFlags.getSettingSelector(), true)) {
+            if (client.checkWatchKeys(featureFlags.getSettingSelector(), context)) {
                 String eventDataInfo = ".appconfig.featureflag/*";
 
                 // Only one refresh Event needs to be call to update all of the

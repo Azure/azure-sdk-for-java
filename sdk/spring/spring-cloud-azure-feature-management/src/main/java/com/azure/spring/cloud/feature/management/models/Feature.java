@@ -67,7 +67,7 @@ public class Feature {
 
     /**
      * @return the description
-     * */
+     */
     public String getDescription() {
         return description;
     }
@@ -75,7 +75,7 @@ public class Feature {
     /**
      * @param description the description to set
      * @return Feature
-     * */
+     */
     public Feature setDescription(String description) {
         this.description = description;
         return this;
@@ -83,7 +83,7 @@ public class Feature {
 
     /**
      * @return the conditions
-     * */
+     */
     public Conditions getConditions() {
         return conditions;
     }
@@ -91,7 +91,7 @@ public class Feature {
     /**
      * @param conditions the conditions to set
      * @return Feature
-     * */
+     */
     public Feature setConditions(Conditions conditions) {
         this.conditions = conditions;
         return this;

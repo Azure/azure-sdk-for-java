@@ -95,5 +95,4 @@ public class EvaluationEvent {
         this.reason = reason;
         return this;
     }
-
 }

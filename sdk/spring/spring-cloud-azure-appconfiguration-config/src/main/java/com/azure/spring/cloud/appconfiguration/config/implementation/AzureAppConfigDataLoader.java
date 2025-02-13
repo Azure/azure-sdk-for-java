@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -19,11 +20,13 @@ import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
+import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 
 @EnableConfigurationProperties(AppConfigurationProviderProperties.class)
@@ -40,6 +43,8 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     private StateHolder storeState = new StateHolder();
 
     private FeatureFlagClient featureFlagClient;
+    
+    private Context requestContext;
 
     public AzureAppConfigDataLoader(DeferredLogFactory logFactory) {
         logger = logFactory.getLog(getClass());
@@ -72,6 +77,15 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
             boolean reloadFailed = false;
 
+            boolean pushRefresh = false;
+            PushNotification notification = resource.getMonitoring().getPushNotification();
+            if ((notification.getPrimaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))
+                || (notification.getSecondaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
+                pushRefresh = true;
+            }
+            requestContext = new Context("refresh", resource.isRefresh()).addData(PUSH_REFRESH,
+                pushRefresh);
+
             // Feature Management needs to be set in the last config store.
 
             for (AppConfigurationReplicaClient client : clients) {
@@ -79,7 +93,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
                 if (reloadFailed
                     && !AppConfigurationRefreshUtil.refreshStoreCheck(client,
-                        replicaClientFactory.findOriginForEndpoint(client.getEndpoint()))) {
+                        replicaClientFactory.findOriginForEndpoint(client.getEndpoint()), requestContext)) {
                     // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                     continue;
                 }
@@ -99,7 +113,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                         // Setting new ETag values for Watch
                         List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
                             .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel(),
-                                resource.isRefresh()))
+                                requestContext))
                             .toList();
 
                         storeState.setState(resource.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
@@ -157,7 +171,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
                     selectedKeys.getKeyFilter() + resource.getEndpoint() + "/", client, keyVaultClientFactory,
                     selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
             }
-            propertySource.initProperties(resource.getTrimKeyPrefix(), resource.isRefresh());
+            propertySource.initProperties(resource.getTrimKeyPrefix(), requestContext);
             sourceList.add(propertySource);
         }
         return sourceList;
@@ -174,9 +188,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         throws Exception {
         List<FeatureFlags> featureFlagWatchKeys = new ArrayList<>();
         List<String> profiles = resource.getProfiles().getActive();
+
         for (FeatureFlagKeyValueSelector selectedKeys : resource.getFeatureFlagSelects()) {
             List<FeatureFlags> storesFeatureFlags = featureFlagClient.loadFeatureFlags(client,
-                selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles), resource.isRefresh());
+                selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles), requestContext);
             featureFlagWatchKeys.addAll(storesFeatureFlags);
         }
 

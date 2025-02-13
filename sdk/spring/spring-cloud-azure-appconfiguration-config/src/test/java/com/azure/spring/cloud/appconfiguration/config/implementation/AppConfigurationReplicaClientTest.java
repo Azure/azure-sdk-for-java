@@ -37,6 +37,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
@@ -69,6 +70,9 @@ public class AppConfigurationReplicaClientTest {
 
     @Mock
     private Response<ConfigurationSnapshot> snapshotResponseMock;
+    
+    @Mock
+    private Context contextMock;
 
     private final String endpoint = "clientTest.azconfig.io";
 
@@ -96,25 +100,25 @@ public class AppConfigurationReplicaClientTest {
             Mockito.any())).thenReturn(configurationSettingResponse);
         when(configurationSettingResponse.getValue()).thenReturn(watchKey);
 
-        assertEquals(watchKey, client.getWatchKey("watch", "\0", false));
+        assertEquals(watchKey, client.getWatchKey("watch", "\0", contextMock));
 
         when(configurationSettingResponse.getValue()).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
-        assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0", false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0", contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(408);
-        assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0", false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0", contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(500);
-        assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0", false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0", contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(499);
-        assertThrows(HttpResponseException.class, () -> client.getWatchKey("watch", "\0", false));
+        assertThrows(HttpResponseException.class, () -> client.getWatchKey("watch", "\0", contextMock));
 
         when(clientMock.getConfigurationSettingWithResponse(Mockito.any(), Mockito.any(), Mockito.anyBoolean(),
             Mockito.any())).thenThrow(new UncheckedIOException(new UnknownHostException()));
-        assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0", false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.getWatchKey("watch", "\0", contextMock));
     }
 
     @Test
@@ -132,21 +136,21 @@ public class AppConfigurationReplicaClientTest {
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
             .thenReturn(new PagedIterable<>(pagedFlux));
 
-        assertEquals(configurations, client.listSettings(new SettingSelector(), false));
+        assertEquals(configurations, client.listSettings(new SettingSelector(), contextMock));
 
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any())).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector(), false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(408);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector(), false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(500);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector(), false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(499);
-        assertThrows(HttpResponseException.class, () -> client.listSettings(new SettingSelector(), false));
+        assertThrows(HttpResponseException.class, () -> client.listSettings(new SettingSelector(), contextMock));
     }
 
     @Test
@@ -166,24 +170,24 @@ public class AppConfigurationReplicaClientTest {
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
             .thenReturn(new PagedIterable<>(pagedFlux));
 
-        assertEquals(configurations, client.listFeatureFlags(new SettingSelector(), false).getFeatureFlags());
+        assertEquals(configurations, client.listFeatureFlags(new SettingSelector(), contextMock).getFeatureFlags());
 
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any())).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.listFeatureFlags(new SettingSelector(), false));
+            () -> client.listFeatureFlags(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(408);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.listFeatureFlags(new SettingSelector(), false));
+            () -> client.listFeatureFlags(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(500);
         assertThrows(AppConfigurationStatusException.class,
-            () -> client.listFeatureFlags(new SettingSelector(), false));
+            () -> client.listFeatureFlags(new SettingSelector(), contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(499);
-        assertThrows(HttpResponseException.class, () -> client.listFeatureFlags(new SettingSelector(), false));
+        assertThrows(HttpResponseException.class, () -> client.listFeatureFlags(new SettingSelector(), contextMock));
     }
 
     @Test
@@ -192,7 +196,7 @@ public class AppConfigurationReplicaClientTest {
 
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
             .thenThrow(new UncheckedIOException(new UnknownHostException()));
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector(), false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettings(new SettingSelector(), contextMock));
     }
 
     @Test
@@ -202,7 +206,7 @@ public class AppConfigurationReplicaClientTest {
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
             .thenThrow(new CredentialUnavailableException("No Credential"));
 
-        assertThrows(CredentialUnavailableException.class, () -> client.listSettings(new SettingSelector(), false));
+        assertThrows(CredentialUnavailableException.class, () -> client.listSettings(new SettingSelector(), contextMock));
     }
 
     @Test
@@ -212,7 +216,7 @@ public class AppConfigurationReplicaClientTest {
         when(clientMock.getConfigurationSettingWithResponse(Mockito.any(), Mockito.any(), Mockito.anyBoolean(), Mockito.any()))
             .thenThrow(new CredentialUnavailableException("No Credential"));
 
-        assertThrows(CredentialUnavailableException.class, () -> client.getWatchKey("key", "label", false));
+        assertThrows(CredentialUnavailableException.class, () -> client.getWatchKey("key", "label", contextMock));
     }
 
     @Test
@@ -238,7 +242,7 @@ public class AppConfigurationReplicaClientTest {
         when(clientMock.listConfigurationSettings(Mockito.any(SettingSelector.class), Mockito.any()))
             .thenReturn(settingsMock);
 
-        client.listSettings(new SettingSelector(), false);
+        client.listSettings(new SettingSelector(), contextMock);
         assertTrue(client.getBackoffEndTime().isBefore(Instant.now()));
         assertEquals(0, client.getFailedAttempts());
     }
@@ -256,25 +260,25 @@ public class AppConfigurationReplicaClientTest {
         when(snapshotResponseMock.getValue()).thenReturn(snapshot);
         when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any())).thenReturn(settingsMock);
 
-        assertEquals(configurations, client.listSettingSnapshot("SnapshotName", false));
+        assertEquals(configurations, client.listSettingSnapshot("SnapshotName", contextMock));
 
         when(clientMock.listConfigurationSettingsForSnapshot(Mockito.any())).thenThrow(exceptionMock);
         when(exceptionMock.getResponse()).thenReturn(responseMock);
         when(responseMock.getStatusCode()).thenReturn(429);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(408);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(500);
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", contextMock));
 
         when(responseMock.getStatusCode()).thenReturn(499);
-        assertThrows(HttpResponseException.class, () -> client.listSettingSnapshot("SnapshotName", false));
+        assertThrows(HttpResponseException.class, () -> client.listSettingSnapshot("SnapshotName", contextMock));
 
         when(clientMock.getSnapshotWithResponse(Mockito.any(), Mockito.any(), Mockito.any()))
             .thenThrow(new UncheckedIOException(new UnknownHostException()));
-        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", false));
+        assertThrows(AppConfigurationStatusException.class, () -> client.listSettingSnapshot("SnapshotName", contextMock));
     }
 
     @Test
@@ -289,7 +293,7 @@ public class AppConfigurationReplicaClientTest {
         when(snapshotResponseMock.getValue()).thenReturn(snapshot);
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
-            () -> client.listSettingSnapshot("SnapshotName", false));
+            () -> client.listSettingSnapshot("SnapshotName", contextMock));
         assertEquals("Snapshot SnapshotName needs to be of type Key.", e.getMessage());
     }
 
@@ -324,7 +328,7 @@ public class AppConfigurationReplicaClientTest {
             when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
                 .thenReturn(new PagedIterable<>(pagedFlux));
 
-            assertTrue(client.checkWatchKeys(new SettingSelector(), false));
+            assertTrue(client.checkWatchKeys(new SettingSelector(), contextMock));
             pagedResponse.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -338,7 +342,7 @@ public class AppConfigurationReplicaClientTest {
 
             when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any())).thenReturn(new PagedIterable<>(pagedFlux));
 
-            assertFalse(client.checkWatchKeys(new SettingSelector(), false));
+            assertFalse(client.checkWatchKeys(new SettingSelector(), contextMock));
             pagedResponse.close();
         } catch (IOException e) {
             e.printStackTrace();
