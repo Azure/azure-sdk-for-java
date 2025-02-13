@@ -26,7 +26,7 @@ public final class StorageAccountCheckNameAvailabilityParameters
     /*
      * The type of resource, Microsoft.Storage/storageAccounts
      */
-    private String type = "Microsoft.Storage/storageAccounts";
+    private final String type = "Microsoft.Storage/storageAccounts";
 
     /**
      * Creates an instance of StorageAccountCheckNameAvailabilityParameters class.
@@ -61,17 +61,6 @@ public final class StorageAccountCheckNameAvailabilityParameters
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: The type of resource, Microsoft.Storage/storageAccounts.
-     * 
-     * @param type the type value to set.
-     * @return the StorageAccountCheckNameAvailabilityParameters object itself.
-     */
-    public StorageAccountCheckNameAvailabilityParameters withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**
