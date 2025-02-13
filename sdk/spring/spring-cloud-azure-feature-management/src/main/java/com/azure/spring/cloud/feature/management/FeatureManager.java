@@ -202,11 +202,11 @@ public class FeatureManager {
 
         Mono<EvaluationEvent> result = this.checkFeatureFilters(event, featureContext);
 
-        result = assignAllocation(result, context);
+        result = assignAllocation(result);
         return result;
     }
 
-    private Mono<EvaluationEvent> assignAllocation(Mono<EvaluationEvent> monoEvent, Object featureContext) {
+    private Mono<EvaluationEvent> assignAllocation(Mono<EvaluationEvent> monoEvent) {
 
         return monoEvent.map(event -> {
 
@@ -222,7 +222,7 @@ public class FeatureManager {
                     this.variantNameToVariant(featureFlag, featureFlag.getAllocation().getDefaultWhenDisabled()));
                 return event;
             }
-            this.assignVariant(event, featureContext);
+            this.assignVariant(event);
             return event;
         });
     }
@@ -245,7 +245,7 @@ public class FeatureManager {
             event.getFeature().getAllocation().getDefaultWhenEnabled(), true, event);
     }
 
-    private void assignVariant(EvaluationEvent event, Object context) {
+    private void assignVariant(EvaluationEvent event) {
         Feature featureFlag = event.getFeature();
         if (featureFlag.getVariants().size() == 0 || featureFlag.getAllocation() == null) {
             return;
@@ -253,7 +253,7 @@ public class FeatureManager {
 
         Allocation allocation = featureFlag.getAllocation();
 
-        TargetingContext targetingContext = buildContext(context);
+        TargetingContext targetingContext = buildContext();
 
         List<String> groups = targetingContext.getGroups();
         String variantName = null;
@@ -402,7 +402,7 @@ public class FeatureManager {
         return null;
     }
 
-    private TargetingFilterContext buildContext(Object appContext) {
+    private TargetingFilterContext buildContext() {
         TargetingFilterContext targetingContext = new TargetingFilterContext();
         if (contextAccessor != null) {
             // If this is the only one provided just use it.
