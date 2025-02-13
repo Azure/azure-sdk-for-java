@@ -14,7 +14,6 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.utils.binarydata.BinaryData;
@@ -90,7 +89,8 @@ public class TestProxyPlaybackClient implements HttpClient {
         HttpRequest request;
         String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         try {
-            request = new HttpRequest().setMethod(HttpMethod.POST).setUri(proxyUri + "/playback/start")
+            request = new HttpRequest().setMethod(HttpMethod.POST)
+                .setUri(proxyUri + "/playback/start")
                 .setBody(BinaryData.fromObject(new RecordFilePayload(recordFile.toString(), assetJsonPath)));
             request.getHeaders()
                 .set(HttpHeaderName.ACCEPT, "application/json")
@@ -109,7 +109,7 @@ public class TestProxyPlaybackClient implements HttpClient {
             // the key. See TestProxyRecordPolicy.serializeVariables.
             // This deserializes the map returned from the test proxy and creates an ordered list
             // based on the key.
-            try (JsonReader jsonReader = JsonProviders.createReader(response.getBody().toBytes())) {
+            try (JsonReader jsonReader = JsonReader.fromBytes(response.getBody().toBytes())) {
                 Map<String, String> variables = jsonReader.readMap(JsonReader::getString);
                 List<Map.Entry<String, String>> toSort;
                 if (variables == null) {
@@ -236,7 +236,7 @@ public class TestProxyPlaybackClient implements HttpClient {
 
             HttpRequest request;
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                JsonWriter jsonWriter = JsonWriter.toStream(outputStream)) {
                 jsonWriter.writeMap(data, (writer, value) -> writer.writeArray(value, JsonWriter::writeString)).flush();
                 request = getRemoveSanitizerRequest().setBody(BinaryData.fromBytes(outputStream.toByteArray()));
                 request.getHeaders().set(X_RECORDING_ID, xRecordingId);

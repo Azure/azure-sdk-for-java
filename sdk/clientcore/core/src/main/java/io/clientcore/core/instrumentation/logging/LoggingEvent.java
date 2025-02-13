@@ -8,7 +8,6 @@ import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.serialization.json.implementation.DefaultJsonWriter;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -308,7 +307,7 @@ public final class LoggingEvent {
         int messageLength = message == null ? 0 : message.length();
         int speculatedSize = 20 + pairsCount * 20 + messageLength;
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream(speculatedSize);
-            JsonWriter jsonWriter = DefaultJsonWriter.toStream(outputStream, null)) {
+            JsonWriter jsonWriter = JsonWriter.toStream(outputStream)) {
             jsonWriter.writeStartObject();
 
             if (message != null) {

@@ -1,14 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package io.clientcore.core.serialization.json.contract.models;
+package io.clientcore.core.serialization.json.models;
 
-import io.clientcore.core.serialization.json.JsonOptions;
-import io.clientcore.core.serialization.json.JsonProvider;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.serialization.json.implementation.StringBuilderWriter;
-import io.clientcore.core.serialization.json.models.JsonBoolean;
-import io.clientcore.core.serialization.json.models.JsonElement;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -22,19 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests the contract of {@link JsonBoolean}.
- * <p>
- * All implementations of {@link JsonProvider} must create a subclass of this test class and pass all tests as they're
- * written to be considered an acceptable implementation.
+ * Tests {@link JsonBoolean}.
  */
-public abstract class JsonBooleanContractTests {
-    /**
-     * Creates an instance {@link JsonProvider} that will be used by a test.
-     *
-     * @return The {@link JsonProvider} that a test will use.
-     */
-    protected abstract JsonProvider getJsonProvider();
-
+public class JsonBooleanTests {
     @Test
     public void kindCheck() {
         JsonElement element = JsonBoolean.getInstance(true);
@@ -49,7 +35,7 @@ public abstract class JsonBooleanContractTests {
     @ParameterizedTest
     @ValueSource(strings = { "true", "false" })
     public void fromJson(String json) throws IOException {
-        try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             JsonBoolean jsonBoolean = JsonBoolean.fromJson(reader);
             assertEquals(json, jsonBoolean.toJsonString());
             if ("true".equals(json)) {
@@ -67,7 +53,7 @@ public abstract class JsonBooleanContractTests {
     public void toJson(boolean value) throws IOException {
         JsonBoolean jsonBoolean = JsonBoolean.getInstance(value);
         try (StringBuilderWriter writer = new StringBuilderWriter()) {
-            try (JsonWriter jsonWriter = getJsonProvider().createWriter(writer, new JsonOptions())) {
+            try (JsonWriter jsonWriter = JsonWriter.toWriter(writer)) {
                 jsonBoolean.toJson(jsonWriter);
             }
             assertEquals(Boolean.toString(value), writer.toString());
@@ -77,7 +63,7 @@ public abstract class JsonBooleanContractTests {
     @ParameterizedTest
     @ValueSource(strings = { "null", "10", "10.0", "\"hello\"", "[]", "{}" })
     public void invalidFromJsonStartingPoints(String json) throws IOException {
-        try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             assertThrows(IllegalStateException.class, () -> JsonBoolean.fromJson(reader));
         }
     }

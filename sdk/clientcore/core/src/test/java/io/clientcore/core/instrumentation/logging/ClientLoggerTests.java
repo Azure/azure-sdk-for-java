@@ -6,8 +6,6 @@ package io.clientcore.core.instrumentation.logging;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.serialization.json.JsonOptions;
-import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonReader;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -1110,7 +1108,7 @@ public class ClientLoggerTests {
     }
 
     private Map<String, Object> fromJson(String str) {
-        try (JsonReader reader = JsonProviders.createReader(str, new JsonOptions())) {
+        try (JsonReader reader = JsonReader.fromString(str)) {
             return reader.readMap(JsonReader::readUntyped);
         } catch (IOException e) {
             throw new UncheckedIOException(e);

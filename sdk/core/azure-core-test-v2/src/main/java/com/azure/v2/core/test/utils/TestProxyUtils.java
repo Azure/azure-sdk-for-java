@@ -441,7 +441,8 @@ public final class TestProxyUtils {
         }
 
         String requestBody = "[" + CoreUtils.stringJoin(",", sanitizersJsonPayloads) + "]";
-        return new HttpRequest().setMethod(HttpMethod.POST).setUri(proxyUri + "/Admin/AddSanitizers")
+        return new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri(proxyUri + "/Admin/AddSanitizers")
             .setBody(new StringBinaryData(requestBody));
     }
 
@@ -456,7 +457,8 @@ public final class TestProxyUtils {
     }
 
     private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URI proxyUri) {
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST).setUri(proxyUri + "/Admin/RemoveSanitizers")
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri(proxyUri + "/Admin/RemoveSanitizers")
             .setBody(new StringBinaryData(requestBody));
         request.getHeaders().set(X_ABSTRACTION_IDENTIFIER, sanitizerType);
         return request;
@@ -488,7 +490,8 @@ public final class TestProxyUtils {
                     CustomMatcher customMatcher = (CustomMatcher) testProxyMatcher;
                     String requestBody = createCustomMatcherRequestBody(customMatcher);
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName();
-                    request = new HttpRequest().setMethod(HttpMethod.POST).setUri(proxyUri + "/Admin/setmatcher")
+                    request = new HttpRequest().setMethod(HttpMethod.POST)
+                        .setUri(proxyUri + "/Admin/setmatcher")
                         .setBody(new StringBinaryData(requestBody));
                     break;
 
@@ -507,7 +510,8 @@ public final class TestProxyUtils {
      */
     public static HttpRequest setCompareBodiesMatcher() {
         String requestBody = createCustomMatcherRequestBody(new CustomMatcher().setComparingBodies(false));
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST).setUri(proxyUri + "/Admin/setmatcher")
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri(proxyUri + "/Admin/setmatcher")
             .setBody(new StringBinaryData(requestBody));
 
         request.getHeaders()

@@ -1,13 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.serialization.json.contract;
+package io.clientcore.core.serialization.json;
 
-import io.clientcore.core.serialization.json.JsonReader;
-import io.clientcore.core.serialization.json.JsonSerializable;
-import io.clientcore.core.serialization.json.JsonToken;
-import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.serialization.json.ReadValueCallback;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,28 +25,18 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
- * Tests the contract of {@link JsonReader}.
- * <p>
- * All implementations of {@link JsonReader} must create a subclass of this test class and pass all tests as they're
- * written to be considered an acceptable implementation.
- * <p>
- * Each test will only create a single instance of {@link JsonReader} to simplify the usage of
- * {@link #getJsonReader(String)}.
+ * Tests {@link JsonReader}.
  */
-public abstract class JsonReaderContractTests {
-    /**
-     * Creates an instance of {@link JsonReader} that will be used by a test.
-     *
-     * @param json The JSON to be read.
-     * @return The {@link JsonReader} that a test will use.
-     */
-    protected abstract JsonReader getJsonReader(String json) throws IOException;
+public class JsonReaderTests {
+    private static final String JSON_WITH_COMMENTS = "{ // single line comment\n\"single-line\":\"comment\",\n/*\n"
+        + "multi-line comment\n*/\n\"multi-line\":\"comment\"}";
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
@@ -121,7 +106,7 @@ public abstract class JsonReaderContractTests {
     @Test
     public void emptyObject() throws IOException {
         String json = "{}";
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
 
             assertJsonReaderStructInitialization(reader, JsonToken.START_OBJECT);
 
@@ -134,7 +119,7 @@ public abstract class JsonReaderContractTests {
     @Test
     public void emptyArray() throws IOException {
         String json = "[]";
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
 
             assertJsonReaderStructInitialization(reader, JsonToken.START_ARRAY);
 
@@ -148,7 +133,7 @@ public abstract class JsonReaderContractTests {
     public void simpleObject() throws IOException {
         String json
             = "{\"stringProperty\":\"string\",\"nullProperty\":null,\"integerProperty\":10,\"floatProperty\":10.0,\"booleanProperty\":true}";
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
 
             assertJsonReaderStructInitialization(reader, JsonToken.START_OBJECT);
 
@@ -187,7 +172,7 @@ public abstract class JsonReaderContractTests {
     @Test
     public void arrayOfBasicTypesInJsonRoot() throws IOException {
         String json = "[\"string\",null,10,10.0,true]";
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
 
             assertJsonReaderStructInitialization(reader, JsonToken.START_ARRAY);
 
@@ -208,7 +193,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("objectWithInnerObjectSupplier")
     public void objectWithInnerObject(String json) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
 
             assertJsonReaderStructInitialization(reader, JsonToken.START_OBJECT);
 
@@ -277,7 +262,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("objectWithInnerArraySupplier")
     public void objectWithInnerArray(String json) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
 
             assertJsonReaderStructInitialization(reader, JsonToken.START_OBJECT);
 
@@ -341,7 +326,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("arrayWithInnerArraySupplier")
     public void arrayWithInnerArray(String json) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
 
             assertJsonReaderStructInitialization(reader, JsonToken.START_ARRAY);
 
@@ -385,7 +370,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("arrayWithInnerObjectSupplier")
     public void arrayWithInnerObject(String json) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
 
             assertJsonReaderStructInitialization(reader, JsonToken.START_ARRAY);
 
@@ -432,7 +417,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("readUntypedSimpleSupplier")
     public void readUntypedSimple(String json, int nextCount, Object expected) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             for (int i = 0; i < nextCount; i++) {
                 reader.nextToken();
             }
@@ -455,7 +440,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("readUntypedArraySupplier")
     public void readUntypedArray(String json, int nextCount, List<Object> expected) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             for (int i = 0; i < nextCount; i++) {
                 reader.nextToken();
             }
@@ -475,7 +460,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("readUntypedObjectSupplier")
     public void readUntypedObject(String json, int nextCount, Map<String, Object> expected) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             for (int i = 0; i < nextCount; i++) {
                 reader.nextToken();
             }
@@ -502,7 +487,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("readUntypedIllegalStartSupplier")
     public void readUntypedIllegalStart(String json, int nextCount) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             for (int i = 0; i < nextCount; i++) {
                 reader.nextToken();
             }
@@ -531,7 +516,7 @@ public abstract class JsonReaderContractTests {
 
         String deeplyNestJson = builder.toString();
 
-        try (JsonReader reader = getJsonReader(deeplyNestJson)) {
+        try (JsonReader reader = JsonReader.fromString(deeplyNestJson)) {
             reader.nextToken();
             assertThrows(IllegalStateException.class, reader::readUntyped);
         }
@@ -540,16 +525,17 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("bufferObjectSupplier")
     public void bufferObject(String json, int nextCount) throws IOException {
-        JsonReader reader = getJsonReader(json);
+        try (JsonReader reader = JsonReader.fromString(json)) {
 
-        for (int i = 0; i < nextCount; i++) {
-            reader.nextToken();
+            for (int i = 0; i < nextCount; i++) {
+                reader.nextToken();
+            }
+
+            JsonReader buffer = reader.bufferObject();
+            TestData testData = TestData.fromJson(buffer);
+
+            assertEquals("test", testData.getTest());
         }
-
-        JsonReader buffer = reader.bufferObject();
-        TestData testData = TestData.fromJson(buffer);
-
-        assertEquals("test", testData.getTest());
     }
 
     private static Stream<Arguments> bufferObjectSupplier() {
@@ -560,13 +546,14 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("bufferObjectIllegalStateSupplier")
     public void bufferObjectIllegalState(String json, int nextCount) throws IOException {
-        JsonReader reader = getJsonReader(json);
+        try (JsonReader reader = JsonReader.fromString(json)) {
 
-        for (int i = 0; i < nextCount; i++) {
-            reader.nextToken();
+            for (int i = 0; i < nextCount; i++) {
+                reader.nextToken();
+            }
+
+            assertThrows(IllegalStateException.class, reader::bufferObject);
         }
-
-        assertThrows(IllegalStateException.class, reader::bufferObject);
     }
 
     private static Stream<Arguments> bufferObjectIllegalStateSupplier() {
@@ -579,7 +566,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("bufferHandlesEncodedTextSupplier")
     public void bufferHandlesEncodedText(String json) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             reader.nextToken(); // Initiate reading.
 
             String buffered = reader.readRemainingFieldsAsJsonObject();
@@ -595,7 +582,7 @@ public abstract class JsonReaderContractTests {
 
     @Test
     public void getTextOnUninitializedReadThrowsIllegalStateException() throws IOException {
-        try (JsonReader reader = getJsonReader("{}")) {
+        try (JsonReader reader = JsonReader.fromString("{}")) {
             assertThrows(IllegalStateException.class, reader::getText);
         }
     }
@@ -603,7 +590,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("getTextSupplier")
     public void getToken(String json, int nextTokens, String expected) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             for (int i = 0; i < nextTokens; i++) {
                 reader.nextToken();
             }
@@ -629,7 +616,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("getRawTextSupplier")
     public void getRawToken(String json, int nextTokens, String expected) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             for (int i = 0; i < nextTokens; i++) {
                 reader.nextToken();
             }
@@ -655,7 +642,7 @@ public abstract class JsonReaderContractTests {
     @ParameterizedTest
     @MethodSource("isJsonStructSupplier")
     public void isJsonStruct(String json, int nextTokens, boolean isStart, boolean expected) throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             for (int i = 0; i < nextTokens; i++) {
                 reader.nextToken();
             }
@@ -685,7 +672,7 @@ public abstract class JsonReaderContractTests {
 
     @Test
     public void readArrayNonStartArrayTokenThrowsIllegalStateException() {
-        assertThrows(IllegalStateException.class, () -> getJsonReader("{}").readArray(JsonReader::readUntyped));
+        assertThrows(IllegalStateException.class, () -> JsonReader.fromString("{}").readArray(JsonReader::readUntyped));
     }
 
     @ParameterizedTest
@@ -713,7 +700,7 @@ public abstract class JsonReaderContractTests {
 
     @Test
     public void readMapNonStartObjectTokenThrowsIllegalStateException() {
-        assertThrows(IllegalStateException.class, () -> getJsonReader("[]").readMap(JsonReader::readUntyped));
+        assertThrows(IllegalStateException.class, () -> JsonReader.fromString("[]").readMap(JsonReader::readUntyped));
     }
 
     @ParameterizedTest
@@ -729,6 +716,28 @@ public abstract class JsonReaderContractTests {
                     assertTrue(actual.containsKey(expectedKey));
                     assertEquals(expected.get(expectedKey), actual.get(expectedKey));
                 }
+            }
+        });
+    }
+
+    @Test
+    public void readJsonc() throws IOException {
+
+        try (JsonReader jsonReader
+            = JsonReader.fromString(JSON_WITH_COMMENTS, new JsonOptions().setJsoncSupported(true))) {
+            jsonReader.nextToken();
+            String outputJson = jsonReader.readChildren();
+            assertNotNull(outputJson);
+        }
+    }
+
+    @Test
+    public void readJsoncFails() throws IOException {
+        assertThrows(IOException.class, () -> {
+            try (JsonReader jsonReader = JsonReader.fromString(JSON_WITH_COMMENTS)) {
+                jsonReader.nextToken();
+                String outputJson = jsonReader.readChildren();
+                assertNotNull(outputJson);
             }
         });
     }
@@ -759,7 +768,7 @@ public abstract class JsonReaderContractTests {
 
     private <T> void readAndValidate(String json, ReadValueCallback<JsonReader, T> read, Consumer<T> validate)
         throws IOException {
-        try (JsonReader reader = getJsonReader(json)) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             reader.nextToken(); // Initialize the JsonReader for reading.
             validate.accept(read.read(reader));
         }

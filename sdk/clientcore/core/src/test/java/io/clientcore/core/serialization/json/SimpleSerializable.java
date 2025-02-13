@@ -1,12 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.serialization.json.contract;
-
-import io.clientcore.core.serialization.json.JsonReader;
-import io.clientcore.core.serialization.json.JsonSerializable;
-import io.clientcore.core.serialization.json.JsonToken;
-import io.clientcore.core.serialization.json.JsonWriter;
+package io.clientcore.core.serialization.json;
 
 import java.io.IOException;
 import java.util.Objects;

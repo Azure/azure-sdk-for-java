@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.serialization.json.contract;
+package io.clientcore.core.serialization.json;
 
-import io.clientcore.core.serialization.json.JsonWriteState;
-import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.serialization.json.implementation.StringBuilderWriter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -29,28 +28,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tests the contract of {@link JsonWriter}.
- * <p>
- * All implementations of {@link JsonWriter} must create a subclass of this test class and pass all tests as they're
- * written to be considered an acceptable implementation.
- * <p>
- * Each test will only create a single instance of {@link JsonWriter} to simplify usage of {@link #getJsonWriter()} and
- * {@link #getJsonWriterContents()}.
+ * Tests {@link JsonWriter}.
  */
-public abstract class JsonWriterContractTests {
-    /**
-     * Creates an instance of {@link JsonWriter} that will be used by a test.
-     *
-     * @return The {@link JsonWriter} that a test will use.
-     */
-    public abstract JsonWriter getJsonWriter();
-
-    /**
-     * Converts the content written to a {@link JsonWriter} during testing to a string representation.
-     *
-     * @return The contents of a {@link JsonWriter} converted to a string.
-     */
-    public abstract String getJsonWriterContents();
+public class JsonWriterTests {
+    private final StringBuilderWriter stringBuilderWriter = new StringBuilderWriter();
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
@@ -240,7 +221,7 @@ public abstract class JsonWriterContractTests {
     @MethodSource("basicExceptionsSupplier")
     public void basicExceptions(IOExceptionConsumer<JsonWriter> operation,
         Class<? extends Throwable> expectedException) {
-        assertThrows(expectedException, () -> operation.accept(getJsonWriter()));
+        assertThrows(expectedException, () -> operation.accept(JsonWriter.toWriter(stringBuilderWriter)));
     }
 
     private static Stream<Arguments> basicExceptionsSupplier() {
@@ -309,11 +290,12 @@ public abstract class JsonWriterContractTests {
 
     @ParameterizedTest
     @MethodSource("basicWriteStateSupplier")
-    public void basicWriteState(IOExceptionConsumer<JsonWriter> operation, JsonWriteState expectedState) {
-        JsonWriter writer = getJsonWriter();
-
+    public void basicWriteState(IOExceptionConsumer<JsonWriter> operation, JsonWriteState expectedState)
+        throws IOException {
+        // Don't close the writer in this test as it will throw an exception about being in an illegal state when
+        // closing.
+        JsonWriter writer = JsonWriter.toWriter(stringBuilderWriter);
         assertDoesNotThrow(() -> operation.accept(writer));
-
         assertEquals(expectedState, writer.getWriteContext().getWriteState());
     }
 
@@ -417,7 +399,7 @@ public abstract class JsonWriterContractTests {
     @ParameterizedTest
     @MethodSource("nullPointerExceptionsSupplier")
     public void nullPointerExceptions(IOExceptionConsumer<JsonWriter> consumer) {
-        assertThrows(NullPointerException.class, () -> consumer.accept(getJsonWriter()));
+        assertThrows(NullPointerException.class, () -> consumer.accept(JsonWriter.toWriter(stringBuilderWriter)));
     }
 
     private static Stream<IOExceptionConsumer<JsonWriter>> nullPointerExceptionsSupplier() {
@@ -454,7 +436,7 @@ public abstract class JsonWriterContractTests {
 
     @Test
     public void writeStartObjectNullFieldName() {
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeStartObject(null));
+        assertThrows(NullPointerException.class, () -> JsonWriter.toWriter(stringBuilderWriter).writeStartObject(null));
     }
 
     @Test
@@ -465,7 +447,7 @@ public abstract class JsonWriterContractTests {
 
     @Test
     public void writeStartArrayNullFieldName() {
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeStartArray(null));
+        assertThrows(NullPointerException.class, () -> JsonWriter.toWriter(stringBuilderWriter).writeStartArray(null));
     }
 
     @Test
@@ -476,7 +458,8 @@ public abstract class JsonWriterContractTests {
 
     @Test
     public void writeJsonFieldNullFieldNameThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeJsonField(null, null));
+        assertThrows(NullPointerException.class,
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeJsonField(null, null));
     }
 
     @ParameterizedTest
@@ -497,16 +480,20 @@ public abstract class JsonWriterContractTests {
 
     @Test
     public void writeArrayThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeArray(new Object[0], null));
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeArray(Collections.emptyList(), null));
-
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeArrayField(null, new Object[0], null));
         assertThrows(NullPointerException.class,
-            () -> getJsonWriter().writeArrayField(null, Collections.emptyList(), null));
-
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeArrayField("field", new Object[0], null));
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeArray(new Object[0], null));
         assertThrows(NullPointerException.class,
-            () -> getJsonWriter().writeArrayField("field", Collections.emptyList(), null));
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeArray(Collections.emptyList(), null));
+
+        assertThrows(NullPointerException.class,
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeArrayField(null, new Object[0], null));
+        assertThrows(NullPointerException.class,
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeArrayField(null, Collections.emptyList(), null));
+
+        assertThrows(NullPointerException.class,
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeArrayField("field", new Object[0], null));
+        assertThrows(NullPointerException.class,
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeArrayField("field", Collections.emptyList(), null));
     }
 
     @ParameterizedTest
@@ -546,11 +533,12 @@ public abstract class JsonWriterContractTests {
 
     @Test
     public void writeMapThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeMap(Collections.emptyMap(), null));
         assertThrows(NullPointerException.class,
-            () -> getJsonWriter().writeMapField(null, Collections.emptyMap(), null));
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeMap(Collections.emptyMap(), null));
         assertThrows(NullPointerException.class,
-            () -> getJsonWriter().writeMapField("field", Collections.emptyMap(), null));
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeMapField(null, Collections.emptyMap(), null));
+        assertThrows(NullPointerException.class,
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeMapField("field", Collections.emptyMap(), null));
     }
 
     @ParameterizedTest
@@ -612,7 +600,8 @@ public abstract class JsonWriterContractTests {
 
     @Test
     public void writeNullableNullWriterFuncThrowsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeNullableField("field", null, null));
+        assertThrows(NullPointerException.class,
+            () -> JsonWriter.toWriter(stringBuilderWriter).writeNullableField("field", null, null));
     }
 
     @Test
@@ -728,11 +717,11 @@ public abstract class JsonWriterContractTests {
     }
 
     private void writeAndValidate(IOExceptionConsumer<JsonWriter> write, String expected) throws IOException {
-        try (JsonWriter writer = getJsonWriter()) {
+        try (JsonWriter writer = JsonWriter.toWriter(stringBuilderWriter)) {
             write.accept(writer);
             writer.flush();
 
-            assertEquals(expected, getJsonWriterContents());
+            assertEquals(expected, stringBuilderWriter.toString());
         } catch (IllegalStateException ignored) {
             // Ignore IllegalStateException if JsonWriter is closed in an invalid state.
         }

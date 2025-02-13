@@ -1,14 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package io.clientcore.core.serialization.json.contract.models;
+package io.clientcore.core.serialization.json.models;
 
-import io.clientcore.core.serialization.json.JsonOptions;
-import io.clientcore.core.serialization.json.JsonProvider;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.serialization.json.implementation.StringBuilderWriter;
-import io.clientcore.core.serialization.json.models.JsonElement;
-import io.clientcore.core.serialization.json.models.JsonNull;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -22,19 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests the contract of {@link JsonNull}.
- * <p>
- * All implementations of {@link JsonProvider} must create a subclass of this test class and pass all tests as they're
- * written to be considered an acceptable implementation.
+ * Tests {@link JsonNull}.
  */
-public abstract class JsonNullContractTests {
-    /**
-     * Creates an instance {@link JsonProvider} that will be used by a test.
-     *
-     * @return The {@link JsonProvider} that a test will use.
-     */
-    protected abstract JsonProvider getJsonProvider();
-
+public class JsonNullTests {
     @Test
     public void kindCheck() {
         JsonElement element = JsonNull.getInstance();
@@ -48,7 +34,7 @@ public abstract class JsonNullContractTests {
 
     @Test
     public void fromJson() throws IOException {
-        try (JsonReader reader = getJsonProvider().createReader("null", new JsonOptions())) {
+        try (JsonReader reader = JsonReader.fromString("null")) {
             JsonNull jsonNull = JsonNull.fromJson(reader);
             assertEquals("null", jsonNull.toJsonString());
             assertSame(JsonNull.getInstance(), jsonNull);
@@ -59,7 +45,7 @@ public abstract class JsonNullContractTests {
     public void toJson() throws IOException {
         JsonNull jsonNull = JsonNull.getInstance();
         try (StringBuilderWriter writer = new StringBuilderWriter()) {
-            try (JsonWriter jsonWriter = getJsonProvider().createWriter(writer, new JsonOptions())) {
+            try (JsonWriter jsonWriter = JsonWriter.toWriter(writer)) {
                 jsonNull.toJson(jsonWriter);
             }
             assertEquals("null", writer.toString());
@@ -69,7 +55,7 @@ public abstract class JsonNullContractTests {
     @ParameterizedTest
     @ValueSource(strings = { "true", "10", "10.0", "\"hello\"", "[]", "{}" })
     public void invalidFromJsonStartingPoints(String json) throws IOException {
-        try (JsonReader reader = getJsonProvider().createReader(json, new JsonOptions())) {
+        try (JsonReader reader = JsonReader.fromString(json)) {
             assertThrows(IllegalStateException.class, () -> JsonNull.fromJson(reader));
         }
     }
