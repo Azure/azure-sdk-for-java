@@ -48,7 +48,7 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
     public void setApplicationContext(@NonNull ApplicationContext applicationContext) throws BeansException {
         this.appContext = applicationContext;
     }
-    
+
     @Bean(name = "Microsoft.TimeWindow")
     @ConditionalOnMissingBean(TimeWindowFilter.class)
     public TimeWindowFilter timeWindowFilter() {
