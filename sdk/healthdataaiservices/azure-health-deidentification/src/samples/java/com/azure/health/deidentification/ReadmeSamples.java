@@ -17,20 +17,13 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public final class ReadmeSamples {
     private final DeidentificationClient deidentificationClient = new DeidentificationClientBuilder().buildClient();
 
-    public void readmeSamples() {
+    public void CreateClient() {
         // BEGIN: readme-sample-create-client
         DeidentificationClient deidentificationClient = new DeidentificationClientBuilder()
-            .endpoint("endpoint")
+            .endpoint(Configuration.getGlobalConfiguration().get("DEID_ENDPOINT"))
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: readme-sample-create-client
-
-        String inputText = "Hello, my name is John Smith.";
-        DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(DeidentificationOperationType.SURROGATE);
-
-        DeidentificationResult result = deidentificationClient.deidentifyText(content);
-        System.out.println("De-identified output: " + result.getOutputText());
     }
 
     /**

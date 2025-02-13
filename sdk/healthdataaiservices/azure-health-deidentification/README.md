@@ -36,12 +36,14 @@ in the [Azure portal][azure_portal], or using the [Azure CLI][azure_cli]:
 az deidservice show --name "<resource-name>" --resource-group "<resource-group-name>" --query "properties.serviceUrl"
 ```
 
+Optionally, save the service URL as an environment variable named `DEID_ENDPOINT` for the sample client initialization code.
+
 The [Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
 You can use `DefaultAzureCredential` to automatically find the best credential to use at runtime.
 
 ```java readme-sample-create-client
 DeidentificationClient deidentificationClient = new DeidentificationClientBuilder()
-    .endpoint("endpoint")
+    .endpoint(Configuration.getGlobalConfiguration().get("DEID_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
@@ -58,28 +60,40 @@ There are two ways to interact with the de-identification service. You can send 
 to de-identify documents in Azure Storage.
 
 You can de-identify text directly using the `DeidentificationClient`:
-```java com.azure.health.deidentification.generated.deidentifytext.deidentifytext
-DeidentificationResult response
-    = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
-        .setOperation(DeidentificationOperationType.REDACT)
-        .setCustomizations(new DeidentificationCustomizationOptions().setRedactionFormat("[{type}]")));
+```java com.azure.health.deidentification.samples.deidentify_text
+String inputText = "Hello, my name is John Smith.";
+
+DeidentificationContent content = new DeidentificationContent(inputText);
+content.setOperation(DeidentificationOperationType.SURROGATE);
+
+DeidentificationResult result = deidentificationClient.deidentifyText(content);
+System.out.println("De-identified output: " + (result != null ? result.getOutputText() : null));
+// De-identified output: Hello, my name is <synthetic name>.
 ```
 
 To de-identify documents in Azure Storage, see [Tutorial: Configure Azure Storage to de-identify documents][deid_configure_storage]
-for prerequisites and configuration options. 
-
+for prerequisites and configuration options. In the sample code below, populate the `STORAGE_ACCOUNT_NAME` and `STORAGE_CONTAINER_NAME`
+environment variables with your desired values. To refer to the same job between multiple examples, set the `DEID_JOB_NAME`
+environment variable.
+ 
 The client exposes a `beginDeidentifyDocuments` method that returns a `SyncPoller` or `PollerFlux` instance.
 Callers should wait for the operation to be completed by calling `getFinalResult()`:
 
-```java com.azure.health.deidentification.generated.deidentifydocuments.createadeidentificationjob
-SyncPoller<DeidentificationJob, DeidentificationJob> response
-    = deidentificationClient.beginDeidentifyDocuments("job_smith_documents_1",
-        new DeidentificationJob(
-            new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "documents/"),
-            new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "_output/")
-                .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
-                    .setCustomizations(
-                        new DeidentificationJobCustomizationOptions().setRedactionFormat("[{type}]")));
+```java com.azure.health.deidentification.samples.begin_deidentify_documents
+String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
+DeidentificationJob job = new DeidentificationJob(
+    new SourceStorageLocation(storageLocation, "example_patient_1"),
+    new TargetStorageLocation(storageLocation, "_output")
+        .setOverwrite(true)
+);
+
+job.setOperation(DeidentificationOperationType.REDACT);
+
+String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME", "MyJob-" + Instant.now().toEpochMilli());
+DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
+    .waitForCompletion()
+    .getValue();
+System.out.println(jobName + " - " + result.getStatus());
 ```
 
 ## Examples
@@ -97,53 +111,68 @@ The following sections provide several code snippets covering some of the most c
 
 ```java readme-sample-create-client
 DeidentificationClient deidentificationClient = new DeidentificationClientBuilder()
-    .endpoint("endpoint")
+    .endpoint(Configuration.getGlobalConfiguration().get("DEID_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
 ### De-identify text
 
-```java com.azure.health.deidentification.generated.deidentifytext.deidentifytext
-DeidentificationResult response
-    = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
-        .setOperation(DeidentificationOperationType.REDACT)
-        .setCustomizations(new DeidentificationCustomizationOptions().setRedactionFormat("[{type}]")));
+```java com.azure.health.deidentification.samples.deidentify_text
+String inputText = "Hello, my name is John Smith.";
+
+DeidentificationContent content = new DeidentificationContent(inputText);
+content.setOperation(DeidentificationOperationType.SURROGATE);
+
+DeidentificationResult result = deidentificationClient.deidentifyText(content);
+System.out.println("De-identified output: " + (result != null ? result.getOutputText() : null));
+// De-identified output: Hello, my name is <synthetic name>.
 ```
 
 ### Begin a job to de-identify documents in Azure Storage
 
-```java com.azure.health.deidentification.generated.deidentifydocuments.createadeidentificationjob
-SyncPoller<DeidentificationJob, DeidentificationJob> response
-    = deidentificationClient.beginDeidentifyDocuments("job_smith_documents_1",
-        new DeidentificationJob(
-            new SourceStorageLocation("https://blobtest.blob.core.windows.net/container", "documents/"),
-            new TargetStorageLocation("https://blobtest.blob.core.windows.net/container", "_output/")
-                .setOverwrite(true)).setOperation(DeidentificationOperationType.REDACT)
-                    .setCustomizations(
-                        new DeidentificationJobCustomizationOptions().setRedactionFormat("[{type}]")));
+```java com.azure.health.deidentification.samples.begin_deidentify_documents
+String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
+DeidentificationJob job = new DeidentificationJob(
+    new SourceStorageLocation(storageLocation, "example_patient_1"),
+    new TargetStorageLocation(storageLocation, "_output")
+        .setOverwrite(true)
+);
+
+job.setOperation(DeidentificationOperationType.REDACT);
+
+String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME", "MyJob-" + Instant.now().toEpochMilli());
+DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
+    .waitForCompletion()
+    .getValue();
+System.out.println(jobName + " - " + result.getStatus());
 ```
 
 ### Get the status of a de-identification job
 
-```java com.azure.health.deidentification.generated.getjob.getadeidentificationjob
-DeidentificationJob response = deidentificationClient.getJob("job_smith_documents_1");
+```java com.azure.health.deidentification.samples.get_deidentification_job
+String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME");
+DeidentificationJob result = deidentificationClient.getJob(jobName);
+System.out.println(jobName + " - " + result.getStatus());
 ```
 
 ### List all de-identification jobs
 
-```java com.azure.health.deidentification.generated.listjobs.listdeidentificationjobs
-PagedIterable<DeidentificationJob> response = deidentificationClient
-    .listJobs();
+```java com.azure.health.deidentification.samples.list_deidentification_jobs
+PagedIterable<DeidentificationJob> result = deidentificationClient.listJobs();
+for (DeidentificationJob job : result) {
+    System.out.println(job.getName() + " - " + job.getStatus());
+}
 ```
 
 ### List all documents in a de-identification job
 
-List the files which are completed by a job.
-
-```java com.azure.health.deidentification.generated.listjobdocuments.listprocesseddocumentswithinajob
-PagedIterable<DeidentificationDocumentDetails> response
-    = deidentificationClient.listJobDocuments("job_smith_documents_1");
+```java com.azure.health.deidentification.samples.list_processed_documents_within_a_job
+String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME");
+PagedIterable<DeidentificationDocumentDetails> result = deidentificationClient.listJobDocuments(jobName);
+for (DeidentificationDocumentDetails documentDetails : result) {
+    System.out.println(documentDetails.getInput().getLocation() + " - " + documentDetails.getStatus());
+}
 ```
 
 ## Troubleshooting
