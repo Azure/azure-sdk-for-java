@@ -802,4 +802,36 @@ public class RetryPolicyTests {
 
         assertEquals(1, attemptCount.get());
     }
+
+    @Test
+    public void testDelayDurationTooLongThrowsException() {
+        RetryStrategy customRetryStrategy = new RetryStrategy() {
+            @Override
+            public int getMaxRetries() {
+                return 1;
+            }
+
+            @Override
+            public Duration calculateRetryDelay(int retryAttempts) {
+                return Duration.ofSeconds(601); // Return a delay duration greater than 600 seconds
+            }
+
+            @Override
+            public boolean shouldRetry(HttpResponse httpResponse) {
+                return true;
+            }
+        };
+
+        RetryPolicy retryPolicy = new RetryPolicy(customRetryStrategy);
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(retryPolicy)
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 503)))
+            .build();
+
+        HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost/");
+
+        StepVerifier.create(pipeline.send(request))
+            .expectErrorMatches(throwable -> throwable instanceof IllegalStateException
+                && throwable.getMessage().startsWith("Delay duration is too long."))
+            .verify();
+    }
 }
