@@ -12,7 +12,7 @@
 - Removed Jackson annotations from models and removed custom serializer for raw JSON fields.
 
 ### Bugs Fixed
-- 
+
 - Fixes issue where text spanning more than a single WebSocketFrame are ignored. [#44130](https://github.com/Azure/azure-sdk-for-java/pull/44130)
 
 ### Other Changes
