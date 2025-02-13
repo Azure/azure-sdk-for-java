@@ -2,7 +2,7 @@ steps:
   - pwsh: |
       # Define repository details
       $repoUrl = "https://github.com/openai/openai-java.git"
-      $branchName = "release-please--branches--main--changes--next"
+      #$branchName = "release-please--branches--main--changes--next"
   
       # Clone the repository and checkout the specified branch
       Write-Host "Cloning repository: $repoUrl"
@@ -10,8 +10,8 @@ steps:
       
       cd openai-java
       
-      Write-Host "Checking out branch: $branchName"
-      git checkout $branchName
+      #Write-Host "Checking out branch: $branchName"
+      #git checkout $branchName
     displayName: Clone OpenAI Java repository and checkout branch
     workingDirectory: $(Agent.TempDirectory)
 
@@ -61,7 +61,26 @@ steps:
       Set-Content -Path $dependenciesFilePath -Value $updatedDependenciesContent
 
       Write-Host "Running the version update script"
-      cd "$(Agent.TempDirectory)/../../1/s/"
+      cd openai-java
       python eng/versioning/update_versions.py --bt client --ut external_dependency --sr
     displayName: Update external_dependencies.txt and run version update script
     workingDirectory: $(Agent.TempDirectory)
+
+  - pwsh: |
+      # Define the path to the external_dependencies.txt file
+      $dependenciesFilePath = "eng/versioning/external_dependencies.txt"
+
+      # Update the version in the external_dependencies.txt file
+      $newVersionInExternalDependenciesFile = "com.openai:openai-java;$newVersion"
+      $dependenciesContent = Get-Content -Path $dependenciesFilePath -Raw
+      $updatedDependenciesContent = $dependenciesContent -replace 'com.openai:openai-java;[0-9.]+', $newVersionInExternalDependenciesFile
+      Write-Host "Updated the version in the external_dependencies.txt file: $updatedDependenciesContent"
+      Set-Content -Path $dependenciesFilePath -Value $updatedDependenciesContent
+    displayName: Update external_dependencies.txt
+    workingDirectory: $(System.DefaultWorkingDirectory)
+
+  - task: PythonScript@0
+    displayName: 'Update versions for source build'
+    inputs:
+      scriptPath: 'eng/versioning/update_versions.py'
+      arguments: '--update-type external_dependency --build-type client --sr'
