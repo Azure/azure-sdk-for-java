@@ -60,15 +60,7 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
-        try {
-            final BinaryData data = BinaryData.fromListByteBuffer(Arrays.asList(compositeByteBuf.nioBuffers()));
-            final String collected = data.toString();
-            final WebPubSubMessage deserialized = messageDecoder.decode(collected);
-
-            messageHandler.accept(deserialized);
-        } finally {
-            release(compositeByteBuf);
-        }
+        publishBuffer();
     }
 
     @Override
