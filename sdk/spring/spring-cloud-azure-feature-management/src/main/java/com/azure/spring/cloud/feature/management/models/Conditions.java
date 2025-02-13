@@ -11,6 +11,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Conditions for evaluating a feature flag.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Conditions {
     @JsonProperty("client_filters")
@@ -28,6 +31,7 @@ public class Conditions {
 
     /**
      * @param requirementType the requirementType to set
+     * @return Conditions
      */
     public Conditions setRequirementType(String requirementType) {
         this.requirementType = requirementType;
@@ -43,6 +47,7 @@ public class Conditions {
 
     /**
      * @param clientFilters the clientFilters to set
+     * @return Conditions
      */
     public Conditions setClientFilters(List<FeatureFilterEvaluationContext> clientFilters) {
         this.clientFilters = clientFilters;
