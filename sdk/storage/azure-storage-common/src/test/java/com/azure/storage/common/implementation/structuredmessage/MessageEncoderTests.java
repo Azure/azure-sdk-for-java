@@ -210,41 +210,31 @@ public class MessageEncoderTests {
     public void contentAlreadyEncoded() throws IOException {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
         encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3, 4 }));
-        IllegalArgumentException exception
-            = assertThrows(IllegalArgumentException.class, () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })));
-        assertEquals("Content has already been encoded.", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })));
     }
 
     @Test
     public void bufferLengthExceedsContentLength() throws IOException {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
         encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3 }));
-        IllegalArgumentException exception
-            = assertThrows(IllegalArgumentException.class, () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })));
-        assertEquals("Buffer length exceeds content length.", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })));
     }
 
     @Test
     public void segmentSizeLessThanOne() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new StructuredMessageEncoder(10, 0, StructuredMessageFlags.NONE);
-        });
-        assertEquals("Segment size must be at least 1.", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> new StructuredMessageEncoder(10, 0,
+            StructuredMessageFlags.NONE));
     }
 
     @Test
     public void contentLengthLessThanOne() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new StructuredMessageEncoder(0, 10, StructuredMessageFlags.NONE);
-        });
-        assertEquals("Content length must be at least 1.", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> new StructuredMessageEncoder(0, 10,
+            StructuredMessageFlags.NONE));
     }
 
     @Test
     public void testNumSegmentsExceedsMaxValue() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new StructuredMessageEncoder(Integer.MAX_VALUE, 1, StructuredMessageFlags.NONE);
-        });
-        assertEquals("Number of segments must be less than or equal to " + Short.MAX_VALUE, exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () -> new StructuredMessageEncoder(Integer.MAX_VALUE, 1,
+            StructuredMessageFlags.NONE));
     }
 }

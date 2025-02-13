@@ -48,10 +48,10 @@ public class StructuredMessageEncoder {
      */
     public StructuredMessageEncoder(int contentLength, int segmentSize, StructuredMessageFlags structuredMessageFlags) {
         if (segmentSize < 1) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Segment size must be at least 1."));
+            StorageImplUtils.assertInBounds("segmentSize", segmentSize, 1, Long.MAX_VALUE);
         }
         if (contentLength < 1) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Content length must be at least 1."));
+            StorageImplUtils.assertInBounds("contentLength", contentLength, 1, Long.MAX_VALUE);
         }
 
         this.messageVersion = DEFAULT_MESSAGE_VERSION;
@@ -68,8 +68,7 @@ public class StructuredMessageEncoder {
         this.currentMessageLength = 0;
 
         if (numSegments > Short.MAX_VALUE) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Number of segments must be less than or equal to " + Short.MAX_VALUE));
+            StorageImplUtils.assertInBounds("numSegments", numSegments, 1, Short.MAX_VALUE);
         }
     }
 
