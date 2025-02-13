@@ -20,7 +20,6 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MessageEncoderTests {
 
@@ -51,7 +50,7 @@ public class MessageEncoderTests {
         stream.write(data); // Write segment content
     }
 
-    // TODO isbr: Add tests with static inputs and expected outputs for the encoder.
+    // TODO (isbr): Add tests with static inputs and expected outputs for the encoder.
     // Avoid reimplementing the encoder in tests to prevent potential errors in both implementation and tests.
     // Consider reusing outputs from existing scripts. This approach can also benefit future decoder tests.
 
@@ -211,8 +210,8 @@ public class MessageEncoderTests {
     public void contentAlreadyEncoded() throws IOException {
         StructuredMessageEncoder encoder = new StructuredMessageEncoder(4, 2, StructuredMessageFlags.NONE);
         encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2, 3, 4 }));
-        IllegalStateException exception
-            = assertThrows(IllegalStateException.class, () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })));
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> encoder.encode(ByteBuffer.wrap(new byte[] { 1, 2 })));
         assertEquals("Content has already been encoded.", exception.getMessage());
     }
 

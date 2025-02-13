@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation.structuredmessage;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
@@ -21,6 +22,7 @@ public class StructuredMessageEncoder {
     private static final int V1_HEADER_LENGTH = 13;
     private static final int V1_SEGMENT_HEADER_LENGTH = 10;
     private static final int CRC64_LENGTH = 8;
+    private static final ClientLogger LOGGER = new ClientLogger(StructuredMessageEncoder.class);
 
     private final int messageVersion;
     private final int contentLength;
@@ -46,10 +48,10 @@ public class StructuredMessageEncoder {
      */
     public StructuredMessageEncoder(int contentLength, int segmentSize, StructuredMessageFlags structuredMessageFlags) {
         if (segmentSize < 1) {
-            throw new IllegalArgumentException("Segment size must be at least 1.");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Segment size must be at least 1."));
         }
         if (contentLength < 1) {
-            throw new IllegalArgumentException("Content length must be at least 1.");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Content length must be at least 1."));
         }
 
         this.messageVersion = DEFAULT_MESSAGE_VERSION;
@@ -66,7 +68,8 @@ public class StructuredMessageEncoder {
         this.currentMessageLength = 0;
 
         if (numSegments > Short.MAX_VALUE) {
-            throw new IllegalArgumentException("Number of segments must be less than or equal to " + Short.MAX_VALUE);
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Number of segments must be less than or equal to " + Short.MAX_VALUE));
         }
     }
 
@@ -129,11 +132,11 @@ public class StructuredMessageEncoder {
         StorageImplUtils.assertNotNull("unencodedBuffer", unencodedBuffer);
 
         if (currentContentOffset == contentLength) {
-            throw new IllegalArgumentException("Content has already been encoded.");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Content has already been encoded."));
         }
 
         if ((unencodedBuffer.remaining() + currentContentOffset) > contentLength) {
-            throw new IllegalArgumentException("Buffer length exceeds content length.");
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Buffer length exceeds content length."));
         }
 
         if (!unencodedBuffer.hasRemaining()) {
