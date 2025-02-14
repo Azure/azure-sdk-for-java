@@ -226,7 +226,7 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2024-03 --add-inner=Deployment"
+    "args": "--tag=package-resources-2024-11 --add-inner=Deployment"
   },
   "resources-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
