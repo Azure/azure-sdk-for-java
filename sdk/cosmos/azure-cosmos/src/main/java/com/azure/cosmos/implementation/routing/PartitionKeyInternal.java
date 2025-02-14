@@ -30,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.as;
 
@@ -56,13 +55,13 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
     @SuppressWarnings("serial")
     public static final PartitionKeyInternal InfinityPartitionKey =
-            new PartitionKeyInternal(new ArrayList<IPartitionKeyComponent>() {{
+            new PartitionKeyInternal(new ArrayList<>() {{
                 add(new InfinityPartitionKeyComponent());
             }});
 
     @SuppressWarnings("serial")
     public static final PartitionKeyInternal UndefinedPartitionKey =
-            new PartitionKeyInternal(new ArrayList<IPartitionKeyComponent>() {{
+            new PartitionKeyInternal(new ArrayList<>() {{
                 add(new UndefinedPartitionKeyComponent());
             }});
 
@@ -182,16 +181,6 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
     @Override
     public int hashCode() {
-//        TODO: @kushagraThapar, @moderakh, mbhaskar to identify proper implementation.
-//        Issue: https://github.com/Azure/azure-sdk-for-java/issues/9046
-//        if (this.components == null || this.components.size() == 0) {
-//            return 0;
-//        }
-//        int [] ordinals = new int[this.components.size()];
-//        for (int i = 0; i < this.components.size(); i++) {
-//            ordinals[i] = this.components.get(i).GetTypeOrdinal();
-//        }
-//        return Arrays.hashCode(ordinals);
         return super.hashCode();
     }
 
@@ -248,6 +237,10 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
     public String getEffectivePartitionKeyString(PartitionKeyInternal internalPartitionKey, PartitionKeyDefinition partitionKey) {
         return PartitionKeyInternalHelper.getEffectivePartitionKeyString(internalPartitionKey, partitionKey);
+    }
+
+    public byte[] getEffectivePartitionKeyBytes(PartitionKeyInternal internalPartitionKey, PartitionKeyDefinition partitionKey) {
+        return PartitionKeyInternalHelper.getEffectivePartitionKeyBytes(internalPartitionKey, partitionKey);
     }
 
     public Range<String> getEPKRangeForPrefixPartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
