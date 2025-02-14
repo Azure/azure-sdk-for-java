@@ -22,7 +22,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * List of dimensions
      */
     @Generated
-    private List<NameAndDesc> dimensions;
+    private List<NameAndDescription> dimensions;
 
     /*
      * The metric description
@@ -80,7 +80,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @return the dimensions value.
      */
     @Generated
-    public List<NameAndDesc> getDimensions() {
+    public List<NameAndDescription> getDimensions() {
         return this.dimensions;
     }
 
@@ -193,7 +193,8 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("dimensions".equals(fieldName)) {
-                    List<NameAndDesc> dimensions = reader.readArray(reader1 -> NameAndDesc.fromJson(reader1));
+                    List<NameAndDescription> dimensions
+                        = reader.readArray(reader1 -> NameAndDescription.fromJson(reader1));
                     deserializedMetricDefinition.dimensions = dimensions;
                 } else if ("description".equals(fieldName)) {
                     deserializedMetricDefinition.description = reader.getString();
