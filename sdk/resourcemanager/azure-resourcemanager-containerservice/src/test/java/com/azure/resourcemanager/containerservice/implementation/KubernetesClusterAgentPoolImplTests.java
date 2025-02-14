@@ -61,9 +61,7 @@ public class KubernetesClusterAgentPoolImplTests {
             String name = method.getName();
             if (mockValues.containsKey(name)) {
                 Object value = method.invoke(agentPoolInner);
-                if (value != null) {
-                    Assertions.assertEquals(mockValues.get(name), value, String.format("Field %s mismatch", name));
-                }
+                Assertions.assertEquals(mockValues.get(name), value, String.format("Field %s mismatch", name));
             }
         }
     }
