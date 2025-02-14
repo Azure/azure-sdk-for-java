@@ -1,6 +1,6 @@
 # Release History
 
-## 2.48.0-beta.1 (2025-02-06)
+## 2.48.0-beta.1 (2025-02-14)
 
 ### Other Changes
 
