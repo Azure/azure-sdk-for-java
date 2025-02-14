@@ -33,18 +33,16 @@ steps:
       }
 
       # Define the new version with '-SNAPSHOT' appended
-      $env:newVersion = "$version-SNAPSHOT"
-      Write-Host "New version: $env:newVersion"
+      $newVersion = "$version-SNAPSHOT"
+      Write-Host "New version: $newVersion"
 
       # Update the version in the build.gradle.kts file
       $updatedContent = $buildGradleContent -replace 'version\s*=\s*\"([^\"]+)\"', "version = `"$global:newVersion`""
       Set-Content -Path $buildGradlePath -Value $updatedContent
-      
-      # Set the output variable
-      Write-Output "::set-output name=newVersion::$env:newVersion"
+     
+      Write-Host "##vso[task.setvariable variable=$newVersion]$env:newVersion"
     displayName: Find current version and update to SNAPSHOT
     workingDirectory: $(Agent.TempDirectory)
-    id: setNewVersion
 
   - pwsh: |
       Write-Host "Building the project and publishing to the local Maven repository"
@@ -56,14 +54,9 @@ steps:
   - pwsh: |
       # Define the path to the external_dependencies.txt file
       $dependenciesFilePath = "eng/versioning/external_dependencies.txt"
-    
-      # Access the environment variable from the previous step
-      $newVersion = "${{ steps.setNewVersion.outputs.newVersion }}"
-      Write-Host "New version from preview step, setNewVersion: $newVersion"
-            
+
       # Update the version in the external_dependencies.txt file
       $newVersionInExternalDependenciesFile = "com.openai:openai-java;$env:newVersion"
-      
       $dependenciesContent = Get-Content -Path $dependenciesFilePath -Raw
       $updatedDependenciesContent = $dependenciesContent -replace 'com.openai:openai-java;[0-9.]+', $newVersionInExternalDependenciesFile
       Write-Host "Updated the version in the external_dependencies.txt file: $updatedDependenciesContent"
