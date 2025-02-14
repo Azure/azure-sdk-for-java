@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for logz Management</name>
-  <description>This package contains Microsoft Azure SDK for logz Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2020-10-01.</description>
+  <description>Please note, this package has been deprecated and will no longer be maintained after 01/01/2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details. This package contains Microsoft Azure SDK for logz Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt.  Package tag package-2020-10-01.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
