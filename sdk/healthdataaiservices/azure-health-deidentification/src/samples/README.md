@@ -28,10 +28,10 @@ how to get started, see the [Azure Health Data Services de-identification servic
 
 <!-- LINKS -->
 [SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/README.md
-[deidentify_text]: <!--https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/DeidentifyText.java-->
-[list_jobs]: <!--https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/ListDeidentificationJobs.java-->
-[begin_job]: <!--https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/BeginDeidentifyDocuments.java-->
-[get_job]: <!--https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/GetDeidentificationJob.java-->
-[get_job_documents]: <!--https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/ListProcessedDocumentsWithinAJob.java-->
-[cancel_job]: <!--https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/CancelDeidentificationJob.java-->
-[delete_job]: <!--https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/DeleteDeidentificationJob.java-->
+[deidentify_text]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/DeidentifyText.java -->
+[list_jobs]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/ListDeidentificationJobs.java -->
+[begin_job]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/BeginDeidentifyDocuments.java -->
+[get_job]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/GetDeidentificationJob.java -->
+[get_job_documents]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/ListProcessedDocumentsWithinAJob.java -->
+[cancel_job]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/CancelDeidentificationJob.java -->
+[delete_job]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/DeleteDeidentificationJob.java -->

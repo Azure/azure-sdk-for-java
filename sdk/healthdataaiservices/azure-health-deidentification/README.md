@@ -210,4 +210,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_cli]: https://learn.microsoft.com/cli/azure/healthcareapis/deidservice?view=azure-cli-latest
 [azure_portal]: https://ms.portal.azure.com
 [http_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
-[samples]: src/samples/README.md
+[samples]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/README.md -->
