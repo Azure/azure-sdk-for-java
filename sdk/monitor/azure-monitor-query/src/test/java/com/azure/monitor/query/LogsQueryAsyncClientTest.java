@@ -68,7 +68,8 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
         resourceId = getLogResourceId(interceptorManager.isPlaybackMode());
 
         credential = TestUtil.getTestTokenCredential(interceptorManager);
-        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder().credential(credential).httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder().credential(credential)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
