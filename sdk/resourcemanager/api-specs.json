@@ -226,7 +226,8 @@
     "dir": "azure-resourcemanager-resources",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.resourcemanager.resources",
-    "args": "--tag=package-resources-2024-11 --add-inner=Deployment"
+    "args": "--tag=package-resources-2024-11 --add-inner=Deployment",
+    "note": "Remove `final` from `ResourceReference`, as it is used as superclass in deploymentstacks."
   },
   "resources-hybrid": {
     "dir": "../resourcemanagerhybrid/azure-resourcemanager-resources",
