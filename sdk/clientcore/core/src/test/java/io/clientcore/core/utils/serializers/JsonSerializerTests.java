@@ -5,6 +5,7 @@ package io.clientcore.core.utils.serializers;
 
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
+import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -20,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -27,13 +29,17 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JsonSerializerTests {
     private static final ObjectSerializer SERIALIZER = new JsonSerializer();
@@ -265,5 +271,92 @@ public class JsonSerializerTests {
             // Thrown when the String cannot be parsed by core
             Arguments.of(URI.class, IOException.class) // Thrown when the String cannot be parsed by core
         );
+    }
+
+    @Test
+    public void deserializeListOfJsonSerializableTypes() throws IOException {
+        byte[] bytes = "[{\"property\":\"value1\"},{\"property\":\"value2\"}]".getBytes(StandardCharsets.UTF_8);
+
+        ParameterizedType type = TypeUtil.createParameterizedType(List.class, FooModel.class);
+
+        List<FooModel> models = SERIALIZER.deserializeFromBytes(bytes, type);
+        assertNotNull(models);
+        assertEquals(2, models.size());
+        assertEquals("value1", models.get(0).getProperty());
+        assertEquals("value2", models.get(1).getProperty());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    public void deserializeListOfNonJsonSerializableTypes() throws IOException {
+        byte[] bytes = "[{\"property\":\"value1\"},{\"property\":\"value2\"}]".getBytes(StandardCharsets.UTF_8);
+
+        ParameterizedType type = TypeUtil.createParameterizedType(List.class, BarModel.class);
+
+        List<?> models = SERIALIZER.deserializeFromBytes(bytes, type);
+        assertNotNull(models);
+        assertEquals(2, models.size());
+        assertTrue(models.get(0) instanceof LinkedHashMap);
+
+        if (models.get(0) instanceof LinkedHashMap) {
+            LinkedHashMap<String, String> model = (LinkedHashMap<String, String>) models.get(0);
+            assertEquals("value1", model.get("property"));
+        }
+    }
+
+    /**
+     * A model that implements {@link JsonSerializable}.
+     */
+    public static final class FooModel implements JsonSerializable<FooModel> {
+        private final String property;
+
+        public FooModel(String property) {
+            this.property = property;
+        }
+
+        public String getProperty() {
+            return this.property;
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("property", this.property);
+            return jsonWriter.writeEndObject();
+        }
+
+        public static FooModel fromJson(JsonReader jsonReader) throws IOException {
+            return jsonReader.readObject(reader -> {
+                String property = null;
+                while (reader.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = reader.getFieldName();
+                    reader.nextToken();
+
+                    if ("property".equals(fieldName)) {
+                        property = reader.getString();
+                    } else {
+                        reader.skipChildren();
+                    }
+                }
+                FooModel deserializedModel = new FooModel(property);
+
+                return deserializedModel;
+            });
+        }
+    }
+
+    /**
+     * A model that does not implement {@link JsonSerializable}.
+     */
+    public static final class BarModel {
+        private final String property;
+
+        public BarModel(String property) {
+            this.property = property;
+        }
+
+        public String getProperty() {
+            return this.property;
+        }
     }
 }
