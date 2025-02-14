@@ -4,7 +4,6 @@ languages:
   - java
 products:
   - azure
-  - azure-health-deidentification
 urlFragment: health-deidentification-java-samples
 ---
 
