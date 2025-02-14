@@ -29,7 +29,7 @@ public class QuickPulse {
 
     private volatile QuickPulseDataCollector collector;
 
-    private static final ClientLogger logger = new ClientLogger(QuickPulse.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QuickPulse.class);
 
     public static QuickPulse create(HttpPipeline httpPipeline, Supplier<URL> endpointUrl,
         Supplier<String> instrumentationKey, @Nullable String roleName, @Nullable String roleInstance,
@@ -73,7 +73,7 @@ public class QuickPulse {
     private void initialize(HttpPipeline httpPipeline, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
         @Nullable String roleName, @Nullable String roleInstance, String sdkVersion) {
 
-        logger.verbose(
+        LOGGER.verbose(
             "Initializing QuickPulse with instrumentation key: {} , URL {}, rolename {}, role instance {}, sdk version {}",
             instrumentationKey.get(), endpointUrl.get().toString(), roleName, roleInstance, sdkVersion);
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");

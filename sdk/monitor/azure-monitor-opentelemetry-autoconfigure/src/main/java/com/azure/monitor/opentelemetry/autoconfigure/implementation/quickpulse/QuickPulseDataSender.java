@@ -12,7 +12,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PublishHeaders;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.ServiceErrorException;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 
 import java.io.IOException;

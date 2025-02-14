@@ -14,7 +14,6 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.ServiceErrorException;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 import reactor.util.annotation.Nullable;
 
