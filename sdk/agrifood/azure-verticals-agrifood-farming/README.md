@@ -32,26 +32,12 @@ Use FarmBeats client library for Python to do the following.
 
 ### Authenticate the client
 
-#### Using Azure Active Directory
+#### Using Microsoft Entra ID
 
-In order to interact with the Azure FarmBeats service, your client must present an Azure Active Directory bearer token to the service.
+In order to interact with the Azure FarmBeats service, your client must present a Microsoft Entra bearer token to the service.
 
-The simplest way of providing a bearer token is to use the `DefaultAzureCredential` authentication method by providing client secret credentials is being used in this getting started section but you can find more ways to authenticate with [azure-identity][azure_identity].
+The best way of providing a bearer token is to use the Azure Identity library. See the [installation instructions](../../../sdk/identity/azure-identity/README.md#include-the-package) to include `azure-identity`. In the examples, `credential` refers to a `TokenCredential`. It's recommended to use a [credential chain](../../../sdk/identity/azure-identity/readme#construct-a-credential-chain).
 
-You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
-
-To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
-
-[//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
-```xml
-<dependency>
-    <groupId>com.azure</groupId>
-    <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
-</dependency>
-```
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Example - Create Parties Client
 
@@ -61,26 +47,29 @@ String endpoint = "https://<farmbeats-endpoint>.farmbeats.azure.net";
 // Create Parties Client
 PartiesClientBuilder partiesBuilder = new PartiesClientBuilder()
     .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build());
+    .credential(credential);
 PartiesAsyncClient partiesClient = partiesBuilder.buildAsyncClient();
 
 ```
 
 ##### Example - Create Boundaries Client
+
 ```java readme-sample-createBoundariesClient
+
 // Create Boundaries Client
 BoundariesClientBuilder boundariesBuilder = new BoundariesClientBuilder()
     .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build());
+    .credential(credential);
 BoundariesAsyncClient boundariesClient = boundariesBuilder.buildAsyncClient();
 ```
 
 ##### Example - Create Scenes Client
+
 ```java readme-sample-createScenesClient
 // Create Scenes Client
 ScenesClientBuilder scenesBuilder = new ScenesClientBuilder()
     .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build());
+    .credential(credential);
 ScenesAsyncClient scenesClient = scenesBuilder.buildAsyncClient();
 ```
 
