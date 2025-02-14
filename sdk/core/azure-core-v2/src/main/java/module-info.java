@@ -16,6 +16,5 @@ module com.azure.v2.core {
     exports com.azure.v2.core.utils.io;
     exports com.azure.v2.core.utils.paging;
     exports com.azure.v2.core.utils.serializers;
-    exports com.azure.v2.core.utils.tracing;
     exports com.azure.v2.core.traits;
 }
