@@ -192,7 +192,7 @@ try {
 ```
 
 ## Next steps
-See the [samples][samples] for several code snippets illustrating common patterns used in the de-identification service
+See the [samples]<!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/README.md)--> for several code snippets illustrating common patterns used in the de-identification service
 Java SDK. For more extensive documentation, see the [de-identification service documentation][product_documentation].
 
 ## Contributing
@@ -210,4 +210,3 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_cli]: https://learn.microsoft.com/cli/azure/healthcareapis/deidservice?view=azure-cli-latest
 [azure_portal]: https://ms.portal.azure.com
 [http_response_exception]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
-[samples]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/README.md -->

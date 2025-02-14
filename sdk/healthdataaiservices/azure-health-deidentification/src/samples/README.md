@@ -16,22 +16,15 @@ how to get started, see the [Azure Health Data Services de-identification servic
 
 ## Samples
 
-| **File Name**                                         | **Description**                                                                               |
-|:------------------------------------------------------|-----------------------------------------------------------------------------------------------|
-| [DeidentifyText][deidentify_text]                     | De-identify text input                                                                        |
-| [ListDeidentificationJobs][list_jobs]                 | List all de-identification jobs                                                               |
-| [BeginDeidentifyDocuments][begin_job]                 | Begin a job to de-identify documents in Azure Storage                                         |
-| [GetDeidentificationJob][get_job]                     | Get details of a de-identification job                                                        |
-| [ListProcessedDocumentsWithinAJob][get_job_documents] | List all documents processed by a de-identification job                                       |
-| [CancelDeidentificationJob][cancel_job]               | Cancel the processing of documents in a de-identification job, while maintaining job metadata |
-| [DeleteDeidentificationJob][delete_job]               | Delete all information about a de-identification job                                          |
+| **File Name**                                                                                                                                                                                             | **Description**                                                                               |
+|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| [DeidentifyText]<!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/DeidentifyText.java)-->                                     | De-identify text input                                                                        |
+| [ListDeidentificationJobs]<!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/ListDeidentificationJobs.java)-->                 | List all de-identification jobs                                                               |
+| [BeginDeidentifyDocuments]<!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/BeginDeidentifyDocuments.java)-->                 | Begin a job to de-identify documents in Azure Storage                                         |
+| [GetDeidentificationJob]<!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/GetDeidentificationJob.java)-->                     | Get details of a de-identification job                                                        |
+| [ListProcessedDocumentsWithinAJob]<!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/ListProcessedDocumentsWithinAJob.java)--> | List all documents processed by a de-identification job                                       |
+| [CancelDeidentificationJob]<!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/CancelDeidentificationJob.java)-->               | Cancel the processing of documents in a de-identification job, while maintaining job metadata |
+| [DeleteDeidentificationJob]<!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/DeleteDeidentificationJob.java)-->               | Delete all information about a de-identification job                                          |
 
 <!-- LINKS -->
 [SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/README.md
-[deidentify_text]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/DeidentifyText.java -->
-[list_jobs]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/ListDeidentificationJobs.java -->
-[begin_job]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/BeginDeidentifyDocuments.java -->
-[get_job]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/GetDeidentificationJob.java -->
-[get_job_documents]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/ListProcessedDocumentsWithinAJob.java -->
-[cancel_job]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/CancelDeidentificationJob.java -->
-[delete_job]: <!-- https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthdataaiservices/azure-health-deidentification/src/samples/DeleteDeidentificationJob.java -->
