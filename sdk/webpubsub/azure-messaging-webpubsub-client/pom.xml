@@ -33,6 +33,10 @@
   </scm>
 
   <properties>
+    <javaModulesSurefireArgLine>
+      --add-exports com.azure.core/com.azure.core.implementation=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
+
     <!-- sdk uses live tests -->
     <jacoco.min.linecoverage>0.2</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.1</jacoco.min.branchcoverage>
@@ -65,14 +69,26 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-serializer-json-jackson</artifactId>
+      <version>1.5.6</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-jackson;dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-webpubsub</artifactId>
       <version>1.4.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
