@@ -28,7 +28,7 @@ public class BlobUploadFromUrlOptions {
     private Boolean copySourceBlobProperties;
     private HttpAuthorization sourceAuthorization;
     private BlobCopySourceTagsMode copySourceTags;
-    private FileShareTokenIntent fileShareTokenIntent;
+    private FileShareTokenIntent sourceShareTokenIntent;
 
     /**
      * Creates a new instance of {@link BlobUploadFromUrlOptions}.
@@ -239,22 +239,22 @@ public class BlobUploadFromUrlOptions {
     }
 
     /**
-     * Gets the  FileShareTokenIntent for the file share.
+     * Gets the sourceShareTokenIntent for the file share.
      *
-     * @return the FileShareTokenIntent for the file share.
+     * @return the sourceShareTokenIntent for the file share.
      */
-    public FileShareTokenIntent getFileShareTokenIntent() {
-        return fileShareTokenIntent;
+    public FileShareTokenIntent getSourceShareTokenIntent() {
+        return sourceShareTokenIntent;
     }
 
     /**
-     * Sets the FileShareTokenIntent for the file share.
+     * Sets the sourceShareTokenIntent for the file share.
      *
-     * @param fileShareTokenIntent Used to indicate the intent of the request.
+     * @param sourceShareTokenIntent Used to indicate the intent of the request.
      * @return The updated options.
      */
-    public BlobUploadFromUrlOptions setFileShareTokenIntent(FileShareTokenIntent fileShareTokenIntent) {
-        this.fileShareTokenIntent = fileShareTokenIntent;
+    public BlobUploadFromUrlOptions setSourceShareTokenIntent(FileShareTokenIntent sourceShareTokenIntent) {
+        this.sourceShareTokenIntent = sourceShareTokenIntent;
         return this;
     }
 }

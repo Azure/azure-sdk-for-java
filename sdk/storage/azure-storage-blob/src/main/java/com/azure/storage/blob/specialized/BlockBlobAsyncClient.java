@@ -589,7 +589,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 sourceRequestConditions.getIfNoneMatch(), sourceRequestConditions.getTagsConditions(), null,
                 options.getContentMd5(), ModelHelper.tagsToString(options.getTags()),
                 options.isCopySourceBlobProperties(), sourceAuth, options.getCopySourceTagsMode(),
-                options.getFileShareTokenIntent(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
+                options.getSourceShareTokenIntent(), options.getHeaders(), getCustomerProvidedKey(), encryptionScope,
                 context)
             .map(rb -> {
                 BlockBlobsPutBlobFromUrlHeaders hd = rb.getDeserializedHeaders();
@@ -886,7 +886,7 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
                 options.getSourceUrl(), sourceRange.toHeaderValue(), options.getSourceContentMd5(), null, null,
                 options.getLeaseId(), sourceRequestConditions.getIfModifiedSince(),
                 sourceRequestConditions.getIfUnmodifiedSince(), sourceRequestConditions.getIfMatch(),
-                sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, options.getFileShareTokenIntent(),
+                sourceRequestConditions.getIfNoneMatch(), null, sourceAuth, options.getSourceShareTokenIntent(),
                 getCustomerProvidedKey(), encryptionScope, context);
     }
 
