@@ -3,6 +3,9 @@
 
 package com.azure.v2.core.credential;
 
+import io.clientcore.core.credential.AccessToken;
+import io.clientcore.core.credential.TokenCredential;
+import io.clientcore.core.credential.TokenRequestContext;
 import io.clientcore.core.util.Base64Util;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;

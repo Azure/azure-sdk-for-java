@@ -66,8 +66,8 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
      * @param httpRequest The request context.
      */
     public void authorizeRequest(HttpRequest httpRequest) {
-        setAuthorizationHeaderHelperSync(httpRequest, new AzureTokenRequestContext().addScopes(scopes).setCaeEnabled(true),
-            false);
+        setAuthorizationHeaderHelperSync(httpRequest,
+            new AzureTokenRequestContext().addScopes(scopes).setCaeEnabled(true), false);
     }
 
     /**
