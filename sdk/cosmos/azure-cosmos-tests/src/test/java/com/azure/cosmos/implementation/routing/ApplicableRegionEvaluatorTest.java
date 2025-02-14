@@ -416,26 +416,30 @@ public class ApplicableRegionEvaluatorTest {
         DatabaseAccountTypes databaseAccountType,
         PerPartitionCircuitBreakerScenarios perPartitionCircuitBreakerScenarios) {
 
-        if (!request.isReadOnly() && (
-            databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION ||
-                databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_THREE_REGIONS ||
-                databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_TWO_REGIONS)) {
-
-            return false;
-        }
-
         switch (perPartitionCircuitBreakerScenarios) {
             case PER_PARTITION_CIRCUIT_BREAKER_DISABLED:
                 return true;
             case PER_PARTITION_CIRCUIT_BREAKER_ONE_REGION_UNAVAILABLE:
 
-                if (databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION) {
+                if (!request.isReadOnly() && (
+                    databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION ||
+                        databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_THREE_REGIONS ||
+                        databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_TWO_REGIONS)) {
+
                     return false;
                 }
 
                 request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(Arrays.asList(EastUsLocation));
                 return true;
             case PER_PARTITION_CIRCUIT_BREAKER_TWO_REGION_UNAVAILABLE:
+
+                if (!request.isReadOnly() && (
+                    databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION ||
+                        databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_THREE_REGIONS ||
+                        databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_TWO_REGIONS)) {
+
+                    return false;
+                }
 
                 if (databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_TWO_REGIONS || databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_TWO_REGIONS) {
                     return false;
@@ -445,6 +449,14 @@ public class ApplicableRegionEvaluatorTest {
                 return true;
             case PER_PARTITION_CIRCUIT_BREAKER_LAST_REGION_UNAVAILABLE:
                 if (databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION) {
+                    return false;
+                }
+
+                if (!request.isReadOnly() && (
+                    databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION ||
+                        databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_THREE_REGIONS ||
+                        databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_TWO_REGIONS)) {
+
                     return false;
                 }
 
@@ -458,6 +470,15 @@ public class ApplicableRegionEvaluatorTest {
                 request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(Arrays.asList(WestUsLocation));
                 return true;
             case PER_PARTITION_CIRCUIT_BREAKER_LAST_BUT_ONE_REGION_UNAVAILABLE:
+
+                if (!request.isReadOnly() && (
+                    databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION ||
+                        databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_THREE_REGIONS ||
+                        databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_TWO_REGIONS)) {
+
+                    return false;
+                }
+
                 if (databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_THREE_REGIONS ||
                     databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_THREE_REGIONS) {
 
@@ -480,17 +501,26 @@ public class ApplicableRegionEvaluatorTest {
         DatabaseAccountTypes databaseAccountType,
         PerPartitionAutomaticFailoverScenarios perPartitionAutomaticFailoverScenarios) {
 
-        if (databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION ||
-            databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_TWO_REGIONS ||
-            databaseAccountType == DatabaseAccountTypes.SINGLE_WRITE_ACCOUNT_WITH_THREE_REGIONS) {
-            return false;
-        }
-
         switch (perPartitionAutomaticFailoverScenarios) {
             case PER_PARTITION_AUTOMATIC_FAILOVER_DISABLED:
+                return true;
             case PER_PARTITION_AUTOMATIC_FAILOVER_WRITE_REGION_AVAILABLE:
+
+                if (databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION ||
+                    databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_TWO_REGIONS ||
+                    databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_THREE_REGIONS) {
+                    return false;
+                }
+
                 return true;
             case PER_PARTITION_AUTOMATIC_FAILOVER_WRITE_REGION_UNAVAILABLE:
+
+                if (databaseAccountType == DatabaseAccountTypes.ACCOUNT_WITH_ONE_REGION ||
+                    databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_TWO_REGIONS ||
+                    databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_THREE_REGIONS) {
+                    return false;
+                }
+
                 globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(request);
                 return true;
             default:
@@ -771,9 +801,9 @@ public class ApplicableRegionEvaluatorTest {
 
                 } else if (databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_TWO_REGIONS) {
                     if (opTypeScenario == OpTypeScenarios.IS_READ) {
-                        return Arrays.asList(TestAccountEastUsEndpoint, TestAccountWestUsEndpoint);
+                        return Arrays.asList(TestAccountWestUsEndpoint);
                     } else {
-                        return Arrays.asList(TestAccountEastUsEndpoint, TestAccountWestUsEndpoint);
+                        return Arrays.asList(TestAccountWestUsEndpoint);
                     }
                 } else if (databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_THREE_REGIONS) {
                     if (opTypeScenario == OpTypeScenarios.IS_READ) {
@@ -879,9 +909,9 @@ public class ApplicableRegionEvaluatorTest {
 
                 } else if (databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_TWO_REGIONS) {
                     if (opTypeScenario == OpTypeScenarios.IS_READ) {
-                        return Arrays.asList(TestAccountWestUsEndpoint);
+                        return Arrays.asList(TestAccountEastUsEndpoint, TestAccountWestUsEndpoint);
                     } else {
-                        return Arrays.asList(TestAccountWestUsEndpoint);
+                        return Arrays.asList(TestAccountEndpoint, TestAccountWestUsEndpoint);
                     }
                 } else if (databaseAccountType == DatabaseAccountTypes.MULTI_WRITE_ACCOUNT_WITH_THREE_REGIONS) {
                     if (opTypeScenario == OpTypeScenarios.IS_READ) {
