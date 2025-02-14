@@ -34,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.azure.communication.callautomation.models.RecordingResult;
-import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 
 public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
     @ParameterizedTest
@@ -294,7 +293,6 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
 
             assertNotNull(recordingStateResult.getRecordingId());
             String recordingId = recordingStateResult.getRecordingId();
-            RecordingStateResult recordingState = callerClient.getCallRecording().getState(recordingId);
 
             // stop recording
             callerClient.getCallRecording().stop(recordingId);
