@@ -139,4 +139,108 @@
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>java9plus</id>
+      <activation>
+        <jdk>[9,)</jdk>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <configuration>
+              <compilerArgs combine.children="append">
+                <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+                <arg>-Xlint:removal</arg>
+                <arg>-Xlint:-requires-transitive-automatic</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
+              </compilerArgs>
+            </configuration>
+            <executions>
+              <!-- compile first with VM's default Java version -->
+              <!-- this will generate module-info with major class version based on the Java version being used, in CI this should be 61 (i.e Java 17) -->
+              <execution>
+                <id>default-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>${java.vm.specification.version}</release>
+                </configuration>
+              </execution>
+
+              <!-- then compile with Java 11 as the base version that supports module-info -->
+              <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated
+              when the Azure SDK policy is changed -->
+              <!-- executing this after default-compile will generate module-info with major class version 55 (i.e Java 11) -->
+              <execution>
+                <id>base-modules-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <release>11</release>
+                  <includes>
+                    <include>module-info.java</include>
+                  </includes>
+                </configuration>
+              </execution>
+
+              <!-- then compile without module-info for Java 8 -->
+              <execution>
+                <id>base-compile</id>
+                <goals>
+                  <goal>compile</goal>
+                </goals>
+                <configuration>
+                  <compilerArgs combine.children="append">
+                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
+                  </compilerArgs>
+                  <release>8</release>
+                  <excludes>
+                    <exclude>module-info.java</exclude>
+                  </excludes>
+                </configuration>
+              </execution>
+
+              <!-- test compile with the current VM's default Java version -->
+              <execution>
+                <id>default-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <release>${java.vm.specification.version}</release>
+                  <testRelease>${java.vm.specification.version}</testRelease>
+                  <useModulePath>false</useModulePath>
+                </configuration>
+              </execution>
+
+              <!-- then compile with Java 8 -->
+              <execution>
+                <id>base-testCompile</id>
+                <goals>
+                  <goal>testCompile</goal>
+                </goals>
+                <configuration>
+                  <compilerArgs combine.children="append">
+                    <arg>-Xlint:-options</arg> <!-- Needed to compile with Java 20+ -->
+                  </compilerArgs>
+                  <release>8</release>
+                  <testRelease>8</testRelease>
+                  <testExcludes>
+                    <testExclude>module-info.java</testExclude>
+                  </testExcludes>
+                  <useModulePath>false</useModulePath>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
 </project>
