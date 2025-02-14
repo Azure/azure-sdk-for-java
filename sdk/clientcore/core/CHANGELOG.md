@@ -1,14 +1,12 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2025-02-14)
 
 ### Features Added
+- Support for deserialization of list of `JsonSerializable` types [#44208](https://github.com/Azure/azure-sdk-for-java/pull/44208)
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- API updates to refactor packages and remove unused APIs [#44210](https://github.com/Azure/azure-sdk-for-java/pull/44210)
 
 ## 1.0.0-beta.4 (2025-02-13)
 
