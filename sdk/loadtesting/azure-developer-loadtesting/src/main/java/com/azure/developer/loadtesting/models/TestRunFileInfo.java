@@ -47,7 +47,7 @@ public final class TestRunFileInfo implements JsonSerializable<TestRunFileInfo> 
      * Validation status of the file
      */
     @Generated
-    private FileStatus validationStatus;
+    private FileValidationStatus validationStatus;
 
     /*
      * Validation failure error details
@@ -108,7 +108,7 @@ public final class TestRunFileInfo implements JsonSerializable<TestRunFileInfo> 
      * @return the validationStatus value.
      */
     @Generated
-    public FileStatus getValidationStatus() {
+    public FileValidationStatus getValidationStatus() {
         return this.validationStatus;
     }
 
@@ -158,7 +158,7 @@ public final class TestRunFileInfo implements JsonSerializable<TestRunFileInfo> 
                     deserializedTestRunFileInfo.expireDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("validationStatus".equals(fieldName)) {
-                    deserializedTestRunFileInfo.validationStatus = FileStatus.fromString(reader.getString());
+                    deserializedTestRunFileInfo.validationStatus = FileValidationStatus.fromString(reader.getString());
                 } else if ("validationFailureDetails".equals(fieldName)) {
                     deserializedTestRunFileInfo.validationFailureDetails = reader.getString();
                 } else {

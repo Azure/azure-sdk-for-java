@@ -137,7 +137,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
      * The test run status.
      */
     @Generated
-    private Status status;
+    private TestRunStatus status;
 
     /*
      * The test run start DateTime(RFC 3339 literal format).
@@ -576,7 +576,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
      * @return the status value.
      */
     @Generated
-    public Status getStatus() {
+    public TestRunStatus getStatus() {
         return this.status;
     }
 
@@ -974,7 +974,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
                 } else if ("description".equals(fieldName)) {
                     deserializedTestRun.description = reader.getString();
                 } else if ("status".equals(fieldName)) {
-                    deserializedTestRun.status = Status.fromString(reader.getString());
+                    deserializedTestRun.status = TestRunStatus.fromString(reader.getString());
                 } else if ("startDateTime".equals(fieldName)) {
                     deserializedTestRun.startDateTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));

@@ -22,7 +22,7 @@ public final class TestRunDetail implements JsonSerializable<TestRunDetail> {
      * Status of the test run.
      */
     @Generated
-    private final Status status;
+    private final TestRunStatus status;
 
     /*
      * ID of the configuration on which the test ran.
@@ -37,26 +37,12 @@ public final class TestRunDetail implements JsonSerializable<TestRunDetail> {
     private final Map<String, String> properties;
 
     /**
-     * Creates an instance of TestRunDetail class.
-     *
-     * @param status the status value to set.
-     * @param configurationId the configurationId value to set.
-     * @param properties the properties value to set.
-     */
-    @Generated
-    private TestRunDetail(Status status, String configurationId, Map<String, String> properties) {
-        this.status = status;
-        this.configurationId = configurationId;
-        this.properties = properties;
-    }
-
-    /**
      * Get the status property: Status of the test run.
      *
      * @return the status value.
      */
     @Generated
-    public Status getStatus() {
+    public TestRunStatus getStatus() {
         return this.status;
     }
 
@@ -105,14 +91,14 @@ public final class TestRunDetail implements JsonSerializable<TestRunDetail> {
     @Generated
     public static TestRunDetail fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            Status status = null;
+            TestRunStatus status = null;
             String configurationId = null;
             Map<String, String> properties = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("status".equals(fieldName)) {
-                    status = Status.fromString(reader.getString());
+                    status = TestRunStatus.fromString(reader.getString());
                 } else if ("configurationId".equals(fieldName)) {
                     configurationId = reader.getString();
                 } else if ("properties".equals(fieldName)) {
@@ -123,5 +109,19 @@ public final class TestRunDetail implements JsonSerializable<TestRunDetail> {
             }
             return new TestRunDetail(status, configurationId, properties);
         });
+    }
+
+    /**
+     * Creates an instance of TestRunDetail class.
+     *
+     * @param status the status value to set.
+     * @param configurationId the configurationId value to set.
+     * @param properties the properties value to set.
+     */
+    @Generated
+    private TestRunDetail(TestRunStatus status, String configurationId, Map<String, String> properties) {
+        this.status = status;
+        this.configurationId = configurationId;
+        this.properties = properties;
     }
 }
