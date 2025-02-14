@@ -40,7 +40,8 @@ steps:
       $updatedContent = $buildGradleContent -replace 'version\s*=\s*\"([^\"]+)\"', "version = `"$global:newVersion`""
       Set-Content -Path $buildGradlePath -Value $updatedContent
      
-      Write-Host "##vso[task.setvariable variable=$newVersion]$env:newVersion"
+      Write-Host "##vso[task.setvariable variable=NewVersion]$newVersion"
+
     displayName: Find current version and update to SNAPSHOT
     workingDirectory: $(Agent.TempDirectory)
 
@@ -55,8 +56,14 @@ steps:
       # Define the path to the external_dependencies.txt file
       $dependenciesFilePath = "eng/versioning/external_dependencies.txt"
 
+      Write-Host "NEW VERSION: $env:NewVersion"
+      Write-Host "NEW VERSION 2: $NewVersion"
+      Write-Host "NEW VERSION 3: $(NewVersion)"
+      
+
+
       # Update the version in the external_dependencies.txt file
-      $newVersionInExternalDependenciesFile = "com.openai:openai-java;$env:newVersion"
+      $newVersionInExternalDependenciesFile = "com.openai:openai-java;$env:NewVersion"
       $dependenciesContent = Get-Content -Path $dependenciesFilePath -Raw
       $updatedDependenciesContent = $dependenciesContent -replace 'com.openai:openai-java;[0-9.]+', $newVersionInExternalDependenciesFile
       Write-Host "Updated the version in the external_dependencies.txt file: $updatedDependenciesContent"
