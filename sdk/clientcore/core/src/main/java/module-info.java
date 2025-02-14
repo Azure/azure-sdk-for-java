@@ -30,6 +30,7 @@ module io.clientcore.core {
     exports io.clientcore.core.instrumentation.tracing;
     exports io.clientcore.core.instrumentation.logging;
     exports io.clientcore.core.instrumentation.metrics;
+    exports io.clientcore.core.implementation;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
     uses io.clientcore.core.serialization.json.JsonProvider;
