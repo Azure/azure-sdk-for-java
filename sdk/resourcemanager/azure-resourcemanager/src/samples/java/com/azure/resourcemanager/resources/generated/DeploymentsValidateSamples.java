@@ -12,31 +12,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for Deployments CreateOrUpdateAtScope.
+ * Samples for Deployments Validate.
  */
-public final class DeploymentsCreateOrUpdateAtScopeSamples {
+public final class DeploymentsValidateSamples {
     /*
-     * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentAtScope.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/
+     * PostDeploymentValidateOnResourceGroup.json
      */
     /**
-     * Sample code: Create deployment at a given scope.
+     * Sample code: Validates a template at resource group scope.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createDeploymentAtAGivenScope(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void validatesATemplateAtResourceGroupScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
             .serviceClient()
             .getDeployments()
-            .createOrUpdateAtScope("providers/Microsoft.Management/managementGroups/my-management-group-id",
-                "my-deployment",
-                new DeploymentInner().withLocation("eastus")
-                    .withProperties(new DeploymentProperties()
-                        .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
-                        .withParameters(mapOf())
-                        .withMode(DeploymentMode.INCREMENTAL))
-                    .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder")),
+            .validate("my-resource-group", "my-deployment",
+                new DeploymentInner().withProperties(new DeploymentProperties().withTemplateLink(new TemplateLink()
+                    .withUri("https://example.com/exampleTemplate.json")
+                    .withQueryString(
+                        "sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=xxxxxxxx0xxxxxxxxxxxxx%2bxxxxxxxxxxxxxxxxxxxx%3d"))
+                    .withParameters(mapOf())
+                    .withMode(DeploymentMode.INCREMENTAL)),
                 com.azure.core.util.Context.NONE);
     }
 

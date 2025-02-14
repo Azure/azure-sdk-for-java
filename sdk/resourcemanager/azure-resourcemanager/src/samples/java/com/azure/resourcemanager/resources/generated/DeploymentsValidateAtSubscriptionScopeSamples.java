@@ -12,31 +12,29 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for Deployments CreateOrUpdateAtScope.
+ * Samples for Deployments ValidateAtSubscriptionScope.
  */
-public final class DeploymentsCreateOrUpdateAtScopeSamples {
+public final class DeploymentsValidateAtSubscriptionScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentAtScope.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/
+     * PostDeploymentValidateOnSubscription.json
      */
     /**
-     * Sample code: Create deployment at a given scope.
+     * Sample code: Validates a template at subscription scope.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createDeploymentAtAGivenScope(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void validatesATemplateAtSubscriptionScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
             .serviceClient()
             .getDeployments()
-            .createOrUpdateAtScope("providers/Microsoft.Management/managementGroups/my-management-group-id",
-                "my-deployment",
+            .validateAtSubscriptionScope("my-deployment",
                 new DeploymentInner().withLocation("eastus")
                     .withProperties(new DeploymentProperties()
                         .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
                         .withParameters(mapOf())
-                        .withMode(DeploymentMode.INCREMENTAL))
-                    .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder")),
+                        .withMode(DeploymentMode.INCREMENTAL)),
                 com.azure.core.util.Context.NONE);
     }
 

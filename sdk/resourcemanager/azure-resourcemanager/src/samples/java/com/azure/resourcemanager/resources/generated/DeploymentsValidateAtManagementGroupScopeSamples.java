@@ -4,39 +4,37 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
 import com.azure.resourcemanager.resources.models.DeploymentProperties;
+import com.azure.resourcemanager.resources.models.ScopedDeployment;
 import com.azure.resourcemanager.resources.models.TemplateLink;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Samples for Deployments CreateOrUpdateAtScope.
+ * Samples for Deployments ValidateAtManagementGroupScope.
  */
-public final class DeploymentsCreateOrUpdateAtScopeSamples {
+public final class DeploymentsValidateAtManagementGroupScopeSamples {
     /*
-     * x-ms-original-file:
-     * specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/PutDeploymentAtScope.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2024-11-01/examples/
+     * PostDeploymentValidateOnManagementGroup.json
      */
     /**
-     * Sample code: Create deployment at a given scope.
+     * Sample code: Validates a template at management group scope.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void createDeploymentAtAGivenScope(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void validatesATemplateAtManagementGroupScope(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.genericResources()
             .manager()
             .serviceClient()
             .getDeployments()
-            .createOrUpdateAtScope("providers/Microsoft.Management/managementGroups/my-management-group-id",
-                "my-deployment",
-                new DeploymentInner().withLocation("eastus")
+            .validateAtManagementGroupScope("my-management-group-id", "my-deployment",
+                new ScopedDeployment().withLocation("eastus")
                     .withProperties(new DeploymentProperties()
                         .withTemplateLink(new TemplateLink().withUri("https://example.com/exampleTemplate.json"))
                         .withParameters(mapOf())
-                        .withMode(DeploymentMode.INCREMENTAL))
-                    .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder")),
+                        .withMode(DeploymentMode.INCREMENTAL)),
                 com.azure.core.util.Context.NONE);
     }
 
