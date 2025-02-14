@@ -17,11 +17,5 @@ module com.azure.v2.core {
     exports com.azure.v2.core.utils.paging;
     exports com.azure.v2.core.utils.serializers;
     exports com.azure.v2.core.utils.tracing;
-    exports com.azure.v2.core.utils.metrics;
     exports com.azure.v2.core.traits;
-
-    // Service Provider Interfaces
-    uses com.azure.v2.core.utils.metrics.MeterProvider;
-    uses com.azure.v2.core.utils.tracing.Tracer;
-    uses com.azure.v2.core.utils.tracing.TracerProvider;
 }
