@@ -63,6 +63,9 @@ public final class MetricsHelper {
             String id, String name, String fullyQualifiedName, String type);
     }
 
+    /**
+     * Accessor interface
+     */
     public interface MetricsQueryResultResourceIdAccessor {
         void setMetricsQueryResultResourceIdProperty(MetricsQueryResult metricsQueryResult, String resourceId);
     }

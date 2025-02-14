@@ -13,8 +13,6 @@ import com.azure.monitor.query.models.MetricsQueryResourcesOptions;
 import com.azure.monitor.query.models.MetricsQueryResourcesResult;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -24,8 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class MetricsAsyncCientTest extends MetricsClientTestBase {
-
-    private static final Logger log = LoggerFactory.getLogger(MetricsAsyncCientTest.class);
 
     @Test
     public void testMetricsAsyncBatchQuery() {
