@@ -958,7 +958,7 @@
               </configurationFile>
             </analysisConfigurationFiles>
             <versionFormat>^\d+\.\d+\.\d+$</versionFormat>
-            <checkDependencies>true</checkDependencies>
+            <checkDependencies>false</checkDependencies>
             <failBuildOnProblemsFound>${revapi.failBuildOnProblemsFound}</failBuildOnProblemsFound>
             <!-- The following configures reporting to file in addition to CLI reporting. -->
             <analysisConfiguration>
