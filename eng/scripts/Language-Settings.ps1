@@ -6,6 +6,7 @@ $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/rel
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 $GithubUri = "https://github.com/Azure/azure-sdk-for-java"
 $PackageRepositoryUri = "https://repo1.maven.org/maven2"
+$ValidationGroupsFile = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../validation-groups.yml")
 
 . "$PSScriptRoot/docs/Docs-ToC.ps1"
 . "$PSScriptRoot/docs/Docs-Onboarding.ps1"
@@ -293,15 +294,24 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
 
   $additionalPackagesForOtherDirs = @()
   if ($targetedFiles) {
-    if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $templateStartsWithPrefixes) {
-      $additionalPackagesForOtherDirs += "azure-sdk-template"
+    $content = LoadFrom-Yaml $ValidationGroupsFile
+    $validationGroups = GetValueSafelyFrom-Yaml $content @("validationGroups")
+    foreach ($validationGroup in $validationGroups) {
+      if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $validationGroup.dirStartsWithPrefixes) {
+        $itemsToAdd = $validationGroup.additionalPackagesForValidation -join ", "
+        Write-Verbose "$($validationGroup.Name) match, adding the following packages for additional validation: $itemsToAdd"
+        $additionalPackagesForOtherDirs += $validationGroup.additionalPackagesForValidation
+      }
     }
-    if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $coreStartsWithPrefixes) {
-      $additionalPackagesForOtherDirs += "azure-core"
-    }
-    if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $clientcoreStartsWithPrefixes) {
-      $additionalPackagesForOtherDirs += "core"
-    }
+    # if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $templateStartsWithPrefixes) {
+    #   $additionalPackagesForOtherDirs += "azure-sdk-template"
+    # }
+    # if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $coreStartsWithPrefixes) {
+    #   $additionalPackagesForOtherDirs += "azure-core"
+    # }
+    # if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $clientcoreStartsWithPrefixes) {
+    #   $additionalPackagesForOtherDirs += "core"
+    # }
   }
 
   $changedServices = $changedServices | Get-Unique
