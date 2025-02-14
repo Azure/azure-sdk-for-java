@@ -55,7 +55,6 @@ public class AzureTokenRequestContext extends TokenRequestContext {
         super();
     }
 
-
     /**
      * Sets the scopes required for the token.
      * @param scopes the scopes required for the token
