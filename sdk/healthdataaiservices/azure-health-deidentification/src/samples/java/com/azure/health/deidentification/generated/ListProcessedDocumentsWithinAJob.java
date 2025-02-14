@@ -19,7 +19,7 @@ public class ListProcessedDocumentsWithinAJob {
                 .buildClient();
         // BEGIN:com.azure.health.deidentification.generated.listjobdocuments.listprocesseddocumentswithinajob
         PagedIterable<DeidentificationDocumentDetails> response
-            = deidentificationClient.listJobDocuments("job_smith_documents_1");
+            = deidentificationClient.listJobDocuments("job_smith_documents_1", "K1JJRDpzOEtaQWZabUQrQUNBQUFBQUFBQUFBQT09I1JUOjEjVFJDOjEwI0ZQQzpBZ0VBQUFBTUFDUUFBQUFBQUE9PQ==");
         // END:com.azure.health.deidentification.generated.listjobdocuments.listprocesseddocumentswithinajob
     }
 }
