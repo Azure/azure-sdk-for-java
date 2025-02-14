@@ -20,6 +20,7 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.List;
 
 /**
  * BinaryData is a convenient data interchange class for use throughout the SDK for Java. Put simply, BinaryData enables
@@ -234,59 +235,59 @@ public abstract class BinaryData implements Closeable {
         return new ByteArrayBinaryData(data);
     }
 
-    //    /**
-    //     * Creates an instance of {@link BinaryData} from the given {@link ByteBuffer}.
-    //     *
-    //     * <p>If the {@link ByteBuffer} is zero length an empty {@link BinaryData} will be returned. Note that the input
-    //     * {@link ByteBuffer} is used as a reference by this instance of {@link BinaryData} and any changes to the
-    //     * {@link ByteBuffer} outside of this instance will result in the contents of this BinaryData instance being updated
-    //     * as well. To safely update the {@link ByteBuffer} without impacting the BinaryData instance, perform an array copy
-    //     * first.</p>
-    //     *
-    //     * <p><strong>Create an instance from a ByteBuffer</strong></p>
-    //     *
-    //     * <!-- src_embed io.clientcore.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
-    //     * <pre>
-    //     * final ByteBuffer data = ByteBuffer.wrap&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
-    //     * BinaryData binaryData = BinaryData.fromByteBuffer&#40;data&#41;;
-    //     * System.out.println&#40;binaryData&#41;;
-    //     * </pre>
-    //     * <!-- end io.clientcore.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
-    //     *
-    //     * @param data The {@link ByteBuffer} that {@link BinaryData} will represent.
-    //     * @return A {@link BinaryData} representing the {@link ByteBuffer}.
-    //     * @throws NullPointerException If {@code data} is null.
-    //     */
-    //    public static BinaryData fromByteBuffer(ByteBuffer data) {
-    //        return new ByteBufferBinaryData(data);
-    //    }
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link ByteBuffer}.
+     *
+     * <p>If the {@link ByteBuffer} is zero length an empty {@link BinaryData} will be returned. Note that the input
+     * {@link ByteBuffer} is used as a reference by this instance of {@link BinaryData} and any changes to the
+     * {@link ByteBuffer} outside of this instance will result in the contents of this BinaryData instance being updated
+     * as well. To safely update the {@link ByteBuffer} without impacting the BinaryData instance, perform an array copy
+     * first.</p>
+     *
+     * <p><strong>Create an instance from a ByteBuffer</strong></p>
+     *
+     * <!-- src_embed io.clientcore.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
+     * <pre>
+     * final ByteBuffer data = ByteBuffer.wrap&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * BinaryData binaryData = BinaryData.fromByteBuffer&#40;data&#41;;
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
+     *
+     * @param data The {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the {@link ByteBuffer}.
+     * @throws NullPointerException If {@code data} is null.
+     */
+    static BinaryData fromByteBuffer(ByteBuffer data) {
+        return new ByteBufferBinaryData(data);
+    }
 
-    //    /**
-    //     * Creates an instance of {@link BinaryData} from the given {@link List} of {@link ByteBuffer}.
-    //     *
-    //     * <p>The input {@link ByteBuffer} instances are used as a reference by this instance of {@link BinaryData} and any
-    //     * changes to a {@link ByteBuffer} outside of this instance will result in the contents of this BinaryData instance
-    //     * being updated as well. To safely update the byte array without impacting the BinaryData instance, perform an
-    //     * array copy first.</p>
-    //     *
-    //     * <p><strong>Create an instance from a List&lt;ByteBuffer&gt;</strong></p>
-    //     *
-    //     * <!-- src_embed io.clientcore.core.util.BinaryData.fromListByteBuffer#List -->
-    //     * <pre>
-    //     * final List&lt;ByteBuffer&gt; data = Stream.of&#40;&quot;Some &quot;, &quot;data&quot;&#41;
-    //     *     .map&#40;s -&gt; ByteBuffer.wrap&#40;s.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
-    //     *     .collect&#40;Collectors.toList&#40;&#41;&#41;;
-    //     * BinaryData binaryData = BinaryData.fromListByteBuffer&#40;data&#41;;
-    //     * System.out.println&#40;binaryData&#41;;
-    //     * </pre>
-    //     * <!-- end io.clientcore.core.util.BinaryData.fromListByteBuffer#List -->
-    //     *
-    //     * @param data The {@link List} of {@link ByteBuffer} that {@link BinaryData} will represent.
-    //     * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.
-    //     */
-    //    public static BinaryData fromListByteBuffer(List<ByteBuffer> data) {
-    //        return new ListByteBufferBinaryData(data);
-    //    }
+    /**
+     * Creates an instance of {@link BinaryData} from the given {@link List} of {@link ByteBuffer}.
+     *
+     * <p>The input {@link ByteBuffer} instances are used as a reference by this instance of {@link BinaryData} and any
+     * changes to a {@link ByteBuffer} outside of this instance will result in the contents of this BinaryData instance
+     * being updated as well. To safely update the byte array without impacting the BinaryData instance, perform an
+     * array copy first.</p>
+     *
+     * <p><strong>Create an instance from a List&lt;ByteBuffer&gt;</strong></p>
+     *
+     * <!-- src_embed io.clientcore.core.util.BinaryData.fromListByteBuffer#List -->
+     * <pre>
+     * final List&lt;ByteBuffer&gt; data = Stream.of&#40;&quot;Some &quot;, &quot;data&quot;&#41;
+     *     .map&#40;s -&gt; ByteBuffer.wrap&#40;s.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
+     *     .collect&#40;Collectors.toList&#40;&#41;&#41;;
+     * BinaryData binaryData = BinaryData.fromListByteBuffer&#40;data&#41;;
+     * System.out.println&#40;binaryData&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.util.BinaryData.fromListByteBuffer#List -->
+     *
+     * @param data The {@link List} of {@link ByteBuffer} that {@link BinaryData} will represent.
+     * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.
+     */
+    static BinaryData fromListByteBuffer(List<ByteBuffer> data) {
+        return new ListByteBufferBinaryData(data);
+    }
 
     /**
      * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the default

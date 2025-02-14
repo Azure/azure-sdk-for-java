@@ -46,7 +46,7 @@ public interface ObjectSerializer {
      * @return The object represented by the deserialized channel.
      * @throws IOException If the deserialization fails.
      */
-    default <T> T deseializeFromChannel(ReadableByteChannel channel, Type type) throws IOException {
+    default <T> T deserializeFromChannel(ReadableByteChannel channel, Type type) throws IOException {
         return deserializeFromStream(Channels.newInputStream(channel), type);
     }
 
