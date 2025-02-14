@@ -86,6 +86,7 @@ The JCA library supports configuring the following options:
 * `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
 * `azure.keyvault.jca.certificates-refresh-interval(-in-ms)`: The refresh interval time.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
+
 You can configure these properties using:
 ```java
 System.setProperty("azure.keyvault.uri", "<your-azure-keyvault-uri>");
