@@ -6,6 +6,7 @@ package io.clientcore.core.utils.serializers;
 import io.clientcore.core.http.exceptions.HttpExceptionType;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
+import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.models.SimpleClass;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -280,23 +281,8 @@ public class JsonSerializerTests {
     public void deserializeListOfJsonSerializableTypes() throws IOException {
         byte[] bytes = "[{\"property\":\"value1\"},{\"property\":\"value2\"}]".getBytes(StandardCharsets.UTF_8);
 
-        ParameterizedType type = new ParameterizedType() {
+        ParameterizedType type = TypeUtil.createParameterizedType(List.class, FooModel.class);
 
-            @Override
-            public Type[] getActualTypeArguments() {
-                return new Type[] { FooModel.class };
-            }
-
-            @Override
-            public Type getRawType() {
-                return List.class;
-            }
-
-            @Override
-            public Type getOwnerType() {
-                return null;
-            }
-        };
         List<FooModel> models = SERIALIZER.deserializeFromBytes(bytes, type);
         assertNotNull(models);
         assertEquals(2, models.size());
@@ -309,23 +295,8 @@ public class JsonSerializerTests {
     public void deserializeListOfNonJsonSerializableTypes() throws IOException {
         byte[] bytes = "[{\"property\":\"value1\"},{\"property\":\"value2\"}]".getBytes(StandardCharsets.UTF_8);
 
-        ParameterizedType type = new ParameterizedType() {
+        ParameterizedType type = TypeUtil.createParameterizedType(List.class, BarModel.class);
 
-            @Override
-            public Type[] getActualTypeArguments() {
-                return new Type[] { BarModel.class };
-            }
-
-            @Override
-            public Type getRawType() {
-                return List.class;
-            }
-
-            @Override
-            public Type getOwnerType() {
-                return null;
-            }
-        };
         List<?> models = SERIALIZER.deserializeFromBytes(bytes, type);
         assertNotNull(models);
         assertEquals(2, models.size());
