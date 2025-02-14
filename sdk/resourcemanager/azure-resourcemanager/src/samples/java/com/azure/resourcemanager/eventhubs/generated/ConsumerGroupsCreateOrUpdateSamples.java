@@ -12,7 +12,7 @@ import com.azure.resourcemanager.eventhubs.fluent.models.ConsumerGroupInner;
 public final class ConsumerGroupsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/ConsumerGroup/
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/ConsumerGroup/
      * EHConsumerGroupCreate.json
      */
     /**

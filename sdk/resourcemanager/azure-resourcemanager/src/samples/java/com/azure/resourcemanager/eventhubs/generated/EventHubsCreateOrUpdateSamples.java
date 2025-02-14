@@ -12,7 +12,9 @@ import com.azure.resourcemanager.eventhubs.models.CleanupPolicyRetentionDescript
 import com.azure.resourcemanager.eventhubs.models.Destination;
 import com.azure.resourcemanager.eventhubs.models.EncodingCaptureDescription;
 import com.azure.resourcemanager.eventhubs.models.EntityStatus;
+import com.azure.resourcemanager.eventhubs.models.MessageTimestampDescription;
 import com.azure.resourcemanager.eventhubs.models.RetentionDescription;
+import com.azure.resourcemanager.eventhubs.models.TimestampType;
 
 /**
  * Samples for EventHubs CreateOrUpdate.
@@ -20,15 +22,15 @@ import com.azure.resourcemanager.eventhubs.models.RetentionDescription;
 public final class EventHubsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/EventHubs/EHEventHubCreate.
-     * json
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/EventHubs/
+     * EHEventHubWithDeletePolicyCreate.json
      */
     /**
-     * Sample code: EventHubCreate.
+     * Sample code: EHEventHubWithDeletePolicyCreate.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void eventHubCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void eHEventHubWithDeletePolicyCreate(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.eventHubs()
             .manager()
             .serviceClient()
@@ -38,7 +40,84 @@ public final class EventHubsCreateOrUpdateSamples {
                 new EventhubInner().withMessageRetentionInDays(4L)
                     .withPartitionCount(4L)
                     .withStatus(EntityStatus.ACTIVE)
-                    .withUserMetadata("key")
+                    .withCaptureDescription(new CaptureDescription().withEnabled(true)
+                        .withEncoding(EncodingCaptureDescription.AVRO)
+                        .withIntervalInSeconds(120)
+                        .withSizeLimitInBytes(10485763)
+                        .withDestination(new Destination().withName("EventHubArchive.AzureBlockBlob")
+                            .withIdentity(new CaptureIdentity().withType(CaptureIdentityType.USER_ASSIGNED)
+                                .withUserAssignedIdentity(
+                                    "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2"))
+                            .withStorageAccountResourceId(
+                                "/subscriptions/e2f361f0-3b27-4503-a9cc-21cfba380093/resourceGroups/Default-Storage-SouthCentralUS/providers/Microsoft.ClassicStorage/storageAccounts/arjunteststorage")
+                            .withBlobContainer("container")
+                            .withArchiveNameFormat(
+                                "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}")))
+                    .withRetentionDescription(
+                        new RetentionDescription().withCleanupPolicy(CleanupPolicyRetentionDescription.DELETE)
+                            .withRetentionTimeInHours(24L))
+                    .withMessageTimestampDescription(
+                        new MessageTimestampDescription().withTimestampType(TimestampType.LOG_APPEND))
+                    .withUserMetadata("key"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/EventHubs/
+     * EHEventHubCreate.json
+     */
+    /**
+     * Sample code: EHEventHubCreate.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void eHEventHubCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.eventHubs()
+            .manager()
+            .serviceClient()
+            .getEventHubs()
+            .createOrUpdateWithResponse("Default-NotificationHubs-AustraliaEast", "sdk-Namespace-5357",
+                "sdk-EventHub-6547",
+                new EventhubInner().withPartitionCount(4L)
+                    .withStatus(EntityStatus.ACTIVE)
+                    .withCaptureDescription(new CaptureDescription().withEnabled(true)
+                        .withEncoding(EncodingCaptureDescription.AVRO)
+                        .withIntervalInSeconds(120)
+                        .withSizeLimitInBytes(10485763)
+                        .withDestination(new Destination().withName("EventHubArchive.AzureBlockBlob")
+                            .withIdentity(new CaptureIdentity().withType(CaptureIdentityType.USER_ASSIGNED)
+                                .withUserAssignedIdentity(
+                                    "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2"))
+                            .withStorageAccountResourceId(
+                                "/subscriptions/e2f361f0-3b27-4503-a9cc-21cfba380093/resourceGroups/Default-Storage-SouthCentralUS/providers/Microsoft.ClassicStorage/storageAccounts/arjunteststorage")
+                            .withBlobContainer("container")
+                            .withArchiveNameFormat(
+                                "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}")))
+                    .withUserMetadata("key"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/EventHubs/
+     * EHEventHubWithCompactPolicyCreate.json
+     */
+    /**
+     * Sample code: EHEventHubWithCompactPolicyCreate.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void eHEventHubWithCompactPolicyCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.eventHubs()
+            .manager()
+            .serviceClient()
+            .getEventHubs()
+            .createOrUpdateWithResponse("Default-NotificationHubs-AustraliaEast", "sdk-Namespace-5357",
+                "sdk-EventHub-6547",
+                new EventhubInner().withMessageRetentionInDays(4L)
+                    .withPartitionCount(4L)
+                    .withStatus(EntityStatus.ACTIVE)
                     .withCaptureDescription(new CaptureDescription().withEnabled(true)
                         .withEncoding(EncodingCaptureDescription.AVRO)
                         .withIntervalInSeconds(120)
@@ -54,8 +133,53 @@ public final class EventHubsCreateOrUpdateSamples {
                                 "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}")))
                     .withRetentionDescription(
                         new RetentionDescription().withCleanupPolicy(CleanupPolicyRetentionDescription.COMPACT)
-                            .withRetentionTimeInHours(96L)
-                            .withTombstoneRetentionTimeInHours(1)),
+                            .withMinCompactionLagInMins(10L)
+                            .withTombstoneRetentionTimeInHours(1))
+                    .withMessageTimestampDescription(
+                        new MessageTimestampDescription().withTimestampType(TimestampType.LOG_APPEND))
+                    .withUserMetadata("key"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/EventHubs/
+     * EHEventHubWithDeleteOrCompactPolicyCreate.json
+     */
+    /**
+     * Sample code: EHEventHubWithDeleteOrCompactPolicyCreate.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void eHEventHubWithDeleteOrCompactPolicyCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.eventHubs()
+            .manager()
+            .serviceClient()
+            .getEventHubs()
+            .createOrUpdateWithResponse("Default-NotificationHubs-AustraliaEast", "sdk-Namespace-5357",
+                "sdk-EventHub-6547",
+                new EventhubInner().withMessageRetentionInDays(4L)
+                    .withPartitionCount(4L)
+                    .withStatus(EntityStatus.ACTIVE)
+                    .withCaptureDescription(new CaptureDescription().withEnabled(true)
+                        .withEncoding(EncodingCaptureDescription.AVRO)
+                        .withIntervalInSeconds(120)
+                        .withSizeLimitInBytes(10485763)
+                        .withDestination(new Destination().withName("EventHubArchive.AzureBlockBlob")
+                            .withIdentity(new CaptureIdentity().withType(CaptureIdentityType.USER_ASSIGNED)
+                                .withUserAssignedIdentity(
+                                    "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2"))
+                            .withStorageAccountResourceId(
+                                "/subscriptions/e2f361f0-3b27-4503-a9cc-21cfba380093/resourceGroups/Default-Storage-SouthCentralUS/providers/Microsoft.ClassicStorage/storageAccounts/arjunteststorage")
+                            .withBlobContainer("container")
+                            .withArchiveNameFormat(
+                                "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}")))
+                    .withRetentionDescription(new RetentionDescription()
+                        .withCleanupPolicy(CleanupPolicyRetentionDescription.DELETE_OR_COMPACT)
+                        .withRetentionTimeInHours(24L))
+                    .withMessageTimestampDescription(
+                        new MessageTimestampDescription().withTimestampType(TimestampType.LOG_APPEND))
+                    .withUserMetadata("key"),
                 com.azure.core.util.Context.NONE);
     }
 }

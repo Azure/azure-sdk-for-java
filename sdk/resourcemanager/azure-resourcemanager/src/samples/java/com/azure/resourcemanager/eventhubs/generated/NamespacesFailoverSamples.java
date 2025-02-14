@@ -4,25 +4,28 @@
 
 package com.azure.resourcemanager.eventhubs.generated;
 
+import com.azure.resourcemanager.eventhubs.fluent.models.FailOverInner;
+
 /**
- * Samples for Namespaces ListByResourceGroup.
+ * Samples for Namespaces Failover.
  */
-public final class NamespacesListByResourceGroupSamples {
+public final class NamespacesFailoverSamples {
     /*
      * x-ms-original-file:
      * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/
-     * EHNameSpaceListByResourceGroup.json
+     * EHNamespaceFailover.json
      */
     /**
-     * Sample code: NamespaceListByResourceGroup.
+     * Sample code: NameSpaceCreate.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void namespaceListByResourceGroup(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void nameSpaceCreate(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.eventHubs()
             .manager()
             .serviceClient()
             .getNamespaces()
-            .listByResourceGroup("ResurceGroupSample", com.azure.core.util.Context.NONE);
+            .failover("ResurceGroupSample", "NamespaceGeoDRFailoverSample",
+                new FailOverInner().withPrimaryLocation("centralus").withForce(true), com.azure.core.util.Context.NONE);
     }
 }

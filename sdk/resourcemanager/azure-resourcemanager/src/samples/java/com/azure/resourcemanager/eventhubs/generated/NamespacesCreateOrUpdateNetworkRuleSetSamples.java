@@ -6,9 +6,9 @@ package com.azure.resourcemanager.eventhubs.generated;
 
 import com.azure.resourcemanager.eventhubs.fluent.models.NetworkRuleSetInner;
 import com.azure.resourcemanager.eventhubs.models.DefaultAction;
-import com.azure.resourcemanager.eventhubs.models.NetworkRuleIpAction;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetIpRules;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetVirtualNetworkRules;
+import com.azure.resourcemanager.eventhubs.models.NetworkRuleIpAction;
 import com.azure.resourcemanager.eventhubs.models.Subnet;
 import java.util.Arrays;
 
@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class NamespacesCreateOrUpdateNetworkRuleSetSamples {
     /*
      * x-ms-original-file:
-     * specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/
      * VirtualNetworkRule/EHNetworkRuleSetCreate.json
      */
     /**

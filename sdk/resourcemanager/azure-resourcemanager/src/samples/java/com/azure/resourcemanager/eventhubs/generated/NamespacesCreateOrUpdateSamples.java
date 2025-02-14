@@ -6,10 +6,13 @@ package com.azure.resourcemanager.eventhubs.generated;
 
 import com.azure.resourcemanager.eventhubs.fluent.models.EHNamespaceInner;
 import com.azure.resourcemanager.eventhubs.models.Encryption;
+import com.azure.resourcemanager.eventhubs.models.GeoDRRoleType;
+import com.azure.resourcemanager.eventhubs.models.GeoDataReplicationProperties;
 import com.azure.resourcemanager.eventhubs.models.Identity;
 import com.azure.resourcemanager.eventhubs.models.KeySource;
 import com.azure.resourcemanager.eventhubs.models.KeyVaultProperties;
 import com.azure.resourcemanager.eventhubs.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.eventhubs.models.NamespaceReplicaLocation;
 import com.azure.resourcemanager.eventhubs.models.UserAssignedIdentity;
 import com.azure.resourcemanager.eventhubs.models.UserAssignedIdentityProperties;
 import java.util.Arrays;
@@ -22,7 +25,7 @@ import java.util.Map;
 public final class NamespacesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/
      * EHNameSpaceCreate.json
      */
     /**
@@ -49,7 +52,38 @@ public final class NamespacesCreateOrUpdateSamples {
                     .withKeyVaultUri("fakeTokenPlaceholder")
                     .withIdentity(new UserAssignedIdentityProperties().withUserAssignedIdentity(
                         "/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1"))))
-                    .withKeySource(KeySource.MICROSOFT_KEY_VAULT)),
+                    .withKeySource(KeySource.MICROSOFT_KEY_VAULT))
+                .withGeoDataReplication(new GeoDataReplicationProperties().withMaxReplicationLagDurationInSeconds(300)
+                    .withLocations(Arrays.asList(
+                        new NamespaceReplicaLocation().withLocationName("eastus").withRoleType(GeoDRRoleType.PRIMARY),
+                        new NamespaceReplicaLocation().withLocationName("southcentralus")
+                            .withRoleType(GeoDRRoleType.SECONDARY)))),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/
+     * NamespaceWithGeoDRCreate.json
+     */
+    /**
+     * Sample code: NamespaceWithGeoDRCreate.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void namespaceWithGeoDRCreate(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.eventHubs()
+            .manager()
+            .serviceClient()
+            .getNamespaces()
+            .createOrUpdate("ResurceGroupSample", "NamespaceGeoDRCreateSample", new EHNamespaceInner()
+                .withLocation("East US")
+                .withGeoDataReplication(new GeoDataReplicationProperties().withMaxReplicationLagDurationInSeconds(60)
+                    .withLocations(Arrays.asList(
+                        new NamespaceReplicaLocation().withLocationName("eastus").withRoleType(GeoDRRoleType.PRIMARY),
+                        new NamespaceReplicaLocation().withLocationName("westus").withRoleType(GeoDRRoleType.SECONDARY),
+                        new NamespaceReplicaLocation().withLocationName("centralus")
+                            .withRoleType(GeoDRRoleType.SECONDARY)))),
                 com.azure.core.util.Context.NONE);
     }
 

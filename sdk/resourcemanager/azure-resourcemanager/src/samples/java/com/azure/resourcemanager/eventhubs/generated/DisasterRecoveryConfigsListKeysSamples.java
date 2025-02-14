@@ -10,8 +10,8 @@ package com.azure.resourcemanager.eventhubs.generated;
 public final class DisasterRecoveryConfigsListKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/disasterRecoveryConfigs/
-     * EHAliasAuthorizationRuleListKey.json
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/
+     * disasterRecoveryConfigs/EHAliasAuthorizationRuleListKey.json
      */
     /**
      * Sample code: NameSpaceAuthorizationRuleListKey.

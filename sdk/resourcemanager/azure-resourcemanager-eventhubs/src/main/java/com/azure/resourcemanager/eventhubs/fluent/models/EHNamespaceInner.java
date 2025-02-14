@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventhubs.models.Encryption;
+import com.azure.resourcemanager.eventhubs.models.GeoDataReplicationProperties;
 import com.azure.resourcemanager.eventhubs.models.Identity;
 import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventhubs.models.Sku;
@@ -46,9 +47,9 @@ public final class EHNamespaceInner extends Resource {
     private EHNamespaceProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -56,9 +57,9 @@ public final class EHNamespaceInner extends Resource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of EHNamespaceInner class.
@@ -125,13 +126,13 @@ public final class EHNamespaceInner extends Resource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -145,13 +146,13 @@ public final class EHNamespaceInner extends Resource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -485,6 +486,29 @@ public final class EHNamespaceInner extends Resource {
             this.innerProperties = new EHNamespaceProperties();
         }
         this.innerProperties().withAlternateName(alternateName);
+        return this;
+    }
+
+    /**
+     * Get the geoDataReplication property: Geo Data Replication settings for the namespace.
+     * 
+     * @return the geoDataReplication value.
+     */
+    public GeoDataReplicationProperties geoDataReplication() {
+        return this.innerProperties() == null ? null : this.innerProperties().geoDataReplication();
+    }
+
+    /**
+     * Set the geoDataReplication property: Geo Data Replication settings for the namespace.
+     * 
+     * @param geoDataReplication the geoDataReplication value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withGeoDataReplication(GeoDataReplicationProperties geoDataReplication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withGeoDataReplication(geoDataReplication);
         return this;
     }
 

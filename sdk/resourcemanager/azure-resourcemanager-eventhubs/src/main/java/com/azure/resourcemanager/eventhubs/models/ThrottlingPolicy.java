@@ -108,10 +108,13 @@ public final class ThrottlingPolicy extends ApplicationGroupPolicy {
      */
     @Override
     public void validate() {
-        super.validate();
         if (metricId() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property metricId in model ThrottlingPolicy"));
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ThrottlingPolicy"));
         }
     }
 
