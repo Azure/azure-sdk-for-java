@@ -13,8 +13,7 @@ import io.clientcore.core.utils.ExpandableEnum;
  * (each try) and may mutate the results of authentication policies.
  * <p>
  * HttpPipelinePosition ensures that the creation of an {@link HttpPipeline} follows a strict positioning of policies.
- * This positioning is based on what is believed to be the best position of policy execution. Here is a visual
- * representation of the order of policies in an {@link HttpPipeline}:
+ * Here is a visual representation of the order of policies in an {@link HttpPipeline}:
  * <pre>
  *     +------------------------+
  *     |    Before redirect     |

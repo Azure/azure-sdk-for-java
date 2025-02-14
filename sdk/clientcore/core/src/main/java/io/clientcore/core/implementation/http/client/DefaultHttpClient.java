@@ -19,8 +19,11 @@ import java.util.Set;
 public final class DefaultHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
 
-    private static final String ERROR_MESSAGE = "Usage of DefaultHttpClient is only available when using Java 12 or "
-        + "higher. For support with Java 11 or lower, please including a dependency on io.clientcore:http-okhttp3.";
+    private static final String ERROR_MESSAGE = "It is recommended that libraries be deployed on the latest LTS "
+        + "version of Java, however the Java client will support down to Java 8. In the case where the client is to "
+        + "operate on Java versions below Java 11, it is required to include additional dependencies. Usage of "
+        + "DefaultHttpClient is only available when using Java 12 or higher. For support with Java 11 or lower, "
+        + "include a dependency on io.clientcore:http-okhttp3.";
 
     /**
      * Creates an instance of DefaultHttpClient.

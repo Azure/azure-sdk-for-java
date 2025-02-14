@@ -17,8 +17,8 @@ import java.util.Objects;
  * Schema URL describes telemetry schema and version.
  * <p>
  * If your client library adds any attributes (links, events, etc.) to the spans,
- * these properties SHOULD follow specific version of <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry Semantic Conventions</a>.
- * And provide the corresponding schema URI.
+ * these properties SHOULD follow specific version of <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry Semantic Conventions</a>
+ * and provide the corresponding schema URI.
  * <p>
  * The {@link LibraryInstrumentationOptions} are usually static and shared across all instances of the client.
  * Application developers are not expected to change them.

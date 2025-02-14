@@ -10,27 +10,27 @@ import java.util.Locale;
  */
 public enum LogLevel {
     /**
-     * Indicates that no log level is set.
+     * Indicates that there no log level is set.
      */
     NOTSET(0, "0", "notSet"),
 
     /**
-     * Indicates that log level is at verbose level.
+     * Indicates that the log level is at verbose level.
      */
     VERBOSE(1, "1", "verbose", "debug"),
 
     /**
-     * Indicates that log level is at information level.
+     * Indicates that the log level is at information level.
      */
     INFORMATIONAL(2, "2", "info", "information", "informational"),
 
     /**
-     * Indicates that log level is at warning level.
+     * Indicates that the log level is at warning level.
      */
     WARNING(3, "3", "warn", "warning"),
 
     /**
-     * Indicates that log level is at error level.
+     * Indicates that the log level is at error level.
      */
     ERROR(4, "4", "err", "error");
 
