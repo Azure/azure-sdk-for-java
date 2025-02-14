@@ -3,7 +3,6 @@
 
 package io.clientcore.core.utils.serializers;
 
-import io.clientcore.core.http.exceptions.HttpExceptionType;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.TypeUtil;
@@ -202,9 +201,7 @@ public class JsonSerializerTests {
 
         return Stream.of(Arguments.of(1, "1"), Arguments.of(1L, "1"), Arguments.of(1.0F, "1.0"),
             Arguments.of(1.0D, "1.0"), Arguments.of("1", "\"1\""), Arguments.of(HttpMethod.GET, "\"GET\""),
-            Arguments.of(HttpExceptionType.RESOURCE_MODIFIED, "\"RESOURCE_MODIFIED\""),
-            Arguments.of(HttpExceptionType.fromString(null), null), Arguments.of(map, "{\"key\":\"value\"}"),
-            Arguments.of(null, null));
+            Arguments.of(map, "{\"key\":\"value\"}"), Arguments.of(null, null));
     }
 
     @ParameterizedTest

@@ -4,7 +4,7 @@
 package io.clientcore.core.implementation.instrumentation;
 
 import io.clientcore.core.implementation.utils.EnvironmentConfiguration;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.PrintStream;
@@ -13,8 +13,6 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoField;
-
-import static io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel;
 
 /**
  * This class is an internal implementation of slf4j logger.
@@ -64,7 +62,7 @@ public final class DefaultLogger {
      * @param logLocation The location to log the messages.
      * @param logLevel The log level supported by the logger.
      */
-    public DefaultLogger(String className, PrintStream logLocation, ClientLogger.LogLevel logLevel) {
+    public DefaultLogger(String className, PrintStream logLocation, LogLevel logLevel) {
         this.classPath = className;
         this.logLocation = logLocation;
         this.level = logLevel;

@@ -18,7 +18,7 @@ import static io.clientcore.core.implementation.utils.ImplUtils.stringJoin;
  * If multiple header values are added to a request with the same name (case-insensitive), then the values will be
  * appended at the end of the same {@link HttpHeader} with commas separating them.
  */
-public class HttpHeader {
+public final class HttpHeader {
     private static final String[] EMPTY_HEADER_ARRAY = new String[0];
 
     private final HttpHeaderName name;

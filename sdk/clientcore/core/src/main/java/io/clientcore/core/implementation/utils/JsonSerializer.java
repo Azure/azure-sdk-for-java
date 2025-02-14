@@ -4,11 +4,10 @@
 package io.clientcore.core.implementation.utils;
 
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.serialization.json.JsonProviders;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.serializers.ObjectSerializer;
 import io.clientcore.core.utils.serializers.SerializationFormat;
 
@@ -54,7 +53,7 @@ public class JsonSerializer implements ObjectSerializer {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T deserializeFromBytes(byte[] bytes, Type type) throws IOException {
-        try (JsonReader jsonReader = JsonProviders.createReader(bytes)) {
+        try (JsonReader jsonReader = JsonReader.fromBytes(bytes)) {
             if (type instanceof ParameterizedType && List.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Type listElementType = parameterizedType.getActualTypeArguments()[0];
@@ -95,7 +94,7 @@ public class JsonSerializer implements ObjectSerializer {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T deserializeFromStream(InputStream stream, Type type) throws IOException {
-        try (JsonReader jsonReader = JsonProviders.createReader(stream)) {
+        try (JsonReader jsonReader = JsonReader.fromStream(stream)) {
             if (type instanceof Class<?> && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
                 Class<T> clazz = (Class<T>) type;
 
@@ -126,7 +125,7 @@ public class JsonSerializer implements ObjectSerializer {
         }
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            JsonWriter jsonWriter = JsonProviders.createWriter(byteArrayOutputStream)) {
+            JsonWriter jsonWriter = JsonWriter.toStream(byteArrayOutputStream)) {
 
             jsonWriter.writeUntyped(value);
             jsonWriter.flush();
@@ -148,7 +147,7 @@ public class JsonSerializer implements ObjectSerializer {
             return;
         }
 
-        try (JsonWriter jsonWriter = JsonProviders.createWriter(stream)) {
+        try (JsonWriter jsonWriter = JsonWriter.toStream(stream)) {
             jsonWriter.writeUntyped(value);
         }
     }
