@@ -24,20 +24,20 @@ import java.util.stream.StreamSupport;
 public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> extends IterableStream<T> {
     private static final ClientLogger LOGGER = new ClientLogger(ContinuablePagedIterable.class);
     private final int batchSize;
-    private final Supplier<PageRetrieverSync<C, P>> pageRetrieverSyncProvider;
+    private final Supplier<PageRetriever<C, P>> pageRetrieverSyncProvider;
     final Integer defaultPageSize;
     private final Predicate<C> continuationPredicate;
 
     /**
-     * Creates instance with the given {@link PageRetrieverSync provider}.
+     * Creates instance with the given {@link PageRetriever provider}.
      *
-     * @param pageRetrieverSyncProvider A provider that returns {@link PageRetrieverSync}.
+     * @param pageRetrieverSyncProvider A provider that returns {@link PageRetriever}.
      * @param pageSize The preferred page size.
      * @param continuationPredicate A predicate which determines if paging should continue.
      * @throws NullPointerException If {@code pageRetrieverSyncProvider} is null.
      * @throws IllegalArgumentException If {@code pageSize} is not null and is less than or equal to zero.
      */
-    public ContinuablePagedIterable(Supplier<PageRetrieverSync<C, P>> pageRetrieverSyncProvider, Integer pageSize,
+    public ContinuablePagedIterable(Supplier<PageRetriever<C, P>> pageRetrieverSyncProvider, Integer pageSize,
         Predicate<C> continuationPredicate) {
         super(null);
         //super(new ContinuablePagedByItemIterable<>(pageRetrieverSyncProvider.get(), null, continuationPredicate,
