@@ -3,7 +3,7 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
-import io.clientcore.core.util.binarydata.FileBinaryData;
+import io.clientcore.core.utils.binarydata.FileBinaryData;
 import okio.Buffer;
 import okio.BufferedSink;
 import okio.ByteString;

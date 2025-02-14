@@ -13,9 +13,9 @@ import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
-import io.clientcore.core.util.Context;
-import io.clientcore.core.util.TestUtils;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.Context;
+import io.clientcore.core.utils.TestUtils;
+import io.clientcore.core.utils.binarydata.BinaryData;
 import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -41,7 +41,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
-import static io.clientcore.core.util.TestUtils.assertArraysEqual;
+import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -8,9 +8,9 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
 import com.azure.resourcemanager.appservice.models.FunctionApp;
@@ -29,7 +29,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 public class AzureResourceManagerJavaDocSamples {
     public void authenticateUsingTokenCredentialAndAzureProfile(String tenantId, String subscriptionId) {
         // BEGIN: com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile
-        AzureProfile profile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
+        AzureProfile profile = new AzureProfile(tenantId, subscriptionId, AzureCloud.AZURE_PUBLIC_CLOUD);
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
             .build();

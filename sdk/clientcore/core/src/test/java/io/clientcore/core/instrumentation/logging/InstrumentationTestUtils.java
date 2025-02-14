@@ -5,7 +5,7 @@ package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
-import io.clientcore.core.implementation.util.ImplUtils;
+import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.serialization.json.JsonOptions;

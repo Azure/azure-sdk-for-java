@@ -4,7 +4,7 @@
 package com.azure.v2.core.http.policy;
 
 import io.clientcore.core.http.pipeline.HttpPipelineOrder;
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;

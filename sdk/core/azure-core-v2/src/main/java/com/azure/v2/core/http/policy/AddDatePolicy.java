@@ -10,7 +10,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelineOrder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import io.clientcore.core.util.DateTimeRfc1123;
+import io.clientcore.core.utils.DateTimeRfc1123;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

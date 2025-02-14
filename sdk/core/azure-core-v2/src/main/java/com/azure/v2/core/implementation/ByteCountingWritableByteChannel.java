@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.implementation;
 
-import com.azure.v2.core.util.ProgressReporter;
+import com.azure.v2.core.utils.ProgressReporter;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

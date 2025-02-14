@@ -5,8 +5,8 @@ package io.clientcore.core.http.client;
 
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.SharedExecutorService;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.SharedExecutorService;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import javax.net.ssl.SSLContext;
 import java.time.Duration;

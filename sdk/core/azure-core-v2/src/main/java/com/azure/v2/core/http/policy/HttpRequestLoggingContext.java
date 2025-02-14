@@ -5,7 +5,7 @@ package com.azure.v2.core.http.policy;
 
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 
 /**
  * The {@code HttpRequestLoggingContext} class provides contextual information available during HTTP request logging.
