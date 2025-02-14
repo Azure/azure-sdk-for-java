@@ -70,7 +70,6 @@ final class QuickPulseCoordinator implements Runnable {
 
     @SuppressWarnings("try")
     private long sendData() {
-        dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
         dataFetcher.prepareQuickPulseDataForSend();
 
         QuickPulseStatus qpStatus = dataSender.getQuickPulseStatus();
@@ -102,6 +101,7 @@ final class QuickPulseCoordinator implements Runnable {
                     : waitBetweenPingsInMillis;
 
             case QP_IS_ON:
+                logger.verbose("In post mode");
                 return waitBetweenPostsInMillis;
         }
 
@@ -136,6 +136,7 @@ final class QuickPulseCoordinator implements Runnable {
                 return waitBetweenPostsInMillis;
 
             case QP_IS_OFF:
+                logger.verbose("In ping mode");
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis
                     : waitBetweenPingsInMillis;
@@ -152,7 +153,15 @@ final class QuickPulseCoordinator implements Runnable {
     private QuickPulseStatus handleReceivedPingHeaders(IsSubscribedHeaders pingHeaders) {
         String redirectLink = pingHeaders.getXMsQpsServiceEndpointRedirectV2();
         if (!Strings.isNullOrEmpty(redirectLink)) {
-            qpsServiceRedirectedEndpoint = redirectLink;
+            // Taking the QuickPulseService.svc part out if present because the swagger will add that on.
+            int index = redirectLink.indexOf("QuickPulseService.svc");
+            if (index > 0) {
+                qpsServiceRedirectedEndpoint = redirectLink.substring(0, index);
+            } else {
+                qpsServiceRedirectedEndpoint = redirectLink;
+            }
+            logger.verbose("Handling ping header to redirect to {}", qpsServiceRedirectedEndpoint);
+            dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
         }
 
         String pollingIntervalHeader = pingHeaders.getXMsQpsServicePollingIntervalHint();
