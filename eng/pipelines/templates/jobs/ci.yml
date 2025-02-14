@@ -469,6 +469,10 @@ jobs:
             parameters:
               ServiceDirectory: ${{parameters.ServiceDirectory}}
               ExcludePaths: ${{parameters.ExcludePaths}}
+          - pwsh: |
+              Get-ChildItem -Path '$(Build.ArtifactStagingDirectory)/PackageInfo' -Recurse `
+                | ForEach-Object { Write-Host $_.Name; Write-Host (Get-Content -Path $_.FullName -Raw)}
+            displayName: dump visible Package Props
       MatrixFilters: ${{ parameters.MatrixFilters }}
       MatrixReplace: ${{ parameters.MatrixReplace }}
       CloudConfig:
