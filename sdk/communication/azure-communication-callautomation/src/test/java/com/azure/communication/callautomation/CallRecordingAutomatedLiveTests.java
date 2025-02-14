@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.RecordingResultResponse;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
@@ -22,6 +21,7 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.core.http.HttpClient;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -32,6 +32,9 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
+
+import com.azure.communication.callautomation.models.RecordingResult;
+import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 
 public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
     @ParameterizedTest
@@ -279,21 +282,26 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
                 = createCallResult.getCallConnection().getCallProperties();
             assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
 
-            // start recording
-            RecordingStateResult recordingStateResult = callerClient.getCallRecording()
-                .start(new StartRecordingOptions(new ServerCallLocator(callConnectionProperties.getServerCallId()))
+            StartRecordingOptions startRecordingOptions
+                = new StartRecordingOptions(new ServerCallLocator(callConnectionProperties.getServerCallId()))
                     .setRecordingChannel(RecordingChannel.UNMIXED)
                     .setRecordingContent(RecordingContent.AUDIO)
                     .setRecordingFormat(RecordingFormat.WAV)
-                    .setRecordingStateCallbackUrl(DISPATCHER_CALLBACK));
+                    .setRecordingStateCallbackUrl(DISPATCHER_CALLBACK);
+
+            // start recording
+            RecordingStateResult recordingStateResult = callerClient.getCallRecording().start(startRecordingOptions);
 
             assertNotNull(recordingStateResult.getRecordingId());
+            String recordingId = recordingStateResult.getRecordingId();
+            RecordingStateResult recordingState = callerClient.getCallRecording().getState(recordingId);
 
             // stop recording
-            callerClient.getCallRecording().stop(recordingStateResult.getRecordingId());
+            callerClient.getCallRecording().stop(recordingId);
+            Thread.sleep(10000);
 
             // get recording
-            RecordingResultResponse recordingResult = callerClient.getCallRecording().getRecordingResult(recordingStateResult.getRecordingId());
+            RecordingResult recordingResult = callerClient.getCallRecording().getRecordingResult(recordingId);
             assertNotNull(recordingResult);
             // hangup
             if (!callConnectionId.isEmpty()) {

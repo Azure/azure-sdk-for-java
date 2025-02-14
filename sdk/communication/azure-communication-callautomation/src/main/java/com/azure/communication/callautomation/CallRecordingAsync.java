@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.azure.communication.callautomation.implementation.CallRecordingsImpl;
+import com.azure.communication.callautomation.implementation.accesshelpers.RecordingResultResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RecordingStateResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
@@ -29,7 +30,6 @@ import com.azure.communication.callautomation.implementation.models.Communicatio
 import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
-import com.azure.communication.callautomation.implementation.models.RecordingResultResponse;
 import com.azure.communication.callautomation.implementation.models.RecordingStorageInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingStorageTypeInternal;
 import com.azure.communication.callautomation.implementation.models.StartCallRecordingRequestInternal;
@@ -40,6 +40,7 @@ import com.azure.communication.callautomation.models.ChannelAffinity;
 import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
+import com.azure.communication.callautomation.models.RecordingResult;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.RoomCallLocator;
 import com.azure.communication.callautomation.models.ServerCallLocator;
@@ -349,7 +350,7 @@ public final class CallRecordingAsync {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecordingResultResponse> getRecordingResult(String recordingId) {
+    public Mono<RecordingResult> getRecordingResult(String recordingId) {
         return getRecordingResultResponse(recordingId).flatMap(response -> Mono.just(response.getValue()));
     }
 
@@ -362,15 +363,17 @@ public final class CallRecordingAsync {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RecordingResultResponse>> getRecordingResultResponse(String recordingId) {
+    public Mono<Response<RecordingResult>> getRecordingResultResponse(String recordingId) {
         return getRecordingResultResponseInternal(recordingId, null);
     }
 
-    Mono<Response<RecordingResultResponse>> getRecordingResultResponseInternal(String recordingId, Context context) {
+    Mono<Response<RecordingResult>> getRecordingResultResponseInternal(String recordingId, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return callRecordingsInternal.getRecordingResultWithResponseAsync(recordingId, contextValue);
+                return callRecordingsInternal.getRecordingResultWithResponseAsync(recordingId, contextValue)
+                    .map(response -> new SimpleResponse<>(response,
+                        RecordingResultResponseConstructorProxy.create(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

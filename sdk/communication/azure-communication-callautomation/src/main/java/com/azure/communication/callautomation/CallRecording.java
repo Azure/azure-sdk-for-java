@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.models.RecordingResultResponse;
 import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
@@ -19,6 +18,8 @@ import java.io.OutputStream;
 import java.nio.file.Path;
 import java.security.InvalidParameterException;
 import java.util.Objects;
+
+import com.azure.communication.callautomation.models.RecordingResult;
 
 /**
  * CallRecording.
@@ -164,16 +165,16 @@ public final class CallRecording {
         return callRecordingAsync.getStateWithResponseInternal(recordingId, context).block();
     }
 
-     /**
-     * Get the recording result by recording id.
-     *
-     * @param recordingId The recording id to stop.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful get recording state request.
-     */
+    /**
+    * Get the recording result by recording id.
+    *
+    * @param recordingId The recording id to stop.
+    * @throws HttpResponseException thrown if the request is rejected by server.
+    * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+    * @return Response for a successful get recording state request.
+    */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecordingResultResponse getRecordingResult(String recordingId) {
+    public RecordingResult getRecordingResult(String recordingId) {
         return callRecordingAsync.getRecordingResult(recordingId).block();
     }
 
@@ -187,7 +188,7 @@ public final class CallRecording {
      * @return Response for a successful get recording state request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecordingResultResponse> getRecordingResult(String recordingId, Context context) {
+    public Response<RecordingResult> getRecordingResult(String recordingId, Context context) {
         return callRecordingAsync.getRecordingResultResponseInternal(recordingId, context).block();
     }
 

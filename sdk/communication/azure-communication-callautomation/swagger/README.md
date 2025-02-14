@@ -220,6 +220,12 @@ directive:
 - rename-model:
     from: RecordingStorageKind
     to: RecordingStorageType
+- rename-model:
+    from: CallSessionEndReason
+    to: CallSessionEndReasonInternal
+- rename-model:
+    from: RecordingStorageInfo
+    to: RecordingStorageInfoInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -277,6 +283,7 @@ directive:
 - remove-model: HoldAudioPaused
 - remove-model: PlayPaused
 - remove-model: PlayResumed
+- remove-model: CallSessionEndReason
 
 ```
 
