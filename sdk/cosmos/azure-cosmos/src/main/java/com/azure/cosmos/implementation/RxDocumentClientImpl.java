@@ -6199,9 +6199,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 List<String> unavailableRegionsForPartition
                     = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request,
                     request.getResourceId(),
-                    preResolvedPartitionKeyRangeIfAny,
-                    request.getOperationType());
+                    preResolvedPartitionKeyRangeIfAny
+                );
 
                 request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
 
@@ -6253,9 +6254,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 List<String> unavailableRegionsForPartition
                     = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request,
                     request.getResourceId(),
-                    resolvedPartitionKeyRange,
-                    request.getOperationType());
+                    resolvedPartitionKeyRange
+                );
 
                 request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
 
@@ -6409,9 +6411,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 List<String> unavailableRegionsForPartition
                     = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request,
                     request.getResourceId(),
-                    preResolvedPartitionKeyRangeIfAny,
-                    request.getOperationType());
+                    preResolvedPartitionKeyRangeIfAny
+                );
 
                 request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
 
@@ -6448,9 +6451,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 List<String> unavailableRegionsForPartition
                     = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request,
                     request.getResourceId(),
-                    resolvedPartitionKeyRange,
-                    request.getOperationType());
+                    resolvedPartitionKeyRange
+                );
 
                 request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
 
@@ -6535,9 +6539,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 List<String> unavailableRegionsForPartition
                     = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request,
                     request.getResourceId(),
-                    preResolvedPartitionKeyRangeIfAny,
-                    request.getOperationType());
+                    preResolvedPartitionKeyRangeIfAny
+                );
 
                 request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
             } else {
@@ -6570,9 +6575,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                 List<String> unavailableRegionsForPartition
                     = this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(
+                    request,
                     request.getResourceId(),
-                    resolvedPartitionKeyRange,
-                    request.getOperationType());
+                    resolvedPartitionKeyRange
+                );
 
                 request.requestContext.setUnavailableRegionsForPerPartitionCircuitBreaker(unavailableRegionsForPartition);
             }

@@ -891,7 +891,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreakerTests {
         globalPartitionEndpointManagerForCircuitBreaker.handleLocationExceptionForPartitionKeyRange(request, locationWithFailure);
 
         List<String> unavailableRegions
-            = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(collectionResourceId, partitionKeyRange, request.getOperationType());
+            = globalPartitionEndpointManagerForCircuitBreaker.getUnavailableRegionsForPartitionKeyRange(request, collectionResourceId, partitionKeyRange);
 
         logger.info("Assert that all regions are not Unavailable!");
         assertThat(unavailableRegions.size()).isLessThan(applicableReadWriteLocations.size());

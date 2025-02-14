@@ -36,6 +36,8 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * Implements the abstraction to resolve target location for geo-replicated DatabaseAccount
  * with multiple writable and readable locations.
@@ -243,7 +245,9 @@ public class LocationCache {
         return this.getApplicableEndpoints(
             new Utils.ValueHolder<>(null),
             writeEndpoints,
+            this.locationInfo.hubRegionalEndpoint,
             this.locationInfo.regionNameByWriteEndpoint,
+            this.locationInfo.availableWriteEndpointByLocation,
             this.defaultEndpoint,
             effectiveExcludedRegions,
             unavailableRegionsForPartition);
@@ -276,7 +280,9 @@ public class LocationCache {
         return this.getApplicableEndpoints(
             new Utils.ValueHolder<>(null),
             readEndpoints,
+            this.locationInfo.hubRegionalEndpoint,
             this.locationInfo.regionNameByReadEndpoint,
+            this.locationInfo.availableReadEndpointByLocation,
             this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
             effectiveExcludedRegions,
             unavailableRegionsForPartition);
@@ -304,7 +310,9 @@ public class LocationCache {
         return this.getApplicableEndpoints(
             requestValueHolder,
             readEndpoints,
+            this.locationInfo.hubRegionalEndpoint,
             this.locationInfo.regionNameByReadEndpoint,
+            this.locationInfo.availableReadEndpointByLocation,
             this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
             effectiveExcludedRegions,
             unavailableRegionsForPartition);
@@ -333,7 +341,9 @@ public class LocationCache {
         return this.getApplicableEndpoints(
             requestValueHolder,
             writeEndpoints,
+            this.locationInfo.hubRegionalEndpoint,
             this.locationInfo.regionNameByWriteEndpoint,
+            this.locationInfo.availableWriteEndpointByLocation,
             this.defaultEndpoint,
             effectiveExcludedRegions,
             unavailableRegionsForPartition);
@@ -342,13 +352,14 @@ public class LocationCache {
     private UnmodifiableList<URI> getApplicableEndpoints(
         Utils.ValueHolder<RxDocumentServiceRequest> requestValueHolder,
         UnmodifiableList<URI> endpoints,
+        URI hubRegionalEndpoint,
         UnmodifiableMap<URI, String> regionNameByEndpoint,
+        UnmodifiableMap<String, URI> endpointByRegionName,
         URI fallbackEndpoint,
         List<String> userConfiguredExcludeRegions,
         List<String> internalExcludeRegions) {
 
-        List<URI> locationsRemovedByInternalExcludeRegions = new ArrayList<>();
-
+        List<URI> endpointsRemovedByInternalExcludeRegions = new ArrayList<>();
         List<URI> applicableEndpoints = new ArrayList<>();
 
         for (URI endpoint : endpoints) {
@@ -360,7 +371,7 @@ public class LocationCache {
             }
         }
 
-        if (internalExcludeRegions != null && internalExcludeRegions.isEmpty()) {
+        if (internalExcludeRegions != null && !internalExcludeRegions.isEmpty()) {
             for (URI endpoint : endpoints) {
                 Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
                 if (Utils.tryGetValue(regionNameByEndpoint, endpoint, regionName)) {
@@ -374,7 +385,7 @@ public class LocationCache {
                         int newSize = applicableEndpoints.size();
 
                         if (newSize < size) {
-                            locationsRemovedByInternalExcludeRegions.add(endpoint);
+                            endpointsRemovedByInternalExcludeRegions.add(endpoint);
                         }
                     }
                 }
@@ -388,9 +399,13 @@ public class LocationCache {
         return ApplicableRegionsEvaluator.reevaluate(
             requestValueHolder,
             new UnmodifiableList<>(applicableEndpoints),
+            regionNameByEndpoint,
+            endpointByRegionName,
             userConfiguredExcludeRegions,
-            locationsRemovedByInternalExcludeRegions
-        );
+            endpointsRemovedByInternalExcludeRegions,
+            internalExcludeRegions,
+            endpoints,
+            hubRegionalEndpoint);
     }
 
     private boolean isExcludeRegionsConfigured(List<String> excludedRegionsOnRequest, List<String> excludedRegionsOnClient) {
@@ -672,6 +687,7 @@ public class LocationCache {
                 nextLocationInfo.availableReadLocations =  out.v;
                 nextLocationInfo.regionNameByReadEndpoint = outReadRegionMap.v;
                 nextLocationInfo.availableReadEndpoints = availableReadEndpointsOut.v;
+                nextLocationInfo.hubRegionalEndpoint = nextLocationInfo.availableReadEndpoints.get(0);
             }
 
             if (writeLocations != null) {
@@ -682,6 +698,7 @@ public class LocationCache {
                 nextLocationInfo.availableWriteLocations = out.v;
                 nextLocationInfo.regionNameByWriteEndpoint = outWriteRegionMap.v;
                 nextLocationInfo.availableWriteEndpoints = outAvailableWriteEndpoints.v;
+                nextLocationInfo.hubRegionalEndpoint = nextLocationInfo.availableWriteEndpoints.get(0);
             }
 
             nextLocationInfo.writeEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableWriteEndpointByLocation, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultEndpoint);
@@ -894,10 +911,13 @@ public class LocationCache {
         private UnmodifiableMap<String, URI> availableReadEndpointByLocation;
         private UnmodifiableMap<URI, String> regionNameByWriteEndpoint;
         private UnmodifiableMap<URI, String> regionNameByReadEndpoint;
+        private UnmodifiableMap<URI, String> writeEndpointByRegionName;
+        private UnmodifiableMap<URI, String> readEndpointByRegionName;
         private UnmodifiableList<URI> writeEndpoints;
         private UnmodifiableList<URI> readEndpoints;
         private UnmodifiableList<URI> availableWriteEndpoints;
         private UnmodifiableList<URI> availableReadEndpoints;
+        private URI hubRegionalEndpoint;
 
         public DatabaseAccountLocationsInfo(List<String> preferredLocations,
                                             URI defaultEndpoint) {
@@ -910,6 +930,10 @@ public class LocationCache {
             this.regionNameByWriteEndpoint
                 = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(new CaseInsensitiveMap<>());
             this.regionNameByReadEndpoint
+                = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.writeEndpointByRegionName
+                = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(new CaseInsensitiveMap<>());
+            this.readEndpointByRegionName
                 = (UnmodifiableMap<URI, String>) UnmodifiableMap.<URI, String>unmodifiableMap(new CaseInsensitiveMap<>());
             this.availableReadLocations = new UnmodifiableList<>(Collections.emptyList());
             this.availableWriteLocations = new UnmodifiableList<>(Collections.emptyList());
@@ -927,11 +951,14 @@ public class LocationCache {
             this.availableWriteEndpointByLocation = other.availableWriteEndpointByLocation;
             this.regionNameByWriteEndpoint = other.regionNameByWriteEndpoint;
             this.regionNameByReadEndpoint = other.regionNameByReadEndpoint;
+            this.writeEndpointByRegionName = other.writeEndpointByRegionName;
+            this.readEndpointByRegionName = other.readEndpointByRegionName;
             this.availableReadEndpointByLocation = other.availableReadEndpointByLocation;
             this.writeEndpoints = other.writeEndpoints;
             this.readEndpoints = other.readEndpoints;
             this.availableReadEndpoints = other.availableReadEndpoints;
             this.availableWriteEndpoints = other.availableWriteEndpoints;
+            this.hubRegionalEndpoint = other.hubRegionalEndpoint;
         }
     }
 
@@ -940,8 +967,22 @@ public class LocationCache {
         public static UnmodifiableList<URI> reevaluate(
             Utils.ValueHolder<RxDocumentServiceRequest> requestValueHolder,
             UnmodifiableList<URI> applicableLocationEndpoints,
+            UnmodifiableMap<URI, String> regionNameByEndpoint,
+            UnmodifiableMap<String, URI> endpointByRegionName,
+            // exclude regions from request options or client
             List<String> userConfiguredExcludeRegions,
-            List<URI> internalExcludedLocationEndpointsOrderedByPreference) {
+            List<URI> endpointsRemovedByExcludeRegions,
+            // exclude URIs from per-partition circuit breaker
+            List<String> internalExcludeRegions,
+            // exclude endpoints from per-partition circuit breaker
+            // original list of regions
+            List<URI> preferredEndpoints,
+            URI hubRegionalEndpoint) {
+
+            // region set intersecting with preferred endpoints is already of size 0 or 1, return
+            if (preferredEndpoints.size() <= 1) {
+                return applicableLocationEndpoints;
+            }
 
             if (applicableLocationEndpoints.size() >= 2) {
                 return applicableLocationEndpoints;
@@ -970,31 +1011,50 @@ public class LocationCache {
                 }
             }
 
-            if (applicableLocationEndpoints.size() == 1) {
-
-                if (!userConfiguredExcludeRegions.isEmpty() &&
-                    internalExcludedLocationEndpointsOrderedByPreference.isEmpty()) {
-                    crossRegionAvailabilityContextForRequest.setShouldUsePerPartitionAutomaticFailoverOverride(true);
-                    return applicableLocationEndpoints;
-                }
-
-                List<URI> modifiedApplicableRegions = new ArrayList<>();
-
-                URI firstApplicableRegion = applicableLocationEndpoints.get(0);
-
-                modifiedApplicableRegions.add(firstApplicableRegion);
-
-                for (URI internalExcludedEndpoint : internalExcludedLocationEndpointsOrderedByPreference) {
-                    if (!internalExcludedEndpoint.equals(firstApplicableRegion)) {
-                        modifiedApplicableRegions.add(internalExcludedEndpoint);
-                        break;
-                    }
-                }
-
-                return new UnmodifiableList<>(modifiedApplicableRegions);
+            if (!userConfiguredExcludeRegions.isEmpty() && endpointsRemovedByExcludeRegions.isEmpty()) {
+                crossRegionAvailabilityContextForRequest.setShouldUsePerPartitionAutomaticFailoverOverride(true);
+                return applicableLocationEndpoints;
             }
 
-            return applicableLocationEndpoints;
+            List<URI> modifiedApplicableEndpoints = new ArrayList<>();
+
+            URI firstApplicableLocationEndpoint = applicableLocationEndpoints.get(0);
+            modifiedApplicableEndpoints.add(firstApplicableLocationEndpoint);
+
+            // todo: will change when GW returns multiple endpoints per region - thin-proxy dependency
+            boolean isFirstApplicableEndpointAGlobalEndpoint = !regionNameByEndpoint.containsKey(firstApplicableLocationEndpoint);
+
+            checkNotNull(hubRegionalEndpoint, "Argument 'hubRegionalEndpoint' cannot be null!");
+
+            // if fallback / first applicable endpoint is global endpoint, it maps to the hub
+            if (isFirstApplicableEndpointAGlobalEndpoint) {
+                for (String internalExcludeRegion : internalExcludeRegions) {
+
+                    Utils.ValueHolder<URI> endpoint = new Utils.ValueHolder<>(null);
+
+                    if (Utils.tryGetValue(endpointByRegionName, internalExcludeRegion, endpoint)) {
+
+                        if (!endpoint.v.equals(hubRegionalEndpoint)) {
+                            modifiedApplicableEndpoints.add(endpoint.v);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                for (String internalExcludeRegion : internalExcludeRegions) {
+
+                    Utils.ValueHolder<URI> endpoint = new Utils.ValueHolder<>(null);
+
+                    if (Utils.tryGetValue(endpointByRegionName, internalExcludeRegion, endpoint)) {
+                        if (!endpoint.v.equals(firstApplicableLocationEndpoint) && !userConfiguredExcludeRegions.contains(internalExcludeRegion)) {
+                            modifiedApplicableEndpoints.add(endpoint.v);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return new UnmodifiableList<>(modifiedApplicableEndpoints);
         }
     }
 }
