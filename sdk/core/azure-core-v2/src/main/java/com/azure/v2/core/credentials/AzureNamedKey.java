@@ -3,14 +3,15 @@
 
 package com.azure.v2.core.credentials;
 
-import com.azure.v2.core.annotations.Immutable;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.TypeConditions;
 
 /**
  * Represents a credential bag containing the key and the name of the key.
  *
  * @see AzureNamedKeyCredential
  */
-@Immutable
+@Metadata(conditions = TypeConditions.IMMUTABLE)
 public final class AzureNamedKey {
     private final String name;
     private final String key;

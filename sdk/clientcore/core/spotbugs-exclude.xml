@@ -13,6 +13,7 @@
   <Match>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
     <Or>
+      <Class name="io.clientcore.core.http.models.HttpRange" />
       <Class name="io.clientcore.core.http.models.HttpRequest" />
       <Class name="io.clientcore.core.http.models.RequestOptions" />
       <Class name="io.clientcore.core.http.pipeline.HttpPipelineBuilder" />
