@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils.binarydata;
+package io.clientcore.core.models.binarydata;
 
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.implementation.utils.IterableOfByteBuffersInputStream;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.serializers.ObjectSerializer;
+import io.clientcore.core.serialization.ObjectSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 /**
  * A {@link BinaryData} implementation backed by a {@link List} of {@link ByteBuffer}.
  */
-public final class ListByteBufferBinaryData extends BinaryData {
+final class ListByteBufferBinaryData extends BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(ListByteBufferBinaryData.class);
 
     private final List<ByteBuffer> content;
@@ -41,7 +41,7 @@ public final class ListByteBufferBinaryData extends BinaryData {
      * @param content The {@link List} of {@link ByteBuffer} content.
      * @throws NullPointerException If {@code content} is null.
      */
-    public ListByteBufferBinaryData(List<ByteBuffer> content) {
+    ListByteBufferBinaryData(List<ByteBuffer> content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
 

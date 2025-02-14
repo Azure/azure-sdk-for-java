@@ -3,7 +3,6 @@
 
 package com.azure.v2.core.exceptions;
 
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
 
 /**
@@ -13,7 +12,7 @@ import io.clientcore.core.http.models.Response;
  * <p>This exception is typically thrown when the service responds with a status code of 4XX, typically 409 Conflict.
  * This can occur when trying to modify a resource that has been updated by another process, resulting in a conflict.</p>
  *
- * <p>This class also provides methods to get the {@link HttpResponse} that was received when the exception occurred and
+ * <p>This class also provides methods to get the {@link Response} that was received when the exception occurred and
  * the deserialized HTTP response value.</p>
  *
  * @see com.azure.v2.core.exceptions

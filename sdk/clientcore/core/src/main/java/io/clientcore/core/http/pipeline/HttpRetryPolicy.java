@@ -32,7 +32,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RE
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_MAX_ATTEMPT_COUNT_KEY;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RETRY_EVENT_NAME;
 import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
-import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_RETRY_COUNT;
+import static io.clientcore.core.utils.configuration.Configuration.MAX_RETRY_ATTEMPTS;
 
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
@@ -52,7 +52,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     private static final double JITTER_FACTOR = 0.05;
 
     static {
-        String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(PROPERTY_REQUEST_RETRY_COUNT);
+        String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(MAX_RETRY_ATTEMPTS);
 
         int defaultMaxRetries = 3;
         if (!isNullOrEmpty(envDefaultMaxRetries)) {
@@ -63,7 +63,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
                 }
             } catch (NumberFormatException ignored) {
                 LOGGER.atVerbose()
-                    .addKeyValue("property", PROPERTY_REQUEST_RETRY_COUNT)
+                    .addKeyValue("property", MAX_RETRY_ATTEMPTS)
                     .log("Invalid property value. Using 3 retries as the maximum.");
             }
         }
@@ -159,7 +159,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         ClientLogger logger = getLogger(httpRequest);
 
         try {
-            response = next.clone().process();
+            response = next.copy().process();
         } catch (RuntimeException err) {
             if (shouldRetryException(err, tryCount, suppressed)) {
 

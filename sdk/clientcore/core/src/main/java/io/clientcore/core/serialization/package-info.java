@@ -4,4 +4,4 @@
 /**
  * Package containing interfaces describing serialization and deserialization contract.
  */
-package io.clientcore.core.utils.serializers;
+package io.clientcore.core.serialization;

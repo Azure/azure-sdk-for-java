@@ -12,8 +12,8 @@ import io.clientcore.core.implementation.http.rest.RestProxyImpl;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.serializers.SerializationFormat;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.SerializationFormat;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

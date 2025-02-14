@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils.binarydata;
+package io.clientcore.core.models.binarydata;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.utils.ImplUtils;
@@ -9,7 +9,7 @@ import io.clientcore.core.implementation.utils.IterableOfByteBuffersInputStream;
 import io.clientcore.core.implementation.utils.StreamUtil;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.serializers.ObjectSerializer;
+import io.clientcore.core.serialization.ObjectSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;

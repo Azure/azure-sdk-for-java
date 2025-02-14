@@ -3,33 +3,33 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.Meter;
-import io.clientcore.core.instrumentation.tracing.SpanBuilder;
-import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.tracing.Tracer;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -40,7 +40,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.net.URI;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
@@ -210,10 +209,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         HttpInstrumentationOptions optionsToUse
             = instrumentationOptions == null ? DEFAULT_OPTIONS : instrumentationOptions;
-        this.isLoggingEnabled = optionsToUse.getHttpLogLevel() != HttpInstrumentationOptions.HttpLogDetailLevel.NONE;
-        this.isContentLoggingEnabled
-            = optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogDetailLevel.BODY
-                || optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogDetailLevel.BODY_AND_HEADERS;
+        this.isLoggingEnabled = optionsToUse.getHttpLogLevel() != HttpInstrumentationOptions.HttpLogLevel.NONE;
+        this.isContentLoggingEnabled = optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogLevel.BODY
+            || optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS;
         this.isRedactedHeadersLoggingEnabled = optionsToUse.isRedactedHeaderNamesLoggingEnabled();
         this.allowedHeaderNames = optionsToUse.getAllowedHeaderNames();
         this.allowedQueryParameterNames = optionsToUse.getAllowedQueryParamNames()
@@ -557,14 +555,14 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @param logBuilder Log message builder.
      */
     private void addHeadersToLogMessage(HttpHeaders headers, LoggingEvent logBuilder) {
-        for (HttpHeader header : headers) {
+        headers.stream().forEach(header -> {
             HttpHeaderName headerName = header.getName();
             if (allowedHeaderNames.contains(headerName)) {
                 logBuilder.addKeyValue(headerName.toString(), header.getValue());
             } else if (isRedactedHeadersLoggingEnabled) {
                 logBuilder.addKeyValue(headerName.toString(), REDACTED_PLACEHOLDER);
             }
-        }
+        });
     }
 
     /**

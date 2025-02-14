@@ -47,7 +47,7 @@ final class HeaderFilteringMap extends AbstractMap<String, List<String>> {
 
     @Override
     public void forEach(BiConsumer<? super String, ? super List<String>> action) {
-        headers.forEach(header -> {
+        headers.stream().forEach(header -> {
             if (restrictedHeaders.contains(header.getName().getCaseInsensitiveName())) {
                 logger.atWarning()
                     .addKeyValue("headerName", header.getName())

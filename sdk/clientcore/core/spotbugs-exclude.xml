@@ -28,20 +28,22 @@
       <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsNoCacheReflection" />
       <Class name="io.clientcore.core.implementation.http.rest.ResponseExceptionConstructorCache" />
       <Class name="io.clientcore.core.implementation.http.rest.RestProxyImpl" />
+      <Class name="io.clientcore.core.implementation.utils.AuthenticateChallengeParser" />
       <Class name="io.clientcore.core.implementation.utils.InternalContext" />
       <Class name="io.clientcore.core.implementation.utils.JsonSerializer" />
       <Class name="io.clientcore.core.implementation.utils.Providers" />
       <Class name="io.clientcore.core.implementation.utils.SliceInputStream" />
       <Class name="io.clientcore.core.implementation.utils.StreamUtil" />
       <Class name="io.clientcore.core.implementation.utils.XmlSerializer" />
+      <Class name="io.clientcore.core.models.binarydata.FileBinaryData" />
+      <Class name="io.clientcore.core.models.binarydata.InputStreamBinaryData" />
+      <Class name="io.clientcore.core.models.binarydata.ListByteBufferBinaryData" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
+      <Class name="io.clientcore.core.utils.AuthenticateChallenge" />
       <Class name="io.clientcore.core.utils.DateTimeRfc1123" />
       <Class name="io.clientcore.core.utils.SharedExecutorService" />
       <Class name="io.clientcore.core.utils.Union" />
-      <Class name="io.clientcore.core.utils.binarydata.FileBinaryData" />
-      <Class name="io.clientcore.core.utils.binarydata.InputStreamBinaryData" />
-      <Class name="io.clientcore.core.utils.binarydata.ListByteBufferBinaryData" />
       <Class name="io.clientcore.core.utils.configuration.Configuration" />
     </Or>
   </Match>
@@ -51,14 +53,6 @@
       <Class name="io.clientcore.core.implementation.serializer.BinaryDataSerializationTests" />
       <Class name="io.clientcore.core.serialization.json.JsonReaderTests" />
     </Or>
-  </Match>
-  <Match>
-    <Bug pattern="CN_IDIOM_NO_SUPER_CALL" />
-    <Class name="io.clientcore.core.implementation.http.HttpPipelineCallState" />
-  </Match>
-  <Match>
-    <Bug pattern="CN_IMPLEMENTS_CLONE_BUT_NOT_CLONEABLE" />
-    <Class name="io.clientcore.core.http.pipeline.HttpPipelineNextPolicy" />
   </Match>
   <Match>
     <Bug pattern="CT_CONSTRUCTOR_THROW" />
@@ -81,7 +75,7 @@
     <Or>
       <Class name="io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderScanner" />
-      <Class name="io.clientcore.core.utils.auth.AuthorizationChallengeHandlerTests" />
+      <Class name="io.clientcore.core.utils.AuthorizationChallengeHandlerTests" />
     </Or>
   </Match>
   <Match>
@@ -92,8 +86,8 @@
     <Bug pattern="DM_CONVERT_CASE" />
     <Or>
       <Class name="io.clientcore.core.http.models.HttpHeaderName" />
+      <Class name="io.clientcore.core.utils.AuthUtils" />
       <Class name="io.clientcore.core.utils.ServerSentEventUtils" />
-      <Class name="io.clientcore.core.utils.auth.AuthUtils" />
     </Or>
   </Match>
   <Match>
@@ -111,12 +105,12 @@
       <Class name="io.clientcore.core.implementation.serializer.JsonSerializableEndToEndTests" />
       <Class name="io.clientcore.core.instrumentation.logging.ClientLoggerTests" />
       <Class name="io.clientcore.core.instrumentation.logging.InstrumentationTestUtils" />
+      <Class name="io.clientcore.core.models.binarydata.BinaryDataTest" />
       <Class name="io.clientcore.core.serialization.json.JsonReader" />
       <Class name="io.clientcore.core.serialization.json.JsonWriter" />
       <Class name="io.clientcore.core.serialization.xml.XmlReader" />
       <Class name="io.clientcore.core.shared.HttpClientTests" />
       <Class name="io.clientcore.core.shared.HttpClientTestsServer" />
-      <Class name="io.clientcore.core.utils.binarydata.BinaryDataTest" />
       <Class name="io.clientcore.core.utils.serializers.JsonSerializerTests" />
     </Or>
   </Match>
@@ -210,7 +204,7 @@
     <Bug pattern="NP_LOAD_OF_KNOWN_NULL_VALUE" />
     <Or>
       <Class name="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy" />
-      <Class name="io.clientcore.core.utils.binarydata.BinaryDataTest" />
+      <Class name="io.clientcore.core.models.binarydata.BinaryDataTest" />
     </Or>
   </Match>
   <Match>
@@ -232,8 +226,8 @@
     <Or>
       <Class name="io.clientcore.core.implementation.http.rest.LengthValidatingInputStreamTests" />
       <Class name="io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentationTests" />
+      <Class name="io.clientcore.core.models.binarydata.BinaryDataTest" />
       <Class name="io.clientcore.core.serialization.json.implementation.StringBuilderWriterTests" />
-      <Class name="io.clientcore.core.utils.binarydata.BinaryDataTest" />
     </Or>
   </Match>
   <Match>
@@ -350,9 +344,9 @@
     <Or>
       <Class name="io.clientcore.core.implementation.http.client.InputStreamTimeoutResponseSubscriber" />
       <Class name="io.clientcore.core.implementation.http.rest.ResponseConstructorsCacheBenchMark" />
+      <Class name="io.clientcore.core.models.binarydata.BinaryDataTest$BinaryDataAsProperty" />
       <Class name="io.clientcore.core.serialization.xml.DefaultXmlWriterContractTests" />
       <Class name="io.clientcore.core.serialization.xml.implementation.aalto.in.ReaderConfig$EncodingContext" />
-      <Class name="io.clientcore.core.utils.binarydata.BinaryDataTest$BinaryDataAsProperty" />
       <Class name="io.clientcore.core.utils.serializers.JsonSerializerTests$DateTimeWrapper" />
     </Or>
   </Match>
@@ -366,12 +360,12 @@
   <Match>
     <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY" />
     <Or>
-      <Class name="io.clientcore.core.utils.binarydata.ByteBufferBinaryData" />
-      <Class name="io.clientcore.core.utils.binarydata.FileBinaryData" />
-      <Class name="io.clientcore.core.utils.binarydata.InputStreamBinaryData" />
-      <Class name="io.clientcore.core.utils.binarydata.ListByteBufferBinaryData" />
-      <Class name="io.clientcore.core.utils.binarydata.SerializableBinaryData" />
-      <Class name="io.clientcore.core.utils.binarydata.StringBinaryData" />
+      <Class name="io.clientcore.core.models.binarydata.ByteBufferBinaryData" />
+      <Class name="io.clientcore.core.models.binarydata.FileBinaryData" />
+      <Class name="io.clientcore.core.models.binarydata.InputStreamBinaryData" />
+      <Class name="io.clientcore.core.models.binarydata.ListByteBufferBinaryData" />
+      <Class name="io.clientcore.core.models.binarydata.SerializableBinaryData" />
+      <Class name="io.clientcore.core.models.binarydata.StringBinaryData" />
     </Or>
   </Match>
   <Match>

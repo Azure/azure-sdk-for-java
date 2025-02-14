@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils.auth;
+package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.security.SecureRandom;
 import java.util.HashMap;
@@ -17,22 +17,22 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-import static io.clientcore.core.utils.auth.AuthUtils.DIGEST;
-import static io.clientcore.core.utils.auth.AuthUtils.MD5;
-import static io.clientcore.core.utils.auth.AuthUtils.SESS;
-import static io.clientcore.core.utils.auth.AuthUtils.SHA_512_256;
-import static io.clientcore.core.utils.auth.AuthUtils.buildAuthorizationHeader;
-import static io.clientcore.core.utils.auth.AuthUtils.bytesToHexString;
-import static io.clientcore.core.utils.auth.AuthUtils.calculateHa1NoSess;
-import static io.clientcore.core.utils.auth.AuthUtils.calculateHa1Sess;
-import static io.clientcore.core.utils.auth.AuthUtils.calculateHa2AuthIntQop;
-import static io.clientcore.core.utils.auth.AuthUtils.calculateHa2AuthQopOrEmpty;
-import static io.clientcore.core.utils.auth.AuthUtils.calculateResponseKnownQop;
-import static io.clientcore.core.utils.auth.AuthUtils.calculateResponseUnknownQop;
-import static io.clientcore.core.utils.auth.AuthUtils.calculateUserhash;
-import static io.clientcore.core.utils.auth.AuthUtils.extractValue;
-import static io.clientcore.core.utils.auth.AuthUtils.getDigestFunction;
-import static io.clientcore.core.utils.auth.AuthUtils.partitionByChallengeType;
+import static io.clientcore.core.utils.AuthUtils.DIGEST;
+import static io.clientcore.core.utils.AuthUtils.MD5;
+import static io.clientcore.core.utils.AuthUtils.SESS;
+import static io.clientcore.core.utils.AuthUtils.SHA_512_256;
+import static io.clientcore.core.utils.AuthUtils.buildAuthorizationHeader;
+import static io.clientcore.core.utils.AuthUtils.bytesToHexString;
+import static io.clientcore.core.utils.AuthUtils.calculateHa1NoSess;
+import static io.clientcore.core.utils.AuthUtils.calculateHa1Sess;
+import static io.clientcore.core.utils.AuthUtils.calculateHa2AuthIntQop;
+import static io.clientcore.core.utils.AuthUtils.calculateHa2AuthQopOrEmpty;
+import static io.clientcore.core.utils.AuthUtils.calculateResponseKnownQop;
+import static io.clientcore.core.utils.AuthUtils.calculateResponseUnknownQop;
+import static io.clientcore.core.utils.AuthUtils.calculateUserhash;
+import static io.clientcore.core.utils.AuthUtils.extractValue;
+import static io.clientcore.core.utils.AuthUtils.getDigestFunction;
+import static io.clientcore.core.utils.AuthUtils.partitionByChallengeType;
 
 /**
  * Handles Digest authentication challenges.

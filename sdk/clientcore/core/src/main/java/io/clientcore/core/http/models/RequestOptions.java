@@ -9,7 +9,7 @@ import io.clientcore.core.implementation.http.rest.UriEscapers;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.Context;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.util.Objects;
 import java.util.function.Consumer;

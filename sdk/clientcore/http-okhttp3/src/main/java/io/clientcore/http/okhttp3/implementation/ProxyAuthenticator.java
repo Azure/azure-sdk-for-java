@@ -6,11 +6,10 @@ package io.clientcore.http.okhttp3.implementation;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.auth.AuthUtils;
-import io.clientcore.core.utils.auth.ChallengeHandler;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.AuthUtils;
+import io.clientcore.core.utils.ChallengeHandler;
 import okhttp3.Authenticator;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -107,8 +106,8 @@ public final class ProxyAuthenticator implements Authenticator {
 
         Request.Builder requestBuilder = response.request().newBuilder();
         HttpRequest httpRequest = new HttpRequest().setMethod(PROXY_METHOD).setUri(PROXY_URI_PATH);
-        HttpResponse<?> httpResponse = new HttpResponse<>(httpRequest, response.code(),
-            OkHttpResponse.fromOkHttpHeaders(response.headers()), NO_BODY);
+        io.clientcore.core.http.models.Response<?> httpResponse = io.clientcore.core.http.models.Response
+            .create(httpRequest, response.code(), OkHttpResponse.fromOkHttpHeaders(response.headers()), NO_BODY);
         String authorizationHeader;
         // Replace nonce value in the PROXY_AUTHENTICATE header with the updated nonce
         ConcurrentHashMap<String, String> lastChallengeMap = proxyInterceptor.getLastChallenge();
@@ -194,7 +193,7 @@ public final class ProxyAuthenticator implements Authenticator {
 
             String proxyAuthenticationInfoHeader = response.header(PROXY_AUTHENTICATION_INFO);
 
-            if (!AuthUtils.isNullOrEmpty(proxyAuthenticationInfoHeader)) {
+            if (proxyAuthenticationInfoHeader != null && !proxyAuthenticationInfoHeader.isEmpty()) {
                 Map<String, String> authenticationInfoPieces
                     = AuthUtils.parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
                 Map<String, String> authorizationPieces = AuthUtils.parseAuthenticationOrAuthorizationHeader(

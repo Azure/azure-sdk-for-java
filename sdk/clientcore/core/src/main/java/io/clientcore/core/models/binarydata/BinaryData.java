@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils.binarydata;
+package io.clientcore.core.models.binarydata;
 
-import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.implementation.utils.JsonSerializer;
-import io.clientcore.core.utils.serializers.ObjectSerializer;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.json.JsonWriter;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -258,7 +258,7 @@ public abstract class BinaryData implements Closeable {
      * @return A {@link BinaryData} representing the {@link ByteBuffer}.
      * @throws NullPointerException If {@code data} is null.
      */
-    public static BinaryData fromByteBuffer(ByteBuffer data) {
+    static BinaryData fromByteBuffer(ByteBuffer data) {
         return new ByteBufferBinaryData(data);
     }
 
@@ -285,13 +285,16 @@ public abstract class BinaryData implements Closeable {
      * @param data The {@link List} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.
      */
-    public static BinaryData fromListByteBuffer(List<ByteBuffer> data) {
+    static BinaryData fromListByteBuffer(List<ByteBuffer> data) {
         return new ListByteBufferBinaryData(data);
     }
 
     /**
      * Creates an instance of {@link BinaryData} by serializing the {@link Object} using the default
-     * {@link ObjectSerializer}.
+     * {@link ObjectSerializer} used internally by ClientCore.
+     * <p>
+     * If the internal serializer is not suitable for your use case, you can provide your own {@link ObjectSerializer}
+     * using {@link #fromObject(Object, ObjectSerializer)}.
      *
      * <p><strong>Creating an instance from an Object</strong></p>
      *
@@ -494,9 +497,12 @@ public abstract class BinaryData implements Closeable {
 
     /**
      * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
-     * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of type
-     * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
-     * type is not recommended.
+     * {@link ObjectSerializer} used internally by ClientCore. Each time this method is called, the content is
+     * deserialized and a new instance of type {@code T} is returned. So, calling this method repeatedly to convert the
+     * underlying data source into the same type is not recommended.
+     * <p>
+     * If the internal serializer is not suitable for your use case, you can provide your own {@link ObjectSerializer}
+     * using {@link #toObject(Type, ObjectSerializer)}.
      *
      * <p>The type, represented by {@link Type}, can either be a generic or non-generic type. If the type is generic
      * create a {@link ParameterizedType}, if the type is non-generic use a {@link Class}.</p>

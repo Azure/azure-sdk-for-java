@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils.binarydata;
+package io.clientcore.core.models.binarydata;
 
 import io.clientcore.core.models.MockPath;
 

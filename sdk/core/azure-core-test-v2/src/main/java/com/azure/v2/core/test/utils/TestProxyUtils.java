@@ -16,7 +16,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.UriBuilder;
-import io.clientcore.core.utils.binarydata.StringBinaryData;
+import io.clientcore.core.models.binarydata.StringBinaryData;
 
 import java.io.File;
 import java.io.IOException;

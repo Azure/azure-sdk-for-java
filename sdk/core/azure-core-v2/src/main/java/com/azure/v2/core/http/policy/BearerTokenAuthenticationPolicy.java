@@ -109,7 +109,7 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
             throw LOGGER.logThrowableAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
-        HttpPipelineNextPolicy nextPolicy = next.clone();
+        HttpPipelineNextPolicy nextPolicy = next.copy();
 
         authorizeRequestSync(httpRequest);
         Response<?> httpResponse = next.process();

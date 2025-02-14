@@ -4,7 +4,6 @@
 package io.clientcore.core.http.models;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,7 +14,7 @@ import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
 /**
  * A collection of {@link HttpHeaders} on a request or response.
  */
-public class HttpHeaders implements Iterable<HttpHeader> {
+public class HttpHeaders {
     /**
      * This map is a case-insensitive key (i.e. lower-cased), but the returned {@link HttpHeader} key will be as-provided to
      * us.
@@ -105,7 +104,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param values The values of the {@link HttpHeader}.
      * @return The updated {@link HttpHeaders} object.
      */
-    public HttpHeaders add(HttpHeaderName name, List<String> values) {
+    private HttpHeaders add(HttpHeaderName name, List<String> values) {
         if (name == null || isNullOrEmpty(values)) {
             return this;
         }
@@ -114,7 +113,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
             if (header == null) {
                 return new HttpHeader(name, values);
             } else {
-                header.addValues(values);
+                for (String value : values) {
+                    header.addValue(value);
+                }
                 return header;
             }
         });
@@ -125,9 +126,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     /**
      * Adds all the provided {@link HttpHeaders} into this {@link HttpHeaders} instance.
      *
-     * <p>This is the equivalent to calling
-     * {@code headers.forEach(header -> add(header.getName(), header.getValuesList())} and therefore the behavior is as
-     * specified in {@link #add(HttpHeaderName, List)}.</p>
+     * <p>This is the equivalent to calling {@code headers.forEach(header -> add(header)} and therefore the behavior is
+     * as specified in {@link #add(HttpHeader)}.</p>
      *
      * <p>If {@code headers} is {@code null} this is a no-op.</p>
      *
@@ -263,14 +263,6 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         final HttpHeader header = get(name);
 
         return header == null ? null : header.getValues();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Iterator<HttpHeader> iterator() {
-        return headers.values().iterator();
     }
 
     /**

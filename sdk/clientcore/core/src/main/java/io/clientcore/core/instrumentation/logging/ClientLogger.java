@@ -21,7 +21,7 @@ import java.util.Objects;
  * logged.</p>
  *
  * <p>A minimum logging level threshold is determined by the
- * {@link Configuration#PROPERTY_LOG_LEVEL LOG_LEVEL} environment configuration. By default logging is
+ * {@link Configuration#LOG_LEVEL LOG_LEVEL} environment configuration. By default logging is
  * <b>disabled</b>.</p>
  *
  * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.

@@ -1,11 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils.binarydata;
+package io.clientcore.core.models.binarydata;
 
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.serializers.ObjectSerializer;
+import io.clientcore.core.serialization.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 /**
  * A {@link BinaryData} implementation backed by a {@link ByteBuffer}.
  */
-public final class ByteBufferBinaryData extends BinaryData {
+final class ByteBufferBinaryData extends BinaryData {
     private final ByteBuffer content;
 
     private volatile byte[] bytes;
@@ -33,7 +33,7 @@ public final class ByteBufferBinaryData extends BinaryData {
      * @param content The {@link ByteBuffer} content.
      * @throws NullPointerException If {@code content} is null.
      */
-    public ByteBufferBinaryData(ByteBuffer content) {
+    ByteBufferBinaryData(ByteBuffer content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
 

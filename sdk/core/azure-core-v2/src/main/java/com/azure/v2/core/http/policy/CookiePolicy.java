@@ -3,14 +3,13 @@
 
 package com.azure.v2.core.http.policy;
 
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
-import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.IOException;
@@ -60,9 +59,9 @@ public class CookiePolicy implements HttpPipelinePolicy {
             final URI uri = httpRequest.getUri();
 
             Map<String, List<String>> cookieHeaders = new HashMap<>();
-            for (HttpHeader header : httpRequest.getHeaders()) {
-                cookieHeaders.put(String.valueOf(header.getName()), header.getValues());
-            }
+            httpRequest.getHeaders()
+                .stream()
+                .forEach(header -> cookieHeaders.put(String.valueOf(header.getName()), header.getValues()));
 
             Map<String, List<String>> requestCookies = cookies.get(uri, cookieHeaders);
             for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
@@ -75,9 +74,9 @@ public class CookiePolicy implements HttpPipelinePolicy {
 
     private static Response<?> afterResponse(HttpRequest httpRequest, Response<?> response, CookieHandler cookies) {
         Map<String, List<String>> responseHeaders = new HashMap<>();
-        for (HttpHeader header : response.getHeaders()) {
-            responseHeaders.put(String.valueOf(header.getName()), header.getValues());
-        }
+        response.getHeaders()
+            .stream()
+            .forEach(header -> responseHeaders.put(String.valueOf(header.getName()), header.getValues()));
         try {
             final URI uri = httpRequest.getUri();
             cookies.put(uri, responseHeaders);

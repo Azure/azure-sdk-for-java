@@ -14,7 +14,7 @@ import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.ServerSentEventUtils;
 import io.clientcore.core.utils.ServerSentResult;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,12 +25,12 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static io.clientcore.core.implementation.http.client.JdkHttpUtils.fromJdkHttpHeaders;
-import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
+import static io.clientcore.core.implementation.http.ContentType.APPLICATION_OCTET_STREAM;
+import static io.clientcore.core.implementation.http.client.JdkHttpUtils.fromJdkHttpHeaders;
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.isTextEventStreamContentType;
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
@@ -41,6 +41,12 @@ import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStre
 public final class DefaultHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(
         io.clientcore.core.implementation.http.client.DefaultHttpClient.class);
+
+    /**
+     * Error message for when no {@link ServerSentEventListener} is attached to the {@link HttpRequest}.
+     */
+    private static final String NO_LISTENER_ERROR_MESSAGE
+        = "No ServerSentEventListener attached to HttpRequest to handle the text/event-stream response";
 
     private final Set<String> restrictedHeaders;
     private final Duration writeTimeout;
@@ -144,7 +150,7 @@ public final class DefaultHttpClient implements HttpClient {
                     return this.send(request);
                 }
             } else {
-                throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE));
+                throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
             }
         }
 

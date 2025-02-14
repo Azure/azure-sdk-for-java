@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils.auth;
+package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
@@ -10,7 +10,7 @@ import io.clientcore.core.http.models.Response;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
-import static io.clientcore.core.utils.auth.AuthUtils.BASIC;
+import static io.clientcore.core.utils.AuthUtils.BASIC;
 
 /**
  * Handles basic authentication challenges.

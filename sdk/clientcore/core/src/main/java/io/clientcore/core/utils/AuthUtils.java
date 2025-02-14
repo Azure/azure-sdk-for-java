@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.utils.auth;
+package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.implementation.utils.AuthenticateChallengeParser;
 import io.clientcore.core.implementation.utils.ImplUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -27,45 +28,75 @@ public final class AuthUtils {
     /**
      * Suffix used for session-based algorithms.
      */
-    public static final String SESS = "-SESS";
+    static final String SESS = "-SESS";
 
     /**
      * MD5 hashing algorithm.
      */
-    public static final String MD5 = "MD5";
+    static final String MD5 = "MD5";
 
     /**
      * SHA-512-256 hashing algorithm.
      */
-    public static final String SHA_512_256 = "SHA-512-256";
+    static final String SHA_512_256 = "SHA-512-256";
 
     /**
      * Key for the algorithm parameter in authentication headers.
      */
-    public static final String ALGORITHM = "algorithm";
+    static final String ALGORITHM = "algorithm";
 
     /**
      * Key for the next nonce parameter in authentication headers.
      */
-    public static final String NEXT_NONCE = "nextnonce";
+    static final String NEXT_NONCE = "nextnonce";
 
     /**
      * Basic authentication scheme.
      */
-    public static final String BASIC = "Basic";
+    static final String BASIC = "Basic";
 
     /**
      * Digest authentication scheme.
      */
-    public static final String DIGEST = "Digest";
+    static final String DIGEST = "Digest";
 
     private AuthUtils() {
         // Utility class should not be instantiated
     }
 
     /**
-     * Calculates the 'HA1' hex string when using an algorithm that isn't a '-sess' variant.
+     * Processes an authenticate header, such as {@link HttpHeaderName#WWW_AUTHENTICATE} or
+     * {@link HttpHeaderName#PROXY_AUTHENTICATE}, into a list of {@link AuthenticateChallenge}.
+     * <p>
+     * If the {@code authenticateHeader} is null or empty an empty list will be returned.
+     * <p>
+     * This method will parse the authenticate header as plainly as possible, meaning no casing will be changed on the
+     * scheme and no decoding will be done on the parameters. The only processing done is removal of quotes around
+     * parameter values and backslashes escaping values. Ex, {@code "va\"lue"} will be parsed as {@code va"lue}.
+     * <p>
+     * In addition to processing as plainly as possible, this method will not validate the authenticate header, it will
+     * only parse it. Though, if the authenticate header has syntax errors an {@link IllegalStateException} will be
+     * thrown.
+     * <p>
+     * A list of {@link AuthenticateChallenge} will be returned as it is valid for multiple authenticate challenges to
+     * use the same scheme, therefore a map cannot be used as the scheme would be the key and only one challenge would
+     * be stored.
      *
+     * @param authenticateHeader The authenticate header to be parsed.
+     * @return A list of authenticate challenges.
+     * @throws IllegalArgumentException If the {@code authenticateHeader} has syntax errors.
+     */
+    public static List<AuthenticateChallenge> parseAuthenticateHeader(String authenticateHeader) {
+        if (isNullOrEmpty(authenticateHeader)) {
+            return Collections.emptyList();
+        }
+
+        return new AuthenticateChallengeParser(authenticateHeader).parse();
+    }
+
+    /**
+     * Calculates the 'HA1' hex string when using an algorithm that isn't a '-sess' variant.
+     * <p>
      * This performs the following operations:
      * - Create the digest of (username + ":" + realm + ":" password).
      * - Return the resulting bytes as a hex string.
@@ -76,7 +107,7 @@ public final class AuthUtils {
      * @param password The password.
      * @return The HA1 hex string.
      */
-    public static String calculateHa1NoSess(Function<byte[], byte[]> digestFunction, String username, String realm,
+    static String calculateHa1NoSess(Function<byte[], byte[]> digestFunction, String username, String realm,
         String password) {
         return bytesToHexString(
             digestFunction.apply((username + ":" + realm + ":" + password).getBytes(StandardCharsets.UTF_8)));
@@ -84,7 +115,7 @@ public final class AuthUtils {
 
     /**
      * Calculates the 'HA1' hex string when using a '-sess' algorithm variant.
-     *
+     * <p>
      * This performs the following operations:
      * - Create the digest of (username + ":" + realm + ":" password).
      * - Convert the resulting bytes to a hex string, aliased as userPassHex.
@@ -99,7 +130,7 @@ public final class AuthUtils {
      * @param cnonce The client-specified nonce.
      * @return The HA1 hex string.
      */
-    public static String calculateHa1Sess(Function<byte[], byte[]> digestFunction, String username, String realm,
+    static String calculateHa1Sess(Function<byte[], byte[]> digestFunction, String username, String realm,
         String password, String nonce, String cnonce) {
         String ha1NoSess = calculateHa1NoSess(digestFunction, username, realm, password);
 
@@ -109,7 +140,7 @@ public final class AuthUtils {
 
     /**
      * Calculates the 'HA2' hex string when using 'qop=auth' or the qop is unknown.
-     *
+     * <p>
      * This performs the following operations:
      * - Create the digest of (httpMethod + ":" + uri).
      * - Return the resulting bytes as a hex string.
@@ -119,20 +150,19 @@ public final class AuthUtils {
      * @param uri The request URI.
      * @return The HA2 hex string.
      */
-    public static String calculateHa2AuthQopOrEmpty(Function<byte[], byte[]> digestFunction, String httpMethod,
-        String uri) {
+    static String calculateHa2AuthQopOrEmpty(Function<byte[], byte[]> digestFunction, String httpMethod, String uri) {
         return bytesToHexString(digestFunction.apply((httpMethod + ":" + uri).getBytes(StandardCharsets.UTF_8)));
     }
 
     /**
      * Calculates the 'HA2' hex string when using 'qop=auth-int'.
-     *
+     * <p>
      * This performs the following operations:
      * - Create the digest of (requestEntityBody).
      * - Convert the resulting bytes to a hex string, aliased as bodyHex.
      * - Create the digest of (httpMethod + ":" + uri + ":" bodyHex).
      * - Return the resulting bytes as a hex string.
-     *
+     * <p>
      * The request entity body is the unmodified body of the request. Using 'qop=auth-int' requires the request body to
      * be replay-able, this is why 'auth' is preferred instead of auth-int as this cannot be guaranteed. In addition to
      * the body being replay-able this runs into risks when the body is very large and potentially consuming large
@@ -144,7 +174,7 @@ public final class AuthUtils {
      * @param requestEntityBody The request entity body.
      * @return The HA2 hex string.
      */
-    public static String calculateHa2AuthIntQop(Function<byte[], byte[]> digestFunction, String httpMethod, String uri,
+    static String calculateHa2AuthIntQop(Function<byte[], byte[]> digestFunction, String httpMethod, String uri,
         byte[] requestEntityBody) {
         String bodyHex = bytesToHexString(digestFunction.apply(requestEntityBody));
 
@@ -154,7 +184,7 @@ public final class AuthUtils {
 
     /**
      * Calculates the 'response' hex string when qop is unknown.
-     *
+     * <p>
      * This performs the following operations:
      * - Create the digest of (ha1 + ":" + nonce + ":" + ha2).
      * - Return the resulting bytes as a hex string.
@@ -165,18 +195,18 @@ public final class AuthUtils {
      * @param ha2 The HA2 hex string.
      * @return The response hex string.
      */
-    public static String calculateResponseUnknownQop(Function<byte[], byte[]> digestFunction, String ha1, String nonce,
+    static String calculateResponseUnknownQop(Function<byte[], byte[]> digestFunction, String ha1, String nonce,
         String ha2) {
         return bytesToHexString(digestFunction.apply((ha1 + ":" + nonce + ":" + ha2).getBytes(StandardCharsets.UTF_8)));
     }
 
     /**
      * Calculates the 'response' hex string when 'qop=auth' or 'qop=auth-int'.
-     *
+     * <p>
      * This performs the following operations:
      * - Create the digest of (ha1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + ha2).
      * - Return the resulting byes as a hex string.
-     *
+     * <p>
      * nc, nonce count, is represented in a hexadecimal format.
      *
      * @param digestFunction The function to compute the digest.
@@ -188,8 +218,8 @@ public final class AuthUtils {
      * @param ha2 The HA2 hex string.
      * @return The response hex string.
      */
-    public static String calculateResponseKnownQop(Function<byte[], byte[]> digestFunction, String ha1, String nonce,
-        int nc, String cnonce, String qop, String ha2) {
+    static String calculateResponseKnownQop(Function<byte[], byte[]> digestFunction, String ha1, String nonce, int nc,
+        String cnonce, String qop, String ha2) {
         String zeroPadNc = String.format("%08X", nc);
 
         return bytesToHexString(
@@ -205,7 +235,7 @@ public final class AuthUtils {
      * @param realm The authentication realm.
      * @return The hashed username value.
      */
-    public static String calculateUserhash(Function<byte[], byte[]> digestFunction, String username, String realm) {
+    static String calculateUserhash(Function<byte[], byte[]> digestFunction, String username, String realm) {
         return bytesToHexString(digestFunction.apply((username + ":" + realm).getBytes(StandardCharsets.UTF_8)));
     }
 
@@ -215,7 +245,7 @@ public final class AuthUtils {
      * @param algorithm The algorithm name.
      * @return The digest function, or null if the algorithm is not supported.
      */
-    public static Function<byte[], byte[]> getDigestFunction(String algorithm) {
+    static Function<byte[], byte[]> getDigestFunction(String algorithm) {
         if (algorithm.toUpperCase(Locale.ROOT).endsWith(SESS)) {
             algorithm = algorithm.substring(0, algorithm.length() - SESS.length());
         }
@@ -243,7 +273,7 @@ public final class AuthUtils {
      * @param bytes The byte array to convert.
      * @return The hex string representation of the byte array.
      */
-    public static String bytesToHexString(byte[] bytes) {
+    static String bytesToHexString(byte[] bytes) {
         StringBuilder hexString = new StringBuilder(bytes.length * 2);
         for (byte b : bytes) {
             String hex = Integer.toHexString(0xFF & b);
@@ -261,7 +291,7 @@ public final class AuthUtils {
      * @param authenticationInfoMap The map containing key-value pairs from the Authentication-Info header.
      * @return The next nonce value if present, otherwise null.
      */
-    public static String processAuthenticationInfoHeader(Map<String, String> authenticationInfoMap) {
+    static String processAuthenticationInfoHeader(Map<String, String> authenticationInfoMap) {
         if (authenticationInfoMap == null || authenticationInfoMap.isEmpty()) {
             return null;
         }
@@ -308,7 +338,7 @@ public final class AuthUtils {
      * @param headers The HTTP headers containing the challenges.
      * @return A map of challenges partitioned by their algorithm.
      */
-    public static Map<String, List<Map<String, String>>> partitionByChallengeType(HttpHeaders headers) {
+    static Map<String, List<Map<String, String>>> partitionByChallengeType(HttpHeaders headers) {
         // Extract the challenges from the headers, specifically the "Proxy-Authenticate" or "WWW-Authenticate" headers
         List<Map<String, String>> challenges = extractAllChallenges(headers);
 
@@ -332,23 +362,12 @@ public final class AuthUtils {
     }
 
     /**
-     * Checks if the map is null or empty.
-     *
-     * @param map Map being checked for nullness or emptiness.
-     *
-     * @return True if the map is null or empty, false otherwise.
-     */
-    public static boolean isNullOrEmpty(Map<?, ?> map) {
-        return map == null || map.isEmpty();
-    }
-
-    /**
      * Parses challenges from the provided {@link HttpHeaders}.
      *
      * @param headers The {@link HttpHeaders} that may contain challenge information.
      * @return A list of parsed challenges as Map.
      */
-    public static List<Map<String, String>> parseChallenges(HttpHeaders headers) {
+    static List<Map<String, String>> parseChallenges(HttpHeaders headers) {
         List<String> authenticateHeaders = new ArrayList<>();
 
         if (headers.getValue(HttpHeaderName.WWW_AUTHENTICATE) != null) {
@@ -376,7 +395,7 @@ public final class AuthUtils {
      * @param headers The HTTP headers containing the challenges.
      * @return A list of parsed challenges as Map.
      */
-    public static List<Map<String, String>> extractAllChallenges(HttpHeaders headers) {
+    static List<Map<String, String>> extractAllChallenges(HttpHeaders headers) {
         // Extract challenges from all relevant header fields
         List<Map<String, String>> challenges = new ArrayList<>();
 
@@ -397,7 +416,7 @@ public final class AuthUtils {
      * @param challengeHeader The header value containing the challenge.
      * @return The parsed challenge as a Map.
      */
-    public static Map<String, String> parseChallenge(String challengeHeader) {
+    static Map<String, String> parseChallenge(String challengeHeader) {
         Map<String, String> challengeMap = new HashMap<>();
 
         // Split the challenge into scheme and parameters.
@@ -444,7 +463,7 @@ public final class AuthUtils {
      * @param key The key whose value needs to be extracted.
      * @return The extracted value, or null if the key is not found.
      */
-    public static String extractValue(String authHeader, String key) {
+    static String extractValue(String authHeader, String key) {
         if (authHeader == null || !authHeader.startsWith("Digest")) {
             return null;
         }
@@ -484,8 +503,8 @@ public final class AuthUtils {
      * @param userhash Whether the username is hashed.
      * @return The constructed Authorization/Proxy-Authorization header value.
      */
-    public static String buildAuthorizationHeader(String username, String realm, String uri, String algorithm,
-        String nonce, int nc, String cnonce, String qop, String response, String opaque, boolean userhash) {
+    static String buildAuthorizationHeader(String username, String realm, String uri, String algorithm, String nonce,
+        int nc, String cnonce, String qop, String response, String opaque, boolean userhash) {
         StringBuilder authorizationBuilder = new StringBuilder(512);
 
         authorizationBuilder.append(DIGEST + " ")
