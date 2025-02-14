@@ -3,10 +3,10 @@
 
 package com.azure.v2.core.credential;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import io.clientcore.core.credential.TokenCredential;
+import io.clientcore.core.credential.TokenRequestContext;
+
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
@@ -44,36 +44,26 @@ import java.util.Objects;
  * @see TokenCredential
  */
 
-public class TokenRequestContext {
-    private final List<String> scopes;
-    private String claims;
+public class AzureTokenRequestContext extends TokenRequestContext {
     private String tenantId;
     private boolean enableCae;
 
     /**
      * Creates a token request instance.
      */
-    public TokenRequestContext() {
-        this.scopes = new ArrayList<>();
+    public AzureTokenRequestContext() {
+        super();
     }
 
-    /**
-     * Gets the scopes required for the token.
-     * @return the scopes required for the token
-     */
-    public List<String> getScopes() {
-        return scopes;
-    }
 
     /**
      * Sets the scopes required for the token.
      * @param scopes the scopes required for the token
      * @return the TokenRequestContext itself
      */
-    public TokenRequestContext setScopes(List<String> scopes) {
-        Objects.requireNonNull(scopes, "'scopes' cannot be null.");
-        this.scopes.clear();
-        this.scopes.addAll(scopes);
+    @Override
+    public AzureTokenRequestContext setScopes(List<String> scopes) {
+        super.setScopes(scopes);
         return this;
     }
 
@@ -82,8 +72,9 @@ public class TokenRequestContext {
      * @param scopes one or more scopes to add
      * @return the TokenRequestContext itself
      */
-    public TokenRequestContext addScopes(String... scopes) {
-        this.scopes.addAll(Arrays.asList(scopes));
+    @Override
+    public AzureTokenRequestContext addScopes(String... scopes) {
+        super.addScopes(scopes);
         return this;
     }
 
@@ -96,21 +87,10 @@ public class TokenRequestContext {
      * @param claims the additional claims to be included in the token.
      * @return the updated TokenRequestContext itself
      */
-    public TokenRequestContext setClaims(String claims) {
-        this.claims = claims;
+    @Override
+    public AzureTokenRequestContext setClaims(String claims) {
+        super.setClaims(claims);
         return this;
-    }
-
-    /**
-     * Get the additional claims to be included in the token.
-     *
-     * @see <a href="https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter">
-     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
-     *
-     * @return the additional claims to be included in the token.
-     */
-    public String getClaims() {
-        return this.claims;
     }
 
     /**
@@ -119,7 +99,7 @@ public class TokenRequestContext {
      * @param tenantId the tenant to be used when requesting the token.
      * @return the updated TokenRequestContext itself
      */
-    public TokenRequestContext setTenantId(String tenantId) {
+    public AzureTokenRequestContext setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -146,7 +126,7 @@ public class TokenRequestContext {
      * the requested token.
      * @return the updated TokenRequestContext.
      */
-    public TokenRequestContext setCaeEnabled(boolean enableCae) {
+    public AzureTokenRequestContext setCaeEnabled(boolean enableCae) {
         this.enableCae = enableCae;
         return this;
     }
