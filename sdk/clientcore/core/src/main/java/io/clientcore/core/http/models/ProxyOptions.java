@@ -4,9 +4,9 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.auth.BasicChallengeHandler;
-import io.clientcore.core.utils.auth.ChallengeHandler;
-import io.clientcore.core.utils.auth.DigestChallengeHandler;
+import io.clientcore.core.utils.BasicChallengeHandler;
+import io.clientcore.core.utils.ChallengeHandler;
+import io.clientcore.core.utils.DigestChallengeHandler;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.core.utils.configuration.ConfigurationProperty;
 import io.clientcore.core.utils.configuration.ConfigurationPropertyBuilder;
@@ -260,14 +260,13 @@ public final class ProxyOptions {
         // System proxy configuration is only possible through system properties.
         // Only use system proxies when the prerequisite property is 'true'.
         if (Boolean.parseBoolean(configuration.get(JAVA_SYSTEM_PROXY_PREREQUISITE))) {
-            proxyOptions
-                = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTPS_PROXY);
+            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.HTTPS_PROXY);
             if (proxyOptions != null) {
                 LOGGER.atVerbose().log("Using proxy created from HTTPS_PROXY environment variable.");
                 return proxyOptions;
             }
 
-            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTP_PROXY);
+            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.HTTP_PROXY);
             if (proxyOptions != null) {
                 LOGGER.atVerbose().log("Using proxy created from HTTP_PROXY environment variable.");
                 return proxyOptions;
@@ -320,7 +319,7 @@ public final class ProxyOptions {
 
             ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, socketAddress);
 
-            String nonProxyHostsString = configuration.get(Configuration.PROPERTY_NO_PROXY);
+            String nonProxyHostsString = configuration.get(Configuration.NO_PROXY);
             if (!isNullOrEmpty(nonProxyHostsString)) {
                 proxyOptions.nonProxyHosts = sanitizeNoProxy(nonProxyHostsString);
 

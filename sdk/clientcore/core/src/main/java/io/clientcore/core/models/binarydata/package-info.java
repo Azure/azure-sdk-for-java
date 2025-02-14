@@ -4,4 +4,4 @@
 /**
  * Provides classes for working with binary data.
  */
-package io.clientcore.core.utils.binarydata;
+package io.clientcore.core.models.binarydata;

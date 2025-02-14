@@ -17,7 +17,7 @@ import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

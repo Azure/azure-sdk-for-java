@@ -89,7 +89,7 @@ public class JdkHttpClientBuilderIT {
     public void buildWithHttpProxyFromEnvConfiguration() throws IOException {
         Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
             new TestConfigurationSource()
-                .put(Configuration.PROPERTY_HTTP_PROXY,
+                .put(Configuration.HTTP_PROXY,
                     "http://" + PROXY_USER_INFO + proxyEndpoint.getHost() + ":" + proxyEndpoint.getPort())
                 .put("java.net.useSystemProxies", "true")).build();
 

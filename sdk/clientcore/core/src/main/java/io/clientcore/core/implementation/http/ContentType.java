@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.models;
+package io.clientcore.core.implementation.http;
 
 /**
  * The different values that commonly used for Content-Type header.

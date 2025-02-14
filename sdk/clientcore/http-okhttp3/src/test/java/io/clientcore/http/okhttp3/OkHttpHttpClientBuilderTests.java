@@ -488,7 +488,7 @@ public class OkHttpHttpClientBuilderTests {
             defaultUri));
 
         Configuration simpleEnvProxy = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
+            new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
 
         arguments.add(Arguments.of(true, simpleEnvProxy, defaultUri));
@@ -503,7 +503,7 @@ public class OkHttpHttpClientBuilderTests {
         arguments.add(Arguments.of(true, javaProxyWithAuthentication, defaultUri));
 
         Configuration envProxyWithAuthentication = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-            new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
+            new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
 
         arguments.add(Arguments.of(true, envProxyWithAuthentication, defaultUri));
@@ -527,8 +527,8 @@ public class OkHttpHttpClientBuilderTests {
         Supplier<TestConfigurationSource> javaNonProxyHostsSupplier
             = () -> baseJavaProxyConfigurationSupplier.get().put(JAVA_NON_PROXY_HOSTS, rawJavaNonProxyHosts);
         Supplier<TestConfigurationSource> envNonProxyHostsSupplier
-            = () -> new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:12345")
-                .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
+            = () -> new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://localhost:12345")
+                .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         List<Supplier<TestConfigurationSource>> nonProxyHostsSuppliers
             = Arrays.asList(javaNonProxyHostsSupplier, envNonProxyHostsSupplier);
@@ -553,8 +553,8 @@ public class OkHttpHttpClientBuilderTests {
         Supplier<TestConfigurationSource> authenticatedJavaNonProxyHostsSupplier
             = () -> javaNonProxyHostsSupplier.get().put(JAVA_HTTP_PROXY_USER, "1").put(JAVA_HTTP_PROXY_PASSWORD, "1");
         Supplier<TestConfigurationSource> authenticatedEnvNonProxyHostsSupplier
-            = () -> new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, "http://1:1@localhost:12345")
-                .put(Configuration.PROPERTY_NO_PROXY, rawEnvNonProxyHosts)
+            = () -> new TestConfigurationSource().put(Configuration.HTTP_PROXY, "http://1:1@localhost:12345")
+                .put(Configuration.NO_PROXY, rawEnvNonProxyHosts)
                 .put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
         List<Supplier<TestConfigurationSource>> authenticatedNonProxyHostsSuppliers
             = Arrays.asList(authenticatedJavaNonProxyHostsSupplier, authenticatedEnvNonProxyHostsSupplier);

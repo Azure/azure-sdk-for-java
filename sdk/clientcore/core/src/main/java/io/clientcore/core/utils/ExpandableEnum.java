@@ -8,6 +8,7 @@ package io.clientcore.core.utils;
  *
  * @param <T> The type of objects to be listed in the expandable enum.
  */
+@FunctionalInterface
 public interface ExpandableEnum<T> {
     /**
      * Returns the value represented by this expandable enum instance.

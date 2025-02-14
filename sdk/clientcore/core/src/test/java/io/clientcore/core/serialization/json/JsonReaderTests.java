@@ -3,6 +3,7 @@
 
 package io.clientcore.core.serialization.json;
 
+import io.clientcore.core.utils.IOExceptionCheckedFunction;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,7 +41,7 @@ public class JsonReaderTests {
 
     @ParameterizedTest
     @MethodSource("basicOperationsSupplier")
-    public <T> void basicOperations(String json, T expectedValue, ReadValueCallback<JsonReader, T> function)
+    public <T> void basicOperations(String json, T expectedValue, IOExceptionCheckedFunction<JsonReader, T> function)
         throws IOException {
         readAndValidate(json, function, actual -> assertEquals(expectedValue, actual));
     }
@@ -89,8 +90,8 @@ public class JsonReaderTests {
     // Byte arrays can't use Object.equals as they'll be compared by memory location instead of value equality.
     @ParameterizedTest
     @MethodSource("binaryOperationsSupplier")
-    public void binaryOperations(String json, byte[] expectedValue, ReadValueCallback<JsonReader, byte[]> function)
-        throws IOException {
+    public void binaryOperations(String json, byte[] expectedValue,
+        IOExceptionCheckedFunction<JsonReader, byte[]> function) throws IOException {
         readAndValidate(json, function, actual -> assertArrayEquals(expectedValue, actual));
     }
 
@@ -677,7 +678,7 @@ public class JsonReaderTests {
 
     @ParameterizedTest
     @MethodSource("readArraySupplier")
-    public void readArray(String json, ReadValueCallback<JsonReader, List<Object>> read, List<Object> expected)
+    public void readArray(String json, IOExceptionCheckedFunction<JsonReader, List<Object>> read, List<Object> expected)
         throws IOException {
         readAndValidate(json, read, actual -> {
             if (expected == null) {
@@ -692,7 +693,7 @@ public class JsonReaderTests {
     }
 
     private static Stream<Arguments> readArraySupplier() {
-        ReadValueCallback<JsonReader, List<Object>> reader = read(r -> r.readArray(JsonReader::readUntyped));
+        IOExceptionCheckedFunction<JsonReader, List<Object>> reader = read(r -> r.readArray(JsonReader::readUntyped));
         return Stream.of(Arguments.of("null", reader, null), Arguments.of("[]", reader, Collections.emptyList()),
             Arguments.of("[10]", reader, Collections.singletonList(10)),
             Arguments.of("[true,10,10.0,\"hello\"]", reader, Arrays.asList(true, 10, 10.0D, "hello")));
@@ -705,7 +706,7 @@ public class JsonReaderTests {
 
     @ParameterizedTest
     @MethodSource("readMapSupplier")
-    public void readMap(String json, ReadValueCallback<JsonReader, Map<String, Object>> read,
+    public void readMap(String json, IOExceptionCheckedFunction<JsonReader, Map<String, Object>> read,
         Map<String, Object> expected) throws IOException {
         readAndValidate(json, read, actual -> {
             if (expected == null) {
@@ -743,7 +744,8 @@ public class JsonReaderTests {
     }
 
     private static Stream<Arguments> readMapSupplier() {
-        ReadValueCallback<JsonReader, Map<String, Object>> reader = read(r -> r.readMap(JsonReader::readUntyped));
+        IOExceptionCheckedFunction<JsonReader, Map<String, Object>> reader
+            = read(r -> r.readMap(JsonReader::readUntyped));
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("boolean", true);
         map.put("int", 42);
@@ -762,15 +764,15 @@ public class JsonReaderTests {
         assertEquals(expectedInitialToken, reader.currentToken());
     }
 
-    private static <T> ReadValueCallback<JsonReader, T> read(ReadValueCallback<JsonReader, T> func) {
+    private static <T> IOExceptionCheckedFunction<JsonReader, T> read(IOExceptionCheckedFunction<JsonReader, T> func) {
         return func;
     }
 
-    private <T> void readAndValidate(String json, ReadValueCallback<JsonReader, T> read, Consumer<T> validate)
+    private <T> void readAndValidate(String json, IOExceptionCheckedFunction<JsonReader, T> read, Consumer<T> validate)
         throws IOException {
         try (JsonReader reader = JsonReader.fromString(json)) {
             reader.nextToken(); // Initialize the JsonReader for reading.
-            validate.accept(read.read(reader));
+            validate.accept(read.apply(reader));
         }
     }
 

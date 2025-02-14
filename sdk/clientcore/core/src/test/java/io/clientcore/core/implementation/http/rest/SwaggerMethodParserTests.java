@@ -16,18 +16,18 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.models.SimpleClass;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.UriBuilder;
-import io.clientcore.core.utils.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -50,8 +50,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.http.models.ContentType.APPLICATION_JSON;
-import static io.clientcore.core.http.models.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
+import static io.clientcore.core.implementation.http.ContentType.APPLICATION_JSON;
+import static io.clientcore.core.implementation.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -187,9 +187,9 @@ public class SwaggerMethodParserTests {
         HttpHeaders actual = new HttpHeaders();
         swaggerMethodParser.setHeaders(null, actual, DEFAULT_SERIALIZER);
 
-        for (HttpHeader header : actual) {
+        actual.stream().forEach(header -> {
             assertEquals(expectedHeaders.getValue(header.getName()), header.getValue());
-        }
+        });
     }
 
     private static Stream<Arguments> headersSupplier() throws NoSuchMethodException {
@@ -398,9 +398,9 @@ public class SwaggerMethodParserTests {
         HttpHeaders actual = new HttpHeaders();
         swaggerMethodParser.setHeaders(arguments, actual, DEFAULT_SERIALIZER);
 
-        for (HttpHeader header : actual) {
+        actual.stream().forEach(header -> {
             assertEquals(expectedHeaders.get(header.getName()), header.getValue());
-        }
+        });
     }
 
     private static Stream<Arguments> headerSubstitutionSupplier() throws NoSuchMethodException {

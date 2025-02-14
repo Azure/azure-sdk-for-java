@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.http.models;
+package io.clientcore.core.implementation.http;
 
-import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.util.function.Function;

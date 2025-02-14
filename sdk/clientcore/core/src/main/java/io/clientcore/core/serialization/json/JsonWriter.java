@@ -5,6 +5,7 @@ package io.clientcore.core.serialization.json;
 
 import io.clientcore.core.serialization.json.implementation.jackson.core.JsonFactory;
 import io.clientcore.core.serialization.json.implementation.jackson.core.JsonGenerator;
+import io.clientcore.core.utils.IOExceptionCheckedBiConsumer;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -289,12 +290,12 @@ public final class JsonWriter implements Closeable {
      * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
      * <p>
      * If an element in the array is null, {@link JsonToken#NULL} will be written for that element. If null elements
-     * should be excluded from serialization use {@link #writeArray(Object[], WriteValueCallback, boolean)} and pass
+     * should be excluded from serialization use {@link #writeArray(Object[], IOExceptionCheckedBiConsumer, boolean)} and pass
      * true for {@code skipNullElements}.
      * <p>
      * If {@code array} is null {@link JsonToken#NULL} will be written.
      * <p>
-     * This API is used instead of {@link #writeArrayField(String, Object[], WriteValueCallback)} when the value
+     * This API is used instead of {@link #writeArrayField(String, Object[], IOExceptionCheckedBiConsumer)} when the value
      * needs to be written to the root of the JSON value, as an element in an array, or after a call to
      * {@link #writeFieldName(String)}.
      *
@@ -305,7 +306,7 @@ public final class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code elementWriterFunc} is null.
      * @throws IOException If the JSON array fails to be written, either the start or end array or an element write.
      */
-    public <T> JsonWriter writeArray(T[] array, WriteValueCallback<JsonWriter, T> elementWriterFunc)
+    public <T> JsonWriter writeArray(T[] array, IOExceptionCheckedBiConsumer<JsonWriter, T> elementWriterFunc)
         throws IOException {
         return writeArray(array, elementWriterFunc, false);
     }
@@ -322,7 +323,7 @@ public final class JsonWriter implements Closeable {
      * <p>
      * If {@code array} is null {@link JsonToken#NULL} will be written.
      * <p>
-     * This API is used instead of {@link #writeArrayField(String, Object[], WriteValueCallback, boolean)} when the
+     * This API is used instead of {@link #writeArrayField(String, Object[], IOExceptionCheckedBiConsumer, boolean)} when the
      * value needs to be written to the root of the JSON value, as an element in an array, or after a call to
      * {@link #writeFieldName(String)}.
      *
@@ -334,7 +335,7 @@ public final class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code elementWriterFunc} is null.
      * @throws IOException If the JSON array fails to be written, either the start or end array or an element write.
      */
-    public <T> JsonWriter writeArray(T[] array, WriteValueCallback<JsonWriter, T> elementWriterFunc,
+    public <T> JsonWriter writeArray(T[] array, IOExceptionCheckedBiConsumer<JsonWriter, T> elementWriterFunc,
         boolean skipNullElements) throws IOException {
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
@@ -352,12 +353,12 @@ public final class JsonWriter implements Closeable {
      * {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
      * <p>
      * If an element in the array is null, {@link JsonToken#NULL} will be written for that element. If null elements
-     * should be excluded from serialization use {@link #writeArray(Iterable, WriteValueCallback, boolean)} and pass
+     * should be excluded from serialization use {@link #writeArray(Iterable, IOExceptionCheckedBiConsumer, boolean)} and pass
      * true for {@code skipNullElements}.
      * <p>
      * If {@code array} is null {@link JsonToken#NULL} will be written.
      * <p>
-     * This API is used instead of {@link #writeArrayField(String, Iterable, WriteValueCallback)} when the value
+     * This API is used instead of {@link #writeArrayField(String, Iterable, IOExceptionCheckedBiConsumer)} when the value
      * needs to be written to the root of the JSON value, as an element in an array, or after a call to
      * {@link #writeFieldName(String)}.
      *
@@ -368,7 +369,7 @@ public final class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code elementWriterFunc} is null.
      * @throws IOException If the JSON array fails to be written, either the start or end array or an element write.
      */
-    public <T> JsonWriter writeArray(Iterable<T> array, WriteValueCallback<JsonWriter, T> elementWriterFunc)
+    public <T> JsonWriter writeArray(Iterable<T> array, IOExceptionCheckedBiConsumer<JsonWriter, T> elementWriterFunc)
         throws IOException {
         return writeArray(array, elementWriterFunc, false);
     }
@@ -385,7 +386,7 @@ public final class JsonWriter implements Closeable {
      * <p>
      * If {@code array} is null {@link JsonToken#NULL} will be written.
      * <p>
-     * This API is used instead of {@link #writeArrayField(String, Iterable, WriteValueCallback, boolean)} when the
+     * This API is used instead of {@link #writeArrayField(String, Iterable, IOExceptionCheckedBiConsumer, boolean)} when the
      * value needs to be written to the root of the JSON value, as an element in an array, or after a call to
      * {@link #writeFieldName(String)}.
      *
@@ -397,7 +398,7 @@ public final class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code elementWriterFunc} is null.
      * @throws IOException If the JSON array fails to be written, either the start or end array or an element write.
      */
-    public <T> JsonWriter writeArray(Iterable<T> array, WriteValueCallback<JsonWriter, T> elementWriterFunc,
+    public <T> JsonWriter writeArray(Iterable<T> array, IOExceptionCheckedBiConsumer<JsonWriter, T> elementWriterFunc,
         boolean skipNullElements) throws IOException {
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
@@ -408,7 +409,7 @@ public final class JsonWriter implements Closeable {
         return writeArrayInternal(array, elementWriterFunc, null, skipNullElements);
     }
 
-    private <T> JsonWriter writeArrayInternal(Iterable<T> array, WriteValueCallback<JsonWriter, T> func,
+    private <T> JsonWriter writeArrayInternal(Iterable<T> array, IOExceptionCheckedBiConsumer<JsonWriter, T> func,
         String fieldName, boolean skipNullElements) throws IOException {
         if (fieldName == null) {
             writeStartArray();
@@ -424,7 +425,7 @@ public final class JsonWriter implements Closeable {
 
                 writeNull();
             } else {
-                func.write(this, element);
+                func.accept(this, element);
             }
         }
 
@@ -443,7 +444,7 @@ public final class JsonWriter implements Closeable {
      * <p>
      * If {@code map} is null {@link JsonToken#NULL} will be written.
      * <p>
-     * This API is used instead of {@link #writeMapField(String, Map, WriteValueCallback)} when the value needs to be
+     * This API is used instead of {@link #writeMapField(String, Map, IOExceptionCheckedBiConsumer)} when the value needs to be
      * written to the root of the JSON value, as an element in an array, or after a call to
      * {@link #writeFieldName(String)}.
      *
@@ -454,7 +455,7 @@ public final class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code valueWriterFunc} is null or any key in the map is null.
      * @throws IOException If the JSON map fails to be written, either the start or end object or a key or value write.
      */
-    public <T> JsonWriter writeMap(Map<String, T> map, WriteValueCallback<JsonWriter, T> valueWriterFunc)
+    public <T> JsonWriter writeMap(Map<String, T> map, IOExceptionCheckedBiConsumer<JsonWriter, T> valueWriterFunc)
         throws IOException {
         return writeMap(map, valueWriterFunc, false);
     }
@@ -471,7 +472,7 @@ public final class JsonWriter implements Closeable {
      * <p>
      * If {@code map} is null {@link JsonToken#NULL} will be written.
      * <p>
-     * This API is used instead of {@link #writeMapField(String, Map, WriteValueCallback, boolean)} when the value needs
+     * This API is used instead of {@link #writeMapField(String, Map, IOExceptionCheckedBiConsumer, boolean)} when the value needs
      * to be written to the root of the JSON value, as an element in an array, or after a call to
      * {@link #writeFieldName(String)}.
      *
@@ -483,7 +484,7 @@ public final class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code valueWriterFunc} is null or any key in the map is null.
      * @throws IOException If the JSON map fails to be written, either the start or end object or a key or value write.
      */
-    public <T> JsonWriter writeMap(Map<String, T> map, WriteValueCallback<JsonWriter, T> valueWriterFunc,
+    public <T> JsonWriter writeMap(Map<String, T> map, IOExceptionCheckedBiConsumer<JsonWriter, T> valueWriterFunc,
         boolean skipNullValues) throws IOException {
         Objects.requireNonNull(valueWriterFunc, "'valueWriterFunc' cannot be null.");
 
@@ -495,7 +496,7 @@ public final class JsonWriter implements Closeable {
     }
 
     private <T> JsonWriter writeMapInternal(String fieldName, Map<String, T> map,
-        WriteValueCallback<JsonWriter, T> valueWriterFunc, boolean skipNullValues) throws IOException {
+        IOExceptionCheckedBiConsumer<JsonWriter, T> valueWriterFunc, boolean skipNullValues) throws IOException {
         if (fieldName == null) {
             writeStartObject();
         } else {
@@ -517,7 +518,7 @@ public final class JsonWriter implements Closeable {
                 writeNull();
             } else {
                 // Write the value.
-                valueWriterFunc.write(this, value);
+                valueWriterFunc.accept(this, value);
             }
         }
 
@@ -771,8 +772,8 @@ public final class JsonWriter implements Closeable {
      * @throws NullPointerException If {@code fieldName} or {@code writerFunc} is null.
      * @throws IOException If the {@code fieldName} or the {@code nullable} fails to be written.
      */
-    public <T> JsonWriter writeNullableField(String fieldName, T nullable, WriteValueCallback<JsonWriter, T> writerFunc)
-        throws IOException {
+    public <T> JsonWriter writeNullableField(String fieldName, T nullable,
+        IOExceptionCheckedBiConsumer<JsonWriter, T> writerFunc) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         Objects.requireNonNull(writerFunc, "'writerFunc' cannot be null.");
 
@@ -780,7 +781,7 @@ public final class JsonWriter implements Closeable {
             return writeNullField(fieldName);
         }
 
-        writerFunc.write(writeFieldName(fieldName), nullable);
+        writerFunc.accept(writeFieldName(fieldName), nullable);
         return this;
     }
 
@@ -791,7 +792,7 @@ public final class JsonWriter implements Closeable {
      * to a JSON object.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      *
      * @param fieldName The field name.
      * @param value {@link JsonSerializable} object to write.
@@ -812,13 +813,13 @@ public final class JsonWriter implements Closeable {
      * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
      * <p>
      * If an element in the array is null, {@link JsonToken#NULL} will be written for that element. If null elements
-     * should be excluded from serialization use {@link #writeArrayField(String, Object[], WriteValueCallback, boolean)}
+     * should be excluded from serialization use {@link #writeArrayField(String, Object[], IOExceptionCheckedBiConsumer, boolean)}
      * and pass true for {@code skipNullElements}.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], WriteValueCallback)} to simplify
+     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], IOExceptionCheckedBiConsumer)} to simplify
      * adding a key-value to a JSON object.
      *
      * @param fieldName The field name.
@@ -831,7 +832,7 @@ public final class JsonWriter implements Closeable {
      * array or the element write.
      */
     public <T> JsonWriter writeArrayField(String fieldName, T[] array,
-        WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
+        IOExceptionCheckedBiConsumer<JsonWriter, T> elementWriterFunc) throws IOException {
         return writeArrayField(fieldName, array, elementWriterFunc, false);
     }
 
@@ -846,9 +847,9 @@ public final class JsonWriter implements Closeable {
      * serialization.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], WriteValueCallback, boolean)} to
+     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Object[], IOExceptionCheckedBiConsumer, boolean)} to
      * simplify adding a key-value to a JSON object.
      *
      * @param fieldName The field name.
@@ -862,7 +863,7 @@ public final class JsonWriter implements Closeable {
      * array or the element write.
      */
     public <T> JsonWriter writeArrayField(String fieldName, T[] array,
-        WriteValueCallback<JsonWriter, T> elementWriterFunc, boolean skipNullElements) throws IOException {
+        IOExceptionCheckedBiConsumer<JsonWriter, T> elementWriterFunc, boolean skipNullElements) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
@@ -880,13 +881,13 @@ public final class JsonWriter implements Closeable {
      * using the {@code elementWriterFunc} and finishing by writing the end array ({@code ]}).
      * <p>
      * If an element in the array is null, {@link JsonToken#NULL} will be written for that element. If null elements
-     * should be excluded from serialization use {@link #writeArrayField(String, Iterable, WriteValueCallback, boolean)}
+     * should be excluded from serialization use {@link #writeArrayField(String, Iterable, IOExceptionCheckedBiConsumer, boolean)}
      * and pass true for {@code skipNullElements}.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Iterable, WriteValueCallback)} to simplify
+     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Iterable, IOExceptionCheckedBiConsumer)} to simplify
      * adding a key-value to a JSON object.
      *
      * @param fieldName The field name.
@@ -899,7 +900,7 @@ public final class JsonWriter implements Closeable {
      * array or the element write.
      */
     public <T> JsonWriter writeArrayField(String fieldName, Iterable<T> array,
-        WriteValueCallback<JsonWriter, T> elementWriterFunc) throws IOException {
+        IOExceptionCheckedBiConsumer<JsonWriter, T> elementWriterFunc) throws IOException {
         return writeArrayField(fieldName, array, elementWriterFunc, false);
     }
 
@@ -914,9 +915,9 @@ public final class JsonWriter implements Closeable {
      * serialization.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Iterable, WriteValueCallback, boolean)} to
+     * Combines {@link #writeFieldName(String)} and {@link #writeArray(Iterable, IOExceptionCheckedBiConsumer, boolean)} to
      * simplify adding a key-value to a JSON object.
      *
      * @param fieldName The field name.
@@ -930,7 +931,7 @@ public final class JsonWriter implements Closeable {
      * array or the element write.
      */
     public <T> JsonWriter writeArrayField(String fieldName, Iterable<T> array,
-        WriteValueCallback<JsonWriter, T> elementWriterFunc, boolean skipNullElements) throws IOException {
+        IOExceptionCheckedBiConsumer<JsonWriter, T> elementWriterFunc, boolean skipNullElements) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         Objects.requireNonNull(elementWriterFunc, "'elementWriterFunc' cannot be null.");
 
@@ -952,9 +953,9 @@ public final class JsonWriter implements Closeable {
      * of the null value is determined by {@code valueWriterFunc}.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeMap(Map, WriteValueCallback)} to simplify adding a
+     * Combines {@link #writeFieldName(String)} and {@link #writeMap(Map, IOExceptionCheckedBiConsumer)} to simplify adding a
      * key-value to a JSON object.
      *
      * @param fieldName The field name.
@@ -968,7 +969,7 @@ public final class JsonWriter implements Closeable {
      * or the key or value write.
      */
     public <T> JsonWriter writeMapField(String fieldName, Map<String, T> map,
-        WriteValueCallback<JsonWriter, T> valueWriterFunc) throws IOException {
+        IOExceptionCheckedBiConsumer<JsonWriter, T> valueWriterFunc) throws IOException {
         return writeMapField(fieldName, map, valueWriterFunc, false);
     }
 
@@ -983,9 +984,9 @@ public final class JsonWriter implements Closeable {
      * values, such as {@link #writeJson(JsonSerializable)}, {@link JsonToken#NULL} will be written for that value.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      * <p>
-     * Combines {@link #writeFieldName(String)} and {@link #writeMap(Map, WriteValueCallback, boolean)} to simplify
+     * Combines {@link #writeFieldName(String)} and {@link #writeMap(Map, IOExceptionCheckedBiConsumer, boolean)} to simplify
      * adding a key-value to a JSON object.
      *
      * @param fieldName The field name.
@@ -1000,7 +1001,7 @@ public final class JsonWriter implements Closeable {
      * or the key or value write.
      */
     public <T> JsonWriter writeMapField(String fieldName, Map<String, T> map,
-        WriteValueCallback<JsonWriter, T> valueWriterFunc, boolean skipNullValues) throws IOException {
+        IOExceptionCheckedBiConsumer<JsonWriter, T> valueWriterFunc, boolean skipNullValues) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         Objects.requireNonNull(valueWriterFunc, "'valueWriterFunc' cannot be null.");
 
@@ -1018,7 +1019,7 @@ public final class JsonWriter implements Closeable {
      * JSON object.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      *
      * @param fieldName The field name.
      * @param value Binary value to write.
@@ -1061,7 +1062,7 @@ public final class JsonWriter implements Closeable {
      * JSON object.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      *
      * @param fieldName The field name.
      * @param value Boolean value to write.
@@ -1171,7 +1172,7 @@ public final class JsonWriter implements Closeable {
      * JSON object.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      *
      * @param fieldName The field name.
      * @param value Number value to write.
@@ -1195,7 +1196,7 @@ public final class JsonWriter implements Closeable {
      * JSON object.
      * <p>
      * The field is only written when {@code value} isn't null, if a null field needs to be written use
-     * {@link #writeNullableField(String, Object, WriteValueCallback)}.
+     * {@link #writeNullableField(String, Object, IOExceptionCheckedBiConsumer)}.
      *
      * @param fieldName The field name.
      * @param value String value to write.

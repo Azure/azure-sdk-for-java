@@ -423,7 +423,7 @@ public class HttpInstrumentationPolicyTests {
     @Test
     public void enrichSpans() throws IOException {
         HttpInstrumentationPolicy httpInstrumentationPolicy = new HttpInstrumentationPolicy(
-            otelOptions.setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS));
+            otelOptions.setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS));
 
         HttpPipelinePolicy enrichingPolicy = new HttpPipelinePolicy() {
             @Override

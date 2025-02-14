@@ -4,10 +4,10 @@
 package io.clientcore.core.implementation.http.client;
 
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.binarydata.ByteArrayBinaryData;
-import io.clientcore.core.utils.binarydata.SerializableBinaryData;
-import io.clientcore.core.utils.binarydata.StringBinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.ByteArrayBinaryData;
+import io.clientcore.core.models.binarydata.SerializableBinaryData;
+import io.clientcore.core.models.binarydata.StringBinaryData;
 
 import java.net.http.HttpRequest;
 import java.time.Duration;

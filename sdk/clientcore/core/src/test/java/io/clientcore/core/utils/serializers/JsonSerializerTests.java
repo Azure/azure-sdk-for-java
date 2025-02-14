@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.models.SimpleClass;
+import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;

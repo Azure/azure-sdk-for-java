@@ -16,7 +16,7 @@ import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
 import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

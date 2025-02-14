@@ -4,12 +4,12 @@
 package io.clientcore.core.implementation.http.rest;
 
 import io.clientcore.core.http.exceptions.HttpResponseException;
-import io.clientcore.core.http.models.ContentType;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
@@ -25,10 +25,10 @@ import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.UriBuilder;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.binarydata.InputStreamBinaryData;
-import io.clientcore.core.utils.serializers.ObjectSerializer;
-import io.clientcore.core.utils.serializers.SerializationFormat;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.InputStreamBinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;

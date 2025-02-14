@@ -5,7 +5,7 @@ package io.clientcore.core.implementation.http.client;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.client.JdkHttpClientBuilder;
-import io.clientcore.core.http.models.ContentType;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -17,7 +17,7 @@ import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.TestUtils;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

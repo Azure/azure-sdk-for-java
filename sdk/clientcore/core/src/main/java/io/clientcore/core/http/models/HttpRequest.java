@@ -6,7 +6,7 @@ package io.clientcore.core.http.models;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.net.URI;
 import java.net.URISyntaxException;

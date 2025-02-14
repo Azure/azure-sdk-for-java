@@ -105,7 +105,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
         InstrumentationContext instrumentationContext) {
 
         // Make sure the context is not modified during redirect, except for the URI
-        Response<?> response = next.clone().process();
+        Response<?> response = next.copy().process();
 
         HttpRedirectCondition requestRedirectCondition
             = new HttpRedirectCondition(response, redirectAttempt, attemptedRedirectUris);

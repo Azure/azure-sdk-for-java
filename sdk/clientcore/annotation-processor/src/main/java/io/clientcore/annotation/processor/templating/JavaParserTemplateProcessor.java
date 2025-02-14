@@ -21,7 +21,7 @@ import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
-import io.clientcore.core.http.models.ContentType;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -30,8 +30,8 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.serializers.ObjectSerializer;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import java.io.IOException;
@@ -412,7 +412,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             if (!isContentTypeSetInHeaders) {
                 setContentTypeHeader(body, contentType);
             }
-            if ("io.clientcore.core.utils.binarydata.BinaryData".equals(parameterType)) {
+            if ("io.clientcore.core.models.binarydata.BinaryData".equals(parameterType)) {
                 body.tryAddImportToParentCompilationUnit(BinaryData.class);
                 body.addStatement(
                     StaticJavaParser.parseStatement("BinaryData binaryData = (BinaryData) " + parameterName + ";"));

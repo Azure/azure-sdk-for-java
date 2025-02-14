@@ -39,7 +39,7 @@ import java.util.Set;
  *     <li>Error details if the request fails</li>
  *     <li>Time it takes to receive response</li>
  *     <li>Correlation identifiers</li>
- *     <li>When content logging is enabled via {@link HttpLogDetailLevel#BODY_AND_HEADERS}: request and response body, and time-to-last-byte</li>
+ *     <li>When content logging is enabled via {@link HttpLogLevel#BODY_AND_HEADERS}: request and response body, and time-to-last-byte</li>
  * </ul>
  *
  * Client libraries auto-discover global OpenTelemetry SDK instance configured by the java agent or
@@ -81,7 +81,7 @@ import java.util.Set;
  * <!-- end io.clientcore.core.telemetry.useexplicitopentelemetry -->
  */
 public final class HttpInstrumentationOptions extends InstrumentationOptions {
-    private HttpLogDetailLevel logDetailLevel;
+    private HttpLogLevel logLevel;
     private boolean isRedactedHeaderNamesLoggingEnabled;
     private Set<HttpHeaderName> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
@@ -93,35 +93,35 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
             HttpHeaderName.PRAGMA, HttpHeaderName.RETRY_AFTER, HttpHeaderName.SERVER, HttpHeaderName.TRANSFER_ENCODING,
             HttpHeaderName.USER_AGENT, HttpHeaderName.WWW_AUTHENTICATE);
 
-    static final HttpLogDetailLevel ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL
-        = HttpLogDetailLevel.fromConfiguration(Configuration.getGlobalConfiguration());
+    static final HttpLogLevel ENVIRONMENT_HTTP_LOG_LEVEL
+        = HttpLogLevel.fromConfiguration(Configuration.getGlobalConfiguration());
     private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList("api-version");
 
     /**
      * Creates a new instance using default options:
      * <ul>
-     *     <li>Detailed HTTP logging is disabled.</li>
+     *     <li>HTTP logging is disabled.</li>
      *     <li>Distributed tracing is enabled.</li>
      * </ul>
      */
     public HttpInstrumentationOptions() {
         super();
-        logDetailLevel = ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL;
+        logLevel = ENVIRONMENT_HTTP_LOG_LEVEL;
         isRedactedHeaderNamesLoggingEnabled = true;
         allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_ALLOWLIST);
         allowedQueryParamNames = new HashSet<>(DEFAULT_QUERY_PARAMS_ALLOWLIST);
     }
 
     /**
-     * Gets the level of detail for HTTP request logs. Default is {@link HttpLogDetailLevel#NONE}.
+     * Gets the level for HTTP request logs. Default is {@link HttpLogLevel#NONE}.
      * <p>
      * When HTTP logging is disabled, basic information about the request and response is still recorded
      * on distributed tracing spans.
      *
-     * @return The {@link HttpLogDetailLevel}.
+     * @return The {@link HttpLogLevel}.
      */
-    public HttpLogDetailLevel getHttpLogLevel() {
-        return logDetailLevel;
+    public HttpLogLevel getHttpLogLevel() {
+        return logLevel;
     }
 
     /**
@@ -148,15 +148,15 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
     }
 
     /**
-     * Sets the level of detail for HTTP request logs.
-     * Default is {@link HttpLogDetailLevel#NONE}.
+     * Sets the level for HTTP request logs.
+     * Default is {@link HttpLogLevel#NONE}.
      *
-     * @param logDetailLevel The {@link HttpLogDetailLevel}.
+     * @param logLevel The {@link HttpLogLevel}.
      *
      * @return The updated {@link HttpInstrumentationOptions} object.
      */
-    public HttpInstrumentationOptions setHttpLogLevel(HttpLogDetailLevel logDetailLevel) {
-        this.logDetailLevel = logDetailLevel;
+    public HttpInstrumentationOptions setHttpLogLevel(HttpLogLevel logLevel) {
+        this.logLevel = logLevel;
         return this;
     }
 
@@ -264,9 +264,9 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
     }
 
     /**
-     * The level of detail for HTTP request logs.
+     * The level for HTTP request logs.
      */
-    public enum HttpLogDetailLevel {
+    public enum HttpLogLevel {
         /**
          * HTTP logging is turned off.
          */
@@ -320,29 +320,25 @@ public final class HttpInstrumentationOptions extends InstrumentationOptions {
         private static final String BODY_VALUE = "body";
         private static final String BODY_AND_HEADERS_VALUE = "body_and_headers";
 
-        private static final ConfigurationProperty<String> HTTP_LOG_DETAIL_LEVEL
-            = ConfigurationPropertyBuilder.ofString("http.log.detail.level")
+        private static final ConfigurationProperty<String> HTTP_LOG_LEVEL
+            = ConfigurationPropertyBuilder.ofString("http.log.level")
                 .shared(true)
-                .environmentVariableName(Configuration.PROPERTY_HTTP_LOG_DETAIL_LEVEL)
+                .environmentVariableName(Configuration.HTTP_LOG_LEVEL)
                 .defaultValue("none")
                 .build();
 
-        static HttpLogDetailLevel fromConfiguration(Configuration configuration) {
-            String detailLevel = configuration.get(HTTP_LOG_DETAIL_LEVEL);
+        static HttpLogLevel fromConfiguration(Configuration configuration) {
+            String logLevel = configuration.get(HTTP_LOG_LEVEL);
 
-            HttpLogDetailLevel logDetailLevel;
-
-            if (HEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
-                logDetailLevel = HEADERS;
-            } else if (BODY_VALUE.equalsIgnoreCase(detailLevel)) {
-                logDetailLevel = BODY;
-            } else if (BODY_AND_HEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
-                logDetailLevel = BODY_AND_HEADERS;
+            if (HEADERS_VALUE.equalsIgnoreCase(logLevel)) {
+                return HEADERS;
+            } else if (BODY_VALUE.equalsIgnoreCase(logLevel)) {
+                return BODY;
+            } else if (BODY_AND_HEADERS_VALUE.equalsIgnoreCase(logLevel)) {
+                return BODY_AND_HEADERS;
             } else {
-                logDetailLevel = NONE;
+                return NONE;
             }
-
-            return logDetailLevel;
         }
     }
 }

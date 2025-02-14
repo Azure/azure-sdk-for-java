@@ -24,8 +24,8 @@ public class EnvironmentConfiguration {
     /*
      * Configurations that are loaded into the global configuration store when the application starts.
      */
-    private static final List<String> DEFAULT_CONFIGURATIONS = Arrays.asList(Configuration.PROPERTY_HTTP_PROXY,
-        Configuration.PROPERTY_HTTPS_PROXY, Configuration.PROPERTY_NO_PROXY);
+    private static final List<String> DEFAULT_CONFIGURATIONS
+        = Arrays.asList(Configuration.HTTP_PROXY, Configuration.HTTPS_PROXY, Configuration.NO_PROXY);
     //Configuration.PROPERTY_IDENTITY_HEADER, Configuration.PROPERTY_IDENTITY_ENDPOINT, Configuration.PROPERTY_MSI_ENDPOINT,
     //Configuration.PROPERTY_MSI_SECRET, Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID,
     //Configuration.PROPERTY_AZURE_USERNAME, Configuration.PROPERTY_AZURE_PASSWORD,

@@ -6,7 +6,7 @@ package io.clientcore.core.http;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;

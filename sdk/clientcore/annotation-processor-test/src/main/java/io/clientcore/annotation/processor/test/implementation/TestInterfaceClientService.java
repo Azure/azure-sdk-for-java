@@ -13,8 +13,8 @@ import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.serializers.ObjectSerializer;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;

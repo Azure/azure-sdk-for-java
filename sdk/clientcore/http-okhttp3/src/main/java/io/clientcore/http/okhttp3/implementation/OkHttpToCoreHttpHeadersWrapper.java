@@ -9,7 +9,6 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.Response;
 import okhttp3.Headers;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -110,13 +109,6 @@ public final class OkHttpToCoreHttpHeadersWrapper extends HttpHeaders {
         convertIfNeeded();
 
         return coreHeaders.getValues(name);
-    }
-
-    @Override
-    public Iterator<HttpHeader> iterator() {
-        convertIfNeeded();
-
-        return coreHeaders.iterator();
     }
 
     @Override

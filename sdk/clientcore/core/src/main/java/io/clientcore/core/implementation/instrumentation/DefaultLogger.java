@@ -217,7 +217,7 @@ public final class DefaultLogger {
 
     private static LogLevel fromEnvironment() {
         // LogLevel is so basic, we can't use configuration to read it (since Configuration needs to log too)
-        String level = EnvironmentConfiguration.getGlobalConfiguration().get(Configuration.PROPERTY_LOG_LEVEL);
+        String level = EnvironmentConfiguration.getGlobalConfiguration().get(Configuration.LOG_LEVEL);
         return LogLevel.fromString(level);
     }
 }

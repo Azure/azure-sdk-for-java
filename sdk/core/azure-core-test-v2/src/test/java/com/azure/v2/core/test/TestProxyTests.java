@@ -24,7 +24,7 @@ import io.clientcore.core.http.pipeline.HttpRedirectPolicy;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;

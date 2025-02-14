@@ -8,8 +8,8 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.serializers.ObjectSerializer;
-import io.clientcore.core.utils.serializers.SerializationFormat;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.SerializationFormat;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
