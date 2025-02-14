@@ -3,16 +3,18 @@
 
 package com.azure.v2.core.utils;
 
-import com.azure.v2.core.annotations.Fluent;
 import com.azure.v2.core.http.policy.UserAgentPolicy;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.TypeConditions;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+
 import java.util.Collections;
 
 /**
  * General configuration options for clients.
  */
-@Fluent
+@Metadata(conditions = TypeConditions.FLUENT)
 public class ClientOptions {
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
     private static final String INVALID_APPLICATION_ID_LENGTH
