@@ -5,7 +5,6 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Database;
@@ -194,12 +193,12 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         String randomVal = UUID.randomUUID().toString();
         Document document = new Document();
         document.setId(idString);
-        document.set(partitionKey, idString, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(QUERY_FIELD_NAME, randomVal, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set("dataField1", randomVal, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set("dataField2", randomVal, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set("dataField3", randomVal, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set("dataField4", randomVal, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(partitionKey, idString);
+        document.set(QUERY_FIELD_NAME, randomVal);
+        document.set("dataField1", randomVal);
+        document.set("dataField2", randomVal);
+        document.set("dataField3", randomVal);
+        document.set("dataField4", randomVal);
 
         Integer key = i == null ? cacheKey() : i;
         return client.createDocument(getCollectionLink(), document, null, false)

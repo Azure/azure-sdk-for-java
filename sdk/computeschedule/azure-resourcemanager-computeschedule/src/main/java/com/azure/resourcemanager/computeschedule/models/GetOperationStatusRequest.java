@@ -24,7 +24,7 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
     private List<String> operationIds;
 
     /*
-     * Correlationid item
+     * CorrelationId item
      */
     private String correlationid;
 
@@ -55,7 +55,7 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
     }
 
     /**
-     * Get the correlationid property: Correlationid item.
+     * Get the correlationid property: CorrelationId item.
      * 
      * @return the correlationid value.
      */
@@ -64,7 +64,7 @@ public final class GetOperationStatusRequest implements JsonSerializable<GetOper
     }
 
     /**
-     * Set the correlationid property: Correlationid item.
+     * Set the correlationid property: CorrelationId item.
      * 
      * @param correlationid the correlationid value to set.
      * @return the GetOperationStatusRequest object itself.

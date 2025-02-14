@@ -176,4 +176,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fagrifood%2Fazure-verticals-agrifood-farming%2FREADME.png)
+

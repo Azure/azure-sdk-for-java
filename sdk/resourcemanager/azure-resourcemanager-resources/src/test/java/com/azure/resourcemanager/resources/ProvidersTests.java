@@ -34,10 +34,11 @@ public class ProvidersTests extends ResourceManagementTest {
         List<ProviderResourceType> resourceTypes = provider.resourceTypes();
         Assertions.assertFalse(resourceTypes.isEmpty());
         Assertions.assertNotNull(provider);
+        boolean providerAlreadyRegistered = false;
         if ("Registered".equals(provider.registrationState())) {
-            Assertions.fail(String.format(
-                "Provider '%s' already registered, please test with a provider that not currently registered.",
-                providerNamespace));
+            providerAlreadyRegistered = true;
+            // unregister it first
+            unregisterProvider(provider);
         }
 
         // register
@@ -49,6 +50,12 @@ public class ProvidersTests extends ResourceManagementTest {
         }
         Assertions.assertEquals("Registered", provider.registrationState());
 
+        if (!providerAlreadyRegistered) {
+            unregisterProvider(provider);
+        }
+    }
+
+    private void unregisterProvider(Provider provider) {
         // unregister
         resourceClient.providers().unregister(provider.namespace());
         provider = resourceClient.providers().getByName(provider.namespace());

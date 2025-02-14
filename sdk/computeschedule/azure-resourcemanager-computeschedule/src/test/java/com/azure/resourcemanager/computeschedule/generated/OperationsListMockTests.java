@@ -11,11 +11,9 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.computeschedule.ComputeScheduleManager;
-import com.azure.resourcemanager.computeschedule.models.ActionType;
 import com.azure.resourcemanager.computeschedule.models.Operation;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -23,7 +21,7 @@ public final class OperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"wrlyxwjkcprb\",\"isDataAction\":false,\"display\":{\"provider\":\"jvtbvpyss\",\"resource\":\"nruj\",\"operation\":\"uhmuouqfprwzwbn\",\"description\":\"itnwuizgazxufi\"},\"origin\":\"user\",\"actionType\":\"Internal\"}]}";
+            = "{\"value\":[{\"name\":\"pwgcuertu\",\"isDataAction\":true,\"display\":{\"provider\":\"vqwhbmdgbbjfd\",\"resource\":\"mbmbexppbh\",\"operation\":\"qrolfpf\",\"description\":\"algbquxigjyjg\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,6 +32,5 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(ActionType.INTERNAL, response.iterator().next().actionType());
     }
 }

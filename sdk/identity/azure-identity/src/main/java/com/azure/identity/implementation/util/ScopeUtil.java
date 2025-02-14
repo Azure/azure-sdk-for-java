@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public final class ScopeUtil {
 
     private static final String DEFAULT_SUFFIX = "/.default";
-    private static final Pattern SCOPE_PATTERN = Pattern.compile("^[0-9a-zA-Z-.:/]+$");
+    private static final Pattern SCOPE_PATTERN = Pattern.compile("^[0-9a-zA-Z-.:/_]+$");
 
     /**
      * Convert a list of scopes to a resource for Microsoft Entra ID.
@@ -55,7 +55,7 @@ public final class ScopeUtil {
 
         if (!isScopeMatch) {
             throw new IllegalArgumentException("The specified scope is not in expected format."
-                + " Only alphanumeric characters, '.', '-', ':', and '/' are allowed");
+                + " Only alphanumeric characters, '.', '-', ':', '_', and '/' are allowed");
         }
     }
 

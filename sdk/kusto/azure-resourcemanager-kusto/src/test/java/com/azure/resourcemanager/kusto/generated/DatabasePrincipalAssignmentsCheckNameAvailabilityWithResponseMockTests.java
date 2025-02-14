@@ -23,7 +23,7 @@ public final class DatabasePrincipalAssignmentsCheckNameAvailabilityWithResponse
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"nameAvailable\":true,\"name\":\"wartspphkixkykxd\",\"message\":\"j\",\"reason\":\"Invalid\"}";
+            = "{\"nameAvailable\":false,\"name\":\"aswlp\",\"message\":\"gm\",\"reason\":\"AlreadyExists\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,13 @@ public final class DatabasePrincipalAssignmentsCheckNameAvailabilityWithResponse
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameResult response = manager.databasePrincipalAssignments()
-            .checkNameAvailabilityWithResponse("piudeugfsxzecpa", "wkufykhvuhxepm", "utznabaobns",
-                new DatabasePrincipalAssignmentCheckNameRequest().withName("ujdjltymkmvg"),
-                com.azure.core.util.Context.NONE)
+            .checkNameAvailabilityWithResponse("vljvrc", "yfqi", "gxhnpomyqwcabv",
+                new DatabasePrincipalAssignmentCheckNameRequest().withName("ui"), com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("wartspphkixkykxd", response.name());
-        Assertions.assertEquals("j", response.message());
-        Assertions.assertEquals(Reason.INVALID, response.reason());
+        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertEquals("aswlp", response.name());
+        Assertions.assertEquals("gm", response.message());
+        Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
     }
 }

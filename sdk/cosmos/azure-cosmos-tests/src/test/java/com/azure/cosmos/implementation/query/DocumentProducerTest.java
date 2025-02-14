@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -840,12 +839,12 @@ public class DocumentProducerTest {
 
                 Document d = getDocumentDefinition();
                 if (isOrderby) {
-                    d.set(OrderByIntFieldName, orderByFieldInitialVal + RandomUtils.nextInt(0, 3), CosmosItemSerializer.DEFAULT_SERIALIZER);
-                    d.set(DocumentPartitionKeyRangeIdFieldName, feedRangeEpk.getRange().toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+                    d.set(OrderByIntFieldName, orderByFieldInitialVal + RandomUtils.nextInt(0, 3));
+                    d.set(DocumentPartitionKeyRangeIdFieldName, feedRangeEpk.getRange().toString());
                     PartitionKeyRange pkr = mockPartitionKeyRange(feedRangeEpk.getRange().toString(), feedRangeEpk.getRange());
 
-                    d.set(DocumentPartitionKeyRangeMinInclusiveFieldName, pkr.getMinInclusive(), CosmosItemSerializer.DEFAULT_SERIALIZER);
-                    d.set(DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive(), CosmosItemSerializer.DEFAULT_SERIALIZER);
+                    d.set(DocumentPartitionKeyRangeMinInclusiveFieldName, pkr.getMinInclusive());
+                    d.set(DocumentPartitionKeyRangeMaxExclusiveFieldName, pkr.getMaxExclusive());
 
                     QueryItem qi = new QueryItem("{ \"item\": " + d.getInt(OrderByIntFieldName) +
                         " }");

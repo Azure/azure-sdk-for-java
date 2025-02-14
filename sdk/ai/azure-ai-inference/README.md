@@ -288,4 +288,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/TROUBLESHOOTING.md
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fai%2Fazure-ai-inference%2FREADME.png)
+

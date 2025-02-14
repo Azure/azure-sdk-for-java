@@ -111,4 +111,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [azure_purview_permissions]: https://learn.microsoft.com/azure/purview/catalog-permissions
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fpurview%2Fazure-analytics-purview-administration%2FREADME.png)
+

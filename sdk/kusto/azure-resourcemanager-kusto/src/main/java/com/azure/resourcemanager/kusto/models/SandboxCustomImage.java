@@ -40,11 +40,21 @@ public interface SandboxCustomImage {
     Language language();
 
     /**
-     * Gets the languageVersion property: The version of the language.
+     * Gets the languageVersion property: The version of the language. Either this property or baseImageName should be
+     * specified.
      * 
      * @return the languageVersion value.
      */
     String languageVersion();
+
+    /**
+     * Gets the baseImageName property: The base image name on which the custom image is built on top of. It can be one
+     * of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom
+     * image. Either this property or languageVersion should be specified.
+     * 
+     * @return the baseImageName value.
+     */
+    String baseImageName();
 
     /**
      * Gets the requirementsFileContent property: The requirements file content.
@@ -110,7 +120,7 @@ public interface SandboxCustomImage {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithLanguage, DefinitionStages.WithLanguageVersion,
-            DefinitionStages.WithRequirementsFileContent {
+            DefinitionStages.WithBaseImageName, DefinitionStages.WithRequirementsFileContent {
             /**
              * Executes the create request.
              * 
@@ -145,12 +155,31 @@ public interface SandboxCustomImage {
          */
         interface WithLanguageVersion {
             /**
-             * Specifies the languageVersion property: The version of the language..
+             * Specifies the languageVersion property: The version of the language. Either this property or
+             * baseImageName should be specified..
              * 
-             * @param languageVersion The version of the language.
+             * @param languageVersion The version of the language. Either this property or baseImageName should be
+             * specified.
              * @return the next definition stage.
              */
             WithCreate withLanguageVersion(String languageVersion);
+        }
+
+        /**
+         * The stage of the SandboxCustomImage definition allowing to specify baseImageName.
+         */
+        interface WithBaseImageName {
+            /**
+             * Specifies the baseImageName property: The base image name on which the custom image is built on top of.
+             * It can be one of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of
+             * an existing custom image. Either this property or languageVersion should be specified..
+             * 
+             * @param baseImageName The base image name on which the custom image is built on top of. It can be one of
+             * the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing
+             * custom image. Either this property or languageVersion should be specified.
+             * @return the next definition stage.
+             */
+            WithCreate withBaseImageName(String baseImageName);
         }
 
         /**
@@ -177,8 +206,8 @@ public interface SandboxCustomImage {
     /**
      * The template for SandboxCustomImage update.
      */
-    interface Update
-        extends UpdateStages.WithLanguage, UpdateStages.WithLanguageVersion, UpdateStages.WithRequirementsFileContent {
+    interface Update extends UpdateStages.WithLanguage, UpdateStages.WithLanguageVersion,
+        UpdateStages.WithBaseImageName, UpdateStages.WithRequirementsFileContent {
         /**
          * Executes the update request.
          * 
@@ -217,12 +246,31 @@ public interface SandboxCustomImage {
          */
         interface WithLanguageVersion {
             /**
-             * Specifies the languageVersion property: The version of the language..
+             * Specifies the languageVersion property: The version of the language. Either this property or
+             * baseImageName should be specified..
              * 
-             * @param languageVersion The version of the language.
+             * @param languageVersion The version of the language. Either this property or baseImageName should be
+             * specified.
              * @return the next definition stage.
              */
             Update withLanguageVersion(String languageVersion);
+        }
+
+        /**
+         * The stage of the SandboxCustomImage update allowing to specify baseImageName.
+         */
+        interface WithBaseImageName {
+            /**
+             * Specifies the baseImageName property: The base image name on which the custom image is built on top of.
+             * It can be one of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of
+             * an existing custom image. Either this property or languageVersion should be specified..
+             * 
+             * @param baseImageName The base image name on which the custom image is built on top of. It can be one of
+             * the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing
+             * custom image. Either this property or languageVersion should be specified.
+             * @return the next definition stage.
+             */
+            Update withBaseImageName(String baseImageName);
         }
 
         /**

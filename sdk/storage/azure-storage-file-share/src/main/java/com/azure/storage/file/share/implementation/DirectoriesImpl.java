@@ -95,7 +95,8 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 201 })
@@ -112,7 +113,8 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 201 })
@@ -129,7 +131,8 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 201 })
@@ -146,7 +149,8 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-last-write-time") String fileLastWriteTime,
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{shareName}/{directory}")
         @ExpectedResponses({ 200 })
@@ -248,7 +252,8 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 200 })
@@ -266,7 +271,8 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 200 })
@@ -284,7 +290,8 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 200 })
@@ -302,7 +309,8 @@ public final class DirectoriesImpl {
             @HeaderParam("x-ms-file-change-time") String fileChangeTime,
             @HeaderParam("x-ms-allow-trailing-dot") Boolean allowTrailingDot,
             @HeaderParam("x-ms-file-request-intent") ShareTokenIntent fileRequestIntent,
-            @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("x-ms-owner") String owner, @HeaderParam("x-ms-group") String group,
+            @HeaderParam("x-ms-mode") String fileMode, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{shareName}/{directory}")
         @ExpectedResponses({ 200 })
@@ -621,8 +629,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -638,9 +644,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -648,13 +659,14 @@ public final class DirectoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DirectoriesCreateHeaders, Void>> createWithResponseAsync(String shareName,
-        String directory, String fileAttributes, Integer timeout, Map<String, String> metadata, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime) {
+        String directory, Integer timeout, Map<String, String> metadata, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner, String group,
+        String fileMode) {
         return FluxUtil
-            .withContext(context -> createWithResponseAsync(shareName, directory, fileAttributes, timeout, metadata,
-                filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, context))
+            .withContext(context -> createWithResponseAsync(shareName, directory, timeout, metadata, filePermission,
+                filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+                fileChangeTime, owner, group, fileMode, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -663,8 +675,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -680,9 +690,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -691,16 +706,17 @@ public final class DirectoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DirectoriesCreateHeaders, Void>> createWithResponseAsync(String shareName,
-        String directory, String fileAttributes, Integer timeout, Map<String, String> metadata, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, Context context) {
+        String directory, Integer timeout, Map<String, String> metadata, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner, String group,
+        String fileMode, Context context) {
         final String restype = "directory";
         final String accept = "application/xml";
         return service
             .create(this.client.getUrl(), shareName, directory, restype, this.client.isAllowTrailingDot(), timeout,
                 metadata, this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey,
                 fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.getFileRequestIntent(),
-                accept, context)
+                owner, group, fileMode, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -709,8 +725,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -726,21 +740,27 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createAsync(String shareName, String directory, String fileAttributes, Integer timeout,
-        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime) {
-        return createWithResponseAsync(shareName, directory, fileAttributes, timeout, metadata, filePermission,
-            filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime)
-                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+    public Mono<Void> createAsync(String shareName, String directory, Integer timeout, Map<String, String> metadata,
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
+        String group, String fileMode) {
+        return createWithResponseAsync(shareName, directory, timeout, metadata, filePermission, filePermissionFormat,
+            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
+            fileMode).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -749,8 +769,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -766,9 +784,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -776,13 +799,13 @@ public final class DirectoriesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> createAsync(String shareName, String directory, String fileAttributes, Integer timeout,
-        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        Context context) {
-        return createWithResponseAsync(shareName, directory, fileAttributes, timeout, metadata, filePermission,
-            filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
-                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+    public Mono<Void> createAsync(String shareName, String directory, Integer timeout, Map<String, String> metadata,
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
+        String group, String fileMode, Context context) {
+        return createWithResponseAsync(shareName, directory, timeout, metadata, filePermission, filePermissionFormat,
+            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
+            fileMode, context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -791,8 +814,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -808,9 +829,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -818,13 +844,13 @@ public final class DirectoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String directory,
-        String fileAttributes, Integer timeout, Map<String, String> metadata, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime) {
+        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String owner, String group, String fileMode) {
         return FluxUtil
-            .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, directory, fileAttributes,
-                timeout, metadata, filePermission, filePermissionFormat, filePermissionKey, fileCreationTime,
-                fileLastWriteTime, fileChangeTime, context))
+            .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, directory, timeout, metadata,
+                filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
+                fileLastWriteTime, fileChangeTime, owner, group, fileMode, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -833,8 +859,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -850,9 +874,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -861,16 +890,16 @@ public final class DirectoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createNoCustomHeadersWithResponseAsync(String shareName, String directory,
-        String fileAttributes, Integer timeout, Map<String, String> metadata, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, Context context) {
+        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String owner, String group, String fileMode, Context context) {
         final String restype = "directory";
         final String accept = "application/xml";
         return service
             .createNoCustomHeaders(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, this.client.getFileRequestIntent(), accept, context)
+                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -879,8 +908,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -896,9 +923,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -907,16 +939,16 @@ public final class DirectoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<DirectoriesCreateHeaders, Void> createWithResponse(String shareName, String directory,
-        String fileAttributes, Integer timeout, Map<String, String> metadata, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, Context context) {
+        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String owner, String group, String fileMode, Context context) {
         try {
             final String restype = "directory";
             final String accept = "application/xml";
             return service.createSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, this.client.getFileRequestIntent(), accept, context);
+                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -927,8 +959,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -944,19 +974,26 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void create(String shareName, String directory, String fileAttributes, Integer timeout,
-        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime) {
-        createWithResponse(shareName, directory, fileAttributes, timeout, metadata, filePermission,
-            filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, Context.NONE);
+    public void create(String shareName, String directory, Integer timeout, Map<String, String> metadata,
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
+        String group, String fileMode) {
+        createWithResponse(shareName, directory, timeout, metadata, filePermission, filePermissionFormat,
+            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
+            fileMode, Context.NONE);
     }
 
     /**
@@ -964,8 +1001,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -981,9 +1016,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -991,17 +1031,17 @@ public final class DirectoriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> createNoCustomHeadersWithResponse(String shareName, String directory, String fileAttributes,
-        Integer timeout, Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        Context context) {
+    public Response<Void> createNoCustomHeadersWithResponse(String shareName, String directory, Integer timeout,
+        Map<String, String> metadata, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String owner, String group, String fileMode, Context context) {
         try {
             final String restype = "directory";
             final String accept = "application/xml";
             return service.createNoCustomHeadersSync(this.client.getUrl(), shareName, directory, restype,
                 this.client.isAllowTrailingDot(), timeout, metadata, this.client.getVersion(), filePermission,
                 filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, this.client.getFileRequestIntent(), accept, context);
+                fileChangeTime, this.client.getFileRequestIntent(), owner, group, fileMode, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -1455,8 +1495,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -1471,9 +1509,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1481,13 +1524,13 @@ public final class DirectoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
-        String directory, String fileAttributes, Integer timeout, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime) {
+        String directory, Integer timeout, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String owner, String group, String fileMode) {
         return FluxUtil
-            .withContext(context -> setPropertiesWithResponseAsync(shareName, directory, fileAttributes, timeout,
-                filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, context))
+            .withContext(context -> setPropertiesWithResponseAsync(shareName, directory, timeout, filePermission,
+                filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime,
+                fileChangeTime, owner, group, fileMode, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1496,8 +1539,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -1512,9 +1553,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1523,9 +1569,9 @@ public final class DirectoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(String shareName,
-        String directory, String fileAttributes, Integer timeout, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, Context context) {
+        String directory, Integer timeout, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String owner, String group, String fileMode, Context context) {
         final String restype = "directory";
         final String comp = "properties";
         final String accept = "application/xml";
@@ -1533,7 +1579,7 @@ public final class DirectoriesImpl {
             .setProperties(this.client.getUrl(), shareName, directory, restype, comp, timeout, this.client.getVersion(),
                 filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
                 fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(), this.client.getFileRequestIntent(),
-                accept, context)
+                owner, group, fileMode, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1542,8 +1588,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -1558,21 +1602,27 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setPropertiesAsync(String shareName, String directory, String fileAttributes, Integer timeout,
-        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime) {
-        return setPropertiesWithResponseAsync(shareName, directory, fileAttributes, timeout, filePermission,
-            filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime)
-                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+    public Mono<Void> setPropertiesAsync(String shareName, String directory, Integer timeout, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner, String group,
+        String fileMode) {
+        return setPropertiesWithResponseAsync(shareName, directory, timeout, filePermission, filePermissionFormat,
+            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
+            fileMode).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -1581,8 +1631,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -1597,9 +1645,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1607,12 +1660,13 @@ public final class DirectoriesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> setPropertiesAsync(String shareName, String directory, String fileAttributes, Integer timeout,
-        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, Context context) {
-        return setPropertiesWithResponseAsync(shareName, directory, fileAttributes, timeout, filePermission,
-            filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
-                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+    public Mono<Void> setPropertiesAsync(String shareName, String directory, Integer timeout, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner, String group,
+        String fileMode, Context context) {
+        return setPropertiesWithResponseAsync(shareName, directory, timeout, filePermission, filePermissionFormat,
+            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
+            fileMode, context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
 
@@ -1621,8 +1675,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -1637,9 +1689,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1647,12 +1704,13 @@ public final class DirectoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, String directory,
-        String fileAttributes, Integer timeout, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime) {
+        Integer timeout, String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
+        String group, String fileMode) {
         return FluxUtil
-            .withContext(context -> setPropertiesNoCustomHeadersWithResponseAsync(shareName, directory, fileAttributes,
-                timeout, filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
-                fileChangeTime, context))
+            .withContext(context -> setPropertiesNoCustomHeadersWithResponseAsync(shareName, directory, timeout,
+                filePermission, filePermissionFormat, filePermissionKey, fileAttributes, fileCreationTime,
+                fileLastWriteTime, fileChangeTime, owner, group, fileMode, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1661,8 +1719,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -1677,9 +1733,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1688,9 +1749,9 @@ public final class DirectoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setPropertiesNoCustomHeadersWithResponseAsync(String shareName, String directory,
-        String fileAttributes, Integer timeout, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        Context context) {
+        Integer timeout, String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
+        String group, String fileMode, Context context) {
         final String restype = "directory";
         final String comp = "properties";
         final String accept = "application/xml";
@@ -1698,7 +1759,7 @@ public final class DirectoriesImpl {
             .setPropertiesNoCustomHeaders(this.client.getUrl(), shareName, directory, restype, comp, timeout,
                 this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey, fileAttributes,
                 fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context)
+                this.client.getFileRequestIntent(), owner, group, fileMode, accept, context)
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1707,8 +1768,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -1723,9 +1782,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1734,9 +1798,9 @@ public final class DirectoriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<DirectoriesSetPropertiesHeaders, Void> setPropertiesWithResponse(String shareName,
-        String directory, String fileAttributes, Integer timeout, String filePermission,
-        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileCreationTime,
-        String fileLastWriteTime, String fileChangeTime, Context context) {
+        String directory, Integer timeout, String filePermission, FilePermissionFormat filePermissionFormat,
+        String filePermissionKey, String fileAttributes, String fileCreationTime, String fileLastWriteTime,
+        String fileChangeTime, String owner, String group, String fileMode, Context context) {
         try {
             final String restype = "directory";
             final String comp = "properties";
@@ -1744,7 +1808,7 @@ public final class DirectoriesImpl {
             return service.setPropertiesSync(this.client.getUrl(), shareName, directory, restype, comp, timeout,
                 this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey, fileAttributes,
                 fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context);
+                this.client.getFileRequestIntent(), owner, group, fileMode, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }
@@ -1755,8 +1819,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -1771,19 +1833,26 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void setProperties(String shareName, String directory, String fileAttributes, Integer timeout,
-        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
-        String fileCreationTime, String fileLastWriteTime, String fileChangeTime) {
-        setPropertiesWithResponse(shareName, directory, fileAttributes, timeout, filePermission, filePermissionFormat,
-            filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, Context.NONE);
+    public void setProperties(String shareName, String directory, Integer timeout, String filePermission,
+        FilePermissionFormat filePermissionFormat, String filePermissionKey, String fileAttributes,
+        String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner, String group,
+        String fileMode) {
+        setPropertiesWithResponse(shareName, directory, timeout, filePermission, filePermissionFormat,
+            filePermissionKey, fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, owner, group,
+            fileMode, Context.NONE);
     }
 
     /**
@@ -1791,8 +1860,6 @@ public final class DirectoriesImpl {
      *
      * @param shareName The name of the target share.
      * @param directory The path of the target directory.
-     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
-     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
      * href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting
      * Timeouts for File Service Operations.&lt;/a&gt;.
@@ -1807,9 +1874,14 @@ public final class DirectoriesImpl {
      * permission.
      * @param filePermissionKey Key of the permission to be set for the directory/file. Note: Only one of the
      * x-ms-file-permission or x-ms-file-permission-key should be specified.
+     * @param fileAttributes If specified, the provided file attributes shall be set. Default value: ‘Archive’ for file
+     * and ‘Directory’ for directory. ‘None’ can also be specified as default.
      * @param fileCreationTime Creation time for the file/directory. Default value: Now.
      * @param fileLastWriteTime Last write time for the file/directory. Default value: Now.
      * @param fileChangeTime Change time for the file/directory. Default value: Now.
+     * @param owner Optional, NFS only. The owner of the file or directory.
+     * @param group Optional, NFS only. The owning group of the file or directory.
+     * @param fileMode Optional, NFS only. The file mode of the file or directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ShareStorageExceptionInternal thrown if the request is rejected by server.
@@ -1817,10 +1889,10 @@ public final class DirectoriesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> setPropertiesNoCustomHeadersWithResponse(String shareName, String directory,
-        String fileAttributes, Integer timeout, String filePermission, FilePermissionFormat filePermissionFormat,
-        String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime,
-        Context context) {
+    public Response<Void> setPropertiesNoCustomHeadersWithResponse(String shareName, String directory, Integer timeout,
+        String filePermission, FilePermissionFormat filePermissionFormat, String filePermissionKey,
+        String fileAttributes, String fileCreationTime, String fileLastWriteTime, String fileChangeTime, String owner,
+        String group, String fileMode, Context context) {
         try {
             final String restype = "directory";
             final String comp = "properties";
@@ -1828,7 +1900,7 @@ public final class DirectoriesImpl {
             return service.setPropertiesNoCustomHeadersSync(this.client.getUrl(), shareName, directory, restype, comp,
                 timeout, this.client.getVersion(), filePermission, filePermissionFormat, filePermissionKey,
                 fileAttributes, fileCreationTime, fileLastWriteTime, fileChangeTime, this.client.isAllowTrailingDot(),
-                this.client.getFileRequestIntent(), accept, context);
+                this.client.getFileRequestIntent(), owner, group, fileMode, accept, context);
         } catch (ShareStorageExceptionInternal internalException) {
             throw ModelHelper.mapToShareStorageException(internalException);
         }

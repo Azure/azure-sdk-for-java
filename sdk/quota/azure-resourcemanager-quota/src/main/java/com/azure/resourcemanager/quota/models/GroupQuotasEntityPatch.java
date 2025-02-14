@@ -18,9 +18,9 @@ import java.io.IOException;
 @Fluent
 public final class GroupQuotasEntityPatch extends ProxyResource {
     /*
-     * Properties and filters for ShareQuota. The request parameter is optional, if there are no filters specified.
+     * Properties
      */
-    private GroupQuotasEntityBasePatch properties;
+    private GroupQuotasEntityPatchProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -49,23 +49,21 @@ public final class GroupQuotasEntityPatch extends ProxyResource {
     }
 
     /**
-     * Get the properties property: Properties and filters for ShareQuota. The request parameter is optional, if there
-     * are no filters specified.
+     * Get the properties property: Properties.
      * 
      * @return the properties value.
      */
-    public GroupQuotasEntityBasePatch properties() {
+    public GroupQuotasEntityPatchProperties properties() {
         return this.properties;
     }
 
     /**
-     * Set the properties property: Properties and filters for ShareQuota. The request parameter is optional, if there
-     * are no filters specified.
+     * Set the properties property: Properties.
      * 
      * @param properties the properties value to set.
      * @return the GroupQuotasEntityPatch object itself.
      */
-    public GroupQuotasEntityPatch withProperties(GroupQuotasEntityBasePatch properties) {
+    public GroupQuotasEntityPatch withProperties(GroupQuotasEntityPatchProperties properties) {
         this.properties = properties;
         return this;
     }
@@ -153,7 +151,7 @@ public final class GroupQuotasEntityPatch extends ProxyResource {
                 } else if ("type".equals(fieldName)) {
                     deserializedGroupQuotasEntityPatch.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedGroupQuotasEntityPatch.properties = GroupQuotasEntityBasePatch.fromJson(reader);
+                    deserializedGroupQuotasEntityPatch.properties = GroupQuotasEntityPatchProperties.fromJson(reader);
                 } else if ("systemData".equals(fieldName)) {
                     deserializedGroupQuotasEntityPatch.systemData = SystemData.fromJson(reader);
                 } else {

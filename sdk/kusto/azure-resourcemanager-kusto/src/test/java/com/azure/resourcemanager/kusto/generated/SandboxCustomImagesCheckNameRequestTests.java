@@ -12,14 +12,14 @@ public final class SandboxCustomImagesCheckNameRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SandboxCustomImagesCheckNameRequest model
-            = BinaryData.fromString("{\"name\":\"varmywdmj\"}").toObject(SandboxCustomImagesCheckNameRequest.class);
-        Assertions.assertEquals("varmywdmj", model.name());
+            = BinaryData.fromString("{\"name\":\"oakufgm\"}").toObject(SandboxCustomImagesCheckNameRequest.class);
+        Assertions.assertEquals("oakufgm", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SandboxCustomImagesCheckNameRequest model = new SandboxCustomImagesCheckNameRequest().withName("varmywdmj");
+        SandboxCustomImagesCheckNameRequest model = new SandboxCustomImagesCheckNameRequest().withName("oakufgm");
         model = BinaryData.fromObject(model).toObject(SandboxCustomImagesCheckNameRequest.class);
-        Assertions.assertEquals("varmywdmj", model.name());
+        Assertions.assertEquals("oakufgm", model.name());
     }
 }

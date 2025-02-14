@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.implementation.util.ImplUtils;
+import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.serialization.xml.XmlReader;
 import io.clientcore.core.serialization.xml.XmlSerializable;
 import io.clientcore.core.serialization.xml.XmlToken;

@@ -33,7 +33,7 @@ public class HttpPipelineTests {
     @Test
     public void withRequestPolicy() {
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
                 @Override
                 public Response<?> send(HttpRequest request) {
                     // do nothing
@@ -49,7 +49,7 @@ public class HttpPipelineTests {
     @Test
     public void withRequestOptions() {
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
                 @Override
                 public Response<?> send(HttpRequest request) {
                     // do nothing

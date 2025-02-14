@@ -121,4 +121,4 @@ Contribution Guidelines for more information.
 [CNCFCloudEvents]: https://cloudevents.github.io/sdk-java/
 [HttpResponseException]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/exception/HttpResponseException.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid-cloudnative-cloudevents%2FREADME.png)
+

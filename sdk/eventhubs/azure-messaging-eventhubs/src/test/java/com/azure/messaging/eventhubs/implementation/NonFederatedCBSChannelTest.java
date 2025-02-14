@@ -35,6 +35,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
@@ -122,7 +123,8 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
     }
 
     @Test
-    void successfullyAuthorizes() {
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
+    public void successfullyAuthorizes() {
         // Arrange
         TokenCredential tokenCredential = new EventHubSharedKeyCredential(connectionProperties.getSharedAccessKeyName(),
             connectionProperties.getSharedAccessKey());
@@ -145,7 +147,8 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
     }
 
     @Test
-    void unsuccessfulAuthorize() {
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
+    public void unsuccessfulAuthorize() {
         // Arrange
         final TokenCredential invalidToken = new EventHubSharedKeyCredential(
             connectionProperties.getSharedAccessKeyName(), "Invalid shared access key.");

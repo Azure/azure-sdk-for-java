@@ -117,4 +117,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_DEPENDENCY]: ../../README.md#adding-the-package-to-your-product
 [azsearch_docs]: https://learn.microsoft.com/azure/search
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java/sdk/search/azure-search/samples/README.png)
+

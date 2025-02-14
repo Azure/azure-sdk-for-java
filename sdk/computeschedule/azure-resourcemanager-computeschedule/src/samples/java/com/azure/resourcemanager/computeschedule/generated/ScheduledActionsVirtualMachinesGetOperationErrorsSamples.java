@@ -12,34 +12,18 @@ import java.util.Arrays;
  */
 public final class ScheduledActionsVirtualMachinesGetOperationErrorsSamples {
     /*
-     * x-ms-original-file: 2024-08-15-preview/ScheduledActions_VirtualMachinesGetOperationErrors_MinimumSet_Gen.json
+     * x-ms-original-file: 2024-10-01/ScheduledActions_VirtualMachinesGetOperationErrors.json
      */
     /**
-     * Sample code: CS_ScheduledActions_VirtualMachinesGetOperationErrors_Min.
+     * Sample code: ScheduledActions_VirtualMachinesGetOperationErrors.
      * 
      * @param manager Entry point to ComputeScheduleManager.
      */
-    public static void csScheduledActionsVirtualMachinesGetOperationErrorsMin(
+    public static void scheduledActionsVirtualMachinesGetOperationErrors(
         com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
         manager.scheduledActions()
-            .virtualMachinesGetOperationErrorsWithResponse("ggxoaxzxtdbi",
-                new GetOperationErrorsRequest().withOperationIds(Arrays.asList("qeicik")),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: 2024-08-15-preview/ScheduledActions_VirtualMachinesGetOperationErrors_MaximumSet_Gen.json
-     */
-    /**
-     * Sample code: CS_ScheduledActions_VirtualMachinesGetOperationErrors_Max.
-     * 
-     * @param manager Entry point to ComputeScheduleManager.
-     */
-    public static void csScheduledActionsVirtualMachinesGetOperationErrorsMax(
-        com.azure.resourcemanager.computeschedule.ComputeScheduleManager manager) {
-        manager.scheduledActions()
-            .virtualMachinesGetOperationErrorsWithResponse("hfsa",
-                new GetOperationErrorsRequest().withOperationIds(Arrays.asList("DE84A209-5715-43E7-BC76-3E208A9A323")),
+            .virtualMachinesGetOperationErrorsWithResponse("eastus2euap",
+                new GetOperationErrorsRequest().withOperationIds(Arrays.asList("23480d2f-1dca-4610-afb4-dd25eec1f34r")),
                 com.azure.core.util.Context.NONE);
     }
 }

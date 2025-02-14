@@ -530,7 +530,7 @@
           versionGA: 2.10.0
           type: client
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-security-keyvault-jca/2.10.0/index.html
+            javadoc: https://azuresdkdocs.z19.web.core.windows.net/java/azure-security-keyvault-jca/latest/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca
             msdocs: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-jca/README.md
             repopath: https://search.maven.org/artifact/com.azure/azure-security-keyvault-jca
@@ -894,7 +894,7 @@
             the Spring programming modoel to support well-known Enterprise Integration Patterns.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-storage-queue/5.19.0/index.html
+            javadoc: https://azuresdkdocs.z19.web.core.windows.net/java/spring-integration-azure-storage-queue/latest/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.19.0/sdk/spring/spring-integration-azure-storage-queue
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-integration-support
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-integration-azure-storage-queue
@@ -1055,7 +1055,7 @@
             the Spring programming modoel to support well-known Enterprise Integration Patterns.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-servicebus/5.19.0/index.html
+            javadoc: https://azuresdkdocs.z19.web.core.windows.net/java/spring-integration-azure-servicebus/latest/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.19.0/sdk/spring/spring-integration-azure-servicebus
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-integration-support
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-integration-azure-servicebus
@@ -1106,7 +1106,7 @@
             Stream based on Azure Service Bus.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-servicebus/5.19.0/index.html
+            javadoc: https://azuresdkdocs.z19.web.core.windows.net/java/spring-cloud-azure-stream-binder-servicebus/latest/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.19.0/sdk/spring/spring-cloud-azure-stream-binder-servicebus
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/configure-spring-cloud-stream-binder-java-app-with-service-bus
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-stream-binder-servicebus
@@ -1392,7 +1392,7 @@
             the Spring programming modoel to support well-known Enterprise Integration Patterns.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-integration-azure-eventhubs/5.19.0/index.html
+            javadoc: https://azuresdkdocs.z19.web.core.windows.net/java/spring-integration-azure-eventhubs/latest/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.19.0/sdk/spring/spring-integration-azure-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-integration-support
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-integration-azure-eventhubs
@@ -1443,7 +1443,7 @@
             Stream based on Azure Event Hubs.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-stream-binder-eventhubs/5.19.0/index.html
+            javadoc: https://azuresdkdocs.z19.web.core.windows.net/java/spring-cloud-azure-stream-binder-eventhubs/latest/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.19.0/sdk/spring/spring-cloud-azure-stream-binder-eventhubs
             msdocs: https://docs.microsoft.com/azure/developer/java/spring-framework/spring-cloud-azure#spring-cloud-stream-binder-for-azure-event-hubs
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-stream-binder-eventhubs
@@ -1667,7 +1667,7 @@
             Storage Blob, Storage Queue.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-testcontainers/5.19.0/index.html
+            javadoc: https://azuresdkdocs.z19.web.core.windows.net/java/spring-cloud-azure-testcontainers/latest/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.19.0/sdk/spring/spring-cloud-azure-testcontainers
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-testcontainers
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.19.0/testcontainers/spring-cloud-azure-testcontainers/
@@ -1714,7 +1714,7 @@
             supports Azure Storage Blob and Azure Storage Queue.
           type: spring
           links:
-            javadoc: https://azuresdkdocs.blob.core.windows.net/$web/java/spring-cloud-azure-docker-compose/5.19.0/index.html
+            javadoc: https://azuresdkdocs.z19.web.core.windows.net/java/spring-cloud-azure-docker-compose/latest/index.html
             github: https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_5.19.0/sdk/spring/spring-cloud-azure-docker-compose
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-docker-compose
             sample: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_5.19.0/dockercompose/spring-cloud-azure-docker-compose/
@@ -1743,3 +1743,4 @@
                 groupId: com.azure.spring
                 artifactId: spring-cloud-azure-docker-compose
                 version: 5.19.0
+

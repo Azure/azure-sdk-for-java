@@ -86,6 +86,22 @@ public interface Script {
     ProvisioningState provisioningState();
 
     /**
+     * Gets the scriptLevel property: Differentiates between the type of script commands included - Database or Cluster.
+     * The default is Database.
+     * 
+     * @return the scriptLevel value.
+     */
+    ScriptLevel scriptLevel();
+
+    /**
+     * Gets the principalPermissionsAction property: Indicates if the permissions for the script caller are kept
+     * following completion of the script.
+     * 
+     * @return the principalPermissionsAction value.
+     */
+    PrincipalPermissionsAction principalPermissionsAction();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -137,7 +153,8 @@ public interface Script {
          */
         interface WithCreate extends DefinitionStages.WithScriptUrl, DefinitionStages.WithScriptUrlSasToken,
             DefinitionStages.WithScriptContent, DefinitionStages.WithForceUpdateTag,
-            DefinitionStages.WithContinueOnErrors {
+            DefinitionStages.WithContinueOnErrors, DefinitionStages.WithScriptLevel,
+            DefinitionStages.WithPrincipalPermissionsAction {
             /**
              * Executes the create request.
              * 
@@ -226,6 +243,36 @@ public interface Script {
              */
             WithCreate withContinueOnErrors(Boolean continueOnErrors);
         }
+
+        /**
+         * The stage of the Script definition allowing to specify scriptLevel.
+         */
+        interface WithScriptLevel {
+            /**
+             * Specifies the scriptLevel property: Differentiates between the type of script commands included -
+             * Database or Cluster. The default is Database..
+             * 
+             * @param scriptLevel Differentiates between the type of script commands included - Database or Cluster. The
+             * default is Database.
+             * @return the next definition stage.
+             */
+            WithCreate withScriptLevel(ScriptLevel scriptLevel);
+        }
+
+        /**
+         * The stage of the Script definition allowing to specify principalPermissionsAction.
+         */
+        interface WithPrincipalPermissionsAction {
+            /**
+             * Specifies the principalPermissionsAction property: Indicates if the permissions for the script caller are
+             * kept following completion of the script..
+             * 
+             * @param principalPermissionsAction Indicates if the permissions for the script caller are kept following
+             * completion of the script.
+             * @return the next definition stage.
+             */
+            WithCreate withPrincipalPermissionsAction(PrincipalPermissionsAction principalPermissionsAction);
+        }
     }
 
     /**
@@ -238,8 +285,8 @@ public interface Script {
     /**
      * The template for Script update.
      */
-    interface Update
-        extends UpdateStages.WithScriptUrl, UpdateStages.WithForceUpdateTag, UpdateStages.WithContinueOnErrors {
+    interface Update extends UpdateStages.WithScriptUrl, UpdateStages.WithForceUpdateTag,
+        UpdateStages.WithContinueOnErrors, UpdateStages.WithScriptLevel, UpdateStages.WithPrincipalPermissionsAction {
         /**
          * Executes the update request.
          * 
@@ -300,6 +347,36 @@ public interface Script {
              * @return the next definition stage.
              */
             Update withContinueOnErrors(Boolean continueOnErrors);
+        }
+
+        /**
+         * The stage of the Script update allowing to specify scriptLevel.
+         */
+        interface WithScriptLevel {
+            /**
+             * Specifies the scriptLevel property: Differentiates between the type of script commands included -
+             * Database or Cluster. The default is Database..
+             * 
+             * @param scriptLevel Differentiates between the type of script commands included - Database or Cluster. The
+             * default is Database.
+             * @return the next definition stage.
+             */
+            Update withScriptLevel(ScriptLevel scriptLevel);
+        }
+
+        /**
+         * The stage of the Script update allowing to specify principalPermissionsAction.
+         */
+        interface WithPrincipalPermissionsAction {
+            /**
+             * Specifies the principalPermissionsAction property: Indicates if the permissions for the script caller are
+             * kept following completion of the script..
+             * 
+             * @param principalPermissionsAction Indicates if the permissions for the script caller are kept following
+             * completion of the script.
+             * @return the next definition stage.
+             */
+            Update withPrincipalPermissionsAction(PrincipalPermissionsAction principalPermissionsAction);
         }
     }
 

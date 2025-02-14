@@ -26,6 +26,7 @@ import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
+import com.azure.resourcemanager.kusto.models.ZoneStatus;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -641,6 +642,29 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the calloutPolicies property: List of callout policies for egress from Cluster.
+     * 
+     * @return the calloutPolicies value.
+     */
+    public List<CalloutPolicyInner> calloutPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().calloutPolicies();
+    }
+
+    /**
+     * Set the calloutPolicies property: List of callout policies for egress from Cluster.
+     * 
+     * @param calloutPolicies the calloutPolicies value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withCalloutPolicies(List<CalloutPolicyInner> calloutPolicies) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withCalloutPolicies(calloutPolicies);
+        return this;
+    }
+
+    /**
      * Get the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
      * and IPv6).
      * 
@@ -704,6 +728,15 @@ public final class ClusterInner extends Resource {
      */
     public MigrationClusterProperties migrationCluster() {
         return this.innerProperties() == null ? null : this.innerProperties().migrationCluster();
+    }
+
+    /**
+     * Get the zoneStatus property: Indicates whether the cluster is zonal or non-zonal.
+     * 
+     * @return the zoneStatus value.
+     */
+    public ZoneStatus zoneStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneStatus();
     }
 
     /**

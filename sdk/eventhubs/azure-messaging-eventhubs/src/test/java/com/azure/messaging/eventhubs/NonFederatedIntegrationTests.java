@@ -15,6 +15,7 @@ import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import reactor.test.StepVerifier;
@@ -23,6 +24,7 @@ import static com.azure.messaging.eventhubs.TestUtils.getEventHubName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Tag("integration")
 public class NonFederatedIntegrationTests extends IntegrationTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(NonFederatedIntegrationTests.class);
     private static final String PARTITION_ID = "2";
@@ -34,8 +36,8 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
     @Test
     @EnabledIfEnvironmentVariable(
         named = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS",
-        matches = ".*ShadAccessSignature .*")
-    void sendWithSasConnectionString() {
+        matches = ".*SharedAccessSignature.*")
+    public void sendWithSasConnectionString() {
         final String eventHubName = TestUtils.getEventHubName();
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
@@ -54,6 +56,7 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
     public void sendAndReceiveEventByAzureSasCredential() {
         Assumptions.assumeTrue(TestUtils.getConnectionString(true) != null,
             "SAS was not set. Can't run test scenario.");
@@ -76,6 +79,7 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
     }
 
     @Test
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
     public void sendAndReceiveEventByAzureNameKeyCredential() {
         ConnectionStringProperties properties = getConnectionStringProperties();
         String fullyQualifiedNamespace = properties.getEndpoint().getHost();
@@ -101,6 +105,7 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
      * Verifies that error conditions are handled for fetching Event Hub metadata.
      */
     @Test
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
     public void getPartitionPropertiesInvalidToken() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();
@@ -127,6 +132,7 @@ public class NonFederatedIntegrationTests extends IntegrationTestBase {
      * Verifies that error conditions are handled for fetching partition metadata.
      */
     @Test
+    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING", matches = ".*SharedAccessKey.*")
     public void getPartitionPropertiesNonExistentHub() {
         // Arrange
         final ConnectionStringProperties original = getConnectionStringProperties();

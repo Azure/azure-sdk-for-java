@@ -9,7 +9,7 @@ Library containing core fault injection classes used to test Azure Cosmos DB SDK
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-test</artifactId>
-  <version>1.0.0-beta.9</version>
+  <version>1.0.0-beta.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -158,7 +158,7 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 
 <!-- LINKS -->
 [cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
-[api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
+[api_documentation]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-cosmos/latest/index.html
 [cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
 [jdk]: https://learn.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
@@ -170,3 +170,4 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [troubleshooting]: https://learn.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
 [perf_guide]: https://learn.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
+

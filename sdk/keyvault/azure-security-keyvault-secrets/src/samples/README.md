@@ -84,4 +84,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [sample_ManageDeleted]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecrets.java
 [sample_ManageDeletedAsync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets/src/samples/java/com/azure/security/keyvault/secrets/ManagingDeletedSecretsAsync.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-secrets%2Fsrc%2Fsamples%2FREADME.png)
+

@@ -19,15 +19,15 @@ final class FallbackTracer implements Tracer {
     private final boolean isEnabled;
     private final ClientLogger logger;
 
-    FallbackTracer(InstrumentationOptions<?> instrumentationOptions, LibraryInstrumentationOptions libraryOptions) {
+    FallbackTracer(InstrumentationOptions instrumentationOptions, LibraryInstrumentationOptions libraryOptions) {
         // TODO (limolkova): do we need additional config to enable fallback tracing? Or maybe we enable it only if logs are enabled?
         this.isEnabled = instrumentationOptions == null || instrumentationOptions.isTracingEnabled();
         this.logger = isEnabled ? getLogger(instrumentationOptions, libraryOptions) : LOGGER;
     }
 
-    private static ClientLogger getLogger(InstrumentationOptions<?> instrumentationOptions,
+    private static ClientLogger getLogger(InstrumentationOptions instrumentationOptions,
         LibraryInstrumentationOptions libraryOptions) {
-        Object providedLogger = instrumentationOptions == null ? null : instrumentationOptions.getProvider();
+        Object providedLogger = instrumentationOptions == null ? null : instrumentationOptions.getTelemetryProvider();
         if (providedLogger instanceof ClientLogger) {
             return (ClientLogger) providedLogger;
         }

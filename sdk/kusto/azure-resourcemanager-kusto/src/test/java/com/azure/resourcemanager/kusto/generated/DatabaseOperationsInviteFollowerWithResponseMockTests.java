@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono;
 public final class DatabaseOperationsInviteFollowerWithResponseMockTests {
     @Test
     public void testInviteFollowerWithResponse() throws Exception {
-        String responseStr = "{\"generatedInvitation\":\"ewbidyvteowxv\"}";
+        String responseStr = "{\"generatedInvitation\":\"cxmjpbyephmg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,20 +33,21 @@ public final class DatabaseOperationsInviteFollowerWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DatabaseInviteFollowerResult response = manager.databaseOperations()
-            .inviteFollowerWithResponse("wjksghudgzhxo", "jggsvo", "jkxibda",
-                new DatabaseInviteFollowerRequest().withInviteeEmail("hrkmdyomkxfbvfbh")
+            .inviteFollowerWithResponse("sxze", "paxwkufyk", "vuhx",
+                new DatabaseInviteFollowerRequest().withInviteeEmail("pmru")
                     .withTableLevelSharingProperties(new TableLevelSharingProperties()
-                        .withTablesToInclude(Arrays.asList("hpwpgddeimawzovg"))
-                        .withTablesToExclude(Arrays.asList("muikjcjcaztbws"))
-                        .withExternalTablesToInclude(Arrays.asList("owxwcomli", "ytwvczcswkacve"))
-                        .withExternalTablesToExclude(Arrays.asList("dvlvhbwrnfxtgdd"))
-                        .withMaterializedViewsToInclude(Arrays.asList("hehnmnaoya"))
-                        .withMaterializedViewsToExclude(Arrays.asList("oe", "swankltytmh", "roznnhdrlktgj", "sggux"))
-                        .withFunctionsToInclude(Arrays.asList("lwywae", "czg", "bukklels"))
-                        .withFunctionsToExclude(Arrays.asList("lycsxz", "jks", "lsmdesqplpvmjc"))),
+                        .withTablesToInclude(Arrays.asList("baobn", "lujdjltymkmv", "uihywart", "pphkixkykxds"))
+                        .withTablesToExclude(Arrays.asList("emmucfxh", "kkflrmymyincqlhr", "s"))
+                        .withExternalTablesToInclude(Arrays.asList("miii", "v"))
+                        .withExternalTablesToExclude(Arrays.asList("gxuugqkctotio", "l", "teqdptj", "wdtgukranblw"))
+                        .withMaterializedViewsToInclude(
+                            Arrays.asList("lkccuzgygqwa", "oiulwgniipr", "lvawuwzdufypivls", "bjpmcubk"))
+                        .withMaterializedViewsToExclude(Arrays.asList("oxxkubvp"))
+                        .withFunctionsToInclude(Arrays.asList("pmhbrbq"))
+                        .withFunctionsToExclude(Arrays.asList("ovpbbttefjoknssq", "zqedikdfrdbi", "mrjgeihfqlggwfi"))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ewbidyvteowxv", response.generatedInvitation());
+        Assertions.assertEquals("cxmjpbyephmg", response.generatedInvitation());
     }
 }

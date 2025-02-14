@@ -18,7 +18,7 @@ import com.azure.resourcemanager.kusto.models.EventHubDataFormat;
  */
 public final class DataConnectionsDataConnectionValidationSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
      * KustoDataConnectionValidationAsync.json
      */
     /**
@@ -35,7 +35,7 @@ public final class DataConnectionsDataConnectionValidationSamples {
                         .withConsumerGroup("testConsumerGroup1")
                         .withTableName("TestTable")
                         .withMappingRuleName("TestMapping")
-                        .withDataFormat(EventHubDataFormat.JSON)
+                        .withDataFormat(EventHubDataFormat.MULTIJSON)
                         .withCompression(Compression.NONE)
                         .withManagedIdentityResourceId(
                             "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")),
@@ -43,7 +43,7 @@ public final class DataConnectionsDataConnectionValidationSamples {
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
      * KustoDataConnectionEventGridValidationAsync.json
      */
     /**
@@ -64,7 +64,7 @@ public final class DataConnectionsDataConnectionValidationSamples {
                         .withConsumerGroup("$Default")
                         .withTableName("TestTable")
                         .withMappingRuleName("TestMapping")
-                        .withDataFormat(EventGridDataFormat.JSON)
+                        .withDataFormat(EventGridDataFormat.MULTIJSON)
                         .withIgnoreFirstRecord(false)
                         .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
                         .withManagedIdentityResourceId(

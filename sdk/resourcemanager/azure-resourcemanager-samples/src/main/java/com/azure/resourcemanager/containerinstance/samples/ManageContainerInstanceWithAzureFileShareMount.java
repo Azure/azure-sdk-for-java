@@ -5,7 +5,7 @@ package com.azure.resourcemanager.containerinstance.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
@@ -129,7 +129,7 @@ public class ManageContainerInstanceWithAzureFileShareMount {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();

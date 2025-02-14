@@ -4,9 +4,11 @@
 package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -14,10 +16,14 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.TestUtils;
+import com.azure.messaging.servicebus.administration.ServiceBusSupplementaryAuthHeaderPolicy;
 import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
@@ -36,11 +42,13 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * Integration tests for {@link ServiceBusManagementClientImpl}.
@@ -50,7 +58,9 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
         = new ClientLogger(ServiceBusAdministrationClientImplIntegrationTests.class);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
     private static final ServiceBusManagementSerializer SERIALIZER = new ServiceBusManagementSerializer();
+
     private final Duration timeout = Duration.ofSeconds(30);
+    private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
 
     /**
      * Verifies we can get queue information.
@@ -205,33 +215,59 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestProxyTestBa
     }
 
     private ServiceBusManagementClientImpl createClient(HttpClient httpClient) {
-        final String connectionString = interceptorManager.isPlaybackMode()
-            ? "Endpoint=sb://foo" + TestUtils.getEndpoint()
-                + ";SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
-            : TestUtils.getConnectionString(false);
-        final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
-        final ServiceBusSharedKeyCredential credential
-            = new ServiceBusSharedKeyCredential(properties.getSharedAccessKeyName(), properties.getSharedAccessKey());
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new UserAgentPolicy());
-        policies.add(new ServiceBusTokenCredentialHttpPolicy(credential));
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
+        final TokenCredential tokenCredential;
         final HttpClient httpClientToUse;
+        final String fullyQualifiedNamespace;
         if (interceptorManager.isPlaybackMode()) {
+            fullyQualifiedNamespace = TestUtils.getFullyQualifiedDomainName(true);
+
             httpClientToUse = interceptorManager.getPlaybackClient();
+            tokenCredential = new MockTokenCredential();
         } else if (interceptorManager.isLiveMode()) {
+            fullyQualifiedNamespace = TestUtils.getFullyQualifiedDomainName(false);
+            assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedNamespace), "FullyQualifiedDomainName is not set.");
+
             httpClientToUse = httpClient;
-        } else {
+            tokenCredential = TestUtils.getPipelineCredential(credentialCached);
+        } else if (interceptorManager.isRecordMode()) {
+            // Record Mode.
+            final String connectionString = TestUtils.getConnectionString(false);
+            if (CoreUtils.isNullOrEmpty(connectionString)) {
+                fullyQualifiedNamespace = TestUtils.getFullyQualifiedDomainName(false);
+                assumeTrue(!CoreUtils.isNullOrEmpty(fullyQualifiedNamespace), "fullyQualifiedNamespace is not set.");
+
+                tokenCredential = new DefaultAzureCredentialBuilder().build();
+            } else {
+                tokenCredential = new ServiceBusSharedKeyCredential(connectionString);
+
+                ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
+                fullyQualifiedNamespace = properties.getEndpoint().getHost();
+            }
+
             httpClientToUse = httpClient;
             policies.add(interceptorManager.getRecordPolicy());
+        } else {
+            throw new UnsupportedOperationException("Test mode is not supported: " + getTestMode());
         }
+
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(TestUtils.TEST_PROXY_SANITIZERS);
+            interceptorManager.addMatchers(TestUtils.TEST_PROXY_REQUEST_MATCHERS);
+        }
+
+        policies.add(new ServiceBusTokenCredentialHttpPolicy(tokenCredential));
+        policies.add(new AddHeadersFromContextPolicy());
+        policies.add(new ServiceBusSupplementaryAuthHeaderPolicy(tokenCredential));
 
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClientToUse)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
 
-        return new ServiceBusManagementClientImpl(pipeline, SERIALIZER, properties.getEndpoint().getHost(),
+        return new ServiceBusManagementClientImpl(pipeline, SERIALIZER, fullyQualifiedNamespace,
             ServiceBusServiceVersion.getLatest().getVersion());
     }
 

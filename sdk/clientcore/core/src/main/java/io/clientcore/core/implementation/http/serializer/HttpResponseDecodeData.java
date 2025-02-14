@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.http.serializer;
 
-import io.clientcore.core.http.exception.HttpResponseException;
+import io.clientcore.core.http.exceptions.HttpResponseException;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.rest.SwaggerMethodParser;
 

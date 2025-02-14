@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
-import static io.clientcore.core.implementation.util.ImplUtils.stringJoin;
+import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.utils.ImplUtils.stringJoin;
 
 /**
  * Represents a single header to be set on a request.

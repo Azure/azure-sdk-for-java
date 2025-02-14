@@ -23,7 +23,7 @@ public final class DatabasesUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"kind\":\"Database\",\"location\":\"w\",\"id\":\"xqszdtmaajquh\",\"name\":\"xylrjvmtygjbmz\",\"type\":\"ospspshckf\"}";
+            = "{\"kind\":\"Database\",\"location\":\"olvdnd\",\"id\":\"iauogphuartv\",\"name\":\"iukyefchnmna\",\"type\":\"mnxhkxjqirwrweo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class DatabasesUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Database response = manager.databases()
-            .update("mrnjh", "sujz", "czytqjtwhauunfpr", new DatabaseInner().withLocation("letlx"), CallerRole.ADMIN,
-                com.azure.core.util.Context.NONE);
+            .update("mur", "xxgewpk", "vqylkmqpzoyhl", new DatabaseInner().withLocation("cgwgcloxoebqinji"),
+                CallerRole.ADMIN, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("w", response.location());
+        Assertions.assertEquals("olvdnd", response.location());
     }
 }

@@ -143,6 +143,32 @@ public interface Clusters {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
+    PagedIterable<FollowerDatabaseDefinitionGet> listFollowerDatabasesGet(String resourceGroupName, String clusterName);
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<FollowerDatabaseDefinitionGet> listFollowerDatabasesGet(String resourceGroupName, String clusterName,
+        Context context);
+
+    /**
+     * Returns a list of databases that are owned by this cluster and were followed by another cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
+     */
     PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(String resourceGroupName, String clusterName);
 
     /**
@@ -353,6 +379,83 @@ public interface Clusters {
      */
     PagedIterable<OutboundNetworkDependenciesEndpoint>
         listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String clusterName, Context context);
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addCalloutPolicies(String resourceGroupName, String clusterName, CalloutPoliciesList calloutPolicies);
+
+    /**
+     * Adds a list of callout policies for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicies The callout policies to add.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void addCalloutPolicies(String resourceGroupName, String clusterName, CalloutPoliciesList calloutPolicies,
+        Context context);
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removeCalloutPolicy(String resourceGroupName, String clusterName, CalloutPolicyToRemove calloutPolicy);
+
+    /**
+     * Removes callout policy for engine services.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param calloutPolicy The callout policies to remove.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void removeCalloutPolicy(String resourceGroupName, String clusterName, CalloutPolicyToRemove calloutPolicy,
+        Context context);
+
+    /**
+     * Returns the allowed callout policies for the specified service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of the service's callout policy objects as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<CalloutPolicy> listCalloutPolicies(String resourceGroupName, String clusterName);
+
+    /**
+     * Returns the allowed callout policies for the specified service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Kusto cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of the service's callout policy objects as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<CalloutPolicy> listCalloutPolicies(String resourceGroupName, String clusterName, Context context);
 
     /**
      * Returns a list of language extensions that can run within KQL queries.

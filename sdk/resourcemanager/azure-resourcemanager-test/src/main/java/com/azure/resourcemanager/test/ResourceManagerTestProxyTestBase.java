@@ -13,6 +13,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -400,10 +401,10 @@ public abstract class ResourceManagerTestProxyTestBase extends TestProxyTestBase
             String subscriptionId
                 = Objects.requireNonNull(configuration.get(Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID),
                     "'AZURE_SUBSCRIPTION_ID' environment variable cannot be null.");
-            credential
-                = new DefaultAzureCredentialBuilder().authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
-                    .build();
-            testProfile = new AzureProfile(tenantId, subscriptionId, AzureEnvironment.AZURE);
+            testProfile = new AzureProfile(tenantId, subscriptionId, AzureCloud.AZURE_PUBLIC_CLOUD);
+            credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(testProfile.getEnvironment().getActiveDirectoryEndpoint())
+                .build();
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             if (interceptorManager.isRecordMode() && !testContextManager.doNotRecordTest()) {

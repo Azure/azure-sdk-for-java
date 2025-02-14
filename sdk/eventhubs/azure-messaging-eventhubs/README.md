@@ -95,7 +95,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventhubs</artifactId>
-    <version>5.19.0</version>
+    <version>5.20.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -468,4 +468,4 @@ Guidelines](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 [troubleshooting]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs/TROUBLESHOOTING.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FREADME.png)
+

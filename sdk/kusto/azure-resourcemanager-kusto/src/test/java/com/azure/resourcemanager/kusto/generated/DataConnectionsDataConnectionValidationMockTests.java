@@ -23,7 +23,7 @@ public final class DataConnectionsDataConnectionValidationMockTests {
     @Test
     public void testDataConnectionValidation() throws Exception {
         String responseStr
-            = "{\"value\":[{\"errorMessage\":\"ewnf\"},{\"errorMessage\":\"hhhqosm\"},{\"errorMessage\":\"jkutycyarnr\"},{\"errorMessage\":\"hguabzoghktdp\"}]}";
+            = "{\"value\":[{\"errorMessage\":\"tlghwzhomew\"},{\"errorMessage\":\"s\"},{\"errorMessage\":\"iuh\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,11 +33,11 @@ public final class DataConnectionsDataConnectionValidationMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataConnectionValidationListResult response = manager.dataConnections()
-            .dataConnectionValidation("aan", "ggiycwkdtaawxwf", "ka",
-                new DataConnectionValidationInner().withDataConnectionName("rrqmbzmqk")
-                    .withProperties(new DataConnectionInner().withLocation("bnxwbjsidbirkf")),
+            .dataConnectionValidation("nlzafwxudgnh", "ookrtalvnbw", "pbeme",
+                new DataConnectionValidationInner().withDataConnectionName("clvdjjukyrdnqod")
+                    .withProperties(new DataConnectionInner().withLocation("h")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ewnf", response.value().get(0).errorMessage());
+        Assertions.assertEquals("tlghwzhomew", response.value().get(0).errorMessage());
     }
 }

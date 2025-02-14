@@ -242,7 +242,7 @@ public final class OutputElement {
         // Note: it's quite difficult to properly resolve masking
 
         if (rootNsContext != null) {
-            Iterator<String> it = rootNsContext.getPrefixes(uri);
+            Iterator<String> it = getPrefixes(rootNsContext, uri);
             while (it.hasNext()) {
                 String prefix = it.next();
                 if (prefix.isEmpty()) { // default NS already checked
@@ -261,6 +261,14 @@ public final class OutputElement {
             return Collections.emptyIterator();
         }
         return l.iterator();
+    }
+
+    // In Java 8 NamespaceContext.getPrefixes returns Iterator, not Iterator<String>, which is why this method exists
+    // with a warnings suppression for the unchecked cast. In later versions of Java it returns Iterator<String>, so
+    // when we upgrade the baseline off Java 8 this method can be removed and the call can be done inline again.
+    @SuppressWarnings("unchecked")
+    private static Iterator<String> getPrefixes(NamespaceContext context, String uri) {
+        return context.getPrefixes(uri);
     }
 
     /**

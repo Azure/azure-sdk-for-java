@@ -4,7 +4,7 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.util.function.Function;

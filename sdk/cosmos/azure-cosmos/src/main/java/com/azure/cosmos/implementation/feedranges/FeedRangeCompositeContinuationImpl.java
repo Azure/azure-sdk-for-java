@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -111,13 +110,13 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
         this.set(
             Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_VERSION,
-            FeedRangeContinuationVersions.V1,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            FeedRangeContinuationVersions.V1
+        );
 
         this.set(
             Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_RESOURCE_ID,
-            this.getContainerRid(),
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.getContainerRid()
+        );
 
         if (this.compositeContinuationTokens.size() > 0) {
             for (CompositeContinuationToken token : this.compositeContinuationTokens) {
@@ -126,8 +125,8 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
 
             this.set(
                 Constants.Properties.FEED_RANGE_COMPOSITE_CONTINUATION_CONTINUATION,
-                this.compositeContinuationTokens,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                this.compositeContinuationTokens
+            );
         }
 
         if (this.feedRange != null) {

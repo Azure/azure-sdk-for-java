@@ -65,6 +65,11 @@ public final class FilesDownloadHeaders {
     private String xMsStructuredBody;
 
     /*
+     * The x-ms-mode property.
+     */
+    private String xMsMode;
+
+    /*
      * The x-ms-file-attributes property.
      */
     private String xMsFileAttributes;
@@ -100,9 +105,19 @@ public final class FilesDownloadHeaders {
     private String xMsRequestId;
 
     /*
+     * The x-ms-owner property.
+     */
+    private String xMsOwner;
+
+    /*
      * The Content-Type property.
      */
     private String contentType;
+
+    /*
+     * The x-ms-group property.
+     */
+    private String xMsGroup;
 
     /*
      * The x-ms-version property.
@@ -170,6 +185,11 @@ public final class FilesDownloadHeaders {
     private String eTag;
 
     /*
+     * The x-ms-link-count property.
+     */
+    private Long xMsLinkCount;
+
+    /*
      * The Content-Disposition property.
      */
     private String contentDisposition;
@@ -211,6 +231,8 @@ public final class FilesDownloadHeaders {
 
     private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
 
+    private static final HttpHeaderName X_MS_MODE = HttpHeaderName.fromString("x-ms-mode");
+
     private static final HttpHeaderName X_MS_FILE_ATTRIBUTES = HttpHeaderName.fromString("x-ms-file-attributes");
 
     private static final HttpHeaderName X_MS_STRUCTURED_CONTENT_LENGTH
@@ -220,6 +242,10 @@ public final class FilesDownloadHeaders {
         = HttpHeaderName.fromString("x-ms-copy-status-description");
 
     private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
+
+    private static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
+
+    private static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
@@ -236,6 +262,8 @@ public final class FilesDownloadHeaders {
         = HttpHeaderName.fromString("x-ms-copy-completion-time");
 
     private static final HttpHeaderName X_MS_SERVER_ENCRYPTED = HttpHeaderName.fromString("x-ms-server-encrypted");
+
+    private static final HttpHeaderName X_MS_LINK_COUNT = HttpHeaderName.fromString("x-ms-link-count");
 
     private static final HttpHeaderName X_MS_FILE_CHANGE_TIME = HttpHeaderName.fromString("x-ms-file-change-time");
 
@@ -276,6 +304,7 @@ public final class FilesDownloadHeaders {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
+        this.xMsMode = rawHeaders.getValue(X_MS_MODE);
         this.xMsFileAttributes = rawHeaders.getValue(X_MS_FILE_ATTRIBUTES);
         String xMsStructuredContentLength = rawHeaders.getValue(X_MS_STRUCTURED_CONTENT_LENGTH);
         if (xMsStructuredContentLength != null) {
@@ -292,7 +321,9 @@ public final class FilesDownloadHeaders {
             this.contentLength = Long.parseLong(contentLength);
         }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        this.xMsOwner = rawHeaders.getValue(X_MS_OWNER);
         this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+        this.xMsGroup = rawHeaders.getValue(X_MS_GROUP);
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.xMsFilePermissionKey = rawHeaders.getValue(X_MS_FILE_PERMISSION_KEY);
         this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
@@ -317,6 +348,10 @@ public final class FilesDownloadHeaders {
         }
         this.cacheControl = rawHeaders.getValue(HttpHeaderName.CACHE_CONTROL);
         this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsLinkCount = rawHeaders.getValue(X_MS_LINK_COUNT);
+        if (xMsLinkCount != null) {
+            this.xMsLinkCount = Long.parseLong(xMsLinkCount);
+        }
         this.contentDisposition = rawHeaders.getValue(HttpHeaderName.CONTENT_DISPOSITION);
         String xMsFileChangeTime = rawHeaders.getValue(X_MS_FILE_CHANGE_TIME);
         if (xMsFileChangeTime != null) {
@@ -512,6 +547,26 @@ public final class FilesDownloadHeaders {
     }
 
     /**
+     * Get the xMsMode property: The x-ms-mode property.
+     * 
+     * @return the xMsMode value.
+     */
+    public String getXMsMode() {
+        return this.xMsMode;
+    }
+
+    /**
+     * Set the xMsMode property: The x-ms-mode property.
+     * 
+     * @param xMsMode the xMsMode value to set.
+     * @return the FilesDownloadHeaders object itself.
+     */
+    public FilesDownloadHeaders setXMsMode(String xMsMode) {
+        this.xMsMode = xMsMode;
+        return this;
+    }
+
+    /**
      * Get the xMsFileAttributes property: The x-ms-file-attributes property.
      * 
      * @return the xMsFileAttributes value.
@@ -652,6 +707,26 @@ public final class FilesDownloadHeaders {
     }
 
     /**
+     * Get the xMsOwner property: The x-ms-owner property.
+     * 
+     * @return the xMsOwner value.
+     */
+    public String getXMsOwner() {
+        return this.xMsOwner;
+    }
+
+    /**
+     * Set the xMsOwner property: The x-ms-owner property.
+     * 
+     * @param xMsOwner the xMsOwner value to set.
+     * @return the FilesDownloadHeaders object itself.
+     */
+    public FilesDownloadHeaders setXMsOwner(String xMsOwner) {
+        this.xMsOwner = xMsOwner;
+        return this;
+    }
+
+    /**
      * Get the contentType property: The Content-Type property.
      * 
      * @return the contentType value.
@@ -668,6 +743,26 @@ public final class FilesDownloadHeaders {
      */
     public FilesDownloadHeaders setContentType(String contentType) {
         this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the xMsGroup property: The x-ms-group property.
+     * 
+     * @return the xMsGroup value.
+     */
+    public String getXMsGroup() {
+        return this.xMsGroup;
+    }
+
+    /**
+     * Set the xMsGroup property: The x-ms-group property.
+     * 
+     * @param xMsGroup the xMsGroup value to set.
+     * @return the FilesDownloadHeaders object itself.
+     */
+    public FilesDownloadHeaders setXMsGroup(String xMsGroup) {
+        this.xMsGroup = xMsGroup;
         return this;
     }
 
@@ -942,6 +1037,26 @@ public final class FilesDownloadHeaders {
      */
     public FilesDownloadHeaders setETag(String eTag) {
         this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the xMsLinkCount property: The x-ms-link-count property.
+     * 
+     * @return the xMsLinkCount value.
+     */
+    public Long getXMsLinkCount() {
+        return this.xMsLinkCount;
+    }
+
+    /**
+     * Set the xMsLinkCount property: The x-ms-link-count property.
+     * 
+     * @param xMsLinkCount the xMsLinkCount value to set.
+     * @return the FilesDownloadHeaders object itself.
+     */
+    public FilesDownloadHeaders setXMsLinkCount(Long xMsLinkCount) {
+        this.xMsLinkCount = xMsLinkCount;
         return this;
     }
 

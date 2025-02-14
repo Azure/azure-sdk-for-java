@@ -23,7 +23,7 @@ public final class ManagedPrivateEndpointsCheckNameAvailabilityWithResponseMockT
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"nameAvailable\":true,\"name\":\"tzejetjklnt\",\"message\":\"yjuzkdb\",\"reason\":\"Invalid\"}";
+            = "{\"nameAvailable\":true,\"name\":\"kglklbyulidwcw\",\"message\":\"zegjonfhjirwgdn\",\"reason\":\"Invalid\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class ManagedPrivateEndpointsCheckNameAvailabilityWithResponseMockT
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameResult response = manager.managedPrivateEndpoints()
-            .checkNameAvailabilityWithResponse("vlwyzg", "blkujrllfojuidjp",
-                new ManagedPrivateEndpointsCheckNameRequest().withName("uyjucejikzo"), com.azure.core.util.Context.NONE)
+            .checkNameAvailabilityWithResponse("vlnnpx", "b",
+                new ManagedPrivateEndpointsCheckNameRequest().withName("fiqgeaar"), com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("tzejetjklnt", response.name());
-        Assertions.assertEquals("yjuzkdb", response.message());
+        Assertions.assertEquals("kglklbyulidwcw", response.name());
+        Assertions.assertEquals("zegjonfhjirwgdn", response.message());
         Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

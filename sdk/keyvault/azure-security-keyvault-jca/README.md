@@ -308,4 +308,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_c
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [non-exportable]: https://learn.microsoft.com/azure/key-vault/certificates/about-certificates#exportable-or-non-exportable-key
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fkeyvault%2Fazure-security-keyvault-jca%2FREADME.png)
+

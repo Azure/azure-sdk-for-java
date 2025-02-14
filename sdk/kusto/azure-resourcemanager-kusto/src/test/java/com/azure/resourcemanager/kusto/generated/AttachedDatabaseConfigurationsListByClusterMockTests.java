@@ -23,7 +23,7 @@ public final class AttachedDatabaseConfigurationsListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"bjb\",\"properties\":{\"provisioningState\":\"Canceled\",\"databaseName\":\"gtdysnaqu\",\"clusterResourceId\":\"lqbctqhamzjrw\",\"attachedDatabaseNames\":[\"zeqyjleziun\",\"xdfzantkw\",\"eg\",\"amlbnseqacjjvpil\"],\"defaultPrincipalsModificationKind\":\"None\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"jagmdi\",\"gueiookjbsahrtdt\",\"delqacslmoto\",\"bnfxofvc\"],\"tablesToExclude\":[\"dirazf\",\"xejw\"],\"externalTablesToInclude\":[\"dujtmvcope\",\"c\",\"jurbuhhlkyqltqsr\",\"gtuwkff\"],\"externalTablesToExclude\":[\"tsysi\",\"fvcl\",\"lxnfuijtkbusqogs\",\"ikayiansharuj\"],\"materializedViewsToInclude\":[\"qxfzyjqttvwk\"],\"materializedViewsToExclude\":[\"j\",\"enuygbq\",\"qqekewvnqvcdlgu\"],\"functionsToInclude\":[\"mfdjwn\",\"axpunjqikczvv\",\"tacgxmfc\"],\"functionsToExclude\":[\"rxhtvso\"]},\"databaseNameOverride\":\"lwntsjgqrs\",\"databaseNamePrefix\":\"p\"},\"id\":\"uuuybnchrsziz\",\"name\":\"yuel\",\"type\":\"etndnbfqyggagf\"}]}";
+            = "{\"value\":[{\"location\":\"gx\",\"properties\":{\"provisioningState\":\"Running\",\"databaseName\":\"serxht\",\"clusterResourceId\":\"soxhlwntsjgqr\",\"attachedDatabaseNames\":[\"p\"],\"defaultPrincipalsModificationKind\":\"Union\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"bnchrsziz\"],\"tablesToExclude\":[\"elyetndnbf\",\"yggagflnlgmt\",\"wahzjmucftbyr\"],\"externalTablesToInclude\":[\"ohkpigqfu\",\"u\",\"kzmkwklsnoxaxmqe\"],\"externalTablesToExclude\":[\"h\",\"jnhgwydyyn\"],\"materializedViewsToInclude\":[\"khgb\"],\"materializedViewsToExclude\":[\"anarfdlpukhpyrne\"],\"functionsToInclude\":[\"cpeogkhnmgbrou\",\"ddbhf\",\"pfpazjzoywjxhpdu\"],\"functionsToExclude\":[\"tacnpqwtehtuev\",\"hrljy\"]},\"databaseNameOverride\":\"gwxhnsduugwbsreu\",\"databaseNamePrefix\":\"q\"},\"id\":\"fuarenlvhht\",\"name\":\"lnvnafvvkyfedev\",\"type\":\"bo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,31 +32,31 @@ public final class AttachedDatabaseConfigurationsListByClusterMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AttachedDatabaseConfiguration> response = manager.attachedDatabaseConfigurations()
-            .listByCluster("ncnwfepbnwgf", "xjg", com.azure.core.util.Context.NONE);
+        PagedIterable<AttachedDatabaseConfiguration> response
+            = manager.attachedDatabaseConfigurations().listByCluster("jqi", "czvvit", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("bjb", response.iterator().next().location());
-        Assertions.assertEquals("gtdysnaqu", response.iterator().next().databaseName());
-        Assertions.assertEquals("lqbctqhamzjrw", response.iterator().next().clusterResourceId());
-        Assertions.assertEquals(DefaultPrincipalsModificationKind.NONE,
+        Assertions.assertEquals("gx", response.iterator().next().location());
+        Assertions.assertEquals("serxht", response.iterator().next().databaseName());
+        Assertions.assertEquals("soxhlwntsjgqr", response.iterator().next().clusterResourceId());
+        Assertions.assertEquals(DefaultPrincipalsModificationKind.UNION,
             response.iterator().next().defaultPrincipalsModificationKind());
-        Assertions.assertEquals("jagmdi",
+        Assertions.assertEquals("bnchrsziz",
             response.iterator().next().tableLevelSharingProperties().tablesToInclude().get(0));
-        Assertions.assertEquals("dirazf",
+        Assertions.assertEquals("elyetndnbf",
             response.iterator().next().tableLevelSharingProperties().tablesToExclude().get(0));
-        Assertions.assertEquals("dujtmvcope",
+        Assertions.assertEquals("ohkpigqfu",
             response.iterator().next().tableLevelSharingProperties().externalTablesToInclude().get(0));
-        Assertions.assertEquals("tsysi",
+        Assertions.assertEquals("h",
             response.iterator().next().tableLevelSharingProperties().externalTablesToExclude().get(0));
-        Assertions.assertEquals("qxfzyjqttvwk",
+        Assertions.assertEquals("khgb",
             response.iterator().next().tableLevelSharingProperties().materializedViewsToInclude().get(0));
-        Assertions.assertEquals("j",
+        Assertions.assertEquals("anarfdlpukhpyrne",
             response.iterator().next().tableLevelSharingProperties().materializedViewsToExclude().get(0));
-        Assertions.assertEquals("mfdjwn",
+        Assertions.assertEquals("cpeogkhnmgbrou",
             response.iterator().next().tableLevelSharingProperties().functionsToInclude().get(0));
-        Assertions.assertEquals("rxhtvso",
+        Assertions.assertEquals("tacnpqwtehtuev",
             response.iterator().next().tableLevelSharingProperties().functionsToExclude().get(0));
-        Assertions.assertEquals("lwntsjgqrs", response.iterator().next().databaseNameOverride());
-        Assertions.assertEquals("p", response.iterator().next().databaseNamePrefix());
+        Assertions.assertEquals("gwxhnsduugwbsreu", response.iterator().next().databaseNameOverride());
+        Assertions.assertEquals("q", response.iterator().next().databaseNamePrefix());
     }
 }

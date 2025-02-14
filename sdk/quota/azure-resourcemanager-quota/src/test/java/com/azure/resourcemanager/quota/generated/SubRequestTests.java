@@ -14,19 +14,19 @@ public final class SubRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubRequest model = BinaryData.fromString(
-            "{\"name\":{\"value\":\"nyqupedeojnabck\",\"localizedValue\":\"mtxpsiebtfh\"},\"resourceType\":\"esap\",\"unit\":\"rdqmhjjdhtldwkyz\",\"provisioningState\":\"InProgress\",\"message\":\"kn\",\"subRequestId\":\"scwsv\",\"limit\":{\"limitObjectType\":\"LimitJsonObject\"}}")
+            "{\"name\":{\"value\":\"yueaxibxujwb\",\"localizedValue\":\"walm\"},\"resourceType\":\"yoxa\",\"unit\":\"dkzjancuxrh\",\"provisioningState\":\"InProgress\",\"message\":\"v\",\"subRequestId\":\"niwdjsw\",\"limit\":{\"limitObjectType\":\"LimitJsonObject\"}}")
             .toObject(SubRequest.class);
-        Assertions.assertEquals("nyqupedeojnabck", model.name().value());
-        Assertions.assertEquals("rdqmhjjdhtldwkyz", model.unit());
+        Assertions.assertEquals("yueaxibxujwb", model.name().value());
+        Assertions.assertEquals("dkzjancuxrh", model.unit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubRequest model = new SubRequest().withName(new ResourceName().withValue("nyqupedeojnabck"))
-            .withUnit("rdqmhjjdhtldwkyz")
+        SubRequest model = new SubRequest().withName(new ResourceName().withValue("yueaxibxujwb"))
+            .withUnit("dkzjancuxrh")
             .withLimit(new LimitJsonObject());
         model = BinaryData.fromObject(model).toObject(SubRequest.class);
-        Assertions.assertEquals("nyqupedeojnabck", model.name().value());
-        Assertions.assertEquals("rdqmhjjdhtldwkyz", model.unit());
+        Assertions.assertEquals("yueaxibxujwb", model.name().value());
+        Assertions.assertEquals("dkzjancuxrh", model.unit());
     }
 }

@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.http.exception.HttpResponseException;
+import io.clientcore.core.http.exceptions.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.instrumentation.logging.ClientLogger;

@@ -17,42 +17,42 @@ public final class EventHubConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventHubConnectionProperties model = BinaryData.fromString(
-            "{\"eventHubResourceId\":\"jdxon\",\"consumerGroup\":\"zoggculapz\",\"tableName\":\"rpgogtqxep\",\"mappingRuleName\":\"lbfu\",\"dataFormat\":\"TSV\",\"eventSystemProperties\":[\"tlvofq\",\"hvfcibyfmow\",\"xrkjpvdw\",\"fzwiivwzjbhyz\"],\"compression\":\"GZip\",\"provisioningState\":\"Moving\",\"managedIdentityResourceId\":\"mbtrnegvmnvu\",\"managedIdentityObjectId\":\"qvldspastjbkkd\",\"databaseRouting\":\"Single\",\"retrievalStartDate\":\"2021-03-26T07:45:49Z\"}")
+            "{\"eventHubResourceId\":\"zqadf\",\"consumerGroup\":\"gzuriglaecxndt\",\"tableName\":\"okpvzm\",\"mappingRuleName\":\"t\",\"dataFormat\":\"SINGLEJSON\",\"eventSystemProperties\":[\"obfirclnpk\"],\"compression\":\"None\",\"provisioningState\":\"Canceled\",\"managedIdentityResourceId\":\"iykhy\",\"managedIdentityObjectId\":\"fvjlboxqvkjlmx\",\"databaseRouting\":\"Single\",\"retrievalStartDate\":\"2021-09-19T13:24:45Z\"}")
             .toObject(EventHubConnectionProperties.class);
-        Assertions.assertEquals("jdxon", model.eventHubResourceId());
-        Assertions.assertEquals("zoggculapz", model.consumerGroup());
-        Assertions.assertEquals("rpgogtqxep", model.tableName());
-        Assertions.assertEquals("lbfu", model.mappingRuleName());
-        Assertions.assertEquals(EventHubDataFormat.TSV, model.dataFormat());
-        Assertions.assertEquals("tlvofq", model.eventSystemProperties().get(0));
-        Assertions.assertEquals(Compression.GZIP, model.compression());
-        Assertions.assertEquals("mbtrnegvmnvu", model.managedIdentityResourceId());
+        Assertions.assertEquals("zqadf", model.eventHubResourceId());
+        Assertions.assertEquals("gzuriglaecxndt", model.consumerGroup());
+        Assertions.assertEquals("okpvzm", model.tableName());
+        Assertions.assertEquals("t", model.mappingRuleName());
+        Assertions.assertEquals(EventHubDataFormat.SINGLEJSON, model.dataFormat());
+        Assertions.assertEquals("obfirclnpk", model.eventSystemProperties().get(0));
+        Assertions.assertEquals(Compression.NONE, model.compression());
+        Assertions.assertEquals("iykhy", model.managedIdentityResourceId());
         Assertions.assertEquals(DatabaseRouting.SINGLE, model.databaseRouting());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T07:45:49Z"), model.retrievalStartDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-19T13:24:45Z"), model.retrievalStartDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubConnectionProperties model = new EventHubConnectionProperties().withEventHubResourceId("jdxon")
-            .withConsumerGroup("zoggculapz")
-            .withTableName("rpgogtqxep")
-            .withMappingRuleName("lbfu")
-            .withDataFormat(EventHubDataFormat.TSV)
-            .withEventSystemProperties(Arrays.asList("tlvofq", "hvfcibyfmow", "xrkjpvdw", "fzwiivwzjbhyz"))
-            .withCompression(Compression.GZIP)
-            .withManagedIdentityResourceId("mbtrnegvmnvu")
+        EventHubConnectionProperties model = new EventHubConnectionProperties().withEventHubResourceId("zqadf")
+            .withConsumerGroup("gzuriglaecxndt")
+            .withTableName("okpvzm")
+            .withMappingRuleName("t")
+            .withDataFormat(EventHubDataFormat.SINGLEJSON)
+            .withEventSystemProperties(Arrays.asList("obfirclnpk"))
+            .withCompression(Compression.NONE)
+            .withManagedIdentityResourceId("iykhy")
             .withDatabaseRouting(DatabaseRouting.SINGLE)
-            .withRetrievalStartDate(OffsetDateTime.parse("2021-03-26T07:45:49Z"));
+            .withRetrievalStartDate(OffsetDateTime.parse("2021-09-19T13:24:45Z"));
         model = BinaryData.fromObject(model).toObject(EventHubConnectionProperties.class);
-        Assertions.assertEquals("jdxon", model.eventHubResourceId());
-        Assertions.assertEquals("zoggculapz", model.consumerGroup());
-        Assertions.assertEquals("rpgogtqxep", model.tableName());
-        Assertions.assertEquals("lbfu", model.mappingRuleName());
-        Assertions.assertEquals(EventHubDataFormat.TSV, model.dataFormat());
-        Assertions.assertEquals("tlvofq", model.eventSystemProperties().get(0));
-        Assertions.assertEquals(Compression.GZIP, model.compression());
-        Assertions.assertEquals("mbtrnegvmnvu", model.managedIdentityResourceId());
+        Assertions.assertEquals("zqadf", model.eventHubResourceId());
+        Assertions.assertEquals("gzuriglaecxndt", model.consumerGroup());
+        Assertions.assertEquals("okpvzm", model.tableName());
+        Assertions.assertEquals("t", model.mappingRuleName());
+        Assertions.assertEquals(EventHubDataFormat.SINGLEJSON, model.dataFormat());
+        Assertions.assertEquals("obfirclnpk", model.eventSystemProperties().get(0));
+        Assertions.assertEquals(Compression.NONE, model.compression());
+        Assertions.assertEquals("iykhy", model.managedIdentityResourceId());
         Assertions.assertEquals(DatabaseRouting.SINGLE, model.databaseRouting());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T07:45:49Z"), model.retrievalStartDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-19T13:24:45Z"), model.retrievalStartDate());
     }
 }

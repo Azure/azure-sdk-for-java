@@ -1,5 +1,14 @@
 # Release History
 
+## 1.2.31 (2025-01-28)
+
+### Dependency Updates
+
+- Added a new library entry to the BOM:
+  - [azure-ai-documentintelligence](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/README.md)
+
+- Updated Azure SDK dependency versions to the latest releases.
+
 ## 1.2.30 (2024-12-04)
 
 ### Dependency Updates

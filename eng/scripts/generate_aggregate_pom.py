@@ -22,10 +22,10 @@ from typing import Dict
 from pom_helper import *
 
 # azure-client-sdk-parent valid parent POMs for Track 2 libraries.
-valid_parents = ['com.azure:azure-client-sdk-parent', 'io.clientcore:clientcore-parent']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-client-sdk-parent-v2', 'io.clientcore:clientcore-parent']
 
 # List of parent POMs that should be retained as projects to create POM.
-parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'io.clientcore:clientcore-parent']
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-client-sdk-parent-v2', 'com.azure:azure-perf-test-parent', 'io.clientcore:clientcore-parent']
 
 include_groups = []
 

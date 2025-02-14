@@ -23,7 +23,7 @@ public final class DatabasesCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"kind\":\"Database\",\"location\":\"cttuxuu\",\"id\":\"i\",\"name\":\"flqo\",\"type\":\"quvre\"}";
+            = "{\"kind\":\"Database\",\"location\":\"phdu\",\"id\":\"neiknpg\",\"name\":\"xgjiuqh\",\"type\":\"btozipqwje\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,9 +33,9 @@ public final class DatabasesCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Database response = manager.databases()
-            .createOrUpdate("zvzbglbyv", "ctctbrxkjz", "rgxffmshkw", new DatabaseInner().withLocation("kgozxwop"),
-                CallerRole.ADMIN, com.azure.core.util.Context.NONE);
+            .createOrUpdate("ribi", "ttgplucfotangcf", "nykzcugswvxwlm", new DatabaseInner().withLocation("wmvtxnjm"),
+                CallerRole.NONE, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cttuxuu", response.location());
+        Assertions.assertEquals("phdu", response.location());
     }
 }

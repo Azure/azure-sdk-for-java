@@ -8,10 +8,10 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.implementation.util.ImplUtils;
+import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -31,13 +31,13 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RE
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_WAS_LAST_ATTEMPT_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.RETRY_MAX_ATTEMPT_COUNT_KEY;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RETRY_EVENT_NAME;
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
-import static io.clientcore.core.util.configuration.Configuration.PROPERTY_REQUEST_RETRY_COUNT;
+import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.configuration.Configuration.PROPERTY_REQUEST_RETRY_COUNT;
 
 /**
  * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
  */
-public class HttpRetryPolicy implements HttpPipelinePolicy {
+public final class HttpRetryPolicy implements HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpRetryPolicy.class);
     private final int maxRetries;
@@ -123,6 +123,11 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         return attempt(httpRequest, next, 0, null);
+    }
+
+    @Override
+    public HttpPipelineOrder getOrder() {
+        return HttpPipelineOrder.RETRY;
     }
 
     /*
@@ -327,7 +332,7 @@ public class HttpRetryPolicy implements HttpPipelinePolicy {
                     && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
                     && code != HttpURLConnection.HTTP_VERSION));
         } else {
-            return requestRetryCondition.getException() instanceof Exception;
+            return requestRetryCondition.getException() != null;
         }
     }
 

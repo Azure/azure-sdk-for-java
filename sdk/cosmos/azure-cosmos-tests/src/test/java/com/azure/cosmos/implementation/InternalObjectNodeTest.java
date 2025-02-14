@@ -45,7 +45,7 @@ public class InternalObjectNodeTest {
     public void internalObjectNodeWithTrackingId() throws IOException {
         String expectedTrackingId = UUID.randomUUID().toString();
         InternalObjectNode intenalObjectNode = new InternalObjectNode();
-        intenalObjectNode.set("id", "myId", CosmosItemSerializer.DEFAULT_SERIALIZER);
+        intenalObjectNode.set("id", "myId");
         ByteBuffer buffer = InternalObjectNode.serializeJsonToByteBuffer(
             intenalObjectNode, CosmosItemSerializer.DEFAULT_SERIALIZER, expectedTrackingId, false);
         byte[] blob = new byte[buffer.remaining()];

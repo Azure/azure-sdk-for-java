@@ -25,13 +25,16 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
+import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
+import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClient;
@@ -411,6 +414,20 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected HttpClient getHttpClient() {
         return StorageCommonTestUtils.getHttpClient(interceptorManager);
+    }
+
+    protected ShareClient getPremiumNFSShareClient(String shareName) {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        return premiumFileServiceClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol), null, null)
+            .getValue();
+    }
+
+    protected Mono<ShareAsyncClient> getPremiumNFSShareAsyncClient(String shareName) {
+        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
+        return premiumFileServiceAsyncClient
+            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol))
+            .flatMap(r -> Mono.just(r.getValue()));
     }
 
     protected String getPrimaryConnectionString() {

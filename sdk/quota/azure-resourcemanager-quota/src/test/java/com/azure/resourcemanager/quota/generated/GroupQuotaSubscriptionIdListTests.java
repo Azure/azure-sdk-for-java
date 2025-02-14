@@ -9,19 +9,23 @@ import com.azure.resourcemanager.quota.fluent.models.GroupQuotaSubscriptionIdInn
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionIdList;
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionIdProperties;
 import java.util.Arrays;
+import org.junit.jupiter.api.Assertions;
 
 public final class GroupQuotaSubscriptionIdListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionIdList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"subscriptionId\":\"hbcryffdfdosyge\",\"provisioningState\":\"Invalid\"},\"id\":\"jakhmsbzjh\",\"name\":\"rzevdphlxaol\",\"type\":\"hqtrgqjbpf\"}],\"nextLink\":\"s\"}")
+            "{\"value\":[{\"properties\":{\"subscriptionId\":\"yejhk\",\"provisioningState\":\"Invalid\"},\"id\":\"napczwlokjy\",\"name\":\"mkkvnip\",\"type\":\"oxzjnchgejspod\"}],\"nextLink\":\"ilzyd\"}")
             .toObject(GroupQuotaSubscriptionIdList.class);
+        Assertions.assertEquals("yejhk", model.value().get(0).properties().subscriptionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotaSubscriptionIdList model = new GroupQuotaSubscriptionIdList().withValue(Arrays
-            .asList(new GroupQuotaSubscriptionIdInner().withProperties(new GroupQuotaSubscriptionIdProperties())));
+        GroupQuotaSubscriptionIdList model
+            = new GroupQuotaSubscriptionIdList().withValue(Arrays.asList(new GroupQuotaSubscriptionIdInner()
+                .withProperties(new GroupQuotaSubscriptionIdProperties().withSubscriptionId("yejhk"))));
         model = BinaryData.fromObject(model).toObject(GroupQuotaSubscriptionIdList.class);
+        Assertions.assertEquals("yejhk", model.value().get(0).properties().subscriptionId());
     }
 }

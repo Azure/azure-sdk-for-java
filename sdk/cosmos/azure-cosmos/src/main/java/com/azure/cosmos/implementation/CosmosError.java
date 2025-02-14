@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -75,7 +74,7 @@ public final class CosmosError extends  JsonSerializable {
      * @param code the error code.
      */
     private void setCode(String code) {
-        super.set(Constants.Properties.CODE, code, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        super.set(Constants.Properties.CODE, code);
     }
 
     /**
@@ -93,7 +92,7 @@ public final class CosmosError extends  JsonSerializable {
      * @param message the error message.
      */
     private void setMessage(String message) {
-        super.set(Constants.Properties.MESSAGE, message, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        super.set(Constants.Properties.MESSAGE, message);
     }
 
     /**
@@ -113,8 +112,8 @@ public final class CosmosError extends  JsonSerializable {
     private void setAdditionalErrorInfo(String additionalErrorInfo) {
         super.set(
             Constants.Properties.ADDITIONAL_ERROR_INFO,
-            additionalErrorInfo,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            additionalErrorInfo
+        );
     }
 
     /**

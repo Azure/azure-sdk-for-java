@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabaseInviteFollowerResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseInviteFollowerResultInner model = BinaryData.fromString("{\"generatedInvitation\":\"c\"}")
+        DatabaseInviteFollowerResultInner model = BinaryData.fromString("{\"generatedInvitation\":\"kotl\"}")
             .toObject(DatabaseInviteFollowerResultInner.class);
-        Assertions.assertEquals("c", model.generatedInvitation());
+        Assertions.assertEquals("kotl", model.generatedInvitation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseInviteFollowerResultInner model = new DatabaseInviteFollowerResultInner().withGeneratedInvitation("c");
+        DatabaseInviteFollowerResultInner model
+            = new DatabaseInviteFollowerResultInner().withGeneratedInvitation("kotl");
         model = BinaryData.fromObject(model).toObject(DatabaseInviteFollowerResultInner.class);
-        Assertions.assertEquals("c", model.generatedInvitation());
+        Assertions.assertEquals("kotl", model.generatedInvitation());
     }
 }

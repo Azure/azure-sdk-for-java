@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.ExpandableEnum;
+import io.clientcore.core.utils.ExpandableEnum;
 
 import java.util.Collection;
 import java.util.Map;

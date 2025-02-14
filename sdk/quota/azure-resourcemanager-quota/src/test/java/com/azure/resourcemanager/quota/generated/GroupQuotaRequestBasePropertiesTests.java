@@ -12,21 +12,21 @@ public final class GroupQuotaRequestBasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaRequestBaseProperties model = BinaryData.fromString(
-            "{\"limit\":7208610995998070397,\"name\":{\"value\":\"c\",\"localizedValue\":\"ierhhbcsglummaj\"},\"region\":\"aodxo\",\"comments\":\"bdxkqpxokaj\"}")
+            "{\"limit\":1000418976764057169,\"name\":{\"value\":\"idtqajzyu\",\"localizedValue\":\"kudjkrlkhb\"},\"region\":\"fepgzgq\",\"comments\":\"zloc\"}")
             .toObject(GroupQuotaRequestBaseProperties.class);
-        Assertions.assertEquals(7208610995998070397L, model.limit());
-        Assertions.assertEquals("aodxo", model.region());
-        Assertions.assertEquals("bdxkqpxokaj", model.comments());
+        Assertions.assertEquals(1000418976764057169L, model.limit());
+        Assertions.assertEquals("fepgzgq", model.region());
+        Assertions.assertEquals("zloc", model.comments());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotaRequestBaseProperties model = new GroupQuotaRequestBaseProperties().withLimit(7208610995998070397L)
-            .withRegion("aodxo")
-            .withComments("bdxkqpxokaj");
+        GroupQuotaRequestBaseProperties model = new GroupQuotaRequestBaseProperties().withLimit(1000418976764057169L)
+            .withRegion("fepgzgq")
+            .withComments("zloc");
         model = BinaryData.fromObject(model).toObject(GroupQuotaRequestBaseProperties.class);
-        Assertions.assertEquals(7208610995998070397L, model.limit());
-        Assertions.assertEquals("aodxo", model.region());
-        Assertions.assertEquals("bdxkqpxokaj", model.comments());
+        Assertions.assertEquals(1000418976764057169L, model.limit());
+        Assertions.assertEquals("fepgzgq", model.region());
+        Assertions.assertEquals("zloc", model.comments());
     }
 }

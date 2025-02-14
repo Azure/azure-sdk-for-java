@@ -31,7 +31,7 @@ public final class StormWindRadiiSummary implements JsonSerializable<StormWindRa
     private WeatherUnitDetails windSpeed;
 
     /*
-     * Contains the information needed to plot wind radius quadrants. Bearing 0–90 = NE quadrant; 90–180 = SE quadrant; 180–270 = SW quadrant; 270–360 = NW quadrant.
+     * Contains the information needed to plot wind radius quadrants. Bearing 0â€“90 = NE quadrant; 90â€“180 = SE quadrant; 180â€“270 = SW quadrant; 270â€“360 = NW quadrant.
      */
     private List<RadiusSector> radiusSectorData;
 
@@ -65,8 +65,8 @@ public final class StormWindRadiiSummary implements JsonSerializable<StormWindRa
     }
 
     /**
-     * Get the radiusSectorData property: Contains the information needed to plot wind radius quadrants. Bearing 0–90 =
-     * NE quadrant; 90–180 = SE quadrant; 180–270 = SW quadrant; 270–360 = NW quadrant.
+     * Get the radiusSectorData property: Contains the information needed to plot wind radius quadrants. Bearing 0â€“90
+     * = NE quadrant; 90â€“180 = SE quadrant; 180â€“270 = SW quadrant; 270â€“360 = NW quadrant.
      *
      * @return the radiusSectorData value.
      */

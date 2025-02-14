@@ -14,19 +14,18 @@ public final class DataConnectionValidationListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataConnectionValidationListResultInner model = BinaryData.fromString(
-            "{\"value\":[{\"errorMessage\":\"agohbuff\"},{\"errorMessage\":\"rqemvvhmxt\"},{\"errorMessage\":\"jfutacoebj\"},{\"errorMessage\":\"wzcjznmwcpmgua\"}]}")
+            "{\"value\":[{\"errorMessage\":\"dweyuqdunv\"},{\"errorMessage\":\"nrwrbiork\"},{\"errorMessage\":\"lywjhh\"}]}")
             .toObject(DataConnectionValidationListResultInner.class);
-        Assertions.assertEquals("agohbuff", model.value().get(0).errorMessage());
+        Assertions.assertEquals("dweyuqdunv", model.value().get(0).errorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataConnectionValidationListResultInner model = new DataConnectionValidationListResultInner()
-            .withValue(Arrays.asList(new DataConnectionValidationResult().withErrorMessage("agohbuff"),
-                new DataConnectionValidationResult().withErrorMessage("rqemvvhmxt"),
-                new DataConnectionValidationResult().withErrorMessage("jfutacoebj"),
-                new DataConnectionValidationResult().withErrorMessage("wzcjznmwcpmgua")));
+            .withValue(Arrays.asList(new DataConnectionValidationResult().withErrorMessage("dweyuqdunv"),
+                new DataConnectionValidationResult().withErrorMessage("nrwrbiork"),
+                new DataConnectionValidationResult().withErrorMessage("lywjhh")));
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationListResultInner.class);
-        Assertions.assertEquals("agohbuff", model.value().get(0).errorMessage());
+        Assertions.assertEquals("dweyuqdunv", model.value().get(0).errorMessage());
     }
 }

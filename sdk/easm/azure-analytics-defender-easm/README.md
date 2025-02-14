@@ -107,4 +107,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [assets_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/understanding-inventory-assets
 [discovery_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/what-is-discovery
 [discovery_groups_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/using-and-managing-discovery#discovery-groups
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feasm%2Fazure-analytics-defender-easm%2FREADME.png)
+

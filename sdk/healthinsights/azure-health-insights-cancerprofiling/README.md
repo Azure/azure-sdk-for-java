@@ -217,4 +217,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [cancer_profiling_api_documentation]: https://learn.microsoft.com/rest/api/cognitiveservices/healthinsights/onco-phenotype
 [product_documentation]: https://learn.microsoft.com/azure/azure-health-insights/oncophenotype/
 [samples_location]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/healthinsights/azure-health-insights-cancerprofiling/src/samples/
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%healthinsights%2Fazure-health-insights-cancerprofiling%2FREADME.png)
+

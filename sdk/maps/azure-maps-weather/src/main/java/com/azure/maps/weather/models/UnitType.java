@@ -8,7 +8,7 @@ import java.util.Collection;
 
 /**
  * Numeric ID value associated with the type of unit being displayed. Can be used for unit translation. Please refer to
- * [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#unittype) for details.
+ * [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#unit-types) for details.
  */
 public final class UnitType extends ExpandableStringEnum<UnitType> {
 

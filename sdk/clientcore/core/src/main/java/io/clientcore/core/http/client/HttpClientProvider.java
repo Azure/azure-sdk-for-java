@@ -3,8 +3,8 @@
 
 package io.clientcore.core.http.client;
 
-import io.clientcore.core.implementation.util.Providers;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.implementation.utils.Providers;
+import io.clientcore.core.utils.configuration.Configuration;
 
 /**
  * An interface to be implemented by any core plugin that wishes to provide an alternate {@link HttpClient}

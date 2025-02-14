@@ -9,6 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.kusto.fluent.models.CalloutPolicyInner;
 import com.azure.resourcemanager.kusto.fluent.models.ClusterProperties;
 import com.azure.resourcemanager.kusto.fluent.models.PrivateEndpointConnectionInner;
 import java.io.IOException;
@@ -630,6 +631,29 @@ public final class ClusterUpdate extends ProxyResource {
     }
 
     /**
+     * Get the calloutPolicies property: List of callout policies for egress from Cluster.
+     * 
+     * @return the calloutPolicies value.
+     */
+    public List<CalloutPolicyInner> calloutPolicies() {
+        return this.innerProperties() == null ? null : this.innerProperties().calloutPolicies();
+    }
+
+    /**
+     * Set the calloutPolicies property: List of callout policies for egress from Cluster.
+     * 
+     * @param calloutPolicies the calloutPolicies value to set.
+     * @return the ClusterUpdate object itself.
+     */
+    public ClusterUpdate withCalloutPolicies(List<CalloutPolicyInner> calloutPolicies) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withCalloutPolicies(calloutPolicies);
+        return this;
+    }
+
+    /**
      * Get the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
      * and IPv6).
      * 
@@ -693,6 +717,15 @@ public final class ClusterUpdate extends ProxyResource {
      */
     public MigrationClusterProperties migrationCluster() {
         return this.innerProperties() == null ? null : this.innerProperties().migrationCluster();
+    }
+
+    /**
+     * Get the zoneStatus property: Indicates whether the cluster is zonal or non-zonal.
+     * 
+     * @return the zoneStatus value.
+     */
+    public ZoneStatus zoneStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneStatus();
     }
 
     /**

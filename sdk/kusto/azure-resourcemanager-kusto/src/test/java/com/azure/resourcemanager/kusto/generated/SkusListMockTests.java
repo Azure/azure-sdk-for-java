@@ -21,7 +21,7 @@ public final class SkusListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"whixmonstsh\",\"name\":\"xgvelfclduccbird\",\"tier\":\"uwc\",\"locations\":[\"egstmninwjizci\",\"nghgshej\"],\"locationInfo\":[{\"location\":\"xqmul\",\"zones\":[\"xqzv\",\"ers\"],\"zoneDetails\":[{\"name\":[\"rwnamikzeb\",\"qbsms\",\"ziqgfuh\"],\"capabilities\":[{},{}]},{\"name\":[\"swhvhczznvfbycj\",\"xjww\",\"xzv\",\"mwmxqhndvnoamld\"],\"capabilities\":[{},{},{},{}]},{\"name\":[\"hdjhhflz\",\"kxcoxpelnje\",\"agltsxoa\"],\"capabilities\":[{},{}]}]},{\"location\":\"g\",\"zones\":[\"pbswvefloccsrm\"],\"zoneDetails\":[{\"name\":[\"ipgawtxx\"],\"capabilities\":[{}]},{\"name\":[\"xcjxgrytfmpcy\",\"ilrmcaykggnox\"],\"capabilities\":[{}]},{\"name\":[\"sxwpndfcpfnznthj\",\"wkjaos\"],\"capabilities\":[{},{},{},{}]},{\"name\":[\"oamktcq\",\"os\",\"gbzahgxqdlyr\",\"ltlaprltzkatbhj\"],\"capabilities\":[{},{},{}]}]}],\"restrictions\":[\"datas\",\"dataqeqala\",\"datavlagun\"]}]}";
+            = "{\"value\":[{\"resourceType\":\"xpxiwfcngjs\",\"name\":\"sii\",\"tier\":\"mkzjvkviir\",\"locations\":[\"grwsdp\",\"ra\",\"zvzbglbyv\",\"ctctbrxkjz\"],\"locationInfo\":[{\"location\":\"xff\",\"zones\":[\"kwfbkgo\",\"xwopdbydpizqa\",\"lnapxbiygn\",\"gjkn\"],\"zoneDetails\":[{\"name\":[\"ttuxuuyilflqoiqu\",\"rehmr\"],\"capabilities\":[{},{}]},{\"name\":[\"ujztcz\"],\"capabilities\":[{},{}]}]},{\"location\":\"jtwhauunf\",\"zones\":[\"jletlxsmrpddo\"],\"zoneDetails\":[{\"name\":[\"owa\",\"iynknlq\",\"zdvpiw\",\"xqszdtmaajquh\"],\"capabilities\":[{}]}]},{\"location\":\"lrjvmtyg\",\"zones\":[\"zyos\",\"spshckfkyjp\",\"sp\"],\"zoneDetails\":[{\"name\":[\"fppyogtieyujtvcz\"],\"capabilities\":[{}]},{\"name\":[\"rxmunjdxvgln\"],\"capabilities\":[{}]}]}],\"restrictions\":[\"datapaglqivbgk\",\"datavkhpzvuqdflvo\",\"dataiypfp\"]}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class SkusListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SkuDescription> response = manager.skus().list("yinljqe", com.azure.core.util.Context.NONE);
+        PagedIterable<SkuDescription> response = manager.skus().list("n", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -17,7 +17,7 @@ import java.time.OffsetDateTime;
  */
 public final class DataConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
      * KustoDataConnectionsCosmosDbUpdate.json
      */
     /**
@@ -43,7 +43,7 @@ public final class DataConnectionsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDataConnectionsUpdate.
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDataConnectionsUpdate.
      * json
      */
     /**
@@ -64,7 +64,7 @@ public final class DataConnectionsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/
      * KustoDataConnectionsEventGridUpdate.json
      */
     /**
@@ -85,7 +85,7 @@ public final class DataConnectionsUpdateSamples {
                 .withConsumerGroup("$Default")
                 .withTableName("TestTable")
                 .withMappingRuleName("TestMapping")
-                .withDataFormat(EventGridDataFormat.JSON)
+                .withDataFormat(EventGridDataFormat.MULTIJSON)
                 .withIgnoreFirstRecord(false)
                 .withBlobStorageEventType(BlobStorageEventType.MICROSOFT_STORAGE_BLOB_CREATED)
                 .withManagedIdentityResourceId(

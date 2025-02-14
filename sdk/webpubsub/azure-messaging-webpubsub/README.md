@@ -214,4 +214,4 @@ comments.
 [coc_contact]: mailto:opencode@microsoft.com
 [api]: https://aka.ms/awps/sdk/java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fwebpubsub%2Fazure-messaging-webpubsub%2FREADME.png)
+

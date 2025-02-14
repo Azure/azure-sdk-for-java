@@ -49,9 +49,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationType;
  */
 public final class AssociationsInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * AssociationPut.json
+     * x-ms-original-file: 2025-01-01/AssociationPut.json
      */
     /**
      * Sample code: Put Association.
@@ -79,9 +77,7 @@ public final class AssociationsInterfaceCreateOrUpdateSamples {
  */
 public final class AssociationsInterfaceDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * AssociationDelete.json
+     * x-ms-original-file: 2025-01-01/AssociationDelete.json
      */
     /**
      * Sample code: Delete Association.
@@ -102,9 +98,7 @@ public final class AssociationsInterfaceDeleteSamples {
  */
 public final class AssociationsInterfaceGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * AssociationGet.json
+     * x-ms-original-file: 2025-01-01/AssociationGet.json
      */
     /**
      * Sample code: Get Association.
@@ -125,9 +119,7 @@ public final class AssociationsInterfaceGetSamples {
  */
 public final class AssociationsInterfaceListByTrafficControllerSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * AssociationsGet.json
+     * x-ms-original-file: 2025-01-01/AssociationsGet.json
      */
     /**
      * Sample code: Get Associations.
@@ -153,9 +145,7 @@ import com.azure.resourcemanager.servicenetworking.models.AssociationUpdatePrope
  */
 public final class AssociationsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * AssociationPatch.json
+     * x-ms-original-file: 2025-01-01/AssociationPatch.json
      */
     /**
      * Sample code: Update Association.
@@ -185,9 +175,7 @@ import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
  */
 public final class FrontendsInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * FrontendPut.json
+     * x-ms-original-file: 2025-01-01/FrontendPut.json
      */
     /**
      * Sample code: Put Frontend.
@@ -213,9 +201,7 @@ public final class FrontendsInterfaceCreateOrUpdateSamples {
  */
 public final class FrontendsInterfaceDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * FrontendDelete.json
+     * x-ms-original-file: 2025-01-01/FrontendDelete.json
      */
     /**
      * Sample code: Delete Frontend.
@@ -236,9 +222,7 @@ public final class FrontendsInterfaceDeleteSamples {
  */
 public final class FrontendsInterfaceGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * FrontendGet.json
+     * x-ms-original-file: 2025-01-01/FrontendGet.json
      */
     /**
      * Sample code: Get Frontend.
@@ -259,9 +243,7 @@ public final class FrontendsInterfaceGetSamples {
  */
 public final class FrontendsInterfaceListByTrafficControllerSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * FrontendsGet.json
+     * x-ms-original-file: 2025-01-01/FrontendsGet.json
      */
     /**
      * Sample code: Get Frontends.
@@ -284,9 +266,7 @@ import com.azure.resourcemanager.servicenetworking.models.Frontend;
  */
 public final class FrontendsInterfaceUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * FrontendPatch.json
+     * x-ms-original-file: 2025-01-01/FrontendPatch.json
      */
     /**
      * Sample code: Update Frontend.
@@ -310,9 +290,7 @@ public final class FrontendsInterfaceUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * OperationsList.json
+     * x-ms-original-file: 2025-01-01/OperationsList.json
      */
     /**
      * Sample code: Get Operations List.
@@ -336,9 +314,7 @@ import com.azure.resourcemanager.servicenetworking.models.WafPolicy;
  */
 public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * SecurityPolicyPut.json
+     * x-ms-original-file: 2025-01-01/SecurityPolicyPut.json
      */
     /**
      * Sample code: Put SecurityPolicy.
@@ -365,9 +341,7 @@ public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
  */
 public final class SecurityPoliciesInterfaceDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * SecurityPolicyDelete.json
+     * x-ms-original-file: 2025-01-01/SecurityPolicyDelete.json
      */
     /**
      * Sample code: Delete SecurityPolicy.
@@ -389,9 +363,7 @@ public final class SecurityPoliciesInterfaceDeleteSamples {
  */
 public final class SecurityPoliciesInterfaceGetSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * SecurityPolicyGet.json
+     * x-ms-original-file: 2025-01-01/SecurityPolicyGet.json
      */
     /**
      * Sample code: Get SecurityPolicy.
@@ -412,9 +384,7 @@ public final class SecurityPoliciesInterfaceGetSamples {
  */
 public final class SecurityPoliciesInterfaceListByTrafficControllerSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * SecurityPoliciesGetList.json
+     * x-ms-original-file: 2025-01-01/SecurityPoliciesGetList.json
      */
     /**
      * Sample code: Get SecurityPolicies.
@@ -433,16 +403,14 @@ public final class SecurityPoliciesInterfaceListByTrafficControllerSamples {
 ```java
 import com.azure.resourcemanager.servicenetworking.models.SecurityPolicy;
 import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyUpdateProperties;
-import com.azure.resourcemanager.servicenetworking.models.WafPolicyUpdate;
+import com.azure.resourcemanager.servicenetworking.models.WafPolicy;
 
 /**
  * Samples for SecurityPoliciesInterface Update.
  */
 public final class SecurityPoliciesInterfaceUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * SecurityPolicyPatch.json
+     * x-ms-original-file: 2025-01-01/SecurityPolicyPatch.json
      */
     /**
      * Sample code: Update SecurityPolicy.
@@ -455,7 +423,7 @@ public final class SecurityPoliciesInterfaceUpdateSamples {
             .getWithResponse("rg1", "tc1", "sp1", com.azure.core.util.Context.NONE)
             .getValue();
         resource.update()
-            .withProperties(new SecurityPolicyUpdateProperties().withWafPolicy(new WafPolicyUpdate().withId(
+            .withProperties(new SecurityPolicyUpdateProperties().withWafPolicy(new WafPolicy().withId(
                 "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
             .apply();
     }
@@ -473,9 +441,7 @@ import java.util.Map;
  */
 public final class TrafficControllerInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * TrafficControllerPut.json
+     * x-ms-original-file: 2025-01-01/TrafficControllerPut.json
      */
     /**
      * Sample code: Put Traffic Controller.
@@ -514,9 +480,7 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
  */
 public final class TrafficControllerInterfaceDeleteSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * TrafficControllerDelete.json
+     * x-ms-original-file: 2025-01-01/TrafficControllerDelete.json
      */
     /**
      * Sample code: Delete Traffic Controller.
@@ -538,9 +502,7 @@ public final class TrafficControllerInterfaceDeleteSamples {
  */
 public final class TrafficControllerInterfaceGetByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * TrafficControllerGet.json
+     * x-ms-original-file: 2025-01-01/TrafficControllerGet.json
      */
     /**
      * Sample code: Get Traffic Controller.
@@ -563,9 +525,7 @@ public final class TrafficControllerInterfaceGetByResourceGroupSamples {
  */
 public final class TrafficControllerInterfaceListSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * TrafficControllersGetList.json
+     * x-ms-original-file: 2025-01-01/TrafficControllersGetList.json
      */
     /**
      * Sample code: Get Traffic Controllers List.
@@ -587,9 +547,7 @@ public final class TrafficControllerInterfaceListSamples {
  */
 public final class TrafficControllerInterfaceListByResourceGroupSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * TrafficControllersGet.json
+     * x-ms-original-file: 2025-01-01/TrafficControllersGet.json
      */
     /**
      * Sample code: Get Traffic Controllers.
@@ -615,9 +573,7 @@ import java.util.Map;
  */
 public final class TrafficControllerInterfaceUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/servicenetworking/resource-manager/Microsoft.ServiceNetworking/preview/2024-05-01-preview/examples/
-     * TrafficControllerPatch.json
+     * x-ms-original-file: 2025-01-01/TrafficControllerPatch.json
      */
     /**
      * Sample code: Patch Traffic Controller.

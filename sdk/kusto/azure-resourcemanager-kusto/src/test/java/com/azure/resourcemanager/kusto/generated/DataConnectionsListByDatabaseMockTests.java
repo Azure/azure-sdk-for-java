@@ -22,7 +22,7 @@ public final class DataConnectionsListByDatabaseMockTests {
     @Test
     public void testListByDatabase() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"xyivpinbm\",\"id\":\"wbjijkgq\",\"name\":\"nhmbkez\",\"type\":\"jauj\"}]}";
+            = "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"mupgxy\",\"id\":\"tcdxabbujftaben\",\"name\":\"bklqpxz\",\"type\":\"cafeddw\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class DataConnectionsListByDatabaseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DataConnection> response = manager.dataConnections()
-            .listByDatabase("aolnjpnnbmjk", "ibjgsjjxxahm", "nadzyq", com.azure.core.util.Context.NONE);
+            .listByDatabase("v", "kxrerlniylylyfwx", "utgqztwh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xyivpinbm", response.iterator().next().location());
+        Assertions.assertEquals("mupgxy", response.iterator().next().location());
     }
 }

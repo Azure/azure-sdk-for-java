@@ -36,6 +36,10 @@ public final class SandboxCustomImageImpl
         return this.innerModel().languageVersion();
     }
 
+    public String baseImageName() {
+        return this.innerModel().baseImageName();
+    }
+
     public String requirementsFileContent() {
         return this.innerModel().requirementsFileContent();
     }
@@ -139,6 +143,11 @@ public final class SandboxCustomImageImpl
 
     public SandboxCustomImageImpl withLanguageVersion(String languageVersion) {
         this.innerModel().withLanguageVersion(languageVersion);
+        return this;
+    }
+
+    public SandboxCustomImageImpl withBaseImageName(String baseImageName) {
+        this.innerModel().withBaseImageName(baseImageName);
         return this;
     }
 

@@ -321,7 +321,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         String newPropLabel = "newProp";
         String newPropValue = UUID.randomUUID().toString();
-        item.set(newPropLabel, newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        item.set(newPropLabel, newPropValue);
         upsertResponse = container.upsertItem(item, new CosmosItemRequestOptions()).block();
 
         assertThat(upsertResponse.getRequestCharge()).isGreaterThan(0);
@@ -376,7 +376,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         validateItemResponse(item, itemResponse);
         String newPropLabel = "newProp";
         String newPropValue = UUID.randomUUID().toString();
-        item.set(newPropLabel, newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        item.set(newPropLabel, newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         PartitionKey pk = new PartitionKey(item.get("mypk"));
         ModelBridgeInternal.setPartitionKey(options, pk);
@@ -390,7 +390,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
         changeProperties(changedOptions);
 
         newPropValue = UUID.randomUUID().toString();
-        item.set(newPropLabel, newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        item.set(newPropLabel, newPropValue);
         // replace document
         replace = container.replaceItem(item,
             item.getId(),
@@ -477,7 +477,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
     public void batch(String[] changedOptions) {
         InternalObjectNode item = getDocumentDefinition(UUID.randomUUID().toString());
         InternalObjectNode item2 = getDocumentDefinition(UUID.randomUUID().toString());
-        item2.set("mypk", item.get("mypk"), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        item2.set("mypk", item.get("mypk"));
         CosmosBatch batch = CosmosBatch.createCosmosBatch(new PartitionKey(item.get("mypk")));
         batch.createItemOperation(item);
         batch.createItemOperation(item2);
@@ -497,7 +497,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
         item = getDocumentDefinition(UUID.randomUUID().toString());
         item2 = getDocumentDefinition(UUID.randomUUID().toString());
-        item2.set("mypk", item.get("mypk"), CosmosItemSerializer.DEFAULT_SERIALIZER);
+        item2.set("mypk", item.get("mypk"));
         batch = CosmosBatch.createCosmosBatch(new PartitionKey(item.get("mypk")));
         batch.createItemOperation(item);
         batch.createItemOperation(item2);

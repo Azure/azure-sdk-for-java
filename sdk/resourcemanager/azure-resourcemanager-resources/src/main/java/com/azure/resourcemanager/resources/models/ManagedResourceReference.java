@@ -93,7 +93,6 @@ public final class ManagedResourceReference extends ResourceReference {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

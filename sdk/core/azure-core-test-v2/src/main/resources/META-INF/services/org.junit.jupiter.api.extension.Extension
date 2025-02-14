@@ -1,0 +1,5 @@
+com.azure.v2.core.test.AzureTestWatcher
+com.azure.v2.core.test.ThreadDumper
+com.azure.v2.core.test.junitextensions.LiveOnlyExtension
+com.azure.v2.core.test.junitextensions.PlaybackOnlyExtension
+com.azure.v2.core.test.junitextensions.TestContextManagerParameterResolver

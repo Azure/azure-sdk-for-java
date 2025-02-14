@@ -13,19 +13,19 @@ public final class CancelOperationsRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CancelOperationsRequest model = BinaryData
-            .fromString("{\"operationIds\":[\"e\",\"qytbciq\",\"ouf\",\"mmnkzsmodmgl\"],\"correlationid\":\"ugpbkw\"}")
+            .fromString("{\"operationIds\":[\"ddhsgcbacphe\",\"koty\",\"qgoulznd\"],\"correlationid\":\"i\"}")
             .toObject(CancelOperationsRequest.class);
-        Assertions.assertEquals("e", model.operationIds().get(0));
-        Assertions.assertEquals("ugpbkw", model.correlationid());
+        Assertions.assertEquals("ddhsgcbacphe", model.operationIds().get(0));
+        Assertions.assertEquals("i", model.correlationid());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CancelOperationsRequest model
-            = new CancelOperationsRequest().withOperationIds(Arrays.asList("e", "qytbciq", "ouf", "mmnkzsmodmgl"))
-                .withCorrelationid("ugpbkw");
+            = new CancelOperationsRequest().withOperationIds(Arrays.asList("ddhsgcbacphe", "koty", "qgoulznd"))
+                .withCorrelationid("i");
         model = BinaryData.fromObject(model).toObject(CancelOperationsRequest.class);
-        Assertions.assertEquals("e", model.operationIds().get(0));
-        Assertions.assertEquals("ugpbkw", model.correlationid());
+        Assertions.assertEquals("ddhsgcbacphe", model.operationIds().get(0));
+        Assertions.assertEquals("i", model.correlationid());
     }
 }

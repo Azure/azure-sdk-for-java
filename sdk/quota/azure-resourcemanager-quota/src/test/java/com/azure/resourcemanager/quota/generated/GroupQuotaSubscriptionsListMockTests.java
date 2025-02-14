@@ -14,6 +14,7 @@ import com.azure.resourcemanager.quota.QuotaManager;
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionId;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -21,7 +22,7 @@ public final class GroupQuotaSubscriptionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"subscriptionId\":\"krtswbxqz\",\"provisioningState\":\"Created\"},\"id\":\"fauvjfdxx\",\"name\":\"vetvt\",\"type\":\"qaqtdoqmcbxvwvxy\"}]}";
+            = "{\"value\":[{\"properties\":{\"subscriptionId\":\"cnojvknmefqsg\",\"provisioningState\":\"Canceled\"},\"id\":\"apj\",\"name\":\"zhpvgqzcjrvxd\",\"type\":\"zlmwlxkvugfhz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +32,8 @@ public final class GroupQuotaSubscriptionsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GroupQuotaSubscriptionId> response
-            = manager.groupQuotaSubscriptions().list("n", "u", com.azure.core.util.Context.NONE);
+            = manager.groupQuotaSubscriptions().list("qtayri", "wroyqbexrmcq", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals("cnojvknmefqsg", response.iterator().next().properties().subscriptionId());
     }
 }

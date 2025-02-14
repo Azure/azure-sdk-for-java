@@ -42,25 +42,25 @@ public final class OperationsClientImpl implements OperationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final ComputeScheduleClientImpl client;
+    private final ComputeScheduleMgmtClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(ComputeScheduleClientImpl client) {
+    OperationsClientImpl(ComputeScheduleMgmtClientImpl client) {
         this.service
             = RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ComputeScheduleClientOperations to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for ComputeScheduleMgmtClientOperations to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "ComputeScheduleClien")
+    @ServiceInterface(name = "ComputeScheduleMgmtC")
     public interface OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ComputeSchedule/operations")

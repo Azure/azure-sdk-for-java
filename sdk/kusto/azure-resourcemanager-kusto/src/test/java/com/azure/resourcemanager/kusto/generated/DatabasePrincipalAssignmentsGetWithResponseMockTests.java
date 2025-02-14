@@ -23,7 +23,7 @@ public final class DatabasePrincipalAssignmentsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principalId\":\"iiovgqcgxu\",\"role\":\"Admin\",\"tenantId\":\"kctotiowlxteq\",\"principalType\":\"User\",\"tenantName\":\"jgwdtgukranbl\",\"principalName\":\"hqlkccuzgygqwaho\",\"provisioningState\":\"Running\",\"aadObjectId\":\"gniiprglvaw\"},\"id\":\"wzdufypivlsbb\",\"name\":\"pmcubkmifoxxkub\",\"type\":\"phavpmhbrb\"}";
+            = "{\"properties\":{\"principalId\":\"guamlj\",\"role\":\"Ingestor\",\"tenantId\":\"gmsplzgaufcshhv\",\"principalType\":\"App\",\"tenantName\":\"gnxkympqan\",\"principalName\":\"jk\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"bta\"},\"id\":\"ypnyghshxc\",\"name\":\"lhkgmnsghp\",\"type\":\"ycphdrwjjkhvyo\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,12 +33,13 @@ public final class DatabasePrincipalAssignmentsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DatabasePrincipalAssignment response = manager.databasePrincipalAssignments()
-            .getWithResponse("mucfxhikkf", "rmymyincqlhr", "s", "sl", com.azure.core.util.Context.NONE)
+            .getWithResponse("jlrxwtoaukhfk", "cisiz", "oaedsxjwuivedwcg", "eewxeiqbpsmg",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("iiovgqcgxu", response.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.ADMIN, response.role());
-        Assertions.assertEquals("kctotiowlxteq", response.tenantId());
-        Assertions.assertEquals(PrincipalType.USER, response.principalType());
+        Assertions.assertEquals("guamlj", response.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, response.role());
+        Assertions.assertEquals("gmsplzgaufcshhv", response.tenantId());
+        Assertions.assertEquals(PrincipalType.APP, response.principalType());
     }
 }

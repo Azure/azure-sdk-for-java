@@ -62,4 +62,11 @@ interface ReflectionUtilsApi {
      */
     ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
         boolean scopeToGenericCore) throws Exception;
+
+    /**
+     * Indicates whether the {@link ReflectionUtilsApi} instance uses Java 9+ modules.
+     *
+     * @return Whether the {@link ReflectionUtilsApi} instance uses Java 9+ modules.
+     */
+    boolean isModuleBased();
 }

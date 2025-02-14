@@ -47,14 +47,9 @@ public final class DeploymentStackInner extends AzureResourceBase {
     private DeploymentStackProperties innerProperties;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -62,9 +57,14 @@ public final class DeploymentStackInner extends AzureResourceBase {
     private String type;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * The name of the resource.
      */
-    private SystemData systemData;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of DeploymentStackInner class.
@@ -124,23 +124,13 @@ public final class DeploymentStackInner extends AzureResourceBase {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
-     * @return the id value.
+     * @return the systemData value.
      */
     @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -154,13 +144,23 @@ public final class DeploymentStackInner extends AzureResourceBase {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * Get the name property: The name of the resource.
      * 
-     * @return the systemData value.
+     * @return the name value.
      */
     @Override
-    public SystemData systemData() {
-        return this.systemData;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -534,7 +534,6 @@ public final class DeploymentStackInner extends AzureResourceBase {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }

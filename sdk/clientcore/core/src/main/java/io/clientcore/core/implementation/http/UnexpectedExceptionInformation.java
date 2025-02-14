@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation.http;
 
-import io.clientcore.core.http.exception.HttpExceptionType;
+import io.clientcore.core.http.exceptions.HttpExceptionType;
 
 /**
  * Contains the information needed to generate an exception type to be thrown or returned when a REST API returns an

@@ -15,16 +15,11 @@ import java.io.IOException;
  * Properties and filters for ShareQuota. The request parameter is optional, if there are no filters specified.
  */
 @Fluent
-public final class GroupQuotasEntityBase implements JsonSerializable<GroupQuotasEntityBase> {
+public class GroupQuotasEntityBase implements JsonSerializable<GroupQuotasEntityBase> {
     /*
      * Display name of the GroupQuota entity.
      */
     private String displayName;
-
-    /*
-     * Additional attributes to filter/restrict the subscriptions, which can be added to the subscriptionIds.
-     */
-    private AdditionalAttributes additionalAttributes;
 
     /*
      * Provisioning state of the operation.
@@ -58,28 +53,6 @@ public final class GroupQuotasEntityBase implements JsonSerializable<GroupQuotas
     }
 
     /**
-     * Get the additionalAttributes property: Additional attributes to filter/restrict the subscriptions, which can be
-     * added to the subscriptionIds.
-     * 
-     * @return the additionalAttributes value.
-     */
-    public AdditionalAttributes additionalAttributes() {
-        return this.additionalAttributes;
-    }
-
-    /**
-     * Set the additionalAttributes property: Additional attributes to filter/restrict the subscriptions, which can be
-     * added to the subscriptionIds.
-     * 
-     * @param additionalAttributes the additionalAttributes value to set.
-     * @return the GroupQuotasEntityBase object itself.
-     */
-    public GroupQuotasEntityBase withAdditionalAttributes(AdditionalAttributes additionalAttributes) {
-        this.additionalAttributes = additionalAttributes;
-        return this;
-    }
-
-    /**
      * Get the provisioningState property: Provisioning state of the operation.
      * 
      * @return the provisioningState value.
@@ -89,14 +62,22 @@ public final class GroupQuotasEntityBase implements JsonSerializable<GroupQuotas
     }
 
     /**
+     * Set the provisioningState property: Provisioning state of the operation.
+     * 
+     * @param provisioningState the provisioningState value to set.
+     * @return the GroupQuotasEntityBase object itself.
+     */
+    GroupQuotasEntityBase withProvisioningState(RequestState provisioningState) {
+        this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (additionalAttributes() != null) {
-            additionalAttributes().validate();
-        }
     }
 
     /**
@@ -106,7 +87,6 @@ public final class GroupQuotasEntityBase implements JsonSerializable<GroupQuotas
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("displayName", this.displayName);
-        jsonWriter.writeJsonField("additionalAttributes", this.additionalAttributes);
         return jsonWriter.writeEndObject();
     }
 
@@ -127,8 +107,6 @@ public final class GroupQuotasEntityBase implements JsonSerializable<GroupQuotas
 
                 if ("displayName".equals(fieldName)) {
                     deserializedGroupQuotasEntityBase.displayName = reader.getString();
-                } else if ("additionalAttributes".equals(fieldName)) {
-                    deserializedGroupQuotasEntityBase.additionalAttributes = AdditionalAttributes.fromJson(reader);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedGroupQuotasEntityBase.provisioningState = RequestState.fromString(reader.getString());
                 } else {

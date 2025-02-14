@@ -14,18 +14,18 @@ public final class DataConnectionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataConnectionListResult model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"ehvbbxurip\",\"id\":\"tfnhtbaxkgxywr\",\"name\":\"kpyklyhp\",\"type\":\"uodpv\"},{\"kind\":\"DataConnection\",\"location\":\"udlgzibthostgkts\",\"id\":\"vdxec\",\"name\":\"zedqbcvhzlhplo\",\"type\":\"qkdlw\"},{\"kind\":\"DataConnection\",\"location\":\"fbumlkx\",\"id\":\"rqjfsmlm\",\"name\":\"txhwgfws\",\"type\":\"tawc\"}]}")
+            "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"bar\",\"id\":\"euayjkqabqgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"},{\"kind\":\"DataConnection\",\"location\":\"hwagohbuffkmrqe\",\"id\":\"vvhmxtdrj\",\"name\":\"utacoe\",\"type\":\"jvewzcjznmwcp\"},{\"kind\":\"DataConnection\",\"location\":\"uaadraufactkahzo\",\"id\":\"ajjziuxxpshne\",\"name\":\"kulfg\",\"type\":\"lqubkwdlen\"}]}")
             .toObject(DataConnectionListResult.class);
-        Assertions.assertEquals("ehvbbxurip", model.value().get(0).location());
+        Assertions.assertEquals("bar", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataConnectionListResult model = new DataConnectionListResult()
-            .withValue(Arrays.asList(new DataConnectionInner().withLocation("ehvbbxurip"),
-                new DataConnectionInner().withLocation("udlgzibthostgkts"),
-                new DataConnectionInner().withLocation("fbumlkx")));
+        DataConnectionListResult model
+            = new DataConnectionListResult().withValue(Arrays.asList(new DataConnectionInner().withLocation("bar"),
+                new DataConnectionInner().withLocation("hwagohbuffkmrqe"),
+                new DataConnectionInner().withLocation("uaadraufactkahzo")));
         model = BinaryData.fromObject(model).toObject(DataConnectionListResult.class);
-        Assertions.assertEquals("ehvbbxurip", model.value().get(0).location());
+        Assertions.assertEquals("bar", model.value().get(0).location());
     }
 }

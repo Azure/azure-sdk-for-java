@@ -10,7 +10,7 @@ package com.azure.resourcemanager.kusto.generated;
 public final class DatabasesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoSuspendedDatabasesGet.
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoSuspendedDatabasesGet.
      * json
      */
     /**
@@ -25,7 +25,7 @@ public final class DatabasesGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabasesGet.json
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabasesGet.json
      */
     /**
      * Sample code: KustoDatabasesGet.

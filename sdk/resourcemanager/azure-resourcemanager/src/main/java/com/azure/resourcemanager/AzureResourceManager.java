@@ -133,7 +133,7 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
  * <pre>
- * AzureProfile profile = new AzureProfile&#40;tenantId, subscriptionId, AzureEnvironment.AZURE&#41;;
+ * AzureProfile profile = new AzureProfile&#40;tenantId, subscriptionId, AzureCloud.AZURE_PUBLIC_CLOUD&#41;;
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;
  *     .authorityHost&#40;profile.getEnvironment&#40;&#41;.getActiveDirectoryEndpoint&#40;&#41;&#41;
  *     .build&#40;&#41;;
@@ -177,7 +177,7 @@ public final class AzureResourceManager {
      *
      * <!-- src_embed com.azure.resourcemanager.azureResourceManager.authenticate#credential-profile -->
      * <pre>
-     * AzureProfile profile = new AzureProfile&#40;tenantId, subscriptionId, AzureEnvironment.AZURE&#41;;
+     * AzureProfile profile = new AzureProfile&#40;tenantId, subscriptionId, AzureCloud.AZURE_PUBLIC_CLOUD&#41;;
      * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;
      *     .authorityHost&#40;profile.getEnvironment&#40;&#41;.getActiveDirectoryEndpoint&#40;&#41;&#41;
      *     .build&#40;&#41;;

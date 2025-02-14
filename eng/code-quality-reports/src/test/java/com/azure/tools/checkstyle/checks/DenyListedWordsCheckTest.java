@@ -11,6 +11,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.util.Arrays;
+
 public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     private Checker checker;
 
@@ -42,6 +45,23 @@ public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     @Test
     public void denyListedWordsInterface() throws Exception {
         verify(checker, getPath("DenyListedWordsInterface.java"));
+    }
+
+    @Test
+    public void implementationPackageIgnored() throws Exception {
+        File file = TestUtils.createCheckFile("implementationPackageIgnored", Arrays.asList(
+            "package com.test.implementation;",
+            "@JacksonXmlRootElement(localName = \"File-SetHTTPHeaders-Headers\")",
+            "public class CamelCaseTestData {",
+            "    public void errorHTTPMethod() { throw new RuntimeException(\"Error Messages.\"); }",
+            "    public void validHttpMethod() { throw new RuntimeException(\"Error Messages.\"); }",
+            "    public static void itIsAURLError() { throw new RuntimeException(\"Error Messages.\"); }",
+            "    protected void invalidXMLMethod() { throw new RuntimeException(\"Error Messages.\"); }",
+            "    private void shouldNotSearch() { throw new RuntimeException(\"Error Messages.\"); }",
+            "}"
+        ));
+
+        verify(checker, new File[]{file}, file.getAbsolutePath());
     }
 
     private String expectedErrorMessage(int line, int column, String errorMessage) {

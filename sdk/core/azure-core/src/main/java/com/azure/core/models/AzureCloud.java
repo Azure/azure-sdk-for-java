@@ -20,7 +20,7 @@ public final class AzureCloud extends ExpandableStringEnum<AzureCloud> {
     /**
      * Azure US government cloud.
      */
-    public static final AzureCloud AZURE_US_GOVERNMENT = fromString("AZURE_US_GOVERNMENT");
+    public static final AzureCloud AZURE_US_GOVERNMENT_CLOUD = fromString("AZURE_US_GOVERNMENT");
 
     /**
      * Creates or finds an AzureCloud from its string representation.

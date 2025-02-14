@@ -5,6 +5,7 @@ package com.azure.messaging.webpubsub.client;
 
 import com.azure.messaging.webpubsub.client.implementation.WebPubSubClientState;
 import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessage;
+import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
 import com.azure.messaging.webpubsub.client.implementation.websocket.SendResult;
 import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
 import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketSession;
@@ -70,7 +71,7 @@ public class MockClientTests {
         Assertions.assertEquals(1, events.size());
     }
 
-    private static void sendConnectedEvent(Consumer<Object> messageHandler) {
+    private static void sendConnectedEvent(Consumer<WebPubSubMessage> messageHandler) {
         Mono.delay(SMALL_DELAY)
             .then(Mono.fromRunnable(() -> messageHandler.accept(new ConnectedMessage("mock_connection_id")))
                 .subscribeOn(Schedulers.boundedElastic()))

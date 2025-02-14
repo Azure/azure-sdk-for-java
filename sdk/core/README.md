@@ -29,4 +29,4 @@ Azure Core is split into a number of sub-components:
 
 For documentation on using Azure Core, refer to the [https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core readme](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core).
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2FREADME.png)
+

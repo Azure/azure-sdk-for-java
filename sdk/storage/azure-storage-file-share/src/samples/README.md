@@ -58,4 +58,4 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [SDK_README_GETTING_STARTDED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-share/README.md#getting-started
 [SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/storage/azure-storage-file-share/README.md#troubleshooting
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fsrc%2Fsamples%2FREADME.png)
+

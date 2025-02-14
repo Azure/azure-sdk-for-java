@@ -27,7 +27,7 @@ public final class OperationsResultsLocationsGetWithResponseMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.operationsResultsLocations().getWithResponse("hvyeldotj", "dkwisw", com.azure.core.util.Context.NONE);
+        manager.operationsResultsLocations().getWithResponse("eimipskd", "zatvfuzka", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -9,7 +9,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.kusto.models.PrincipalPermissionsAction;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.ScriptLevel;
 import java.io.IOException;
 
 /**
@@ -48,6 +50,16 @@ public final class ScriptProperties implements JsonSerializable<ScriptProperties
      * The provisioned state of the resource.
      */
     private ProvisioningState provisioningState;
+
+    /*
+     * Differentiates between the type of script commands included - Database or Cluster. The default is Database.
+     */
+    private ScriptLevel scriptLevel;
+
+    /*
+     * Indicates if the permissions for the script caller are kept following completion of the script.
+     */
+    private PrincipalPermissionsAction principalPermissionsAction;
 
     /**
      * Creates an instance of ScriptProperties class.
@@ -171,6 +183,50 @@ public final class ScriptProperties implements JsonSerializable<ScriptProperties
     }
 
     /**
+     * Get the scriptLevel property: Differentiates between the type of script commands included - Database or Cluster.
+     * The default is Database.
+     * 
+     * @return the scriptLevel value.
+     */
+    public ScriptLevel scriptLevel() {
+        return this.scriptLevel;
+    }
+
+    /**
+     * Set the scriptLevel property: Differentiates between the type of script commands included - Database or Cluster.
+     * The default is Database.
+     * 
+     * @param scriptLevel the scriptLevel value to set.
+     * @return the ScriptProperties object itself.
+     */
+    public ScriptProperties withScriptLevel(ScriptLevel scriptLevel) {
+        this.scriptLevel = scriptLevel;
+        return this;
+    }
+
+    /**
+     * Get the principalPermissionsAction property: Indicates if the permissions for the script caller are kept
+     * following completion of the script.
+     * 
+     * @return the principalPermissionsAction value.
+     */
+    public PrincipalPermissionsAction principalPermissionsAction() {
+        return this.principalPermissionsAction;
+    }
+
+    /**
+     * Set the principalPermissionsAction property: Indicates if the permissions for the script caller are kept
+     * following completion of the script.
+     * 
+     * @param principalPermissionsAction the principalPermissionsAction value to set.
+     * @return the ScriptProperties object itself.
+     */
+    public ScriptProperties withPrincipalPermissionsAction(PrincipalPermissionsAction principalPermissionsAction) {
+        this.principalPermissionsAction = principalPermissionsAction;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -189,6 +245,9 @@ public final class ScriptProperties implements JsonSerializable<ScriptProperties
         jsonWriter.writeStringField("scriptContent", this.scriptContent);
         jsonWriter.writeStringField("forceUpdateTag", this.forceUpdateTag);
         jsonWriter.writeBooleanField("continueOnErrors", this.continueOnErrors);
+        jsonWriter.writeStringField("scriptLevel", this.scriptLevel == null ? null : this.scriptLevel.toString());
+        jsonWriter.writeStringField("principalPermissionsAction",
+            this.principalPermissionsAction == null ? null : this.principalPermissionsAction.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -219,6 +278,11 @@ public final class ScriptProperties implements JsonSerializable<ScriptProperties
                     deserializedScriptProperties.continueOnErrors = reader.getNullable(JsonReader::getBoolean);
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedScriptProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("scriptLevel".equals(fieldName)) {
+                    deserializedScriptProperties.scriptLevel = ScriptLevel.fromString(reader.getString());
+                } else if ("principalPermissionsAction".equals(fieldName)) {
+                    deserializedScriptProperties.principalPermissionsAction
+                        = PrincipalPermissionsAction.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -12,24 +12,25 @@ public final class ManagedPrivateEndpointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedPrivateEndpointInner model = BinaryData.fromString(
-            "{\"properties\":{\"privateLinkResourceId\":\"xbaaabjyv\",\"privateLinkResourceRegion\":\"ffimrzrtuzqogsex\",\"groupId\":\"evfdnwnwm\",\"requestMessage\":\"zsyyceuzso\",\"provisioningState\":\"Canceled\"},\"id\":\"dpfrxtrthzvaytdw\",\"name\":\"qbrqubpaxhexiili\",\"type\":\"pdtii\"}")
+            "{\"properties\":{\"privateLinkResourceId\":\"cslfaoqzpiyylha\",\"privateLinkResourceRegion\":\"swhccsphk\",\"groupId\":\"ivwitqscywugg\",\"requestMessage\":\"luhczbw\",\"provisioningState\":\"Deleting\"},\"id\":\"i\",\"name\":\"sbrgz\",\"type\":\"wmsweypqwd\"}")
             .toObject(ManagedPrivateEndpointInner.class);
-        Assertions.assertEquals("xbaaabjyv", model.privateLinkResourceId());
-        Assertions.assertEquals("ffimrzrtuzqogsex", model.privateLinkResourceRegion());
-        Assertions.assertEquals("evfdnwnwm", model.groupId());
-        Assertions.assertEquals("zsyyceuzso", model.requestMessage());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.privateLinkResourceId());
+        Assertions.assertEquals("swhccsphk", model.privateLinkResourceRegion());
+        Assertions.assertEquals("ivwitqscywugg", model.groupId());
+        Assertions.assertEquals("luhczbw", model.requestMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedPrivateEndpointInner model = new ManagedPrivateEndpointInner().withPrivateLinkResourceId("xbaaabjyv")
-            .withPrivateLinkResourceRegion("ffimrzrtuzqogsex")
-            .withGroupId("evfdnwnwm")
-            .withRequestMessage("zsyyceuzso");
+        ManagedPrivateEndpointInner model
+            = new ManagedPrivateEndpointInner().withPrivateLinkResourceId("cslfaoqzpiyylha")
+                .withPrivateLinkResourceRegion("swhccsphk")
+                .withGroupId("ivwitqscywugg")
+                .withRequestMessage("luhczbw");
         model = BinaryData.fromObject(model).toObject(ManagedPrivateEndpointInner.class);
-        Assertions.assertEquals("xbaaabjyv", model.privateLinkResourceId());
-        Assertions.assertEquals("ffimrzrtuzqogsex", model.privateLinkResourceRegion());
-        Assertions.assertEquals("evfdnwnwm", model.groupId());
-        Assertions.assertEquals("zsyyceuzso", model.requestMessage());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.privateLinkResourceId());
+        Assertions.assertEquals("swhccsphk", model.privateLinkResourceRegion());
+        Assertions.assertEquals("ivwitqscywugg", model.groupId());
+        Assertions.assertEquals("luhczbw", model.requestMessage());
     }
 }

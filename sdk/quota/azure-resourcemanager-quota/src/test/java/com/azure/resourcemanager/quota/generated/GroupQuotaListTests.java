@@ -6,12 +6,8 @@ package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.quota.fluent.models.GroupQuotasEntityInner;
-import com.azure.resourcemanager.quota.models.AdditionalAttributes;
-import com.azure.resourcemanager.quota.models.EnvironmentType;
 import com.azure.resourcemanager.quota.models.GroupQuotaList;
-import com.azure.resourcemanager.quota.models.GroupQuotasEntityBase;
-import com.azure.resourcemanager.quota.models.GroupingId;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
+import com.azure.resourcemanager.quota.models.GroupQuotasEntityProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -19,54 +15,21 @@ public final class GroupQuotaListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"kdtmlxhekuk\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"BillingId\",\"value\":\"kc\"},\"environment\":\"NonProduction\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ryuanzwuxzdxtay\",\"name\":\"lhmwhfpmrqobm\",\"type\":\"u\"},{\"properties\":{\"displayName\":\"ryrtihfxtijbpzv\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"BillingId\",\"value\":\"ymglzufcyz\"},\"environment\":\"NonProduction\"},\"provisioningState\":\"Invalid\"},\"id\":\"hanufhfcbjysagi\",\"name\":\"hxqh\",\"type\":\"bifpikxwczb\"},{\"properties\":{\"displayName\":\"npqxuh\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"BillingId\",\"value\":\"iwbybrkxvdumjg\"},\"environment\":\"NonProduction\"},\"provisioningState\":\"InProgress\"},\"id\":\"k\",\"name\":\"gaudcc\",\"type\":\"nhsjcnyej\"},{\"properties\":{\"displayName\":\"yhtnapczwlokjye\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"ServiceTreeId\",\"value\":\"ipjoxzjnchgejs\"},\"environment\":\"Production\"},\"provisioningState\":\"Accepted\"},\"id\":\"lzydehojwyahux\",\"name\":\"npmqnjaqwixjspro\",\"type\":\"vcputegj\"}],\"nextLink\":\"mfdatscmdvpj\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"siznto\",\"provisioningState\":\"Failed\"},\"id\":\"ouajpsqucmpoyf\",\"name\":\"kfo\",\"type\":\"knygjofjddeq\"},{\"properties\":{\"displayName\":\"eupewnwreitjz\",\"provisioningState\":\"InProgress\"},\"id\":\"sarhmofc\",\"name\":\"hs\",\"type\":\"yurkdtmlxhekuksj\"},{\"properties\":{\"displayName\":\"kc\",\"provisioningState\":\"InProgress\"},\"id\":\"rcryuanzwuxzdxta\",\"name\":\"rlhm\",\"type\":\"hfpmrqobmtukknr\"},{\"properties\":{\"displayName\":\"ihfxtijbpzvgnwzs\",\"provisioningState\":\"Accepted\"},\"id\":\"zufcyzkohdbi\",\"name\":\"anufhfcbjysag\",\"type\":\"th\"}],\"nextLink\":\"hab\"}")
             .toObject(GroupQuotaList.class);
-        Assertions.assertEquals("kdtmlxhekuk", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(GroupingIdType.BILLING_ID,
-            model.value().get(0).properties().additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("kc", model.value().get(0).properties().additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.NON_PRODUCTION,
-            model.value().get(0).properties().additionalAttributes().environment());
+        Assertions.assertEquals("siznto", model.value().get(0).properties().displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotaList model
-            = new GroupQuotaList()
-                .withValue(
-                    Arrays.asList(
-                        new GroupQuotasEntityInner()
-                            .withProperties(new GroupQuotasEntityBase().withDisplayName("kdtmlxhekuk")
-                                .withAdditionalAttributes(new AdditionalAttributes()
-                                    .withGroupId(
-                                        new GroupingId().withGroupingIdType(GroupingIdType.BILLING_ID).withValue("kc"))
-                                    .withEnvironment(EnvironmentType.NON_PRODUCTION))),
-                        new GroupQuotasEntityInner().withProperties(new GroupQuotasEntityBase()
-                            .withDisplayName("ryrtihfxtijbpzv")
-                            .withAdditionalAttributes(new AdditionalAttributes()
-                                .withGroupId(new GroupingId().withGroupingIdType(GroupingIdType.BILLING_ID)
-                                    .withValue("ymglzufcyz"))
-                                .withEnvironment(EnvironmentType.NON_PRODUCTION))),
-                        new GroupQuotasEntityInner()
-                            .withProperties(
-                                new GroupQuotasEntityBase().withDisplayName("npqxuh")
-                                    .withAdditionalAttributes(new AdditionalAttributes()
-                                        .withGroupId(new GroupingId().withGroupingIdType(GroupingIdType.BILLING_ID)
-                                            .withValue("iwbybrkxvdumjg"))
-                                        .withEnvironment(EnvironmentType.NON_PRODUCTION))),
-                        new GroupQuotasEntityInner()
-                            .withProperties(
-                                new GroupQuotasEntityBase().withDisplayName("yhtnapczwlokjye")
-                                    .withAdditionalAttributes(new AdditionalAttributes()
-                                        .withGroupId(new GroupingId().withGroupingIdType(GroupingIdType.SERVICE_TREE_ID)
-                                            .withValue("ipjoxzjnchgejs"))
-                                        .withEnvironment(EnvironmentType.PRODUCTION)))));
+        GroupQuotaList model = new GroupQuotaList().withValue(Arrays.asList(
+            new GroupQuotasEntityInner().withProperties(new GroupQuotasEntityProperties().withDisplayName("siznto")),
+            new GroupQuotasEntityInner()
+                .withProperties(new GroupQuotasEntityProperties().withDisplayName("eupewnwreitjz")),
+            new GroupQuotasEntityInner().withProperties(new GroupQuotasEntityProperties().withDisplayName("kc")),
+            new GroupQuotasEntityInner()
+                .withProperties(new GroupQuotasEntityProperties().withDisplayName("ihfxtijbpzvgnwzs"))));
         model = BinaryData.fromObject(model).toObject(GroupQuotaList.class);
-        Assertions.assertEquals("kdtmlxhekuk", model.value().get(0).properties().displayName());
-        Assertions.assertEquals(GroupingIdType.BILLING_ID,
-            model.value().get(0).properties().additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("kc", model.value().get(0).properties().additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.NON_PRODUCTION,
-            model.value().get(0).properties().additionalAttributes().environment());
+        Assertions.assertEquals("siznto", model.value().get(0).properties().displayName());
     }
 }

@@ -5,7 +5,7 @@ package com.azure.resourcemanager.compute.samples;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
@@ -113,13 +113,13 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
 
             // ============================================================
             // Login using created service principle and verify it can assign/remove identity #1, but not #2
+            AzureProfile profile = new AzureProfile(null, subscription, AzureCloud.AZURE_PUBLIC_CLOUD);
             ClientSecretCredential credential
                 = new ClientSecretCredentialBuilder().clientId(servicePrincipal.applicationId())
                     .tenantId(servicePrincipal.manager().tenantId())
                     .clientSecret("\"StrongPass!12\"")
-                    .authorityHost(AzureEnvironment.AZURE.getActiveDirectoryEndpoint())
+                    .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                     .build();
-            AzureProfile profile = new AzureProfile(null, subscription, AzureEnvironment.AZURE);
             ComputeManager computeManager1 = ComputeManager.authenticate(credential, profile);
 
             VirtualMachineScaleSet vmss
@@ -176,7 +176,7 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             //=============================================================
             // Authenticate
 
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
+            final AzureProfile profile = new AzureProfile(AzureCloud.AZURE_PUBLIC_CLOUD);
             final TokenCredential credential = new DefaultAzureCredentialBuilder()
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();

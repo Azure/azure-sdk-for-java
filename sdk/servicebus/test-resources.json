@@ -71,7 +71,9 @@
       "sku": {
         "name": "Premium"
       },
-      "properties": {},
+      "properties": {
+        "disableLocalAuth": true
+      },
       "resources": [
         {
           "apiVersion": "2021-01-01-preview",

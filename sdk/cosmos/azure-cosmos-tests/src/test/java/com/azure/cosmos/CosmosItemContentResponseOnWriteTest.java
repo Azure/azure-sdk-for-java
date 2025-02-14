@@ -126,7 +126,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
 
         validateMinimalItemResponse(properties, itemResponse, true);
         String newPropValue = UUID.randomUUID().toString();
-        properties.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        properties.set("newProp", newPropValue);
         ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions,
             new PartitionKey(properties.get("mypk")));
         // replace document
@@ -148,7 +148,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
 
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
-        properties.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        properties.set("newProp", newPropValue);
         ModelBridgeInternal.setPartitionKey(cosmosItemRequestOptions,
             new PartitionKey(properties.get("mypk")));
         // replace document

@@ -41,4 +41,4 @@ This project welcomes contributions and suggestions. Find [contributing][SDK_REA
 [sample_basic]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub-client/src/samples/java/com/azure/messaging/webpubsub/client/HelloWorldSample.java
 [sample_echo]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub-client/src/samples/java/com/azure/messaging/webpubsub/client/EchoSample.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fwebpubsub%2Fazure-messaging-webpubsub-client%2Fsrc%2Fsamples%2FREADME.png)
+

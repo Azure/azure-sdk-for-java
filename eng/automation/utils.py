@@ -255,6 +255,7 @@ def set_or_default_version(
     sdk_root: str,
     group: str,
     module: str,
+    version=None,
 ) -> Tuple[str, str]:
     version_file = os.path.join(sdk_root, "eng/versioning/version_client.txt")
     project = "{0}:{1}".format(group, module)
@@ -287,6 +288,9 @@ def set_or_default_version(
             lines = lines[:version_index] + [""] + lines[version_index:]
             stable_version = ""
             current_version = default_version
+
+    if version:
+        current_version = version
 
     if not stable_version:
         stable_version = current_version
@@ -346,7 +350,10 @@ def set_or_increase_version(
         write_version(version_file, lines, version_index, project, stable_version, version)
         return stable_version, version
 
+    # 1.0.0-beta.1 -> [1,0,0,"-beta.1"]
     current_versions = list(re.findall(version_pattern, current_version)[0])
+    # 1.0.0 -> [(1,0,0,"")]
+    # 1.0.0-beta.1 -> [(1,0,0,"-beta.1")]
     stable_versions = re.findall(version_pattern, stable_version)
     # no stable version
     if len(stable_versions) < 1 or stable_versions[0][-1] != "":

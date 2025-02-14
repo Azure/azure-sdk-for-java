@@ -116,5 +116,5 @@ Reference:
 * [DEFAULT_POOL_SIZE for Schedulers.parallel()](https://github.com/reactor/reactor-core/blob/3.4.x/reactor-core/src/main/java/reactor/core/scheduler/Schedulers.java#L72-L81)
 
 ## Other JVM thread configurations you might be interested:
-* [Compiler threads for JIT compiler](https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#advanced-jit-compiler-options-for-java)
-* [GC threads](https://docs.oracle.com/en/java/javase/17/docs/specs/man/java.html#advanced-garbage-collection-options-for-java)
+* [Compiler threads for JIT compiler](https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html#advanced-jit-compiler-options-for-java)
+* [GC threads](https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html#advanced-garbage-collection-options-for-java)
