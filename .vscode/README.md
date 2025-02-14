@@ -2,6 +2,8 @@
 
 ## Setup for testing changes locally before submit
 
+JRS - Test, will not be checked in.
+
 1. Install VS Code.
 2. Install the Code Spell Checker by Street Side Software.
 This will allow testing of the changes locally with minimal effort. Literally, you'll just need to load a file and anything it flags will be underlined in blue. The configuration definition can be found at <https://cspell.org/configuration/>
