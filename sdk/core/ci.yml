@@ -13,6 +13,9 @@ trigger:
       - sdk/parents/azure-client-sdk-parent/
       - eng/pipelines/
       - eng/common/testproxy/
+    exclude:
+      - sdk/core/azure-core-v2
+      - sdk/core/azure-core-test-v2
 
 pr:
   branches:
@@ -28,6 +31,9 @@ pr:
       - sdk/parents/azure-client-sdk-parent/
       - eng/pipelines/
       - eng/common/testproxy/
+    exclude:
+      - sdk/core/azure-core-v2
+      - sdk/core/azure-core-test-v2
 
 parameters:
   - name: release_dependsonlivetests

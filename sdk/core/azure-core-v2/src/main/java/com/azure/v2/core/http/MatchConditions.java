@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.http;
 
-import com.azure.v2.core.annotation.Fluent;
+import com.azure.v2.core.annotations.Fluent;
 import io.clientcore.core.http.models.HttpRequest;
 
 /**

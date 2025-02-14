@@ -3,7 +3,7 @@
 
 package io.clientcore.annotation.processor.models;
 
-import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;

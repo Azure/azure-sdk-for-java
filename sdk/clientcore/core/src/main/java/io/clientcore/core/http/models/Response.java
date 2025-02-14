@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 import java.io.Closeable;
 

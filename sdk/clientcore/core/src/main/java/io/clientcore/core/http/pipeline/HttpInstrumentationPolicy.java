@@ -25,7 +25,7 @@ import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -60,7 +60,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.UR
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.USER_AGENT_ORIGINAL_KEY;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_REQUEST_EVENT_NAME;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RESPONSE_EVENT_NAME;
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
 
 /**

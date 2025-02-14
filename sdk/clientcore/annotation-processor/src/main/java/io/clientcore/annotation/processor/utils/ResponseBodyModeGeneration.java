@@ -10,7 +10,7 @@ import com.github.javaparser.ast.stmt.ReturnStmt;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.io.InputStream;

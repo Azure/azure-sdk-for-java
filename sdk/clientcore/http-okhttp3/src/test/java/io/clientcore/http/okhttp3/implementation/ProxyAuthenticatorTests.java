@@ -3,10 +3,10 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
-import io.clientcore.core.util.auth.BasicChallengeHandler;
-import io.clientcore.core.util.auth.AuthUtils;
-import io.clientcore.core.util.auth.ChallengeHandler;
-import io.clientcore.core.util.auth.DigestChallengeHandler;
+import io.clientcore.core.utils.auth.BasicChallengeHandler;
+import io.clientcore.core.utils.auth.AuthUtils;
+import io.clientcore.core.utils.auth.ChallengeHandler;
+import io.clientcore.core.utils.auth.DigestChallengeHandler;
 import okhttp3.Address;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;

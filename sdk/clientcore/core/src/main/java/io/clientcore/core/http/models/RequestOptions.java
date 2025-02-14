@@ -3,13 +3,13 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.http.annotation.QueryParam;
+import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.rest.UriEscapers;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.Context;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.utils.Context;
+import io.clientcore.core.utils.binarydata.BinaryData;
 
 import java.util.Objects;
 import java.util.function.Consumer;

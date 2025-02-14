@@ -5,7 +5,7 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -30,7 +30,7 @@ import java.util.Objects;
  * <!-- end io.clientcore.core.http.HttpPipelineBuilder.noConfiguration -->
  *
  * <p>Create a pipeline using the default HTTP client and a retry policy</p>
- * 
+ *
  * <!-- src_embed io.clientcore.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;

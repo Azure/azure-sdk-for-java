@@ -3,17 +3,17 @@
 
 package io.clientcore.core.implementation.http.serializer;
 
-import io.clientcore.core.http.annotation.HttpRequestInformation;
-import io.clientcore.core.http.exception.HttpResponseException;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
+import io.clientcore.core.http.exceptions.HttpResponseException;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.rest.RestProxyImpl;
-import io.clientcore.core.util.Base64Uri;
-import io.clientcore.core.util.DateTimeRfc1123;
+import io.clientcore.core.utils.Base64Uri;
+import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.SerializationFormat;
+import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.utils.serializers.SerializationFormat;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;

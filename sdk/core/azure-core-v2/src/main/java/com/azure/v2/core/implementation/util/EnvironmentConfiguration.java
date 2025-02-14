@@ -3,9 +3,9 @@
 
 package com.azure.v2.core.implementation.util;
 
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 
-import io.clientcore.core.util.configuration.ConfigurationSource;
+import io.clientcore.core.utils.configuration.ConfigurationSource;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;

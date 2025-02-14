@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Updated `api-version` of resources to `2024-11-01`.
+
 ## 2.47.0 (2025-01-24)
 
 ### Other Changes

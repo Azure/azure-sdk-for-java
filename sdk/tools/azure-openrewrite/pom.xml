@@ -11,6 +11,10 @@
     <name>Microsoft Azure OpenRewrite Plugin library for Java</name>
     <description>This module contains OpenRewrite recipe for migrating to next generation Microsoft Azure client libraries.</description>
 
+    <properties>
+      <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -31,14 +35,31 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- You only need the version that corresponds to your current
-        Java version. It is fine to add all of them, though, as
-        they can coexist on a classpath. -->
-        <dependency>
-            <groupId>org.openrewrite</groupId>
-            <artifactId>rewrite-java-8</artifactId>
-            <scope>test</scope>
-        </dependency>
+      <!-- To test on different JDKs multiple within CI,
+      we need to include multiple rewrite-java test dependencies -->
+      <dependency>
+          <groupId>org.openrewrite</groupId>
+          <artifactId>rewrite-java-8</artifactId>
+          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.openrewrite</groupId>
+        <artifactId>rewrite-java-11</artifactId>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.openrewrite</groupId>
+        <artifactId>rewrite-java-17</artifactId>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.openrewrite</groupId>
+        <artifactId>rewrite-java-21</artifactId>
+        <scope>test</scope>
+      </dependency>
 
         <!-- rewrite-maven dependency only necessary for Maven Recipe development -->
         <dependency>
@@ -49,7 +70,7 @@
         <dependency>
             <groupId>com.azure</groupId>
             <artifactId>azure-core</artifactId>
-            <version>1.55.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+            <version>1.55.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -126,6 +147,181 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>3.15.0</version>
             </plugin>
+            <!-- generate sources jar -->
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-source-plugin</artifactId>
+              <version>3.3.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-source-plugin;external_dependency} -->
+              <executions>
+                <execution>
+                  <id>attach-sources</id>
+                  <goals>
+                    <goal>jar</goal>
+                  </goals>
+                  <configuration>
+                    <outputDirectory>${packageOutputDirectory}</outputDirectory>
+                  </configuration>
+                </execution>
+              </executions>
+            </plugin>
+
+            <!-- Copy the pom file to output -->
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-antrun-plugin</artifactId>
+              <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
+              <executions>
+                <execution>
+                  <id>copy</id>
+                  <phase>package</phase>
+                  <configuration>
+                    <target>
+                      <copy file="${project.pomFile}" tofile="${packageOutputDirectory}/${project.build.finalName}.pom"/>
+                    </target>
+                  </configuration>
+                  <goals>
+                    <goal>run</goal>
+                  </goals>
+                </execution>
+              </executions>
+            </plugin>
+
+          <!-- generate javadoc jar -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <!-- This plugin scans checkstyle issues in the code -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+            <dependencies>
+              <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>sdk-build-tools</artifactId>
+                <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+              </dependency>
+              <dependency>
+                <groupId>com.puppycrawl.tools</groupId>
+                <artifactId>checkstyle</artifactId>
+                <version>9.3</version> <!-- {x-version-update;com.puppycrawl.tools:checkstyle;external_dependency} -->
+              </dependency>
+            </dependencies>
+            <configuration>
+              <configLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle.xml</configLocation>
+              <suppressionsLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml</suppressionsLocation>
+              <headerLocation>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/checkstyle/java.header</headerLocation>
+              <propertyExpansion>samedir=</propertyExpansion>
+              <encoding>UTF-8</encoding>
+              <consoleOutput>true</consoleOutput>
+              <includeTestSourceDirectory>true</includeTestSourceDirectory>
+              <linkXRef>true</linkXRef>
+              <failsOnError>true</failsOnError>
+              <failOnViolation>true</failOnViolation>
+            </configuration>
+          </plugin>
+          <!-- This plugin scans reports spotbugs in the code -->
+          <plugin>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-maven-plugin</artifactId>
+            <version>4.8.3.1</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+            <dependencies>
+              <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>sdk-build-tools</artifactId>
+                <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+              </dependency>
+              <dependency>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs</artifactId>
+                <version>4.8.3</version> <!-- {x-version-update;com.github.spotbugs:spotbugs;external_dependency} -->
+              </dependency>
+              <!-- Needed as the version of Spotbugs being used isn't compatible is Java 18+ without this. -->
+              <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm</artifactId>
+                <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+              </dependency>
+            </dependencies>
+            <configuration>
+              <effort>max</effort>
+              <threshold>Low</threshold>
+              <xmlOutput>true</xmlOutput>
+              <spotbugsXmlOutputDirectory>${project.build.directory}/spotbugs</spotbugsXmlOutputDirectory>
+              <excludeFilterFile>${project.basedir}/../../../eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
+              <fork>true</fork>
+            </configuration>
+          </plugin>
+
+          <!-- Checks public surface area for breaking changes. -->
+          <plugin>
+            <groupId>org.revapi</groupId>
+            <artifactId>revapi-maven-plugin</artifactId>
+            <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>com.azure</groupId>
+                <artifactId>sdk-build-tools</artifactId>
+                <version>1.0.0</version> <!-- {x-version-update;com.azure:sdk-build-tools;external_dependency} -->
+              </dependency>
+              <dependency>
+                <groupId>org.revapi</groupId>
+                <artifactId>revapi-java</artifactId>
+                <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+              </dependency>
+              <dependency>
+                <groupId>org.revapi</groupId>
+                <artifactId>revapi-reporter-json</artifactId>
+                <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+              </dependency>
+            </dependencies>
+          </plugin>
+
+          <plugin>
+            <groupId>com.azure.tools</groupId>
+            <artifactId>codesnippet-maven-plugin</artifactId>
+            <version>1.0.0-beta.10</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
+            <configuration>
+              <readmeGlob>**/*.md</readmeGlob>
+            </configuration>
+            <executions>
+              <execution>
+                <id>update-codesnippets</id>
+                <goals>
+                  <goal>update-codesnippet</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>verify-codesnippets</id>
+                <goals>
+                  <goal>verify-codesnippet</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>com.diffplug.spotless</groupId>
+            <artifactId>spotless-maven-plugin</artifactId>
+            <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
         </plugins>
     </build>
 </project>
