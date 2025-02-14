@@ -55,13 +55,13 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
     @SuppressWarnings("serial")
     public static final PartitionKeyInternal InfinityPartitionKey =
-            new PartitionKeyInternal(new ArrayList<>() {{
+            new PartitionKeyInternal(new ArrayList<IPartitionKeyComponent>() {{
                 add(new InfinityPartitionKeyComponent());
             }});
 
     @SuppressWarnings("serial")
     public static final PartitionKeyInternal UndefinedPartitionKey =
-            new PartitionKeyInternal(new ArrayList<>() {{
+            new PartitionKeyInternal(new ArrayList<IPartitionKeyComponent>() {{
                 add(new UndefinedPartitionKeyComponent());
             }});
 
