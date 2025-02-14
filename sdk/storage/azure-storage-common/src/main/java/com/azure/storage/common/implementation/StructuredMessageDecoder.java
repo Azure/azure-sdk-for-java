@@ -169,14 +169,7 @@ public class StructuredMessageDecoder {
         return decodedContent.toByteArray();
     }
 
-    public byte[] decodeFully() throws IOException {
-        ByteArrayOutputStream decodedContent = new ByteArrayOutputStream();
-        byte[] chunk;
-
-        while ((chunk = decode(1024)).length > 0) {
-            decodedContent.write(chunk);
-        }
-
-        return decodedContent.toByteArray();
+    public byte[] decode() throws IOException {
+        return decode(buffer.remaining());
     }
 }
