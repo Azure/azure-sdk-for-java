@@ -13,12 +13,14 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.CastExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.core.http.models.ContentType;
@@ -30,12 +32,16 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.util.CodegenUtil;
 import io.clientcore.core.utils.binarydata.BinaryData;
 import io.clientcore.core.utils.serializers.ObjectSerializer;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.io.Writer;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -126,6 +132,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             serviceVersionClassName);
 
         getGeneratedServiceMethods(templateInput);
+        addDeserializeHelperMethod();
+        // inferTypeNameFromReturnType();
 
         try (Writer fileWriter = processingEnv.getFiler()
             .createSourceFile(packageName + "." + serviceInterfaceImplShortName)
@@ -137,18 +145,34 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
     }
 
+    private void addDeserializeHelperMethod() {
+        MethodDeclaration deserializeHelperMethod
+            = classBuilder.addMethod("decodeByteArray", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC)
+                .setType("Object")
+                .addParameter("byte[]", "bytes")
+                .addParameter(ObjectSerializer.class, "serializer")
+                .addParameter("String", "returnType");
+        deserializeHelperMethod.tryAddImportToParentCompilationUnit(IOException.class);
+        deserializeHelperMethod.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
+        deserializeHelperMethod.tryAddImportToParentCompilationUnit(CodegenUtil.class);
+        deserializeHelperMethod.tryAddImportToParentCompilationUnit(ParameterizedType.class);
+        deserializeHelperMethod.tryAddImportToParentCompilationUnit(Type.class);
+        deserializeHelperMethod.setBody(new BlockStmt().addStatement(StaticJavaParser
+            .parseStatement("try {" + " ParameterizedType type = CodegenUtil.inferTypeNameFromReturnType(returnType);"
+                + " Type token = type" + ".getRawType();" + " if (type.getRawType().equals(Response.class)) {"
+                + "     token = type.getActualTypeArguments()[0];" + " }"
+                + " return serializer.deserializeFromBytes(bytes, token);" + " } catch (IOException e) {"
+                + " throw LOGGER.logThrowableAsError(new UncheckedIOException(e));" + " }")));
+    }
+
     void getGeneratedServiceMethods(TemplateInput templateInput) {
         for (HttpRequestContext method : templateInput.getHttpRequestContexts()) {
-            boolean generateInternalOnly = method.getParameters().isEmpty()
-                || method.getParameters()
-                    .stream()
-                    .anyMatch(parameter -> !(parameter.getName().equals("endpoint")
-                        || parameter.getName().equals("apiVersion")));
+            boolean generatePublicOnly = method.getMethodName().contains("Convenience");
+            //            boolean generateInternalOnly = false;
 
-            if (generateInternalOnly) {
-                configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method); // Generate the internal method
-            } else {
+            if (generatePublicOnly) {
                 configurePublicMethod(classBuilder.addMethod(method.getMethodName()), method);
+            } else {
                 configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method);
             }
         }
@@ -227,8 +251,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .orElse("");
 
         if (!"void".equals(method.getMethodReturnType())) {
-            publicMethod
-                .setBody(new BlockStmt().addStatement(new ReturnStmt(method.getMethodName() + "(" + params + ")")));
+            String callerMethodName = method.getMethodName().replace("Convenience", "");
+            publicMethod.setBody(
+                new BlockStmt().addStatement(new ReturnStmt(callerMethodName + "(" + params + ").getValue()")));
         } else {
             publicMethod.setBody(StaticJavaParser.parseBlock("{" + method.getMethodName() + "(" + params + ")}"));
         }
@@ -267,7 +292,16 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(HttpRequest.class);
         body.tryAddImportToParentCompilationUnit(HttpMethod.class);
 
-        body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
+        // Fix for use the URI passed to the method, if provided
+        boolean useProvidedUri = method.getParameters()
+            .stream()
+            .anyMatch(parameter -> "uri".equals(parameter.getName()) && "String".equals(parameter.getShortTypeName()));
+
+        if (useProvidedUri) {
+            body.addStatement(StaticJavaParser.parseStatement("String host = uri + \"/put\";"));
+        } else {
+            body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
+        }
         Statement statement = StaticJavaParser.parseStatement(
             "HttpRequest httpRequest = new HttpRequest(HttpMethod." + method.getHttpMethod() + ", host);");
         statement.setLineComment("Create the HTTP request");
@@ -335,6 +369,27 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
         Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
+        if (!"void".equals(returnTypeName) && !"java.lang.Void".equals(returnTypeName)) {
+
+            // Extract the variable declaration
+            if (statement.isExpressionStmt()) {
+                statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
+                    variableDeclarationExpr.getVariables().forEach(variable -> {
+                        // Parse the full response type with generics from returnTypeName
+                        ClassOrInterfaceType responseType = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
+
+                        // Set the new type for the variable
+                        variable.setType(responseType);
+
+                        // Only add a cast if it's NOT a generic type
+                        if (!returnTypeName.startsWith("Response<")) {
+                            CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
+                            variable.setInitializer(castExpression);
+                        }
+                    });
+                });
+            }
+        }
         statement.setLineComment("Send the request through the pipeline");
         body.addStatement(statement);
 
@@ -342,8 +397,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             validateResponseStatus(body, method);
         }
 
-        // requestOptions is not used in the generated code for RestProxyTests
-        generateResponseHandling(body, returnTypeName, false);
+        generateResponseHandling(body, returnTypeName, method);
     }
 
     private void validateResponseStatus(BlockStmt body, HttpRequestContext method) {
@@ -396,6 +450,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             }
             // Set the content type header if it is not already set in the headers
             if (!isContentTypeSetInHeaders) {
+                body.tryAddImportToParentCompilationUnit(ContentType.class);
                 setContentTypeHeader(body, contentType);
             }
             if ("io.clientcore.core.utils.binarydata.BinaryData".equals(parameterType)) {

@@ -8,16 +8,21 @@ import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
+import io.clientcore.core.http.annotations.QueryParam;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.implementation.serializer.Foo;
 import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.utils.binarydata.BinaryData;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,6 +38,7 @@ import java.nio.file.Path;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -64,6 +70,11 @@ public class RestProxyTests {
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<InputStream> testDownload();
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "/kv/{key}", expectedStatusCodes = { 200 })
+        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
+        Response<Foo> getFoo(@PathParam("key") String key, @QueryParam("label") String label,
+            @HeaderParam("Sync-Token") String syncToken);
     }
 
     @Test
@@ -214,5 +225,30 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
         testInterface.testListNext(nextLinkUri).close();
+    }
+
+    @Test
+    public void testGetFoo() {
+        String wireValue
+            = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient((request) -> {
+            // what is the default response body mode?
+            request.setRequestOptions(new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE));
+            return new MockHttpResponse(request, 200, BinaryData.fromString(wireValue));
+        }).build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
+
+        // test getFoo method
+        Response<Foo> response = testInterface.getFoo("key", "label", "sync-token-value");
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+        Foo foo = response.getValue();
+
+        assertNotNull(foo.additionalProperties());
+        assertEquals("baz", foo.additionalProperties().get("bar"));
+        assertEquals("c.d", foo.additionalProperties().get("a.b"));
+        assertEquals("barbar", foo.additionalProperties().get("properties.bar"));
     }
 }
