@@ -38,10 +38,11 @@ public class ThinClientReproMain {
 
             while (true) {
                 try {
-                    CosmosItemResponse<ObjectNode> createResponse = container.readItem(
-                        "HelloWorld",
-                        new PartitionKey("HelloWorld"),
-                        ObjectNode.class).block(); // container.createItem(doc).block();
+                    // container.readItem(
+                    //                        "HelloWorld",
+                    //                        new PartitionKey("HelloWorld"),
+                    //                        ObjectNode.class)
+                    CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
                     System.out.println("CREATE DIAGNOSTICS: " + createResponse.getDiagnostics());
                     break;
                 } catch (CosmosException cosmosError) {

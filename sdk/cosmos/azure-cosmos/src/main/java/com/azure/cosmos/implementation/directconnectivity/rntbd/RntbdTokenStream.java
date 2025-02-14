@@ -9,16 +9,16 @@ import io.netty.util.ReferenceCounted;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME;
-import static com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders.EFFECTIVE_PARTITION_KEY;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @SuppressWarnings("UnstableApiUsage")
-abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {
+public abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {
 
     final ByteBuf in;
     final Map<Short, T> headers;
@@ -36,13 +36,34 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         this.in = in;
     }
 
+    public String dumpTokens() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(System.lineSeparator());
+        for (Map.Entry<?, RntbdToken> entry : this.tokens.entrySet()) {
+            RntbdToken token = entry.getValue();
+            if (token == null || !token.isPresent()) {
+                continue;
+            }
+
+            sb.append(token);
+            sb.append(System.lineSeparator());
+        }
+
+        return sb.toString();
+    }
+
     // region Methods
 
-    final int computeCount() {
+    final int computeCount(boolean isThinClientRequest) {
 
         int count = 0;
 
         for (final RntbdToken token : this.tokens.values()) {
+            if (isThinClientRequest
+                && RntbdConstants.RntbdRequestHeader.thinClientProxyExcludedSet.contains(token.getId())) {
+                continue;
+            }
+
             if (token.isPresent()) {
                 ++count;
             }
@@ -51,18 +72,17 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         return count;
     }
 
-    final int computeLength() {
+    final int computeLength(boolean isThinClientRequest) {
 
         int total = 0;
 
-        for (final Map.Entry<T, RntbdToken> entry : this.tokens.entrySet()) {
-            if (entry.getKey() == RntbdConstants.RntbdRequestHeader.TransportRequestID
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.ReplicaPath
-            ) {
+        for (final RntbdToken token : this.tokens.values()) {
+            if (isThinClientRequest
+                && RntbdConstants.RntbdRequestHeader.thinClientProxyExcludedSet.contains(token.getId())) {
                 continue;
             }
 
-            total += entry.getValue().computeLength();
+            total += token.computeLength();
         }
 
         return total;
@@ -96,79 +116,23 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         return stream;
     }
 
-    final void encode(final ByteBuf out) {
-        // TODO: special casing for thin client. need to revisit perf implications.
-        RntbdToken epkHeader = this.tokens.get(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey);
-        if (epkHeader != null) {
-            epkHeader.encode(out);
+    final void encode(final ByteBuf out, boolean isThinClientRequest) {
+        if (isThinClientRequest) {
+            for (RntbdConstants.RntbdRequestHeader header : RntbdConstants.RntbdRequestHeader.thinClientHeadersInOrderList) {
+                RntbdToken token = this.tokens.get(header);
+                if (token != null) {
+                    token.encode(out);
+                }
+            }
         }
 
-        RntbdToken globalDbAccount = this.tokens.get(RntbdConstants.RntbdRequestHeader.GlobalDatabaseAccountName);
-        if (globalDbAccount != null) {
-            globalDbAccount.encode(out);
-        }
-
-        RntbdToken dbName = this.tokens.get(RntbdConstants.RntbdRequestHeader.DatabaseName);
-        if (dbName != null) {
-            dbName.encode(out);
-        }
-
-        RntbdToken containerName = this.tokens.get(RntbdConstants.RntbdRequestHeader.CollectionName);
-        if (containerName != null) {
-            containerName.encode(out);
-        }
-
-        RntbdToken containerRid = this.tokens.get(RntbdConstants.RntbdRequestHeader.CollectionRid);
-        if (containerRid != null) {
-            containerRid.encode(out);
-        } else {
-
-        }
-
-        RntbdToken resourceId = this.tokens.get(RntbdConstants.RntbdRequestHeader.ResourceId);
-        if (resourceId != null) {
-            resourceId.encode(out);
-        }
-
-        RntbdToken payloadPresent = this.tokens.get(RntbdConstants.RntbdRequestHeader.PayloadPresent);
-        if (payloadPresent != null) {
-            payloadPresent.encode(out);
-        }
-
-        RntbdToken docName = this.tokens.get(RntbdConstants.RntbdRequestHeader.DocumentName);
-        if (docName != null) {
-            docName.encode(out);
-        }
-
-
-        RntbdToken authzToken = this.tokens.get(RntbdConstants.RntbdRequestHeader.AuthorizationToken);
-        if (authzToken != null) {
-            authzToken.encode(out);
-        }
-
-        RntbdToken date = this.tokens.get(RntbdConstants.RntbdRequestHeader.Date);
-        if (date != null) {
-            date.encode(out);
-        }
-
-        for (final Map.Entry<T, RntbdToken> entry : this.tokens.entrySet()) {
-            if (entry.getKey() == RntbdConstants.RntbdRequestHeader.EffectivePartitionKey
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.GlobalDatabaseAccountName
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.DatabaseName
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.CollectionName
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.CollectionRid
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.ResourceId
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.PayloadPresent
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.DocumentName
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.AuthorizationToken
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.Date
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.TransportRequestID
-                || entry.getKey() == RntbdConstants.RntbdRequestHeader.ReplicaPath
-            ) {
+        for (final RntbdToken token : this.tokens.values()) {
+            if (isThinClientRequest
+                && RntbdConstants.RntbdRequestHeader.thinClientProxyOrderedOrExcludedSet.contains(token.getId())) {
                 continue;
             }
 
-            entry.getValue().encode(out);
+            token.encode(out);
         }
     }
 

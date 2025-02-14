@@ -79,18 +79,20 @@ final class RntbdToken {
 
         if (this.value instanceof ByteBuf) {
             final ByteBuf buffer = (ByteBuf) this.value;
+            buffer.markReaderIndex();
             try {
-                this.value = codec.defaultValue();
-                this.value = codec.read(buffer);
+                return codec.read(buffer);
+
             } catch (final CorruptedFrameException error) {
                 String message = lenientFormat("failed to read %s value: %s", this.getName(), error.getMessage());
                 throw new CorruptedFrameException(message);
             }
+            finally {
+                buffer.resetReaderIndex();
+            }
         } else {
-            this.value = codec.convert(this.value);
+            return codec.convert(this.value);
         }
-
-        return this.value;
     }
 
     public <T> T getValue(final Class<T> cls) {

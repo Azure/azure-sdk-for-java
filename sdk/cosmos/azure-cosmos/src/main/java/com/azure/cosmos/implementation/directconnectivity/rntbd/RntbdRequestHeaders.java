@@ -47,7 +47,7 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdCons
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonFilter("RntbdToken")
-final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
+public final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     // region Fields
 
@@ -68,8 +68,15 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final byte[] content = request.getContentAsByteArray();
 
         this.getPayloadPresent().setValue(content != null && content.length > 0);
-        this.getReplicaPath().setValue(args.replicaPath());
-        this.getTransportRequestID().setValue(args.transportRequestId());
+        RntbdToken replicaPathToken = this.getReplicaPath();
+        if (replicaPathToken != null) {
+            replicaPathToken.setValue(args.replicaPath());
+        }
+
+        RntbdToken transportRequestIDToken = this.getTransportRequestID();
+        if (transportRequestIDToken != null) {
+            transportRequestIDToken.setValue(args.transportRequestId());
+        }
 
         final Map<String, String> headers = request.getHeaders();
 
@@ -1122,7 +1129,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
         if (StringUtils.isNotEmpty(value)) {
             // Name-based can also have ResourceId because gateway might have generated it
-            this.getResourceId().setValue(ResourceId.parse(request.getResourceType(), value));
+            RntbdToken requestIdToken = this.getResourceId();
+            if (requestIdToken != null) {
+                requestIdToken.setValue(ResourceId.parse(request.getResourceType(), value));
+            }
         }
 
         if (request.getIsNameBased()) {

@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdContext;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdFramer;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.routing.HexConvert;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
@@ -21,12 +22,16 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-import static com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders.EFFECTIVE_PARTITION_KEY;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -38,6 +43,20 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     private static final Logger logger = LoggerFactory.getLogger(ThinClientStoreModel.class);
+
+    private static final List<RntbdConstants.RntbdRequestHeader> thinClientHeadersInOrder = Arrays.asList(
+        RntbdConstants.RntbdRequestHeader.EffectivePartitionKey,
+        RntbdConstants.RntbdRequestHeader.GlobalDatabaseAccountName,
+        RntbdConstants.RntbdRequestHeader.DatabaseName,
+        RntbdConstants.RntbdRequestHeader.CollectionName,
+        RntbdConstants.RntbdRequestHeader.CollectionRid,
+        //RntbdConstants.RntbdRequestHeader.ResourceId,
+        RntbdConstants.RntbdRequestHeader.PayloadPresent,
+        RntbdConstants.RntbdRequestHeader.DocumentName,
+        RntbdConstants.RntbdRequestHeader.AuthorizationToken,
+        RntbdConstants.RntbdRequestHeader.Date);
+
+
 
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
@@ -94,8 +113,8 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public StoreResponse unwrapToStoreResponse(RxDocumentServiceRequest request, int statusCode, HttpHeaders headers, ByteBuf content) {
-        if (content == null) {
-            return super.unwrapToStoreResponse(request, statusCode, headers, null);
+        if (content == null || content.readableBytes() == 0) {
+            return super.unwrapToStoreResponse(request, statusCode, headers, Unpooled.EMPTY_BUFFER);
         }
 
         Instant decodeStartTime = Instant.now();
@@ -128,13 +147,12 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // todo - neharao1 - validate b/w name() v/s toString()
         request.setThinclientHeaders(request.getOperationType().name(), request.getResourceType().name());
 
-        String epk = request.getPartitionKeyInternal().getEffectivePartitionKeyString(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
+        byte[] epk = request.getPartitionKeyInternal().getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
         if (request.properties == null) {
             request.properties = new HashMap<>();
         }
         //request.properties.put(EFFECTIVE_PARTITION_KEY, epk);
         //request.properties.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "chukangzhongstagesignoff");
-        request.getHeaders().put(EFFECTIVE_PARTITION_KEY, epk);
         request.getHeaders().put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, "tiagonapoli-cdb-test"); // "chukangzhongstagesignoff"
         request.getHeaders().put(WFConstants.BackendHeaders.COLLECTION_RID, "cLklAJU8SN0=");
         // todo - neharao1: no concept of a replica / service endpoint that can be passed
@@ -145,25 +163,46 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         HttpHeaders headers = this.getHttpHeaders();
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
+        boolean success = rntbdRequest.setHeaderValue(
+            RntbdConstants.RntbdRequestHeader.EffectivePartitionKey,
+            epk);
+        if (!success) {
+            logger.error("Failed to update EPK to value {}", HexConvert.bytesToHex(epk));
+        } else {
+            logger.error("Updated EPK to value {}", HexConvert.bytesToHex(epk));
+        }
         // todo: neharao1 - validate whether Java heap buffer is okay v/s Direct buffer
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
 
+        logger.error("HEADERS: {}", rntbdRequest.getHeaders().dumpTokens());
+
         // todo: lifting the logic from there to encode the RntbdRequest instance into a ByteBuf (ByteBuf is a network compatible format)
         // todo: double-check with fabianm to see if RntbdRequest across RNTBD over TCP (Direct connectivity mode) is same as that when using ThinClient proxy
         // todo: need to conditionally add some headers (userAgent, replicaId/endpoint, etc)
-        rntbdRequest.encode(byteBuf);
+        rntbdRequest.encode(byteBuf, true);
+
+        byte[] contentAsByteArray = new byte[byteBuf.writerIndex()];
+        byteBuf.getBytes(0, contentAsByteArray, 0, byteBuf.writerIndex());
+
+        try {
+            Files.write(java.nio.file.Paths.get("E:\\Temp\\java" + UUID.randomUUID() + ".bin"), contentAsByteArray);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return new HttpRequest(
             HttpMethod.POST,
             //requestUri,
             //https://thinclient-performancetests-eastus2.documents-staging.windows-ppe.net:10650
             //https://cdb-ms-stage-eastus2-fe2-sql.eastus2.cloudapp.azure.com:10650
+            //https://57.155.105.105:10650/
+            // https://tiagonapoli-cdb-test-westus3.documents.azure.com:10650
             URI.create("https://57.155.105.105:10650/"), // https://127.0.0.1:10650/ //https://chukangzhongstagesignoff-eastus2.documents-staging.windows-ppe.net:10650/ // thinclient-performancetests-eastus2.documents-staging.windows-ppe.net  cdb-ms-stage-eastus2-fe2-sql.eastus2.cloudapp.azure.com
             //requestUri.getPort(),
             10650,
             headers,
-            Flux.just(byteBuf.array()));
+            Flux.just(contentAsByteArray));
     }
 
     private HttpHeaders getHttpHeaders() {

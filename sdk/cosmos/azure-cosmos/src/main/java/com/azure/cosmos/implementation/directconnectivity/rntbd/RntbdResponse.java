@@ -88,7 +88,7 @@ public final class RntbdResponse implements ReferenceCounted {
         this.content = content.copy();
 
         final HttpResponseStatus status = HttpResponseStatus.valueOf(statusCode);
-        final int length = RntbdResponseStatus.LENGTH + this.headers.computeLength();
+        final int length = RntbdResponseStatus.LENGTH + this.headers.computeLength(false);
 
         this.frame = new RntbdResponseStatus(length, status, activityId);
         this.messageLength = length + this.content.writerIndex();
@@ -173,7 +173,7 @@ public final class RntbdResponse implements ReferenceCounted {
         final int start = out.writerIndex();
 
         this.frame.encode(out);
-        this.headers.encode(out);
+        this.headers.encode(out, false);
 
         final int length = out.writerIndex() - start;
         checkState(length == this.frame.getLength());

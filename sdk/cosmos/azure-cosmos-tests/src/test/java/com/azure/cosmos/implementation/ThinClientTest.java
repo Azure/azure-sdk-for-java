@@ -4,17 +4,13 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Mono;
 
 public class ThinClientTest {
+
     @Test
     public void testThinclientHttp2() {
         try {

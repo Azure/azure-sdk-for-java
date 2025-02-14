@@ -207,7 +207,7 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
 
     List<Map.Entry<String, String>> asList(final RntbdContext context, final UUID activityId) {
 
-        final ImmutableList.Builder<Map.Entry<String, String>> builder = ImmutableList.builderWithExpectedSize(this.computeCount() + 2);
+        final ImmutableList.Builder<Map.Entry<String, String>> builder = ImmutableList.builderWithExpectedSize(this.computeCount(false) + 2);
         builder.add(new Entry(HttpHeaders.SERVER_VERSION, context.serverVersion()));
         builder.add(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
 
@@ -222,7 +222,7 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
 
     public Map<String, String> asMap(final RntbdContext context, final UUID activityId) {
 
-        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount() + 2);
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount(false) + 2);
         builder.put(new Entry(HttpHeaders.SERVER_VERSION, context.serverVersion()));
         builder.put(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
 
@@ -237,7 +237,7 @@ public class RntbdResponseHeaders extends RntbdTokenStream<RntbdResponseHeader> 
 
     public Map<String, String> asMap(final UUID activityId) {
 
-        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount() + 2);
+        final ImmutableMap.Builder<String, String> builder = ImmutableMap.builderWithExpectedSize(this.computeCount(false) + 2);
         builder.put(new Entry(HttpHeaders.ACTIVITY_ID, activityId.toString()));
 
         this.collectEntries((token, toEntry) -> {
