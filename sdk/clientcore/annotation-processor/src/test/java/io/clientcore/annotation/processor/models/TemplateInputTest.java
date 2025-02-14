@@ -98,11 +98,6 @@ public class TemplateInputTest {
 
     private static final class MockUnexpectedResponseExceptionDetail implements UnexpectedResponseExceptionDetail {
         @Override
-        public String exceptionTypeName() {
-            return "MockException";
-        }
-
-        @Override
         public int[] statusCode() {
             return new int[0];
         }

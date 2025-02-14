@@ -53,7 +53,7 @@ public class AuthorizationChallengeHandlerTests {
     private static final String DEFAULT_PASSWORD = "Circle Of Life";
     private static final String EXPECTED_BASIC = "Basic " + Base64.getEncoder()
         .encodeToString(String.format("%s:%s", DEFAULT_USERNAME, DEFAULT_PASSWORD).getBytes(StandardCharsets.UTF_8));
-    private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUri());
+    private static final HttpRequest HTTP_REQUEST = new HttpRequest().setMethod(HttpMethod.GET).setUri(createUri());
     private static final BinaryData ENTITY_BODY = BinaryData.fromBytes(new byte[0]);
     private static final String BASIC_REALM_EXAMPLE = "Basic realm=\"example\"";
 
@@ -87,7 +87,7 @@ public class AuthorizationChallengeHandlerTests {
         assertEquals(EXPECTED_BASIC, HTTP_REQUEST.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
 
         // Simulate a subsequent request to validate pipelining
-        HttpRequest subsequentRequest = new HttpRequest(HttpMethod.GET, createUri());
+        HttpRequest subsequentRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(createUri());
         basicHandler.handleChallenge(subsequentRequest, new HttpResponse<>(subsequentRequest, 200, headers, null),
             false);
 
@@ -104,7 +104,7 @@ public class AuthorizationChallengeHandlerTests {
         BasicChallengeHandler basicHandler = new BasicChallengeHandler(DEFAULT_USERNAME, DEFAULT_PASSWORD);
 
         // Simulate a subsequent request to validate pipelining without initial handling
-        HttpRequest subsequentRequest = new HttpRequest(HttpMethod.GET, createUri());
+        HttpRequest subsequentRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(createUri());
 
         // Handle challenge with no previous challenge (lastChallenge is null)
         basicHandler.handleChallenge(subsequentRequest, new HttpResponse<>(subsequentRequest, 200, null, null), false);
@@ -123,7 +123,7 @@ public class AuthorizationChallengeHandlerTests {
 
         String expectedResponse = "6629fae49393a05397450978507c4ef1";
         String uri = "/dir/index.html";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         HttpResponse<?> httpResponse
             = createChallengeResponse("testrealm@host.com", "auth", Collections.singletonList("MD5"),
                 "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null, ENTITY_BODY);
@@ -143,7 +143,7 @@ public class AuthorizationChallengeHandlerTests {
 
         String expectedResponse = "6629fae49393a05397450978507c4ef1";
         String uri = "/dir/index.html";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> httpResponse
             = createChallengeResponse("testrealm@host.com", "auth", Collections.singletonList("MD5"),
@@ -157,7 +157,7 @@ public class AuthorizationChallengeHandlerTests {
         assertNotNull(authHeader);
 
         // Simulate a subsequent request to validate pipelining
-        HttpRequest subsequentRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest subsequentRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         digestChallengeHandler.handleChallenge(subsequentRequest, httpResponse, false);
 
         // Validate that the nonce count is incremented
@@ -181,7 +181,7 @@ public class AuthorizationChallengeHandlerTests {
 
         // Simulate a subsequent request to validate pipelining without initial handling
         // i.e has not been initialized with the necessary challenge information (like nonce, realm, etc.)
-        HttpRequest subsequentRequest = new HttpRequest(HttpMethod.GET, "/dir/index.html");
+        HttpRequest subsequentRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("/dir/index.html");
         digestChallengeHandler.handleChallenge(subsequentRequest,
             new HttpResponse<>(subsequentRequest, 200, null, null), false);
 
@@ -199,7 +199,7 @@ public class AuthorizationChallengeHandlerTests {
 
         String expectedResponse = "753927fa0e85d155564e2e272a28d1802ca10daf4496794697cf8db5856cb6c1";
         String uri = "/dir/index.html";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> httpResponse = createChallengeResponse("http-auth@example.org", "auth",
             Collections.singletonList("SHA-256"), "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v",
@@ -220,7 +220,7 @@ public class AuthorizationChallengeHandlerTests {
 
         String expectedResponse = "753927fa0e85d155564e2e272a28d1802ca10daf4496794697cf8db5856cb6c1";
         String uri = "/dir/index.html";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> challengeResponse = createChallengeResponse("http-auth@example.org", "auth",
             Arrays.asList("MD5", "SHA-256"), "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v",
@@ -240,7 +240,7 @@ public class AuthorizationChallengeHandlerTests {
 
         String expectedResponse = "6629fae49393a05397450978507c4ef1";
         String uri = "/dir/index.html";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> challengeResponse = createChallengeResponse("testrealm@host.com", "auth", null,
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null, ENTITY_BODY);
@@ -262,7 +262,7 @@ public class AuthorizationChallengeHandlerTests {
         String expectedResponse = "ae66e67d6b427bd3f120414a82e4acff38e8ecd9101d6c861229025f607a79dd";
         String expectedUsername = "488869477bf257147b804c45308cd62ac4e25eb717b12b298c79e62dcea254ec";
         String uri = "/doe.json";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> challengeResponse = createChallengeResponse("api@example.org", "auth",
             Collections.singletonList("SHA-512-256"), "5TsQWLVdgBdmrQ0XsxbDODV+57QdFR34I9HAbC/RVvkK",
@@ -286,7 +286,7 @@ public class AuthorizationChallengeHandlerTests {
         String expectedResponse = "670fd8c2df070c60b045671b8b24ff02";
         String method = HttpMethod.GET.toString();
         String uri = "/dir/index.html";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> challengeResponse
             = createChallengeResponse("testrealm@host.com", "unknownQop", Collections.singletonList("MD5"),
@@ -308,7 +308,7 @@ public class AuthorizationChallengeHandlerTests {
 
         String expectedResponse = "f7b13069066cfdda58d5accbc02a6b98";
         String uri = "/dir/index.html";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> challengeResponse = createChallengeResponse("testrealm@host.com", "auth-int",
             Collections.singletonList("MD5"), "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41",
@@ -330,7 +330,7 @@ public class AuthorizationChallengeHandlerTests {
         String expectedResponse = "4726bc10c33fa6cb357eb27807b1cce8";
         String method = HttpMethod.GET.toString();
         String uri = "/dir/index.html";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> challengeResponse
             = createChallengeResponse("testrealm@host.com", "", Collections.singletonList("MD5-sess"),
@@ -350,7 +350,7 @@ public class AuthorizationChallengeHandlerTests {
         DigestChallengeHandler digestChallengeHandler = new DigestChallengeHandler(DEFAULT_USERNAME, DEFAULT_PASSWORD);
 
         String uri = "/dir/index.html";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> challengeResponse = createChallengeResponse("realm", "auth", Collections.singletonList("SHA3"),
             "nonce", "opaque", null, ENTITY_BODY);
@@ -368,7 +368,7 @@ public class AuthorizationChallengeHandlerTests {
         DigestChallengeHandler digestChallengeHandler = new DigestChallengeHandler(DEFAULT_USERNAME, DEFAULT_PASSWORD);
 
         String uri = "/dir/index.html";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> challengeResponse = createChallengeResponse("realm", "auth",
             Collections.singletonList("SHA9000"), "nonce", "opaque", null, BinaryData.fromBytes(new byte[0]));
@@ -388,7 +388,7 @@ public class AuthorizationChallengeHandlerTests {
 
         String uri = "/dir/index.html";
         String nonce = "dcd98b7102dd2f0e8b11d0f600bfb0c093";
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
 
         HttpResponse<?> challengeResponse = createChallengeResponse("realm", "auth", Collections.singletonList("MD5"),
             nonce, "opaque", null, BinaryData.fromBytes(new byte[0]));
@@ -412,7 +412,7 @@ public class AuthorizationChallengeHandlerTests {
             Collections.singletonList("MD5"), nextNonceReturned, "opaque", null, BinaryData.fromBytes(new byte[0]));
 
         // Simulate a subsequent request to validate the updated nonce
-        HttpRequest subsequentRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest subsequentRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         digestChallengeHandler.handleChallenge(subsequentRequest, challengeResponseWithNextNonce, false);
 
         // Validate that the nonce has been updated
@@ -435,7 +435,7 @@ public class AuthorizationChallengeHandlerTests {
         String uri = "/dir/index.html";
         String nonce = "dcd98b7102dd2f0e8b11d0f600bfb0c093";
 
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         HttpResponse<?> challengeResponse = createChallengeResponse("testrealm@host.com", "auth",
             Collections.singletonList("MD5"), nonce, "5ccc069c403ebaf9f0171e9517f40e41", null, ENTITY_BODY);
 
@@ -498,7 +498,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaderName.PROXY_AUTHENTICATE, BASIC_REALM_EXAMPLE);
 
-        HttpRequest proxyRequest = new HttpRequest(HttpMethod.GET, createUri());
+        HttpRequest proxyRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(createUri());
         basicHandler.handleChallenge(proxyRequest, new HttpResponse<>(proxyRequest, 200, headers, null), true);
 
         assertEquals(EXPECTED_BASIC, proxyRequest.getHeaders().getValue(HttpHeaderName.PROXY_AUTHORIZATION));
@@ -511,7 +511,7 @@ public class AuthorizationChallengeHandlerTests {
         headers.add(HttpHeaderName.PROXY_AUTHENTICATE,
             "Digest realm=\"example\", nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\"");
 
-        HttpRequest proxyRequest = new HttpRequest(HttpMethod.GET, createUri());
+        HttpRequest proxyRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(createUri());
         digestHandler.handleChallenge(proxyRequest, new HttpResponse<>(proxyRequest, 200, headers, null), true);
 
         assertNotNull(proxyRequest.getHeaders().getValue(HttpHeaderName.PROXY_AUTHORIZATION));

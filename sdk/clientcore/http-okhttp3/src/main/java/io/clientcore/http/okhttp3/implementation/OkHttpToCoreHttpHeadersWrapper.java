@@ -11,7 +11,6 @@ import okhttp3.Headers;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Stream;
 
 /**
@@ -111,13 +110,6 @@ public final class OkHttpToCoreHttpHeadersWrapper extends HttpHeaders {
         convertIfNeeded();
 
         return coreHeaders.getValues(name);
-    }
-
-    @Override
-    public Map<String, String> toMap() {
-        convertIfNeeded();
-
-        return coreHeaders.toMap();
     }
 
     @Override

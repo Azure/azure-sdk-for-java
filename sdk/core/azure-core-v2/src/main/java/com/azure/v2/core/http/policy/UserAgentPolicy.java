@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.http.policy;
 
-import io.clientcore.core.http.pipeline.HttpPipelineOrder;
+import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.utils.configuration.Configuration;
 import com.azure.v2.core.utils.CoreUtils;
 import com.azure.v2.core.utils.ServiceVersion;
@@ -130,7 +130,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public final HttpPipelineOrder getOrder() {
-        return HttpPipelineOrder.BEFORE_REDIRECT;
+    public final HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.BEFORE_REDIRECT;
     }
 }

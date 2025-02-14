@@ -5,7 +5,6 @@ package io.clientcore.core.implementation.serializer;
 
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.MockHttpResponseDecodeData;
-import io.clientcore.core.http.exceptions.HttpExceptionType;
 import io.clientcore.core.http.exceptions.HttpResponseException;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
@@ -14,10 +13,10 @@ import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.implementation.utils.JsonSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -47,8 +46,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class HttpResponseBodyDecoderTests {
     private static final CompositeSerializer SERIALIZER = new CompositeSerializer(Arrays.asList(new JsonSerializer()));
 
-    private static final HttpRequest GET_REQUEST = new HttpRequest(HttpMethod.GET, "https://localhost");
-    private static final HttpRequest HEAD_REQUEST = new HttpRequest(HttpMethod.HEAD, "https://localhost");
+    private static final HttpRequest GET_REQUEST
+        = new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost");
+    private static final HttpRequest HEAD_REQUEST
+        = new HttpRequest().setMethod(HttpMethod.HEAD).setUri("https://localhost");
 
     @ParameterizedTest
     @MethodSource("invalidHttpResponseSupplier")
@@ -80,8 +81,7 @@ public class HttpResponseBodyDecoderTests {
     }
 
     private static Stream<Arguments> errorResponseSupplier() {
-        UnexpectedExceptionInformation exceptionInformation
-            = new MockUnexpectedExceptionInformation(null, String.class);
+        UnexpectedExceptionInformation exceptionInformation = new MockUnexpectedExceptionInformation(String.class);
 
         HttpResponseDecodeData noExpectedStatusCodes = new MockHttpResponseDecodeData(exceptionInformation);
         HttpResponseDecodeData expectedStatusCodes = new MockHttpResponseDecodeData(202, exceptionInformation);
@@ -107,7 +107,7 @@ public class HttpResponseBodyDecoderTests {
         }));
 
         HttpResponseDecodeData noExpectedStatusCodes
-            = new MockHttpResponseDecodeData(new UnexpectedExceptionInformation(null, null));
+            = new MockHttpResponseDecodeData(new UnexpectedExceptionInformation(null));
 
         Response<?> response = new MockHttpResponse(GET_REQUEST, 300);
 
@@ -248,7 +248,7 @@ public class HttpResponseBodyDecoderTests {
         Response<?> getResponse = new MockHttpResponse(GET_REQUEST, 200);
 
         HttpResponseDecodeData badResponseData
-            = new MockHttpResponseDecodeData(-1, new UnexpectedExceptionInformation(null, null));
+            = new MockHttpResponseDecodeData(-1, new UnexpectedExceptionInformation(null));
 
         HttpResponseDecodeData nonDecodable = new MockHttpResponseDecodeData(200, void.class, false);
 
@@ -288,18 +288,10 @@ public class HttpResponseBodyDecoderTests {
 
         /**
          * Creates an UnexpectedExceptionInformation object with the given exception type and expected response body.
-         *
-         * @param exceptionType Exception type to be thrown.
          */
-        MockUnexpectedExceptionInformation(HttpExceptionType exceptionType, Class<?> exceptionBodyType) {
-            super(exceptionType, null);
-
+        MockUnexpectedExceptionInformation(Class<?> exceptionBodyType) {
+            super(null);
             this.exceptionBodyType = exceptionBodyType;
-        }
-
-        @Override
-        public HttpExceptionType getExceptionType() {
-            return super.getExceptionType();
         }
 
         @Override

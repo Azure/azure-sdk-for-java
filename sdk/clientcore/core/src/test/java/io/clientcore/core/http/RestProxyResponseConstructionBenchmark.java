@@ -38,7 +38,8 @@ import java.util.concurrent.TimeUnit;
 public class RestProxyResponseConstructionBenchmark {
     private static final ResponseConstructorsCache CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
 
-    private static final HttpRequest REQUEST = new HttpRequest(HttpMethod.GET, "https://example.com");
+    private static final HttpRequest REQUEST
+        = new HttpRequest().setMethod(HttpMethod.GET).setUri("https://example.com");
     private static final HttpHeaders HEADERS = new HttpHeaders();
 
     private static final Class<? extends Response<?>> RESPONSE_TYPE = (Class<? extends Response<?>>) TypeUtil

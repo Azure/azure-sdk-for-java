@@ -113,7 +113,7 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
 
         authorizeRequestSync(httpRequest);
         Response<?> httpResponse = next.process();
-        String authHeader = httpResponse.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
+        String authHeader = httpResponse.getHeaders().get(HttpHeaderName.WWW_AUTHENTICATE).getValue();
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
             if (authorizeRequestOnChallengeSync(httpRequest, httpResponse)) {
                 // body needs to be closed or read to the end to release the connection

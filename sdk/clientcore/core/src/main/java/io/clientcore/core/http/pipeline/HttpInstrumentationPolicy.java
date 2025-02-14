@@ -6,7 +6,6 @@ package io.clientcore.core.http.pipeline;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
@@ -16,6 +15,8 @@ import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationO
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
@@ -154,7 +155,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         LIBRARY_VERSION = properties.getOrDefault("version", "unknown");
         LibraryInstrumentationOptions libOptions
             = new LibraryInstrumentationOptions(LIBRARY_NAME).setLibraryVersion(LIBRARY_VERSION)
-                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+                .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
 
         // HTTP tracing is special - we suppress nested public API spans, but
         // preserve nested HTTP ones.
@@ -179,8 +180,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     // request log level is low (verbose) since almost all request details are also
     // captured on the response log.
-    private static final ClientLogger.LogLevel HTTP_REQUEST_LOG_LEVEL = ClientLogger.LogLevel.VERBOSE;
-    private static final ClientLogger.LogLevel HTTP_RESPONSE_LOG_LEVEL = ClientLogger.LogLevel.INFORMATIONAL;
+    private static final LogLevel HTTP_REQUEST_LOG_LEVEL = LogLevel.VERBOSE;
+    private static final LogLevel HTTP_RESPONSE_LOG_LEVEL = LogLevel.INFORMATIONAL;
 
     private final Tracer tracer;
     private final Meter meter;
@@ -426,7 +427,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private void logRequest(ClientLogger logger, HttpRequest request, long startNanoTime, long requestContentLength,
         String redactedUrl, int tryCount, InstrumentationContext context) {
-        ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_REQUEST_LOG_LEVEL);
+        LoggingEvent logBuilder = logger.atLevel(HTTP_REQUEST_LOG_LEVEL);
         if (!logBuilder.isEnabled() || !isLoggingEnabled) {
             return;
         }
@@ -457,7 +458,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private Response<?> logResponse(ClientLogger logger, Response<?> response, long startNanoTime,
         long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
-        ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
+        LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
         if (!isLoggingEnabled) {
             return response;
         }
@@ -502,7 +503,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         T throwable, long startNanoTime, Long responseStartNanoTime, long requestContentLength, String redactedUrl,
         int tryCount, InstrumentationContext context) {
 
-        ClientLogger.LoggingEvent log = logger.atLevel(ClientLogger.LogLevel.WARNING);
+        LoggingEvent log = logger.atLevel(LogLevel.WARNING);
         if (!log.isEnabled() || !isLoggingEnabled) {
             return throwable;
         }
@@ -555,7 +556,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @param headers HTTP headers on the request or response.
      * @param logBuilder Log message builder.
      */
-    private void addHeadersToLogMessage(HttpHeaders headers, ClientLogger.LoggingEvent logBuilder) {
+    private void addHeadersToLogMessage(HttpHeaders headers, LoggingEvent logBuilder) {
         for (HttpHeader header : headers) {
             HttpHeaderName headerName = header.getName();
             if (allowedHeaderNames.contains(headerName)) {
@@ -653,7 +654,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpPipelineOrder getOrder() {
-        return HttpPipelineOrder.INSTRUMENTATION;
+    public HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.INSTRUMENTATION;
     }
 }

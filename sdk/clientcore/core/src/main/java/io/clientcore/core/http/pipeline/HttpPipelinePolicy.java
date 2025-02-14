@@ -26,16 +26,16 @@ public interface HttpPipelinePolicy {
     /**
      * Gets the position in the {@link HttpPipelineBuilder} the policy will be placed when added.
      * <p>
-     * Policy order does not need to be unique. When multiple polices with the same {@link HttpPipelineOrder} are added
-     * they will be handled based on the documentation of {@link HttpPipelineOrder}.
+     * Policy position does not need to be unique. When multiple polices with the same {@link HttpPipelinePosition} are
+     * added they will be handled based on the documentation of {@link HttpPipelinePosition}.
      * <p>
-     * By default, this method returns {@link HttpPipelineOrder#BETWEEN_RETRY_AND_AUTHENTICATION}.
+     * By default, this method returns {@link HttpPipelinePosition#AFTER_RETRY}.
      * <p>
      * If this method returns null, an exception will be thrown when it is added to the {@link HttpPipelineBuilder}.
      *
-     * @return The order of this policy.
+     * @return The position of this policy.
      */
-    default HttpPipelineOrder getOrder() {
-        return HttpPipelineOrder.BETWEEN_RETRY_AND_AUTHENTICATION;
+    default HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.AFTER_RETRY;
     }
 }

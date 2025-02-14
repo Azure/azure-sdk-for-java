@@ -18,7 +18,7 @@ import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -262,7 +262,8 @@ public abstract class HttpClientTests {
     @Test
     public void canAccessResponseBody() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
 
         try (Response<?> response = getHttpClient().send(request)) {
             assertEquals(requestBody.toString(), response.getBody().toString());
@@ -276,7 +277,9 @@ public abstract class HttpClientTests {
     @Test
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUri(ECHO_RESPONSE)).setBody(requestBody)
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.PUT)
+            .setUri(getRequestUri(ECHO_RESPONSE))
+            .setBody(requestBody)
             .setRequestOptions(new RequestOptions().setResponseBodyMode(DESERIALIZE));
 
         try (Response<?> response = getHttpClient().send(request)) {
@@ -304,7 +307,8 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
 
         try (Response<?> response = getHttpClient().send(request)) {
             assertArrayEquals(expectedResponseBody, response.getBody().toBytes());
@@ -387,7 +391,8 @@ public abstract class HttpClientTests {
     }
 
     private byte[] sendRequest(String requestPath) throws IOException {
-        try (Response<?> response = getHttpClient().send(new HttpRequest(HttpMethod.GET, getRequestUri(requestPath)))) {
+        try (Response<?> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(getRequestUri(requestPath)))) {
             return response.getBody().toBytes();
         }
     }

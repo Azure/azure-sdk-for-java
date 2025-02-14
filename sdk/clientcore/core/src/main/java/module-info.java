@@ -30,7 +30,7 @@ module io.clientcore.core {
     exports io.clientcore.core.utils.binarydata;
     exports io.clientcore.core.utils.configuration;
     exports io.clientcore.core.utils.serializers;
+    exports io.clientcore.core.implementation.http.client;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
-    uses io.clientcore.core.serialization.json.JsonProvider;
 }

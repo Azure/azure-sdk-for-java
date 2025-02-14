@@ -25,7 +25,7 @@ public class HttpResponseTests {
     private static final HttpRequest HTTP_REQUEST;
 
     static {
-        HTTP_REQUEST = new HttpRequest(HttpMethod.POST, "http://request.uri");
+        HTTP_REQUEST = new HttpRequest().setMethod(HttpMethod.POST).setUri("http://request.uri");
     }
 
     @Test
