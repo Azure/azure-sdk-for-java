@@ -6,9 +6,12 @@ package com.azure.monitor.query;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
@@ -65,7 +68,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
         resourceId = getLogResourceId(interceptorManager.isPlaybackMode());
 
         credential = TestUtil.getTestTokenCredential(interceptorManager);
-        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder().credential(credential);
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder().credential(credential).httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
@@ -116,6 +119,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testLogsQueryAllowPartialSuccess() {
         // Arrange
         final String query = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
