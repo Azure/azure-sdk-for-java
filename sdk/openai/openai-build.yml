@@ -2,7 +2,7 @@ steps:
   - pwsh: |
       # Define repository details
       $repoUrl = "https://github.com/openai/openai-java.git"
-      #$branchName = "release-please--branches--main--changes--next"
+      $branchName = "6390dfd63c978ceae2f0f8e0f5601c2ae212d2e8"
 
       # Clone the repository and checkout the specified branch
       Write-Host "Cloning repository: $repoUrl"
@@ -11,7 +11,7 @@ steps:
       cd openai-java
 
       #Write-Host "Checking out branch: $branchName"
-      #git checkout $branchName
+      git checkout $branchName
     displayName: Clone OpenAI Java repository and checkout branch
     workingDirectory: $(Agent.TempDirectory)
 
