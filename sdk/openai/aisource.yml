@@ -6,6 +6,11 @@ extends:
     UseFederatedAuth: false
     PreSteps:
       - template: ./../../../../../sdk/openai/openai-build.yml
+    PreTestRunSteps:
+      - script: echo "Running pre-test steps"
+        displayName: "Pre-Test Step 1"
+      - script: echo "Another pre-test step"
+        displayName: "Pre-Test Step 2"
     Artifacts:
       - name: azure-ai-openai
         groupId: com.azure

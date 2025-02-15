@@ -107,6 +107,9 @@ parameters:
   - name: PersistOidcToken
     type: boolean
     default: false
+  - name: PreTestRunSteps
+    type: object
+    default: [ ]
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
