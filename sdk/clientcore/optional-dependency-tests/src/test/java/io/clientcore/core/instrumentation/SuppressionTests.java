@@ -376,7 +376,8 @@ public class SuppressionTests {
             options.setInstrumentationContext(span.getInstrumentationContext());
 
             try (TracingScope scope = span.makeCurrent()) {
-                Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost"));
+                Response<?> response
+                    = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"));
                 try {
                     response.close();
                 } catch (IOException e) {
@@ -424,14 +425,16 @@ public class SuppressionTests {
         @SuppressWarnings("try")
         public void protocolMethod(RequestOptions options) throws IOException {
             if (!protocolInstrumentation.shouldInstrument(options)) {
-                Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost"));
+                Response<?> response
+                    = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"));
                 response.close();
                 return;
             }
 
             OperationInstrumentation.Scope scope = protocolInstrumentation.startScope(options);
             try {
-                Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost"));
+                Response<?> response
+                    = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"));
                 response.close();
             } catch (IOException e) {
                 scope.setError(e);

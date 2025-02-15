@@ -8,7 +8,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
-import io.clientcore.core.serialization.json.WriteValueCallback;
+import io.clientcore.core.utils.IOExceptionCheckedBiConsumer;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.IOException;
@@ -150,13 +150,13 @@ public final class TestingHelpers {
      * @param fieldConsumer The consumer that will consume the field name and reader for each field in the object.
      * @throws IOException If an error occurs while reading the JSON object.
      */
-    public static void fieldReaderLoop(JsonReader jsonReader, WriteValueCallback<String, JsonReader> fieldConsumer)
-        throws IOException {
+    public static void fieldReaderLoop(JsonReader jsonReader,
+        IOExceptionCheckedBiConsumer<String, JsonReader> fieldConsumer) throws IOException {
         while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
             String fieldName = jsonReader.getFieldName();
             jsonReader.nextToken();
 
-            fieldConsumer.write(fieldName, jsonReader);
+            fieldConsumer.accept(fieldName, jsonReader);
         }
     }
 }

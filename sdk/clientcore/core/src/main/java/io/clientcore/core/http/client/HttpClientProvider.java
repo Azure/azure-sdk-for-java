@@ -42,7 +42,7 @@ public abstract class HttpClientProvider {
     static Providers<HttpClientProvider, HttpClient> getProviders() {
         if (providers == null) {
             providers = new Providers<>(HttpClientProvider.class,
-                Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_HTTP_CLIENT_IMPLEMENTATION),
+                Configuration.getGlobalConfiguration().get(Configuration.HTTP_CLIENT_IMPLEMENTATION),
                 NO_DEFAULT_PROVIDER_MESSAGE);
         }
 

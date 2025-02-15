@@ -39,7 +39,7 @@ public class MeterTests {
     private static final InstrumentationScopeInfo INSTRUMENTATION_SCOPE
         = InstrumentationScopeInfo.builder(DEFAULT_LIB_OPTIONS.getLibraryName())
             .setVersion(DEFAULT_LIB_OPTIONS.getLibraryVersion())
-            .setSchemaUrl(DEFAULT_LIB_OPTIONS.getSchemaUrl())
+            .setSchemaUrl(DEFAULT_LIB_OPTIONS.getSchemaUri())
             .build();
     private static final long SECOND_NANOS = 1_000_000_000;
 

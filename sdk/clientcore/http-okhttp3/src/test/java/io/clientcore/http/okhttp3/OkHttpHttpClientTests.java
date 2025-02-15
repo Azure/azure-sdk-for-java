@@ -110,7 +110,7 @@ public class OkHttpHttpClientTests {
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, "/connectionClose"));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, "/connectionClose"));
 
         assertThrows(IOException.class, () -> client.send(request).getBody().toBytes());
     }
@@ -151,8 +151,9 @@ public class OkHttpHttpClientTests {
         HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (Response<?> response = client
-            .send(new HttpRequest(HttpMethod.GET, uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
+        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri(uri(server, RETURN_HEADERS_AS_IS_PATH))
+            .setHeaders(headers))) {
 
             assertEquals(200, response.getStatusCode());
 
@@ -182,7 +183,8 @@ public class OkHttpHttpClientTests {
                 .hostnameVerifier((hostname, session) -> true)
                 .build();
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri(server, "/short")))) {
+        try (Response<?> response
+            = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(httpsUri(server, "/short")))) {
             TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
         }
     }
@@ -224,7 +226,7 @@ public class OkHttpHttpClientTests {
     }
 
     private static Response<?> doRequest(HttpClient client, String path) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, path));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path));
 
         return client.send(request);
     }

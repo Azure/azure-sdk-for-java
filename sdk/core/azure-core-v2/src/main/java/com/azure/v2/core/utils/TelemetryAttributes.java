@@ -3,12 +3,13 @@
 
 package com.azure.v2.core.utils;
 
-import com.azure.v2.core.annotations.Immutable;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.TypeConditions;
 
 /**
  * Generic attribute collection applicable to metrics, tracing and logging implementations.
  * Implementation is capable of handling different attribute types, caching and optimizing the internal representation.
  */
-@Immutable
+@Metadata(conditions = TypeConditions.IMMUTABLE)
 public interface TelemetryAttributes {
 }

@@ -3,7 +3,8 @@
 
 package com.azure.v2.core.utils.tracing;
 
-import com.azure.v2.core.annotations.Immutable;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.TypeConditions;
 import io.clientcore.core.utils.Context;
 
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
 /**
  * Represents tracing link that connects one trace to another.
  */
-@Immutable
+@Metadata(conditions = TypeConditions.IMMUTABLE)
 public class TracingLink {
     private final Context context;
     private final Map<String, Object> attributes;

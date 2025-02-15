@@ -19,17 +19,16 @@
   <suppress files="io.clientcore.core.implementation.utils.ImplUtils.java" checks="MissingJavadocTypeCheck" />
   <suppress files="io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="io.clientcore.core.implementation.utils.EnvironmentConfiguration.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="io.clientcore.core.utils.Union.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
   <suppress files="io.clientcore.core.implementation.ReflectionSerializable.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
   <suppress files="io.clientcore.core.implementation.http.serializer.HttpResponseBodyDecoder.java" checks="com.azure.tools.checkstyle.checks.JavadocThrowsChecks" />
-  <suppress files="io.clientcore.core.http.client.DefaultHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="io.clientcore.core.http.client.JdkHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
   <suppress files="io.clientcore.core.http.pipeline.HttpInstrumentationPolicy.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.MethodHandleReflectiveInvoker.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.implementation.http.rest.LengthValidatingInputStream.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="io.clientcore.core.instrumentation.logging.LoggingEvent.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.JsonReader.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.JsonWriteContext.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="io.clientcore.core.serialization.json.implementation.DefaultJsonReader.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="io.clientcore.core.serialization.json.implementation.DefaultJsonWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="io.clientcore.core.serialization.json.JsonWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.implementation.StringBuilderWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.models.JsonNumber.java" checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" />
 </suppressions>

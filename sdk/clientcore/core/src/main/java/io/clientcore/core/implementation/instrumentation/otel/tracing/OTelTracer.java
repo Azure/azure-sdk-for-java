@@ -81,7 +81,7 @@ public final class OTelTracer implements Tracer {
         Object tracerBuilder = GET_TRACER_BUILDER_INVOKER.invoke(otelTracerProvider, libraryOptions.getLibraryName());
         if (tracerBuilder != null) {
             SET_INSTRUMENTATION_VERSION_INVOKER.invoke(tracerBuilder, libraryOptions.getLibraryVersion());
-            SET_SCHEMA_URL_INVOKER.invoke(tracerBuilder, libraryOptions.getSchemaUrl());
+            SET_SCHEMA_URL_INVOKER.invoke(tracerBuilder, libraryOptions.getSchemaUri());
             this.otelTracer = BUILD_INVOKER.invoke(tracerBuilder);
         } else {
             this.otelTracer = null;

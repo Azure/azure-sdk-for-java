@@ -4,9 +4,9 @@
 package io.clientcore.core.traits;
 
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
-import io.clientcore.core.http.models.HttpRedirectOptions;
-import io.clientcore.core.http.models.HttpRetryOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpRedirectOptions;
+import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 

@@ -4,7 +4,6 @@
 package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -16,9 +15,9 @@ import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.ServerSentEventUtils;
 import io.clientcore.core.utils.ServerSentResult;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.binarydata.FileBinaryData;
-import io.clientcore.core.utils.binarydata.InputStreamBinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.FileBinaryData;
+import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.http.okhttp3.implementation.OkHttpFileRequestBody;
 import io.clientcore.http.okhttp3.implementation.OkHttpInputStreamRequestBody;
 import io.clientcore.http.okhttp3.implementation.OkHttpResponse;
@@ -31,14 +30,13 @@ import okhttp3.ResponseBody;
 
 import java.io.IOException;
 
-import static io.clientcore.core.http.models.ContentType.APPLICATION_OCTET_STREAM;
 import static io.clientcore.core.http.models.HttpHeaderName.CONTENT_TYPE;
 import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
-import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
 import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
+import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
 
 /**
  * HttpClient implementation for OkHttp.
@@ -47,6 +45,13 @@ class OkHttpHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(OkHttpHttpClient.class);
     private static final byte[] EMPTY_BODY = new byte[0];
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
+
+    /**
+     * Error message for when no {@link ServerSentEventListener} is attached to the {@link HttpRequest}.
+     */
+    private static final String NO_LISTENER_ERROR_MESSAGE
+        = "No ServerSentEventListener attached to HttpRequest to handle the text/event-stream response";
+
     final OkHttpClient httpClient;
 
     OkHttpHttpClient(OkHttpClient httpClient) {
@@ -72,11 +77,11 @@ class OkHttpHttpClient implements HttpClient {
         Request.Builder requestBuilder = new Request.Builder().url(request.getUri().toString());
 
         if (request.getHeaders() != null) {
-            for (HttpHeader hdr : request.getHeaders()) {
+            request.getHeaders().stream().forEach(hdr -> {
                 // OkHttp allows for headers with multiple values, but it treats them as separate headers,
                 // therefore, we must call rb.addHeader for each value, using the same key for all of them
                 hdr.getValues().forEach(value -> requestBuilder.addHeader(hdr.getName().toString(), value));
-            }
+            });
         }
 
         if (request.getHttpMethod() == HttpMethod.GET) {
@@ -158,7 +163,7 @@ class OkHttpHttpClient implements HttpClient {
                     return this.send(request);
                 }
             } else {
-                throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtils.NO_LISTENER_ERROR_MESSAGE));
+                throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
             }
         }
 
@@ -235,7 +240,8 @@ class OkHttpHttpClient implements HttpClient {
         if (request.getHttpMethod() == HEAD) {
             return IGNORE;
         } else if (contentType != null
-            && (APPLICATION_OCTET_STREAM.regionMatches(true, 0, contentType, 0, APPLICATION_OCTET_STREAM.length()))) {
+            && ("application/octet-stream".regionMatches(true, 0, contentType, 0,
+                "application/octet-stream".length()))) {
 
             return STREAM;
         } else {

@@ -3,8 +3,7 @@
 
 package io.clientcore.core.implementation.http;
 
-import io.clientcore.core.http.models.HttpResponse;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.util.function.Function;
 

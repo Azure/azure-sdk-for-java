@@ -3,15 +3,15 @@
 
 package com.azure.v2.core.test.utils;
 
-import com.azure.v2.core.utils.ProgressReporter;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.binarydata.ByteArrayBinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.ByteArrayBinaryData;
+import io.clientcore.core.utils.ProgressReporter;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -88,11 +88,11 @@ public class HttpUrlConnectionHttpClient implements HttpClient {
     private static void setHeadersOnRequest(HttpRequest request, HttpURLConnection connection) {
         HttpHeaders headers = request.getHeaders();
         if (headers != null) {
-            for (HttpHeader header : headers) {
+            headers.stream().forEach(header -> {
                 String name = header.getName().getCaseSensitiveName();
 
                 header.getValues().forEach(value -> connection.addRequestProperty(name, value));
-            }
+            });
         }
     }
 
@@ -171,7 +171,12 @@ public class HttpUrlConnectionHttpClient implements HttpClient {
         @Override
         public HttpHeaders getHeaders() {
             HttpHeaders headers = new HttpHeaders();
-            connection.getHeaderFields().forEach((key, value) -> headers.add(HttpHeaderName.fromString(key), value));
+            connection.getHeaderFields().forEach((key, value) -> {
+                if (key == null) {
+                    return;
+                }
+                headers.add(new HttpHeader(HttpHeaderName.fromString(key), value));
+            });
             return headers;
         }
 

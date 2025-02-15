@@ -18,7 +18,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.utils.Context;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -121,7 +121,7 @@ public class RestProxyImplTests {
 
     @Test
     public void emptyRequestBody() {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost");
 
         assertNull(RestProxyImpl.validateLength(httpRequest));
     }
@@ -150,8 +150,9 @@ public class RestProxyImplTests {
 
     @Test
     public void multipleToBytesToCheckBodyLength() {
-        HttpRequest httpRequest
-            = new HttpRequest(HttpMethod.GET, "http://localhost").setBody(BinaryData.fromBytes(EXPECTED));
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri("http://localhost")
+            .setBody(BinaryData.fromBytes(EXPECTED));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
 
         BinaryData binaryData = RestProxyImpl.validateLength(httpRequest);
@@ -178,7 +179,7 @@ public class RestProxyImplTests {
     }
 
     private static HttpRequest createHttpRequest(String uri, BinaryData body, int contentLength) {
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri).setBody(body);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri).setBody(body);
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
         return httpRequest;
     }
@@ -186,7 +187,8 @@ public class RestProxyImplTests {
     @Test
     public void userProvidedLengthShouldNotBeTrustedTooLarge() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
-            HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
+            HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length - 1L));
             httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length - 1L));
 
@@ -200,7 +202,8 @@ public class RestProxyImplTests {
     @Test
     public void userProvidedLengthShouldNotBeTrustedTooSmall() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
-            HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
+            HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, EXPECTED.length + 1L));
             httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length + 1L));
 
@@ -215,7 +218,8 @@ public class RestProxyImplTests {
     @Test
     public void expectedBodyLength() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
-            HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
+            HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("http://localhost")
                 .setBody(BinaryData.fromStream(byteArrayInputStream, (long) EXPECTED.length));
             httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
 

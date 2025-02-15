@@ -14,12 +14,10 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
-import io.clientcore.core.http.pipeline.HttpPipelineOrder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
-import io.clientcore.core.serialization.json.JsonProviders;
+import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.binarydata.StringBinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -78,8 +76,9 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     public void startRecording(File recordFile, Path testClassPath) {
         try {
             String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
-            HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUri + "/record/start").setBody(
-                new StringBinaryData(new RecordFilePayload(recordFile.toString(), assetJsonPath).toJsonString()));
+            HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+                .setUri(proxyUri + "/record/start")
+                .setBody(BinaryData.fromObject(new RecordFilePayload(recordFile.toString(), assetJsonPath)));
             request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
 
             try (Response<?> response = client.send(request)) {
@@ -99,7 +98,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     }
 
     private void setDefaultRecordingOptions() throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUri + "/Admin/SetRecordingOptions")
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri(proxyUri + "/Admin/SetRecordingOptions")
             .setBody(BinaryData.fromString("{\"HandleRedirects\": false}"));
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         client.send(request).close();
@@ -112,8 +112,9 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @throws IOException If an error occurs while sending the request.
      */
     public void stopRecording(Queue<String> variables) throws IOException {
-        HttpRequest request
-            = new HttpRequest(HttpMethod.POST, proxyUri + "/record/stop").setBody(serializeVariables(variables));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri(proxyUri + "/record/stop")
+            .setBody(serializeVariables(variables));
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json").set(X_RECORDING_ID, xRecordingId);
 
         try (Response<?> response = client.send(request)) {
@@ -213,7 +214,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
 
             HttpRequest request;
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+                JsonWriter jsonWriter = JsonWriter.toStream(outputStream)) {
                 jsonWriter.writeMap(data, (writer, value) -> writer.writeArray(value, JsonWriter::writeString)).flush();
                 request = getRemoveSanitizerRequest().setBody(BinaryData.fromBytes(outputStream.toByteArray()));
                 request.getHeaders().set(X_RECORDING_ID, xRecordingId);
@@ -230,7 +231,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void setRecordingOptions(TestProxyRecordingOptions testProxyRecordingOptions) {
         try {
-            HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUri + "/admin/setrecordingoptions")
+            HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+                .setUri(proxyUri + "/admin/setrecordingoptions")
                 .setBody(BinaryData.fromObject(testProxyRecordingOptions));
             request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
             client.send(request).close();
@@ -240,7 +242,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpPipelineOrder getOrder() {
-        return HttpPipelineOrder.AFTER_INSTRUMENTATION;
+    public HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.AFTER_INSTRUMENTATION;
     }
 }

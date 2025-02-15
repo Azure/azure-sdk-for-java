@@ -5,12 +5,12 @@ package io.clientcore.core.implementation.instrumentation;
 
 import io.clientcore.core.implementation.ReflectionUtils;
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
 
-import static io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel.ERROR;
-import static io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel.INFORMATIONAL;
-import static io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel.VERBOSE;
-import static io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel.WARNING;
+import static io.clientcore.core.instrumentation.logging.LogLevel.ERROR;
+import static io.clientcore.core.instrumentation.logging.LogLevel.INFORMATIONAL;
+import static io.clientcore.core.instrumentation.logging.LogLevel.VERBOSE;
+import static io.clientcore.core.instrumentation.logging.LogLevel.WARNING;
 
 public class Slf4jLoggerShim {
     private static final DefaultLogger DEFAULT_LOGGER = new DefaultLogger(Slf4jLoggerShim.class);
@@ -146,7 +146,7 @@ public class Slf4jLoggerShim {
         this.isErrorEnabledForDefault = defaultLogger.isEnabled(ERROR);
     }
 
-    public boolean canLogAtLevel(ClientLogger.LogLevel logLevel) {
+    public boolean canLogAtLevel(LogLevel logLevel) {
         if (logLevel == null) {
             return false;
         }
@@ -171,7 +171,7 @@ public class Slf4jLoggerShim {
         }
     }
 
-    public void performLogging(ClientLogger.LogLevel logLevel, String message, Throwable throwable) {
+    public void performLogging(LogLevel logLevel, String message, Throwable throwable) {
         if (!canLogAtLevel(logLevel)) {
             return;
         }
@@ -241,7 +241,7 @@ public class Slf4jLoggerShim {
         }
     }
 
-    private static void writeSlf4jDisabledError(ClientLogger.LogLevel level, String message, Throwable throwable) {
+    private static void writeSlf4jDisabledError(LogLevel level, String message, Throwable throwable) {
         if (!slf4jErrorLogged) {
             slf4jErrorLogged = true;
             DEFAULT_LOGGER.log(level, String.format("[DefaultLogger]: %s. SLF4J logging will be disabled.", message),

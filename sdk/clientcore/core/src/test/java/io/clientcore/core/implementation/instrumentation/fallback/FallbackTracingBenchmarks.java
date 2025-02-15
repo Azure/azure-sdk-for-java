@@ -8,6 +8,7 @@ import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.InstrumentationTestUtils;
+import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
@@ -48,13 +49,13 @@ public class FallbackTracingBenchmarks {
                 .createTracer();
 
         ClientLogger loggerDisabled
-            = InstrumentationTestUtils.setupLogLevelAndGetLogger(ClientLogger.LogLevel.WARNING, new NoopStream());
+            = InstrumentationTestUtils.setupLogLevelAndGetLogger(LogLevel.WARNING, new NoopStream());
         fallbackTracerEnabledNoLogs
             = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(loggerDisabled), libraryOptions)
                 .createTracer();
 
         ClientLogger loggerEnabled
-            = InstrumentationTestUtils.setupLogLevelAndGetLogger(ClientLogger.LogLevel.INFORMATIONAL, new NoopStream());
+            = InstrumentationTestUtils.setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, new NoopStream());
         fallbackTracerEnabledWithLogs
             = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(loggerEnabled), libraryOptions)
                 .createTracer();

@@ -6,8 +6,6 @@ package com.azure.v2.core.test.http;
 import com.azure.v2.core.test.implementation.models.HttpBinFormDataJson;
 import com.azure.v2.core.test.implementation.models.HttpBinJson;
 import com.azure.v2.core.test.implementation.models.PizzaSize;
-import io.clientcore.core.http.models.ContentType;
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
@@ -71,9 +69,9 @@ public class MockHttpClient extends NoOpHttpClient {
             } else if (requestPathLower.startsWith("/bytes/")) {
                 final String byteCountString = requestPath.substring("/bytes/".length());
                 final int byteCount = Integer.parseInt(byteCountString);
-                HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS)
-                    .set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM)
-                    .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(byteCount));
+                HttpHeaders newHeaders
+                    = new HttpHeaders(RESPONSE_HEADERS).set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream")
+                        .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(byteCount));
                 byte[] content;
                 if (byteCount > 0) {
                     content = new byte[byteCount];
@@ -218,9 +216,7 @@ public class MockHttpClient extends NoOpHttpClient {
 
     private static Map<String, List<String>> toMap(HttpHeaders headers) {
         final Map<String, List<String>> result = new HashMap<>();
-        for (final HttpHeader header : headers) {
-            result.put(header.getName().getCaseSensitiveName(), header.getValues());
-        }
+        headers.stream().forEach(header -> result.put(header.getName().getCaseSensitiveName(), header.getValues()));
         return result;
     }
 

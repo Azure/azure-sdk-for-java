@@ -38,61 +38,61 @@ public class Configuration {
     /**
      * URI of the proxy for HTTP connections.
      */
-    public static final String PROPERTY_HTTP_PROXY = "HTTP_PROXY";
+    public static final String HTTP_PROXY = "HTTP_PROXY";
 
     /**
      * URI of the proxy for HTTPS connections.
      */
-    public static final String PROPERTY_HTTPS_PROXY = "HTTPS_PROXY";
+    public static final String HTTPS_PROXY = "HTTPS_PROXY";
 
     /**
      * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.
      */
-    public static final String PROPERTY_NO_PROXY = "NO_PROXY";
+    public static final String NO_PROXY = "NO_PROXY";
 
     /**
      * Enables logging by setting a log level.
      */
-    public static final String PROPERTY_LOG_LEVEL = "LOG_LEVEL";
+    public static final String LOG_LEVEL = "LOG_LEVEL";
 
     /**
-     * Enables HTTP request/response logging by setting an HTTP log detail level.
+     * Enables HTTP request/response logging by setting an HTTP log level.
      */
-    public static final String PROPERTY_HTTP_LOG_DETAIL_LEVEL = "HTTP_LOG_DETAIL_LEVEL";
+    public static final String HTTP_LOG_LEVEL = "HTTP_LOG_LEVEL";
 
     /**
      * Sets the default number of times a request will be retried, if it passes the conditions for retrying, before it
      * fails.
      */
-    public static final String PROPERTY_REQUEST_RETRY_COUNT = "REQUEST_RETRY_COUNT";
+    public static final String MAX_RETRY_ATTEMPTS = "MAX_RETRY_ATTEMPTS";
 
     /**
      * Sets the default timeout, in milliseconds, for a request to connect to the remote host.
      * <p>
      * If the configured value is equal to or less than 0 no timeout will be applied.
      */
-    public static final String PROPERTY_REQUEST_CONNECT_TIMEOUT = "REQUEST_CONNECT_TIMEOUT";
+    public static final String REQUEST_CONNECT_TIMEOUT_IN_MS = "REQUEST_CONNECT_TIMEOUT_IN_MS";
 
     /**
      * Sets the default timeout interval, in milliseconds, allowed between each byte written by a request.
      * <p>
      * If the configured value is equal to or less than 0 no timeout will be applied.
      */
-    public static final String PROPERTY_REQUEST_WRITE_TIMEOUT = "REQUEST_WRITE_TIMEOUT";
+    public static final String REQUEST_WRITE_TIMEOUT_IN_MS = "REQUEST_WRITE_TIMEOUT_IN_MS";
 
     /**
      * Sets the default timeout, in milliseconds, for a request to receive a response from the remote host.
      * <p>
      * If the configured value is equal to or less than 0 no timeout will be applied.
      */
-    public static final String PROPERTY_REQUEST_RESPONSE_TIMEOUT = "REQUEST_RESPONSE_TIMEOUT";
+    public static final String REQUEST_RESPONSE_TIMEOUT_IN_MS = "REQUEST_RESPONSE_TIMEOUT_IN_MS";
 
     /**
      * Sets the default timeout interval, in milliseconds, allowed between each byte read in a response.
      * <p>
      * If the configured value is equal to or less than 0 no timeout will be applied.
      */
-    public static final String PROPERTY_REQUEST_READ_TIMEOUT = "REQUEST_READ_TIMEOUT";
+    public static final String REQUEST_READ_TIMEOUT_IN_MS = "REQUEST_READ_TIMEOUT_IN_MS";
 
     /**
      * Sets the name of the {@link HttpClientProvider} implementation that should be used to construct instances of
@@ -107,7 +107,7 @@ public class Configuration {
      * and doesn't match any {@link HttpClientProvider} resolved by {@link java.util.ServiceLoader} an
      * {@link IllegalStateException} will be thrown when attempting to create an instance of {@link HttpClient}.
      */
-    public static final String PROPERTY_HTTP_CLIENT_IMPLEMENTATION = "HTTP_CLIENT_IMPLEMENTATION";
+    public static final String HTTP_CLIENT_IMPLEMENTATION = "HTTP_CLIENT_IMPLEMENTATION";
 
     /*
      * Gets the global configuration shared by all client libraries.

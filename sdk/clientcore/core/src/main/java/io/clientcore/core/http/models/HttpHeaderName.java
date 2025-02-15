@@ -287,11 +287,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
     public static final HttpHeaderName HOST = fromString("Host");
 
     /**
-     * {@code HTTP2-Settings}/{@code http2-settings}
-     */
-    public static final HttpHeaderName HTTP2_SETTINGS = fromString("HTTP2-Settings");
-
-    /**
      * {@code If-Match}/{@code if-match}
      */
     public static final HttpHeaderName IF_MATCH = fromString("If-Match");

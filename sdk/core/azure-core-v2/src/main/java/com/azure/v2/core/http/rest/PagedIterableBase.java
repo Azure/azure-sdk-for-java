@@ -6,7 +6,7 @@ package com.azure.v2.core.http.rest;
 import com.azure.v2.core.utils.CoreUtils;
 import com.azure.v2.core.utils.IterableStream;
 import com.azure.v2.core.utils.paging.ContinuablePagedIterable;
-import com.azure.v2.core.utils.paging.PageRetrieverSync;
+import com.azure.v2.core.utils.paging.PageRetriever;
 
 import java.util.function.Supplier;
 import java.util.stream.Stream;
@@ -43,11 +43,11 @@ import java.util.stream.Stream;
  */
 public class PagedIterableBase<T, P extends PagedResponse<T>> extends ContinuablePagedIterable<String, T, P> {
     /**
-     * Creates instance given the {@link PageRetrieverSync page retriever} {@link Supplier}.
+     * Creates instance given the {@link PageRetriever page retriever} {@link Supplier}.
      *
      * @param provider The page retriever {@link Supplier}.
      */
-    public PagedIterableBase(Supplier<PageRetrieverSync<String, P>> provider) {
+    public PagedIterableBase(Supplier<PageRetriever<String, P>> provider) {
         super(provider, null, token -> !CoreUtils.isNullOrEmpty(token));
     }
 }

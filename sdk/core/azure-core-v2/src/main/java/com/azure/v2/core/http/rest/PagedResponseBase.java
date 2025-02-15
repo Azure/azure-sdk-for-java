@@ -7,7 +7,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import com.azure.v2.core.utils.IterableStream;
 
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import java.util.List;
 
 /**

@@ -14,11 +14,9 @@ import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.exceptions.HttpResponseException;
-import io.clientcore.core.http.models.ContentType;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.RequestOptions;
@@ -26,19 +24,20 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.ByteArrayBinaryData;
+import io.clientcore.core.models.binarydata.InputStreamBinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.UriBuilder;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.binarydata.ByteArrayBinaryData;
-import io.clientcore.core.utils.binarydata.ByteBufferBinaryData;
-import io.clientcore.core.utils.binarydata.InputStreamBinaryData;
-import io.clientcore.core.utils.serializers.ObjectSerializer;
-import io.clientcore.core.utils.serializers.SerializationFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -262,7 +261,8 @@ public abstract class HttpClientTests {
     @Test
     public void canAccessResponseBody() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
 
         try (Response<?> response = getHttpClient().send(request)) {
             assertEquals(requestBody.toString(), response.getBody().toString());
@@ -276,7 +276,9 @@ public abstract class HttpClientTests {
     @Test
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUri(ECHO_RESPONSE)).setBody(requestBody)
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.PUT)
+            .setUri(getRequestUri(ECHO_RESPONSE))
+            .setBody(requestBody)
             .setRequestOptions(new RequestOptions().setResponseBodyMode(DESERIALIZE));
 
         try (Response<?> response = getHttpClient().send(request)) {
@@ -304,7 +306,8 @@ public abstract class HttpClientTests {
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
     public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
 
         try (Response<?> response = getHttpClient().send(request)) {
             assertArrayEquals(expectedResponseBody, response.getBody().toBytes());
@@ -387,7 +390,8 @@ public abstract class HttpClientTests {
     }
 
     private byte[] sendRequest(String requestPath) throws IOException {
-        try (Response<?> response = getHttpClient().send(new HttpRequest(HttpMethod.GET, getRequestUri(requestPath)))) {
+        try (Response<?> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(getRequestUri(requestPath)))) {
             return response.getBody().toBytes();
         }
     }
@@ -1493,7 +1497,7 @@ public abstract class HttpClientTests {
         // Order in which policies applied will be the order in which they added to builder
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
             .addPolicy(new HttpInstrumentationPolicy(new HttpInstrumentationOptions()
-                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
+                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS)))
             .build();
 
         Response<HttpBinJSON> response
@@ -1946,8 +1950,8 @@ public abstract class HttpClientTests {
             Response<HttpBinJSON> response = service.postStreamResponse(getServerUri(isSecure()), 42, requestOptions)) {
             assertNotNull(response.getBody());
             assertNotEquals(0, response.getBody().getLength());
-            assertTrue(response.getBody() instanceof ByteArrayBinaryData
-                || response.getBody() instanceof ByteBufferBinaryData);
+            assertTrue(response.getBody() instanceof ByteArrayBinaryData);
+            //                || response.getBody() instanceof ByteBufferBinaryData);
         }
     }
 

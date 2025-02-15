@@ -12,8 +12,7 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.exceptions.HttpExceptionType;
-import io.clientcore.core.http.models.ContentType;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -25,13 +24,13 @@ import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.UnexpectedExceptionInformation;
 import io.clientcore.core.implementation.http.serializer.CompositeSerializer;
 import io.clientcore.core.implementation.http.serializer.HttpResponseDecodeData;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
-import io.clientcore.core.utils.UriBuilder;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.ExpandableEnum;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.serializers.SerializationFormat;
+import io.clientcore.core.utils.UriBuilder;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.SerializationFormat;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -727,9 +726,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         HashMap<Integer, UnexpectedExceptionInformation> exceptionHashMap = new HashMap<>();
 
         for (UnexpectedResponseExceptionDetail exceptionAnnotation : unexpectedResponseExceptionDetails) {
-            UnexpectedExceptionInformation exception = new UnexpectedExceptionInformation(
-                HttpExceptionType.fromString(exceptionAnnotation.exceptionTypeName()),
-                exceptionAnnotation.exceptionBodyClass());
+            UnexpectedExceptionInformation exception
+                = new UnexpectedExceptionInformation(exceptionAnnotation.exceptionBodyClass());
 
             if (exceptionAnnotation.statusCode().length == 0) {
                 defaultException = exception;
@@ -741,7 +739,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         }
 
         if (defaultException == null) {
-            defaultException = new UnexpectedExceptionInformation(null, null);
+            defaultException = new UnexpectedExceptionInformation(null);
         }
 
         return exceptionHashMap;

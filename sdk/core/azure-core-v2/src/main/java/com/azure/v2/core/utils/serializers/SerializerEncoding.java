@@ -37,7 +37,7 @@ public enum SerializerEncoding {
      * unrecognized Content-Type encoding is returned.
      */
     public static SerializerEncoding fromHeaders(HttpHeaders headers) {
-        final String mimeContentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
+        final String mimeContentType = headers.get(HttpHeaderName.CONTENT_TYPE).getValue();
         if (CoreUtils.isNullOrEmpty(mimeContentType)) {
             LOGGER.atVerbose().log("'Content-Type' not found. Returning default encoding: JSON");
             return JSON;

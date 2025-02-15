@@ -9,7 +9,6 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.HttpRedirectOptions;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import org.junit.jupiter.api.Test;
@@ -199,7 +198,7 @@ public class RedirectPolicyTest {
                 HttpHeaders httpHeader
                     = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/" + requestCount[0]++);
 
-                request.setHttpMethod(HttpMethod.PUT);
+                request.setMethod(HttpMethod.PUT);
 
                 requestCount[0]++;
 
@@ -210,7 +209,7 @@ public class RedirectPolicyTest {
                 HttpHeaders httpHeader
                     = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/" + requestCount[0]++);
 
-                request.setHttpMethod(HttpMethod.POST);
+                request.setMethod(HttpMethod.POST);
 
                 return new MockHttpResponse(request, 308, httpHeader);
             } else {
@@ -336,14 +335,15 @@ public class RedirectPolicyTest {
                 }
             }).build();
 
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/"))) {
             assertEquals(200, response.getStatusCode());
             assertEquals(2, attemptCount.get());
         }
     }
 
     private Response<?> sendRequest(HttpPipeline pipeline, HttpMethod httpMethod) {
-        return pipeline.send(new HttpRequest(httpMethod, URI.create("http://localhost/")));
+        return pipeline.send(new HttpRequest().setMethod(httpMethod).setUri(URI.create("http://localhost/")));
     }
 
     static class RecordingHttpClient implements HttpClient {

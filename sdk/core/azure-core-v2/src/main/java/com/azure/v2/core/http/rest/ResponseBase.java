@@ -5,9 +5,9 @@ package com.azure.v2.core.http.rest;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.binarydata.ByteArrayBinaryData;
-import io.clientcore.core.utils.binarydata.StringBinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.ByteArrayBinaryData;
+import io.clientcore.core.models.binarydata.StringBinaryData;
 
 import java.io.IOException;
 
