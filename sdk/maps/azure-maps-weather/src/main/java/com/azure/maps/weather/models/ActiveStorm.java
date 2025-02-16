@@ -80,15 +80,6 @@ public final class ActiveStorm implements JsonSerializable<ActiveStorm> {
     }
 
     /**
-     * Get the isActive property: True if the depression has been updated recently.
-     *
-     * @return the isActive value.
-     */
-    public Boolean isActive() {
-        return this.isActive;
-    }
-
-    /**
      * Get the isSubtropical property: True when the depression is classified as a subtropical cyclone.
      *
      * @return the isSubtropical value.
@@ -102,7 +93,7 @@ public final class ActiveStorm implements JsonSerializable<ActiveStorm> {
      *
      * @return the govId value.
      */
-    public Integer getGovId() {
+    public Integer getGovernmentId() {
         return this.govId;
     }
 

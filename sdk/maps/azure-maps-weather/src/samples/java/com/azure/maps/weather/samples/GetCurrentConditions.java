@@ -31,7 +31,7 @@ public class GetCurrentConditions {
         System.out.println("Get Current Conditions Sync Client");
         // BEGIN: com.azure.maps.weather.sync.get_current_conditions
         client.getCurrentConditions(new GeoPosition(-122.125679, 47.641268),
-            null, null, null, null);
+            null, true, null, null);
         // END: com.azure.maps.weather.sync.get_current_conditions
 
         // Authenticates using subscription key
@@ -54,7 +54,7 @@ public class GetCurrentConditions {
         System.out.println("Get Current Conditions Async Client");
         // BEGIN: com.azure.maps.weather.async.get_current_conditions
         asyncClient.getCurrentConditions(new GeoPosition(-122.125679, 47.641268),
-            null, null, null, null);
+            null, true, null, null);
         // END: com.azure.maps.weather.async.get_current_conditions
     }
 }

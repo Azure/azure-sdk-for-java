@@ -4,14 +4,16 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.GeoPosition;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.maps.weather.implementation.models.LatLongPair;
 import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import com.azure.core.models.GeoPosition;
 
 /**
  * Government-issued storm forecast.
@@ -22,7 +24,7 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
     /*
      * Datetime the forecast is valid, displayed in ISO8601 format.
      */
-    private String timestamp;
+    private OffsetDateTime timestamp;
 
     /*
      * Datetime the forecast was created, displayed in ISO8601 format.
@@ -45,12 +47,20 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
     private WeatherUnitDetails sustainedWind;
 
     /*
-     * Possible status values include:<ul><li>Cyclonic storm</li><li>Deep depression</li><li>Depression</li><li>Extremely severe cyclonic storm</li><li>Hurricane category (1-5)</li><li>Intense tropical cyclone</li><li>Moderate tropical storm</li><li>Post-tropical cyclone</li><li>Potential tropical cyclone</li><li>Severe cyclonic storm</li><li>Severe tropical storm</li><li>Subtropical</li><li>Super cyclonic storm</li><li>Tropical cyclone</li><li>Tropical cyclone category (1-5)</li><li>Tropical depression</li><li>Tropical disturbance</li><li>Tropical storm</li><li>Typhoon</li><li>Very intense tropical cyclone</li><li>Very severe cyclonic storm</li><li>Very strong typhoon</li><li>Violent typhoon</li></ul>
+     * Possible status values include:<ul><li>Cyclonic storm</li><li>Deep
+     * depression</li><li>Depression</li><li>Extremely severe cyclonic storm</li><li>Hurricane category
+     * (1-5)</li><li>Intense tropical cyclone</li><li>Moderate tropical storm</li><li>Post-tropical
+     * cyclone</li><li>Potential tropical cyclone</li><li>Severe cyclonic storm</li><li>Severe tropical
+     * storm</li><li>Subtropical</li><li>Super cyclonic storm</li><li>Tropical cyclone</li><li>Tropical cyclone category
+     * (1-5)</li><li>Tropical depression</li><li>Tropical disturbance</li><li>Tropical
+     * storm</li><li>Typhoon</li><li>Very intense tropical cyclone</li><li>Very severe cyclonic storm</li><li>Very
+     * strong typhoon</li><li>Violent typhoon</li></ul>
      */
     private String status;
 
     /*
-     * Contains information about the forecast window for the storm during the specified time period (not the entire cone). If windowGeometry=true in the request, this object will include geoJSON details for window geometry.
+     * Contains information about the forecast window for the storm during the specified time period (not the entire
+     * cone). If windowGeometry=true in the request, this object will include geoJSON details for window geometry.
      */
     private WeatherWindow weatherWindow;
 
@@ -70,7 +80,7 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
      *
      * @return the timestamp value.
      */
-    public String getTimestamp() {
+    public OffsetDateTime getTimestamp() {
         return this.timestamp;
     }
 
@@ -155,7 +165,8 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("dateTime", this.timestamp);
+        jsonWriter.writeStringField("dateTime",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
         jsonWriter.writeStringField("initializedDateTime", this.initializedTimestamp);
         jsonWriter.writeJsonField("location", this.coordinates);
         jsonWriter.writeJsonField("maxWindGust", this.maxWindGust);
@@ -182,7 +193,8 @@ public final class StormForecast implements JsonSerializable<StormForecast> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("dateTime".equals(fieldName)) {
-                    deserializedStormForecast.timestamp = reader.getString();
+                    deserializedStormForecast.timestamp
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("initializedDateTime".equals(fieldName)) {
                     deserializedStormForecast.initializedTimestamp = reader.getString();
                 } else if ("location".equals(fieldName)) {

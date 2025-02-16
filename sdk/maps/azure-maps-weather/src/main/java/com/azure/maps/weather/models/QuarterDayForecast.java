@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -24,7 +25,8 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
     private OffsetDateTime dateTime;
 
     /*
-     * Date and time of the beginning of the forecast quarter displayed in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
+     * Date and time of the beginning of the forecast quarter displayed in ISO 8601 format, for example,
+     * 2019-10-27T19:39:57-08:00.
      */
     private OffsetDateTime effectiveDate;
 
@@ -34,7 +36,8 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
     private DayQuarter quarter;
 
     /*
-     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
+     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
     private IconCode iconCode;
 
@@ -59,12 +62,14 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
     private WeatherValueRange realFeelTemperature;
 
     /*
-     * The dewpoint temperature in specified unit. The dewpoint temperature is the temperature that the air must be cooled to in order to reach saturation.
+     * The dewpoint temperature in specified unit. The dewpoint temperature is the temperature that the air must be
+     * cooled to in order to reach saturation.
      */
     private WeatherUnitDetails dewPoint;
 
     /*
-     * Relative humidity is the amount of water vapor present in air expressed as a percentage of the amount needed for saturation at the same temperature.
+     * Relative humidity is the amount of water vapor present in air expressed as a percentage of the amount needed for
+     * saturation at the same temperature.
      */
     private Integer relativeHumidity;
 
@@ -89,12 +94,14 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
     private Integer cloudCover;
 
     /*
-     * Indicates the presence or absence of precipitation. True indicates the presence of precipitation, false indicates the absence of precipitation.
+     * Indicates the presence or absence of precipitation. True indicates the presence of precipitation, false indicates
+     * the absence of precipitation.
      */
     private Boolean hasPrecipitation;
 
     /*
-     * Specifies the type of precipitation ("Rain" "Snow" "Ice" or "Mix"). If dbz is zero, precipitationType is not present in the response.
+     * Specifies the type of precipitation ("Rain" "Snow" "Ice" or "Mix"). If dbz is zero, precipitationType is not
+     * present in the response.
      */
     private PrecipitationType precipitationType;
 
@@ -366,8 +373,8 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
             this.dateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.dateTime));
         jsonWriter.writeStringField("effectiveDate",
             this.effectiveDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.effectiveDate));
-        jsonWriter.writeNumberField("quarter", this.quarter == null ? null : this.quarter.toInt());
-        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
+        jsonWriter.writeNumberField("quarter", this.quarter == null ? null : this.quarter.getValue());
+        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.getValue());
         jsonWriter.writeStringField("iconPhrase", this.iconPhrase);
         jsonWriter.writeStringField("phrase", this.phrase);
         jsonWriter.writeJsonField("temperature", this.temperature);
@@ -406,15 +413,15 @@ public final class QuarterDayForecast implements JsonSerializable<QuarterDayFore
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("date".equals(fieldName)) {
-                    deserializedQuarterDayForecast.dateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedQuarterDayForecast.dateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("effectiveDate".equals(fieldName)) {
-                    deserializedQuarterDayForecast.effectiveDate
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedQuarterDayForecast.effectiveDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("quarter".equals(fieldName)) {
-                    deserializedQuarterDayForecast.quarter = DayQuarter.fromInt(reader.getInt());
+                    deserializedQuarterDayForecast.quarter = DayQuarter.fromValue(reader.getInt());
                 } else if ("iconCode".equals(fieldName)) {
-                    deserializedQuarterDayForecast.iconCode = IconCode.fromInt(reader.getInt());
+                    deserializedQuarterDayForecast.iconCode = IconCode.fromValue(reader.getInt());
                 } else if ("iconPhrase".equals(fieldName)) {
                     deserializedQuarterDayForecast.iconPhrase = reader.getString();
                 } else if ("phrase".equals(fieldName)) {

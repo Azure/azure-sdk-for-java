@@ -8,8 +8,9 @@ import com.azure.core.models.GeoPosition;
 import com.azure.maps.weather.WeatherAsyncClient;
 import com.azure.maps.weather.WeatherClient;
 import com.azure.maps.weather.WeatherClientBuilder;
+import com.azure.maps.weather.models.DailyDuration;
 
-public class GetCurrentAirQuality {
+public class GetDailyAirQualityForecast {
     public static void main(String[] args) {
         // Authenticates using subscription key
         AzureKeyCredential keyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
@@ -26,18 +27,20 @@ public class GetCurrentAirQuality {
                 .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
                 .buildClient();
 
-        // Get Current Air Quality -
-        // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-current-air-quality
+        // Get Air Quality Daily Forecasts -
+        // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-air-quality-daily-forecasts
         // Get detailed information about the concentration of pollutants and overall
-        // status for current air quality.
+        // status of forecasted daily air quality.
+        // The service can provide forecasted daily air quality information for the
+        // upcoming 1 to 7 days.
         // Information includes, pollution levels, air quality index values, the
         // dominant pollutant, and a brief statement summarizing risk level and
         // suggested precautions.
-        System.out.println("Get Current Air Quality Sync Client");
-        // BEGIN: com.azure.maps.weather.sync.get_current_air_quality
-        client.getCurrentAirQuality(
-                new GeoPosition(-122.138874, 47.632346), "es", false);
-        // END: com.azure.maps.weather.sync.get_current_air_quality
+        System.out.println("Get Air Quality Daily Forecasts Sync Client");
+        // BEGIN: com.azure.maps.weather.sync.get_air_quality_daily_forecasts
+        client.getDailyAirQualityForecast(
+                new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
+        // END: com.azure.maps.weather.sync.get_air_quality_daily_forecasts
 
         // Authenticates using subscription key
         AzureKeyCredential asyncClientKeyCredential = new AzureKeyCredential(System.getenv("SUBSCRIPTION_KEY"));
@@ -54,17 +57,19 @@ public class GetCurrentAirQuality {
                 .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
                 .buildAsyncClient();
 
-        // Get Current Air Quality -
-        // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-current-air-quality
+        // Get Air Quality Daily Forecasts -
+        // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-air-quality-daily-forecasts
         // Get detailed information about the concentration of pollutants and overall
-        // status for current air quality.
+        // status of forecasted daily air quality.
+        // The service can provide forecasted daily air quality information for the
+        // upcoming 1 to 7 days.
         // Information includes, pollution levels, air quality index values, the
         // dominant pollutant, and a brief statement summarizing risk level and
         // suggested precautions.
-        System.out.println("Get Current Air Quality Async Client");
-        // BEGIN: com.azure.maps.weather.async.get_current_air_quality
-        asyncClient.getCurrentAirQuality(
-                new GeoPosition(-122.138874, 47.632346), "es", false);
-        // END: com.azure.maps.weather.async.get_current_air_quality
+        System.out.println("Get Air Quality Daily Forecasts Async Client");
+        // BEGIN: com.azure.maps.weather.async.get_air_quality_daily_forecasts
+        asyncClient.getDailyAirQualityForecast(
+                new GeoPosition(-122.138874, 47.632346), "en", DailyDuration.TWO_DAYS);
+        // END: com.azure.maps.weather.async.get_air_quality_daily_forecasts
     }
 }

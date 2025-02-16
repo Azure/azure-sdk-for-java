@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -110,8 +111,8 @@ public final class DailyHistoricalRecords implements JsonSerializable<DailyHisto
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("date".equals(fieldName)) {
-                    deserializedDailyHistoricalRecords.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDailyHistoricalRecords.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("temperature".equals(fieldName)) {
                     deserializedDailyHistoricalRecords.temperature = WeatherValueYearMaxMinAvg.fromJson(reader);
                 } else if ("precipitation".equals(fieldName)) {

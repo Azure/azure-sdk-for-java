@@ -147,7 +147,9 @@ public class WeatherCustomization extends Customization {
         customizeClass(models, "ActiveStorm", clazz -> {
             customizePrivateConstructor(clazz);
             customizeClassesWithString(clazz);
-            bulkRemoveMethods(clazz, "setBasinId", "setName", "setIsActive", "setIsSubtropical", "setGovId");
+            clazz.getMothod("getGovId").rename("getGovernmentId");
+            bulkRemoveMethods(clazz, "setBasinId", "setName", "setIsActive", "setIsSubtropical", "setGovId",
+                    "isActive");
         });
     }
 
@@ -155,7 +157,7 @@ public class WeatherCustomization extends Customization {
     private void customizeActiveStormResult(PackageCustomization models) {
         customizeClass(models, "ActiveStormResult", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setActiveStorms", "setNextLink");
+            bulkRemoveMethods(clazz, "setActiveStorms", "setNextLink", "getNextLink");
         });
     }
 
@@ -181,7 +183,7 @@ public class WeatherCustomization extends Customization {
     private void customizeAirQualityResult(PackageCustomization models) {
         customizeClass(models, "AirQualityResult", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setAirQualityResults", "setNextLink");
+            bulkRemoveMethods(clazz, "setAirQualityResults", "setNextLink", "getNextLink");
         });
     }
 
@@ -230,7 +232,7 @@ public class WeatherCustomization extends Customization {
     private void customizeDailyAirQualityForecastResult(PackageCustomization models) {
         customizeClass(models, "DailyAirQualityForecastResult", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setAirQualityResults", "setNextLink");
+            bulkRemoveMethods(clazz, "setAirQualityResults", "setNextLink", "getNextLink");
         });
     }
 
@@ -291,7 +293,7 @@ public class WeatherCustomization extends Customization {
     private void customizeDailyHistoricalActualsResult(PackageCustomization models) {
         customizeClass(models, "DailyHistoricalActualsResult", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setHistoricalActuals", "setNextLink");
+            bulkRemoveMethods(clazz, "setHistoricalActuals", "setNextLink", "getNextLink");
         });
     }
 
@@ -307,7 +309,7 @@ public class WeatherCustomization extends Customization {
     private void customizeDailyHistoricalNormalsResult(PackageCustomization models) {
         customizeClass(models, "DailyHistoricalNormalsResult", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setHistoricalNormals", "setNextLink");
+            bulkRemoveMethods(clazz, "setHistoricalNormals", "setNextLink", "getNextLink");
         });
     }
 
@@ -323,7 +325,7 @@ public class WeatherCustomization extends Customization {
     private void customizeDailyHistoricalRecordsResult(PackageCustomization models) {
         customizeClass(models, "DailyHistoricalRecordsResult", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setHistoricalRecords", "setNextLink");
+            bulkRemoveMethods(clazz, "setHistoricalRecords", "setNextLink", "getNextLink");
         });
     }
 
@@ -492,7 +494,7 @@ public class WeatherCustomization extends Customization {
     private void customizeStormForecastResult(PackageCustomization models) {
         customizeClass(models, "StormForecastResult", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setStormForecasts", "setNextLink");
+            bulkRemoveMethods(clazz, "setStormForecasts", "setNextLink", "getNextLink");
         });
     }
 
@@ -511,7 +513,7 @@ public class WeatherCustomization extends Customization {
     private void customizeStormLocationsResult(PackageCustomization models) {
         customizeClass(models, "StormLocationsResult", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setStormLocations", "setNextLink");
+            bulkRemoveMethods(clazz, "setStormLocations", "setNextLink", "getNextLink");
         });
     }
 
@@ -519,7 +521,8 @@ public class WeatherCustomization extends Customization {
     private void customizeStormSearchResult(PackageCustomization models) {
         customizeClass(models, "StormSearchResult", clazz -> {
             customizePrivateConstructor(clazz);
-            bulkRemoveMethods(clazz, "setStorms", "setNextLink");
+            clazz.getMothod("getGovId").rename("getGovernmentId");
+            bulkRemoveMethods(clazz, "setStorms", "setNextLink", "getNextLink");
         });
     }
 
