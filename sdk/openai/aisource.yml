@@ -7,11 +7,11 @@ extends:
     PreSteps:
       - template: ./../../../../../sdk/openai/openai-build.yml
     PreTestRunSteps:
-      - script: echo "Running pre-test steps"
-        displayName: "Pre-Test Step 1"
       - script: |
           java -version
           echo "Java version above"
+          echo "JAVA_HOME: $JAVA_HOME"
+          echo "PATH: $PATH"
           
           ls -la
           echo "Current directory contents"
@@ -25,6 +25,15 @@ extends:
 #          export JAVA_HOME=/path/to/java8
 #          export PATH=$JAVA_HOME/bin:$PATH
         displayName: "Set JAVA_HOME to Java 8"
+#      - task: Maven@4
+#          displayName: 'Run tests'
+#          inputs:
+#            mavenPomFile: pom.xml
+#            javaHomeOption: 'JDKVersion'
+#            jdkVersionOption: '8'
+#            jdkArchitectureOption: 'x64'
+#            publishJUnitResults: false
+#            goals: 'test'
     Artifacts:
       - name: azure-ai-openai
         groupId: com.azure

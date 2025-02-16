@@ -1,5 +1,7 @@
 steps:
   - pwsh: |
+      java -version
+      echo "Java version above"
       # Define repository details
       $repoUrl = "https://github.com/openai/openai-java.git"
       $branchName = "6390dfd63c978ceae2f0f8e0f5601c2ae212d2e8"
@@ -45,6 +47,9 @@ steps:
     workingDirectory: $(Agent.TempDirectory)
 
   - pwsh: |
+      java -version
+      echo "Java version above"
+      
       Write-Host "Building the project and publishing to the local Maven repository"
       cd "$(Agent.TempDirectory)/openai-java"
       ./gradlew clean build -x test "-Dmaven.repo.local=$env:PIPELINE_WORKSPACE/.m2/repository" publishToMavenLocal
