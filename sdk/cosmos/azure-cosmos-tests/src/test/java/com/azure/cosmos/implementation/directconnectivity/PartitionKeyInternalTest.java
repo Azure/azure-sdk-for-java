@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.routing.HexConvert;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
@@ -288,18 +289,33 @@ public class PartitionKeyInternalTest {
         assertThat(PartitionKeyInternalHelper.getEffectivePartitionKeyString(PartitionKeyInternal.InclusiveMinimum, new PartitionKeyDefinition()))
                 .isEqualTo(PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey);
 
+        assertThat(PartitionKeyInternalHelper.getEffectivePartitionKeyBytes(PartitionKeyInternal.InclusiveMinimum, new PartitionKeyDefinition()))
+            .isEqualTo(PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKeyBytes);
+
         assertThat(
                 PartitionKeyInternalHelper.getEffectivePartitionKeyString(PartitionKeyInternal.ExclusiveMaximum, new PartitionKeyDefinition()))
                 .isEqualTo(PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey);
+
+        assertThat(
+            PartitionKeyInternalHelper.getEffectivePartitionKeyBytes(PartitionKeyInternal.ExclusiveMaximum, new PartitionKeyDefinition()))
+            .isEqualTo(PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKeyBytes);
+
 
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         partitionKeyDefinition.setPaths(Lists.newArrayList("/A", "/B", "/C", "/E", "/F", "/G"));
 
         PartitionKeyInternal partitionKey = PartitionKeyInternal.fromObjectArray(
                 new Object[]{2, true, false, null, Undefined.value(), "Привет!"}, true);
-        String effectivePartitionKey = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
+        String effectivePartitionKey = PartitionKeyInternalHelper
+            .getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
 
-        assertThat(effectivePartitionKey).isEqualTo("05C1D19581B37C05C0000302010008D1A0D281D1B9D1B3D1B6D2832200");
+        assertThat(effectivePartitionKey)
+            .isEqualTo("05C1D19581B37C05C0000302010008D1A0D281D1B9D1B3D1B6D2832200");
+
+        byte[] effectivePartitionKeyBytes = PartitionKeyInternalHelper
+            .getEffectivePartitionKeyBytes(partitionKey, partitionKeyDefinition);
+        assertThat(HexConvert.bytesToHex(effectivePartitionKeyBytes))
+            .isEqualTo("05C1D19581B37C05C0000302010008D1A0D281D1B9D1B3D1B6D2832200");
     }
 
     @DataProvider(name = "v2ParamProvider")
