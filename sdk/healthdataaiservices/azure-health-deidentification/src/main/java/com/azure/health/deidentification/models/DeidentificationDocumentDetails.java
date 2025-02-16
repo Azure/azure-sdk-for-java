@@ -17,7 +17,7 @@ import java.io.IOException;
  * Details of a single document in a job.
  */
 @Immutable
-public final class DocumentDetails implements JsonSerializable<DocumentDetails> {
+public final class DeidentificationDocumentDetails implements JsonSerializable<DeidentificationDocumentDetails> {
     /*
      * Id of the document details.
      */
@@ -28,13 +28,13 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
      * Location for the input.
      */
     @Generated
-    private final DocumentLocation input;
+    private final DeidentificationDocumentLocation input;
 
     /*
      * Location for the output.
      */
     @Generated
-    private DocumentLocation output;
+    private DeidentificationDocumentLocation output;
 
     /*
      * Status of the document.
@@ -49,13 +49,13 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
     private ResponseError error;
 
     /**
-     * Creates an instance of DocumentDetails class.
+     * Creates an instance of DeidentificationDocumentDetails class.
      * 
      * @param input the input value to set.
      * @param status the status value to set.
      */
     @Generated
-    private DocumentDetails(DocumentLocation input, OperationState status) {
+    private DeidentificationDocumentDetails(DeidentificationDocumentLocation input, OperationState status) {
         this.input = input;
         this.status = status;
     }
@@ -76,7 +76,7 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
      * @return the input value.
      */
     @Generated
-    public DocumentLocation getInput() {
+    public DeidentificationDocumentLocation getInput() {
         return this.input;
     }
 
@@ -86,7 +86,7 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
      * @return the output value.
      */
     @Generated
-    public DocumentLocation getOutput() {
+    public DeidentificationDocumentLocation getOutput() {
         return this.output;
     }
 
@@ -125,21 +125,21 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
     }
 
     /**
-     * Reads an instance of DocumentDetails from the JsonReader.
+     * Reads an instance of DeidentificationDocumentDetails from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DocumentDetails if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of DeidentificationDocumentDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DocumentDetails.
+     * @throws IOException If an error occurs while reading the DeidentificationDocumentDetails.
      */
     @Generated
-    public static DocumentDetails fromJson(JsonReader jsonReader) throws IOException {
+    public static DeidentificationDocumentDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            DocumentLocation input = null;
+            DeidentificationDocumentLocation input = null;
             OperationState status = null;
-            DocumentLocation output = null;
+            DeidentificationDocumentLocation output = null;
             ResponseError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -148,23 +148,24 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("input".equals(fieldName)) {
-                    input = DocumentLocation.fromJson(reader);
+                    input = DeidentificationDocumentLocation.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
                     status = OperationState.fromString(reader.getString());
                 } else if ("output".equals(fieldName)) {
-                    output = DocumentLocation.fromJson(reader);
+                    output = DeidentificationDocumentLocation.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
                     error = ResponseError.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            DocumentDetails deserializedDocumentDetails = new DocumentDetails(input, status);
-            deserializedDocumentDetails.id = id;
-            deserializedDocumentDetails.output = output;
-            deserializedDocumentDetails.error = error;
+            DeidentificationDocumentDetails deserializedDeidentificationDocumentDetails
+                = new DeidentificationDocumentDetails(input, status);
+            deserializedDeidentificationDocumentDetails.id = id;
+            deserializedDeidentificationDocumentDetails.output = output;
+            deserializedDeidentificationDocumentDetails.error = error;
 
-            return deserializedDocumentDetails;
+            return deserializedDeidentificationDocumentDetails;
         });
     }
 }

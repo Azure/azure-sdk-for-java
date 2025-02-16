@@ -11,53 +11,53 @@ import java.util.Collection;
 /**
  * Enum of supported Operation Types.
  */
-public final class OperationType extends ExpandableStringEnum<OperationType> {
+public final class DeidentificationOperationType extends ExpandableStringEnum<DeidentificationOperationType> {
     /**
      * Redact Operation will remove all entities of PHI and replace them with a placeholder value.
      */
     @Generated
-    public static final OperationType REDACT = fromString("Redact");
+    public static final DeidentificationOperationType REDACT = fromString("Redact");
 
     /**
      * Surrogation Operation will replace all entities of PHI with a surrogate value.
      */
     @Generated
-    public static final OperationType SURROGATE = fromString("Surrogate");
+    public static final DeidentificationOperationType SURROGATE = fromString("Surrogate");
 
     /**
      * Tag Operation will detect all entities of PHI, their type, and return their locations in the document.
      */
     @Generated
-    public static final OperationType TAG = fromString("Tag");
+    public static final DeidentificationOperationType TAG = fromString("Tag");
 
     /**
-     * Creates a new instance of OperationType value.
+     * Creates a new instance of DeidentificationOperationType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public OperationType() {
+    public DeidentificationOperationType() {
     }
 
     /**
-     * Creates or finds a OperationType from its string representation.
+     * Creates or finds a DeidentificationOperationType from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding OperationType.
+     * @return the corresponding DeidentificationOperationType.
      */
     @Generated
-    public static OperationType fromString(String name) {
-        return fromString(name, OperationType.class);
+    public static DeidentificationOperationType fromString(String name) {
+        return fromString(name, DeidentificationOperationType.class);
     }
 
     /**
-     * Gets known OperationType values.
+     * Gets known DeidentificationOperationType values.
      * 
-     * @return known OperationType values.
+     * @return known DeidentificationOperationType values.
      */
     @Generated
-    public static Collection<OperationType> values() {
-        return values(OperationType.class);
+    public static Collection<DeidentificationOperationType> values() {
+        return values(DeidentificationOperationType.class);
     }
 }
