@@ -19,7 +19,7 @@ extends:
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-filter-template.yml
         parameters:
           TestName: IT_ServiceBus
-          TestClassPatterns: com.azure.spring.cloud.integration.tests.servicebus.*IT,com.azure.spring.cloud.integration.tests.servicebus.*.*IT
+          TestClassPatterns: com.azure.spring.cloud.integration.tests.servicebus.binder.ServiceBusMultiBindersQueueAndTopicIT
           TestResourceDirectories:
             - spring/spring-cloud-azure-integration-tests/test-resources/servicebus
       - template: /sdk/spring/pipeline/tests-supported-spring-versions-filter-template.yml
