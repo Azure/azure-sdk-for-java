@@ -42,6 +42,6 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
     }
 
     public void setShouldUsePerPartitionAutomaticFailoverOverride(boolean shouldUsePerPartitionAutomaticFailoverOverride) {
-        this.shouldUsePerPartitionAutomaticFailoverOverride.set(true);
+        this.shouldUsePerPartitionAutomaticFailoverOverride.set(shouldUsePerPartitionAutomaticFailoverOverride);
     }
 }

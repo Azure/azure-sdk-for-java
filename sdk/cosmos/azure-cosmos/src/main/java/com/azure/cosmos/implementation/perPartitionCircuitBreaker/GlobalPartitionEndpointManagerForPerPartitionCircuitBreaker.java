@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
 
+import com.azure.cosmos.implementation.AvailabilityStrategyContext;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
@@ -375,6 +376,26 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
         if (request.getOperationType() == OperationType.QueryPlan) {
             return false;
+        }
+
+        if (request.requestContext == null) {
+            return false;
+        }
+
+        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
+            = request.requestContext.getCrossRegionAvailabilityContext();
+
+        if (crossRegionAvailabilityContextForRequest == null) {
+            return false;
+        }
+
+        AvailabilityStrategyContext availabilityStrategyContext
+            = crossRegionAvailabilityContextForRequest.getAvailabilityStrategyContext();
+
+        if (availabilityStrategyContext != null) {
+            if (availabilityStrategyContext.isAvailabilityStrategyEnabled() && availabilityStrategyContext.isHedgedRequest()) {
+                return false;
+            }
         }
 
         GlobalEndpointManager globalEndpointManager = this.globalEndpointManager;

@@ -75,7 +75,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        if (request.getOperationType() != OperationType.QueryPlan) {
+        if (request.getOperationType() == OperationType.QueryPlan) {
             return false;
         }
 
