@@ -318,6 +318,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withNetworkProfile(innerModel().networkProfile());
         agentPoolInner.withWindowsProfile(innerModel().windowsProfile());
         agentPoolInner.withSecurityProfile(innerModel().securityProfile());
+        agentPoolInner.withMessageOfTheDay(innerModel().messageOfTheDay());
         return agentPoolInner;
     }
 
