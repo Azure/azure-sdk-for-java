@@ -86,6 +86,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
     private volatile Duration responseTimeout;
+    public volatile boolean useThinProxy = false;
 
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 

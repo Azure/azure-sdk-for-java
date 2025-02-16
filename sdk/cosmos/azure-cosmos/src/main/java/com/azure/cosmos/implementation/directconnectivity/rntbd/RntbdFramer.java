@@ -9,12 +9,12 @@ import io.netty.handler.codec.CorruptedFrameException;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-final class RntbdFramer {
+public final class RntbdFramer {
 
     private RntbdFramer() {
     }
 
-    static boolean canDecodeHead(final ByteBuf in) throws CorruptedFrameException {
+    public static boolean canDecodeHead(final ByteBuf in) throws CorruptedFrameException {
 
         checkNotNull(in, "in");
 
