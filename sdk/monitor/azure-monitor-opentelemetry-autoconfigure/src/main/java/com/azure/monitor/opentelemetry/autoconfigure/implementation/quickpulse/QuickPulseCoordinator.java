@@ -9,6 +9,8 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.String
 import org.slf4j.MDC;
 import reactor.util.annotation.Nullable;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_PING_ERROR;
@@ -70,7 +72,6 @@ final class QuickPulseCoordinator implements Runnable {
 
     @SuppressWarnings("try")
     private long sendData() {
-        dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
         dataFetcher.prepareQuickPulseDataForSend();
 
         QuickPulseStatus qpStatus = dataSender.getQuickPulseStatus();
@@ -102,6 +103,7 @@ final class QuickPulseCoordinator implements Runnable {
                     : waitBetweenPingsInMillis;
 
             case QP_IS_ON:
+                logger.verbose("In post mode");
                 return waitBetweenPostsInMillis;
         }
 
@@ -136,6 +138,7 @@ final class QuickPulseCoordinator implements Runnable {
                 return waitBetweenPostsInMillis;
 
             case QP_IS_OFF:
+                logger.verbose("In ping mode");
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis
                     : waitBetweenPingsInMillis;
@@ -152,7 +155,15 @@ final class QuickPulseCoordinator implements Runnable {
     private QuickPulseStatus handleReceivedPingHeaders(IsSubscribedHeaders pingHeaders) {
         String redirectLink = pingHeaders.getXMsQpsServiceEndpointRedirectV2();
         if (!Strings.isNullOrEmpty(redirectLink)) {
-            qpsServiceRedirectedEndpoint = redirectLink;
+            try {
+                URL redirectUrl = new URL(redirectLink);
+                // Taking the QuickPulseService.svc part out if present because the swagger will add that on.
+                qpsServiceRedirectedEndpoint = redirectUrl.getProtocol() + "://" + redirectUrl.getHost() + "/";
+                logger.verbose("Handling ping header to redirect to {}", qpsServiceRedirectedEndpoint);
+                dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
+            } catch (MalformedURLException e) {
+                logger.error("The service returned a malformed URL in the redirect header: {}", redirectLink);
+            }
         }
 
         String pollingIntervalHeader = pingHeaders.getXMsQpsServicePollingIntervalHint();
