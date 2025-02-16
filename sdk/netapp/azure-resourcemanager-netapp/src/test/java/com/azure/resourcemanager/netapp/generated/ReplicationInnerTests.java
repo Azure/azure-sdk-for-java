@@ -14,24 +14,24 @@ public final class ReplicationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationInner model = BinaryData.fromString(
-            "{\"replicationId\":\"fcktqumiekke\",\"endpointType\":\"src\",\"replicationSchedule\":\"hourly\",\"remoteVolumeResourceId\":\"ly\",\"remoteVolumeRegion\":\"hdgqggeb\"}")
+            "{\"replicationId\":\"cjzkzivgvvcna\",\"endpointType\":\"src\",\"replicationSchedule\":\"_10minutely\",\"remoteVolumeResourceId\":\"nxxmueedndrdv\",\"remoteVolumeRegion\":\"kwqqtchealmf\"}")
             .toObject(ReplicationInner.class);
         Assertions.assertEquals(EndpointType.SRC, model.endpointType());
-        Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("ly", model.remoteVolumeResourceId());
-        Assertions.assertEquals("hdgqggeb", model.remoteVolumeRegion());
+        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replicationSchedule());
+        Assertions.assertEquals("nxxmueedndrdv", model.remoteVolumeResourceId());
+        Assertions.assertEquals("kwqqtchealmf", model.remoteVolumeRegion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationInner model = new ReplicationInner().withEndpointType(EndpointType.SRC)
-            .withReplicationSchedule(ReplicationSchedule.HOURLY)
-            .withRemoteVolumeResourceId("ly")
-            .withRemoteVolumeRegion("hdgqggeb");
+            .withReplicationSchedule(ReplicationSchedule.ONE_ZEROMINUTELY)
+            .withRemoteVolumeResourceId("nxxmueedndrdv")
+            .withRemoteVolumeRegion("kwqqtchealmf");
         model = BinaryData.fromObject(model).toObject(ReplicationInner.class);
         Assertions.assertEquals(EndpointType.SRC, model.endpointType());
-        Assertions.assertEquals(ReplicationSchedule.HOURLY, model.replicationSchedule());
-        Assertions.assertEquals("ly", model.remoteVolumeResourceId());
-        Assertions.assertEquals("hdgqggeb", model.remoteVolumeRegion());
+        Assertions.assertEquals(ReplicationSchedule.ONE_ZEROMINUTELY, model.replicationSchedule());
+        Assertions.assertEquals("nxxmueedndrdv", model.remoteVolumeResourceId());
+        Assertions.assertEquals("kwqqtchealmf", model.remoteVolumeRegion());
     }
 }
