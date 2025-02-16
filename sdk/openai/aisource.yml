@@ -12,16 +12,17 @@ extends:
           echo "Java version above"
           echo "JAVA_HOME: $JAVA_HOME"
           echo "PATH: $PATH"
-          
-          ls -la
-          echo "Current directory contents"
-          
-          if ! java -version 2>&1 | grep -q "1.8"; then
-            echo "Java 8 is not installed. Installing Java 8..."
-            sudo apt-get update
-            sudo apt-get install -y openjdk-8-jdk
-          fi
-          echo "Setting JAVA_HOME to Java 8"
+          export JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64/jre
+          echo "JAVA_HOME: $JAVA_HOME"
+
+          ls /usr/lib/jvm
+#
+#          if ! java -version 2>&1 | grep -q "1.8"; then
+#            echo "Java 8 is not installed. Installing Java 8..."
+#            sudo apt-get update
+#            sudo apt-get install -y openjdk-8-jdk
+#          fi
+#          echo "Setting JAVA_HOME to Java 8"
 #          export JAVA_HOME=/path/to/java8
 #          export PATH=$JAVA_HOME/bin:$PATH
         displayName: "Set JAVA_HOME to Java 8"
