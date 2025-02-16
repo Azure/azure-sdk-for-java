@@ -88,7 +88,7 @@ public final class RntbdResponse implements ReferenceCounted {
         this.content = content.copy();
 
         final HttpResponseStatus status = HttpResponseStatus.valueOf(statusCode);
-        final int length = RntbdResponseStatus.LENGTH + this.headers.computeLength();
+        final int length = RntbdResponseStatus.LENGTH + this.headers.computeLength(false);
 
         this.frame = new RntbdResponseStatus(length, status, activityId);
         this.messageLength = length + this.content.writerIndex();
@@ -173,7 +173,7 @@ public final class RntbdResponse implements ReferenceCounted {
         final int start = out.writerIndex();
 
         this.frame.encode(out);
-        this.headers.encode(out);
+        this.headers.encode(out, false);
 
         final int length = out.writerIndex() - start;
         checkState(length == this.frame.getLength());
@@ -318,7 +318,7 @@ public final class RntbdResponse implements ReferenceCounted {
         return this;
     }
 
-    static RntbdResponse decode(final ByteBuf in) {
+    public static RntbdResponse decode(final ByteBuf in) {
 
         final int start = in.markReaderIndex().readerIndex();
 
@@ -347,7 +347,7 @@ public final class RntbdResponse implements ReferenceCounted {
         return new RntbdResponse(in.readSlice(end - start), frame, headers, content);
     }
 
-    StoreResponse toStoreResponse(final RntbdContext context) {
+    public StoreResponse toStoreResponse(final RntbdContext context) {
 
         checkNotNull(context, "expected non-null context");
 
@@ -364,6 +364,25 @@ public final class RntbdResponse implements ReferenceCounted {
         return new StoreResponse(
             this.getStatus().code(),
             this.headers.asMap(context, this.getActivityId()),
+            new ByteBufInputStream(this.content.retain(), true),
+            length);
+    }
+
+    public StoreResponse toStoreResponse() {
+
+        final int length = this.content.writerIndex();
+
+        if (length == 0) {
+            return new StoreResponse(
+                this.getStatus().code(),
+                this.headers.asMap(this.getActivityId()),
+                null,
+                0);
+        }
+
+        return new StoreResponse(
+            this.getStatus().code(),
+            this.headers.asMap(this.getActivityId()),
             new ByteBufInputStream(this.content.retain(), true),
             length);
     }

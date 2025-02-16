@@ -410,7 +410,7 @@ Licensed under the MIT License.
                   </descriptorRefs>
                   <archive>
                     <manifest>
-                      <mainClass>com.azure.cosmos.dotnet.benchmark.Main</mainClass>
+                      <mainClass>com.azure.cosmos.dotnet.benchmark.ThinClientReproMain</mainClass>
                     </manifest>
                   </archive>
                 </configuration>

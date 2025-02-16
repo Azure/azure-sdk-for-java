@@ -255,6 +255,8 @@ public class HttpConstants {
         public static final String POPULATE_INDEX_METRICS = "x-ms-cosmos-populateindexmetrics";
         public static final String INDEX_UTILIZATION = "x-ms-cosmos-index-utilization";
         public static final String QUERY_EXECUTION_INFO = "x-ms-cosmos-query-execution-info";
+        public static final String START_EPK_HASH = "x-ms-cosmos-start-epk-hash";
+        public static final String END_EPK_HASH = "x-ms-cosmos-end-epk-hash";
 
         // Batch operations
         public static final String IS_BATCH_ATOMIC = "x-ms-cosmos-batch-atomic";
@@ -282,6 +284,8 @@ public class HttpConstants {
 
         // Priority Level for throttling
         public static final String PRIORITY_LEVEL = "x-ms-cosmos-priority-level";
+
+        public static final String GLOBAL_DATABASE_ACCOUNT_NAME = "GlobalDatabaseAccountName";
 
         // Thinclient headers
         public static final String THINCLIENT_PROXY_OPERATION_TYPE = "x-ms-thinclient-proxy-operation-type";

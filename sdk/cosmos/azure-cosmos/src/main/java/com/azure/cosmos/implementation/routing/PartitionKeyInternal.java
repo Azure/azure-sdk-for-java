@@ -250,6 +250,10 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
         return PartitionKeyInternalHelper.getEffectivePartitionKeyString(internalPartitionKey, partitionKey);
     }
 
+    public byte[] getEffectivePartitionKeyBytes(PartitionKeyInternal internalPartitionKey, PartitionKeyDefinition partitionKey) {
+        return PartitionKeyInternalHelper.getEffectivePartitionKeyBytes(internalPartitionKey, partitionKey);
+    }
+
     public Range<String> getEPKRangeForPrefixPartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
         return PartitionKeyInternalHelper.getEPKRangeForPrefixPartitionKey(this, partitionKeyDefinition);
     }

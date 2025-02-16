@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
+import com.azure.cosmos.implementation.Lists;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
@@ -17,6 +18,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.apachecommons.collections.map.CaseInsensitiveMap;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -563,6 +565,56 @@ public class LocationCache {
             DatabaseAccountLocationsInfo nextLocationInfo = new DatabaseAccountLocationsInfo(this.locationInfo);
             logger.debug("updating location cache ..., current readLocations [{}], current writeLocations [{}]",
                     nextLocationInfo.readEndpoints, nextLocationInfo.writeEndpoints);
+
+            List<DatabaseAccountLocation> effectiveThinClientWriteLocations = new ArrayList<>();
+            if (thinClientWriteLocations != null) {
+                thinClientWriteLocations.forEach(l -> effectiveThinClientWriteLocations.add(l));
+            }
+
+            List<DatabaseAccountLocation> effectiveThinClientReadLocations = new ArrayList<>();
+            if (thinClientReadLocations != null) {
+                thinClientReadLocations.forEach(l -> effectiveThinClientReadLocations.add(l));
+            }
+
+            if (effectiveThinClientWriteLocations.size() == 0) {
+                logger.error("GetAccount does not contain ThinClient write locations - injecting them.");
+
+                if (gatewayWriteLocations != null) {
+                    gatewayWriteLocations.forEach(l -> {
+                        DatabaseAccountLocation cloned = new DatabaseAccountLocation(l.getPropertyBag().deepCopy());
+                        URI uri = URI.create(cloned.getEndpoint());
+                        String transformed = "https://" + uri.getHost() + ":10650";
+                        logger.error("Transforming Uri {} -> {}", cloned.getEndpoint(), transformed);
+                        cloned.setEndpoint(transformed);
+                        effectiveThinClientWriteLocations.add(cloned);
+                    });
+                }
+            } else {
+                logger.error("GetAccount contains ThinClient write locations.");
+                effectiveThinClientReadLocations.forEach(l -> logger.error("Existing Uri {}", l.getEndpoint()));
+            }
+
+            if (effectiveThinClientReadLocations.size() == 0) {
+                logger.error("GetAccount does not contain ThinClient read locations - injecting them.");
+
+                if (gatewayReadLocations != null) {
+                    gatewayReadLocations.forEach(l -> {
+                        DatabaseAccountLocation cloned = new DatabaseAccountLocation(l.getPropertyBag().deepCopy());
+                        URI uri = URI.create(cloned.getEndpoint());
+                        String transformed = "https://" + uri.getHost() + ":10650";
+                        logger.error("Transforming Uri {} -> {}", cloned.getEndpoint(), transformed);
+                        cloned.setEndpoint(transformed);
+                        effectiveThinClientReadLocations.add(cloned);
+                    });
+                }
+
+            } else {
+                logger.error("GetAccount contains ThinClient read locations.");
+                effectiveThinClientReadLocations.forEach(l -> logger.error("Existing Uri {}", l.getEndpoint()));
+            }
+
+            thinClientWriteLocations = effectiveThinClientWriteLocations;
+            thinClientReadLocations = effectiveThinClientReadLocations;
 
             if (preferenceList != null) {
                 nextLocationInfo.preferredLocations = preferenceList;

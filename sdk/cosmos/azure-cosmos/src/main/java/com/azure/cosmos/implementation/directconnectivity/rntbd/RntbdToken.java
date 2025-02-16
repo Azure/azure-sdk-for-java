@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.ser.PropertyWriter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.CorruptedFrameException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -21,6 +23,8 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @JsonPropertyOrder({ "id", "name", "type", "present", "required", "value" })
 final class RntbdToken {
+
+    private static final Logger logger = LoggerFactory.getLogger(RntbdToken.class);
 
     // region Fields
 
@@ -75,18 +79,20 @@ final class RntbdToken {
 
         if (this.value instanceof ByteBuf) {
             final ByteBuf buffer = (ByteBuf) this.value;
+            buffer.markReaderIndex();
             try {
-                this.value = codec.defaultValue();
-                this.value = codec.read(buffer);
+                return codec.read(buffer);
+
             } catch (final CorruptedFrameException error) {
                 String message = lenientFormat("failed to read %s value: %s", this.getName(), error.getMessage());
                 throw new CorruptedFrameException(message);
             }
+            finally {
+                buffer.resetReaderIndex();
+            }
         } else {
-            this.value = codec.convert(this.value);
+            return codec.convert(this.value);
         }
-
-        return this.value;
     }
 
     public <T> T getValue(final Class<T> cls) {
@@ -149,7 +155,6 @@ final class RntbdToken {
     }
 
     public void encode(final ByteBuf out) {
-
         checkNotNull(out, "out");
 
         if (!this.isPresent()) {
@@ -160,6 +165,7 @@ final class RntbdToken {
             return;
         }
 
+        logger.error("RNTBD TOKEN {}", this);
         out.writeShortLE(this.getId());
         out.writeByte(this.getTokenType().id());
 
