@@ -39,8 +39,8 @@ public class MetricsClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             interceptorManager.addSanitizers(new TestProxySanitizer(
-                "resourceGroups/.*/",
-                "resourceGroups/redacted/",
+                "resourceGroups\\/.*\\/providers",
+                "resourceGroups/redacted/providers",
                 TestProxySanitizerType.URL));
             interceptorManager.addMatchers(
                 new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
@@ -51,8 +51,8 @@ public class MetricsClientTestBase extends TestProxyTestBase {
             configClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
             interceptorManager.addSanitizers(new TestProxySanitizer(
-                "resourceGroups/.*/",
-                "resourceGroups/redacted/",
+                "resourceGroups\\/.*\\/providers",
+                "resourceGroups/redacted/providers",
                 TestProxySanitizerType.URL));
             interceptorManager.addMatchers(
                 new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
