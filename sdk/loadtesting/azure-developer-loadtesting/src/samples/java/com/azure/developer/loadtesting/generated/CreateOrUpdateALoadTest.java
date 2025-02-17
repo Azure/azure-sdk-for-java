@@ -57,9 +57,9 @@ public class CreateOrUpdateALoadTest {
                 .setSecrets(mapOf("secret1",
                     new Secret().setValue(
                         "https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827")
-                        .setType(SecretType.AKV_SECRET_URI)))
+                        .setType(SecretType.KEY_VAULT_SECRET_URI)))
                 .setEnvironmentVariables(mapOf("envvar1", "sampletext"))
-                .setLoadTestConfiguration(new LoadTestConfiguration().setEngineInstances(6).setSplitAllCSVs(true))
+                .setLoadTestConfiguration(new LoadTestConfiguration().setEngineInstances(6).setSplitAllCsvs(true))
                 .setDescription("sample description")
                 .setDisplayName("Performance_LoadTest")
                 .setSubnetId(

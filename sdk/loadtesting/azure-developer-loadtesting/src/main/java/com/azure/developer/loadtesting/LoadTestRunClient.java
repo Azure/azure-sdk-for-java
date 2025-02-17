@@ -24,7 +24,7 @@ import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.developer.loadtesting.models.TestRun;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
 import com.azure.developer.loadtesting.models.TestRunFileInfo;
-import com.azure.developer.loadtesting.models.TestRunServerMetricConfig;
+import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
 import com.azure.developer.loadtesting.models.TimeGrain;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -1840,35 +1840,6 @@ public final class LoadTestRunClient {
     }
 
     /**
-     * Configure server metrics for a test run.
-     *
-     * @param testRunId Unique Id for the load test run, must contain only lower-case alphabetic,
-     * numeric, underscore or hyphen characters.
-     * @param body Server metric configuration model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test run server metrics configuration.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestRunServerMetricConfig createOrUpdateServerMetricsConfig(String testRunId,
-        TestRunServerMetricConfig body) {
-        // Generated convenience method for createOrUpdateServerMetricsConfigWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getTestRunServerMetricConfigAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getTestRunServerMetricConfigAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateServerMetricsConfigWithResponse(testRunId, bodyInBinaryData, requestOptions).getValue()
-            .toObject(TestRunServerMetricConfig.class);
-    }
-
-    /**
      * Delete an existing load test run.
      *
      * Delete an existing load test run by providing the testRunId.
@@ -1928,11 +1899,11 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestRunServerMetricConfig getServerMetricsConfig(String testRunId) {
+    public TestRunServerMetricsConfiguration getServerMetricsConfig(String testRunId) {
         // Generated convenience method for getServerMetricsConfigWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getServerMetricsConfigWithResponse(testRunId, requestOptions).getValue()
-            .toObject(TestRunServerMetricConfig.class);
+            .toObject(TestRunServerMetricsConfiguration.class);
     }
 
     /**
@@ -2340,5 +2311,34 @@ public final class LoadTestRunClient {
         // Generated convenience method for listTestProfileRuns
         return new PagedIterable<>(client.listTestProfileRuns(minStartDateTime, maxStartDateTime, minEndDateTime,
             maxEndDateTime, createdDateStartTime, createdDateEndTime, testProfileRunIds, testProfileIds, statuses));
+    }
+
+    /**
+     * Configure server metrics for a test run.
+     *
+     * @param testRunId Unique Id for the load test run, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param body Server metric configuration model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return test run server metrics configuration.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TestRunServerMetricsConfiguration createOrUpdateServerMetricsConfig(String testRunId,
+        TestRunServerMetricsConfiguration body) {
+        // Generated convenience method for createOrUpdateServerMetricsConfigWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getTestRunServerMetricsConfigurationAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getTestRunServerMetricsConfigurationAccessor().prepareModelForJsonMergePatch(body, false);
+        return createOrUpdateServerMetricsConfigWithResponse(testRunId, bodyInBinaryData, requestOptions).getValue()
+            .toObject(TestRunServerMetricsConfiguration.class);
     }
 }

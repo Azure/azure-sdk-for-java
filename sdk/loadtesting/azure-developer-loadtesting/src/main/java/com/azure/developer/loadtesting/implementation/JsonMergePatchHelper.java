@@ -23,8 +23,8 @@ import com.azure.developer.loadtesting.models.TestProfile;
 import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.developer.loadtesting.models.TestRun;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
-import com.azure.developer.loadtesting.models.TestRunServerMetricConfig;
-import com.azure.developer.loadtesting.models.TestServerMetricConfig;
+import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
+import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
 
 /**
  * This is the Helper class to enable json merge patch serialization for a model.
@@ -230,21 +230,21 @@ public class JsonMergePatchHelper {
         return appComponentAccessor;
     }
 
-    private static TestServerMetricConfigAccessor testServerMetricConfigAccessor;
+    private static TestServerMetricsConfigurationAccessor testServerMetricsConfigurationAccessor;
 
-    public interface TestServerMetricConfigAccessor {
-        TestServerMetricConfig prepareModelForJsonMergePatch(TestServerMetricConfig testServerMetricConfig,
-            boolean jsonMergePatchEnabled);
+    public interface TestServerMetricsConfigurationAccessor {
+        TestServerMetricsConfiguration prepareModelForJsonMergePatch(
+            TestServerMetricsConfiguration testServerMetricsConfiguration, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(TestServerMetricConfig testServerMetricConfig);
+        boolean isJsonMergePatch(TestServerMetricsConfiguration testServerMetricsConfiguration);
     }
 
-    public static void setTestServerMetricConfigAccessor(TestServerMetricConfigAccessor accessor) {
-        testServerMetricConfigAccessor = accessor;
+    public static void setTestServerMetricsConfigurationAccessor(TestServerMetricsConfigurationAccessor accessor) {
+        testServerMetricsConfigurationAccessor = accessor;
     }
 
-    public static TestServerMetricConfigAccessor getTestServerMetricConfigAccessor() {
-        return testServerMetricConfigAccessor;
+    public static TestServerMetricsConfigurationAccessor getTestServerMetricsConfigurationAccessor() {
+        return testServerMetricsConfigurationAccessor;
     }
 
     private static ResourceMetricAccessor resourceMetricAccessor;
@@ -350,21 +350,22 @@ public class JsonMergePatchHelper {
         return testRunAppComponentsAccessor;
     }
 
-    private static TestRunServerMetricConfigAccessor testRunServerMetricConfigAccessor;
+    private static TestRunServerMetricsConfigurationAccessor testRunServerMetricsConfigurationAccessor;
 
-    public interface TestRunServerMetricConfigAccessor {
-        TestRunServerMetricConfig prepareModelForJsonMergePatch(TestRunServerMetricConfig testRunServerMetricConfig,
-            boolean jsonMergePatchEnabled);
+    public interface TestRunServerMetricsConfigurationAccessor {
+        TestRunServerMetricsConfiguration prepareModelForJsonMergePatch(
+            TestRunServerMetricsConfiguration testRunServerMetricsConfiguration, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(TestRunServerMetricConfig testRunServerMetricConfig);
+        boolean isJsonMergePatch(TestRunServerMetricsConfiguration testRunServerMetricsConfiguration);
     }
 
-    public static void setTestRunServerMetricConfigAccessor(TestRunServerMetricConfigAccessor accessor) {
-        testRunServerMetricConfigAccessor = accessor;
+    public static void
+        setTestRunServerMetricsConfigurationAccessor(TestRunServerMetricsConfigurationAccessor accessor) {
+        testRunServerMetricsConfigurationAccessor = accessor;
     }
 
-    public static TestRunServerMetricConfigAccessor getTestRunServerMetricConfigAccessor() {
-        return testRunServerMetricConfigAccessor;
+    public static TestRunServerMetricsConfigurationAccessor getTestRunServerMetricsConfigurationAccessor() {
+        return testRunServerMetricsConfigurationAccessor;
     }
 
     private static TestProfileRunAccessor testProfileRunAccessor;

@@ -133,7 +133,7 @@
     "com.azure.developer.loadtesting.LoadTestRunClient.stopTestRun": "Customizations.TestRunOperations.stop",
     "com.azure.developer.loadtesting.LoadTestRunClient.stopTestRunWithResponse": "Customizations.TestRunOperations.stop",
     "com.azure.developer.loadtesting.LoadTestRunClientBuilder": "Customizations.TestRunOperations",
-    "com.azure.developer.loadtesting.models.AggregationType": "Microsoft.LoadTestService.AggregationType",
+    "com.azure.developer.loadtesting.models.Aggregation": "Microsoft.LoadTestService.Aggregation",
     "com.azure.developer.loadtesting.models.AppComponent": "Microsoft.LoadTestService.AppComponent",
     "com.azure.developer.loadtesting.models.ArtifactsContainerInfo": "Microsoft.LoadTestService.ArtifactsContainerInfo",
     "com.azure.developer.loadtesting.models.AutoStopCriteria": "Microsoft.LoadTestService.AutoStopCriteria",
@@ -191,10 +191,10 @@
     "com.azure.developer.loadtesting.models.TestRunFileInfo": "Microsoft.LoadTestService.TestRunFileInfo",
     "com.azure.developer.loadtesting.models.TestRunInputArtifacts": "Microsoft.LoadTestService.TestRunInputArtifacts",
     "com.azure.developer.loadtesting.models.TestRunOutputArtifacts": "Microsoft.LoadTestService.TestRunOutputArtifacts",
-    "com.azure.developer.loadtesting.models.TestRunServerMetricConfig": "Microsoft.LoadTestService.TestRunServerMetricConfig",
+    "com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration": "Microsoft.LoadTestService.TestRunServerMetricsConfiguration",
     "com.azure.developer.loadtesting.models.TestRunStatistics": "Microsoft.LoadTestService.TestRunStatistics",
     "com.azure.developer.loadtesting.models.TestRunStatus": "Microsoft.LoadTestService.TestRunStatus",
-    "com.azure.developer.loadtesting.models.TestServerMetricConfig": "Microsoft.LoadTestService.TestServerMetricConfig",
+    "com.azure.developer.loadtesting.models.TestServerMetricsConfiguration": "Microsoft.LoadTestService.TestServerMetricsConfiguration",
     "com.azure.developer.loadtesting.models.TimeGrain": "Microsoft.LoadTestService.TimeGrain",
     "com.azure.developer.loadtesting.models.TimeSeriesElement": "Microsoft.LoadTestService.TimeSeriesElement"
   }

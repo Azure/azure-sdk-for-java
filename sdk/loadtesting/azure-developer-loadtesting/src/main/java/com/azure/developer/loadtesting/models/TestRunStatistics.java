@@ -36,90 +36,6 @@ public final class TestRunStatistics implements JsonSerializable<TestRunStatisti
     private Double errorCount;
 
     /*
-     * Error percentage.
-     */
-    @Generated
-    private Double errorPct;
-
-    /*
-     * Mean response time.
-     */
-    @Generated
-    private Double meanResTime;
-
-    /*
-     * Median response time.
-     */
-    @Generated
-    private Double medianResTime;
-
-    /*
-     * Max response time.
-     */
-    @Generated
-    private Double maxResTime;
-
-    /*
-     * Minimum response time.
-     */
-    @Generated
-    private Double minResTime;
-
-    /*
-     * 90 percentile response time.
-     */
-    @Generated
-    private Double pct1ResTime;
-
-    /*
-     * 95 percentile response time.
-     */
-    @Generated
-    private Double pct2ResTime;
-
-    /*
-     * 99 percentile response time.
-     */
-    @Generated
-    private Double pct3ResTime;
-
-    /*
-     * 75 percentile response time.
-     */
-    @Generated
-    private Double pct75ResTime;
-
-    /*
-     * 96 percentile response time.
-     */
-    @Generated
-    private Double pct96ResTime;
-
-    /*
-     * 97 percentile response time.
-     */
-    @Generated
-    private Double pct97ResTime;
-
-    /*
-     * 98 percentile response time.
-     */
-    @Generated
-    private Double pct98ResTime;
-
-    /*
-     * 99.9 percentile response time.
-     */
-    @Generated
-    private Double pct999ResTime;
-
-    /*
-     * 99.99 percentile response time.
-     */
-    @Generated
-    private Double pct9999ResTime;
-
-    /*
      * Throughput.
      */
     @Generated
@@ -172,146 +88,6 @@ public final class TestRunStatistics implements JsonSerializable<TestRunStatisti
     @Generated
     public Double getErrorCount() {
         return this.errorCount;
-    }
-
-    /**
-     * Get the errorPct property: Error percentage.
-     *
-     * @return the errorPct value.
-     */
-    @Generated
-    public Double getErrorPct() {
-        return this.errorPct;
-    }
-
-    /**
-     * Get the meanResTime property: Mean response time.
-     *
-     * @return the meanResTime value.
-     */
-    @Generated
-    public Double getMeanResTime() {
-        return this.meanResTime;
-    }
-
-    /**
-     * Get the medianResTime property: Median response time.
-     *
-     * @return the medianResTime value.
-     */
-    @Generated
-    public Double getMedianResTime() {
-        return this.medianResTime;
-    }
-
-    /**
-     * Get the maxResTime property: Max response time.
-     *
-     * @return the maxResTime value.
-     */
-    @Generated
-    public Double getMaxResTime() {
-        return this.maxResTime;
-    }
-
-    /**
-     * Get the minResTime property: Minimum response time.
-     *
-     * @return the minResTime value.
-     */
-    @Generated
-    public Double getMinResTime() {
-        return this.minResTime;
-    }
-
-    /**
-     * Get the pct1ResTime property: 90 percentile response time.
-     *
-     * @return the pct1ResTime value.
-     */
-    @Generated
-    public Double getPct1ResTime() {
-        return this.pct1ResTime;
-    }
-
-    /**
-     * Get the pct2ResTime property: 95 percentile response time.
-     *
-     * @return the pct2ResTime value.
-     */
-    @Generated
-    public Double getPct2ResTime() {
-        return this.pct2ResTime;
-    }
-
-    /**
-     * Get the pct3ResTime property: 99 percentile response time.
-     *
-     * @return the pct3ResTime value.
-     */
-    @Generated
-    public Double getPct3ResTime() {
-        return this.pct3ResTime;
-    }
-
-    /**
-     * Get the pct75ResTime property: 75 percentile response time.
-     *
-     * @return the pct75ResTime value.
-     */
-    @Generated
-    public Double getPct75ResTime() {
-        return this.pct75ResTime;
-    }
-
-    /**
-     * Get the pct96ResTime property: 96 percentile response time.
-     *
-     * @return the pct96ResTime value.
-     */
-    @Generated
-    public Double getPct96ResTime() {
-        return this.pct96ResTime;
-    }
-
-    /**
-     * Get the pct97ResTime property: 97 percentile response time.
-     *
-     * @return the pct97ResTime value.
-     */
-    @Generated
-    public Double getPct97ResTime() {
-        return this.pct97ResTime;
-    }
-
-    /**
-     * Get the pct98ResTime property: 98 percentile response time.
-     *
-     * @return the pct98ResTime value.
-     */
-    @Generated
-    public Double getPct98ResTime() {
-        return this.pct98ResTime;
-    }
-
-    /**
-     * Get the pct999ResTime property: 99.9 percentile response time.
-     *
-     * @return the pct999ResTime value.
-     */
-    @Generated
-    public Double getPct999ResTime() {
-        return this.pct999ResTime;
-    }
-
-    /**
-     * Get the pct9999ResTime property: 99.99 percentile response time.
-     *
-     * @return the pct9999ResTime value.
-     */
-    @Generated
-    public Double getPct9999ResTime() {
-        return this.pct9999ResTime;
     }
 
     /**
@@ -376,33 +152,34 @@ public final class TestRunStatistics implements JsonSerializable<TestRunStatisti
                 } else if ("errorCount".equals(fieldName)) {
                     deserializedTestRunStatistics.errorCount = reader.getNullable(JsonReader::getDouble);
                 } else if ("errorPct".equals(fieldName)) {
-                    deserializedTestRunStatistics.errorPct = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.errorPercentage = reader.getNullable(JsonReader::getDouble);
                 } else if ("meanResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.meanResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.meanResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("medianResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.medianResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.medianResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("maxResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.maxResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.maxResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("minResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.minResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.minResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("pct1ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.pct1ResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.percentile90ResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("pct2ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.pct2ResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.percentile95ResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("pct3ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.pct3ResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.percentile99ResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("pct75ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.pct75ResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.percentile75ResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("pct96ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.pct96ResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.percentile96ResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("pct97ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.pct97ResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.percentile97ResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("pct98ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.pct98ResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.percentile98ResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("pct999ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.pct999ResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.percentile999ResponseTime = reader.getNullable(JsonReader::getDouble);
                 } else if ("pct9999ResTime".equals(fieldName)) {
-                    deserializedTestRunStatistics.pct9999ResTime = reader.getNullable(JsonReader::getDouble);
+                    deserializedTestRunStatistics.percentile9999ResponseTime
+                        = reader.getNullable(JsonReader::getDouble);
                 } else if ("throughput".equals(fieldName)) {
                     deserializedTestRunStatistics.throughput = reader.getNullable(JsonReader::getDouble);
                 } else if ("receivedKBytesPerSec".equals(fieldName)) {
@@ -415,5 +192,229 @@ public final class TestRunStatistics implements JsonSerializable<TestRunStatisti
             }
             return deserializedTestRunStatistics;
         });
+    }
+
+    /*
+     * Error percentage.
+     */
+    @Generated
+    private Double errorPercentage;
+
+    /*
+     * Mean response time.
+     */
+    @Generated
+    private Double meanResponseTime;
+
+    /*
+     * Median response time.
+     */
+    @Generated
+    private Double medianResponseTime;
+
+    /*
+     * Max response time.
+     */
+    @Generated
+    private Double maxResponseTime;
+
+    /*
+     * Minimum response time.
+     */
+    @Generated
+    private Double minResponseTime;
+
+    /*
+     * 90 percentile response time.
+     */
+    @Generated
+    private Double percentile90ResponseTime;
+
+    /*
+     * 95 percentile response time.
+     */
+    @Generated
+    private Double percentile95ResponseTime;
+
+    /*
+     * 99 percentile response time.
+     */
+    @Generated
+    private Double percentile99ResponseTime;
+
+    /*
+     * 75 percentile response time.
+     */
+    @Generated
+    private Double percentile75ResponseTime;
+
+    /*
+     * 96 percentile response time.
+     */
+    @Generated
+    private Double percentile96ResponseTime;
+
+    /*
+     * 97 percentile response time.
+     */
+    @Generated
+    private Double percentile97ResponseTime;
+
+    /*
+     * 98 percentile response time.
+     */
+    @Generated
+    private Double percentile98ResponseTime;
+
+    /*
+     * 99.9 percentile response time.
+     */
+    @Generated
+    private Double percentile999ResponseTime;
+
+    /*
+     * 99.99 percentile response time.
+     */
+    @Generated
+    private Double percentile9999ResponseTime;
+
+    /**
+     * Get the errorPercentage property: Error percentage.
+     *
+     * @return the errorPercentage value.
+     */
+    @Generated
+    public Double getErrorPercentage() {
+        return this.errorPercentage;
+    }
+
+    /**
+     * Get the meanResponseTime property: Mean response time.
+     *
+     * @return the meanResponseTime value.
+     */
+    @Generated
+    public Double getMeanResponseTime() {
+        return this.meanResponseTime;
+    }
+
+    /**
+     * Get the medianResponseTime property: Median response time.
+     *
+     * @return the medianResponseTime value.
+     */
+    @Generated
+    public Double getMedianResponseTime() {
+        return this.medianResponseTime;
+    }
+
+    /**
+     * Get the maxResponseTime property: Max response time.
+     *
+     * @return the maxResponseTime value.
+     */
+    @Generated
+    public Double getMaxResponseTime() {
+        return this.maxResponseTime;
+    }
+
+    /**
+     * Get the minResponseTime property: Minimum response time.
+     *
+     * @return the minResponseTime value.
+     */
+    @Generated
+    public Double getMinResponseTime() {
+        return this.minResponseTime;
+    }
+
+    /**
+     * Get the percentile90ResponseTime property: 90 percentile response time.
+     *
+     * @return the percentile90ResponseTime value.
+     */
+    @Generated
+    public Double getPercentile90ResponseTime() {
+        return this.percentile90ResponseTime;
+    }
+
+    /**
+     * Get the percentile95ResponseTime property: 95 percentile response time.
+     *
+     * @return the percentile95ResponseTime value.
+     */
+    @Generated
+    public Double getPercentile95ResponseTime() {
+        return this.percentile95ResponseTime;
+    }
+
+    /**
+     * Get the percentile99ResponseTime property: 99 percentile response time.
+     *
+     * @return the percentile99ResponseTime value.
+     */
+    @Generated
+    public Double getPercentile99ResponseTime() {
+        return this.percentile99ResponseTime;
+    }
+
+    /**
+     * Get the percentile75ResponseTime property: 75 percentile response time.
+     *
+     * @return the percentile75ResponseTime value.
+     */
+    @Generated
+    public Double getPercentile75ResponseTime() {
+        return this.percentile75ResponseTime;
+    }
+
+    /**
+     * Get the percentile96ResponseTime property: 96 percentile response time.
+     *
+     * @return the percentile96ResponseTime value.
+     */
+    @Generated
+    public Double getPercentile96ResponseTime() {
+        return this.percentile96ResponseTime;
+    }
+
+    /**
+     * Get the percentile97ResponseTime property: 97 percentile response time.
+     *
+     * @return the percentile97ResponseTime value.
+     */
+    @Generated
+    public Double getPercentile97ResponseTime() {
+        return this.percentile97ResponseTime;
+    }
+
+    /**
+     * Get the percentile98ResponseTime property: 98 percentile response time.
+     *
+     * @return the percentile98ResponseTime value.
+     */
+    @Generated
+    public Double getPercentile98ResponseTime() {
+        return this.percentile98ResponseTime;
+    }
+
+    /**
+     * Get the percentile999ResponseTime property: 99.9 percentile response time.
+     *
+     * @return the percentile999ResponseTime value.
+     */
+    @Generated
+    public Double getPercentile999ResponseTime() {
+        return this.percentile999ResponseTime;
+    }
+
+    /**
+     * Get the percentile9999ResponseTime property: 99.99 percentile response time.
+     *
+     * @return the percentile9999ResponseTime value.
+     */
+    @Generated
+    public Double getPercentile9999ResponseTime() {
+        return this.percentile9999ResponseTime;
     }
 }

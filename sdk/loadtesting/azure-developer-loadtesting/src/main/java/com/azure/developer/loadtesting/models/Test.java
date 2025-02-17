@@ -109,12 +109,6 @@ public final class Test implements JsonSerializable<Test> {
     private TestKind kind;
 
     /*
-     * Inject load test engines without deploying public IP for outbound access
-     */
-    @Generated
-    private Boolean publicIPDisabled;
-
-    /*
      * Type of the managed identity referencing the Key vault.
      */
     @Generated
@@ -501,29 +495,6 @@ public final class Test implements JsonSerializable<Test> {
     }
 
     /**
-     * Get the publicIPDisabled property: Inject load test engines without deploying public IP for outbound access.
-     *
-     * @return the publicIPDisabled value.
-     */
-    @Generated
-    public Boolean isPublicIPDisabled() {
-        return this.publicIPDisabled;
-    }
-
-    /**
-     * Set the publicIPDisabled property: Inject load test engines without deploying public IP for outbound access.
-     *
-     * @param publicIPDisabled the publicIPDisabled value to set.
-     * @return the Test object itself.
-     */
-    @Generated
-    public Test setPublicIPDisabled(Boolean publicIPDisabled) {
-        this.publicIPDisabled = publicIPDisabled;
-        this.updatedProperties.add("publicIPDisabled");
-        return this;
-    }
-
-    /**
      * Get the keyvaultReferenceIdentityType property: Type of the managed identity referencing the Key vault.
      *
      * @return the keyvaultReferenceIdentityType value.
@@ -725,7 +696,7 @@ public final class Test implements JsonSerializable<Test> {
             jsonWriter.writeStringField("displayName", this.displayName);
             jsonWriter.writeStringField("subnetId", this.subnetId);
             jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
-            jsonWriter.writeBooleanField("publicIPDisabled", this.publicIPDisabled);
+            jsonWriter.writeBooleanField("publicIPDisabled", this.publicIpDisabled);
             jsonWriter.writeStringField("keyvaultReferenceIdentityType", this.keyvaultReferenceIdentityType);
             jsonWriter.writeStringField("keyvaultReferenceIdentityId", this.keyvaultReferenceIdentityId);
             jsonWriter.writeStringField("metricsReferenceIdentityType",
@@ -849,11 +820,11 @@ public final class Test implements JsonSerializable<Test> {
                 jsonWriter.writeStringField("kind", this.kind.toString());
             }
         }
-        if (updatedProperties.contains("publicIPDisabled")) {
-            if (this.publicIPDisabled == null) {
+        if (updatedProperties.contains("publicIpDisabled")) {
+            if (this.publicIpDisabled == null) {
                 jsonWriter.writeNullField("publicIPDisabled");
             } else {
-                jsonWriter.writeBooleanField("publicIPDisabled", this.publicIPDisabled);
+                jsonWriter.writeBooleanField("publicIPDisabled", this.publicIpDisabled);
             }
         }
         if (updatedProperties.contains("keyvaultReferenceIdentityType")) {
@@ -948,7 +919,7 @@ public final class Test implements JsonSerializable<Test> {
                 } else if ("kind".equals(fieldName)) {
                     deserializedTest.kind = TestKind.fromString(reader.getString());
                 } else if ("publicIPDisabled".equals(fieldName)) {
-                    deserializedTest.publicIPDisabled = reader.getNullable(JsonReader::getBoolean);
+                    deserializedTest.publicIpDisabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("keyvaultReferenceIdentityType".equals(fieldName)) {
                     deserializedTest.keyvaultReferenceIdentityType = reader.getString();
                 } else if ("keyvaultReferenceIdentityId".equals(fieldName)) {
@@ -978,5 +949,34 @@ public final class Test implements JsonSerializable<Test> {
             }
             return deserializedTest;
         });
+    }
+
+    /*
+     * Inject load test engines without deploying public IP for outbound access
+     */
+    @Generated
+    private Boolean publicIpDisabled;
+
+    /**
+     * Get the publicIpDisabled property: Inject load test engines without deploying public IP for outbound access.
+     *
+     * @return the publicIpDisabled value.
+     */
+    @Generated
+    public Boolean isPublicIpDisabled() {
+        return this.publicIpDisabled;
+    }
+
+    /**
+     * Set the publicIpDisabled property: Inject load test engines without deploying public IP for outbound access.
+     *
+     * @param publicIpDisabled the publicIpDisabled value to set.
+     * @return the Test object itself.
+     */
+    @Generated
+    public Test setPublicIpDisabled(Boolean publicIpDisabled) {
+        this.publicIpDisabled = publicIpDisabled;
+        this.updatedProperties.add("publicIpDisabled");
+        return this;
     }
 }

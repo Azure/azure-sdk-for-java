@@ -46,7 +46,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * The primary aggregation type value defining how to use the values for display.
      */
     @Generated
-    private AggregationType primaryAggregationType;
+    private Aggregation primaryAggregationType;
 
     /*
      * The collection of what all aggregation types are supported.
@@ -121,7 +121,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
      * @return the primaryAggregationType value.
      */
     @Generated
-    public AggregationType getPrimaryAggregationType() {
+    public Aggregation getPrimaryAggregationType() {
         return this.primaryAggregationType;
     }
 
@@ -203,8 +203,7 @@ public final class MetricDefinition implements JsonSerializable<MetricDefinition
                 } else if ("namespace".equals(fieldName)) {
                     deserializedMetricDefinition.namespace = reader.getString();
                 } else if ("primaryAggregationType".equals(fieldName)) {
-                    deserializedMetricDefinition.primaryAggregationType
-                        = AggregationType.fromString(reader.getString());
+                    deserializedMetricDefinition.primaryAggregationType = Aggregation.fromString(reader.getString());
                 } else if ("supportedAggregationTypes".equals(fieldName)) {
                     List<String> supportedAggregationTypes = reader.readArray(reader1 -> reader1.getString());
                     deserializedMetricDefinition.supportedAggregationTypes = supportedAggregationTypes;

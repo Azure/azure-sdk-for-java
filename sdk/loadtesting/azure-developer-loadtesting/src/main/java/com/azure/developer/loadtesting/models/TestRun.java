@@ -200,12 +200,6 @@ public final class TestRun implements JsonSerializable<TestRun> {
     private Boolean debugLogsEnabled;
 
     /*
-     * Inject load test engines without deploying public IP for outbound access
-     */
-    @Generated
-    private Boolean publicIPDisabled;
-
-    /*
      * The type of the entity that created the test run. (E.x. User, ScheduleTrigger, etc).
      */
     @Generated
@@ -709,16 +703,6 @@ public final class TestRun implements JsonSerializable<TestRun> {
     }
 
     /**
-     * Get the publicIPDisabled property: Inject load test engines without deploying public IP for outbound access.
-     *
-     * @return the publicIPDisabled value.
-     */
-    @Generated
-    public Boolean isPublicIPDisabled() {
-        return this.publicIPDisabled;
-    }
-
-    /**
      * Get the createdByType property: The type of the entity that created the test run. (E.x. User, ScheduleTrigger,
      * etc).
      *
@@ -999,7 +983,7 @@ public final class TestRun implements JsonSerializable<TestRun> {
                 } else if ("debugLogsEnabled".equals(fieldName)) {
                     deserializedTestRun.debugLogsEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("publicIPDisabled".equals(fieldName)) {
-                    deserializedTestRun.publicIPDisabled = reader.getNullable(JsonReader::getBoolean);
+                    deserializedTestRun.publicIpDisabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("createdByType".equals(fieldName)) {
                     deserializedTestRun.createdByType = CreatedByType.fromString(reader.getString());
                 } else if ("createdDateTime".equals(fieldName)) {
@@ -1032,5 +1016,21 @@ public final class TestRun implements JsonSerializable<TestRun> {
         this.createdByType = createdByType;
         this.updatedProperties.add("createdByType");
         return this;
+    }
+
+    /*
+     * Inject load test engines without deploying public IP for outbound access
+     */
+    @Generated
+    private Boolean publicIpDisabled;
+
+    /**
+     * Get the publicIpDisabled property: Inject load test engines without deploying public IP for outbound access.
+     *
+     * @return the publicIpDisabled value.
+     */
+    @Generated
+    public Boolean isPublicIpDisabled() {
+        return this.publicIpDisabled;
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestRunClient;
 import com.azure.developer.loadtesting.LoadTestRunClientBuilder;
 import com.azure.developer.loadtesting.models.ResourceMetric;
-import com.azure.developer.loadtesting.models.TestRunServerMetricConfig;
+import com.azure.developer.loadtesting.models.TestRunServerMetricsConfiguration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,9 +20,9 @@ public class AddOrUpdateServerMetricsConfigurationForALoadTestRun {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.developer.loadtesting.generated.createorupdateservermetricsconfig.addorupdateservermetricsconfigurationforaloadtestrun
-        TestRunServerMetricConfig response = loadTestRunClient.createOrUpdateServerMetricsConfig(
+        TestRunServerMetricsConfiguration response = loadTestRunClient.createOrUpdateServerMetricsConfig(
             "edc6e529-d009-4b99-b763-ca492e3a2823",
-            new TestRunServerMetricConfig().setMetrics(mapOf(
+            new TestRunServerMetricsConfiguration().setMetrics(mapOf(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource/providers/microsoft.insights/metricdefinitions/requests/duration",
                 new ResourceMetric().setResourceId(
                     "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplerg/providers/microsoft.insights/components/appcomponentresource")

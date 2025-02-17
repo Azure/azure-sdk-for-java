@@ -54,9 +54,9 @@ public class CreateUpdateAndStartALoadTestRun {
                 new Secret()
                     .setValue(
                         "https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827")
-                    .setType(SecretType.AKV_SECRET_URI)))
+                    .setType(SecretType.KEY_VAULT_SECRET_URI)))
             .setEnvironmentVariables(mapOf("envvar1", "sampletext"))
-            .setLoadTestConfiguration(new LoadTestConfiguration().setEngineInstances(6).setSplitAllCSVs(true))
+            .setLoadTestConfiguration(new LoadTestConfiguration().setEngineInstances(6).setSplitAllCsvs(true))
             .setDisplayName("Performance_LoadTest_Run1")
             .setTestId("12345678-1234-1234-1234-123456789012")
             .setDescription("sample description")

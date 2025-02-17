@@ -27,7 +27,7 @@ import com.azure.developer.loadtesting.models.Test;
 import com.azure.developer.loadtesting.models.TestAppComponents;
 import com.azure.developer.loadtesting.models.TestFileInfo;
 import com.azure.developer.loadtesting.models.TestProfile;
-import com.azure.developer.loadtesting.models.TestServerMetricConfig;
+import com.azure.developer.loadtesting.models.TestServerMetricsConfiguration;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -1240,35 +1240,6 @@ public final class LoadTestAdministrationAsyncClient {
     }
 
     /**
-     * Configure server metrics for a test.
-     *
-     * @param testId Unique name for the load test, must contain only lower-case alphabetic,
-     * numeric, underscore or hyphen characters.
-     * @param body Server metric configuration model.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return test server metrics configuration on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TestServerMetricConfig> createOrUpdateServerMetricsConfig(String testId, TestServerMetricConfig body) {
-        // Generated convenience method for createOrUpdateServerMetricsConfigWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        JsonMergePatchHelper.getTestServerMetricConfigAccessor().prepareModelForJsonMergePatch(body, true);
-        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
-        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
-        bodyInBinaryData.getLength();
-        JsonMergePatchHelper.getTestServerMetricConfigAccessor().prepareModelForJsonMergePatch(body, false);
-        return createOrUpdateServerMetricsConfigWithResponse(testId, bodyInBinaryData, requestOptions)
-            .flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TestServerMetricConfig.class));
-    }
-
-    /**
      * Get associated app component (collection of azure resources) for the given test.
      *
      * @param testId Unique name for the load test, must contain only lower-case alphabetic,
@@ -1306,11 +1277,11 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TestServerMetricConfig> getServerMetricsConfig(String testId) {
+    public Mono<TestServerMetricsConfiguration> getServerMetricsConfig(String testId) {
         // Generated convenience method for getServerMetricsConfigWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getServerMetricsConfigWithResponse(testId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(TestServerMetricConfig.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(TestServerMetricsConfiguration.class));
     }
 
     /**
@@ -1748,5 +1719,35 @@ public final class LoadTestAdministrationAsyncClient {
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
+    }
+
+    /**
+     * Configure server metrics for a test.
+     *
+     * @param testId Unique name for the load test, must contain only lower-case alphabetic,
+     * numeric, underscore or hyphen characters.
+     * @param body Server metric configuration model.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return test server metrics configuration on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TestServerMetricsConfiguration> createOrUpdateServerMetricsConfig(String testId,
+        TestServerMetricsConfiguration body) {
+        // Generated convenience method for createOrUpdateServerMetricsConfigWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getTestServerMetricsConfigurationAccessor().prepareModelForJsonMergePatch(body, true);
+        BinaryData bodyInBinaryData = BinaryData.fromObject(body);
+        // BinaryData.fromObject() will not fire serialization, use getLength() to fire serialization.
+        bodyInBinaryData.getLength();
+        JsonMergePatchHelper.getTestServerMetricsConfigurationAccessor().prepareModelForJsonMergePatch(body, false);
+        return createOrUpdateServerMetricsConfigWithResponse(testId, bodyInBinaryData, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TestServerMetricsConfiguration.class));
     }
 }

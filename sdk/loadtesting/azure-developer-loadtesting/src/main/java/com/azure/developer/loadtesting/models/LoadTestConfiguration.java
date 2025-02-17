@@ -29,15 +29,6 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
     private Integer engineInstances;
 
     /*
-     * If false, Azure Load Testing copies and processes your input files unmodified
-     * across all test engine instances. If true, Azure Load Testing splits the CSV
-     * input data evenly across all engine instances. If you provide multiple CSV
-     * files, each file will be split evenly.
-     */
-    @Generated
-    private Boolean splitAllCSVs;
-
-    /*
      * If true, optionalLoadTestConfig is required and JMX script for the load test is
      * not required to upload.
      */
@@ -116,35 +107,6 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
     public LoadTestConfiguration setEngineInstances(Integer engineInstances) {
         this.engineInstances = engineInstances;
         this.updatedProperties.add("engineInstances");
-        return this;
-    }
-
-    /**
-     * Get the splitAllCSVs property: If false, Azure Load Testing copies and processes your input files unmodified
-     * across all test engine instances. If true, Azure Load Testing splits the CSV
-     * input data evenly across all engine instances. If you provide multiple CSV
-     * files, each file will be split evenly.
-     *
-     * @return the splitAllCSVs value.
-     */
-    @Generated
-    public Boolean isSplitAllCSVs() {
-        return this.splitAllCSVs;
-    }
-
-    /**
-     * Set the splitAllCSVs property: If false, Azure Load Testing copies and processes your input files unmodified
-     * across all test engine instances. If true, Azure Load Testing splits the CSV
-     * input data evenly across all engine instances. If you provide multiple CSV
-     * files, each file will be split evenly.
-     *
-     * @param splitAllCSVs the splitAllCSVs value to set.
-     * @return the LoadTestConfiguration object itself.
-     */
-    @Generated
-    public LoadTestConfiguration setSplitAllCSVs(Boolean splitAllCSVs) {
-        this.splitAllCSVs = splitAllCSVs;
-        this.updatedProperties.add("splitAllCSVs");
         return this;
     }
 
@@ -230,7 +192,7 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
         } else {
             jsonWriter.writeStartObject();
             jsonWriter.writeNumberField("engineInstances", this.engineInstances);
-            jsonWriter.writeBooleanField("splitAllCSVs", this.splitAllCSVs);
+            jsonWriter.writeBooleanField("splitAllCSVs", this.splitAllCsvs);
             jsonWriter.writeBooleanField("quickStartTest", this.quickStartTest);
             jsonWriter.writeJsonField("optionalLoadTestConfig", this.optionalLoadTestConfig);
             jsonWriter.writeArrayField("regionalLoadTestConfig", this.regionalLoadTestConfig,
@@ -249,11 +211,11 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
                 jsonWriter.writeNumberField("engineInstances", this.engineInstances);
             }
         }
-        if (updatedProperties.contains("splitAllCSVs")) {
-            if (this.splitAllCSVs == null) {
+        if (updatedProperties.contains("splitAllCsvs")) {
+            if (this.splitAllCsvs == null) {
                 jsonWriter.writeNullField("splitAllCSVs");
             } else {
-                jsonWriter.writeBooleanField("splitAllCSVs", this.splitAllCSVs);
+                jsonWriter.writeBooleanField("splitAllCSVs", this.splitAllCsvs);
             }
         }
         if (updatedProperties.contains("quickStartTest")) {
@@ -303,7 +265,7 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
                 if ("engineInstances".equals(fieldName)) {
                     deserializedLoadTestConfiguration.engineInstances = reader.getNullable(JsonReader::getInt);
                 } else if ("splitAllCSVs".equals(fieldName)) {
-                    deserializedLoadTestConfiguration.splitAllCSVs = reader.getNullable(JsonReader::getBoolean);
+                    deserializedLoadTestConfiguration.splitAllCsvs = reader.getNullable(JsonReader::getBoolean);
                 } else if ("quickStartTest".equals(fieldName)) {
                     deserializedLoadTestConfiguration.quickStartTest = reader.getNullable(JsonReader::getBoolean);
                 } else if ("optionalLoadTestConfig".equals(fieldName)) {
@@ -318,5 +280,43 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
             }
             return deserializedLoadTestConfiguration;
         });
+    }
+
+    /*
+     * If false, Azure Load Testing copies and processes your input files unmodified
+     * across all test engine instances. If true, Azure Load Testing splits the CSV
+     * input data evenly across all engine instances. If you provide multiple CSV
+     * files, each file will be split evenly.
+     */
+    @Generated
+    private Boolean splitAllCsvs;
+
+    /**
+     * Get the splitAllCsvs property: If false, Azure Load Testing copies and processes your input files unmodified
+     * across all test engine instances. If true, Azure Load Testing splits the CSV
+     * input data evenly across all engine instances. If you provide multiple CSV
+     * files, each file will be split evenly.
+     *
+     * @return the splitAllCsvs value.
+     */
+    @Generated
+    public Boolean isSplitAllCsvs() {
+        return this.splitAllCsvs;
+    }
+
+    /**
+     * Set the splitAllCsvs property: If false, Azure Load Testing copies and processes your input files unmodified
+     * across all test engine instances. If true, Azure Load Testing splits the CSV
+     * input data evenly across all engine instances. If you provide multiple CSV
+     * files, each file will be split evenly.
+     *
+     * @param splitAllCsvs the splitAllCsvs value to set.
+     * @return the LoadTestConfiguration object itself.
+     */
+    @Generated
+    public LoadTestConfiguration setSplitAllCsvs(Boolean splitAllCsvs) {
+        this.splitAllCsvs = splitAllCsvs;
+        this.updatedProperties.add("splitAllCsvs");
+        return this;
     }
 }

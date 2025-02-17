@@ -13,12 +13,6 @@ import java.util.Collection;
 public final class SecretType extends ExpandableStringEnum<SecretType> {
 
     /**
-     * If the secret is stored in an Azure Key Vault.
-     */
-    @Generated
-    public static final SecretType AKV_SECRET_URI = fromString("AKV_SECRET_URI");
-
-    /**
      * If the secret value provided as plain text.
      */
     @Generated
@@ -54,4 +48,10 @@ public final class SecretType extends ExpandableStringEnum<SecretType> {
     public static Collection<SecretType> values() {
         return values(SecretType.class);
     }
+
+    /**
+     * If the secret is stored in an Azure Key Vault.
+     */
+    @Generated
+    public static final SecretType KEY_VAULT_SECRET_URI = fromString("AKV_SECRET_URI");
 }
