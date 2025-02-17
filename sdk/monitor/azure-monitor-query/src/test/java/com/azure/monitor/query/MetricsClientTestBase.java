@@ -7,6 +7,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
@@ -36,6 +38,10 @@ public class MetricsClientTestBase extends TestProxyTestBase {
             = new ConfigurationClientBuilder().endpoint(appConfigEndpoint).credential(credential);
 
         if (getTestMode() == TestMode.PLAYBACK) {
+            interceptorManager.addSanitizers(new TestProxySanitizer(
+                "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/.*/providers/Microsoft.OperationalInsights/workspaces/.*",
+                "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/redacted/providers/Microsoft.OperationalInsights/workspaces/redacted",
+                TestProxySanitizerType.URL));
             interceptorManager.addMatchers(
                 new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
                     .setComparingBodies(false)
@@ -44,6 +50,10 @@ public class MetricsClientTestBase extends TestProxyTestBase {
 
             configClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
+            interceptorManager.addSanitizers(new TestProxySanitizer(
+                "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/.*/providers/Microsoft.OperationalInsights/workspaces/.*",
+                "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/redacted/providers/Microsoft.OperationalInsights/workspaces/redacted",
+                TestProxySanitizerType.URL));
             interceptorManager.addMatchers(
                 new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
                     .setComparingBodies(false)
