@@ -208,16 +208,6 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
   $additionalValidationPackages = @()
   $uniqueResultSet = @()
 
-  # Any PR files that start with these prefixes will add azure-template
-  # Note: sdk/boms and sdk/parents are both pom only pipelines which are effectively release only and
-  # for changes in those directories, we need to run something, and template should be sufficient. For
-  # certain subdirectories in sdk/parents we're running core or clientcore but adding template ensures
-  # that the other sdk/parents subdirectories are covered.
-  $templateStartsWithPrefixes = @(".config", ".devcontainer", ".github", ".vscode", "common", "doc", "samples", "sdk/boms", "sdk/parents")
-  # Any PR files that start with these prefixes will add azure-core
-  $coreStartsWithPrefixes = @("eng", "sdk/parents/azure-sdk-parent", "sdk/parents/azure-client-sdk-parent")
-  # Any PR files that start with these prefixes will add clientcore which is just 'core'
-  $clientcoreStartsWithPrefixes = @("sdk/parents/clientcore-parent")
   function Test-StartsWith {
     param (
         [string[]]$ChangedFiles,
@@ -268,8 +258,9 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
         $changedServices += $pathComponents[1]
       }
 
-      # for anything in the root of the sdk directory, just run template
-      if ($pathComponents.Length -eq 2 -and $pathComponents[0] -eq "sdk") {
+      # For anything in the root of the sdk directory, or the repository root, just run template
+      if (($pathComponents.Length -eq 2 -and $pathComponents[0] -eq "sdk") -or
+          ($pathComponents.Length -eq 1)) {
         $changedServices += "template"
       }
     }
@@ -303,15 +294,6 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
         $additionalPackagesForOtherDirs += $validationGroup.additionalPackagesForValidation
       }
     }
-    # if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $templateStartsWithPrefixes) {
-    #   $additionalPackagesForOtherDirs += "azure-sdk-template"
-    # }
-    # if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $coreStartsWithPrefixes) {
-    #   $additionalPackagesForOtherDirs += "azure-core"
-    # }
-    # if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $clientcoreStartsWithPrefixes) {
-    #   $additionalPackagesForOtherDirs += "core"
-    # }
   }
 
   $changedServices = $changedServices | Get-Unique

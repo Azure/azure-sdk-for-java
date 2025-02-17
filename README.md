@@ -7,6 +7,8 @@ This repository is for active development of the Azure SDK for Java. For consume
 
 ## Getting started
 
+JRS-WILL NOT BE CHECKED IN.
+
 To get started with a specific service library, see the **README.md** file located in the library's project folder. You can find service libraries in the `/sdk` directory. For a list of all the services we support access our [list of all existing libraries](https://azure.github.io/azure-sdk/releases/latest/all/java.html).
 
 For tutorials, samples, quick starts and other documentation, visit [Azure for Java Developers](https://docs.microsoft.com/java/azure/).
