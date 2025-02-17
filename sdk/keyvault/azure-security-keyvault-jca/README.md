@@ -307,14 +307,14 @@ You can use the JCA provider to sign JAR files using certificates stored in Azur
 You can find completed steps [here](#using-jarsigner-with-azure-key-vault-jca)
 
 ### File-System certificates
-You can load the certificate in the file system as a trusted certificate by configure the following properties.
+You can load the certificate in the file system as a trusted certificate by configuring the following properties.
 
-```yaml
-azure:
-  cert-path:
-    well-known:     # The file location where you store the well-known certificate
-    custom:         # The file location where you store the custom certificate
-```
+| Certificate Type       | Description                                 | Usage                                                                                     |
+|------------------------|---------------------------------------------|-------------------------------------------------------------------------------------------|
+| Well-Known Certificate | The file path to the well-known certificate | `System.setProperty("azure.cert-path.well-known", "<well-known-certificate-file-path>")]` |
+| Custom Certificate     | The file path to the custom certificate     | `System.setProperty("azure.cert-path.custom", "<custom-certificate-file-path>")`          |
+
+Note: These properties support certificate files only (e.g., `.cer`, `.pem`, `.der`, `.crt`). Private keys are not supported.
 
 ### Key-Less certificates
 You can set the private key as [non-exportable] to ensure the security of the key.
