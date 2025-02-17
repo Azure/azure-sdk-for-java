@@ -1328,16 +1328,6 @@ service
 
 <br/>
 <details>
-<summary> logz </summary>
-
-* [package-2020-10-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logz/resource-manager#tag-package-2020-10-01)
-    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-logz/1.0.0-beta.3)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-logz/1.0.0-beta.2)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-logz/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> machinelearning </summary>
 
 * [package-2024-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/machinelearningservices/resource-manager#tag-package-2024-04)
