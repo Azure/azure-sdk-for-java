@@ -69,6 +69,25 @@ public final class RntbdObjectMapper {
 
     public static String toJson(final Object value) {
         try {
+            if (value instanceof RntbdToken) {
+                RntbdToken token = (RntbdToken)value;
+                if (token.isPresent() && token.getTokenType() == RntbdTokenType.Bytes) {
+                    Object tokenValue = token.getValue();
+                    // TODO @fabianm special casing after conversion?
+                    if (tokenValue instanceof ByteBuf) {
+                        ByteBuf buf = (ByteBuf) tokenValue;
+                        StringBuilder hexString = new StringBuilder();
+                        for (int i = buf.readerIndex(); i < buf.readerIndex() + buf.readableBytes(); i++) {
+                            hexString.append(java.lang.String.format("%02X", buf.getByte(i)));
+                        }
+
+                        String json = objectWriter.writeValueAsString(value);
+                        ObjectNode parsed = (ObjectNode)objectMapper.readTree(json);
+                        parsed.put("value", hexString.toString());
+                        return parsed.toString();
+                    }
+                }
+            }
             return objectWriter.writeValueAsString(value);
         } catch (final JsonProcessingException error) {
             logger.debug("could not convert {} value to JSON due to:", value.getClass(), error);
