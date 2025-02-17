@@ -100,11 +100,24 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)))
                 .recordWith(ArrayList::new)
-                .thenConsumeWhile(chatCompletions -> {
-                    assertCompletionsStream(chatCompletions);
-                    return true;
+                .thenConsumeWhile(completions -> true)
+                .consumeRecordedWith(messageList -> {
+                    assertTrue(messageList.size() > 1);
+
+                    Object[] result = messageList.stream().toArray();
+                    Completions[] completionsArray = Arrays.copyOf(result, result.length, Completions[].class);
+
+                    assertTrue(completionsArray.length > 1);
+                    // First element returns the prompt filter results (no output tokens are present)
+                    assertFalse(CoreUtils.isNullOrEmpty(completionsArray[0].getPromptFilterResults()));
+                    // Choices (output tokens) are present in all the elements in between
+                    for(int i = 1; i < completionsArray.length - 2; i++) {
+                        assertCompletionsStream(completionsArray[i]);
+                    }
+
+                    // Last element returns the completion tokens (no output tokens are present)
+                    assertNotNull(completionsArray[completionsArray.length - 1].getUsage());
                 })
-                .consumeRecordedWith(messageList -> assertTrue(messageList.size() > 1))
                 .verifyComplete();
         });
     }
@@ -567,13 +580,9 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
             StepVerifier.create(client.getCompletionsStream(modelId, completionsOptions))
                 .recordWith(ArrayList::new)
-                .thenConsumeWhile(chatCompletions -> {
-                    assertCompletionsStream(chatCompletions);
-                    return true;
-                })
+                .thenConsumeWhile(chatCompletions ->  true)
                 .consumeRecordedWith(messageList -> {
                     assertTrue(messageList.size() > 1);
-
                     int i = 0;
                     for (Iterator<Completions> it = messageList.iterator(); it.hasNext();) {
                         Completions completions = it.next();
@@ -581,19 +590,19 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                             assertEquals(1, completions.getPromptFilterResults().size());
                             assertSafePromptContentFilterResults(completions.getPromptFilterResults().get(0));
                         } else if (i == messageList.size() - 1) {
-                            // The last stream message is empty with all the filters set to null
-                            assertEquals(1, completions.getChoices().size());
-                            Choice choice = completions.getChoices().get(0);
-                            assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
-                            assertNotNull(choice.getText());
-                            // TODO (team): change in behaviour, this used to be uncommented
-                            //                            assertSafeChoiceContentFilterResults(choice.getContentFilterResults());
+                            // The last contains only the token usage
+                            assertEquals(0, completions.getChoices().size());
+                            assertEquals(completions.getUsage().getCompletionTokens() + completions.getUsage().getPromptTokens(),
+                                    completions.getUsage().getTotalTokens());
                         } else {
                             // The rest of the intermediary messages have the text generation content filter set
                             assertNull(completions.getPromptFilterResults());
-                            assertNotNull(completions.getChoices().get(0));
-                            assertSafeChoiceContentFilterResults(
-                                completions.getChoices().get(0).getContentFilterResults());
+                            Choice choice = completions.getChoices().get(0);
+                            assertNotNull(choice);
+                            if (choice.getFinishReason() == null) {
+                                assertSafeChoiceContentFilterResults(
+                                        choice.getContentFilterResults());
+                            }
                         }
                         i++;
                     }
