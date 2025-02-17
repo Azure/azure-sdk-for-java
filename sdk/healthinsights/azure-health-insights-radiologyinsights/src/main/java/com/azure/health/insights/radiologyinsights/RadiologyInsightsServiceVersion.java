@@ -13,7 +13,17 @@ public enum RadiologyInsightsServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-04-01.
      */
-    V2024_04_01("2024-04-01");
+    V2024_04_01("2024-04-01"),
+
+    /**
+     * Enum value 2024-08-01-preview.
+     */
+    V2024_08_01_PREVIEW("2024-08-01-preview"),
+
+    /**
+     * Enum value 2024-10-01.
+     */
+    V2024_10_01("2024-10-01");
 
     private final String version;
 
@@ -35,6 +45,6 @@ public enum RadiologyInsightsServiceVersion implements ServiceVersion {
      * @return The latest {@link RadiologyInsightsServiceVersion}.
      */
     public static RadiologyInsightsServiceVersion getLatest() {
-        return V2024_04_01;
+        return V2024_10_01;
     }
 }
