@@ -39,8 +39,8 @@ public class MetricsClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             interceptorManager.addSanitizers(new TestProxySanitizer(
-                "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/.*/providers/Microsoft.OperationalInsights/workspaces/.*",
-                "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/redacted/providers/Microsoft.OperationalInsights/workspaces/redacted",
+                "resourceGroups/.*/",
+                "resourceGroups/redacted/",
                 TestProxySanitizerType.URL));
             interceptorManager.addMatchers(
                 new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
@@ -51,8 +51,8 @@ public class MetricsClientTestBase extends TestProxyTestBase {
             configClientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
             interceptorManager.addSanitizers(new TestProxySanitizer(
-                "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/.*/providers/Microsoft.OperationalInsights/workspaces/.*",
-                "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/redacted/providers/Microsoft.OperationalInsights/workspaces/redacted",
+                "resourceGroups/.*/",
+                "resourceGroups/redacted/",
                 TestProxySanitizerType.URL));
             interceptorManager.addMatchers(
                 new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
