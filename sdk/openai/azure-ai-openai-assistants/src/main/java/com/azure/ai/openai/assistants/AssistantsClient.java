@@ -36,6 +36,7 @@ import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.ListSortOrder;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
 import com.azure.ai.openai.assistants.models.PageableList;
+import com.azure.ai.openai.assistants.models.RunIncludes;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.StreamUpdate;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
@@ -70,6 +71,7 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 
 /**
@@ -3931,5 +3933,35 @@ public final class AssistantsClient {
         return createVectorStoreFileBatchWithResponse(vectorStoreId, createVectorStoreFileBatchRequest, requestOptions)
             .getValue()
             .toObject(VectorStoreFileBatch.class);
+    }
+
+    /**
+     * Gets a single run step from a thread run.
+     *
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the specific run to retrieve the step from.
+     * @param stepId The ID of the step to retrieve information about.
+     * @param runInclude A list of additional fields to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single run step from a thread run.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RunStep getRunStep(String threadId, String runId, String stepId, List<RunIncludes> runInclude) {
+        // Generated convenience method for getRunStepWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (runInclude != null) {
+            requestOptions.addQueryParam("include[]",
+                runInclude.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(",")),
+                false);
+        }
+        return getRunStepWithResponse(threadId, runId, stepId, requestOptions).getValue().toObject(RunStep.class);
     }
 }
