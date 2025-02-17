@@ -163,6 +163,7 @@
     <module>sdk/parents</module>
     <module>sdk/peering</module>
     <module>sdk/personalizer</module>
+    <module>sdk/pineconevectordb</module>
     <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
     <module>sdk/postgresql</module>

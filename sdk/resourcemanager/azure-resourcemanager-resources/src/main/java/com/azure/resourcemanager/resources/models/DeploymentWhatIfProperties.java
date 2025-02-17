@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -121,17 +122,54 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DeploymentWhatIfProperties withValidationLevel(ValidationLevel validationLevel) {
+        super.withValidationLevel(validationLevel);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (whatIfSettings() != null) {
             whatIfSettings().validate();
         }
+        if (templateLink() != null) {
+            templateLink().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (parametersLink() != null) {
+            parametersLink().validate();
+        }
+        if (mode() == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property mode in model DeploymentWhatIfProperties"));
+        }
+        if (debugSetting() != null) {
+            debugSetting().validate();
+        }
+        if (onErrorDeployment() != null) {
+            onErrorDeployment().validate();
+        }
+        if (expressionEvaluationOptions() != null) {
+            expressionEvaluationOptions().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeploymentWhatIfProperties.class);
 
     /**
      * {@inheritDoc}
@@ -147,6 +185,7 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
         jsonWriter.writeJsonField("debugSetting", debugSetting());
         jsonWriter.writeJsonField("onErrorDeployment", onErrorDeployment());
         jsonWriter.writeJsonField("expressionEvaluationOptions", expressionEvaluationOptions());
+        jsonWriter.writeStringField("validationLevel", validationLevel() == null ? null : validationLevel().toString());
         jsonWriter.writeJsonField("whatIfSettings", this.whatIfSettings);
         return jsonWriter.writeEndObject();
     }
@@ -186,6 +225,9 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
                 } else if ("expressionEvaluationOptions".equals(fieldName)) {
                     deserializedDeploymentWhatIfProperties
                         .withExpressionEvaluationOptions(ExpressionEvaluationOptions.fromJson(reader));
+                } else if ("validationLevel".equals(fieldName)) {
+                    deserializedDeploymentWhatIfProperties
+                        .withValidationLevel(ValidationLevel.fromString(reader.getString()));
                 } else if ("whatIfSettings".equals(fieldName)) {
                     deserializedDeploymentWhatIfProperties.whatIfSettings = DeploymentWhatIfSettings.fromJson(reader);
                 } else {

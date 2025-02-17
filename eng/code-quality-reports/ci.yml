@@ -11,6 +11,8 @@ trigger:
       - .vscode/eclipse-format-azure-sdk-for-java.xml
       - eng/code-quality-reports/
       - eng/pipelines/code-quality-reports.yml
+      - eng/pipelines/scripts/Get-Linting-Commands.ps1
+      - eng/pipelines/scripts/Get-Linting-Reports.ps1
 
 pr:
   branches:
@@ -24,6 +26,8 @@ pr:
       - .vscode/eclipse-format-azure-sdk-for-java.xml
       - eng/code-quality-reports/
       - eng/pipelines/code-quality-reports.yml
+      - eng/pipelines/scripts/Get-Linting-Commands.ps1
+      - eng/pipelines/scripts/Get-Linting-Reports.ps1
 
 extends:
   template: /eng/pipelines/code-quality-reports.yml

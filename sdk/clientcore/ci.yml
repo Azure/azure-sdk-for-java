@@ -9,6 +9,8 @@ trigger:
   paths:
     include:
       - sdk/clientcore/
+    exclude:
+      - sdk/clientcore/annotation-processor/
 
 pr:
   branches:
@@ -20,6 +22,8 @@ pr:
   paths:
     include:
       - sdk/clientcore/
+    exclude:
+      - sdk/clientcore/annotation-processor/
 
 parameters:
   - name: release_core

@@ -22,7 +22,7 @@ public class PartitionKeyInternalHelper {
     public static final String MaximumExclusiveEffectivePartitionKey = toHexEncodedBinaryString(PartitionKeyInternal.InfinityPartitionKey.components);
     public static final byte[] MaximumExclusiveEffectivePartitionKeyBytes = toBinary(PartitionKeyInternal.InfinityPartitionKey.components);
 
-    public static final Range<String> FullRange = new Range<String>(
+    public static final Range<String> FullRange = new Range<>(
         PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
         PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey,
         true,

@@ -129,4 +129,4 @@ Set the following two Environment variables to be able to run unit tests targeti
   For more details on this visit - [how to create an Azure Storage account connection
   string](https://learn.microsoft.com/azure/storage/common/storage-configure-connection-string#create-a-connection-string-for-an-azure-storage-account).
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fmicrosoft-azure-eventhubs%2FREADME.png)
+

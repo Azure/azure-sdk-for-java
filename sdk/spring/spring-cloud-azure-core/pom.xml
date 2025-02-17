@@ -12,7 +12,7 @@
 
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-core</artifactId>
-  <version>5.20.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
+  <version>5.21.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-core;current} -->
 
   <name>Spring Cloud Azure Core</name>
   <url>https://microsoft.github.io/spring-cloud-azure</url>
@@ -40,27 +40,27 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>6.2.1</version> <!-- {x-version-update;springboot3_org.springframework:spring-context;external_dependency} -->
+      <version>6.2.2</version> <!-- {x-version-update;springboot3_org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.55.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.15.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.9.12</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.9.14</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
-      <version>1.15.6</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
+      <version>1.16.1</version> <!-- {x-version-update;com.azure:azure-core-management;dependency} -->
     </dependency>
 
     <dependency>
@@ -124,7 +124,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>6.2.1</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
+      <version>6.2.2</version> <!-- {x-version-update;springboot3_org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -181,7 +181,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework:spring-context:[6.2.1]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-context:[6.2.2]</include> <!-- {x-include-update;springboot3_org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

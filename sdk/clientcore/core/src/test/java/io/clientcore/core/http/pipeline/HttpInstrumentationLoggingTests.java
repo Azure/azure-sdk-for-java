@@ -4,21 +4,18 @@
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.MockHttpResponse;
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpLogOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpRetryOptions;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -56,10 +53,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class HttpInstrumentationLoggingTests {
     private static final String URI = "https://example.com?param=value&api-version=42";
     private static final String REDACTED_URI = "https://example.com?param=REDACTED&api-version=42";
-    private static final Set<String> DEFAULT_ALLOWED_QUERY_PARAMS = new HttpLogOptions().getAllowedQueryParamNames();
-    private static final Set<HttpHeaderName> DEFAULT_ALLOWED_HEADERS = new HttpLogOptions().getAllowedHeaderNames();
+    private static final Set<String> DEFAULT_ALLOWED_QUERY_PARAMS
+        = new HttpInstrumentationOptions().getAllowedQueryParamNames();
+    private static final Set<HttpHeaderName> DEFAULT_ALLOWED_HEADERS
+        = new HttpInstrumentationOptions().getAllowedHeaderNames();
     private static final HttpHeaderName CUSTOM_REQUEST_ID = HttpHeaderName.fromString("custom-request-id");
-    private static final InstrumentationOptions<?> DEFAULT_INSTRUMENTATION_OPTIONS = null;
 
     private final AccessibleByteArrayOutputStream logCaptureStream;
 
@@ -69,13 +67,12 @@ public class HttpInstrumentationLoggingTests {
 
     @ParameterizedTest
     @MethodSource("disabledHttpLoggingSource")
-    public void testDisabledHttpLogging(ClientLogger.LogLevel logLevel, HttpLogOptions.HttpLogDetailLevel httpLogLevel)
+    public void testDisabledHttpLogging(LogLevel logLevel, HttpInstrumentationOptions.HttpLogLevel detailLevel)
         throws IOException {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
 
-        HttpPipeline pipeline
-            = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, new HttpLogOptions().setLogLevel(httpLogLevel));
-        HttpRequest request = new HttpRequest(HttpMethod.GET, URI);
+        HttpPipeline pipeline = createPipeline(new HttpInstrumentationOptions().setHttpLogLevel(detailLevel));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(URI);
         request.setRequestOptions(new RequestOptions().setLogger(logger));
 
         pipeline.send(request).close();
@@ -84,21 +81,21 @@ public class HttpInstrumentationLoggingTests {
     }
 
     public static Stream<Arguments> disabledHttpLoggingSource() {
-        return Stream.of(Arguments.of(ClientLogger.LogLevel.VERBOSE, HttpLogOptions.HttpLogDetailLevel.NONE),
-            Arguments.of(ClientLogger.LogLevel.WARNING, HttpLogOptions.HttpLogDetailLevel.BASIC),
-            Arguments.of(ClientLogger.LogLevel.WARNING, HttpLogOptions.HttpLogDetailLevel.HEADERS),
-            Arguments.of(ClientLogger.LogLevel.WARNING, HttpLogOptions.HttpLogDetailLevel.BODY),
-            Arguments.of(ClientLogger.LogLevel.WARNING, HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS));
+        return Stream.of(Arguments.of(LogLevel.VERBOSE, HttpInstrumentationOptions.HttpLogLevel.NONE),
+            Arguments.of(LogLevel.WARNING, HttpInstrumentationOptions.HttpLogLevel.HEADERS),
+            Arguments.of(LogLevel.WARNING, HttpInstrumentationOptions.HttpLogLevel.BODY),
+            Arguments.of(LogLevel.WARNING, HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS));
     }
 
     @ParameterizedTest
     @MethodSource("allowQueryParamSource")
     public void testBasicHttpLogging(Set<String> allowedParams, String expectedUri) throws IOException {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC)
-            .setAllowedQueryParamNames(allowedParams);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options
+            = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS)
+                .setAllowedQueryParamNames(allowedParams);
 
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options);
+        HttpPipeline pipeline = createPipeline(options);
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
         Response<?> response = pipeline.send(request);
@@ -108,19 +105,25 @@ public class HttpInstrumentationLoggingTests {
         assertEquals(2, logMessages.size());
 
         assertRequestLog(logMessages.get(0), expectedUri, request, null, 0);
-        assertEquals(7, logMessages.get(0).size());
+        assertEquals(10, logMessages.get(0).size());
+        assertEquals("REDACTED", logMessages.get(0).get("Authorization"));
+        assertEquals("application/json", logMessages.get(0).get("Content-Type"));
 
         assertResponseLog(logMessages.get(1), expectedUri, response, 0);
-        assertEquals(11, logMessages.get(1).size());
+        assertEquals(14, logMessages.get(1).size());
+        assertEquals("13", logMessages.get(1).get("Content-Length"));
+        assertEquals("application/text", logMessages.get(1).get("Content-Type"));
+        assertEquals("REDACTED", logMessages.get(1).get("not-safe-to-log"));
     }
 
     @Test
-    public void testHttpLoggingTracingDisabled() throws IOException {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>().setTracingEnabled(false);
-        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC);
+    public void testBasicHttpLoggingNoRedactedHeaders() throws IOException {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options
+            = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS)
+                .setRedactedHeaderNamesLoggingEnabled(false);
 
-        HttpPipeline pipeline = createPipeline(instrumentationOptions, logOptions);
+        HttpPipeline pipeline = createPipeline(options);
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
         Response<?> response = pipeline.send(request);
@@ -130,19 +133,45 @@ public class HttpInstrumentationLoggingTests {
         assertEquals(2, logMessages.size());
 
         assertRequestLog(logMessages.get(0), request);
-        assertEquals(5, logMessages.get(0).size());
+        assertEquals(9, logMessages.get(0).size());
+        assertEquals("application/json", logMessages.get(0).get("Content-Type"));
 
         assertResponseLog(logMessages.get(1), response);
-        assertEquals(9, logMessages.get(1).size());
+        assertEquals(13, logMessages.get(1).size());
+        assertEquals("13", logMessages.get(1).get("Content-Length"));
+        assertEquals("application/text", logMessages.get(1).get("Content-Type"));
+    }
+
+    @Test
+    public void testHttpLoggingTracingDisabled() throws IOException {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions().setTracingEnabled(false)
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS)
+            .setRedactedHeaderNamesLoggingEnabled(false);
+        HttpPipeline pipeline = createPipeline(options);
+
+        HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
+        Response<?> response = pipeline.send(request);
+        response.close();
+
+        List<Map<String, Object>> logMessages = parseLogMessages(logCaptureStream);
+        assertEquals(2, logMessages.size());
+
+        assertRequestLog(logMessages.get(0), request);
+        assertEquals(6, logMessages.get(0).size());
+
+        assertResponseLog(logMessages.get(1), response);
+        assertEquals(11, logMessages.get(1).size());
     }
 
     @Test
     public void testHttpLoggingTracingDisabledCustomContext() throws IOException {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>().setTracingEnabled(false);
-        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions().setTracingEnabled(false)
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS);
 
-        HttpPipeline pipeline = createPipeline(instrumentationOptions, logOptions);
+        HttpPipeline pipeline = createPipeline(options);
 
         InstrumentationContext instrumentationContext
             = createInstrumentationContext("1234567890abcdef1234567890abcdef", "1234567890abcdef");
@@ -155,18 +184,19 @@ public class HttpInstrumentationLoggingTests {
         assertEquals(2, logMessages.size());
 
         assertRequestLog(logMessages.get(0), request);
-        assertEquals(7, logMessages.get(0).size());
+        assertEquals(10, logMessages.get(0).size());
 
         assertResponseLog(logMessages.get(1), response);
-        assertEquals(11, logMessages.get(1).size());
+        assertEquals(14, logMessages.get(1).size());
     }
 
     @Test
     public void testTryCount() throws IOException {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options
+            = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS);
 
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options);
+        HttpPipeline pipeline = createPipeline(options);
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
         HttpRequestAccessHelper.setTryCount(request, 42);
@@ -182,12 +212,13 @@ public class HttpInstrumentationLoggingTests {
 
     @ParameterizedTest
     @MethodSource("testExceptionSeverity")
-    public void testConnectionException(ClientLogger.LogLevel level, boolean expectExceptionLog) {
+    public void testConnectionException(LogLevel level, boolean expectExceptionLog) {
         ClientLogger logger = setupLogLevelAndGetLogger(level, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
+        HttpInstrumentationOptions options
+            = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS);
 
         RuntimeException expectedException = new RuntimeException("socket error");
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options, request -> {
+        HttpPipeline pipeline = createPipeline(options, request -> {
             throw expectedException;
         });
 
@@ -205,14 +236,15 @@ public class HttpInstrumentationLoggingTests {
 
     @ParameterizedTest
     @MethodSource("testExceptionSeverity")
-    public void testRequestBodyException(ClientLogger.LogLevel level, boolean expectExceptionLog) {
+    public void testRequestBodyException(LogLevel level, boolean expectExceptionLog) {
         ClientLogger logger = setupLogLevelAndGetLogger(level, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         IOException expectedException = new IOException("socket error");
         TestStream requestStream = new TestStream(1024, expectedException);
         BinaryData requestBody = BinaryData.fromStream(requestStream, 1024L);
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options);
+        HttpPipeline pipeline = createPipeline(options);
 
         HttpRequest request = createRequest(HttpMethod.POST, URI, logger);
         request.setBody(requestBody);
@@ -229,13 +261,14 @@ public class HttpInstrumentationLoggingTests {
 
     @ParameterizedTest
     @MethodSource("testExceptionSeverity")
-    public void testResponseBodyException(ClientLogger.LogLevel level, boolean expectExceptionLog) {
+    public void testResponseBodyException(LogLevel level, boolean expectExceptionLog) {
         ClientLogger logger = setupLogLevelAndGetLogger(level, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         IOException expectedException = new IOException("socket error");
         TestStream responseStream = new TestStream(1024, expectedException);
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options,
+        HttpPipeline pipeline = createPipeline(options,
             request -> new MockHttpResponse(request, 200, BinaryData.fromStream(responseStream, 1024L)));
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
@@ -253,10 +286,11 @@ public class HttpInstrumentationLoggingTests {
 
     @Test
     public void testResponseBodyLoggingOnClose() throws IOException {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.INFORMATIONAL, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, logCaptureStream);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options,
+        HttpPipeline pipeline = createPipeline(options,
             request -> new MockHttpResponse(request, 200, BinaryData.fromString("Response body")));
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
@@ -272,10 +306,11 @@ public class HttpInstrumentationLoggingTests {
 
     @Test
     public void testResponseBodyRequestedMultipleTimes() {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.INFORMATIONAL, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, logCaptureStream);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options,
+        HttpPipeline pipeline = createPipeline(options,
             request -> new MockHttpResponse(request, 200, BinaryData.fromString("Response body")));
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
@@ -292,11 +327,12 @@ public class HttpInstrumentationLoggingTests {
     @ParameterizedTest
     @MethodSource("allowQueryParamSource")
     public void testBasicHttpLoggingRequestOff(Set<String> allowedParams, String expectedUri) throws IOException {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.INFORMATIONAL, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC)
-            .setAllowedQueryParamNames(allowedParams);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, logCaptureStream);
+        HttpInstrumentationOptions options
+            = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS)
+                .setAllowedQueryParamNames(allowedParams);
 
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options);
+        HttpPipeline pipeline = createPipeline(options);
 
         HttpRequest request = createRequest(HttpMethod.POST, URI, logger);
         Response<?> response = pipeline.send(request);
@@ -306,17 +342,18 @@ public class HttpInstrumentationLoggingTests {
         assertEquals(1, logMessages.size());
 
         assertResponseLog(logMessages.get(0), expectedUri, response, 0);
-        assertEquals(11, logMessages.get(0).size());
+        assertEquals(14, logMessages.get(0).size());
     }
 
     @ParameterizedTest
     @MethodSource("allowedHeaders")
     public void testHeadersHttpLogging(Set<HttpHeaderName> allowedHeaders) throws IOException {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS)
-            .setAllowedHeaderNames(allowedHeaders);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options
+            = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS)
+                .setAllowedHeaderNames(allowedHeaders);
 
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options);
+        HttpPipeline pipeline = createPipeline(options);
 
         HttpRequest request = createRequest(HttpMethod.GET, URI, logger);
         request.getHeaders().set(CUSTOM_REQUEST_ID, "12345");
@@ -328,31 +365,32 @@ public class HttpInstrumentationLoggingTests {
 
         Map<String, Object> requestLog = logMessages.get(0);
         assertRequestLog(requestLog, request);
-        for (HttpHeader header : request.getHeaders()) {
+        request.getHeaders().stream().forEach(header -> {
             if (allowedHeaders.contains(header.getName())) {
                 assertEquals(header.getValue(), requestLog.get(header.getName().toString()));
             } else {
                 assertEquals("REDACTED", requestLog.get(header.getName().toString()));
             }
-        }
+        });
 
         Map<String, Object> responseLog = logMessages.get(1);
         assertResponseLog(responseLog, response);
-        for (HttpHeader header : response.getHeaders()) {
+        response.getHeaders().stream().forEach(header -> {
             if (allowedHeaders.contains(header.getName())) {
                 assertEquals(header.getValue(), responseLog.get(header.getName().toString()));
             } else {
                 assertEquals("REDACTED", responseLog.get(header.getName().toString()));
             }
-        }
+        });
     }
 
     @Test
     public void testStringBodyLogging() throws IOException {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options,
+        HttpPipeline pipeline = createPipeline(options,
             request -> new MockHttpResponse(request, 200, BinaryData.fromString("Response body")));
 
         HttpRequest request = createRequest(HttpMethod.PUT, URI, logger);
@@ -377,15 +415,15 @@ public class HttpInstrumentationLoggingTests {
 
     @Test
     public void testStreamBodyLogging() {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         BinaryData responseBody = BinaryData.fromString("Response body");
         TestStream responseStream = new TestStream(responseBody);
 
-        HttpPipeline pipeline
-            = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options, request -> new MockHttpResponse(request, 200,
-                BinaryData.fromStream(responseStream, responseBody.getLength())));
+        HttpPipeline pipeline = createPipeline(options, request -> new MockHttpResponse(request, 200,
+            BinaryData.fromStream(responseStream, responseBody.getLength())));
 
         BinaryData requestBody = BinaryData.fromString("Request body");
         TestStream requestStream = new TestStream(requestBody);
@@ -416,12 +454,13 @@ public class HttpInstrumentationLoggingTests {
 
     @Test
     public void testHugeBodyNotLogged() throws IOException {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         TestStream requestStream = new TestStream(1024 * 1024);
         TestStream responseStream = new TestStream(1024 * 1024);
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options,
+        HttpPipeline pipeline = createPipeline(options,
             request -> new MockHttpResponse(request, 200, BinaryData.fromStream(responseStream, (long) 1024 * 1024)));
 
         HttpRequest request = createRequest(HttpMethod.PUT, URI, logger);
@@ -447,12 +486,13 @@ public class HttpInstrumentationLoggingTests {
 
     @Test
     public void testBodyWithUnknownLengthNotLogged() throws IOException {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         TestStream requestStream = new TestStream(1024);
         TestStream responseStream = new TestStream(1024);
-        HttpPipeline pipeline = createPipeline(DEFAULT_INSTRUMENTATION_OPTIONS, options,
+        HttpPipeline pipeline = createPipeline(options,
             request -> new MockHttpResponse(request, 200, BinaryData.fromStream(responseStream)));
 
         HttpRequest request = createRequest(HttpMethod.PUT, URI, logger);
@@ -481,13 +521,14 @@ public class HttpInstrumentationLoggingTests {
     @Test
     public void tracingWithRetriesException() throws IOException {
         AtomicInteger count = new AtomicInteger(0);
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         AtomicReference<InstrumentationContext> firstTryContext = new AtomicReference<>();
         UnknownHostException expectedException = new UnknownHostException("test exception");
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new HttpRetryPolicy(), new HttpInstrumentationPolicy(DEFAULT_INSTRUMENTATION_OPTIONS, options))
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
                 assertEquals(traceparent(request.getRequestOptions().getInstrumentationContext()),
                     request.getHeaders().get(TRACEPARENT).getValue());
@@ -521,13 +562,14 @@ public class HttpInstrumentationLoggingTests {
     @Test
     public void tracingWithRetriesStatusCode() throws IOException {
         AtomicInteger count = new AtomicInteger(0);
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         AtomicReference<InstrumentationContext> firstTryContext = new AtomicReference<>();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new HttpRetryPolicy(), new HttpInstrumentationPolicy(DEFAULT_INSTRUMENTATION_OPTIONS, options))
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
                 if (count.getAndIncrement() == 0) {
                     firstTryContext.set(request.getRequestOptions().getInstrumentationContext());
@@ -553,14 +595,14 @@ public class HttpInstrumentationLoggingTests {
 
     @ParameterizedTest
     @MethodSource("logLevels")
-    public void retryPolicyLoggingRetriesExhausted(ClientLogger.LogLevel logLevel, boolean expectRetryingLogs,
+    public void retryPolicyLoggingRetriesExhausted(LogLevel logLevel, boolean expectRetryingLogs,
         boolean expectExhaustedLog) throws IOException {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
 
         int maxRetries = 3;
         HttpRetryOptions retryOptions = new HttpRetryOptions(maxRetries, Duration.ofMillis(5));
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpRetryPolicy(retryOptions))
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy(retryOptions))
             .httpClient(request -> new MockHttpResponse(request, 500))
             .build();
 
@@ -593,13 +635,14 @@ public class HttpInstrumentationLoggingTests {
     @Test
     public void tracingWithRedirects() throws IOException {
         AtomicInteger count = new AtomicInteger(0);
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpLogOptions options = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.BASIC);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpInstrumentationOptions options = new HttpInstrumentationOptions()
+            .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS);
 
         AtomicReference<InstrumentationContext> firstRedirectContext = new AtomicReference<>();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new HttpRedirectPolicy(), new HttpInstrumentationPolicy(DEFAULT_INSTRUMENTATION_OPTIONS, options))
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(options))
             .httpClient(request -> {
                 if (count.getAndIncrement() == 0) {
                     firstRedirectContext.set(request.getRequestOptions().getInstrumentationContext());
@@ -631,8 +674,8 @@ public class HttpInstrumentationLoggingTests {
     @Test
     public void redirectLoggingMethodNotSupported() throws IOException {
         AtomicInteger count = new AtomicInteger(0);
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpRedirectPolicy()).httpClient(request -> {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy()).httpClient(request -> {
             count.getAndIncrement();
             HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
             return new MockHttpResponse(request, 302, httpHeaders);
@@ -654,8 +697,8 @@ public class HttpInstrumentationLoggingTests {
     @Test
     public void redirectToTheSameUri() throws IOException {
         AtomicInteger count = new AtomicInteger(0);
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpRedirectPolicy()).httpClient(request -> {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy()).httpClient(request -> {
             count.getAndIncrement();
             HttpHeaders httpHeaders = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
             return new MockHttpResponse(request, 302, httpHeaders);
@@ -678,8 +721,8 @@ public class HttpInstrumentationLoggingTests {
     @Test
     public void redirectAttemptsExhausted() throws IOException {
         AtomicInteger count = new AtomicInteger(0);
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
-        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new HttpRedirectPolicy()).httpClient(request -> {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRedirectPolicy()).httpClient(request -> {
             count.getAndIncrement();
             HttpHeaders httpHeaders
                 = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/" + count.get());
@@ -702,10 +745,8 @@ public class HttpInstrumentationLoggingTests {
     }
 
     public static Stream<Arguments> logLevels() {
-        return Stream.of(Arguments.of(ClientLogger.LogLevel.ERROR, false, false),
-            Arguments.of(ClientLogger.LogLevel.WARNING, false, true),
-            Arguments.of(ClientLogger.LogLevel.INFORMATIONAL, false, true),
-            Arguments.of(ClientLogger.LogLevel.VERBOSE, true, true));
+        return Stream.of(Arguments.of(LogLevel.ERROR, false, false), Arguments.of(LogLevel.WARNING, false, true),
+            Arguments.of(LogLevel.INFORMATIONAL, false, true), Arguments.of(LogLevel.VERBOSE, true, true));
     }
 
     public static Stream<Arguments> allowQueryParamSource() {
@@ -729,8 +770,8 @@ public class HttpInstrumentationLoggingTests {
     }
 
     public static Stream<Arguments> testExceptionSeverity() {
-        return Stream.of(Arguments.of(ClientLogger.LogLevel.INFORMATIONAL, true),
-            Arguments.of(ClientLogger.LogLevel.WARNING, true), Arguments.of(ClientLogger.LogLevel.ERROR, false));
+        return Stream.of(Arguments.of(LogLevel.INFORMATIONAL, true), Arguments.of(LogLevel.WARNING, true),
+            Arguments.of(LogLevel.ERROR, false));
     }
 
     private static class TestStream extends InputStream {
@@ -935,18 +976,24 @@ public class HttpInstrumentationLoggingTests {
         assertTraceContext(log, context);
     }
 
-    private HttpPipeline createPipeline(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions options) {
-        return createPipeline(instrumentationOptions, options, request -> {
+    private HttpPipeline createPipeline(HttpInstrumentationOptions instrumentationOptions) {
+        return createPipeline(instrumentationOptions, request -> {
             if (request.getBody() != null) {
                 request.getBody().toString();
             }
-            return new MockHttpResponse(request, 200, BinaryData.fromString("Hello, world!"));
+            BinaryData responseBody = BinaryData.fromString("Hello, world!");
+            MockHttpResponse response = new MockHttpResponse(request, 200, responseBody);
+            response.getHeaders()
+                .set(HttpHeaderName.CONTENT_TYPE, "application/text")
+                .set(HttpHeaderName.CONTENT_LENGTH, responseBody.getLength().toString())
+                .set(HttpHeaderName.fromString("not-safe-to-log"), "12345");
+            return response;
         });
     }
 
-    private HttpPipeline createPipeline(InstrumentationOptions<?> instrumentationOptions, HttpLogOptions options,
+    private HttpPipeline createPipeline(HttpInstrumentationOptions instrumentationOptions,
         Function<HttpRequest, Response<?>> httpClient) {
-        return new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(instrumentationOptions, options))
+        return new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
             .httpClient(httpClient::apply)
             .build();
     }
@@ -957,7 +1004,7 @@ public class HttpInstrumentationLoggingTests {
 
     private HttpRequest createRequest(HttpMethod method, String url, ClientLogger logger,
         InstrumentationContext context) {
-        HttpRequest request = new HttpRequest(method, url);
+        HttpRequest request = new HttpRequest().setMethod(method).setUri(url);
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         request.getHeaders().set(HttpHeaderName.AUTHORIZATION, "Bearer {token}");
         request.setRequestOptions(new RequestOptions().setLogger(logger).setInstrumentationContext(context));

@@ -3,12 +3,20 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
+import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
+import io.clientcore.core.implementation.instrumentation.NoopMeter;
 import io.clientcore.core.instrumentation.Instrumentation;
+import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.metrics.Meter;
+import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
+
+import java.util.Map;
 
 /**
  * Fallback implementation of {@link Instrumentation} which implements basic correlation and context propagation
@@ -17,26 +25,51 @@ import io.clientcore.core.instrumentation.tracing.Tracer;
 public class FallbackInstrumentation implements Instrumentation {
     public static final FallbackInstrumentation DEFAULT_INSTANCE = new FallbackInstrumentation(null, null);
 
-    private final InstrumentationOptions<?> instrumentationOptions;
+    private final InstrumentationOptions instrumentationOptions;
     private final LibraryInstrumentationOptions libraryOptions;
+    private final boolean allowNestedSpans;
+    private final boolean isTracingEnabled;
 
     /**
      * Creates a new instance of {@link FallbackInstrumentation}.
      * @param instrumentationOptions the application instrumentation options
      * @param libraryOptions the library instrumentation options
      */
-    public FallbackInstrumentation(InstrumentationOptions<?> instrumentationOptions,
+    public FallbackInstrumentation(InstrumentationOptions instrumentationOptions,
         LibraryInstrumentationOptions libraryOptions) {
         this.instrumentationOptions = instrumentationOptions;
         this.libraryOptions = libraryOptions;
+        this.allowNestedSpans = libraryOptions != null
+            && LibraryInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
+        this.isTracingEnabled = instrumentationOptions == null || instrumentationOptions.isTracingEnabled();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Tracer getTracer() {
+    public Tracer createTracer() {
         return new FallbackTracer(instrumentationOptions, libraryOptions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Meter createMeter() {
+        // We don't provide fallback metrics support. This might change in the future.
+        // Some challenges:
+        // - metric aggregation is complicated
+        // - having metrics reported in logs is not very useful
+        return NoopMeter.INSTANCE;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public InstrumentationAttributes createAttributes(Map<String, Object> attributes) {
+        return new FallbackAttributes(attributes);
     }
 
     /**
@@ -63,5 +96,37 @@ public class FallbackInstrumentation implements Instrumentation {
         } else {
             return FallbackSpanContext.INVALID;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean shouldInstrument(SpanKind spanKind, InstrumentationContext context) {
+        if (!isTracingEnabled) {
+            return false;
+        }
+
+        if (allowNestedSpans) {
+            return true;
+        }
+
+        return spanKind != tryGetSpanKind(context);
+    }
+
+    /**
+     * Retrieves the span kind from the given context if and only if the context is a {@link FallbackSpanContext}
+     * i.e. was created by this instrumentation.
+     * @param context the context to get the span kind from
+     * @return the span kind or {@code null} if the context is not recognized
+     */
+    private SpanKind tryGetSpanKind(InstrumentationContext context) {
+        if (context instanceof FallbackSpanContext) {
+            Span span = context.getSpan();
+            if (span instanceof FallbackSpan) {
+                return ((FallbackSpan) span).getSpanKind();
+            }
+        }
+        return null;
     }
 }

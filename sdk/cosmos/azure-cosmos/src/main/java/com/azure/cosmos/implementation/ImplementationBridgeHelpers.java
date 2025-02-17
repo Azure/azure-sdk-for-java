@@ -75,6 +75,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
@@ -1806,6 +1807,9 @@ public class ImplementationBridgeHelpers {
             void setShouldWrapSerializationExceptions(
                 CosmosItemSerializer serializer,
                 boolean shouldWrapSerializationExceptions);
+
+            void setItemObjectMapper(CosmosItemSerializer serializer, ObjectMapper mapper);
+            ObjectMapper getItemObjectMapper(CosmosItemSerializer serializer);
         }
     }
 }

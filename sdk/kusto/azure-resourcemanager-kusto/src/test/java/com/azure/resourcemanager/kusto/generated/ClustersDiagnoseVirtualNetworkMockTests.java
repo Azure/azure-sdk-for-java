@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class ClustersDiagnoseVirtualNetworkMockTests {
     @Test
     public void testDiagnoseVirtualNetwork() throws Exception {
-        String responseStr = "{\"findings\":[\"pwbralllibphbqz\"]}";
+        String responseStr = "{\"findings\":[\"ywuhpsvfuur\",\"tlwexxwlalniexz\",\"rzpgep\"]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,9 +29,9 @@ public final class ClustersDiagnoseVirtualNetworkMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DiagnoseVirtualNetworkResult response
-            = manager.clusters().diagnoseVirtualNetwork("gdqoh", "cwsldri", com.azure.core.util.Context.NONE);
+        DiagnoseVirtualNetworkResult response = manager.clusters()
+            .diagnoseVirtualNetwork("awumuaslzkwrrwo", "cqucwyhahnom", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pwbralllibphbqz", response.findings().get(0));
+        Assertions.assertEquals("ywuhpsvfuur", response.findings().get(0));
     }
 }

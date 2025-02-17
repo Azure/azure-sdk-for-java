@@ -960,7 +960,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Database, OperationType.Create);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = database.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
+            ByteBuffer byteBuffer = database.serializeJsonToByteBuffer(
+                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                null,
+                false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1367,7 +1370,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Create);
 
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(
+                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                null,
+                false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -1420,7 +1426,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             String path = Utils.joinPath(collection.getSelfLink(), null);
             Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Replace);
             Instant serializationStartTimeUTC = Instant.now();
-            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER, null, false);
+            ByteBuffer byteBuffer = collection.serializeJsonToByteBuffer(
+                DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
+                null,
+                false);
             Instant serializationEndTimeUTC = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTimeUTC,
@@ -5642,7 +5651,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request -> readFeed(request)
                 .map(response -> feedResponseAccessor.createFeedResponse(
                                     response,
-                                    CosmosItemSerializer.DEFAULT_SERIALIZER,
+                                    DefaultCosmosItemSerializer.INTERNAL_DEFAULT_SERIALIZER,
                                     klass));
 
         return Paginator

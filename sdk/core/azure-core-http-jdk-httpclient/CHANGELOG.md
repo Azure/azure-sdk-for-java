@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.20 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.1 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.0` to `1.55.1`.
+
+## 1.0.0 (2025-02-06)
+
+Initial GA of `azure-core-http-jdk-httpclient`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
 
 ## 1.0.0-beta.19 (2024-11-14)
 

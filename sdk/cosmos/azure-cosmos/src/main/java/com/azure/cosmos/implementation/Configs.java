@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.netty.handler.ssl.ApplicationProtocolNames;
 import io.netty.handler.ssl.SslContext;
@@ -62,6 +63,11 @@ public class Configs {
     public static final int DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE = 1000;
     public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE = "COSMOS.DEFAULT_HTTP_CONNECTION_POOL_SIZE";
     public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_DEFAULT_HTTP_CONNECTION_POOL_SIZE";
+
+    public static final String ITEM_SERIALIZATION_INCLUSION_MODE = "COSMOS.ITEM_SERIALIZATION_INCLUSION_MODE";
+    public static final String ITEM_SERIALIZATION_INCLUSION_MODE_VARIABLE = "COSMOS_ITEM_SERIALIZATION_INCLUSION_MODE";
+
+    public static final String DEFAULT_ITEM_SERIALIZATION_INCLUSION_MODE = "Always";
 
     public static final boolean DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT = false;
     public static final String DEFAULT_E2E_FOR_NON_POINT_DISABLED = "COSMOS.E2E_FOR_NON_POINT_DISABLED";
@@ -511,6 +517,37 @@ public class Configs {
         }
 
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
+    }
+
+    private static String validateSerializationInclusionMode(String serializationInclusionMode) {
+        if (!Strings.isNullOrEmpty(serializationInclusionMode)) {
+            if ("Always".equalsIgnoreCase(serializationInclusionMode)
+                || "NonNull".equalsIgnoreCase(serializationInclusionMode)
+                || "NonEmpty".equalsIgnoreCase(serializationInclusionMode)
+                || "NonDefault".equalsIgnoreCase(serializationInclusionMode)) {
+
+                return serializationInclusionMode;
+            }
+        }
+
+        throw new IllegalArgumentException(
+            "Invalid serialization inclusion mode '"
+                + serializationInclusionMode != null ? serializationInclusionMode : "null"
+                + "'.");
+    }
+
+    public static String getItemSerializationInclusionMode() {
+        String valueFromSystemProperty = System.getProperty(ITEM_SERIALIZATION_INCLUSION_MODE);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return validateSerializationInclusionMode(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(ITEM_SERIALIZATION_INCLUSION_MODE_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return validateSerializationInclusionMode(valueFromEnvVariable);
+        }
+
+        return DEFAULT_ITEM_SERIALIZATION_INCLUSION_MODE;
     }
 
     public static boolean isDefaultE2ETimeoutDisabledForNonPointOperations() {

@@ -359,7 +359,7 @@ def main():
         tsp_config = args["tsp_config"]
 
         succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
-            tsp_project=tsp_config, sdk_root=sdk_root, remove_before_regen=True, group_id=GROUP_ID
+            tsp_project=tsp_config, sdk_root=sdk_root, remove_before_regen=True, group_id=GROUP_ID, **args
         )
 
         stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, **args)

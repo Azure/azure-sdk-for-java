@@ -66,7 +66,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core</artifactId>
-    <version>1.54.1</version>
+    <version>1.55.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -264,4 +264,4 @@ the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/C
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core%2FREADME.png)
+

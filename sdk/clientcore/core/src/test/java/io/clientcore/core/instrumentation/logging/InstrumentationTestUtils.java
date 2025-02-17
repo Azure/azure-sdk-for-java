@@ -5,10 +5,9 @@ package io.clientcore.core.instrumentation.logging;
 
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
+import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.tracing.Span;
-import io.clientcore.core.serialization.json.JsonOptions;
-import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonReader;
 
 import java.io.IOException;
@@ -16,10 +15,12 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -35,8 +36,7 @@ public final class InstrumentationTestUtils {
         assertTrue(traceId.matches("[0-9a-f]{32}"));
     }
 
-    public static ClientLogger setupLogLevelAndGetLogger(ClientLogger.LogLevel logLevelToSet,
-        OutputStream logCaptureStream) {
+    public static ClientLogger setupLogLevelAndGetLogger(LogLevel logLevelToSet, OutputStream logCaptureStream) {
         DefaultLogger logger
             = new DefaultLogger(ClientLogger.class.getName(), new PrintStream(logCaptureStream), logLevelToSet);
 
@@ -45,13 +45,19 @@ public final class InstrumentationTestUtils {
 
     public static List<Map<String, Object>> parseLogMessages(AccessibleByteArrayOutputStream logCaptureStream) {
         String fullLog = logCaptureStream.toString(StandardCharsets.UTF_8);
-        return fullLog.lines().map(InstrumentationTestUtils::parseLogLine).toList();
+        // Changing this from String.lines() has a slight runtime difference where lines() won't have any output if the
+        // String is empty where as String.split("\\R") will have an empty string in the array.
+        // Filter out any empty lines.
+        return Arrays.stream(fullLog.split("\\R"))
+            .filter(line -> !ImplUtils.isNullOrEmpty(line)) // Filter out empty lines
+            .map(InstrumentationTestUtils::parseLogLine)
+            .collect(Collectors.toList());
     }
 
     private static Map<String, Object> parseLogLine(String logLine) {
         String messageJson = logLine.substring(logLine.indexOf(" - ") + 3);
         System.out.println(messageJson);
-        try (JsonReader reader = JsonProviders.createReader(messageJson, new JsonOptions())) {
+        try (JsonReader reader = JsonReader.fromString(messageJson)) {
             return reader.readMap(JsonReader::readUntyped);
         } catch (IOException e) {
             throw new UncheckedIOException(e);

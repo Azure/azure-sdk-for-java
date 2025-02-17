@@ -3,18 +3,18 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.annotation.ServiceInterface;
+import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.RestProxy;
-import io.clientcore.core.http.annotation.BodyParam;
-import io.clientcore.core.http.annotation.HttpRequestInformation;
+import io.clientcore.core.http.annotations.BodyParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.serialization.xml.XmlSerializable;
-import io.clientcore.core.util.binarydata.StringBinaryData;
+import io.clientcore.core.models.binarydata.StringBinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

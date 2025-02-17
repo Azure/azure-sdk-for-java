@@ -50,13 +50,13 @@ public class HttpPipelineNextPolicy {
     }
 
     /**
-     * Creates a new instance of this instance.
+     * Copies the current state of the {@link HttpPipelineNextPolicy}.
+     * <p>
+     * This method must be used when a re-request is made in the pipeline.
      *
      * @return A new instance of this next pipeline policy.
      */
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
-    @Override
-    public HttpPipelineNextPolicy clone() {
-        return new HttpPipelineNextPolicy(this.state.clone());
+    public HttpPipelineNextPolicy copy() {
+        return new HttpPipelineNextPolicy(this.state.copy());
     }
 }
