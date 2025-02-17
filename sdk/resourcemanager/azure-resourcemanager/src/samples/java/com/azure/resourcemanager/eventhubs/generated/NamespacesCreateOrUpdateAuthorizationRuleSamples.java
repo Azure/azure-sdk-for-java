@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class NamespacesCreateOrUpdateAuthorizationRuleSamples {
     /*
      * x-ms-original-file:
-     * specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/NameSpaces/
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/NameSpaces/
      * EHNameSpaceAuthorizationRuleCreate.json
      */
     /**

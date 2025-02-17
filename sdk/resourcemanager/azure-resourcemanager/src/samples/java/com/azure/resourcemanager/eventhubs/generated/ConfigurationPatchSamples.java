@@ -14,7 +14,7 @@ import java.util.Map;
 public final class ConfigurationPatchSamples {
     /*
      * x-ms-original-file:
-     * specification/eventhub/resource-manager/Microsoft.EventHub/stable/2024-01-01/examples/Clusters/
+     * specification/eventhub/resource-manager/Microsoft.EventHub/preview/2024-05-01-preview/examples/Clusters/
      * ClusterQuotaConfigurationPatch.json
      */
     /**

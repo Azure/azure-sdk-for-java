@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventhubs.models.Encryption;
+import com.azure.resourcemanager.eventhubs.models.GeoDataReplicationProperties;
 import com.azure.resourcemanager.eventhubs.models.PublicNetworkAccess;
 import com.azure.resourcemanager.eventhubs.models.TlsVersion;
 import java.io.IOException;
@@ -107,6 +108,11 @@ public final class EHNamespaceProperties implements JsonSerializable<EHNamespace
      * Alternate name specified when alias and namespace names are same.
      */
     private String alternateName;
+
+    /*
+     * Geo Data Replication settings for the namespace
+     */
+    private GeoDataReplicationProperties geoDataReplication;
 
     /**
      * Creates an instance of EHNamespaceProperties class.
@@ -398,6 +404,26 @@ public final class EHNamespaceProperties implements JsonSerializable<EHNamespace
     }
 
     /**
+     * Get the geoDataReplication property: Geo Data Replication settings for the namespace.
+     * 
+     * @return the geoDataReplication value.
+     */
+    public GeoDataReplicationProperties geoDataReplication() {
+        return this.geoDataReplication;
+    }
+
+    /**
+     * Set the geoDataReplication property: Geo Data Replication settings for the namespace.
+     * 
+     * @param geoDataReplication the geoDataReplication value to set.
+     * @return the EHNamespaceProperties object itself.
+     */
+    public EHNamespaceProperties withGeoDataReplication(GeoDataReplicationProperties geoDataReplication) {
+        this.geoDataReplication = geoDataReplication;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -408,6 +434,9 @@ public final class EHNamespaceProperties implements JsonSerializable<EHNamespace
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (geoDataReplication() != null) {
+            geoDataReplication().validate();
         }
     }
 
@@ -431,6 +460,7 @@ public final class EHNamespaceProperties implements JsonSerializable<EHNamespace
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeBooleanField("disableLocalAuth", this.disableLocalAuth);
         jsonWriter.writeStringField("alternateName", this.alternateName);
+        jsonWriter.writeJsonField("geoDataReplication", this.geoDataReplication);
         return jsonWriter.writeEndObject();
     }
 
@@ -488,6 +518,9 @@ public final class EHNamespaceProperties implements JsonSerializable<EHNamespace
                     deserializedEHNamespaceProperties.disableLocalAuth = reader.getNullable(JsonReader::getBoolean);
                 } else if ("alternateName".equals(fieldName)) {
                     deserializedEHNamespaceProperties.alternateName = reader.getString();
+                } else if ("geoDataReplication".equals(fieldName)) {
+                    deserializedEHNamespaceProperties.geoDataReplication
+                        = GeoDataReplicationProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
