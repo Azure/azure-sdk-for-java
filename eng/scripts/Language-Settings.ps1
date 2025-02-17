@@ -264,6 +264,8 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
         $changedServices += "template"
       }
     }
+    # dedupe the changedServices list
+    $changedServices = $changedServices | Get-Unique
     foreach ($changedService in $changedServices) {
       # Because Java has libraries at the sdk/<ServiceDirectory> and sdk/<ServiceDirectory>/<Library>
       # directories, the additional package lookup needs to for ci*.yml files where the ServiceDirectory
@@ -295,8 +297,6 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
       }
     }
   }
-
-  $changedServices = $changedServices | Get-Unique
 
   if ($additionalPackagesForOtherDirs) {
     $additionalPackages = $additionalPackagesForOtherDirs | ForEach-Object { $me=$_; $AllPkgProps | Where-Object { $_.Name -eq $me } | Select-Object -First 1 }
