@@ -1,14 +1,79 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (2025-02-17)
 
-### Features Added
+- Azure Resource Manager ApplicationInsights client library for Java. This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Composite Swagger for Application Insights Management Client. Package tag package-2024-08-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.MyWorkbooksListResult` was removed
 
-### Other Changes
+#### `models.MyWorkbookManagedIdentityType` was removed
+
+#### `models.MyWorkbook` was removed
+
+#### `models.MyWorkbookUserAssignedIdentities` was removed
+
+#### `models.MyWorkbookResource` was removed
+
+#### `models.MyWorkbookManagedIdentity` was removed
+
+#### `models.MyWorkbooks` was removed
+
+#### `models.MyWorkbook$UpdateStages` was removed
+
+#### `models.MyWorkbook$DefinitionStages` was removed
+
+#### `models.Kind` was removed
+
+#### `models.MyWorkbook$Update` was removed
+
+#### `models.MyWorkbook$Definition` was removed
+
+#### `models.ErrorDefinitionException` was removed
+
+#### `models.ErrorDefinition` was removed
+
+#### `ApplicationInsightsManager` was modified
+
+* `myWorkbooks()` was removed
+
+### Features Added
+
+* `models.ComponentLinkedStorageAccounts` was added
+
+* `models.ComponentLinkedStorageAccounts$Update` was added
+
+* `models.ComponentLinkedStorageAccounts$DefinitionStages` was added
+
+* `models.DeletedWorkbookResource` was added
+
+* `models.DeletedWorkbooks` was added
+
+* `models.ComponentLinkedStorageAccountsOperations` was added
+
+* `models.DeletedWorkbooksListResult` was added
+
+* `models.DeletedWorkbookErrorDefinitionException` was added
+
+* `models.ComponentLinkedStorageAccountsPatch` was added
+
+* `models.DeletedWorkbookInnerErrorTrace` was added
+
+* `models.StorageType` was added
+
+* `models.DeletedWorkbookErrorDefinition` was added
+
+* `models.DeletedWorkbook` was added
+
+* `models.ComponentLinkedStorageAccounts$Definition` was added
+
+* `models.ComponentLinkedStorageAccounts$UpdateStages` was added
+
+#### `ApplicationInsightsManager` was modified
+
+* `componentLinkedStorageAccountsOperations()` was added
+* `deletedWorkbooks()` was added
 
 ## 1.1.0 (2024-12-13)
 
