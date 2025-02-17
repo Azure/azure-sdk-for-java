@@ -79,7 +79,7 @@ public class WebExceptionUtilityTest {
                             new URI("https://localhost"),
                             new ChannelAcquisitionException("Test acquire channel failed"),
                             HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410),
-                        HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410),
+                        HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_503),
                     true
                 }
         };
