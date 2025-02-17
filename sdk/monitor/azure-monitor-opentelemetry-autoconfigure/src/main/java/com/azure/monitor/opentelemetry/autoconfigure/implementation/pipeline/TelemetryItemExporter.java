@@ -167,9 +167,13 @@ public class TelemetryItemExporter {
     private static String maskIKeys(List<TelemetryItem> telemetryItems, String json) {
         Set<String> iKeys
             = telemetryItems.stream().map(TelemetryItem::getInstrumentationKey).collect(Collectors.toSet());
+        int charactersToSKip = 13;
         for (String instrumentationKey : iKeys) {
-            String maskedIKey = "*" + instrumentationKey.substring(instrumentationKey.length() - 13);
-            json = json.replace(instrumentationKey, maskedIKey);
+            // Tests could set  the connection string with a short one
+            if (instrumentationKey.length() > charactersToSKip) {
+                String maskedIKey = "*" + instrumentationKey.substring(instrumentationKey.length() - charactersToSKip);
+                json = json.replace(instrumentationKey, maskedIKey);
+            }
         }
         return json;
     }
