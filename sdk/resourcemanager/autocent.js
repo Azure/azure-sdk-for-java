@@ -15,7 +15,7 @@ const servicesInvalidUrl = ["securitydevops"];
 const deprecatedArtifacts = [
     "azure-resourcemanager-loadtestservice",
     "azure-resourcemanager-networkanalytics",
-    "azure-resourcemanager-batchai"
+    "azure-resourcemanager-logz"
 ];
 // exclude premium packages
 const excludeArtifacts = [
