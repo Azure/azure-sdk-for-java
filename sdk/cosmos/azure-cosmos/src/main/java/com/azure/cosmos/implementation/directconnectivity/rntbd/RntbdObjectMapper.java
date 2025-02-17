@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -73,17 +74,15 @@ public final class RntbdObjectMapper {
                 RntbdToken token = (RntbdToken)value;
                 if (token.isPresent() && token.getTokenType() == RntbdTokenType.Bytes) {
                     Object tokenValue = token.getValue();
-                    // TODO @fabianm special casing after conversion?
                     if (tokenValue instanceof ByteBuf) {
                         ByteBuf buf = (ByteBuf) tokenValue;
-                        StringBuilder hexString = new StringBuilder();
-                        for (int i = buf.readerIndex(); i < buf.readerIndex() + buf.readableBytes(); i++) {
-                            hexString.append(java.lang.String.format("%02X", buf.getByte(i)));
-                        }
 
+                        byte[] blob = new byte[buf.readableBytes()];
+                        buf.getBytes(buf.readerIndex(), blob);
+                        String base64String = Base64.getEncoder().encodeToString(blob);
                         String json = objectWriter.writeValueAsString(value);
                         ObjectNode parsed = (ObjectNode)objectMapper.readTree(json);
-                        parsed.put("value", hexString.toString());
+                        parsed.put("value", base64String);
                         return parsed.toString();
                     }
                 }

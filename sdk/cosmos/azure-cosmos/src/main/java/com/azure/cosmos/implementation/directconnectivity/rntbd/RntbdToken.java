@@ -82,7 +82,6 @@ final class RntbdToken {
             final ByteBuf buffer = (ByteBuf) this.value;
             buffer.markReaderIndex();
             try {
-                this.value = codec.defaultValue();
                 this.value = codec.read(buffer);
                 this.hasConvertedValue = true;
             } catch (final CorruptedFrameException error) {
