@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2025-02-19)
 
 ### Breaking Changes
 - Change ChatCompletionsResponseFormatJSON class name to ChatCompletionsResponseFormatJsonObject.
