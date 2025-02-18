@@ -47,7 +47,8 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
     private String longPhrase;
 
     /*
-     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
+     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
     private IconCode iconCode;
 
@@ -133,7 +134,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
         jsonWriter.writeStringField("shortPhrase", this.shortDescription);
         jsonWriter.writeStringField("briefPhrase", this.briefDescription);
         jsonWriter.writeStringField("longPhrase", this.longPhrase);
-        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
+        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.getValue());
         return jsonWriter.writeEndObject();
     }
 
@@ -164,7 +165,7 @@ public final class IntervalSummary implements JsonSerializable<IntervalSummary> 
                 } else if ("longPhrase".equals(fieldName)) {
                     deserializedIntervalSummary.longPhrase = reader.getString();
                 } else if ("iconCode".equals(fieldName)) {
-                    deserializedIntervalSummary.iconCode = IconCode.fromInt(reader.getInt());
+                    deserializedIntervalSummary.iconCode = IconCode.fromValue(reader.getInt());
                 } else {
                     reader.skipChildren();
                 }
