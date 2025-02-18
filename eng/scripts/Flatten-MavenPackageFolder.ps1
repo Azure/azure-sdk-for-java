@@ -42,4 +42,6 @@ foreach($dir in $dirs) {
     Remove-Item $dir.FullName -Force -Recurse -ErrorAction Stop
 }
 
+Get-ChildItem -Path $Path -Recurse
+
 exit 0
