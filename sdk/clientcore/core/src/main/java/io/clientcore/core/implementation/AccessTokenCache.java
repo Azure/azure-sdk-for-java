@@ -3,10 +3,11 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.credential.AccessToken;
-import io.clientcore.core.credential.TokenCredential;
-import io.clientcore.core.credential.TokenRequestContext;
+import io.clientcore.core.credentials.AccessToken;
+import io.clientcore.core.credentials.TokenCredential;
+import io.clientcore.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -123,7 +124,7 @@ public final class AccessTokenCache {
             try {
                 if (tokenRefresh != null) {
                     AccessToken token = tokenRefresh.get();
-                    logTokenRefresh(ClientLogger.LogLevel.VERBOSE, cachedToken, now, "Acquired a new access token.");
+                    logTokenRefresh(LogLevel.VERBOSE, cachedToken, now, "Acquired a new access token.");
                     OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now().plus(REFRESH_DELAY);
                     AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(token, nextTokenRefreshTime);
                     this.cacheInfo.set(updatedInfo);
@@ -132,7 +133,7 @@ public final class AccessTokenCache {
                     return fallback;
                 }
             } catch (Throwable error) {
-                logTokenRefresh(ClientLogger.LogLevel.ERROR, cachedToken, now, "Failed to acquire a new access token.");
+                logTokenRefresh(LogLevel.ERROR, cachedToken, now, "Failed to acquire a new access token.");
                 OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now();
                 AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(cachedToken, nextTokenRefreshTime);
                 this.cacheInfo.set(updatedInfo);
@@ -153,15 +154,14 @@ public final class AccessTokenCache {
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
-    private static void logTokenRefresh(ClientLogger.LogLevel level, AccessToken cache, OffsetDateTime now,
-        String prefix) {
+    private static void logTokenRefresh(LogLevel level, AccessToken cache, OffsetDateTime now, String prefix) {
         if (cache == null || !LOGGER.canLogAtLevel(level)) {
             LOGGER.atLevel(level).log(prefix);
         }
 
         Duration tte = cache.getDurationUntilExpiration();
 
-        LOGGER.atLevel(ClientLogger.LogLevel.VERBOSE)
+        LOGGER.atLevel(LogLevel.VERBOSE)
             .log(String.format("%s. expiresAt: %s, tteSeconds: %s, retryAfterSeconds: %s, expired: %s",
                 cache.getExpiresAt(), String.valueOf(tte.abs().getSeconds()), REFRESH_DELAY_STRING, tte.isNegative()));
     }

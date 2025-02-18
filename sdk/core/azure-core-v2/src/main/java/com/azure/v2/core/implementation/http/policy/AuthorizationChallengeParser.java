@@ -3,10 +3,10 @@
 
 package com.azure.v2.core.implementation.http.policy;
 
-import com.azure.v2.core.util.CoreUtils;
+import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.implementation.http.HttpResponse;
 
 /**
  * Parses Authorization challenges from the {@link HttpResponse}.

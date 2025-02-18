@@ -3,10 +3,13 @@
 
 package com.azure.v2.core.implementation;
 
-import com.azure.v2.core.credential.AzureTokenRequestContext;
-import io.clientcore.core.credential.AccessToken;
-import io.clientcore.core.credential.TokenCredential;
+import com.azure.v2.core.credentials.AzureTokenRequestContext;
+import io.clientcore.core.credentials.AccessToken;
+import io.clientcore.core.credentials.TokenCredential;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
+
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -118,8 +121,7 @@ public final class AccessTokenCache {
             try {
                 if (tokenRefresh != null) {
                     AccessToken token = tokenRefresh.get();
-                    buildTokenRefreshLog(ClientLogger.LogLevel.INFORMATIONAL, cachedToken, now)
-                        .log("Acquired a new access token.");
+                    buildTokenRefreshLog(LogLevel.INFORMATIONAL, cachedToken, now).log("Acquired a new access token.");
                     OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now().plus(REFRESH_DELAY);
                     AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(token, nextTokenRefreshTime);
                     this.cacheInfo.set(updatedInfo);
@@ -128,8 +130,8 @@ public final class AccessTokenCache {
                     return fallback;
                 }
             } catch (Throwable error) {
-                buildTokenRefreshLog(ClientLogger.LogLevel.ERROR, cachedToken, now)
-                    .log("Failed to acquire a new access token.", error);
+                buildTokenRefreshLog(LogLevel.ERROR, cachedToken, now).log("Failed to acquire a new access token.",
+                    error);
                 OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now();
                 AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(cachedToken, nextTokenRefreshTime);
                 this.cacheInfo.set(updatedInfo);
@@ -151,9 +153,8 @@ public final class AccessTokenCache {
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
-    private static ClientLogger.LoggingEvent buildTokenRefreshLog(ClientLogger.LogLevel level, AccessToken cache,
-        OffsetDateTime now) {
-        ClientLogger.LoggingEvent logBuilder = LOGGER.atLevel(level);
+    private static LoggingEvent buildTokenRefreshLog(LogLevel level, AccessToken cache, OffsetDateTime now) {
+        LoggingEvent logBuilder = LOGGER.atLevel(level);
         if (cache == null || !LOGGER.canLogAtLevel(level)) {
             return logBuilder;
         }

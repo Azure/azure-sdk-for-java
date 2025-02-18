@@ -155,7 +155,7 @@ public class InstrumentationTests {
 
             LibraryInstrumentationOptions libOptions
                 = new LibraryInstrumentationOptions("test-library").setLibraryVersion("1.0.0")
-                    .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+                    .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
 
             Tracer tracer = Instrumentation.create(null, libOptions).createTracer();
             assertTrue(tracer.isEnabled());

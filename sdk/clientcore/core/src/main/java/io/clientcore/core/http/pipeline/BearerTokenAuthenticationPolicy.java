@@ -3,11 +3,14 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.credential.AccessToken;
-import io.clientcore.core.credential.TokenCredential;
-import io.clientcore.core.credential.TokenRequestContext;
-import io.clientcore.core.http.models.*;
+import io.clientcore.core.credentials.AccessToken;
+import io.clientcore.core.credentials.TokenCredential;
+import io.clientcore.core.credentials.TokenRequestContext;
 import io.clientcore.core.implementation.AccessTokenCache;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.IOException;
@@ -36,10 +39,10 @@ import java.util.Objects;
  *
  * @see com.azure.core.http.policy
  * @see io.clientcore.core.http.pipeline.HttpPipelinePolicy
- * @see io.clientcore.core.credential.TokenCredential
+ * @see io.clientcore.core.credentials.TokenCredential
  * @see io.clientcore.core.http.pipeline.HttpPipeline
  * @see io.clientcore.core.http.models.HttpRequest
- * @see io.clientcore.core.http.models.HttpResponse
+ * @see io.clientcore.core.http.models.Response
  */
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
@@ -88,11 +91,11 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
             throw LOGGER.logThrowableAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
-        HttpPipelineNextPolicy nextPolicy = next.clone();
+        HttpPipelineNextPolicy nextPolicy = next.copy();
 
         authorizeRequest(httpRequest);
         Response<?> httpResponse = next.process();
-        String authHeader = httpResponse.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
+        String authHeader = httpResponse.getHeaders().get(HttpHeaderName.WWW_AUTHENTICATE).getValue();
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
             if (authorizeRequestOnChallenge(httpRequest, httpResponse)) {
                 // body needs to be closed or read to the end to release the connection

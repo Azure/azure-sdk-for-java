@@ -5,7 +5,7 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -30,7 +30,7 @@ import java.util.Objects;
  * <!-- end io.clientcore.core.http.HttpPipelineBuilder.noConfiguration -->
  *
  * <p>Create a pipeline using the default HTTP client and a retry policy</p>
- * 
+ *
  * <!-- src_embed io.clientcore.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
@@ -129,11 +129,11 @@ public class HttpPipelineBuilder {
     /**
      * Adds an {@link HttpPipelinePolicy} to the builder.
      * <p>
-     * The {@code policy} passed will be positioned based on {@link HttpPipelinePolicy#getOrder()}. If the
-     * {@link HttpPipelineOrder} is null an {@link IllegalArgumentException} will be thrown.
+     * The {@code policy} passed will be positioned based on {@link HttpPipelinePolicy#getPipelinePosition()}. If the
+     * {@link HttpPipelinePosition} is null an {@link IllegalArgumentException} will be thrown.
      * <p>
      * If the {@code policy} is one of the pillar policies ({@link HttpRedirectPolicy}, {@link HttpRetryPolicy},
-     * {@link HttpCredentialPolicy}, or {@link HttpInstrumentationPolicy}) the {@link HttpPipelineOrder} will be ignored
+     * {@link HttpCredentialPolicy}, or {@link HttpInstrumentationPolicy}) the {@link HttpPipelinePosition} will be ignored
      * as those policies are positioned in a specific location within the pipeline. If a duplicate pillar policy is
      * added (for example two {@link HttpRetryPolicy}) the last one added will be used and a message will be logged.
      *
@@ -147,22 +147,22 @@ public class HttpPipelineBuilder {
             return this;
         }
 
-        HttpPipelineOrder order = policy.getOrder();
+        HttpPipelinePosition order = policy.getPipelinePosition();
         if (order == null) {
             throw LOGGER.atError()
                 .addKeyValue("policyType", policy.getClass())
                 .log("Policy order cannot be null.", new IllegalArgumentException("Policy order cannot be null."));
         }
 
-        if (order == HttpPipelineOrder.BEFORE_REDIRECT) {
+        if (order == HttpPipelinePosition.BEFORE_REDIRECT) {
             beforeRedirect.add(policy);
-        } else if (order == HttpPipelineOrder.BETWEEN_REDIRECT_AND_RETRY) {
+        } else if (order == HttpPipelinePosition.AFTER_REDIRECT) {
             betweenRedirectAndRetry.add(policy);
-        } else if (order == HttpPipelineOrder.BETWEEN_RETRY_AND_AUTHENTICATION) {
+        } else if (order == HttpPipelinePosition.AFTER_RETRY) {
             betweenRetryAndAuthentication.add(policy);
-        } else if (order == HttpPipelineOrder.BETWEEN_AUTHENTICATION_AND_INSTRUMENTATION) {
+        } else if (order == HttpPipelinePosition.AFTER_AUTHENTICATION) {
             betweenAuthenticationAndInstrumentation.add(policy);
-        } else if (order == HttpPipelineOrder.AFTER_INSTRUMENTATION) {
+        } else if (order == HttpPipelinePosition.AFTER_INSTRUMENTATION) {
             afterInstrumentation.add(policy);
         } else {
             throw LOGGER.atError()
@@ -178,20 +178,20 @@ public class HttpPipelineBuilder {
         HttpPipelinePolicy previous = null;
         boolean added = false;
 
-        HttpPipelineOrder order = policy.getOrder();
-        if (order == HttpPipelineOrder.REDIRECT) {
+        HttpPipelinePosition order = policy.getPipelinePosition();
+        if (order == HttpPipelinePosition.REDIRECT) {
             previous = redirectPolicy;
             redirectPolicy = (HttpRedirectPolicy) policy;
             added = true;
-        } else if (order == HttpPipelineOrder.RETRY) {
+        } else if (order == HttpPipelinePosition.RETRY) {
             previous = retryPolicy;
             retryPolicy = (HttpRetryPolicy) policy;
             added = true;
-        } else if (order == HttpPipelineOrder.AUTHENTICATION) {
+        } else if (order == HttpPipelinePosition.AUTHENTICATION) {
             previous = credentialPolicy;
             credentialPolicy = (HttpCredentialPolicy) policy;
             added = true;
-        } else if (order == HttpPipelineOrder.INSTRUMENTATION) {
+        } else if (order == HttpPipelinePosition.INSTRUMENTATION) {
             previous = instrumentationPolicy;
             instrumentationPolicy = (HttpInstrumentationPolicy) policy;
             added = true;

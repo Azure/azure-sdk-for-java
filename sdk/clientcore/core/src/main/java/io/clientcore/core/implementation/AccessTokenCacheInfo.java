@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.credential.AccessToken;
+import io.clientcore.core.credentials.AccessToken;
 
 import java.time.OffsetDateTime;
 

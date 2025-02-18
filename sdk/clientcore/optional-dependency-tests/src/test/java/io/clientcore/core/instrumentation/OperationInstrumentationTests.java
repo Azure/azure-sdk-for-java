@@ -44,7 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OperationInstrumentationTests {
     private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
         = new LibraryInstrumentationOptions("test-lib").setLibraryVersion("1.0.0")
-            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
     private static final URI DEFAULT_ENDPOINT = URI.create("https://localhost");
 
     private InMemorySpanExporter exporter;
@@ -231,10 +231,10 @@ public class OperationInstrumentationTests {
     public void testNestedOperations() {
         LibraryInstrumentationOptions libOptions1
             = new LibraryInstrumentationOptions("test-lib1").setLibraryVersion("1.0.0")
-                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+                .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
         LibraryInstrumentationOptions libOptions2
             = new LibraryInstrumentationOptions("test-lib2").setLibraryVersion("2.0.0")
-                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+                .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
         Instrumentation instrumentation1 = Instrumentation.create(otelOptions, libOptions1);
         Instrumentation instrumentation2 = Instrumentation.create(otelOptions, libOptions2);
 

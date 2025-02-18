@@ -3,16 +3,18 @@
 
 package com.azure.v2.core.http.policy;
 
-import com.azure.v2.core.credential.AzureTokenRequestContext;
+import com.azure.v2.core.credentials.AzureTokenRequestContext;
 import com.azure.v2.core.implementation.AccessTokenCache;
 import com.azure.v2.core.implementation.http.policy.AuthorizationChallengeParser;
-import com.azure.v2.core.util.CoreUtils;
-import io.clientcore.core.credential.AccessToken;
-import io.clientcore.core.credential.TokenCredential;
-import io.clientcore.core.credential.TokenRequestContext;
+import com.azure.v2.core.utils.CoreUtils;
+import io.clientcore.core.credentials.AccessToken;
+import io.clientcore.core.credentials.TokenCredential;
+import io.clientcore.core.credentials.TokenRequestContext;
 import io.clientcore.core.http.models.*;
 import io.clientcore.core.http.pipeline.*;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -121,7 +123,8 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
             throw LOGGER.logThrowableAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
-        HttpPipelineNextPolicy nextPolicy = next.clone();
+
+        HttpPipelineNextPolicy nextPolicy = next.copy();
 
         authorizeRequest(httpRequest);
         Response<?> httpResponse = next.process();
@@ -152,7 +155,7 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
                 decodedClaims = new String(Base64.getDecoder().decode(encodedClaims), StandardCharsets.UTF_8);
             } catch (IllegalArgumentException e) {
                 // We don't want to throw here, but we want to log this for future incident investigation.
-                LOGGER.atLevel(ClientLogger.LogLevel.WARNING)
+                LOGGER.atLevel(LogLevel.WARNING)
                     .log("Failed to decode the claims from the CAE challenge. Encoded claims: " + encodedClaims);
             }
         }

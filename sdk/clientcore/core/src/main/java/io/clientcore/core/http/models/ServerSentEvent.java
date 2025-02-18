@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.implementation.util.ServerSentEventHelper;
+import io.clientcore.core.implementation.utils.ServerSentEventHelper;
 
 import java.time.Duration;
 import java.util.List;
