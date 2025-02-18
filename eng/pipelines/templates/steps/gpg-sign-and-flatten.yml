@@ -30,6 +30,6 @@ steps:
       workingDirectory: $(Agent.BuildDirectory)
       filePath: ${{ parameters.JavaRepoRoot }}/eng/scripts/Flatten-MavenPackageFolder.ps1
       arguments: >
-        -OutputDirectory ${{ parameters.OutputDirectory }}
+        -SignedDirectory ${{ parameters.OutputDirectory }}
         -FlattenedDirectory ${{ parameters.FlattenedESRPDirectory }}
         -InformationAction Continue

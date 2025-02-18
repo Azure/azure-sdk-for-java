@@ -65,14 +65,24 @@ stages:
                     Artifacts: ${{parameters.Artifacts}}
                     ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
 
+                # Publish the ESRP signed directory. This will still be used by the
+                # Dev feed publish.
+                - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+                  parameters:
+                    ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}'
+                    ArtifactName: '${{parameters.ArtifactName}}-signed'
+
                 # gpg-sign and create the flattened directory for ESRP bulk publish
+                # Note: The maven release requires the files to be local GPG signed
+                # Dev feed publishes use the gpg-sign-and-deply to do it in one step
                 - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                 - template: /eng/pipelines/templates/steps/gpg-sign-and-flatten.yml
                   parameters:
                     ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
                     OutputDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-gpg-signed
                     FlattenedESRPDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened
-                # The package-esrp-gpg-signed will be used for feed publishing
+                # Publish the packages-esrp-gpg-signed, which is the intermediate directory
+                # prior to flattening
                 - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                   parameters:
                     ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}'
