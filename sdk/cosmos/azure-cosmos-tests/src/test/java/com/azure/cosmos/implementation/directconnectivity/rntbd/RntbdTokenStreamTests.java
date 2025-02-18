@@ -22,7 +22,7 @@ public class RntbdTokenStreamTests {
     private static final Random rnd = new Random();
     @Test(groups = { "unit" })
     public void noReorderingInDirectMode() {
-        List<Short> headerIds = createAdnEncodeRequestHeaders(false);
+        List<Short> headerIds = createAndEncodeRequestHeaders(false);
         assertThat(headerIds).isNotNull();
         assertThat(headerIds.size()).isEqualTo(6);
         assertThat(headerIds.get(0)).isEqualTo(RntbdConstants.RntbdRequestHeader.PayloadPresent.id());
@@ -35,7 +35,7 @@ public class RntbdTokenStreamTests {
 
     @Test(groups = { "unit" })
     public void withReorderingForThinClient() {
-        List<Short> headerIds = createAdnEncodeRequestHeaders(true);
+        List<Short> headerIds = createAndEncodeRequestHeaders(true);
         assertThat(headerIds).isNotNull();
         assertThat(headerIds.size()).isEqualTo(4);
         assertThat(headerIds.get(0)).isEqualTo(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey.id());
@@ -44,7 +44,7 @@ public class RntbdTokenStreamTests {
         assertThat(headerIds.get(3)).isEqualTo(RntbdConstants.RntbdRequestHeader.CorrelatedActivityId.id());
     }
 
-    private static List<Short> createAdnEncodeRequestHeaders(boolean forThinClient) {
+    private static List<Short> createAndEncodeRequestHeaders(boolean forThinClient) {
         UUID activityId = UUID.randomUUID();
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(
             null,
