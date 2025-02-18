@@ -45,6 +45,15 @@ public enum StructuredMessageFlags {
         return null;
     }
 
+    public static StructuredMessageFlags fromValue(int value) {
+        for (StructuredMessageFlags flag : StructuredMessageFlags.values()) {
+            if (flag.getValue() == value) {
+                return flag;
+            }
+        }
+        throw new IllegalArgumentException("Invalid value for StructuredMessageFlags: " + value);
+    }
+
     /**
      * Returns the value for a StructuredMessageFlags instance.
      *

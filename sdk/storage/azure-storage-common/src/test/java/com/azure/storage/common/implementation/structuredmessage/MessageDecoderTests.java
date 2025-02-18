@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.implementation;
+package com.azure.storage.common.implementation.structuredmessage;
 
+import com.azure.storage.common.implementation.StorageCrc64Calculator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -46,7 +47,7 @@ public class MessageDecoderTests {
     }
 
     private static ByteBuffer buildStructuredMessage(ByteBuffer data, int segmentSize,
-        StructuredMessageFlags structuredMessageFlags) throws IOException {
+                                                     StructuredMessageFlags structuredMessageFlags) throws IOException {
         int segmentCount = Math.max(1, (int) Math.ceil((double) data.capacity() / segmentSize));
         int segmentFooterLength = structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64 ? CRC64_LENGTH : 0;
 
@@ -130,8 +131,11 @@ public class MessageDecoderTests {
         byte[] data = getRandomData(size);
         ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), segmentSize, flags);
 
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
-        byte[] decodedData = decoder.decode();
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
+        ByteBuffer decodedBuffer = decoder.decode(encodedBuffer);
+
+        byte[] decodedData = new byte[decodedBuffer.remaining()];
+        decodedBuffer.get(decodedData);
 
         Assertions.assertArrayEquals(data, decodedData);
     }
@@ -142,21 +146,25 @@ public class MessageDecoderTests {
         ByteBuffer encodedBuffer
             = buildStructuredMessage(ByteBuffer.wrap(data), 10, StructuredMessageFlags.STORAGE_CRC64);
 
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
-        byte[] decodedData = decoder.decode();
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
+        ByteBuffer decodedBuffer = decoder.decode(encodedBuffer);
+
+        byte[] decodedData = new byte[decodedBuffer.remaining()];
+        decodedBuffer.get(decodedData);
 
         Assertions.assertArrayEquals(data, decodedData);
-        Assertions.assertArrayEquals(new byte[0], decoder.decode(10)); // Should return empty on subsequent reads
+        Assertions.assertArrayEquals(new byte[0], decoder.decode(encodedBuffer, 10).array()); // Should return empty on subsequent reads
     }
 
     @Test
     public void testEmptyStream() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> new StructuredMessageDecoder(ByteBuffer.allocate(0)));
+        ByteBuffer emptyBuffer = ByteBuffer.allocate(0);
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(emptyBuffer.capacity());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decode(emptyBuffer));
     }
 
     private static ByteBuffer buildInvalidStructuredMessage(ByteBuffer data, int segmentSize,
-        StructuredMessageFlags structuredMessageFlags, Integer invalidSegment) throws IOException {
+                                                            StructuredMessageFlags structuredMessageFlags, Integer invalidSegment) throws IOException {
         int segmentCount = Math.max(1, (int) Math.ceil((double) data.capacity() / segmentSize));
         int segmentFooterLength = structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64 ? CRC64_LENGTH : 0;
 
@@ -218,9 +226,9 @@ public class MessageDecoderTests {
         ByteBuffer encodedBuffer = buildInvalidStructuredMessage(ByteBuffer.wrap(data), 1024,
             StructuredMessageFlags.STORAGE_CRC64, invalidSegment);
 
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
 
-        Assertions.assertThrows(IllegalArgumentException.class, decoder::decode);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decode(encodedBuffer));
     }
 
     @Test
@@ -230,7 +238,7 @@ public class MessageDecoderTests {
         ByteBuffer encodedBuffer
             = buildStructuredMessage(ByteBuffer.wrap(data), dataSize / 3, StructuredMessageFlags.STORAGE_CRC64);
 
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
 
         ByteArrayOutputStream result = new ByteArrayOutputStream();
         Random random = new Random();
@@ -238,7 +246,10 @@ public class MessageDecoderTests {
 
         while (readCount < dataSize) {
             int readSize = Math.min(random.nextInt(50) + 1, dataSize - readCount);
-            byte[] chunk = decoder.decode(readSize);
+            ByteBuffer chunkBuffer = decoder.decode(encodedBuffer, readSize);
+
+            byte[] chunk = new byte[chunkBuffer.remaining()];
+            chunkBuffer.get(chunk);
 
             result.write(chunk);
             readCount += chunk.length;
@@ -255,7 +266,8 @@ public class MessageDecoderTests {
         // Modify the first byte (message version) to an invalid value (0xFF)
         encodedBuffer.put(0, (byte) 0xFF);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> new StructuredMessageDecoder(encodedBuffer));
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decode(encodedBuffer));
     }
 
     @ParameterizedTest
@@ -267,8 +279,8 @@ public class MessageDecoderTests {
         // Modify the message length field
         encodedBuffer.putLong(1, invalidMessageLength);
 
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
-        Assertions.assertThrows(IllegalArgumentException.class, decoder::decode);
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decode(encodedBuffer));
     }
 
     private static Stream<Arguments> invalidMessageLengths() {
@@ -284,8 +296,8 @@ public class MessageDecoderTests {
         // Modify the segment count
         encodedBuffer.putShort(11, (short) invalidSegmentCount);
 
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
-        Assertions.assertThrows(IllegalArgumentException.class, decoder::decode);
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decode(encodedBuffer));
     }
 
     private static Stream<Arguments> invalidSegmentCounts() {
@@ -302,8 +314,8 @@ public class MessageDecoderTests {
         int position = V1_HEADER_LENGTH + V1_SEGMENT_HEADER_LENGTH + 256;
         encodedBuffer.putShort(position, (short) invalidSegmentNumber);
 
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
-        Assertions.assertThrows(IllegalArgumentException.class, decoder::decode);
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decode(encodedBuffer));
     }
 
     private static Stream<Arguments> invalidSegmentNumbers() {
@@ -330,9 +342,9 @@ public class MessageDecoderTests {
 
         modifiableBuffer.putShort(position, (short) invalidSegmentSize);
 
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(ByteBuffer.wrap(encodedArray));
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(ByteBuffer.wrap(encodedArray).capacity());
 
-        Assertions.assertThrows(IllegalArgumentException.class, decoder::decode);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decode(ByteBuffer.wrap(encodedArray)));
     }
 
     @Test
@@ -343,8 +355,8 @@ public class MessageDecoderTests {
         // Modify the segment size (15th byte)
         encodedBuffer.putShort(15, (short) 123);
 
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
-        Assertions.assertThrows(IllegalArgumentException.class, decoder::decode);
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decode(encodedBuffer));
     }
 
     @ParameterizedTest
@@ -354,15 +366,14 @@ public class MessageDecoderTests {
         ByteBuffer encodedBuffer = buildInvalidStructuredMessage(ByteBuffer.wrap(data), 1024,
             StructuredMessageFlags.STORAGE_CRC64, invalidSegment);
 
-        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer);
+        StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             int read = 0;
             while (read < data.length) {
-                decoder.decode(512); // Read in chunks
+                decoder.decode(encodedBuffer, 512); // Read in chunks
                 read += 512;
             }
         });
     }
-
 }
