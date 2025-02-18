@@ -74,7 +74,8 @@ public class HttpPipelineTests {
                 return new MockHttpResponse(request, 200);
             }
         }).build();
-        final Response<?> response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUri));
+        final Response<?> response
+            = httpPipeline.send(new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri));
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -94,7 +95,8 @@ public class HttpPipelineTests {
                 return new MockHttpResponse(request, 200);
             }
         }).build();
-        final Response<?> response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUri));
+        final Response<?> response
+            = httpPipeline.send(new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri));
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());

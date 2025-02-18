@@ -6,7 +6,7 @@ package io.clientcore.core.http.models;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -47,31 +47,8 @@ public class HttpRequest {
 
     /**
      * Create a new {@link HttpRequest} instance.
-     *
-     * @param httpMethod The request {@link HttpMethod}.
-     * @param uri The target address to send the request to as a {@link URI}.
-     * @throws NullPointerException if {@code uri} is {@code null}.
      */
-    public HttpRequest(HttpMethod httpMethod, URI uri) {
-        this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
-        this.uri = Objects.requireNonNull(uri, "'uri' cannot be null");
-        this.headers = new HttpHeaders();
-        this.requestOptions = RequestOptions.none();
-    }
-
-    /**
-     * Create a new {@link HttpRequest} instance.
-     *
-     * @param httpMethod The request {@link HttpMethod}.
-     * @param uri The target address to send the request to.
-     * @throws NullPointerException if {@code uri} is {@code null}.
-     * @throws IllegalArgumentException If {@code uri} cannot be parsed into a valid {@link URI}.
-     */
-    public HttpRequest(HttpMethod httpMethod, String uri) {
-        this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
-
-        setUri(uri);
-
+    public HttpRequest() {
         this.headers = new HttpHeaders();
         this.requestOptions = RequestOptions.none();
     }
@@ -92,9 +69,8 @@ public class HttpRequest {
      * @return The updated {@link HttpRequest}.
      * @throws NullPointerException if {@code httpMethod} is {@code null}.
      */
-    public HttpRequest setHttpMethod(HttpMethod httpMethod) {
+    public HttpRequest setMethod(HttpMethod httpMethod) {
         this.httpMethod = Objects.requireNonNull(httpMethod, "'httpMethod' cannot be null");
-
         return this;
     }
 
@@ -116,7 +92,6 @@ public class HttpRequest {
      */
     public HttpRequest setUri(URI uri) {
         this.uri = Objects.requireNonNull(uri, "'uri' cannot be null");
-
         return this;
     }
 
@@ -155,7 +130,6 @@ public class HttpRequest {
      */
     public HttpRequest setHeaders(HttpHeaders headers) {
         this.headers = headers;
-
         return this;
     }
 
@@ -207,7 +181,6 @@ public class HttpRequest {
      */
     public HttpRequest setRequestOptions(RequestOptions requestOptions) {
         this.requestOptions = requestOptions;
-
         return this;
     }
 
@@ -228,7 +201,6 @@ public class HttpRequest {
      */
     public HttpRequest setServerSentEventListener(ServerSentEventListener serverSentEventListener) {
         this.serverSentEventListener = serverSentEventListener;
-
         return this;
     }
 
@@ -251,7 +223,6 @@ public class HttpRequest {
      */
     private HttpRequest setTryCount(int tryCount) {
         this.tryCount = tryCount;
-
         return this;
     }
 }

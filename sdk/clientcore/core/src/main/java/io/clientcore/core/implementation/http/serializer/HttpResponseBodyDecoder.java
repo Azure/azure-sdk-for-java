@@ -12,8 +12,8 @@ import io.clientcore.core.implementation.http.rest.RestProxyImpl;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.serializers.SerializationFormat;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.SerializationFormat;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -94,9 +94,9 @@ public final class HttpResponseBodyDecoder {
                     extractEntityTypeFromReturnType(decodeData), decodeData.getReturnValueWireType(),
                     RestProxyImpl.serializationFormatFromContentType(response.getHeaders()), serializer);
             } catch (MalformedValueException e) {
-                throw new HttpResponseException("HTTP response has a malformed body.", response, null, e);
+                throw new HttpResponseException("HTTP response has a malformed body.", response, e);
             } catch (IOException e) {
-                throw new HttpResponseException("Deserialization failed.", response, null, e);
+                throw new HttpResponseException("Deserialization failed.", response, e);
             }
         }
     }

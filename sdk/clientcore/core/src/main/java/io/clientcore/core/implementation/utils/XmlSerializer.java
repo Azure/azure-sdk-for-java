@@ -8,8 +8,8 @@ import io.clientcore.core.serialization.xml.XmlReader;
 import io.clientcore.core.serialization.xml.XmlSerializable;
 import io.clientcore.core.serialization.xml.XmlWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.serializers.ObjectSerializer;
-import io.clientcore.core.utils.serializers.SerializationFormat;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.SerializationFormat;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;

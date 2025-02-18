@@ -68,6 +68,11 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
      */
     private ExpressionEvaluationOptions expressionEvaluationOptions;
 
+    /*
+     * The validation level of the deployment
+     */
+    private ValidationLevel validationLevel;
+
     /**
      * Creates an instance of DeploymentProperties class.
      */
@@ -262,6 +267,26 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
     }
 
     /**
+     * Get the validationLevel property: The validation level of the deployment.
+     * 
+     * @return the validationLevel value.
+     */
+    public ValidationLevel validationLevel() {
+        return this.validationLevel;
+    }
+
+    /**
+     * Set the validationLevel property: The validation level of the deployment.
+     * 
+     * @param validationLevel the validationLevel value to set.
+     * @return the DeploymentProperties object itself.
+     */
+    public DeploymentProperties withValidationLevel(ValidationLevel validationLevel) {
+        this.validationLevel = validationLevel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -311,6 +336,8 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
         jsonWriter.writeJsonField("debugSetting", this.debugSetting);
         jsonWriter.writeJsonField("onErrorDeployment", this.onErrorDeployment);
         jsonWriter.writeJsonField("expressionEvaluationOptions", this.expressionEvaluationOptions);
+        jsonWriter.writeStringField("validationLevel",
+            this.validationLevel == null ? null : this.validationLevel.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -349,6 +376,8 @@ public class DeploymentProperties implements JsonSerializable<DeploymentProperti
                 } else if ("expressionEvaluationOptions".equals(fieldName)) {
                     deserializedDeploymentProperties.expressionEvaluationOptions
                         = ExpressionEvaluationOptions.fromJson(reader);
+                } else if ("validationLevel".equals(fieldName)) {
+                    deserializedDeploymentProperties.validationLevel = ValidationLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -3,10 +3,7 @@
 
 package com.azure.v2.core.http.policy;
 
-import io.clientcore.core.http.pipeline.HttpPipelineOrder;
-import io.clientcore.core.utils.configuration.Configuration;
 import com.azure.v2.core.utils.CoreUtils;
-import com.azure.v2.core.utils.ServiceVersion;
 import com.azure.v2.core.utils.UserAgentUtil;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
@@ -14,7 +11,9 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.utils.Context;
+import io.clientcore.core.utils.configuration.Configuration;
 
 /**
  * The {@code UserAgentPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
@@ -92,23 +91,6 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         this.userAgent = UserAgentUtil.toUserAgentString(applicationId, sdkName, sdkVersion, configuration);
     }
 
-    /**
-     * Creates a UserAgentPolicy with the {@code sdkName} and {@code sdkVersion} in the User-Agent header value.
-     *
-     * <p>If the passed configuration contains true for AZURE_TELEMETRY_DISABLED the platform information won't be
-     * included in the user agent.</p>
-     *
-     * @param sdkName Name of the client library.
-     * @param sdkVersion Version of the client library.
-     * @param version {@link ServiceVersion} of the service to be used when making requests.
-     * @param configuration Configuration store that will be checked for configurations.
-     * @deprecated Use {@link UserAgentPolicy#UserAgentPolicy(String, String, String, Configuration)} instead.
-     */
-    @Deprecated
-    public UserAgentPolicy(String sdkName, String sdkVersion, Configuration configuration, ServiceVersion version) {
-        this.userAgent = UserAgentUtil.toUserAgentString(null, sdkName, sdkVersion, configuration);
-    }
-
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         final Context context = httpRequest.getRequestOptions().getContext();
@@ -130,7 +112,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public final HttpPipelineOrder getOrder() {
-        return HttpPipelineOrder.BEFORE_REDIRECT;
+    public final HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.BEFORE_REDIRECT;
     }
 }

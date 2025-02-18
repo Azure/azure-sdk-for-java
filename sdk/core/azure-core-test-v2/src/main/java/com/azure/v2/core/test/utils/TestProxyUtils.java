@@ -16,7 +16,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.UriBuilder;
-import io.clientcore.core.utils.binarydata.StringBinaryData;
+import io.clientcore.core.models.binarydata.StringBinaryData;
 
 import java.io.File;
 import java.io.IOException;
@@ -441,7 +441,8 @@ public final class TestProxyUtils {
         }
 
         String requestBody = "[" + CoreUtils.stringJoin(",", sanitizersJsonPayloads) + "]";
-        return new HttpRequest(HttpMethod.POST, proxyUri + "/Admin/AddSanitizers")
+        return new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri(proxyUri + "/Admin/AddSanitizers")
             .setBody(new StringBinaryData(requestBody));
     }
 
@@ -450,13 +451,14 @@ public final class TestProxyUtils {
      * @return The {@link HttpRequest request} to be sent.
      */
     public static HttpRequest getRemoveSanitizerRequest() {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUri + "/Admin/RemoveSanitizers");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST).setUri(proxyUri + "/Admin/RemoveSanitizers");
         request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         return request;
     }
 
     private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URI proxyUri) {
-        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUri + "/Admin/RemoveSanitizers")
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri(proxyUri + "/Admin/RemoveSanitizers")
             .setBody(new StringBinaryData(requestBody));
         request.getHeaders().set(X_ABSTRACTION_IDENTIFIER, sanitizerType);
         return request;
@@ -476,19 +478,20 @@ public final class TestProxyUtils {
             switch (testProxyMatcher.getType()) {
                 case HEADERLESS:
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.HEADERLESS.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUri + "/Admin/setmatcher");
+                    request = new HttpRequest().setMethod(HttpMethod.POST).setUri(proxyUri + "/Admin/setmatcher");
                     break;
 
                 case BODILESS:
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.BODILESS.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUri + "/Admin/setmatcher");
+                    request = new HttpRequest().setMethod(HttpMethod.POST).setUri(proxyUri + "/Admin/setmatcher");
                     break;
 
                 case CUSTOM:
                     CustomMatcher customMatcher = (CustomMatcher) testProxyMatcher;
                     String requestBody = createCustomMatcherRequestBody(customMatcher);
                     matcherType = TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName();
-                    request = new HttpRequest(HttpMethod.POST, proxyUri + "/Admin/setmatcher")
+                    request = new HttpRequest().setMethod(HttpMethod.POST)
+                        .setUri(proxyUri + "/Admin/setmatcher")
                         .setBody(new StringBinaryData(requestBody));
                     break;
 
@@ -507,7 +510,8 @@ public final class TestProxyUtils {
      */
     public static HttpRequest setCompareBodiesMatcher() {
         String requestBody = createCustomMatcherRequestBody(new CustomMatcher().setComparingBodies(false));
-        HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUri + "/Admin/setmatcher")
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri(proxyUri + "/Admin/setmatcher")
             .setBody(new StringBinaryData(requestBody));
 
         request.getHeaders()

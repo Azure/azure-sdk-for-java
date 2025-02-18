@@ -69,7 +69,7 @@ public interface HttpResponseDecodeData {
      * @return The {@link UnexpectedExceptionInformation} to generate an exception to throw or return.
      */
     default UnexpectedExceptionInformation getUnexpectedException(int code) {
-        return new UnexpectedExceptionInformation(null, null);
+        return new UnexpectedExceptionInformation(null);
     }
 
     /**

@@ -3,16 +3,18 @@
 
 package com.azure.v2.core.utils;
 
-import com.azure.v2.core.annotations.Fluent;
 import com.azure.v2.core.http.policy.UserAgentPolicy;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.TypeConditions;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+
 import java.util.Collections;
 
 /**
  * General configuration options for clients.
  */
-@Fluent
+@Metadata(conditions = TypeConditions.FLUENT)
 public class ClientOptions {
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
     private static final String INVALID_APPLICATION_ID_LENGTH
@@ -24,9 +26,6 @@ public class ClientOptions {
     private Iterable<HttpHeader> headers;
 
     private String applicationId;
-
-    private MetricsOptions metricsOptions;
-    private TracingOptions tracingOptions;
 
     /**
      * Creates a new instance of {@link ClientOptions}.
@@ -111,45 +110,5 @@ public class ClientOptions {
             return Collections.emptyList();
         }
         return headers;
-    }
-
-    /**
-     * Sets {@link MetricsOptions} that are applied to each metric reported by the client.
-     * Use metrics options to enable and disable metrics or pass implementation-specific configuration.
-     *
-     * @param metricsOptions instance of {@link MetricsOptions} to set.
-     * @return The updated {@link ClientOptions} object.
-     */
-    public ClientOptions setMetricsOptions(MetricsOptions metricsOptions) {
-        this.metricsOptions = metricsOptions;
-        return this;
-    }
-
-    /**
-     * Gets {@link MetricsOptions}
-     * @return The {@link MetricsOptions} instance, if metrics options weren't set previously, {@code null} is returned.
-     */
-    public MetricsOptions getMetricsOptions() {
-        return metricsOptions;
-    }
-
-    /**
-     * Sets {@link TracingOptions} that are applied to each tracing reported by the client.
-     * Use tracing options to enable and disable tracing or pass implementation-specific configuration.
-     *
-     * @param tracingOptions instance of {@link TracingOptions} to set.
-     * @return The updated {@link ClientOptions} object.
-     */
-    public ClientOptions setTracingOptions(TracingOptions tracingOptions) {
-        this.tracingOptions = tracingOptions;
-        return this;
-    }
-
-    /**
-     * Gets {@link TracingOptions}
-     * @return The {@link TracingOptions} instance, if tracing options weren't set previously, {@code null} is returned.
-     */
-    public TracingOptions getTracingOptions() {
-        return tracingOptions;
     }
 }
