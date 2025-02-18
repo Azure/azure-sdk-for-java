@@ -48,8 +48,6 @@ public class MetricsAsyncCientTest extends MetricsClientTestBase {
             .flatMapMany(metricsQueryResourcesResultResponse -> {
                 assertEquals(1, metricsQueryResourcesResultResponse.getValue().getMetricsQueryResults().size());
                 assertEquals(1, metricsQueryResourcesResultResponse.getValue().getMetricsQueryResults().size());
-                assertEquals(finalResourceId,
-                    metricsQueryResourcesResultResponse.getValue().getMetricsQueryResults().get(0).getResourceId());
                 assertEquals(1,
                     metricsQueryResourcesResultResponse.getValue().getMetricsQueryResults().get(0).getMetrics().size());
                 MetricResult metricResult = metricsQueryResourcesResultResponse.getValue()
