@@ -4,7 +4,6 @@
 package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ImageEmbeddingsClientImpl;
-import com.azure.ai.inference.implementation.models.EmbedRequest;
 import com.azure.ai.inference.implementation.models.ImageEmbedRequest;
 import com.azure.ai.inference.models.EmbeddingsResult;
 import com.azure.ai.inference.models.ExtraParameters;
@@ -23,9 +22,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
-import reactor.core.publisher.Mono;
-
 import java.util.List;
+import reactor.core.publisher.Mono;
 
 /**
  * Initializes a new instance of the asynchronous ImageEmbeddingsClient type.
@@ -60,7 +58,7 @@ public final class ImageEmbeddingsAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -80,9 +78,9 @@ public final class ImageEmbeddingsAsyncClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -123,7 +121,7 @@ public final class ImageEmbeddingsAsyncClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -175,8 +173,6 @@ public final class ImageEmbeddingsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(EmbeddingsResult.class));
     }
 
-    /**
-    
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.

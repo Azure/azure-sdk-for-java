@@ -26,25 +26,13 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      * The content of the message.
      */
     @Generated
-    private final String content;
+    private String content;
 
     /*
      * The ID of the tool call resolved by the provided content.
      */
     @Generated
     private final String toolCallId;
-
-    /**
-     * Creates an instance of ChatRequestToolMessage class.
-     *
-     * @param content the content value to set.
-     * @param toolCallId the toolCallId value to set.
-     */
-    @Generated
-    public ChatRequestToolMessage(String content, String toolCallId) {
-        this.content = content;
-        this.toolCallId = toolCallId;
-    }
 
     /**
      * Get the role property: The chat role associated with this message.
@@ -117,9 +105,31 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
                     reader.skipChildren();
                 }
             }
-            ChatRequestToolMessage deserializedChatRequestToolMessage = new ChatRequestToolMessage(content, toolCallId);
+            ChatRequestToolMessage deserializedChatRequestToolMessage = new ChatRequestToolMessage(toolCallId).setContent(content);
             deserializedChatRequestToolMessage.role = role;
             return deserializedChatRequestToolMessage;
         });
+    }
+
+    /**
+     * Creates an instance of ChatRequestToolMessage class.
+     *
+     * @param toolCallId the toolCallId value to set.
+     */
+    @Generated
+    public ChatRequestToolMessage(String toolCallId) {
+        this.toolCallId = toolCallId;
+    }
+
+    /**
+     * Set the content property: The content of the message.
+     *
+     * @param content the content value to set.
+     * @return the ChatRequestToolMessage object itself.
+     */
+    @Generated
+    public ChatRequestToolMessage setContent(String content) {
+        this.content = content;
+        return this;
     }
 }

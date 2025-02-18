@@ -164,7 +164,7 @@ public final class ChatCompletionsAsyncClient {
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {

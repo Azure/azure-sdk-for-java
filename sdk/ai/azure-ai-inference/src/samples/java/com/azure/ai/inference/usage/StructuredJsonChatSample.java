@@ -51,8 +51,8 @@ public final class StructuredJsonChatSample {
             put("required", BinaryData.fromString("[\"ingredients\", \"steps\", \"bake_time\"]"));
             put("additionalProperties", BinaryData.fromString("false"));
         }};
-        String key = Configuration.getGlobalConfiguration().get("AZURE_API_KEY");
-        String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
+        String key = Configuration.getGlobalConfiguration().get("AZUREAI_ENDPOINT_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_AAD_COMPLETIONS_ENDPOINT");
 
         ChatCompletionsClient client = new ChatCompletionsClientBuilder()
             .credential(new AzureKeyCredential(key))

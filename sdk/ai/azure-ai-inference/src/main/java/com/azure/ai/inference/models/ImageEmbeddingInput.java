@@ -56,9 +56,6 @@ public final class ImageEmbeddingInput implements JsonSerializable<ImageEmbeddin
     }
 
     /**
-     * Get the type property: The discriminated object type.
-    
-    /**
      * Creates an instance of ImageEmbeddingInput class.
      *
      * @param image the image value to set.

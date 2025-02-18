@@ -5,9 +5,9 @@ package com.azure.ai.inference;
 
 import com.azure.ai.inference.implementation.ImageEmbeddingsClientImpl;
 import com.azure.ai.inference.implementation.models.ImageEmbedRequest;
-import com.azure.ai.inference.models.ImageEmbeddingInput;
 import com.azure.ai.inference.models.EmbeddingsResult;
 import com.azure.ai.inference.models.ExtraParameters;
+import com.azure.ai.inference.models.ImageEmbeddingInput;
 import com.azure.ai.inference.models.ModelInfo;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -140,8 +140,6 @@ public final class ImageEmbeddingsClient {
         return embedWithResponse(embedRequest, requestOptions).getValue().toObject(EmbeddingsResult.class);
     }
 
-    /**
-    
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
