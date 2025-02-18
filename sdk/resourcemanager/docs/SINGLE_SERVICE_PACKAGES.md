@@ -1247,6 +1247,8 @@ service
 <details>
 <summary> kusto </summary>
 
+* [package-2024-04](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager#tag-package-2024-04)
+    * [1.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-kusto/1.2.0)
 * [package-2023-08](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azure-kusto/resource-manager#tag-package-2023-08)
     * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-kusto/1.1.0)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-kusto/1.0.0)
@@ -1322,16 +1324,6 @@ service
     * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-logic/1.0.0-beta.3)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-logic/1.0.0-beta.2)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-logic/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
-<summary> logz </summary>
-
-* [package-2020-10-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/logz/resource-manager#tag-package-2020-10-01)
-    * [1.0.0-beta.3](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-logz/1.0.0-beta.3)
-    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-logz/1.0.0-beta.2)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-logz/1.0.0-beta.1)
 </details>
 
 <br/>
@@ -1584,15 +1576,6 @@ service
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.0.0-beta.2)
 * [package-netapp-2020-11-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/netapp/resource-manager#tag-package-netapp-2020-11-01)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-netapp/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
-<summary> networkanalytics </summary>
-
-* [package-2023-11-15](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/networkanalytics/resource-manager#tag-package-2023-11-15)
-    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-networkanalytics/1.0.0)
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-networkanalytics/1.0.0-beta.1)
 </details>
 
 <br/>

@@ -116,7 +116,7 @@ public final class StormSearchResultItem implements JsonSerializable<StormSearch
      *
      * @return the govId value.
      */
-    public Integer getGovId() {
+    public Integer getGovernmentId() {
         return this.govId;
     }
 

@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -38,6 +39,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
     private final Duration lockTime;
     private final Duration sleepTime;
     private final ChangeFeedMode changeFeedModeToStart;
+    private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
 
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
@@ -50,7 +52,9 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
         Duration sleepTime,
         LeaseStoreManager pkRangeIdVersionLeaseStoreManager,
         LeaseStoreManager epkRangeVersionLeaseStoreManager,
+        ChangeFeedProcessorOptions changeFeedProcessorOptions,
         ChangeFeedMode changeFeedModeToStart) {
+
         checkNotNull(synchronizer, "Argument 'synchronizer' can not be null");
         checkNotNull(leaseStore, "Argument 'leaseStore' can not be null");
         checkArgument(lockTime != null && this.isPositive(lockTime), "lockTime should be non-null and positive");
@@ -63,6 +67,7 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
         this.leaseStore = leaseStore;
         this.pkRangeIdVersionLeaseStoreManager = pkRangeIdVersionLeaseStoreManager;
         this.epkRangeVersionLeaseStoreManager = epkRangeVersionLeaseStoreManager;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
         this.changeFeedModeToStart = changeFeedModeToStart;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
@@ -166,7 +171,11 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
                             ChangeFeedState changeFeedState = ChangeFeedState.fromString(lease.getContinuationToken());
 
                             if (changeFeedState.getMode() != this.changeFeedModeToStart) {
-                                return Mono.error(new IllegalStateException("Change feed mode in the pre-existing lease is : " + changeFeedState.getMode() + " while the expected change feed mode is : " + this.changeFeedModeToStart));
+                                String errorMessage = String.format("ChangeFeedProcessor#handleLatestVersionChanges cannot be invoked when " +
+                                    "ChangeFeedProcessor#handleAllVersionsAndDeletes was also started for " +
+                                    "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
+
+                                return Mono.error(new IllegalStateException(errorMessage));
                             }
                         }
                     }

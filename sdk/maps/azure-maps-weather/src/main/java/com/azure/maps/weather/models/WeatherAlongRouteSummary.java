@@ -17,7 +17,8 @@ import java.io.IOException;
 public final class WeatherAlongRouteSummary implements JsonSerializable<WeatherAlongRouteSummary> {
 
     /*
-     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
+     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
     private IconCode iconCode;
 
@@ -80,7 +81,7 @@ public final class WeatherAlongRouteSummary implements JsonSerializable<WeatherA
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
+        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.getValue());
         jsonWriter.writeJsonField("hazards", this.hazards);
         return jsonWriter.writeEndObject();
     }
@@ -100,7 +101,7 @@ public final class WeatherAlongRouteSummary implements JsonSerializable<WeatherA
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("iconCode".equals(fieldName)) {
-                    deserializedWeatherAlongRouteSummary.iconCode = IconCode.fromInt(reader.getInt());
+                    deserializedWeatherAlongRouteSummary.iconCode = IconCode.fromValue(reader.getInt());
                 } else if ("hazards".equals(fieldName)) {
                     deserializedWeatherAlongRouteSummary.hazards = WeatherHazards.fromJson(reader);
                 } else {

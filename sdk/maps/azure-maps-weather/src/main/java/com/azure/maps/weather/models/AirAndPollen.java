@@ -22,7 +22,8 @@ public final class AirAndPollen implements JsonSerializable<AirAndPollen> {
     private String description;
 
     /*
-     * Value of the given type above. Values associated with mold, grass, weed and tree are in units of parts per cubic meter. Both air quality and UV are indices, so they are unitless.
+     * Value of the given type above. Values associated with mold, grass, weed and tree are in units of parts per cubic
+     * meter. Both air quality and UV are indices, so they are unitless.
      */
     private Integer value;
 
@@ -32,7 +33,8 @@ public final class AirAndPollen implements JsonSerializable<AirAndPollen> {
     private String category;
 
     /*
-     * Value associated with the air quality or pollution category. These values range from 1 to 6. 1 implying good conditions, 6 implying hazardous conditions.
+     * Value associated with the air quality or pollution category. These values range from 1 to 6. 1 implying good
+     * conditions, 6 implying hazardous conditions.
      */
     private Integer categoryValue;
 

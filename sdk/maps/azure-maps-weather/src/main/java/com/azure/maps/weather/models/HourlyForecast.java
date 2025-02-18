@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,14 +20,12 @@ import java.time.format.DateTimeFormatter;
 public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
 
     /*
-     * Date and time of the forecast in ISO 8601 format, for example,
-     * 2019-10-27T19:39:57-08:00.
+     * Date and time of the forecast in ISO 8601 format, for example, 2019-10-27T19:39:57-08:00.
      */
     private OffsetDateTime timestamp;
 
     /*
-     * Numeric value representing an image that displays the `iconPhrase`. Please
-     * refer to [Weather services in Azure
+     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
      * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
     private IconCode iconCode;
@@ -37,8 +36,8 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     private String iconPhrase;
 
     /*
-     * Indicates the presence or absence of precipitation. True indicates the
-     * presence of precipitation, false indicates the absence of precipitation.
+     * Indicates the presence or absence of precipitation. True indicates the presence of precipitation, false indicates
+     * the absence of precipitation.
      */
     private Boolean hasPrecipitation;
 
@@ -53,20 +52,19 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     private WeatherUnitDetails temperature;
 
     /*
-     * RealFeel™ Temperature being returned. Describes what the temperature really
-     * feels like in the shade.
+     * RealFeel™ Temperature being returned. Describes what the temperature really feels like in the shade.
      */
     private WeatherUnitDetails realFeelTemperature;
 
     /*
-     * The temperature to which air may be cooled by evaporating water into it at
-     * constant pressure until it reaches saturation.
+     * The temperature to which air may be cooled by evaporating water into it at constant pressure until it reaches
+     * saturation.
      */
     private WeatherUnitDetails wetBulbTemperature;
 
     /*
-     * The dewpoint temperature in specified unit. The dewpoint temperature is the
-     * temperature that the air must be cooled to in order to reach saturation.
+     * The dewpoint temperature in specified unit. The dewpoint temperature is the temperature that the air must be
+     * cooled to in order to reach saturation.
      */
     private WeatherUnitDetails dewPoint;
 
@@ -81,26 +79,23 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     private WindDetails windGust;
 
     /*
-     * Relative humidity is the amount of water vapor present in air expressed as a
-     * percentage of the amount needed for saturation at the same temperature.
+     * Relative humidity is the amount of water vapor present in air expressed as a percentage of the amount needed for
+     * saturation at the same temperature.
      */
     private Integer relativeHumidity;
 
     /*
-     * Visibility in specified unit. A measure of the distance at which an object or
-     * light can be clearly discerned.
+     * Visibility in specified unit. A measure of the distance at which an object or light can be clearly discerned.
      */
     private WeatherUnitDetails visibility;
 
     /*
-     * Cloud ceiling in specified unit. The ceiling is a measurement of the height
-     * of the base of the lowest clouds.
+     * Cloud ceiling in specified unit. The ceiling is a measurement of the height of the base of the lowest clouds.
      */
     private WeatherUnitDetails cloudCeiling;
 
     /*
-     * Measure of the strength of the ultraviolet radiation from the sun. Supported
-     * values are:
+     * Measure of the strength of the ultraviolet radiation from the sun. Supported values are:
      * * `0-2` - Low danger from the sun's UV rays or the average person.
      * * `3-5` - Moderate risk of harm from unprotected sun exposure.
      * * `6-7` - High risk of harm from unprotected sun exposure.
@@ -166,8 +161,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the timestamp property: Date and time of the forecast in ISO 8601 format,
-     * for example,
+     * Get the timestamp property: Date and time of the forecast in ISO 8601 format, for example,
      * 2019-10-27T19:39:57-08:00.
      *
      * @return the timestamp value.
@@ -177,10 +171,8 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the iconCode property: Numeric value representing an image that displays
-     * the `iconPhrase`. Please refer to
-     * [Weather services in Azure
-     * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
+     * Get the iconCode property: Numeric value representing an image that displays the `iconPhrase`. Please refer to
+     * [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      *
      * @return the iconCode value.
      */
@@ -198,8 +190,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the hasPrecipitation property: Indicates the presence or absence of
-     * precipitation. True indicates the
+     * Get the hasPrecipitation property: Indicates the presence or absence of precipitation. True indicates the
      * presence of precipitation, false indicates the absence of precipitation.
      *
      * @return the hasPrecipitation value.
@@ -209,8 +200,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the isDaylight property: Specifies whether or not it is daylight. True
-     * indicates day light.
+     * Get the isDaylight property: Specifies whether or not it is daylight. True indicates day light.
      *
      * @return the isDaylight value.
      */
@@ -228,8 +218,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the realFeelTemperature property: RealFeel™ Temperature being returned.
-     * Describes what the temperature
+     * Get the realFeelTemperature property: RealFeel™ Temperature being returned. Describes what the temperature
      * really feels like in the shade.
      *
      * @return the realFeelTemperature value.
@@ -239,8 +228,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the wetBulbTemperature property: The temperature to which air may be
-     * cooled by evaporating water into it at
+     * Get the wetBulbTemperature property: The temperature to which air may be cooled by evaporating water into it at
      * constant pressure until it reaches saturation.
      *
      * @return the wetBulbTemperature value.
@@ -250,8 +238,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the dewPoint property: The dewpoint temperature in specified unit. The
-     * dewpoint temperature is the
+     * Get the dewPoint property: The dewpoint temperature in specified unit. The dewpoint temperature is the
      * temperature that the air must be cooled to in order to reach saturation.
      *
      * @return the dewPoint value.
@@ -261,8 +248,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the wind property: Wind details being returned including speed and
-     * direction.
+     * Get the wind property: Wind details being returned including speed and direction.
      *
      * @return the wind value.
      */
@@ -271,8 +257,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the windGust property: Wind gust. Wind gust is a sudden, brief increase
-     * in speed of the wind.
+     * Get the windGust property: Wind gust. Wind gust is a sudden, brief increase in speed of the wind.
      *
      * @return the windGust value.
      */
@@ -281,8 +266,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the relativeHumidity property: Relative humidity is the amount of water
-     * vapor present in air expressed as a
+     * Get the relativeHumidity property: Relative humidity is the amount of water vapor present in air expressed as a
      * percentage of the amount needed for saturation at the same temperature.
      *
      * @return the relativeHumidity value.
@@ -292,8 +276,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the visibility property: Visibility in specified unit. A measure of the
-     * distance at which an object or light
+     * Get the visibility property: Visibility in specified unit. A measure of the distance at which an object or light
      * can be clearly discerned.
      *
      * @return the visibility value.
@@ -303,8 +286,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the cloudCeiling property: Cloud ceiling in specified unit. The ceiling
-     * is a measurement of the height of the
+     * Get the cloudCeiling property: Cloud ceiling in specified unit. The ceiling is a measurement of the height of the
      * base of the lowest clouds.
      *
      * @return the cloudCeiling value.
@@ -314,8 +296,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the uvIndex property: Measure of the strength of the ultraviolet
-     * radiation from the sun. Supported values
+     * Get the uvIndex property: Measure of the strength of the ultraviolet radiation from the sun. Supported values
      * are:
      * * `0-2` - Low danger from the sun's UV rays or the average person.
      * * `3-5` - Moderate risk of harm from unprotected sun exposure.
@@ -339,8 +320,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the precipitationProbability property: Percent representing the
-     * probability of precipitation. For example,
+     * Get the precipitationProbability property: Percent representing the probability of precipitation. For example,
      * '20'.
      *
      * @return the precipitationProbability value.
@@ -350,8 +330,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the rainProbability property: Percent representing the probability of
-     * rain. For example, '50'.
+     * Get the rainProbability property: Percent representing the probability of rain. For example, '50'.
      *
      * @return the rainProbability value.
      */
@@ -360,8 +339,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the snowProbability property: Percent representing the probability of
-     * snow. For example, '50'.
+     * Get the snowProbability property: Percent representing the probability of snow. For example, '50'.
      *
      * @return the snowProbability value.
      */
@@ -370,8 +348,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the iceProbability property: Percent representing the probability of
-     * snow. For example, '5'.
+     * Get the iceProbability property: Percent representing the probability of snow. For example, '5'.
      *
      * @return the iceProbability value.
      */
@@ -380,8 +357,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
     }
 
     /**
-     * Get the totalLiquid property: Total liquid equivalent of precipitation during
-     * the forecast period.
+     * Get the totalLiquid property: Total liquid equivalent of precipitation during the forecast period.
      *
      * @return the totalLiquid value.
      */
@@ -433,7 +409,7 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("date",
             this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
-        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
+        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.getValue());
         jsonWriter.writeStringField("iconPhrase", this.iconPhrase);
         jsonWriter.writeBooleanField("hasPrecipitation", this.hasPrecipitation);
         jsonWriter.writeBooleanField("isDaylight", this.isDaylight);
@@ -464,9 +440,8 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
      * Reads an instance of HourlyForecast from the JsonReader.
      *
      * @param jsonReader The JsonReader being read.
-     * @return An instance of HourlyForecast if the JsonReader was pointing to an
-     *         instance of it, or null if it was
-     *         pointing to JSON null.
+     * @return An instance of HourlyForecast if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
      * @throws IOException If an error occurs while reading the HourlyForecast.
      */
     public static HourlyForecast fromJson(JsonReader jsonReader) throws IOException {
@@ -476,10 +451,10 @@ public final class HourlyForecast implements JsonSerializable<HourlyForecast> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("date".equals(fieldName)) {
-                    deserializedHourlyForecast.timestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedHourlyForecast.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("iconCode".equals(fieldName)) {
-                    deserializedHourlyForecast.iconCode = IconCode.fromInt(reader.getInt());
+                    deserializedHourlyForecast.iconCode = IconCode.fromValue(reader.getInt());
                 } else if ("iconPhrase".equals(fieldName)) {
                     deserializedHourlyForecast.iconPhrase = reader.getString();
                 } else if ("hasPrecipitation".equals(fieldName)) {

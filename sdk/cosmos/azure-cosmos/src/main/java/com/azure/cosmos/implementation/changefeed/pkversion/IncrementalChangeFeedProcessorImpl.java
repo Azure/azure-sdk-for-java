@@ -89,6 +89,8 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
     private final ChangeFeedObserverFactory<JsonNode> observerFactory;
     private volatile String databaseId;
     private volatile String collectionId;
+    private volatile String databaseResourceId;
+    private volatile String collectionResourceId;
     private final ChangeFeedContextClient leaseContextClient;
     private PartitionLoadBalancingStrategy loadBalancingStrategy;
     private LeaseStoreManager leaseStoreManager;
@@ -354,12 +356,14 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             .readDatabase(this.feedContextClient.getDatabaseClient(), null)
             .map( databaseResourceResponse -> {
                 this.databaseId = databaseResourceResponse.getProperties().getId();
+                this.databaseResourceId = databaseResourceResponse.getProperties().getResourceId();
                 return this.databaseId;
             })
             .flatMap( id -> this.feedContextClient
                 .readContainer(this.feedContextClient.getContainerClient(), null)
                 .map(documentCollectionResourceResponse -> {
                     this.collectionId = documentCollectionResourceResponse.getProperties().getId();
+                    this.collectionResourceId = documentCollectionResourceResponse.getProperties().getResourceId();
                     return this;
                 }));
     }
@@ -427,7 +431,25 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
             this.collectionId
         );
 
-        Bootstrapper bootstrapper = new BootstrapperImpl(synchronizer, leaseStoreManager, this.lockTime, this.sleepTime);
+        RequestOptionsFactory requestOptionsFactory = new PartitionedByIdCollectionRequestOptionsFactory();
+        String epkRangeVersionLeasePrefix = this.getEpkRangeVersionLeasePrefix();
+
+        LeaseStoreManager epkVersionLeaseStoreManager =
+            com.azure.cosmos.implementation.changefeed.epkversion.LeaseStoreManagerImpl.builder()
+                .leasePrefix(epkRangeVersionLeasePrefix)
+                .leaseCollectionLink(this.leaseContextClient.getContainerClient())
+                .leaseContextClient(this.leaseContextClient)
+                .requestOptionsFactory(requestOptionsFactory)
+                .hostName(this.hostName)
+                .build();
+
+        Bootstrapper bootstrapper = new BootstrapperImpl(
+            synchronizer,
+            leaseStoreManager,
+            epkVersionLeaseStoreManager,
+            this.changeFeedProcessorOptions,
+            this.lockTime,
+            this.sleepTime);
 
         FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager = this.getFeedRangeThroughputControlConfigManager();
 
@@ -489,6 +511,23 @@ public class IncrementalChangeFeedProcessorImpl implements ChangeFeedProcessor, 
         }
 
         return null;
+    }
+
+    private String getEpkRangeVersionLeasePrefix() {
+        String optionsPrefix = this.changeFeedProcessorOptions.getLeasePrefix();
+
+        if (optionsPrefix == null) {
+            optionsPrefix = "";
+        }
+
+        URI uri = this.feedContextClient.getServiceEndpoint();
+
+        return String.format(
+            "%s%s_%s_%s",
+            optionsPrefix,
+            uri.getHost(),
+            this.databaseResourceId,
+            this.collectionResourceId);
     }
 
     @Override

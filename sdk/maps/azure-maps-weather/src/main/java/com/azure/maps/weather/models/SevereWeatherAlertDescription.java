@@ -17,7 +17,8 @@ import java.io.IOException;
 public final class SevereWeatherAlertDescription implements JsonSerializable<SevereWeatherAlertDescription> {
 
     /*
-     * Description of the alert in the specified language. By default English (en-US) is returned if the language parameter is not specified in the request.
+     * Description of the alert in the specified language. By default English (en-US) is returned if the language
+     * parameter is not specified in the request.
      */
     private String description;
 

@@ -27,7 +27,8 @@ public final class PrecipitationSummary implements JsonSerializable<Precipitatio
     private WeatherUnitDetails past3Hours;
 
     /*
-     * The amount of precipitation (liquid equivalent) that has fallen in the past six hours. Contains Metric and Imperial Values.
+     * The amount of precipitation (liquid equivalent) that has fallen in the past six hours. Contains Metric and
+     * Imperial Values.
      */
     private WeatherUnitDetails past6Hours;
 

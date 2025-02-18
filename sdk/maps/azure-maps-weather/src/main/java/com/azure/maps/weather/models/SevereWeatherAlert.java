@@ -38,7 +38,9 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
     private String category;
 
     /*
-     * Number signifying the importance or ranking order of the given alert within the country/region it has originated. A lower number signifies a higher priority. For example, 1 is the highest priority. The number varies by country/region and can change over time as each country/region evolves their alert systems.
+     * Number signifying the importance or ranking order of the given alert within the country/region it has originated.
+     * A lower number signifies a higher priority. For example, 1 is the highest priority. The number varies by
+     * country/region and can change over time as each country/region evolves their alert systems.
      */
     private Integer priority;
 
@@ -53,7 +55,8 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
     private String level;
 
     /*
-     * The provider of the alert information. By default the source is returned in English (en-US). The alerts are from official Government Meteorological Agencies and leading global weather alert providers.
+     * The provider of the alert information. By default the source is returned in English (en-US). The alerts are from
+     * official Government Meteorological Agencies and leading global weather alert providers.
      */
     private String source;
 
@@ -63,7 +66,8 @@ public final class SevereWeatherAlert implements JsonSerializable<SevereWeatherA
     private Integer sourceId;
 
     /*
-     * A disclaimer regarding the source of the alert information. This field is not always available. For example, disclaimer may include details about the delays or potential issues related to the alarm.
+     * A disclaimer regarding the source of the alert information. This field is not always available. For example,
+     * disclaimer may include details about the delays or potential issues related to the alarm.
      */
     private String disclaimer;
 
