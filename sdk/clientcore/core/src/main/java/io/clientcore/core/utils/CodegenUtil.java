@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.util;
+package io.clientcore.core.utils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

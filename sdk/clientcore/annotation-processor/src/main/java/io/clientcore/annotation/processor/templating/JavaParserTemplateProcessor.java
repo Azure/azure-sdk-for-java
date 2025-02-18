@@ -14,10 +14,13 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
 import com.github.javaparser.ast.expr.CastExpr;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
@@ -193,7 +196,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     void getGeneratedServiceMethods(TemplateInput templateInput) {
         for (HttpRequestContext method : templateInput.getHttpRequestContexts()) {
             boolean generatePublicOnly = method.getMethodName().contains("Convenience");
-            //            boolean generateInternalOnly = false;
 
             if (generatePublicOnly) {
                 configurePublicMethod(classBuilder.addMethod(method.getMethodName()), method);
@@ -276,7 +278,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .orElse("");
 
         if (!"void".equals(method.getMethodReturnType())) {
-            String callerMethodName = method.getMethodName().replace("Convenience", "");
+            String callerMethodName = method.getMethodName().replace("Convenience", "").concat("Response");
             publicMethod.setBody(
                 new BlockStmt().addStatement(new ReturnStmt(callerMethodName + "(" + params + ").getValue()")));
         } else {
@@ -306,9 +308,25 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         initializeHttpRequest(body, method);
         addHeadersToRequest(body, method);
         addRequestBody(body, method);
+        addRequestOptionsToRequestIfPresent(body, method);
         finalizeHttpRequest(body, returnTypeName, method);
 
         internalMethod.setBody(body);
+    }
+
+    private void addRequestOptionsToRequestIfPresent(BlockStmt body, HttpRequestContext method) {
+        // Check if any parameter in the method is of type RequestOptions
+        boolean hasRequestOptions = method.getParameters()
+            .stream()
+            .anyMatch(parameter -> "options".equals(parameter.getName())
+                && "RequestOptions".equals(parameter.getShortTypeName()));
+
+        if (hasRequestOptions) {
+            ExpressionStmt statement = new ExpressionStmt(new MethodCallExpr(new NameExpr("httpRequest"),
+                "setRequestOptions", NodeList.nodeList(new NameExpr("options"))));
+            statement.setLineComment("Set the Request Options");
+            body.addStatement(statement);
+        }
     }
 
     // Helper methods
@@ -329,7 +347,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .anyMatch(parameter -> "uri".equals(parameter.getName()) && "String".equals(parameter.getShortTypeName()));
 
         if (useProvidedUri) {
-            body.addStatement(StaticJavaParser.parseStatement("String host = uri + \"/put\";"));
+            body.addStatement(
+                StaticJavaParser.parseStatement("String host = uri + \"/\" + \"" + method.getPath() + "\";"));
         } else {
             body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
         }

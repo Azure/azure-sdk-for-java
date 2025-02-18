@@ -78,11 +78,20 @@ public interface TestInterfaceClientService {
     // Need to add RequestOptions to specify ResponseBodyMode, which is otherwise provided by convenience methods
     @SuppressWarnings({ "unchecked", "cast" })
     @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
-    HttpBinJSON putResponseConvenience(String uri, int putBody, RequestOptions options);
+    HttpBinJSON putConvenience(String uri, int putBody, RequestOptions options);
 
     @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
     Response<HttpBinJSON> putResponse(@HostParam("uri") String uri,
         @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
+
+    @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
+    HttpBinJSON postStreamConvenience(@HostParam("uri") String uri,
+                           @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
+
+    @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
+    Response<HttpBinJSON> postStreamResponse(@HostParam("uri") String uri,
+                                             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
+
 
 
 }

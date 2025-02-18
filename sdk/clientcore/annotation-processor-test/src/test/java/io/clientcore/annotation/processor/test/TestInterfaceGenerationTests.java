@@ -15,18 +15,25 @@ import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.utils.binarydata.ByteArrayBinaryData;
+import io.clientcore.core.utils.binarydata.ByteBufferBinaryData;
+import io.clientcore.core.utils.binarydata.InputStreamBinaryData;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 
+import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
+import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
+import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestInterfaceGenerationTests {
     private static LocalTestServer server;
@@ -86,14 +93,13 @@ public class TestInterfaceGenerationTests {
     }
 
     @Test
-    @Disabled("Fix errors on test")
     public void bodyIsEmptyWhenIgnoreBodyIsSet() throws IOException {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
 
         TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
         assertNotNull(testInterface);
         RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(IGNORE);
-        HttpBinJSON httpBinJSON = testInterface.putResponseConvenience(getServerUri(false), 42, requestOptions);
+        HttpBinJSON httpBinJSON = testInterface.putConvenience(getServerUri(false), 42, requestOptions);
 
         assertNull(httpBinJSON);
 
@@ -101,6 +107,76 @@ public class TestInterfaceGenerationTests {
             assertNotNull(response.getBody());
             assertEquals(0, response.getBody().getLength());
             assertNull(response.getValue());
+        }
+    }
+
+    @Test
+    public void bodyIsEmptyWhenIgnoreBodyIsSetForStreamResponse() throws IOException {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        assertNotNull(testInterface);
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(IGNORE);
+        HttpBinJSON httpBinJSON = testInterface.postStreamConvenience(getServerUri(false), 42, requestOptions);
+
+        assertNull(httpBinJSON);
+
+        try (
+            Response<HttpBinJSON> response = testInterface.postStreamResponse(getServerUri(false), 42, requestOptions)) {
+            assertNotNull(response.getBody());
+            assertEquals(0, response.getBody().getLength());
+            assertNull(response.getValue());
+        }
+    }
+
+    @Test
+    public void bodyIsStreamedWhenResponseBodyModeIndicatesIt() throws IOException {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        assertNotNull(testInterface);
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(STREAM);
+
+        try (
+            Response<HttpBinJSON> response = testInterface.postStreamResponse(getServerUri(false), 42, requestOptions)) {
+            assertNotNull(response.getBody());
+            assertNotEquals(0, response.getBody().getLength());
+            assertTrue(response.getBody() instanceof InputStreamBinaryData);
+        }
+    }
+
+    @Test
+    public void bodyIsBufferedWhenResponseBodyModeIndicatesIt() throws IOException {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        assertNotNull(testInterface);
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(BUFFER);
+        HttpBinJSON httpBinJSON = testInterface.postStreamConvenience(getServerUri(false), 42, requestOptions);
+
+        assertNotNull(httpBinJSON);
+
+        try (
+            Response<HttpBinJSON> response = testInterface.postStreamResponse(getServerUri(false), 42, requestOptions)) {
+            assertNotNull(response.getBody());
+            assertNotEquals(0, response.getBody().getLength());
+            assertTrue(response.getBody() instanceof ByteArrayBinaryData
+                || response.getBody() instanceof ByteBufferBinaryData);
+        }
+    }
+
+    @Test
+    public void bodyIsDeserializedWhenResponseBodyModeIndicatesIt() throws IOException {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        assertNotNull(testInterface);
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(DESERIALIZE);
+        HttpBinJSON httpBinJSON = testInterface.postStreamConvenience(getServerUri(false), 42, requestOptions);
+
+        assertNotNull(httpBinJSON);
+
+        try (
+            Response<HttpBinJSON> response = testInterface.postStreamResponse(getServerUri(false), 42, requestOptions)) {
+            assertNotNull(response.getBody());
+            assertNotEquals(0, response.getBody().getLength());
+            assertNotNull(response.getValue());
         }
     }
 
