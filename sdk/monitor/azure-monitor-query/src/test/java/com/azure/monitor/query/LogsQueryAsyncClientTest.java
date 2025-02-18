@@ -38,6 +38,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
+import static com.azure.monitor.query.MonitorQueryTestUtils.addTestProxySanitizersAndMatchers;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getAdditionalLogWorkspaceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogResourceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogWorkspaceId;
@@ -72,8 +73,10 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (getTestMode() == TestMode.PLAYBACK) {
+            addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
+            addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());

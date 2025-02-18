@@ -52,6 +52,8 @@ public class MetricsClientTest extends MetricsClientTestBase {
                 .getValue();
         assertEquals(1, metricsQueryResults.getMetricsQueryResults().size());
         assertEquals(1, metricsQueryResults.getMetricsQueryResults().get(0).getMetrics().size());
+        assertNotNull(metricsQueryResults.getMetricsQueryResults().get(0).getResourceId());
+        assertEquals(resourceId, metricsQueryResults.getMetricsQueryResults().get(0).getResourceId());
         MetricResult metricResult = metricsQueryResults.getMetricsQueryResults().get(0).getMetrics().get(0);
         assertEquals("HttpIncomingRequestCount", metricResult.getMetricName());
         assertFalse(CoreUtils.isNullOrEmpty(metricResult.getTimeSeries()));
@@ -73,35 +75,6 @@ public class MetricsClientTest extends MetricsClientTestBase {
             () -> metricsBatchQueryClient.queryResources(Arrays.asList(updatedResource1, updatedResource2),
                 Arrays.asList("Successful Requests"), " Microsoft.Eventhub/Namespaces"));
 
-    }
-
-    @Test
-    public void testQueryResourcesReturnsNonNullResourceId() {
-        MetricsClient metricsClient
-            = clientBuilder.httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .buildClient();
-        String resourceId
-            = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2", FAKE_RESOURCE_ID);
-        resourceId = resourceId.substring(resourceId.indexOf("/subscriptions"));
-
-        try {
-            configClient.getConfigurationSetting("foo", "bar");
-        } catch (HttpResponseException exception) {
-            // ignore as this is only to generate some metrics
-        }
-
-        MetricsQueryResourcesOptions options = new MetricsQueryResourcesOptions().setGranularity(Duration.ofMinutes(15))
-            .setTop(10)
-            .setTimeInterval(new QueryTimeInterval(OffsetDateTime.now().minusDays(1), OffsetDateTime.now()));
-
-        MetricsQueryResourcesResult metricsQueryResults
-            = metricsClient
-                .queryResourcesWithResponse(Arrays.asList(resourceId), Arrays.asList("HttpIncomingRequestCount"),
-                    "microsoft.appconfiguration/configurationstores", options, Context.NONE)
-                .getValue();
-
-        assertNotNull(metricsQueryResults.getMetricsQueryResults().get(0).getResourceId());
-        assertEquals(resourceId, metricsQueryResults.getMetricsQueryResults().get(0).getResourceId());
     }
 
 }

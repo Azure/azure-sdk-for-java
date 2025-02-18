@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
+import static com.azure.monitor.query.MonitorQueryTestUtils.addTestProxySanitizersAndMatchers;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getAdditionalLogWorkspaceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogResourceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogWorkspaceId;
@@ -74,10 +75,12 @@ public class LogsQueryClientTest extends TestProxyTestBase {
         credential = TestUtil.getTestTokenCredential(interceptorManager);
         LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder().credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
+            addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
+            addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
         }
 
