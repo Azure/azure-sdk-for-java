@@ -46,5 +46,5 @@ public final class ClientConstants {
     /**
      * Default value when geo-replication is not enabled for that Event Hub namespace.
      */
-    public static final int DEFAULT_REPLICATION_SEGMENT = "";
+    public static final String DEFAULT_REPLICATION_SEGMENT = "";
 }
