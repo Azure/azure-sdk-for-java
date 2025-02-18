@@ -345,13 +345,23 @@ class PartitionPumpManager {
     EventPosition getInitialEventPosition(String partitionId, Checkpoint checkpoint) {
         // A checkpoint indicates the last known successfully processed event.
         // So, the event position to start a new partition processing should be exclusive of the
-        // offset/sequence number in the checkpoint. If no checkpoint is available, start from
+        // offset/sequence number in the checkpoint.
+
+        // If no checkpoint is available, start from
         // the position in set in the InitializationContext (either the earliest event in the partition or
         // the user provided initial position)
-        if (checkpoint != null && checkpoint.getOffset() != null) {
-            return EventPosition.fromOffset(checkpoint.getOffset());
-        } else if (checkpoint != null && checkpoint.getSequenceNumber() != null) {
-            return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
+        if (checkpoint != null) {
+            if (checkpoint.getOffsetString() != null) {
+                return EventPosition.fromOffsetString(checkpoint.getOffsetString());
+            }
+
+            if (checkpoint.getOffset() != null) {
+                return EventPosition.fromOffset(checkpoint.getOffset());
+            }
+
+            if (checkpoint.getSequenceNumber() != null) {
+                return EventPosition.fromSequenceNumber(checkpoint.getSequenceNumber());
+            }
         }
 
         if (options.getInitialEventPositionProvider() != null) {
