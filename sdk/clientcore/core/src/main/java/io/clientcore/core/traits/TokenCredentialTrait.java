@@ -6,13 +6,13 @@ package io.clientcore.core.traits;
 import io.clientcore.core.credentials.TokenCredential;
 
 /**
- * An {@link io.clientcore.core.traits Azure SDK for Java trait} providing a consistent interface for setting
+ * A {@link io.clientcore.core.traits Client Core Trait} providing a consistent interface for setting
  * {@link TokenCredential}.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
  * to return the concrete type, rather than the trait type.
  *
- * @see com.azure.core.client.traits
+ * @see io.clientcore.core.traits
  * @see TokenCredential
  */
 public interface TokenCredentialTrait<T extends TokenCredentialTrait<T>> {

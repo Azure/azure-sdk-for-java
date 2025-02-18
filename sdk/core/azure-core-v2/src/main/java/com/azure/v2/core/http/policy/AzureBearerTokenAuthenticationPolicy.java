@@ -21,20 +21,12 @@ import java.util.Base64;
 import java.util.Objects;
 
 /**
- * <p>The {@code BearerTokenAuthenticationPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface.
- * This policy uses a {@link TokenCredential} to authenticate the request with a bearer token.</p>
+ * <p>The {@code AzureBearerTokenAuthenticationPolicy} class is an implementation of the
+ * {@link HttpPipelinePolicy} interface. This policy uses a {@link TokenCredential} to authenticate the request with
+ * a bearer token.</p>
  *
  * <p>This class is useful when you need to authorize requests with a bearer token from Azure. It ensures that the
  * requests are sent over HTTPS to prevent the token from being leaked.</p>
- *
- * <p><strong>Code sample:</strong></p>
- *
- * <p>In this example, a {@code BearerTokenAuthenticationPolicy} is created with a {@link TokenCredential} and a scope.
- * The policy can then added to the pipeline. The request sent via the pipeline will then include the
- * Authorization header with the bearer token.</p>
- *
- * <!-- src_embed com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
- * <!-- end com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
  *
  * @see HttpPipelinePolicy
  * @see TokenCredential
