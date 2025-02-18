@@ -27,10 +27,7 @@ package io.clientcore.core.credentials;
 public interface TokenCredential {
 
     /**
-     * Synchronously get a token for a given resource/audience.
-     * <p>
-     * This method is called automatically by Azure SDK client libraries.
-     * <p>
+     * Get a token for a given resource/audience.
      * You may call this method directly, but you must also handle token caching and token refreshing.
      *
      * @param request the details of the token request

@@ -30,7 +30,7 @@ import java.util.Objects;
  * @see io.clientcore.core.http.models.HttpRequest
  * @see io.clientcore.core.http.models.Response
  */
-public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
+public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
     private static final String BEARER = "Bearer";
 

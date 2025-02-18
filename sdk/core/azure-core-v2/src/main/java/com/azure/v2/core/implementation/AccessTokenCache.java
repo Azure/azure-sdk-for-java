@@ -3,9 +3,9 @@
 
 package com.azure.v2.core.implementation;
 
-import com.azure.v2.core.credentials.AzureTokenRequestContext;
 import io.clientcore.core.credentials.AccessToken;
 import io.clientcore.core.credentials.TokenCredential;
+import io.clientcore.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
@@ -34,7 +34,7 @@ public final class AccessTokenCache {
     private static final ClientLogger LOGGER = new ClientLogger(AccessTokenCache.class);
     private final AtomicReference<AccessTokenCacheInfo> cacheInfo;
     // Stores the last authenticated token request context. The cached token is valid under this context.
-    private AzureTokenRequestContext tokenRequestContext;
+    private TokenRequestContext tokenRequestContext;
     private final Supplier<AccessToken> tokenSupplierSync;
     private final Predicate<AccessToken> shouldRefresh;
     // Used for sync flow.
@@ -61,7 +61,7 @@ public final class AccessTokenCache {
      * @param checkToForceFetchToken The flag indicating whether to force fetch a new token or not.
      * @return The Publisher that emits an AccessToken
      */
-    public AccessToken getTokenSync(AzureTokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
+    public AccessToken getTokenSync(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         lock.lock();
         try {
             return retrieveTokenSync(tokenRequestContext, checkToForceFetchToken).get();
@@ -70,7 +70,7 @@ public final class AccessTokenCache {
         }
     }
 
-    private Supplier<AccessToken> retrieveTokenSync(AzureTokenRequestContext tokenRequestContext,
+    private Supplier<AccessToken> retrieveTokenSync(TokenRequestContext tokenRequestContext,
         boolean checkToForceFetchToken) {
         return () -> {
             if (tokenRequestContext == null) {
@@ -143,7 +143,7 @@ public final class AccessTokenCache {
         };
     }
 
-    private boolean checkIfForceRefreshRequired(AzureTokenRequestContext tokenRequestContext) {
+    private boolean checkIfForceRefreshRequired(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null
                 ? tokenRequestContext.getClaims() == null

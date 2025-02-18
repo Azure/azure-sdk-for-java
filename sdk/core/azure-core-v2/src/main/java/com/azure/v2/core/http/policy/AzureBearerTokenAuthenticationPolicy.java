@@ -59,9 +59,10 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
      *
      * @param httpRequest The request context.
      */
+    @Override
     public void authorizeRequest(HttpRequest httpRequest) {
-        setAuthorizationHeaderHelperSync(httpRequest,
-            new AzureTokenRequestContext().addScopes(scopes).setCaeEnabled(true), false);
+        setAuthorizationHeaderHelper(httpRequest, new AzureTokenRequestContext().addScopes(scopes).setCaeEnabled(true),
+            false);
     }
 
     /**
@@ -81,7 +82,7 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
         if (AuthorizationChallengeParser.isCaeClaimsChallenge(response)) {
             AzureTokenRequestContext tokenRequestContext = getTokenRequestContextForCaeChallenge(response);
             if (tokenRequestContext != null) {
-                setAuthorizationHeaderSync(httpRequest, tokenRequestContext);
+                setAuthorizationHeader(httpRequest, tokenRequestContext);
                 return true;
             }
         }
@@ -95,11 +96,12 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
      * @param request the HTTP request.
      * @param tokenRequestContext the token request context to be used for token acquisition.
      */
-    public void setAuthorizationHeaderSync(HttpRequest request, AzureTokenRequestContext tokenRequestContext) {
-        setAuthorizationHeaderHelperSync(request, tokenRequestContext, true);
+    @Override
+    public void setAuthorizationHeader(HttpRequest request, TokenRequestContext tokenRequestContext) {
+        setAuthorizationHeaderHelper(request, tokenRequestContext, true);
     }
 
-    private void setAuthorizationHeaderHelperSync(HttpRequest httpRequest, AzureTokenRequestContext tokenRequestContext,
+    private void setAuthorizationHeaderHelper(HttpRequest httpRequest, TokenRequestContext tokenRequestContext,
         boolean checkToForceFetchToken) {
         AccessToken token = cache.getTokenSync(tokenRequestContext, checkToForceFetchToken);
         setAuthorizationHeader(httpRequest.getHeaders(), token.getToken());
