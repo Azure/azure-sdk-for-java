@@ -33,8 +33,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.monitor.query.MonitorQueryTestUtils.addTestProxySanitizersAndMatchers;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getMetricResourceUri;
+import static com.azure.monitor.query.TestUtil.addTestProxySanitizersAndMatchers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

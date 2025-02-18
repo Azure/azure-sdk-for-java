@@ -43,10 +43,10 @@ import java.util.List;
 import java.util.Map;
 
 import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
-import static com.azure.monitor.query.MonitorQueryTestUtils.addTestProxySanitizersAndMatchers;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getAdditionalLogWorkspaceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogResourceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogWorkspaceId;
+import static com.azure.monitor.query.TestUtil.addTestProxySanitizersAndMatchers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
