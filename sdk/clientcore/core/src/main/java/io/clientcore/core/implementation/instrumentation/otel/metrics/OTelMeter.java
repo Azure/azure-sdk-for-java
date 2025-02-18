@@ -71,7 +71,7 @@ public class OTelMeter implements Meter {
         Object meterBuilder = GET_METER_BUILDER_INVOKER.invoke(otelMeterProvider, libraryOptions.getLibraryName());
         if (meterBuilder != null) {
             SET_INSTRUMENTATION_VERSION_INVOKER.invoke(meterBuilder, libraryOptions.getLibraryVersion());
-            SET_SCHEMA_URL_INVOKER.invoke(meterBuilder, libraryOptions.getSchemaUrl());
+            SET_SCHEMA_URL_INVOKER.invoke(meterBuilder, libraryOptions.getSchemaUri());
             this.otelMeter = BUILD_INVOKER.invoke(meterBuilder);
         } else {
             this.otelMeter = null;

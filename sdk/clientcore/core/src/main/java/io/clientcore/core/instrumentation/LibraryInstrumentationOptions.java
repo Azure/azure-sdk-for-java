@@ -17,8 +17,8 @@ import java.util.Objects;
  * Schema URL describes telemetry schema and version.
  * <p>
  * If your client library adds any attributes (links, events, etc.) to the spans,
- * these properties SHOULD follow specific version of <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry Semantic Conventions</a>.
- * And provide the corresponding schema URL.
+ * these properties SHOULD follow specific version of <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry Semantic Conventions</a>
+ * and provide the corresponding schema URI.
  * <p>
  * The {@link LibraryInstrumentationOptions} are usually static and shared across all instances of the client.
  * Application developers are not expected to change them.
@@ -26,7 +26,7 @@ import java.util.Objects;
 public final class LibraryInstrumentationOptions {
     private final String libraryName;
     private String libraryVersion;
-    private String schemaUrl;
+    private String schemaUri;
     private boolean disableSpanSuppression;
 
     static {
@@ -68,11 +68,11 @@ public final class LibraryInstrumentationOptions {
      * Sets the schema URL describing specific schema and version of the telemetry
      * the library emits.
      *
-     * @param schemaUrl The schema URL.
+     * @param schemaUri The schema URL.
      * @return The updated {@link LibraryInstrumentationOptions} object.
      */
-    public LibraryInstrumentationOptions setSchemaUrl(String schemaUrl) {
-        this.schemaUrl = schemaUrl;
+    public LibraryInstrumentationOptions setSchemaUri(String schemaUri) {
+        this.schemaUri = schemaUri;
         return this;
     }
 
@@ -100,8 +100,8 @@ public final class LibraryInstrumentationOptions {
      *
      * @return The schema URL.
      */
-    public String getSchemaUrl() {
-        return schemaUrl;
+    public String getSchemaUri() {
+        return schemaUri;
     }
 
     LibraryInstrumentationOptions disableSpanSuppression(boolean disableSpanSuppression) {

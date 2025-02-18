@@ -4,7 +4,7 @@
 package com.azure.v2.core.http.rest;
 
 import com.azure.v2.core.utils.IterableStream;
-import com.azure.v2.core.utils.paging.PageRetrieverSync;
+import com.azure.v2.core.utils.paging.PageRetriever;
 
 import java.util.ArrayList;
 import java.util.function.BiFunction;
@@ -144,7 +144,7 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      * @param firstPageRetriever first page retriever function to get the first page given the page size.
      * @param nextPageRetriever next page retriever function to get the next page given a continuation token and the page size.
      */
-    private PagedIterable(Supplier<PageRetrieverSync<String, PagedResponse<T>>> provider,
+    private PagedIterable(Supplier<PageRetriever<String, PagedResponse<T>>> provider,
         Function<Integer, PagedResponse<T>> firstPageRetriever,
         BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
         super(provider);

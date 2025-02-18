@@ -26,11 +26,11 @@ module io.clientcore.core {
     exports io.clientcore.core.serialization.xml;
     exports io.clientcore.core.traits;
     exports io.clientcore.core.utils;
-    exports io.clientcore.core.utils.auth;
-    exports io.clientcore.core.utils.binarydata;
+    exports io.clientcore.core.models.binarydata;
     exports io.clientcore.core.utils.configuration;
-    exports io.clientcore.core.utils.serializers;
+    exports io.clientcore.core.implementation.http.client;
+    exports io.clientcore.core.implementation.http;
+    exports io.clientcore.core.serialization;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
-    uses io.clientcore.core.serialization.json.JsonProvider;
 }

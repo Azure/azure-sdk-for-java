@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.v2.core.utils.tracing;
 
-import com.azure.v2.core.annotations.Fluent;
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.TypeConditions;
 import io.clientcore.core.utils.Context;
 
 import java.time.Instant;
@@ -15,7 +16,7 @@ import java.util.Objects;
 /**
  * Represents span options that are available before span starts and describe it.
  */
-@Fluent
+@Metadata(conditions = TypeConditions.FLUENT)
 public final class StartSpanOptions {
     private final SpanKind spanKind;
     private Map<String, Object> spanAttributes;

@@ -7,7 +7,7 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
-import io.clientcore.core.utils.auth.ChallengeHandler;
+import io.clientcore.core.utils.ChallengeHandler;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.okhttp3.implementation.OkHttpProxySelector;
 import io.clientcore.http.okhttp3.implementation.ProxyAuthenticator;
@@ -137,7 +137,7 @@ public class OkHttpHttpClientBuilder {
      * The connection timeout begins once the request attempts to connect to the remote host and finishes once the
      * connection is resolved.
      * <p>
-     * If {@code connectTimeout} is null either {@link Configuration#PROPERTY_REQUEST_CONNECT_TIMEOUT} or a
+     * If {@code connectTimeout} is null either {@link Configuration#REQUEST_CONNECT_TIMEOUT_IN_MS} or a
      * 10-second timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout will be
      * applied. When applying the timeout the greatest of one millisecond and the value of {@code connectTimeout} will
      * be used.
@@ -188,7 +188,7 @@ public class OkHttpHttpClientBuilder {
      * timeout triggers periodically but won't fire its operation if another read operation has completed between when
      * the timeout is triggered and completes.
      * <p>
-     * If {@code readTimeout} is null or {@link Configuration#PROPERTY_REQUEST_READ_TIMEOUT} or a 60-second
+     * If {@code readTimeout} is null or {@link Configuration#REQUEST_READ_TIMEOUT_IN_MS} or a 60-second
      * timeout will be used, if it is a {@link Duration} less than or equal to zero then no timeout period will be
      * applied to response read. When applying the timeout the greatest of one millisecond and the value of {@code
      * readTimeout} will be used.
@@ -212,7 +212,7 @@ public class OkHttpHttpClientBuilder {
      * write tracker will update when each operation completes and the outbound buffer will be periodically checked to
      * determine if it is still draining.
      * <p>
-     * If {@code writeTimeout} is null either {@link Configuration#PROPERTY_REQUEST_WRITE_TIMEOUT} or a 60-second
+     * If {@code writeTimeout} is null either {@link Configuration#REQUEST_WRITE_TIMEOUT_IN_MS} or a 60-second
      * timeout will be used, if it is a {@link Duration} less than or equal to zero then no write timeout will be
      * applied. When applying the timeout the greatest of one millisecond and the value of {@code writeTimeout} will be
      * used.

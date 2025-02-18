@@ -6,8 +6,8 @@ package io.clientcore.http.okhttp3.implementation;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
-import io.clientcore.core.utils.binarydata.BinaryData;
+import io.clientcore.core.implementation.http.HttpResponse;
+import io.clientcore.core.models.binarydata.BinaryData;
 import okhttp3.Headers;
 import okhttp3.ResponseBody;
 

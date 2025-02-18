@@ -46,7 +46,8 @@ public class ReadmeSamples {
                 pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
             }
 
-            try (Response<?> response = pipelineBuilder.build().send(new HttpRequest(HttpMethod.GET, "http://bing.com"))) {
+            try (Response<?> response = pipelineBuilder.build().send(new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("http://bing.com"))) {
                 // Validate test results.
                 assertEquals(200, response.getStatusCode());
             } catch (IOException ex) {
@@ -85,7 +86,8 @@ public class ReadmeSamples {
             }
             // END: readme-sample-add-sanitizer-matcher
 
-            try (Response<?> response = pipelineBuilder.build().send(new HttpRequest(HttpMethod.GET, "http://bing.com"))) {
+            try (Response<?> response = pipelineBuilder.build().send(new HttpRequest().setMethod(HttpMethod.GET)
+                .setUri("http://bing.com"))) {
                 // Validate test results.
                 assertEquals(200, response.getStatusCode());
             } catch (IOException ex) {
