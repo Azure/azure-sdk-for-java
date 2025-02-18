@@ -5,10 +5,15 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.InterceptorManager;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzurePipelinesCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.Arrays;
 
 /**
  * Utility class for tests.
@@ -39,5 +44,17 @@ public class TestUtil {
         } else {
             return new MockTokenCredential();
         }
+    }
+
+    public static void addTestProxySanitizersAndMatchers(InterceptorManager interceptorManager) {
+        interceptorManager.addSanitizers(
+            new TestProxySanitizer("resourceGroups\\/.*?\\/", "resourceGroups/REDACTED/", TestProxySanitizerType.URL),
+            new TestProxySanitizer("Namespaces\\/.*\\/providers", "Namespaces/REDACTED/providers",
+                TestProxySanitizerType.URL),
+            new TestProxySanitizer("workspaces\\/.*?\\/", "workspaces/REDACTED/", TestProxySanitizerType.URL));
+        interceptorManager.addMatchers(
+            new CustomMatcher().setIgnoredQueryParameters(Arrays.asList("starttime", "endtime", "api-version"))
+                .setComparingBodies(false)
+                .setExcludedHeaders(Arrays.asList("x-ms-content-sha256")));
     }
 }
