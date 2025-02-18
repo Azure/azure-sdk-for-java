@@ -105,7 +105,8 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
                     reader.skipChildren();
                 }
             }
-            ChatRequestToolMessage deserializedChatRequestToolMessage = new ChatRequestToolMessage(toolCallId).setContent(content);
+            ChatRequestToolMessage deserializedChatRequestToolMessage
+                = new ChatRequestToolMessage(toolCallId).setContent(content);
             deserializedChatRequestToolMessage.role = role;
             return deserializedChatRequestToolMessage;
         });
