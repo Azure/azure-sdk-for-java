@@ -84,7 +84,8 @@ The JCA library supports configuring the following options:
 * `azure.cert-path.well-known`: The path where the well-known certificate is stored.
 * `azure.cert-path.custom`: The path where the custom certificate is stored.
 * `azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate`: Indicates whether to refresh certificates when have untrusted certificate.
-* `azure.keyvault.jca.certificates-refresh-interval(-in-ms)`: The refresh interval time.
+* `azure.keyvault.jca.certificates-refresh-interval`: The refresh interval time.
+* `azure.keyvault.jca.certificates-refresh-interval-in-ms`: The refresh interval time.
 * `azure.keyvault.disable-challenge-resource-verification`: Indicates whether to disable verification that the authentication challenge resource matches the Key Vault or Managed HSM domain.
 
 You can configure these properties using:
@@ -321,7 +322,7 @@ You can set the private key as [non-exportable] to ensure the security of the ke
 
 Note if you want to use key less certificate, you must add `sign` permission.
 
-You can add permission in portal: ![Sign To Principal](resources/SignToPrincipal.png)
+You can add permission in portal: ![Sign To Principal](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/keyvault/azure-security-keyvault-jca/resources/SignToPrincipal.png)
 
 Or add permission by cli command:
 ```shell
@@ -372,7 +373,7 @@ The integration of Azure Key Vault JCA provider can be used with jarsigner to si
 1. Download the latest [JCA](https://repo1.maven.org/maven2/com/azure/azure-security-keyvault-jca) Provider Jar.
 2. If you are using Java8, you need to add the JCA provider jar to the class path.
     1. Place the jar under the folder `${JAVA_HOME}/jre/lib/ext`
-        - ![place-jar.jpg](resources/place-jar.png)
+        - ![place-jar.jpg](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/keyvault/azure-security-keyvault-jca/resources/place-jar.png)
 3. If you are using Java9 or higher, just place the jar in a folder that jarsigner can access.
 
 ### Prepare Azure Resources
@@ -490,10 +491,20 @@ az role assignment create \
 
 replace ${PARAM_YOUR_JAR_FILE_PATH} with the path of your jar file, replace ${PARAM_JCA_PROVIDER_JAR_PATH} with the path of the jca provider jar.
 
+Check your output, if you see the following message, it means the jar is signed successfully.
+```
+jar signed.
+```
+
 ### Verify with Jarsigner
 After signing, you can verify the JAR file with:
 ```bash
 jarsigner -verify -verbose -certs signerjar.jar
+```
+
+Check your output, if you see the following message, it means the jar is verified successfully.
+```
+jar verified.
 ```
 
 ### Clean up Resources
@@ -533,15 +544,15 @@ Before you start debugging, make sure the code of your JCA jar is the same as yo
 
    After execution, you will see the following output information:
 
-   ![start jarsigner command for debug](resources/start-jarsigner-command-for-debug.png)
+   ![start jarsigner command for debug](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/keyvault/azure-security-keyvault-jca/resources/start-jarsigner-command-for-debug.png)
 
 2. Create a Remote JVM Debug configuration in your IDE tool, such as in Intellij IDEA:
 
-   ![add remote JVM Debug configuration](./resources/add-remote-jvm-debug-configuration.png)
+   ![add remote JVM Debug configuration](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/keyvault/azure-security-keyvault-jca/resources/add-remote-jvm-debug-configuration.png)
 
 3. Click the `Debug` button to debug in your IDE:
 
-   ![debug breakpoints](resources/debug-breakpoints.png)
+   ![debug breakpoints](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/keyvault/azure-security-keyvault-jca/resources/debug-breakpoints.png)
 
 ## Configure logging
 This module uses JUL (`java.util.logging`), so to configure things like the logging level you can directly modify the JUL configuration.
