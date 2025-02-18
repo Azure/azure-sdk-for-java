@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.BackupVault;
@@ -23,25 +23,24 @@ public final class BackupVaultsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"atzuuv\",\"tags\":{\"ajqfutlx\":\"grebwggahttzlsw\",\"unwqr\":\"oqza\"},\"id\":\"zfrgqhaohcm\",\"name\":\"uocnjrohmbpyr\",\"type\":\"xameblydyvkfkm\"}";
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"uihywart\",\"tags\":{\"emmucfxh\":\"hkixkykxdssj\",\"s\":\"kkflrmymyincqlhr\",\"iiiovgqcgxuugq\":\"sl\",\"e\":\"ctotiowlx\"},\"id\":\"dptjgwdtgukranb\",\"name\":\"wphqlkccuzgygqw\",\"type\":\"hoi\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupVault response = manager.backupVaults()
-            .define("razisg")
-            .withRegion("nbwzohmnrxxbso")
-            .withExistingNetAppAccount("xcptsoqfyiaseqc", "krtt")
-            .withTags(
-                mapOf("rqsgnzx", "inhmdptys", "lsvjgpliu", "jp", "oucqpqojx", "iqwoyxqvapcoh", "rzdcgdzbenribcaw", "x"))
+            .define("blycsxzujksr")
+            .withRegion("bidyv")
+            .withExistingNetAppAccount("ywaeeczgf", "ukklelss")
+            .withTags(mapOf("paxwkufyk", "wxvgpiudeugfsxze"))
             .create();
 
-        Assertions.assertEquals("atzuuv", response.location());
-        Assertions.assertEquals("grebwggahttzlsw", response.tags().get("ajqfutlx"));
+        Assertions.assertEquals("uihywart", response.location());
+        Assertions.assertEquals("hkixkykxdssj", response.tags().get("emmucfxh"));
     }
 
     // Use "Map.of" if available

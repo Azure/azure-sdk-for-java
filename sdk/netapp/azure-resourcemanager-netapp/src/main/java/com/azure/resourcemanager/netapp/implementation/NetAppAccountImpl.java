@@ -12,6 +12,7 @@ import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
+import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
 import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
@@ -80,14 +81,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public Boolean disableShowmount() {
         return this.innerModel().disableShowmount();
-    }
-
-    public String nfsV4IdDomain() {
-        return this.innerModel().nfsV4IdDomain();
-    }
-
-    public Boolean isMultiAdEnabled() {
-        return this.innerModel().isMultiAdEnabled();
     }
 
     public Region region() {
@@ -199,12 +192,12 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         serviceManager.accounts().transitionToCmk(resourceGroupName, accountName, body, context);
     }
 
-    public void getChangeKeyVaultInformation() {
-        serviceManager.accounts().getChangeKeyVaultInformation(resourceGroupName, accountName);
+    public GetKeyVaultStatusResponse getChangeKeyVaultInformation() {
+        return serviceManager.accounts().getChangeKeyVaultInformation(resourceGroupName, accountName);
     }
 
-    public void getChangeKeyVaultInformation(Context context) {
-        serviceManager.accounts().getChangeKeyVaultInformation(resourceGroupName, accountName, context);
+    public GetKeyVaultStatusResponse getChangeKeyVaultInformation(Context context) {
+        return serviceManager.accounts().getChangeKeyVaultInformation(resourceGroupName, accountName, context);
     }
 
     public void changeKeyVault() {
@@ -261,16 +254,6 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
             return this;
         } else {
             this.updateBody.withEncryption(encryption);
-            return this;
-        }
-    }
-
-    public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
-        if (isInCreateMode()) {
-            this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
-            return this;
-        } else {
-            this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
             return this;
         }
     }
