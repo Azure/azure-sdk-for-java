@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
@@ -72,10 +73,12 @@ public class QuickPulse {
 
     private void initialize(HttpPipeline httpPipeline, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
         @Nullable String roleName, @Nullable String roleInstance, String sdkVersion) {
+        if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
+            LOGGER.verbose(
+                "Initializing QuickPulse with instrumentation key: {} , URL {}, rolename {}, role instance {}, sdk version {}",
+                maskIkey(instrumentationKey.get()), endpointUrl.get().toString(), roleName, roleInstance, sdkVersion);
+        }
 
-        LOGGER.verbose(
-            "Initializing QuickPulse with instrumentation key: {} , URL {}, rolename {}, role instance {}, sdk version {}",
-            instrumentationKey.get(), endpointUrl.get().toString(), roleName, roleInstance, sdkVersion);
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
         ArrayBlockingQueue<MonitoringDataPoint> sendQueue = new ArrayBlockingQueue<>(256, true);
 
@@ -126,5 +129,9 @@ public class QuickPulse {
         collector.enable(instrumentationKey);
 
         this.collector = collector;
+    }
+
+    private String maskIkey(String ikey) {
+        return "*" + ikey.substring(ikey.length() - 13);
     }
 }

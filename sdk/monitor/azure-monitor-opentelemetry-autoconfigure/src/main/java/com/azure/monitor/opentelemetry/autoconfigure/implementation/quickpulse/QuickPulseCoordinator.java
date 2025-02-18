@@ -103,7 +103,6 @@ final class QuickPulseCoordinator implements Runnable {
                     : waitBetweenPingsInMillis;
 
             case QP_IS_ON:
-                logger.verbose("In post mode");
                 return waitBetweenPostsInMillis;
         }
 
@@ -138,7 +137,6 @@ final class QuickPulseCoordinator implements Runnable {
                 return waitBetweenPostsInMillis;
 
             case QP_IS_OFF:
-                logger.verbose("In ping mode");
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis
                     : waitBetweenPingsInMillis;
@@ -162,7 +160,8 @@ final class QuickPulseCoordinator implements Runnable {
                 logger.verbose("Handling ping header to redirect to {}", qpsServiceRedirectedEndpoint);
                 dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
             } catch (MalformedURLException e) {
-                logger.error("The service returned a malformed URL in the redirect header: {}", redirectLink);
+                logger.error("The service returned a malformed URL in the redirect header: {}. Exception message: {}",
+                    redirectLink, e.getMessage());
             }
         }
 
