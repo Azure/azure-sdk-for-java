@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2025-02-19)
 
 ### Breaking Changes
 
@@ -12,6 +12,10 @@
 - Update `getCurrentConditions` function signature
 - Remove `getNextLink` in all classes
 - Remove `isActive` method from `ActiveStorm` class
+
+### Other Changes
+
+- Upgrade `@autorest/java` version
 
 ## 1.0.0-beta.2 (2024-12-27)
 
