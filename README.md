@@ -1,6 +1,8 @@
 
 # Azure SDK for Java
 
+JRS - WILL NOT BE CHECKED IN
+
 [![Packages](https://img.shields.io/badge/packages-latest-blue.svg)](https://azure.github.io/azure-sdk/releases/latest/java.html) [![Build Documentation](https://img.shields.io/badge/documentation-published-blue.svg)](https://azure.github.io/azure-sdk-for-java)
 
 This repository is for active development of the Azure SDK for Java. For consumers of the SDK we recommend visiting our [public developer docs](https://docs.microsoft.com/azure/developer/java/sdk/) or our versioned [developer docs](https://azure.github.io/azure-sdk-for-java).
