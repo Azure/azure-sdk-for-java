@@ -4,8 +4,12 @@
 
 package com.azure.maps.weather.models;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.azure.core.util.ExpandableEnum;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -16,7 +20,7 @@ import java.util.function.Function;
 /**
  * Defines values for HourlyDuration.
  */
-public final class HourlyDuration implements ExpandableEnum<Integer> {
+public final class HourlyDuration implements ExpandableEnum<Integer>, JsonSerializable<HourlyDuration> {
     private static final Map<Integer, HourlyDuration> VALUES = new ConcurrentHashMap<>();
 
     private static final Function<Integer, HourlyDuration> NEW_INSTANCE = HourlyDuration::new;
@@ -59,7 +63,7 @@ public final class HourlyDuration implements ExpandableEnum<Integer> {
 
     /**
      * Creates or finds a HourlyDuration.
-     *
+     * 
      * @param value a value to look for.
      * @return the corresponding HourlyDuration.
      * @throws IllegalArgumentException if value is null.
@@ -73,7 +77,7 @@ public final class HourlyDuration implements ExpandableEnum<Integer> {
 
     /**
      * Gets known HourlyDuration values.
-     *
+     * 
      * @return Known HourlyDuration values.
      */
     public static Collection<HourlyDuration> values() {
@@ -82,7 +86,7 @@ public final class HourlyDuration implements ExpandableEnum<Integer> {
 
     /**
      * Gets the value of the HourlyDuration instance.
-     *
+     * 
      * @return the value of the HourlyDuration instance.
      */
     @Override
@@ -90,8 +94,36 @@ public final class HourlyDuration implements ExpandableEnum<Integer> {
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    @JsonValue
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeInt(getValue());
+    }
+
+    /**
+     * Reads an instance of HourlyDuration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HourlyDuration if the JsonReader was pointing to an instance of it, or null if the
+     * JsonReader was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HourlyDuration.
+     * @throws IllegalStateException If unexpected JSON token is found.
+     */
+    public static HourlyDuration fromJson(JsonReader jsonReader) throws IOException {
+        JsonToken nextToken = jsonReader.nextToken();
+        if (nextToken == JsonToken.NULL) {
+            return null;
+        }
+        if (nextToken != JsonToken.NUMBER) {
+            throw new IllegalStateException(
+                String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.NUMBER, nextToken));
+        }
+        return HourlyDuration.fromValue(jsonReader.getInt());
+    }
+
+    @Override
     public String toString() {
         return Objects.toString(this.value);
     }

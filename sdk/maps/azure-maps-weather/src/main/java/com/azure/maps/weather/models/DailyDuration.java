@@ -4,8 +4,12 @@
 
 package com.azure.maps.weather.models;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.azure.core.util.ExpandableEnum;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -16,7 +20,7 @@ import java.util.function.Function;
 /**
  * Defines values for DailyDuration.
  */
-public final class DailyDuration implements ExpandableEnum<Integer> {
+public final class DailyDuration implements ExpandableEnum<Integer>, JsonSerializable<DailyDuration> {
     private static final Map<Integer, DailyDuration> VALUES = new ConcurrentHashMap<>();
 
     private static final Function<Integer, DailyDuration> NEW_INSTANCE = DailyDuration::new;
@@ -64,7 +68,7 @@ public final class DailyDuration implements ExpandableEnum<Integer> {
 
     /**
      * Creates or finds a DailyDuration.
-     *
+     * 
      * @param value a value to look for.
      * @return the corresponding DailyDuration.
      * @throws IllegalArgumentException if value is null.
@@ -78,7 +82,7 @@ public final class DailyDuration implements ExpandableEnum<Integer> {
 
     /**
      * Gets known DailyDuration values.
-     *
+     * 
      * @return Known DailyDuration values.
      */
     public static Collection<DailyDuration> values() {
@@ -87,7 +91,7 @@ public final class DailyDuration implements ExpandableEnum<Integer> {
 
     /**
      * Gets the value of the DailyDuration instance.
-     *
+     * 
      * @return the value of the DailyDuration instance.
      */
     @Override
@@ -95,8 +99,36 @@ public final class DailyDuration implements ExpandableEnum<Integer> {
         return this.value;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    @JsonValue
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeInt(getValue());
+    }
+
+    /**
+     * Reads an instance of DailyDuration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DailyDuration if the JsonReader was pointing to an instance of it, or null if the
+     * JsonReader was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DailyDuration.
+     * @throws IllegalStateException If unexpected JSON token is found.
+     */
+    public static DailyDuration fromJson(JsonReader jsonReader) throws IOException {
+        JsonToken nextToken = jsonReader.nextToken();
+        if (nextToken == JsonToken.NULL) {
+            return null;
+        }
+        if (nextToken != JsonToken.NUMBER) {
+            throw new IllegalStateException(
+                String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.NUMBER, nextToken));
+        }
+        return DailyDuration.fromValue(jsonReader.getInt());
+    }
+
+    @Override
     public String toString() {
         return Objects.toString(this.value);
     }

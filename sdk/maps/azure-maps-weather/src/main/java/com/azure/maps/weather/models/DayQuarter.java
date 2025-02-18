@@ -4,6 +4,11 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.util.ExpandableEnum;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -14,7 +19,7 @@ import java.util.function.Function;
 /**
  * Quarter of the day.
  */
-public final class DayQuarter implements ExpandableEnum<Integer> {
+public final class DayQuarter implements ExpandableEnum<Integer>, JsonSerializable<DayQuarter> {
 
     private static final Map<Integer, DayQuarter> VALUES = new ConcurrentHashMap<>();
 
@@ -77,6 +82,35 @@ public final class DayQuarter implements ExpandableEnum<Integer> {
     @Override
     public Integer getValue() {
         return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeInt(getValue());
+    }
+
+    /**
+     * Reads an instance of DayQuarter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DayQuarter if the JsonReader was pointing to an instance of it, or null if the JsonReader
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DayQuarter.
+     * @throws IllegalStateException If unexpected JSON token is found.
+     */
+    public static DayQuarter fromJson(JsonReader jsonReader) throws IOException {
+        JsonToken nextToken = jsonReader.nextToken();
+        if (nextToken == JsonToken.NULL) {
+            return null;
+        }
+        if (nextToken != JsonToken.NUMBER) {
+            throw new IllegalStateException(
+                String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.NUMBER, nextToken));
+        }
+        return DayQuarter.fromValue(jsonReader.getInt());
     }
 
     @Override

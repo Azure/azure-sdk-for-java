@@ -4,6 +4,11 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.util.ExpandableEnum;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -15,7 +20,7 @@ import java.util.function.Function;
  * Numeric ID value associated with the type of unit being displayed. Can be used for unit translation. Please refer to
  * [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#unit-types) for details.
  */
-public final class UnitType implements ExpandableEnum<Integer> {
+public final class UnitType implements ExpandableEnum<Integer>, JsonSerializable<UnitType> {
 
     private static final Map<Integer, UnitType> VALUES = new ConcurrentHashMap<>();
 
@@ -178,6 +183,35 @@ public final class UnitType implements ExpandableEnum<Integer> {
     @Override
     public Integer getValue() {
         return this.value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeInt(getValue());
+    }
+
+    /**
+     * Reads an instance of UnitType from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UnitType if the JsonReader was pointing to an instance of it, or null if the JsonReader
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UnitType.
+     * @throws IllegalStateException If unexpected JSON token is found.
+     */
+    public static UnitType fromJson(JsonReader jsonReader) throws IOException {
+        JsonToken nextToken = jsonReader.nextToken();
+        if (nextToken == JsonToken.NULL) {
+            return null;
+        }
+        if (nextToken != JsonToken.NUMBER) {
+            throw new IllegalStateException(
+                String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.NUMBER, nextToken));
+        }
+        return UnitType.fromValue(jsonReader.getInt());
     }
 
     @Override
