@@ -9,14 +9,16 @@ import io.netty.util.ReferenceCounted;
 
 import java.util.EnumMap;
 import java.util.EnumSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdHeader;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @SuppressWarnings("UnstableApiUsage")
-abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {
+public abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {
 
     final ByteBuf in;
     final Map<Short, T> headers;
@@ -28,19 +30,40 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         checkNotNull(ids, "expected non-null ids");
         checkNotNull(in, "expected non-null in");
 
-        this.tokens = new EnumMap<T, RntbdToken>(classType);
+        this.tokens = new EnumMap<>(classType);
         headers.stream().forEach(h -> tokens.put(h, RntbdToken.create(h)));
         this.headers = ids;
         this.in = in;
     }
 
+    public String dumpTokens() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(System.lineSeparator());
+        for (Map.Entry<?, RntbdToken> entry : this.tokens.entrySet()) {
+            RntbdToken token = entry.getValue();
+            if (token == null || !token.isPresent()) {
+                continue;
+            }
+
+            sb.append(token);
+            sb.append(System.lineSeparator());
+        }
+
+        return sb.toString();
+    }
+
     // region Methods
 
-    final int computeCount() {
+    final int computeCount(boolean isThinClientRequest) {
 
         int count = 0;
 
         for (final RntbdToken token : this.tokens.values()) {
+            if (isThinClientRequest
+                && RntbdConstants.RntbdRequestHeader.thinClientProxyExcludedSet.contains(token.getId())) {
+                continue;
+            }
+
             if (token.isPresent()) {
                 ++count;
             }
@@ -49,11 +72,16 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         return count;
     }
 
-    final int computeLength() {
+    final int computeLength(boolean isThinClientRequest) {
 
         int total = 0;
 
         for (final RntbdToken token : this.tokens.values()) {
+            if (isThinClientRequest
+                && RntbdConstants.RntbdRequestHeader.thinClientProxyExcludedSet.contains(token.getId())) {
+                continue;
+            }
+
             total += token.computeLength();
         }
 
@@ -88,8 +116,22 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         return stream;
     }
 
-    final void encode(final ByteBuf out) {
+    final void encode(final ByteBuf out, boolean isThinClientRequest) {
+        if (isThinClientRequest) {
+            for (RntbdConstants.RntbdRequestHeader header : RntbdConstants.RntbdRequestHeader.thinClientHeadersInOrderList) {
+                RntbdToken token = this.tokens.get(header);
+                if (token != null) {
+                    token.encode(out);
+                }
+            }
+        }
+
         for (final RntbdToken token : this.tokens.values()) {
+            if (isThinClientRequest
+                && RntbdConstants.RntbdRequestHeader.thinClientProxyOrderedOrExcludedSet.contains(token.getId())) {
+                continue;
+            }
+
             token.encode(out);
         }
     }

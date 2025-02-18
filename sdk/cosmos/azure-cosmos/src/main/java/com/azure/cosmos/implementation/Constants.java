@@ -199,6 +199,8 @@ public final class Constants {
         public static final String Name = "name";
         public static final String WRITABLE_LOCATIONS = "writableLocations";
         public static final String READABLE_LOCATIONS = "readableLocations";
+        public static final String THINCLIENT_WRITABLE_LOCATIONS = "thinClientWritableLocations";
+        public static final String THINCLIENT_READABLE_LOCATIONS = "thinClientReadableLocations";
         public static final String DATABASE_ACCOUNT_ENDPOINT = "databaseAccountEndpoint";
 
       //Authorization

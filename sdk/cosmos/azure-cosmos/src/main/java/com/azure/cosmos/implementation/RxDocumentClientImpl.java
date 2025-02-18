@@ -56,6 +56,7 @@ import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.query.PipelinedQueryExecutionContextBase;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
@@ -146,7 +147,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private final static List<String> EMPTY_REGION_LIST = Collections.emptyList();
 
-    private final static List<URI> EMPTY_ENDPOINT_LIST = Collections.emptyList();
+    private final static List<LocationCache.ConsolidatedRegionalEndpoint> EMPTY_ENDPOINT_LIST = Collections.emptyList();
 
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
@@ -210,6 +211,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
     private RxClientCollectionCache collectionCache;
     private RxGatewayStoreModel gatewayProxy;
+    private RxGatewayStoreModel thinProxy;
     private RxStoreModel storeModel;
     private GlobalAddressResolver addressResolver;
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
@@ -260,6 +262,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
     private List<CosmosOperationPolicy> operationPolicies;
     private AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
+    private final boolean isThinClientEnabled;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -488,6 +491,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
             this.configs = configs;
             this.masterKeyOrResourceToken = masterKeyOrResourceToken;
+            this.isThinClientEnabled = Configs.isThinClientEnabled();
             this.serviceEndpoint = serviceEndpoint;
             this.credential = credential;
             this.tokenCredential = tokenCredential;
@@ -668,6 +672,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         (this.gatewayProxy).setSessionContainer(this.sessionContainer);
     }
 
+    private void updateThinProxy() {
+        (this.thinProxy).setGatewayServiceConfigurationReader(this.gatewayConfigurationReader);
+        (this.thinProxy).setCollectionCache(this.collectionCache);
+        (this.thinProxy).setPartitionKeyRangeCache(this.partitionKeyRangeCache);
+        (this.thinProxy).setUseMultipleWriteLocations(this.useMultipleWriteLocations);
+        (this.thinProxy).setSessionContainer(this.sessionContainer);
+    }
+
     public void init(CosmosClientMetadataCachesSnapshot metadataCachesSnapshot, Function<HttpClient, HttpClient> httpClientInterceptor) {
         try {
 
@@ -683,6 +695,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.globalEndpointManager,
                 this.reactorHttpClient,
                 this.apiType);
+
+            this.thinProxy = createThinProxy(this.sessionContainer,
+                this.consistencyLevel,
+                this.userAgentContainer,
+                this.globalEndpointManager,
+                this.reactorHttpClient);
 
             this.globalEndpointManager.init();
 
@@ -711,6 +729,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 collectionCache);
 
             updateGatewayProxy();
+            updateThinProxy();
             clientTelemetry = new ClientTelemetry(
                     this,
                     null,
@@ -824,6 +843,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 globalEndpointManager,
                 httpClient,
                 apiType);
+    }
+
+    ThinClientStoreModel createThinProxy(ISessionContainer sessionContainer,
+                                             ConsistencyLevel consistencyLevel,
+                                             UserAgentContainer userAgentContainer,
+                                             GlobalEndpointManager globalEndpointManager,
+                                             HttpClient httpClient) {
+        return new ThinClientStoreModel(
+            this,
+            sessionContainer,
+            consistencyLevel,
+            userAgentContainer,
+            globalEndpointManager,
+            httpClient);
     }
 
     private HttpClient httpClient() {
@@ -1869,6 +1902,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             getEffectiveClientContext(clientContextOverride),
             operationType, ResourceType.Document, path, requestHeaders, options, content);
 
+        // TODO: Configs.isThinClientEnabled() && request.useGatewayMode -> false for some reason, fix it
+        request.useThinProxy = Configs.isThinClientEnabled() && request.useGatewayMode ? true : false;
+        request.useThinProxy = true;
+
         if (operationType.isWriteOperation() &&  options != null && options.getNonIdempotentWriteRetriesEnabled() != null && options.getNonIdempotentWriteRetriesEnabled()) {
             request.setNonIdempotentWriteRetriesEnabled(true);
         }
@@ -2032,6 +2069,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return Mono, which on subscription will populate the headers in the request passed in the argument.
      */
     public Mono<RxDocumentServiceRequest> populateHeadersAsync(RxDocumentServiceRequest request, RequestVerb httpMethod) {
+        // if thin client enabled, populate thin client header so we can get thin client read and writeable locations
+        if (this.isThinClientEnabled) {
+            request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_OPT_IN, "true");
+        }
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
@@ -3404,6 +3445,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 getEffectiveClientContext(clientContextOverride),
                 OperationType.Read, ResourceType.Document, path, requestHeaders, options);
 
+            request.useThinProxy = Configs.isThinClientEnabled() && request.useGatewayMode ? true : false;
+            request.useThinProxy = true;
             DocumentServiceRequestContext requestContext = request.requestContext;
 
             options.getMarkE2ETimeoutInRequestContextCallbackHook().set(
@@ -5720,6 +5763,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return RxStoreModel
      */
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
+        // TODO: request.useThinProxy is false here, fix it
+
+        // TODO: remove, for testing
+        if (request.isMetadataRequest()) {
+            return this.gatewayProxy;
+        }
+
+        if (request.useThinProxy) {
+            return this.thinProxy;
+        }
+
         // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
         // we return the GATEWAY store model
         if (request.useGatewayMode) {
@@ -6460,7 +6514,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @param operationType - the operationT
      * @return the applicable endpoints ordered by preference list if any
      */
-    private List<URI> getApplicableEndPoints(OperationType operationType, List<String> excludedRegions) {
+    private List<LocationCache.ConsolidatedRegionalEndpoint> getApplicableEndPoints(OperationType operationType, List<String> excludedRegions) {
         if (operationType.isReadOnlyOperation()) {
             return withoutNulls(this.globalEndpointManager.getApplicableReadEndpoints(excludedRegions));
         } else if (operationType.isWriteOperation()) {
@@ -6470,7 +6524,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return EMPTY_ENDPOINT_LIST;
     }
 
-    private static List<URI> withoutNulls(List<URI> orderedEffectiveEndpointsList) {
+    private static List<LocationCache.ConsolidatedRegionalEndpoint> withoutNulls(List<LocationCache.ConsolidatedRegionalEndpoint> orderedEffectiveEndpointsList) {
         if (orderedEffectiveEndpointsList == null) {
             return EMPTY_ENDPOINT_LIST;
         }
@@ -6529,7 +6583,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return EMPTY_REGION_LIST;
         }
 
-        List<URI> endpoints = getApplicableEndPoints(operationType, excludedRegions);
+        List<LocationCache.ConsolidatedRegionalEndpoint> consolidatedRegionalEndpointList = getApplicableEndPoints(operationType, excludedRegions);
 
         HashSet<String> normalizedExcludedRegions = new HashSet<>();
         if (excludedRegions != null) {
@@ -6537,8 +6591,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         List<String> orderedRegionsForSpeculation = new ArrayList<>();
-        endpoints.forEach(uri -> {
-            String regionName = this.globalEndpointManager.getRegionName(uri, operationType);
+        consolidatedRegionalEndpointList.forEach(consolidatedLocationEndpoints -> {
+            String regionName = this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayLocationEndpoint(), operationType);
             if (!normalizedExcludedRegions.contains(regionName.toLowerCase(Locale.ROOT))) {
                 orderedRegionsForSpeculation.add(regionName);
             }
@@ -6742,7 +6796,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private void handleLocationCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
 
-        URI firstContactedLocationEndpoint = diagnosticsAccessor
+        LocationCache.ConsolidatedRegionalEndpoint firstContactedLocationEndpoint = diagnosticsAccessor
             .getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {

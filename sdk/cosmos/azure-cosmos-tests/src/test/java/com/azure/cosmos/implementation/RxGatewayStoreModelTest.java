@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.timeout.ReadTimeoutException;
@@ -82,7 +83,7 @@ public class RxGatewayStoreModelTest {
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
-        Mockito.doReturn(new URI("https://localhost"))
+        Mockito.doReturn(new LocationCache.ConsolidatedRegionalEndpoint(new URI("https://localhost"), null))
                 .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(ReadTimeoutException.INSTANCE))
@@ -125,7 +126,7 @@ public class RxGatewayStoreModelTest {
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
-        Mockito.doReturn(new URI("https://localhost"))
+        Mockito.doReturn(new LocationCache.ConsolidatedRegionalEndpoint(new URI("https://localhost"), null))
                .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         Mockito.doReturn(Mono.error(new SocketException("Dummy SocketException")))
@@ -179,7 +180,7 @@ public class RxGatewayStoreModelTest {
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
-        Mockito.doReturn(new URI("https://localhost"))
+        Mockito.doReturn(new LocationCache.ConsolidatedRegionalEndpoint(new URI("https://localhost"), null))
             .when(globalEndpointManager).resolveServiceEndpoint(any());
 
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -250,7 +251,7 @@ public class RxGatewayStoreModelTest {
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
-        Mockito.doReturn(new URI("https://localhost"))
+        Mockito.doReturn(new LocationCache.ConsolidatedRegionalEndpoint(new URI("https://localhost"), null))
             .when(globalEndpointManager).resolveServiceEndpoint(any());
 
         HttpClient httpClient = Mockito.mock(HttpClient.class);
