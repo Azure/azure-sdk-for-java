@@ -14,6 +14,7 @@ import java.time.Instant;
 public class LastEnqueuedEventProperties {
     private final Long lastSequenceNumber;
     private final Long lastOffset;
+    private final String lastOffsetString;
     private final Instant lastEnqueuedTime;
     private final Instant retrievalTime;
 
@@ -31,10 +32,40 @@ public class LastEnqueuedEventProperties {
      */
     public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
         Instant retrievalTime) {
+        this(lastSequenceNumber, String.valueOf(lastOffset), lastEnqueuedTime, retrievalTime);
+    }
+
+    /**
+     * Creates an instance with the last enqueued event information set.
+     *
+     * @param lastSequenceNumber Sequence number of the last event to be enqueued in a partition. {@code null} if
+     *     the information has not been retrieved, yet.
+     * @param lastOffsetString Offset of the last observed event enqueued in a partition. {@code null} if the
+     *     information has not been retrieved, yet.
+     * @param lastEnqueuedTime The date and time of the last observed event enqueued in a partition. {@code null} if
+     *     the information has not been retrieved, yet.
+     * @param retrievalTime The date and time that the information was retrieved. {@code null} if the information
+     *     has not been retrieved, yet.
+     */
+    public LastEnqueuedEventProperties(Long lastSequenceNumber, String lastOffsetString, Instant lastEnqueuedTime,
+        Instant retrievalTime) {
         this.lastSequenceNumber = lastSequenceNumber;
-        this.lastOffset = lastOffset;
+        this.lastOffsetString = lastOffsetString;
         this.lastEnqueuedTime = lastEnqueuedTime;
         this.retrievalTime = retrievalTime;
+
+        if (lastOffsetString != null) {
+            Long parsed = null;
+            try {
+                parsed = Long.valueOf(lastOffsetString);
+            } catch (NumberFormatException e) {
+                // Offset is not a number;
+            }
+
+            this.lastOffset = parsed;
+        } else {
+            this.lastOffset = null;
+        }
     }
 
     /**
@@ -51,10 +82,22 @@ public class LastEnqueuedEventProperties {
      * Gets the offset of the last observed event enqueued in the partition.
      *
      * @return The offset of the last observed event enqueued in the partition. {@code null} if the information has not
-     *     been retrieved, yet.
+     *     been retrieved, or the offset cannot be represented as a string.
+     * @deprecated This value is obsolete and should no longer be used. Please use {@link #getOffsetString()} instead.
      */
+    @Deprecated
     public Long getOffset() {
         return lastOffset;
+    }
+
+    /**
+     * Gets the offset of the last observed event enqueued in the partition.
+     *
+     * @return The offset of the last observed event enqueued in the partition. {@code null} if the information has not
+     *     been retrieved, yet.
+     */
+    public String getOffsetString() {
+        return lastOffsetString;
     }
 
     /**
