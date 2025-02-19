@@ -57,6 +57,7 @@ public final class ResponseBodyModeGeneration {
      *
      * @param body the method builder to append generated code.
      * @param returnTypeName the return type of the method.
+     * @param method The Http method request context
      */
     public static void handleResponseBody(BlockStmt body, String returnTypeName, HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);

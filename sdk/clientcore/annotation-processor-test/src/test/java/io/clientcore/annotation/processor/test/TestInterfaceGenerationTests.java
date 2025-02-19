@@ -14,10 +14,9 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.LocalTestServer;
-import io.clientcore.core.utils.binarydata.BinaryData;
-import io.clientcore.core.utils.binarydata.ByteArrayBinaryData;
-import io.clientcore.core.utils.binarydata.ByteBufferBinaryData;
-import io.clientcore.core.utils.binarydata.InputStreamBinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.ByteArrayBinaryData;
+import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -157,8 +156,7 @@ public class TestInterfaceGenerationTests {
             Response<HttpBinJSON> response = testInterface.postStreamResponse(getServerUri(false), 42, requestOptions)) {
             assertNotNull(response.getBody());
             assertNotEquals(0, response.getBody().getLength());
-            assertTrue(response.getBody() instanceof ByteArrayBinaryData
-                || response.getBody() instanceof ByteBufferBinaryData);
+            assertTrue(response.getBody() instanceof ByteArrayBinaryData);
         }
     }
 

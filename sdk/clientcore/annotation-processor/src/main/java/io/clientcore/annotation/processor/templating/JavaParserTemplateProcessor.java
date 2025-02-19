@@ -186,7 +186,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(Type.class);
         deserializeHelperMethod.setBody(new BlockStmt().addStatement(StaticJavaParser
             .parseStatement("try {" + " ParameterizedType type = CodegenUtil.inferTypeNameFromReturnType(returnType);"
-                + " Type token = type" + ".getRawType();" + " if (type.getRawType().equals(Response.class)) {"
+                + " Type token = type.getRawType();" + " if (Response.class.isAssignableFrom((Class<?>) token)) {"
                 + "     token = type.getActualTypeArguments()[0];" + " }"
                 + " return serializer.deserializeFromBytes(bytes, token);" + " } catch (IOException e) {"
                 + " throw LOGGER.logThrowableAsError(new UncheckedIOException(e));" + " }")));
