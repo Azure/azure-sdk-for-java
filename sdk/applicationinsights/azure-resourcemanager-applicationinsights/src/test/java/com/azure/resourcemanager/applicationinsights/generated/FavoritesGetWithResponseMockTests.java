@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentFavorite;
@@ -22,26 +22,26 @@ public final class FavoritesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"Name\":\"ebtijvacvbmqzbqq\",\"Config\":\"aj\",\"Version\":\"wxacevehj\",\"FavoriteId\":\"yxoaf\",\"FavoriteType\":\"shared\",\"SourceType\":\"lt\",\"TimeModified\":\"eyl\",\"Tags\":[\"fgvxirpghriypoqe\",\"hlqhykprlpy\",\"nuciqdsmexiit\",\"fuxtyasiibmiybnn\"],\"Category\":\"tgnljhnmgixhcmav\",\"IsGeneratedFromTemplate\":false,\"UserId\":\"udorh\"}";
+            = "{\"Name\":\"heioqa\",\"Config\":\"v\",\"Version\":\"ufuqyrx\",\"FavoriteId\":\"lcgqlsismj\",\"FavoriteType\":\"shared\",\"SourceType\":\"dgamquhiosrsj\",\"TimeModified\":\"vfcdisyirn\",\"Tags\":[\"czexrxzbujrtrhqv\"],\"Category\":\"evkh\",\"IsGeneratedFromTemplate\":true,\"UserId\":\"zonzlrpiqywnc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationInsightsComponentFavorite response = manager.favorites()
-            .getWithResponse("bgomfgbegl", "gleohi", "etnluankrrfx", com.azure.core.util.Context.NONE)
+            .getWithResponse("zaapmudqmeqwi", "pibudqwyxebeybpm", "znrtffyaqit", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ebtijvacvbmqzbqq", response.name());
-        Assertions.assertEquals("aj", response.config());
-        Assertions.assertEquals("wxacevehj", response.version());
+        Assertions.assertEquals("heioqa", response.name());
+        Assertions.assertEquals("v", response.config());
+        Assertions.assertEquals("ufuqyrx", response.version());
         Assertions.assertEquals(FavoriteType.SHARED, response.favoriteType());
-        Assertions.assertEquals("lt", response.sourceType());
-        Assertions.assertEquals("fgvxirpghriypoqe", response.tags().get(0));
-        Assertions.assertEquals("tgnljhnmgixhcmav", response.category());
-        Assertions.assertEquals(false, response.isGeneratedFromTemplate());
+        Assertions.assertEquals("dgamquhiosrsj", response.sourceType());
+        Assertions.assertEquals("czexrxzbujrtrhqv", response.tags().get(0));
+        Assertions.assertEquals("evkh", response.category());
+        Assertions.assertEquals(true, response.isGeneratedFromTemplate());
     }
 }

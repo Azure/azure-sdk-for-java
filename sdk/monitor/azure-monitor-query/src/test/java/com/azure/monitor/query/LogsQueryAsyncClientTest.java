@@ -6,9 +6,12 @@ package com.azure.monitor.query;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
@@ -38,6 +41,7 @@ import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getAdditionalLogWorkspaceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogResourceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogWorkspaceId;
+import static com.azure.monitor.query.TestUtil.addTestProxySanitizersAndMatchers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -65,11 +69,14 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
         resourceId = getLogResourceId(interceptorManager.isPlaybackMode());
 
         credential = TestUtil.getTestTokenCredential(interceptorManager);
-        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder().credential(credential);
+        LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder().credential(credential)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 
         if (getTestMode() == TestMode.PLAYBACK) {
+            addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
+            addTestProxySanitizersAndMatchers(interceptorManager);
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
             clientBuilder.endpoint(MonitorQueryTestUtils.getLogEndpoint());
@@ -116,6 +123,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
+    @LiveOnly
     public void testLogsQueryAllowPartialSuccess() {
         // Arrange
         final String query = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
