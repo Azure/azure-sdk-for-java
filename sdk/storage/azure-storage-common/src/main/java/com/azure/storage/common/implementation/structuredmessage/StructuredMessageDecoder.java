@@ -129,8 +129,9 @@ public class StructuredMessageDecoder {
         int toRead = Math.min(buffer.remaining(), currentSegmentContentLength - currentSegmentContentOffset);
         toRead = Math.min(toRead, size);
 
-        if (toRead == 0)
+        if (toRead == 0) {
             return;
+        }
 
         byte[] content = new byte[toRead];
         buffer.get(content);
