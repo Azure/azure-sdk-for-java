@@ -62,4 +62,8 @@ public final class CodegenUtil {
             }
         };
     }
+
+    // Private Ctr
+    private CodegenUtil() {
+    }
 }

@@ -88,9 +88,9 @@ public class RestProxyTests {
             .build();
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
         StreamResponse streamResponse = testInterface.testDownload();
-
+    
         streamResponse.close();
-
+    
         // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/

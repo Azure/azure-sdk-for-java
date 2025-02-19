@@ -13,7 +13,7 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.http.models.ContentType;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 
-@ServiceInterface(name = "myService", host = "https://localhost:")
+@ServiceInterface(name = "myService", host = "https://somecloud.com")
 public interface TestInterfaceClientService {
     static TestInterfaceClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer) {
         if (pipeline == null) {

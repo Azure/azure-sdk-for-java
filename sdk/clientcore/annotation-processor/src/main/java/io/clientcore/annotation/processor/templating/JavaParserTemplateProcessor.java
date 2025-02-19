@@ -161,7 +161,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         getGeneratedServiceMethods(templateInput);
         addDeserializeHelperMethod();
-        // inferTypeNameFromReturnType();
 
         try (Writer fileWriter = processingEnv.getFiler()
             .createSourceFile(packageName + "." + serviceInterfaceImplShortName)
@@ -335,12 +334,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(HttpRequest.class);
         body.tryAddImportToParentCompilationUnit(HttpMethod.class);
 
-<<<<<<< HEAD
-        body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
-        Statement statement
-            = StaticJavaParser.parseStatement("HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod."
-                + method.getHttpMethod() + ").setUri(host);");
-=======
         // Fix for use the URI passed to the method, if provided
         boolean useProvidedUri = method.getParameters()
             .stream()
@@ -352,9 +345,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         } else {
             body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
         }
-        Statement statement = StaticJavaParser.parseStatement(
-            "HttpRequest httpRequest = new HttpRequest(HttpMethod." + method.getHttpMethod() + ", host);");
->>>>>>> 4550b7c63a6 (update for convenience methods + tests update for dynamic port)
+        Statement statement
+            = StaticJavaParser.parseStatement("HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod."
+                + method.getHttpMethod() + ").setUri(host);");
         statement.setLineComment("Create the HTTP request");
         body.addStatement(statement);
     }
