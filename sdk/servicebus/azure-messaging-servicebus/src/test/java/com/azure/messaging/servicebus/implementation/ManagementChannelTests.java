@@ -7,7 +7,6 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpResponseCode;
-import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
@@ -570,8 +569,8 @@ class ManagementChannelTests {
 
         final RequestResponseChannelCache cache = new RequestResponseChannelCache(connection, ENTITY_PATH,
             "cbs-session", "$cbs", new FixedAmqpRetryPolicy(new AmqpRetryOptions()));
-        managementChannel = new ManagementChannel(new ChannelCacheWrapper(cache), NAMESPACE, ENTITY_PATH, tokenManager,
-            messageSerializer, TIMEOUT);
+        managementChannel
+            = new ManagementChannel(cache, NAMESPACE, ENTITY_PATH, tokenManager, messageSerializer, TIMEOUT);
     }
 
     @AfterEach

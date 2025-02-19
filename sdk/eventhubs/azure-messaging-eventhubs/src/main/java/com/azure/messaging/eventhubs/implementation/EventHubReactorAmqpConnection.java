@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ProtonSession;
@@ -170,9 +169,8 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private synchronized ManagementChannel getOrCreateManagementChannel() {
         if (managementChannel == null) {
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-            final RequestResponseChannelCache cache = new RequestResponseChannelCache(this, MANAGEMENT_ADDRESS,
+            final RequestResponseChannelCache channelCache = new RequestResponseChannelCache(this, MANAGEMENT_ADDRESS,
                 MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, retryPolicy);
-            final ChannelCacheWrapper channelCache = new ChannelCacheWrapper(cache);
             managementChannel = new ManagementChannel(channelCache, eventHubName, tokenCredential, tokenManagerProvider,
                 this.messageSerializer, scheduler);
         }

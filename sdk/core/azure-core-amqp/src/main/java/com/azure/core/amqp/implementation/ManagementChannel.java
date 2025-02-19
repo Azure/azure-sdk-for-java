@@ -33,7 +33,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.ERROR_DESCRIPTI
  */
 public class ManagementChannel implements AmqpManagementNode {
     private final TokenManager tokenManager;
-    private final ChannelCacheWrapper channelCache;
+    private final RequestResponseChannelCache channelCache;
     private final String fullyQualifiedNamespace;
     private final ClientLogger logger;
     private final String entityPath;
@@ -46,8 +46,8 @@ public class ManagementChannel implements AmqpManagementNode {
      * @param entityPath The entity path for the message broker.
      * @param tokenManager Manages tokens for authorization.
      */
-    public ManagementChannel(ChannelCacheWrapper channelCache, String fullyQualifiedNamespace, String entityPath,
-        TokenManager tokenManager) {
+    public ManagementChannel(RequestResponseChannelCache channelCache, String fullyQualifiedNamespace,
+        String entityPath, TokenManager tokenManager) {
         this.channelCache = Objects.requireNonNull(channelCache, "'channelCache' cannot be null.");
         this.fullyQualifiedNamespace
             = Objects.requireNonNull(fullyQualifiedNamespace, "'fullyQualifiedNamespace' cannot be null.");

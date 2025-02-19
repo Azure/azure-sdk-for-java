@@ -105,9 +105,9 @@ public class ManagementChannelTest {
         when(connection.newRequestResponseChannel(anyString(), anyString(), anyString()))
             .thenReturn(Mono.just(requestResponseChannel));
 
-        final RequestResponseChannelCache cache = new RequestResponseChannelCache(connection, ENTITY_PATH,
+        final RequestResponseChannelCache channelCache = new RequestResponseChannelCache(connection, ENTITY_PATH,
             "cbs-session", "$cbs", new FixedAmqpRetryPolicy(new AmqpRetryOptions()));
-        managementChannel = new ManagementChannel(new ChannelCacheWrapper(cache), NAMESPACE, ENTITY_PATH, tokenManager);
+        managementChannel = new ManagementChannel(channelCache, NAMESPACE, ENTITY_PATH, tokenManager);
     }
 
     @AfterEach
