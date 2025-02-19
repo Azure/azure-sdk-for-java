@@ -32,7 +32,7 @@ public final class BatchJobNetworkConfiguration implements JsonSerializable<Batc
      * must be enabled for inbound communication from the Azure Batch service. For Pools created with a Virtual Machine
      * configuration, enable ports 29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. Port 443 is
      * also required to be open for outbound connections for communications to Azure Storage. For more details see:
-     * https://docs.microsoft.com/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      */
     @Generated
     private final String subnetId;
@@ -52,7 +52,7 @@ public final class BatchJobNetworkConfiguration implements JsonSerializable<Batc
      * enabled for inbound communication from the Azure Batch service. For Pools created with a Virtual Machine
      * configuration, enable ports 29876 and 29877, as well as port 22 for Linux and port 3389 for Windows. Port 443 is
      * also required to be open for outbound connections for communications to Azure Storage. For more details see:
-     * https://docs.microsoft.com/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @return the subnetId value.
      */

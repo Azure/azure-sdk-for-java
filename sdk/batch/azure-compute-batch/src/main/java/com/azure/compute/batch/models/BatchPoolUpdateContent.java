@@ -271,7 +271,7 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
     /*
      * The size of virtual machines in the Pool. For information about available sizes of virtual machines in Pools, see
      * Choose a VM size for Compute Nodes in an Azure Batch Pool
-     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).<br /><br />This field can be updated only when the
+     * (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).<br /><br />This field can be updated only when the
      * pool is empty.
      */
     @Generated
@@ -372,7 +372,7 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
     /**
      * Get the vmSize property: The size of virtual machines in the Pool. For information about available sizes of
      * virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
-     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).&lt;br /&gt;&lt;br /&gt;This field can be updated
+     * (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).&lt;br /&gt;&lt;br /&gt;This field can be updated
      * only when the pool is empty.
      *
      * @return the vmSize value.
@@ -385,7 +385,7 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
     /**
      * Set the vmSize property: The size of virtual machines in the Pool. For information about available sizes of
      * virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
-     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).&lt;br /&gt;&lt;br /&gt;This field can be updated
+     * (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).&lt;br /&gt;&lt;br /&gt;This field can be updated
      * only when the pool is empty.
      *
      * @param vmSize the vmSize value to set.
