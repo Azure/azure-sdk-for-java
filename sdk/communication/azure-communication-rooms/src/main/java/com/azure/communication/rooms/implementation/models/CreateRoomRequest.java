@@ -32,15 +32,15 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
     private OffsetDateTime validUntil;
 
     /*
+     * (Optional) Participants to be invited to the room.
+     */
+    private Map<String, ParticipantProperties> participants;
+
+    /*
      * Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By
      * default, this flag is set to false.
      */
     private Boolean pstnDialOutEnabled;
-
-    /*
-     * (Optional) Participants to be invited to the room.
-     */
-    private Map<String, ParticipantProperties> participants;
 
     /**
      * Creates an instance of CreateRoomRequest class.
@@ -93,6 +93,26 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
     }
 
     /**
+     * Get the participants property: (Optional) Participants to be invited to the room.
+     * 
+     * @return the participants value.
+     */
+    public Map<String, ParticipantProperties> getParticipants() {
+        return this.participants;
+    }
+
+    /**
+     * Set the participants property: (Optional) Participants to be invited to the room.
+     * 
+     * @param participants the participants value to set.
+     * @return the CreateRoomRequest object itself.
+     */
+    public CreateRoomRequest setParticipants(Map<String, ParticipantProperties> participants) {
+        this.participants = participants;
+        return this;
+    }
+
+    /**
      * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
      * number is enabled in a particular room. By default, this flag is set to false.
      * 
@@ -114,26 +134,6 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
         return this;
     }
 
-    /**
-     * Get the participants property: (Optional) Participants to be invited to the room.
-     * 
-     * @return the participants value.
-     */
-    public Map<String, ParticipantProperties> getParticipants() {
-        return this.participants;
-    }
-
-    /**
-     * Set the participants property: (Optional) Participants to be invited to the room.
-     * 
-     * @param participants the participants value to set.
-     * @return the CreateRoomRequest object itself.
-     */
-    public CreateRoomRequest setParticipants(Map<String, ParticipantProperties> participants) {
-        this.participants = participants;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -141,8 +141,8 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
             this.validFrom == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.validFrom));
         jsonWriter.writeStringField("validUntil",
             this.validUntil == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.validUntil));
-        jsonWriter.writeBooleanField("pstnDialOutEnabled", this.pstnDialOutEnabled);
         jsonWriter.writeMapField("participants", this.participants, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("pstnDialOutEnabled", this.pstnDialOutEnabled);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,12 +167,12 @@ public final class CreateRoomRequest implements JsonSerializable<CreateRoomReque
                 } else if ("validUntil".equals(fieldName)) {
                     deserializedCreateRoomRequest.validUntil
                         = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("pstnDialOutEnabled".equals(fieldName)) {
-                    deserializedCreateRoomRequest.pstnDialOutEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("participants".equals(fieldName)) {
                     Map<String, ParticipantProperties> participants
                         = reader.readMap(reader1 -> ParticipantProperties.fromJson(reader1));
                     deserializedCreateRoomRequest.participants = participants;
+                } else if ("pstnDialOutEnabled".equals(fieldName)) {
+                    deserializedCreateRoomRequest.pstnDialOutEnabled = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

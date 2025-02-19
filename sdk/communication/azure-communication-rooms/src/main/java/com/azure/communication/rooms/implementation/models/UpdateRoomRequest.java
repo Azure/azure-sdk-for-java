@@ -31,8 +31,8 @@ public final class UpdateRoomRequest implements JsonSerializable<UpdateRoomReque
     private OffsetDateTime validUntil;
 
     /*
-     * Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By
-     * default, this flag is set to false.
+     * (Optional) Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a
+     * particular room. By default, this flag is set to false.
      */
     private Boolean pstnDialOutEnabled;
 
@@ -87,8 +87,8 @@ public final class UpdateRoomRequest implements JsonSerializable<UpdateRoomReque
     }
 
     /**
-     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
-     * number is enabled in a particular room. By default, this flag is set to false.
+     * Get the pstnDialOutEnabled property: (Optional) Set this flag to true if, at the time of the call, dial out to a
+     * PSTN number is enabled in a particular room. By default, this flag is set to false.
      * 
      * @return the pstnDialOutEnabled value.
      */
@@ -97,8 +97,8 @@ public final class UpdateRoomRequest implements JsonSerializable<UpdateRoomReque
     }
 
     /**
-     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
-     * number is enabled in a particular room. By default, this flag is set to false.
+     * Set the pstnDialOutEnabled property: (Optional) Set this flag to true if, at the time of the call, dial out to a
+     * PSTN number is enabled in a particular room. By default, this flag is set to false.
      * 
      * @param pstnDialOutEnabled the pstnDialOutEnabled value to set.
      * @return the UpdateRoomRequest object itself.
