@@ -1,14 +1,15 @@
 # Release History
 
-## 12.6.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 12.5.1 (2025-02-18)
 
 ### Bugs Fixed
 
+- [Fixed the issue](https://github.com/Azure/azure-sdk-for-java/issues/44005) where `Errors` were being improperly cast into `RuntimeException`.
+
 ### Other Changes
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.1`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.9`.
 
 ## 12.5.0 (2024-11-21)
 
