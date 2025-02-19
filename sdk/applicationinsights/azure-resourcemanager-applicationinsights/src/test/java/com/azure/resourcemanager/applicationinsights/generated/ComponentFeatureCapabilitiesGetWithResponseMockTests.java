@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentFeatureCapabilities;
@@ -20,17 +20,17 @@ public final class ComponentFeatureCapabilitiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"SupportExportData\":false,\"BurstThrottlePolicy\":\"auzzptjazysd\",\"MetadataClass\":\"ezwwv\",\"LiveStreamMetrics\":true,\"ApplicationMap\":false,\"WorkItemIntegration\":true,\"PowerBIIntegration\":false,\"OpenSchema\":false,\"ProactiveDetection\":false,\"AnalyticsIntegration\":false,\"MultipleStepWebTest\":true,\"ApiAccessLevel\":\"vyl\",\"TrackingType\":\"yavluwmncstt\",\"DailyCap\":49.36264,\"DailyCapResetTime\":93.52877,\"ThrottleRate\":59.016396}";
+            = "{\"SupportExportData\":false,\"BurstThrottlePolicy\":\"hocxvdfffwafqrou\",\"MetadataClass\":\"spave\",\"LiveStreamMetrics\":false,\"ApplicationMap\":false,\"WorkItemIntegration\":false,\"PowerBIIntegration\":false,\"OpenSchema\":false,\"ProactiveDetection\":true,\"AnalyticsIntegration\":true,\"MultipleStepWebTest\":true,\"ApiAccessLevel\":\"moy\",\"TrackingType\":\"dyuib\",\"DailyCap\":13.8623295,\"DailyCapResetTime\":64.25693,\"ThrottleRate\":39.80005}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationInsightsComponentFeatureCapabilities response = manager.componentFeatureCapabilities()
-            .getWithResponse("xhom", "ynhdwdigum", com.azure.core.util.Context.NONE)
+            .getWithResponse("brn", "suxmpraf", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

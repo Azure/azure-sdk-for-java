@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.fluent.models.AnnotationInner;
@@ -23,31 +23,31 @@ public final class AnnotationsCreateWithResponseMockTests {
     @Test
     public void testCreateWithResponse() throws Exception {
         String responseStr
-            = "[{\"AnnotationName\":\"rqemvvhmxt\",\"Category\":\"jfutacoebj\",\"EventTime\":\"2021-04-28T14:16:46Z\",\"Id\":\"cjznmwcpmg\",\"Properties\":\"adraufactkahzo\",\"RelatedAnnotation\":\"jjziuxxpsh\"}]";
+            = "[{\"AnnotationName\":\"nnrwrbiork\",\"Category\":\"lywjhh\",\"EventTime\":\"2021-11-16T09:40:09Z\",\"Id\":\"xmsivfomiloxggdu\",\"Properties\":\"q\",\"RelatedAnnotation\":\"ieuzaofjchvcyyy\"},{\"AnnotationName\":\"gdotcubiipuipwo\",\"Category\":\"nmacj\",\"EventTime\":\"2021-08-08T02:00:14Z\",\"Id\":\"zshq\",\"Properties\":\"impevf\",\"RelatedAnnotation\":\"b\"}]";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         List<Annotation> response = manager.annotations()
-            .createWithResponse("iqtqzfavyvnq", "ybar",
-                new AnnotationInner().withAnnotationName("uayjkqa")
-                    .withCategory("gzslesjcbhernnti")
-                    .withEventTime(OffsetDateTime.parse("2021-09-10T03:49:52Z"))
-                    .withId("cv")
-                    .withProperties("uwrbehwagoh")
-                    .withRelatedAnnotation("f"),
+            .createWithResponse("nnbj", "rxgibbd",
+                new AnnotationInner().withAnnotationName("confozauors")
+                    .withCategory("okwbqplh")
+                    .withEventTime(OffsetDateTime.parse("2021-05-19T05:27:01Z"))
+                    .withId("uepzl")
+                    .withProperties("hw")
+                    .withRelatedAnnotation("oldweyuqdu"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("rqemvvhmxt", response.get(0).annotationName());
-        Assertions.assertEquals("jfutacoebj", response.get(0).category());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-28T14:16:46Z"), response.get(0).eventTime());
-        Assertions.assertEquals("cjznmwcpmg", response.get(0).id());
-        Assertions.assertEquals("adraufactkahzo", response.get(0).properties());
-        Assertions.assertEquals("jjziuxxpsh", response.get(0).relatedAnnotation());
+        Assertions.assertEquals("nnrwrbiork", response.get(0).annotationName());
+        Assertions.assertEquals("lywjhh", response.get(0).category());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-16T09:40:09Z"), response.get(0).eventTime());
+        Assertions.assertEquals("xmsivfomiloxggdu", response.get(0).id());
+        Assertions.assertEquals("q", response.get(0).properties());
+        Assertions.assertEquals("ieuzaofjchvcyyy", response.get(0).relatedAnnotation());
     }
 }
