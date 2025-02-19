@@ -12,7 +12,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 public final class ReadmeSamples {
     private final DeidentificationClient deidentificationClient = new DeidentificationClientBuilder().buildClient();
 
-    public void CreateClient() {
+    public void createClient() {
         // BEGIN: readme-sample-create-client
         DeidentificationClient deidentificationClient = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_ENDPOINT"))
