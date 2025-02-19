@@ -113,20 +113,6 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * The RoleAssignmentsImpl object to access its operations.
-     */
-    private final RoleAssignmentsImpl roleAssignments;
-
-    /**
-     * Gets the RoleAssignmentsImpl object to access its operations.
-     * 
-     * @return the RoleAssignmentsImpl object.
-     */
-    public RoleAssignmentsImpl getRoleAssignments() {
-        return this.roleAssignments;
-    }
-
-    /**
      * The RoleDefinitionsImpl object to access its operations.
      */
     private final RoleDefinitionsImpl roleDefinitions;
@@ -138,6 +124,20 @@ public final class KeyVaultAdministrationClientImpl {
      */
     public RoleDefinitionsImpl getRoleDefinitions() {
         return this.roleDefinitions;
+    }
+
+    /**
+     * The RoleAssignmentsImpl object to access its operations.
+     */
+    private final RoleAssignmentsImpl roleAssignments;
+
+    /**
+     * Gets the RoleAssignmentsImpl object to access its operations.
+     * 
+     * @return the RoleAssignmentsImpl object.
+     */
+    public RoleAssignmentsImpl getRoleAssignments() {
+        return this.roleAssignments;
     }
 
     /**
@@ -177,8 +177,8 @@ public final class KeyVaultAdministrationClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
-        this.roleAssignments = new RoleAssignmentsImpl(this);
         this.roleDefinitions = new RoleDefinitionsImpl(this);
+        this.roleAssignments = new RoleAssignmentsImpl(this);
         this.service = RestProxy.create(KeyVaultAdministrationClientService.class, this.httpPipeline,
             this.getSerializerAdapter());
     }

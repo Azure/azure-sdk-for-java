@@ -258,6 +258,7 @@ public final class KeyAttributes implements JsonSerializable<KeyAttributes> {
         jsonWriter.writeNumberField("nbf", this.notBefore);
         jsonWriter.writeNumberField("exp", this.expires);
         jsonWriter.writeBooleanField("exportable", this.exportable);
+        jsonWriter.writeJsonField("attestation", this.attestation);
         return jsonWriter.writeEndObject();
     }
 
@@ -294,11 +295,41 @@ public final class KeyAttributes implements JsonSerializable<KeyAttributes> {
                     deserializedKeyAttributes.exportable = reader.getNullable(JsonReader::getBoolean);
                 } else if ("hsmPlatform".equals(fieldName)) {
                     deserializedKeyAttributes.hsmPlatform = reader.getString();
+                } else if ("attestation".equals(fieldName)) {
+                    deserializedKeyAttributes.attestation = KeyAttestation.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedKeyAttributes;
         });
+    }
+
+    /*
+     * The key or key version attestation information.
+     */
+    @Generated
+    private KeyAttestation attestation;
+
+    /**
+     * Get the attestation property: The key or key version attestation information.
+     *
+     * @return the attestation value.
+     */
+    @Generated
+    public KeyAttestation getAttestation() {
+        return this.attestation;
+    }
+
+    /**
+     * Set the attestation property: The key or key version attestation information.
+     *
+     * @param attestation the attestation value to set.
+     * @return the KeyAttributes object itself.
+     */
+    @Generated
+    public KeyAttributes setAttestation(KeyAttestation attestation) {
+        this.attestation = attestation;
+        return this;
     }
 }
