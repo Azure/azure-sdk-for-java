@@ -579,17 +579,17 @@ class AzurePropertiesUtilsTests {
         private Boolean testWrapBoolean;
         private boolean testBoolean;
 
-        public TestProperties() {
+        TestProperties() {
         }
 
-        public TestProperties(String testString, Integer testWrapNumber, Long testWrapLong, Boolean testWrapBoolean) {
+        TestProperties(String testString, Integer testWrapNumber, Long testWrapLong, Boolean testWrapBoolean) {
             this.testString = testString;
             this.testWrapNumber = testWrapNumber;
             this.testWrapLong = testWrapLong;
             this.testWrapBoolean = testWrapBoolean;
         }
 
-        public TestProperties(String testString, Integer testWrapNumber, int testNumber, Long testWrapLong, long testLong, Boolean testWrapBoolean, boolean testBoolean) {
+        TestProperties(String testString, Integer testWrapNumber, int testNumber, Long testWrapLong, long testLong, Boolean testWrapBoolean, boolean testBoolean) {
             this.testString = testString;
             this.testWrapNumber = testWrapNumber;
             this.testNumber = testNumber;

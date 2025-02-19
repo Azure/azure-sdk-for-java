@@ -49,7 +49,7 @@ public class AzureKeyVaultSslBundlesRegistrar implements SslBundleRegistrar, Res
     private final AzureKeyVaultJcaProperties jcaProperties;
     private final AzureKeyVaultSslBundlesProperties sslBundlesProperties;
     private static final String KEY_VAULT_PROVIDER_NAME = "AzureKeyVault";
-    private static final String[] JCA_SYSTEM_PROPERTY_KEYS = new String [] {
+    private static final String[] JCA_SYSTEM_PROPERTY_KEYS = new String[] {
         "azure.keyvault.uri",
         "azure.keyvault.tenant-id",
         "azure.keyvault.client-id",
@@ -191,7 +191,7 @@ public class AzureKeyVaultSslBundlesRegistrar implements SslBundleRegistrar, Res
                     try {
                         return res.getFile();
                     } catch (IOException e) {
-                        throw new RuntimeException("Failed to load the cert path " + path , e);
+                        throw new RuntimeException("Failed to load the cert path " + path, e);
                     }
                 })
                 .map(File::getAbsolutePath)
