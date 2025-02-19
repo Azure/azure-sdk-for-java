@@ -166,7 +166,7 @@ public class ApplicableRegionEvaluatorTest {
 
         logger.info("SCENARIO : {}", testScenario);
 
-        try (globalEndpointManager) {
+        try {
 
             GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 = Mockito.mock(GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker.class);
@@ -196,6 +196,8 @@ public class ApplicableRegionEvaluatorTest {
             clientRetryPolicy.onBeforeSendRequest(request);
 
             Assertions.assertThat(request.requestContext.locationEndpointToRoute).isEqualTo(expectedLocationEndpointToRoute);
+        } finally {
+            globalEndpointManager.close();
         }
     }
 
