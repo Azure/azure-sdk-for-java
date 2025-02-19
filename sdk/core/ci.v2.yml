@@ -54,3 +54,6 @@ extends:
         groupId: com.azure
         safeName: azurecoretestv2
         releaseInBatch: ${{ parameters.release_azurecoretestv2 }}
+    AdditionalModules:
+      - name: core
+        groupId: io.clientcore
