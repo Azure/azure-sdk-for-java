@@ -5,13 +5,8 @@
 package com.azure.health.deidentification;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
 import com.azure.health.deidentification.models.DeidentificationContent;
-import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public final class ReadmeSamples {

@@ -4,10 +4,7 @@
 
 package com.azure.health.deidentification;
 
-import com.azure.core.http.rest.RequestOptions;
-import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
-import com.azure.health.deidentification.models.DeidentificationJob;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DeleteDeidentificationJob {
