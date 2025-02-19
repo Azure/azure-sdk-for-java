@@ -1,6 +1,14 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
+
+## 1.0.0-beta.5
+
+- Removed `AssistantsApiResponseFormatMode.NONE`.
+- Added `runIncludes` query parameter for `getRunStep` methods to specify additional fields for the request. Currently only files are supported.
+- Added more `VectorStoreFileErrorCode`s. Specifically, `server_error`, `unsupported_file` and `invalid_file`.
+- Added `AssistantsApiResponseFormatJsonSchema` as a possible value (previously, `text` and `json_object` where the only supported ones).
+- Added Azure OpenAI services labels: `V2024_09_01_PREVIEW`, `V2024_10_01_PREVIEW`, `V2025_01_01_PREVIEW`.
 
 ### Features Added
 
