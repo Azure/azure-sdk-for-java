@@ -49,6 +49,7 @@ public enum StructuredMessageFlags {
      * Parses a serialized value to a StructuredMessageFlags instance.
      * @param value the serialized value to parse.
      * @return the parsed StructuredMessageFlags object.
+     * @throws IllegalArgumentException if unable to parse.
      */
     public static StructuredMessageFlags fromValue(int value) {
         for (StructuredMessageFlags flag : StructuredMessageFlags.values()) {
