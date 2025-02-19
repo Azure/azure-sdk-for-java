@@ -226,8 +226,8 @@ class EventHubMessageSerializer implements MessageSerializer {
         messageAnnotations.put(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue(), enqueuedTime);
         messageAnnotations.put(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
 
-        final SystemProperties systemProperties = new SystemProperties(amqpAnnotatedMessage, offsetString, enqueuedTime,
-            sequenceNumber, partitionKey);
+        final SystemProperties systemProperties
+            = new SystemProperties(amqpAnnotatedMessage, offsetString, enqueuedTime, sequenceNumber, partitionKey);
         final EventData eventData = new EventData(amqpAnnotatedMessage, systemProperties, Context.NONE);
 
         message.clear();

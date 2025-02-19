@@ -121,10 +121,9 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                 = messageSerializer.deserialize(message, LastEnqueuedEventProperties.class);
 
             if (enqueuedEventProperties != null) {
-                final LastEnqueuedEventProperties updated
-                    = new LastEnqueuedEventProperties(enqueuedEventProperties.getSequenceNumber(),
-                        enqueuedEventProperties.getOffsetString(), enqueuedEventProperties.getEnqueuedTime(),
-                        enqueuedEventProperties.getRetrievalTime());
+                final LastEnqueuedEventProperties updated = new LastEnqueuedEventProperties(
+                    enqueuedEventProperties.getSequenceNumber(), enqueuedEventProperties.getOffsetString(),
+                    enqueuedEventProperties.getEnqueuedTime(), enqueuedEventProperties.getRetrievalTime());
 
                 lastEnqueuedEventProperties.set(updated);
             }

@@ -73,7 +73,6 @@ final class SystemProperties implements Map<String, Object> {
         return offset;
     }
 
-
     /**
      * Gets the relative position for event in the context of the stream. The offset should not be considered a stable
      * value, as the same offset may refer to a different event as events reach the age limit for retention and are no
@@ -84,7 +83,6 @@ final class SystemProperties implements Map<String, Object> {
     String getOffsetString() {
         return offsetString;
     }
-
 
     /**
      * Gets a partition key used for message partitioning. If it exists, this value was used to compute a hash to select

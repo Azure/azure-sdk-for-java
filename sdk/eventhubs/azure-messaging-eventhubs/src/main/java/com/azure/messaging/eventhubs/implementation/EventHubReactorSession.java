@@ -135,11 +135,6 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
         final String isInclusiveFlag = eventPosition.isInclusive() ? "=" : "";
 
         // order of preference
-        if (eventPosition.getOffsetString() != null) {
-            return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
-                isInclusiveFlag, eventPosition.getOffsetString());
-        }
-
         if (eventPosition.getOffset() != null) {
             return String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, OFFSET_ANNOTATION_NAME.getValue(),
                 isInclusiveFlag, eventPosition.getOffset());

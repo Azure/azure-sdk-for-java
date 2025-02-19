@@ -108,8 +108,8 @@ public class SystemPropertiesTest {
     @Test
     public void cannotModifyProperties() {
         // Act
-        final SystemProperties properties = new SystemProperties(message, offsetString, enqueuedTime, sequenceNumber,
-            partitionKey);
+        final SystemProperties properties
+            = new SystemProperties(message, offsetString, enqueuedTime, sequenceNumber, partitionKey);
         final HashMap<String, Object> testMap = new HashMap<>();
         testMap.put("one", 1L);
         testMap.put("two", 2);

@@ -176,10 +176,10 @@ class EventHubPartitionAsyncConsumerTest {
 
         final EventData event1
             = new EventData(annotatedMessage1, getSystemProperties(annotatedMessage1, "25", 14L), Context.NONE);
-        final EventData event2
-            = new EventData(annotatedMessage2, getSystemProperties(annotatedMessage1, String.valueOf(secondOffset), 21L), Context.NONE);
-        final EventData event3
-            = new EventData(annotatedMessage3, getSystemProperties(annotatedMessage1, String.valueOf(lastOffset), 53L), Context.NONE);
+        final EventData event2 = new EventData(annotatedMessage2,
+            getSystemProperties(annotatedMessage1, String.valueOf(secondOffset), 21L), Context.NONE);
+        final EventData event3 = new EventData(annotatedMessage3,
+            getSystemProperties(annotatedMessage1, String.valueOf(lastOffset), 53L), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -203,8 +203,7 @@ class EventHubPartitionAsyncConsumerTest {
         final EventPosition firstPosition = currentPosition.get().get();
         Assertions.assertNotNull(firstPosition);
 
-        Assertions.assertEquals(secondOffset, firstPosition.getOffset());
-        Assertions.assertEquals(String.valueOf(secondOffset), firstPosition.getOffsetString());
+        Assertions.assertEquals(String.valueOf(secondOffset), firstPosition.getOffset());
 
         Assertions.assertFalse(firstPosition.isInclusive());
 
@@ -238,10 +237,10 @@ class EventHubPartitionAsyncConsumerTest {
 
         final EventData event1
             = new EventData(annotatedMessage1, getSystemProperties(annotatedMessage1, "25", 14L), Context.NONE);
-        final EventData event2
-            = new EventData(annotatedMessage2, getSystemProperties(annotatedMessage2, String.valueOf(secondOffset), 21L), Context.NONE);
-        final EventData event3
-            = new EventData(annotatedMessage3, getSystemProperties(annotatedMessage3, String.valueOf(lastOffset), 53L), Context.NONE);
+        final EventData event2 = new EventData(annotatedMessage2,
+            getSystemProperties(annotatedMessage2, String.valueOf(secondOffset), 21L), Context.NONE);
+        final EventData event3 = new EventData(annotatedMessage3,
+            getSystemProperties(annotatedMessage3, String.valueOf(lastOffset), 53L), Context.NONE);
 
         when(messageSerializer.deserialize(same(message1), eq(EventData.class))).thenReturn(event1);
         when(messageSerializer.deserialize(same(message2), eq(EventData.class))).thenReturn(event2);
@@ -320,7 +319,8 @@ class EventHubPartitionAsyncConsumerTest {
     private static SystemProperties getSystemProperties(AmqpAnnotatedMessage amqpAnnotatedMessage, String offsetString,
         long sequenceNumber) {
 
-        amqpAnnotatedMessage.getMessageAnnotations().put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offsetString);
+        amqpAnnotatedMessage.getMessageAnnotations()
+            .put(AmqpMessageConstant.OFFSET_ANNOTATION_NAME.getValue(), offsetString);
         amqpAnnotatedMessage.getMessageAnnotations()
             .put(AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME.getValue(), sequenceNumber);
         amqpAnnotatedMessage.getMessageAnnotations()

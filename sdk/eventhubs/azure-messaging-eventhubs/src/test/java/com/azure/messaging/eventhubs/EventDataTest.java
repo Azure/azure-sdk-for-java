@@ -24,7 +24,6 @@ import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.ENQUEUED_TIME;
-import static com.azure.messaging.eventhubs.TestUtils.OFFSET_STRING;
 import static com.azure.messaging.eventhubs.TestUtils.PARTITION_KEY;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.qpid.proton.amqp.Symbol.getSymbol;
