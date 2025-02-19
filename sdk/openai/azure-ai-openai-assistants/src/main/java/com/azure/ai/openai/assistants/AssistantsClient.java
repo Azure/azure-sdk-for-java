@@ -1943,6 +1943,34 @@ public final class AssistantsClient {
     }
 
     /**
+     * Gets a list of run steps from a thread run with additional run include parameters.
+     *
+     * @param threadId The ID of the thread that was run.
+     * @param runId The ID of the run from which to list steps.
+     * @param runInclude A list of extra fields to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by the server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by the server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
+     * @return a {@link PageableList} of {@link RunStep} from the thread run.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PageableList<RunStep> listRunSteps(String threadId, String runId, List<RunIncludes> runInclude) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (runInclude != null && !runInclude.isEmpty()) {
+            requestOptions.addQueryParam("include[]",
+                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")),
+                false);
+        }
+        OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions)
+                .getValue()
+                .toObject(OpenAIPageableListOfRunStep.class);
+        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(),
+                runStepList.getLastId(), runStepList.isHasMore());
+    }
+
+    /**
      * Gets a list of previously uploaded files.
      *
      * @param purpose A value that, when provided, limits list results to files matching the corresponding purpose.
@@ -2488,6 +2516,62 @@ public final class AssistantsClient {
     }
 
     /**
+     * Creates a new run for an assistant thread with additional run include parameters.
+     *
+     * @param threadId The ID of the thread to run.
+     * @param createRunOptions The details for creating a new run.
+     * @param runInclude A list of extra fields to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by the server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by the server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
+     * @return a {@link ThreadRun} representing the created run.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThreadRun createRun(String threadId, CreateRunOptions createRunOptions, List<RunIncludes> runInclude) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (runInclude != null && !runInclude.isEmpty()) {
+            requestOptions.addQueryParam("include[]",
+                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")),
+                false);
+        }
+        return createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions)
+                .getValue()
+                .toObject(ThreadRun.class);
+    }
+
+    /**
+     * Creates a new run for an assistant thread returning a stream of updates with additional run include parameters.
+     *
+     * @param threadId The ID of the thread to run.
+     * @param createRunOptions The details for creating the run.
+     * @param runInclude A list of extra fields to include in the response.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by the server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by the server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by the server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
+     * @return an {@link IterableStream} of {@link StreamUpdate} representing the response stream.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions, List<RunIncludes> runInclude) {
+        RequestOptions requestOptions = new RequestOptions();
+        if (runInclude != null && !runInclude.isEmpty()) {
+            requestOptions.addQueryParam("include[]",
+                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")),
+                false);
+        }
+        BinaryData inputJson = BinaryData.fromObject(createRunOptions);
+        BinaryData adjustedJson = OpenAIUtils.injectStreamJsonField(inputJson, true);
+        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, adjustedJson, requestOptions)
+                .getValue()
+                .toFluxByteBuffer();
+        OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
+        return new IterableStream<>(eventStream.getEvents());
+    }
+
+    /**
      * Modifies an existing thread run.
      *
      * @param threadId The ID of the thread associated with the specified run.
@@ -2618,7 +2702,7 @@ public final class AssistantsClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * byte[]
