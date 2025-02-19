@@ -1934,7 +1934,7 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
                 1,
                 15,
                 15
-            },
+            }
         };
     }
 
@@ -3504,9 +3504,9 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         int expectedRegionCountWithFailures,
         int operationIterationCountInFailureFlow,
         int operationIterationCountInRecoveryFlow,
-        boolean isSingleWriteAccount) {
+        boolean isSingleWriteMultiRegionAccount) {
 
-        List<String> preferredRegions = isSingleWriteAccount ? this.readRegions : this.writeRegions;
+        List<String> preferredRegions = isSingleWriteMultiRegionAccount ? this.readRegions : this.writeRegions;
 
         this.firstPreferredRegion = preferredRegions.get(0);
         this.secondPreferredRegion = preferredRegions.get(1);
@@ -3598,7 +3598,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
             expectedRegionCountWithFailures,
             operationIterationCountInFailureFlow,
-            operationIterationCountInRecoveryFlow);
+            operationIterationCountInRecoveryFlow,
+            isSingleWriteMultiRegionAccount);
     }
 
     @Test(groups = {"circuit-breaker-read-all-read-many"}, dataProvider = "readManyTestConfigs", timeOut = 4 * TIMEOUT)
@@ -3707,7 +3708,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
             expectedRegionCountWithFailures,
             operationIterationCountInFailureFlow,
-            operationIterationCountInRecoveryFlow);
+            operationIterationCountInRecoveryFlow,
+            false);
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "readManyTestConfigsReduced", timeOut = 4 * TIMEOUT)
@@ -3816,7 +3818,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
             expectedRegionCountWithFailures,
             operationIterationCountInFailureFlow,
-            operationIterationCountInRecoveryFlow);
+            operationIterationCountInRecoveryFlow,
+            true);
     }
 
 
@@ -3927,7 +3930,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
             expectedRegionCountWithFailures,
             operationIterationCountInFailureFlow,
-            operationIterationCountInRecoveryFlow);
+            operationIterationCountInRecoveryFlow,
+            false);
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "readAllTestConfigsReduced", timeOut = 4 * TIMEOUT)
@@ -4037,7 +4041,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
             expectedRegionCountWithFailures,
             operationIterationCountInFailureFlow,
-            operationIterationCountInRecoveryFlow);
+            operationIterationCountInRecoveryFlow,
+            true);
     }
 
     private void execute(
@@ -4055,11 +4060,12 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
         Consumer<CosmosDiagnosticsContext> validateRegionsContactedWhenShortCircuitRegionMarkedAsHealthyOrHealthyTentative,
         int expectedRegionCountWithFailures,
         int operationIterationCountInFailureFlow,
-        int operationIterationCountInRecoveryFlow) {
+        int operationIterationCountInRecoveryFlow,
+        boolean isSingleWriteMultiRegionAccount) {
 
         logger.info("Checking circuit breaking behavior for test type {}", testId);
 
-        List<String> preferredRegions = this.writeRegions;
+        List<String> preferredRegions = isSingleWriteMultiRegionAccount ? this.readRegions : this.writeRegions;
 
         this.firstPreferredRegion = preferredRegions.get(0);
         this.secondPreferredRegion = preferredRegions.get(1);

@@ -2404,6 +2404,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
+                            request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
                                 options,
@@ -2420,7 +2422,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 preResolvedPartitionKeyRangeIfAny);
 
                             documentServiceRequestReference.set(request);
-                            request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
                             // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
                             // to the RxDocumentServiceRequest instance
@@ -2740,6 +2741,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             }
 
                             options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
+                            request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
                             PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                 request,
@@ -2756,7 +2758,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 retryPolicyInstance,
                                 preResolvedPartitionKeyRangeIfAny);
 
-                            request.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
                             requestReference.set(request);
 
                             // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
@@ -3032,6 +3033,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
+                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
@@ -3047,7 +3050,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     retryPolicyInstance,
                                     preResolvedPartitionKeyRangeIfAny);
 
-                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
                                 requestReference.set(req);
 
                                 // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
@@ -3240,6 +3242,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
+                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
@@ -3255,7 +3259,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     retryPolicyInstance,
                                     preResolvedPartitionKeyRangeIfAny);
 
-                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
                                 requestReference.set(req);
 
                                 // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
@@ -3399,6 +3402,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                                 options.setPartitionKeyDefinition(documentCollectionValueHolder.v.getPartitionKey());
 
+                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
+
                                 PartitionKeyRange preResolvedPartitionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
                                     options,
@@ -3414,7 +3419,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     retryPolicyInstance,
                                     preResolvedPartitionKeyRangeIfAny);
 
-                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
                                 requestReference.set(req);
 
                                 // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired
@@ -3573,6 +3577,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             return requestObs.flatMap(req -> {
 
                                 options.setPartitionKeyDefinition(documentCollection.getPartitionKey());
+                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
 
                                 PartitionKeyRange preResolvedPartionKeyRangeIfAny = setPartitionKeyRangeForPointOperationRequestForPerPartitionAutomaticFailover(
                                     req,
@@ -3589,7 +3594,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     retryPolicyInstance,
                                     preResolvedPartionKeyRangeIfAny);
 
-                                req.requestContext.setCrossRegionAvailabilityContext(crossRegionAvailabilityContextForRequest);
                                 requestReference.set(req);
 
                                 // needs to be after onBeforeSendRequest since CosmosDiagnostics instance needs to be wired

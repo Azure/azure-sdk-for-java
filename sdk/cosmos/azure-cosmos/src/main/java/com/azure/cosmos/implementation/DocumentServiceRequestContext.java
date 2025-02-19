@@ -147,6 +147,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.originalRequestConsistencyLevel = this.originalRequestConsistencyLevel;
         context.resolvedPartitionKeyRange = this.resolvedPartitionKeyRange;
         context.resolvedPartitionKeyRangeForCircuitBreaker = this.resolvedPartitionKeyRangeForCircuitBreaker;
+        context.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover = this.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
         context.regionIndex = this.regionIndex;
         context.usePreferredLocations = this.usePreferredLocations;
         context.locationIndexToRoute = this.locationIndexToRoute;
