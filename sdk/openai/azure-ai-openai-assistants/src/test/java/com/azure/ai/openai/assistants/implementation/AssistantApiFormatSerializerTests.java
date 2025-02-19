@@ -58,6 +58,21 @@ public class AssistantApiFormatSerializerTests {
     }
 
     @Test
+    public void assistantCreationOptionJsonSchemaFormat() {
+        AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
+        assistantCreationOptions.setResponseFormat(
+                new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_SCHEMA)));
+        AssistantsApiResponseFormatOption responseFormat = assistantCreationOptions.getResponseFormat();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(assistantCreationOptions);
+        String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.JSON_SCHEMA, responseFormat.getFormat().getType());
+        assertTrue(json.contains("\"response_format\":{\"type\":\"json_schema\"}"));
+        assertTrue(json.contains("\"model\":\"gpt-4\""));
+    }
+
+    @Test
     public void assistantCreationOptionAutoMode() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
         assistantCreationOptions
@@ -99,6 +114,21 @@ public class AssistantApiFormatSerializerTests {
 
         assertEquals(ApiResponseFormat.JSON_OBJECT, responseFormat.getFormat().getType());
         assertTrue(json.contains("\"response_format\":{\"type\":\"json_object\"}"));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
+    public void createRunOptionJsonSchemaFormat() {
+        CreateRunOptions createRunOptions = new CreateRunOptions("abc123");
+        createRunOptions.setResponseFormat(
+                new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_SCHEMA)));
+        AssistantsApiResponseFormatOption responseFormat = createRunOptions.getResponseFormat();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(createRunOptions);
+        String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.JSON_SCHEMA, responseFormat.getFormat().getType());
+        assertTrue(json.contains("\"response_format\":{\"type\":\"json_schema\"}"));
         assertTrue(json.contains("\"assistant_id\":\"abc123\""));
     }
 
@@ -147,6 +177,21 @@ public class AssistantApiFormatSerializerTests {
     }
 
     @Test
+    public void createAndRunThreadOptionJsonSchemaFormat() {
+        CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
+        options.setResponseFormat(
+                new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_SCHEMA)));
+        AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.JSON_SCHEMA, responseFormat.getFormat().getType());
+        assertTrue(json.contains("\"response_format\":{\"type\":\"json_schema\"}"));
+        assertTrue(json.contains("\"assistant_id\":\"abc123\""));
+    }
+
+    @Test
     public void createAndRunThreadOptionAutoMode() {
         CreateAndRunThreadOptions options = new CreateAndRunThreadOptions("abc123");
         options.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.AUTO));
@@ -189,6 +234,20 @@ public class AssistantApiFormatSerializerTests {
     }
 
     @Test
+    public void updateAssistantOptionJsonSchemaFormat() {
+        UpdateAssistantOptions options = new UpdateAssistantOptions();
+        options.setResponseFormat(
+                new AssistantsApiResponseFormatOption(new AssistantsApiResponseFormat(ApiResponseFormat.JSON_SCHEMA)));
+        AssistantsApiResponseFormatOption responseFormat = options.getResponseFormat();
+
+        BinaryData jsonBinaryData = BinaryData.fromObject(options);
+        String json = jsonBinaryData.toString();
+
+        assertEquals(ApiResponseFormat.JSON_SCHEMA, responseFormat.getFormat().getType());
+        assertTrue(json.contains("\"response_format\":{\"type\":\"json_schema\"}"));
+    }
+
+    @Test
     public void updateAssistantOptionAutoMode() {
         UpdateAssistantOptions options = new UpdateAssistantOptions();
         options.setResponseFormat(new AssistantsApiResponseFormatOption(AssistantsApiResponseFormatMode.AUTO));
@@ -221,6 +280,17 @@ public class AssistantApiFormatSerializerTests {
         assertNull(responseFormat.getMode());
         assertNotNull(responseFormat.getFormat());
         assertEquals(ApiResponseFormat.JSON_OBJECT, responseFormat.getFormat().getType());
+    }
+
+    @Test
+    public void assistantJsonSchemaFormat() {
+        Assistant assistant
+                = BinaryData.fromString("{\"response_format\":{\"type\":\"json_schema\"}}").toObject(Assistant.class);
+        AssistantsApiResponseFormatOption responseFormat = assistant.getResponseFormat();
+
+        assertNull(responseFormat.getMode());
+        assertNotNull(responseFormat.getFormat());
+        assertEquals(ApiResponseFormat.JSON_SCHEMA, responseFormat.getFormat().getType());
     }
 
     @Test
@@ -261,6 +331,17 @@ public class AssistantApiFormatSerializerTests {
         assertNull(responseFormat.getMode());
         assertNotNull(responseFormat.getFormat());
         assertEquals(ApiResponseFormat.JSON_OBJECT, responseFormat.getFormat().getType());
+    }
+
+    @Test
+    public void threadRunJsonSchemaFormat() {
+        ThreadRun threadRun
+                = BinaryData.fromString("{\"response_format\":{\"type\":\"json_schema\"}}").toObject(ThreadRun.class);
+        AssistantsApiResponseFormatOption responseFormat = threadRun.getResponseFormat();
+
+        assertNull(responseFormat.getMode());
+        assertNotNull(responseFormat.getFormat());
+        assertEquals(ApiResponseFormat.JSON_SCHEMA, responseFormat.getFormat().getType());
     }
 
     @Test
