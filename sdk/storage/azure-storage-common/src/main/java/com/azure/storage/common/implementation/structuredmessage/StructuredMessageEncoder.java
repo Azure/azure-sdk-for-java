@@ -14,7 +14,10 @@ import java.nio.ByteOrder;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.*;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.CRC64_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.DEFAULT_MESSAGE_VERSION;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_HEADER_LENGTH;
+import static com.azure.storage.common.implementation.structuredmessage.StructuredMessageConstants.V1_SEGMENT_HEADER_LENGTH;
 
 /**
  * Encoder for structured messages with support for segmenting and CRC64 checksums.

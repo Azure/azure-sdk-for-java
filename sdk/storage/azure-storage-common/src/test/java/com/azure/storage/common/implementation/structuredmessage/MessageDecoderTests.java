@@ -47,7 +47,7 @@ public class MessageDecoderTests {
     }
 
     private static ByteBuffer buildStructuredMessage(ByteBuffer data, int segmentSize,
-                                                     StructuredMessageFlags structuredMessageFlags) throws IOException {
+        StructuredMessageFlags structuredMessageFlags, Integer invalidSegment) throws IOException {
         int segmentCount = Math.max(1, (int) Math.ceil((double) data.capacity() / segmentSize));
         int segmentFooterLength = structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64 ? CRC64_LENGTH : 0;
 
@@ -57,7 +57,7 @@ public class MessageDecoderTests {
         long messageCRC = 0;
 
         // Message Header
-        ByteBuffer buffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN); //1 + 8 + 2 + 2
+        ByteBuffer buffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN);
         buffer.put((byte) 0x01);
         buffer.putLong(messageLength);
         buffer.putShort((short) structuredMessageFlags.getValue());
@@ -83,8 +83,8 @@ public class MessageDecoderTests {
                 long segmentCrc = -1;
                 if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
                     segmentCrc = StorageCrc64Calculator.compute(segmentData, 0);
-                    if (i == -1) {
-                        segmentCrc += 5;
+                    if (invalidSegment != null && i == invalidSegment) {  // Introduce CRC Mismatch Here
+                        segmentCrc += 5;  // Corrupt the CRC value for this segment
                     }
                 }
                 writeSegment(i, segmentData, segmentCrc, message);
@@ -129,13 +129,16 @@ public class MessageDecoderTests {
     @MethodSource("readAllSupplier")
     public void testReadAll(int size, int segmentSize, StructuredMessageFlags flags) throws IOException {
         byte[] data = getRandomData(size);
-        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), segmentSize, flags);
+        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), segmentSize, flags, null);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
         ByteBuffer decodedBuffer = decoder.decode(encodedBuffer);
 
         byte[] decodedData = new byte[decodedBuffer.remaining()];
         decodedBuffer.get(decodedData);
+
+        // Call finalizeDecoding to ensure the entire message has been processed
+        decoder.finalizeDecoding();
 
         Assertions.assertArrayEquals(data, decodedData);
     }
@@ -144,7 +147,7 @@ public class MessageDecoderTests {
     public void testReadPastEnd() throws IOException {
         byte[] data = getRandomData(10);
         ByteBuffer encodedBuffer
-            = buildStructuredMessage(ByteBuffer.wrap(data), 10, StructuredMessageFlags.STORAGE_CRC64);
+            = buildStructuredMessage(ByteBuffer.wrap(data), 10, StructuredMessageFlags.STORAGE_CRC64, null);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
         ByteBuffer decodedBuffer = decoder.decode(encodedBuffer);
@@ -154,6 +157,8 @@ public class MessageDecoderTests {
 
         Assertions.assertArrayEquals(data, decodedData);
         Assertions.assertArrayEquals(new byte[0], decoder.decode(encodedBuffer, 10).array()); // Should return empty on subsequent reads
+        // Call finalizeDecoding to ensure the entire message has been processed
+        decoder.finalizeDecoding();
     }
 
     @Test
@@ -161,58 +166,6 @@ public class MessageDecoderTests {
         ByteBuffer emptyBuffer = ByteBuffer.allocate(0);
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(emptyBuffer.capacity());
         Assertions.assertThrows(IllegalArgumentException.class, () -> decoder.decode(emptyBuffer));
-    }
-
-    private static ByteBuffer buildInvalidStructuredMessage(ByteBuffer data, int segmentSize,
-                                                            StructuredMessageFlags structuredMessageFlags, Integer invalidSegment) throws IOException {
-        int segmentCount = Math.max(1, (int) Math.ceil((double) data.capacity() / segmentSize));
-        int segmentFooterLength = structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64 ? CRC64_LENGTH : 0;
-
-        int messageLength = V1_HEADER_LENGTH + ((V1_SEGMENT_HEADER_LENGTH + segmentFooterLength) * segmentCount)
-            + data.capacity() + (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64 ? CRC64_LENGTH : 0);
-
-        long messageCRC = 0;
-
-        // Message Header
-        ByteBuffer buffer = ByteBuffer.allocate(13).order(ByteOrder.LITTLE_ENDIAN);
-        buffer.put((byte) 0x01);
-        buffer.putLong(messageLength);
-        buffer.putShort((short) structuredMessageFlags.getValue());
-        buffer.putShort((short) segmentCount);
-
-        ByteArrayOutputStream message = new ByteArrayOutputStream();
-        message.write(buffer.array());
-
-        // Segments
-        int[] segmentSizes = new int[segmentCount];
-        Arrays.fill(segmentSizes, segmentSize);
-
-        int offset = 0;
-        for (int i = 1; i <= segmentCount; i++) {
-            int size = segmentSizes[i - 1];
-            byte[] segmentData = customCopyOfRange(data, offset, size);
-            offset += size;
-
-            long segmentCrc = -1;
-            if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
-                segmentCrc = StorageCrc64Calculator.compute(segmentData, 0);
-                if (i == invalidSegment) {  // Introduce CRC Mismatch Here
-                    segmentCrc += 5;  // Corrupt the CRC value for this segment
-                }
-            }
-            writeSegment(i, segmentData, segmentCrc, message);
-
-            messageCRC = StorageCrc64Calculator.compute(segmentData, messageCRC);
-        }
-
-        // Message footer
-        if (structuredMessageFlags == StructuredMessageFlags.STORAGE_CRC64) {
-            byte[] crcBytes
-                = ByteBuffer.allocate(CRC64_LENGTH).order(ByteOrder.LITTLE_ENDIAN).putLong(messageCRC).array();
-            message.write(crcBytes);
-        }
-
-        return ByteBuffer.wrap(message.toByteArray());
     }
 
     private static Stream<Arguments> crcMismatchSupplier() {
@@ -223,8 +176,8 @@ public class MessageDecoderTests {
     @MethodSource("crcMismatchSupplier")
     public void testCrcMismatchReadAll(int invalidSegment) throws IOException {
         byte[] data = getRandomData(3 * 1024);
-        ByteBuffer encodedBuffer = buildInvalidStructuredMessage(ByteBuffer.wrap(data), 1024,
-            StructuredMessageFlags.STORAGE_CRC64, invalidSegment);
+        ByteBuffer encodedBuffer
+            = buildStructuredMessage(ByteBuffer.wrap(data), 1024, StructuredMessageFlags.STORAGE_CRC64, invalidSegment);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
 
@@ -236,7 +189,7 @@ public class MessageDecoderTests {
         int dataSize = 1024;
         byte[] data = getRandomData(dataSize);
         ByteBuffer encodedBuffer
-            = buildStructuredMessage(ByteBuffer.wrap(data), dataSize / 3, StructuredMessageFlags.STORAGE_CRC64);
+            = buildStructuredMessage(ByteBuffer.wrap(data), dataSize / 3, StructuredMessageFlags.STORAGE_CRC64, null);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
 
@@ -254,6 +207,8 @@ public class MessageDecoderTests {
             result.write(chunk);
             readCount += chunk.length;
         }
+        // Call finalizeDecoding to ensure the entire message has been processed
+        decoder.finalizeDecoding();
 
         Assertions.assertArrayEquals(data, result.toByteArray());
     }
@@ -261,7 +216,8 @@ public class MessageDecoderTests {
     @Test
     public void testInvalidMessageVersion() throws IOException {
         byte[] data = getRandomData(1024);
-        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), 512, StructuredMessageFlags.NONE);
+        ByteBuffer encodedBuffer
+            = buildStructuredMessage(ByteBuffer.wrap(data), 512, StructuredMessageFlags.NONE, null);
 
         // Modify the first byte (message version) to an invalid value (0xFF)
         encodedBuffer.put(0, (byte) 0xFF);
@@ -274,7 +230,8 @@ public class MessageDecoderTests {
     @MethodSource("invalidMessageLengths")
     public void testIncorrectMessageLength(long invalidMessageLength) throws IOException {
         byte[] data = getRandomData(1024);
-        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), 512, StructuredMessageFlags.NONE);
+        ByteBuffer encodedBuffer
+            = buildStructuredMessage(ByteBuffer.wrap(data), 512, StructuredMessageFlags.NONE, null);
 
         // Modify the message length field
         encodedBuffer.putLong(1, invalidMessageLength);
@@ -291,7 +248,8 @@ public class MessageDecoderTests {
     @MethodSource("invalidSegmentCounts")
     public void testIncorrectSegmentCount(int invalidSegmentCount) throws IOException {
         byte[] data = getRandomData(1024);
-        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), 256, StructuredMessageFlags.NONE);
+        ByteBuffer encodedBuffer
+            = buildStructuredMessage(ByteBuffer.wrap(data), 256, StructuredMessageFlags.NONE, null);
 
         // Modify the segment count
         encodedBuffer.putShort(11, (short) invalidSegmentCount);
@@ -308,7 +266,8 @@ public class MessageDecoderTests {
     @MethodSource("invalidSegmentNumbers")
     public void testIncorrectSegmentNumber(int invalidSegmentNumber) throws IOException {
         byte[] data = getRandomData(1024);
-        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), 256, StructuredMessageFlags.NONE);
+        ByteBuffer encodedBuffer
+            = buildStructuredMessage(ByteBuffer.wrap(data), 256, StructuredMessageFlags.NONE, null);
 
         // Modify the second segment's number
         int position = V1_HEADER_LENGTH + V1_SEGMENT_HEADER_LENGTH + 256;
@@ -327,7 +286,7 @@ public class MessageDecoderTests {
     @MethodSource("invalidSegmentNumbers")
     public void testIncorrectSegmentSize(int invalidSegmentSize, StructuredMessageFlags flags) throws IOException {
         byte[] data = getRandomData(1024);
-        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), 256, flags);
+        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), 256, flags, null);
 
         byte[] encodedArray = encodedBuffer.array();
         ByteBuffer modifiableBuffer = ByteBuffer.wrap(encodedArray).order(ByteOrder.LITTLE_ENDIAN);
@@ -350,7 +309,8 @@ public class MessageDecoderTests {
     @Test
     public void testIncorrectSegmentSizeSingleSegment() throws IOException {
         byte[] data = getRandomData(256);
-        ByteBuffer encodedBuffer = buildStructuredMessage(ByteBuffer.wrap(data), 256, StructuredMessageFlags.NONE);
+        ByteBuffer encodedBuffer
+            = buildStructuredMessage(ByteBuffer.wrap(data), 256, StructuredMessageFlags.NONE, null);
 
         // Modify the segment size (15th byte)
         encodedBuffer.putShort(15, (short) 123);
@@ -363,8 +323,8 @@ public class MessageDecoderTests {
     @MethodSource("crcMismatchSupplier")
     public void testCrcMismatchReadChunks(int invalidSegment) throws IOException {
         byte[] data = getRandomData(3 * 1024);
-        ByteBuffer encodedBuffer = buildInvalidStructuredMessage(ByteBuffer.wrap(data), 1024,
-            StructuredMessageFlags.STORAGE_CRC64, invalidSegment);
+        ByteBuffer encodedBuffer
+            = buildStructuredMessage(ByteBuffer.wrap(data), 1024, StructuredMessageFlags.STORAGE_CRC64, invalidSegment);
 
         StructuredMessageDecoder decoder = new StructuredMessageDecoder(encodedBuffer.capacity());
 
@@ -374,6 +334,8 @@ public class MessageDecoderTests {
                 decoder.decode(encodedBuffer, 512); // Read in chunks
                 read += 512;
             }
+            // Call finalizeDecoding to ensure the entire message has been processed
+            decoder.finalizeDecoding();
         });
     }
 }

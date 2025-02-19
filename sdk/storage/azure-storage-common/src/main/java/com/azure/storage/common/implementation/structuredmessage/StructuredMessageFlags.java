@@ -45,6 +45,11 @@ public enum StructuredMessageFlags {
         return null;
     }
 
+    /**
+     * Parses a serialized value to a StructuredMessageFlags instance.
+     * @param value the serialized value to parse.
+     * @return the parsed StructuredMessageFlags object.
+     */
     public static StructuredMessageFlags fromValue(int value) {
         for (StructuredMessageFlags flag : StructuredMessageFlags.values()) {
             if (flag.getValue() == value) {
