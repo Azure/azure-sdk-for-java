@@ -1960,14 +1960,12 @@ public final class AssistantsClient {
         RequestOptions requestOptions = new RequestOptions();
         if (runInclude != null && !runInclude.isEmpty()) {
             requestOptions.addQueryParam("include[]",
-                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")),
-                false);
+                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")), false);
         }
-        OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions)
-                .getValue()
-                .toObject(OpenAIPageableListOfRunStep.class);
-        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(),
-                runStepList.getLastId(), runStepList.isHasMore());
+        OpenAIPageableListOfRunStep runStepList = listRunStepsWithResponse(threadId, runId, requestOptions).getValue()
+            .toObject(OpenAIPageableListOfRunStep.class);
+        return PageableListAccessHelper.create(runStepList.getData(), runStepList.getFirstId(), runStepList.getLastId(),
+            runStepList.isHasMore());
     }
 
     /**
@@ -2533,12 +2531,10 @@ public final class AssistantsClient {
         RequestOptions requestOptions = new RequestOptions();
         if (runInclude != null && !runInclude.isEmpty()) {
             requestOptions.addQueryParam("include[]",
-                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")),
-                false);
+                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")), false);
         }
-        return createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions)
-                .getValue()
-                .toObject(ThreadRun.class);
+        return createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions).getValue()
+            .toObject(ThreadRun.class);
     }
 
     /**
@@ -2555,18 +2551,17 @@ public final class AssistantsClient {
      * @return an {@link IterableStream} of {@link StreamUpdate} representing the response stream.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions, List<RunIncludes> runInclude) {
+    public IterableStream<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions,
+        List<RunIncludes> runInclude) {
         RequestOptions requestOptions = new RequestOptions();
         if (runInclude != null && !runInclude.isEmpty()) {
             requestOptions.addQueryParam("include[]",
-                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")),
-                false);
+                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")), false);
         }
         BinaryData inputJson = BinaryData.fromObject(createRunOptions);
         BinaryData adjustedJson = OpenAIUtils.injectStreamJsonField(inputJson, true);
-        Flux<ByteBuffer> responseStream = createRunWithResponse(threadId, adjustedJson, requestOptions)
-                .getValue()
-                .toFluxByteBuffer();
+        Flux<ByteBuffer> responseStream
+            = createRunWithResponse(threadId, adjustedJson, requestOptions).getValue().toFluxByteBuffer();
         OpenAIServerSentEvents eventStream = new OpenAIServerSentEvents(responseStream);
         return new IterableStream<>(eventStream.getEvents());
     }
@@ -2702,7 +2697,7 @@ public final class AssistantsClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * byte[]

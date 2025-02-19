@@ -1914,19 +1914,12 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         if (runInclude != null && !runInclude.isEmpty()) {
             requestOptions.addQueryParam("include[]",
-                runInclude.stream()
-                    .map(item -> Objects.toString(item, ""))
-                    .collect(Collectors.joining(",")),
-                false);
+                runInclude.stream().map(item -> Objects.toString(item, "")).collect(Collectors.joining(",")), false);
         }
-        return listRunStepsWithResponse(threadId, runId, requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return listRunStepsWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfRunStep.class))
-            .map(assistantList -> PageableListAccessHelper.create(
-                assistantList.getData(),
-                assistantList.getFirstId(),
-                assistantList.getLastId(),
-                assistantList.isHasMore()));
+            .map(assistantList -> PageableListAccessHelper.create(assistantList.getData(), assistantList.getFirstId(),
+                assistantList.getLastId(), assistantList.isHasMore()));
     }
 
     /**
@@ -2523,20 +2516,19 @@ public final class AssistantsAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by the server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by the server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data representing a single evaluation run of an assistant thread on successful completion of {@link Mono}.
+     * @return data representing a single evaluation run of an assistant thread on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ThreadRun> createRun(String threadId, CreateRunOptions createRunOptions, List<RunIncludes> runInclude) {
         RequestOptions requestOptions = new RequestOptions();
         if (runInclude != null && !runInclude.isEmpty()) {
-            requestOptions.addQueryParam(
-                "include[]",
-                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("include[]",
+                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")), false);
         }
         return createRunWithResponse(threadId, BinaryData.fromObject(createRunOptions), requestOptions)
-                  .flatMap(FluxUtil::toMono)
-                  .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
     }
 
     /**
@@ -2554,13 +2546,12 @@ public final class AssistantsAsyncClient {
      * @return a stream of updates from the assistant thread run on successful completion of {@link Flux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Flux<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions, List<RunIncludes> runInclude) {
+    public Flux<StreamUpdate> createRunStream(String threadId, CreateRunOptions createRunOptions,
+        List<RunIncludes> runInclude) {
         RequestOptions requestOptions = new RequestOptions();
         if (runInclude != null && !runInclude.isEmpty()) {
-            requestOptions.addQueryParam(
-                "include[]",
-                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")),
-                false);
+            requestOptions.addQueryParam("include[]",
+                runInclude.stream().map(Object::toString).collect(Collectors.joining(",")), false);
         }
         BinaryData inputJson = BinaryData.fromObject(createRunOptions);
         BinaryData adjustedJson = OpenAIUtils.injectStreamJsonField(inputJson, true);
@@ -2706,7 +2697,7 @@ public final class AssistantsAsyncClient {
     /**
      * Returns information about a specific file. Does not retrieve file content.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * byte[]
