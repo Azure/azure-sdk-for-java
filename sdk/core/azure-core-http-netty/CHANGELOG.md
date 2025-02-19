@@ -1,14 +1,10 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.15.10 (2025-02-20)
 
 ### Other Changes
+
+- Fix for the `1.15.9` release as Netty dependencies weren't updated.
 
 ## 1.15.9 (2025-02-12)
 

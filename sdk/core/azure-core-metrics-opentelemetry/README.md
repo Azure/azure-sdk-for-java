@@ -20,7 +20,7 @@ services.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-metrics-opentelemetry</artifactId>
-  <version>1.0.0-beta.27</version>
+  <version>1.0.0-beta.28</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
