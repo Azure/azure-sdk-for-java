@@ -50,11 +50,12 @@ public final class StructuredJsonChatSample {
             + "} }";
 
         Map<String, BinaryData> recipeSchema = new HashMap<String, BinaryData>() {{
-            put("type", BinaryData.fromString("\"object\""));
-            put("properties", BinaryData.fromString(jsonSchema));
-            put("required", BinaryData.fromString("[\"ingredients\", \"steps\", \"bake_time\"]"));
-            put("additionalProperties", BinaryData.fromString("false"));
-        }};
+                put("type", BinaryData.fromString("\"object\""));
+                put("properties", BinaryData.fromString(jsonSchema));
+                put("required", BinaryData.fromString("[\"ingredients\", \"steps\", \"bake_time\"]"));
+                put("additionalProperties", BinaryData.fromString("false"));
+            }};
+
         String key = Configuration.getGlobalConfiguration().get("AZURE_API_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("MODEL_ENDPOINT");
 
