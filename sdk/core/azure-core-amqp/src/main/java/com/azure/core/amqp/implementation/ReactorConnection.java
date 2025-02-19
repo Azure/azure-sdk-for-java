@@ -246,9 +246,8 @@ public class ReactorConnection implements AmqpConnection {
                     .addKeyValue("address", address)
                     .log("Creating management node.");
 
-                final RequestResponseChannelCache cache
+                final RequestResponseChannelCache channelCache
                     = new RequestResponseChannelCache(this, sessionName, linkName, address, retryPolicy);
-                final ChannelCacheWrapper channelCache = new ChannelCacheWrapper(cache);
                 return new ManagementChannel(channelCache, getFullyQualifiedNamespace(), entityPath, tokenManager);
             }));
         });

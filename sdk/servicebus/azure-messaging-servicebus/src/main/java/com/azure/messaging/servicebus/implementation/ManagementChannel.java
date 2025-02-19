@@ -8,10 +8,10 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.SessionErrorContext;
-import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.RequestResponseChannelCache;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.CoreUtils;
@@ -76,14 +76,14 @@ public class ManagementChannel implements ServiceBusManagementNode {
     private final MessageSerializer messageSerializer;
     private final TokenManager tokenManager;
     private final Duration operationTimeout;
-    private final ChannelCacheWrapper channelCache;
+    private final RequestResponseChannelCache channelCache;
     private final String fullyQualifiedNamespace;
     private final ClientLogger logger;
     private final String entityPath;
 
     private volatile boolean isDisposed;
 
-    ManagementChannel(ChannelCacheWrapper channelCache, String fullyQualifiedNamespace, String entityPath,
+    ManagementChannel(RequestResponseChannelCache channelCache, String fullyQualifiedNamespace, String entityPath,
         TokenManager tokenManager, MessageSerializer messageSerializer, Duration operationTimeout) {
         this.channelCache = Objects.requireNonNull(channelCache, "'channelCache' cannot be null.");
         this.fullyQualifiedNamespace

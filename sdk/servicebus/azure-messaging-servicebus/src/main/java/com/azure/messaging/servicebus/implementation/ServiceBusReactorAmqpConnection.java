@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
-import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ProtonSession;
@@ -128,9 +127,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     .log("Creating management node.");
 
                 final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-                final RequestResponseChannelCache cache
+                final RequestResponseChannelCache channelCache
                     = new RequestResponseChannelCache(this, address, sessionName, linkName, retryPolicy);
-                final ChannelCacheWrapper channelCache = new ChannelCacheWrapper(cache);
                 return new ManagementChannel(channelCache, fullyQualifiedNamespace, entityPath, tokenManager,
                     messageSerializer, retryOptions.getTryTimeout());
             }));

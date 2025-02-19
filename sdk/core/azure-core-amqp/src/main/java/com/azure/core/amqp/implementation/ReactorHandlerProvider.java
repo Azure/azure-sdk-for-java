@@ -8,7 +8,6 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.handler.ConnectionHandler;
 import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
-import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
@@ -154,22 +153,6 @@ public class ReactorHandlerProvider {
     public SendLinkHandler createSendLinkHandler(String connectionId, String hostname, String senderName,
         String entityPath) {
         return new SendLinkHandler(connectionId, hostname, senderName, entityPath,
-            getMetricProvider(hostname, entityPath));
-    }
-
-    /**
-     * Creates a new link handler for receiving messages.
-     *
-     * @param connectionId Identifier of the parent connection that created this session.
-     * @param hostname Fully qualified namespace of the parent connection.
-     * @param receiverName Name of the send link.
-     * @param entityPath The relative path to the messaging entity streaming the messages.
-     * @return A new {@link ReceiveLinkHandler}.
-     */
-    public ReceiveLinkHandler createReceiveLinkHandler(String connectionId, String hostname, String receiverName,
-        String entityPath) {
-
-        return new ReceiveLinkHandler(connectionId, hostname, receiverName, entityPath,
             getMetricProvider(hostname, entityPath));
     }
 

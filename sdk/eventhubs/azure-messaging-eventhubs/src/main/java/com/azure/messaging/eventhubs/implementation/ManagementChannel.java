@@ -6,10 +6,10 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
+import com.azure.core.amqp.implementation.RequestResponseChannelCache;
 import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.credential.TokenCredential;
@@ -60,7 +60,7 @@ public class ManagementChannel implements EventHubManagementNode {
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagementChannel.class);
     private final TokenCredential tokenProvider;
-    private final ChannelCacheWrapper channelCache;
+    private final RequestResponseChannelCache channelCache;
     private final Scheduler scheduler;
     private final String eventHubName;
     private final MessageSerializer messageSerializer;
@@ -79,7 +79,7 @@ public class ManagementChannel implements EventHubManagementNode {
      * @param tokenManagerProvider Provides a token manager that will keep track and maintain tokens.
      * @param messageSerializer Maps responses from the management channel.
      */
-    ManagementChannel(ChannelCacheWrapper channelCache, String eventHubName, TokenCredential credential,
+    ManagementChannel(RequestResponseChannelCache channelCache, String eventHubName, TokenCredential credential,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, Scheduler scheduler) {
 
         this.tokenManagerProvider

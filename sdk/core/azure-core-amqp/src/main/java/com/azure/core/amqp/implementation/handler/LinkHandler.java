@@ -24,7 +24,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
  * Base class for AMQP links.
  *
  * @see SendLinkHandler
- * @see ReceiveLinkHandler
+ * @see ReceiveLinkHandler2
  */
 abstract class LinkHandler extends Handler {
     private final String entityPath;
