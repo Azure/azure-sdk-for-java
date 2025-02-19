@@ -35,28 +35,13 @@ public final class EventPosition {
     private static final EventPosition LATEST = new EventPosition(false, END_OF_STREAM, null, null);
 
     private final boolean isInclusive;
-    private final String offsetString;
-    private final Long offset;
+    private final String offset;
     private final Long sequenceNumber;
     private final Instant enqueuedDateTime;
 
-    private EventPosition(final boolean isInclusive, final Long offset, final Long sequenceNumber,
+    private EventPosition(final boolean isInclusive, final String offset, final Long sequenceNumber,
         final Instant enqueuedDateTime) {
-        this(isInclusive, String.valueOf(offset), sequenceNumber, enqueuedDateTime);
-    }
-
-    private EventPosition(final boolean isInclusive, final String offsetString, final Long sequenceNumber,
-        final Instant enqueuedDateTime) {
-        this.offsetString = offsetString;
-
-        Long parsed;
-        try {
-            parsed = offsetString != null && !offsetString.isEmpty() ? Long.valueOf(offsetString) : null;
-        } catch (NumberFormatException e) {
-            parsed = null;
-        }
-
-        this.offset = parsed;
+        this.offset = offset;
         this.sequenceNumber = sequenceNumber;
         this.enqueuedDateTime = enqueuedDateTime;
         this.isInclusive = isInclusive;
@@ -126,7 +111,7 @@ public final class EventPosition {
      */
     @Deprecated
     private static EventPosition fromOffset(long offset, boolean isInclusive) {
-        return new EventPosition(isInclusive, offset, null, null);
+        return new EventPosition(isInclusive, String.valueOf(offset), null, null);
     }
 
     /**
@@ -199,22 +184,9 @@ public final class EventPosition {
      * longer visible within the stream.
      *
      * @return The offset of the event within that partition.
-     * @deprecated This method is obsolete and should no longer be used. Please use {@link #getOffsetString()}.
      */
-    @Deprecated
-    public Long getOffset() {
+    public String getOffset() {
         return offset;
-    }
-
-    /**
-     * Gets the relative position for event in the context of the stream. The offset should not be considered a stable
-     * value, as the same offset may refer to a different event as events reach the age limit for retention and are no
-     * longer visible within the stream.
-     *
-     * @return The offset of the event within that partition.
-     */
-    public String getOffsetString() {
-        return offsetString;
     }
 
     /**
@@ -237,10 +209,8 @@ public final class EventPosition {
 
     @Override
     public String toString() {
-        return String.format(Locale.US,
-            "offsetString[%s], offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]",
-            offsetString, offset, sequenceNumber,
-            enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null", isInclusive);
+        return String.format(Locale.US, "offset[%s], sequenceNumber[%s], enqueuedTime[%s], isInclusive[%s]", offset,
+            sequenceNumber, enqueuedDateTime != null ? enqueuedDateTime.toEpochMilli() : "null", isInclusive);
     }
 
     @Override
@@ -253,13 +223,12 @@ public final class EventPosition {
 
         return Objects.equals(isInclusive, other.isInclusive)
             && Objects.equals(offset, other.offset)
-            && Objects.equals(offsetString, other.offsetString)
             && Objects.equals(sequenceNumber, other.sequenceNumber)
             && Objects.equals(enqueuedDateTime, other.enqueuedDateTime);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(isInclusive, offset, offsetString, sequenceNumber, enqueuedDateTime);
+        return Objects.hash(isInclusive, offset, sequenceNumber, enqueuedDateTime);
     }
 }
