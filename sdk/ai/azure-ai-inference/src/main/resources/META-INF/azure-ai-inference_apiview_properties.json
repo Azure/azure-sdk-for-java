@@ -55,6 +55,7 @@
     "com.azure.ai.inference.models.ChatMessageImageUrl": "AI.Model.ChatMessageImageUrl",
     "com.azure.ai.inference.models.ChatMessageTextContentItem": "AI.Model.ChatMessageTextContentItem",
     "com.azure.ai.inference.models.ChatRequestAssistantMessage": "AI.Model.ChatRequestAssistantMessage",
+    "com.azure.ai.inference.models.ChatRequestDeveloperMessage": "AI.Model.ChatRequestDeveloperMessage",
     "com.azure.ai.inference.models.ChatRequestMessage": "AI.Model.ChatRequestMessage",
     "com.azure.ai.inference.models.ChatRequestSystemMessage": "AI.Model.ChatRequestSystemMessage",
     "com.azure.ai.inference.models.ChatRequestToolMessage": "AI.Model.ChatRequestToolMessage",

@@ -212,7 +212,7 @@ public final class ChatCompletionsClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/user/assistant/tool) (Required)
+     *             role: String(system/user/assistant/tool/developer) (Required)
      *         }
      *     ]
      *     frequency_penalty: Double (Optional)
@@ -265,7 +265,7 @@ public final class ChatCompletionsClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/tool_calls) (Required)
      *             message (Required): {
-     *                 role: String(system/user/assistant/tool) (Required)
+     *                 role: String(system/user/assistant/tool/developer) (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
@@ -324,7 +324,7 @@ public final class ChatCompletionsClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/user/assistant/tool) (Required)
+     *             role: String(system/user/assistant/tool/developer) (Required)
      *         }
      *     ]
      *     frequency_penalty: Double (Optional)
@@ -377,7 +377,7 @@ public final class ChatCompletionsClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/tool_calls) (Required)
      *             message (Required): {
-     *                 role: String(system/user/assistant/tool) (Required)
+     *                 role: String(system/user/assistant/tool/developer) (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
