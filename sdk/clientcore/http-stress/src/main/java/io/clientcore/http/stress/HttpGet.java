@@ -4,9 +4,9 @@
 package io.clientcore.http.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import io.clientcore.core.http.client.DefaultHttpClientBuilder;
+import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -141,7 +141,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private HttpRequest createRequest() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri);
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         request.getHeaders().set(HttpHeaderName.USER_AGENT, "clientcore-stress");
         request.getHeaders()
             .set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
@@ -150,13 +150,13 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     private HttpPipelineBuilder getPipelineBuilder() {
         HttpPipelineBuilder builder = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy())
-            .addPolicy(new HttpInstrumentationPolicy(new HttpInstrumentationOptions()
-                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS)));
+            .addPolicy(new HttpInstrumentationPolicy(
+                new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS)));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());
         } else {
-            builder.httpClient(new DefaultHttpClientBuilder().build());
+            builder.httpClient(new JdkHttpClientBuilder().build());
         }
         return builder;
     }

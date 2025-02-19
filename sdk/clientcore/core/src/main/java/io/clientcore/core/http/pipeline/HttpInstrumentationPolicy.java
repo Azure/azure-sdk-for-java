@@ -3,32 +3,33 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.Meter;
-import io.clientcore.core.instrumentation.tracing.SpanBuilder;
-import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.clientcore.core.instrumentation.tracing.Span;
+import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.TraceContextSetter;
 import io.clientcore.core.instrumentation.tracing.Tracer;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.instrumentation.tracing.TracingScope;
+import io.clientcore.core.models.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,7 +40,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-import java.net.URI;
 
 import static io.clientcore.core.implementation.UrlRedactionUtil.getRedactedUri;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
@@ -60,7 +60,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.UR
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.USER_AGENT_ORIGINAL_KEY;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_REQUEST_EVENT_NAME;
 import static io.clientcore.core.implementation.instrumentation.LoggingEventNames.HTTP_RESPONSE_EVENT_NAME;
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
 
 /**
@@ -154,7 +154,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         LIBRARY_VERSION = properties.getOrDefault("version", "unknown");
         LibraryInstrumentationOptions libOptions
             = new LibraryInstrumentationOptions(LIBRARY_NAME).setLibraryVersion(LIBRARY_VERSION)
-                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+                .setSchemaUri("https://opentelemetry.io/schemas/1.29.0");
 
         // HTTP tracing is special - we suppress nested public API spans, but
         // preserve nested HTTP ones.
@@ -179,8 +179,8 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     // request log level is low (verbose) since almost all request details are also
     // captured on the response log.
-    private static final ClientLogger.LogLevel HTTP_REQUEST_LOG_LEVEL = ClientLogger.LogLevel.VERBOSE;
-    private static final ClientLogger.LogLevel HTTP_RESPONSE_LOG_LEVEL = ClientLogger.LogLevel.INFORMATIONAL;
+    private static final LogLevel HTTP_REQUEST_LOG_LEVEL = LogLevel.VERBOSE;
+    private static final LogLevel HTTP_RESPONSE_LOG_LEVEL = LogLevel.INFORMATIONAL;
 
     private final Tracer tracer;
     private final Meter meter;
@@ -209,10 +209,9 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
         HttpInstrumentationOptions optionsToUse
             = instrumentationOptions == null ? DEFAULT_OPTIONS : instrumentationOptions;
-        this.isLoggingEnabled = optionsToUse.getHttpLogLevel() != HttpInstrumentationOptions.HttpLogDetailLevel.NONE;
-        this.isContentLoggingEnabled
-            = optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogDetailLevel.BODY
-                || optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogDetailLevel.BODY_AND_HEADERS;
+        this.isLoggingEnabled = optionsToUse.getHttpLogLevel() != HttpInstrumentationOptions.HttpLogLevel.NONE;
+        this.isContentLoggingEnabled = optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogLevel.BODY
+            || optionsToUse.getHttpLogLevel() == HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS;
         this.isRedactedHeadersLoggingEnabled = optionsToUse.isRedactedHeaderNamesLoggingEnabled();
         this.allowedHeaderNames = optionsToUse.getAllowedHeaderNames();
         this.allowedQueryParameterNames = optionsToUse.getAllowedQueryParamNames()
@@ -426,7 +425,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private void logRequest(ClientLogger logger, HttpRequest request, long startNanoTime, long requestContentLength,
         String redactedUrl, int tryCount, InstrumentationContext context) {
-        ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_REQUEST_LOG_LEVEL);
+        LoggingEvent logBuilder = logger.atLevel(HTTP_REQUEST_LOG_LEVEL);
         if (!logBuilder.isEnabled() || !isLoggingEnabled) {
             return;
         }
@@ -457,7 +456,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
 
     private Response<?> logResponse(ClientLogger logger, Response<?> response, long startNanoTime,
         long requestContentLength, String redactedUrl, int tryCount, InstrumentationContext context) {
-        ClientLogger.LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
+        LoggingEvent logBuilder = logger.atLevel(HTTP_RESPONSE_LOG_LEVEL);
         if (!isLoggingEnabled) {
             return response;
         }
@@ -502,7 +501,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         T throwable, long startNanoTime, Long responseStartNanoTime, long requestContentLength, String redactedUrl,
         int tryCount, InstrumentationContext context) {
 
-        ClientLogger.LoggingEvent log = logger.atLevel(ClientLogger.LogLevel.WARNING);
+        LoggingEvent log = logger.atLevel(LogLevel.WARNING);
         if (!log.isEnabled() || !isLoggingEnabled) {
             return throwable;
         }
@@ -555,15 +554,15 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @param headers HTTP headers on the request or response.
      * @param logBuilder Log message builder.
      */
-    private void addHeadersToLogMessage(HttpHeaders headers, ClientLogger.LoggingEvent logBuilder) {
-        for (HttpHeader header : headers) {
+    private void addHeadersToLogMessage(HttpHeaders headers, LoggingEvent logBuilder) {
+        headers.stream().forEach(header -> {
             HttpHeaderName headerName = header.getName();
             if (allowedHeaderNames.contains(headerName)) {
                 logBuilder.addKeyValue(headerName.toString(), header.getValue());
             } else if (isRedactedHeadersLoggingEnabled) {
                 logBuilder.addKeyValue(headerName.toString(), REDACTED_PLACEHOLDER);
             }
-        }
+        });
     }
 
     /**
@@ -653,7 +652,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpPipelineOrder getOrder() {
-        return HttpPipelineOrder.INSTRUMENTATION;
+    public HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.INSTRUMENTATION;
     }
 }

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.v2.core.http.rest;
 
-import com.azure.v2.core.util.IterableStream;
+import com.azure.v2.core.utils.IterableStream;
 
 import io.clientcore.core.http.models.Response;
 import java.io.Closeable;

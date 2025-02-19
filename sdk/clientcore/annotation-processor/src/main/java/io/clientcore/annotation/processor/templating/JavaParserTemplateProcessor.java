@@ -21,22 +21,24 @@ import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
-import io.clientcore.core.http.models.ContentType;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.implementation.util.JsonSerializer;
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -46,6 +48,29 @@ import static io.clientcore.annotation.processor.utils.ResponseBodyModeGeneratio
  * This class generates the implementation of the service interface.
  */
 public class JavaParserTemplateProcessor implements TemplateProcessor {
+    private static final Map<String, String> LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT;
+
+    static {
+        LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT = new HashMap<>();
+        for (Field field : HttpHeaderName.class.getDeclaredFields()) {
+            // Only inspect public static final fields (aka, constants)
+            if (!java.lang.reflect.Modifier.isPublic(field.getModifiers())
+                || !java.lang.reflect.Modifier.isStatic(field.getModifiers())
+                || !java.lang.reflect.Modifier.isFinal(field.getModifiers())) {
+                continue;
+            }
+
+            String constantName = field.getName();
+            HttpHeaderName httpHeaderName = null;
+            try {
+                httpHeaderName = (HttpHeaderName) field.get(null);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
+
+            LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.put(httpHeaderName.getCaseInsensitiveName(), constantName);
+        }
+    }
 
     /**
      * Initializes a new instance of the {@link JavaParserTemplateProcessor} class.
@@ -268,8 +293,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(HttpMethod.class);
 
         body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
-        Statement statement = StaticJavaParser.parseStatement(
-            "HttpRequest httpRequest = new HttpRequest(HttpMethod." + method.getHttpMethod() + ", host);");
+        Statement statement
+            = StaticJavaParser.parseStatement("HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod."
+                + method.getHttpMethod() + ").setUri(host);");
         statement.setLineComment("Create the HTTP request");
         body.addStatement(statement);
     }
@@ -282,35 +308,23 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(HttpHeaders.class);
         body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
 
-        Statement statement = StaticJavaParser.parseStatement("HttpHeaders headers = new HttpHeaders();");
-        statement.setLineComment("Set the headers");
-        body.addStatement(statement);
         for (Map.Entry<String, String> header : method.getHeaders().entrySet()) {
-            String enumHeaderKey = header.getKey().toUpperCase().replace("-", "_");
-            boolean isEnumExists = false;
-            for (HttpHeaderName httpHeaderName : HttpHeaderName.values()) {
-                if (httpHeaderName.getCaseInsensitiveName().equals(header.getKey().toLowerCase())) {
-                    isEnumExists = true;
-                    break;
-                }
-            }
-
             boolean isStringType = method.getParameters()
                 .stream()
                 .anyMatch(parameter -> parameter.getName().equals(header.getValue())
                     && "String".equals(parameter.getShortTypeName()));
             String value = isStringType ? header.getValue() : "String.valueOf(" + header.getValue() + ")";
 
-            if (isEnumExists) {
-                body.addStatement(StaticJavaParser
-                    .parseStatement("headers.add(HttpHeaderName." + enumHeaderKey + ", " + value + ");"));
-            } else {
+            String constantName = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(header.getKey().toLowerCase());
+            if (constantName != null) {
                 body.addStatement(StaticJavaParser.parseStatement(
-                    "headers.add(HttpHeaderName.fromString(\"" + header.getKey() + "\"), " + value + ");"));
+                    "httpRequest.getHeaders().add(HttpHeaderName." + constantName + ", " + value + ");"));
+            } else {
+                body.addStatement(
+                    StaticJavaParser.parseStatement("httpRequest.getHeaders().add(HttpHeaderName.fromString(\""
+                        + header.getKey() + "\"), " + value + ");"));
             }
         }
-
-        body.addStatement(StaticJavaParser.parseStatement("httpRequest.setHeaders(headers);"));
     }
 
     private void addRequestBody(BlockStmt body, HttpRequestContext method) {
@@ -398,7 +412,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             if (!isContentTypeSetInHeaders) {
                 setContentTypeHeader(body, contentType);
             }
-            if ("io.clientcore.core.util.binarydata.BinaryData".equals(parameterType)) {
+            if ("io.clientcore.core.models.binarydata.BinaryData".equals(parameterType)) {
                 body.tryAddImportToParentCompilationUnit(BinaryData.class);
                 body.addStatement(
                     StaticJavaParser.parseStatement("BinaryData binaryData = (BinaryData) " + parameterName + ";"));

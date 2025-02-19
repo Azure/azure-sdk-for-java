@@ -449,7 +449,7 @@ def check_call(cmd: List[str], work_dir: str, shell: bool = False):
 
 
 def drop_changes(work_dir: str):
-    check_call(["git", "checkout", "--", "."], work_dir)
+    check_call(["git", "reset", "--hard", "-q"], work_dir)
     check_call(["git", "clean", "-qf", "."], work_dir)
 
 

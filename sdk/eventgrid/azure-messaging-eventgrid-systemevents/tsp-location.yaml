@@ -1,4 +1,4 @@
 directory: specification/eventgrid/Azure.Messaging.EventGrid.SystemEvents
-commit: 3d89480a5040927159f42fa3f464e0cb5f837c85
+commit: e3b80f8a9b24f10e5a3e027836c6e162a0c7ade4
 repo: Azure/azure-rest-api-specs
 additionalDirectories:

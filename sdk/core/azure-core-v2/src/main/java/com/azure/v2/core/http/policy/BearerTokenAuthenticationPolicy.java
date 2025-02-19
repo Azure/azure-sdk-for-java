@@ -3,9 +3,9 @@
 
 package com.azure.v2.core.http.policy;
 
-import com.azure.v2.core.credential.AccessToken;
-import com.azure.v2.core.credential.TokenCredential;
-import com.azure.v2.core.credential.TokenRequestContext;
+import com.azure.v2.core.credentials.AccessToken;
+import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.implementation.AccessTokenCache;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
@@ -109,11 +109,11 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
             throw LOGGER.logThrowableAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
-        HttpPipelineNextPolicy nextPolicy = next.clone();
+        HttpPipelineNextPolicy nextPolicy = next.copy();
 
         authorizeRequestSync(httpRequest);
         Response<?> httpResponse = next.process();
-        String authHeader = httpResponse.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
+        String authHeader = httpResponse.getHeaders().get(HttpHeaderName.WWW_AUTHENTICATE).getValue();
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
             if (authorizeRequestOnChallengeSync(httpRequest, httpResponse)) {
                 // body needs to be closed or read to the end to release the connection
