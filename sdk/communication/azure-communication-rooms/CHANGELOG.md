@@ -1,14 +1,20 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0 (Unreleased)
 
 ### Features Added
+- Introduce Collaborator role to supported participant roles.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+#### Dependency Updates
+- Upgraded `azure-identity` from `1.14.2` to version `1.15.2`
+- Upgraded `azure-core` from `1.54.1` to version `1.55.1`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.9`.
+- Upgraded `azure-core-test` from `1.27.0-beta.4` to version `1.27.0-beta.6`.
 
 ## 1.1.8 (2024-12-04)
 
