@@ -1506,7 +1506,7 @@ class EventHubProducerAsyncClientTest {
         receivedMessage.setApplicationProperties(new ApplicationProperties(Collections.singletonMap("foo", "bar")));
 
         Map<Symbol, Object> annotations = new HashMap<>();
-        annotations.put(Symbol.getSymbol(OFFSET_ANNOTATION_NAME.getValue()), Instant.now().toEpochMilli());
+        annotations.put(Symbol.getSymbol(OFFSET_ANNOTATION_NAME.getValue()), Instant.now().toString());
         annotations.put(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), Instant.now());
         annotations.put(Symbol.getSymbol(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue()), 100L);
         receivedMessage.setMessageAnnotations(new MessageAnnotations(annotations));
