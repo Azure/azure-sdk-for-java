@@ -3,6 +3,13 @@
 
 package io.clientcore.core.utils;
 
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonToken;
+import io.clientcore.core.serialization.json.JsonWriter;
+
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
@@ -11,7 +18,10 @@ import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
 /**
  * Encodes and decodes using Base64 URI encoding.
  */
-public final class Base64Uri {
+public final class Base64Uri implements JsonSerializable<Base64Uri> {
+
+    private static final ClientLogger LOGGER = new ClientLogger(Base64Uri.class);
+
     /**
      * The Base64Uri encoded bytes.
      */
@@ -132,5 +142,37 @@ public final class Base64Uri {
         }
 
         return Arrays.equals(this.bytes, ((Base64Uri) obj).encodedBytes());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        if (bytes == null) {
+            return jsonWriter.writeNull();
+        } else {
+            return jsonWriter.writeString(this.toString());
+        }
+    }
+
+    /**
+     * Reads an instance of Base64Uri from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Base64Uri if the JsonReader was pointing to an instance of it.
+     * @throws IOException If an error occurs while reading the Base64Uri.
+     * @throws IllegalStateException If unexpected JSON token is found.
+     */
+    public static Base64Uri fromJson(JsonReader jsonReader) throws IOException {
+        JsonToken nextToken = jsonReader.nextToken();
+        if (nextToken == JsonToken.NULL) {
+            return null;
+        }
+        if (nextToken != JsonToken.STRING) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                String.format("Unexpected JSON token for Base64Uri deserialization: %s", nextToken)));
+        }
+        return new Base64Uri(jsonReader.getString());
     }
 }
