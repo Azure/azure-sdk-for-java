@@ -14,7 +14,7 @@ class HttpUtilTest {
 
     @Test
     void userAgent() {
-        assertEquals("az-sp-kv-ct/", HttpUtil.getUserAgentPrefix());
-        assertEquals("az-sp-kv-ct/" + VERSION, USER_AGENT_VALUE);
+        assertEquals("az-sp-kv-jca/", HttpUtil.getUserAgentPrefix());
+        assertEquals("az-sp-kv-jca/" + VERSION, USER_AGENT_VALUE);
     }
 }

@@ -1,1 +1,1 @@
-az-sp-kv-ct/
+az-sp-kv-jca/
