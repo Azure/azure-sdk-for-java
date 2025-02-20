@@ -31,7 +31,7 @@ public class PartitionLevelFailoverInfo implements Serializable {
 
     synchronized boolean tryMoveToNextLocation(List<URI> readLocations, URI failedLocation) {
 
-        if (failedLocation != this.current) {
+        if (!failedLocation.equals(this.current)) {
             return true;
         }
 

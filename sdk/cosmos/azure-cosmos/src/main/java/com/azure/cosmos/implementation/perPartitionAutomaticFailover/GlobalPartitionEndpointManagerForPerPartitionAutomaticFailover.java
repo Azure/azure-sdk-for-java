@@ -3,9 +3,6 @@
 
 package com.azure.cosmos.implementation.perPartitionAutomaticFailover;
 
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -13,18 +10,12 @@ import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -50,14 +41,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        ConnectionPolicy connectionPolicy = this.globalEndpointManager.getConnectionPolicy();
+        checkNotNull(request, "Argument 'request' cannot be null!");
+        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
-        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+
+        if (request.getResourceType() != ResourceType.Document) {
             return false;
         }
 
-        checkNotNull(request, "Argument 'request' cannot be null!");
-        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+        if (request.getOperationType() == OperationType.QueryPlan) {
+            return false;
+        }
 
         PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
         String resolvedCollectionRid = request.requestContext.resolvedCollectionRid;
@@ -85,12 +79,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request) {
 
         if (!this.isPerPartitionAutomaticFailoverEnabled) {
-            return false;
-        }
-
-        ConnectionPolicy connectionPolicy = this.globalEndpointManager.getConnectionPolicy();
-
-        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
             return false;
         }
 
@@ -160,6 +148,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
         checkNotNull(resourceType, "Argument 'resourceType' cannot be null!");
         checkNotNull(operationType, "Argument 'operationType' cannot be null!");
+
+        if (request.getOperationType() == OperationType.QueryPlan) {
+            return false;
+        }
 
         if (resourceType == ResourceType.Document ||
             (resourceType == ResourceType.StoredProcedure && operationType == OperationType.ExecuteJavaScript)) {

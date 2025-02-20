@@ -15,8 +15,10 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
@@ -30,6 +32,10 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.guava25.base.Function;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
@@ -48,6 +54,10 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.handler.codec.http.HttpMethod;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 import org.testng.SkipException;
@@ -58,12 +68,15 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -78,6 +91,10 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor COSMOS_CLIENT_BUILDER_ACCESSOR
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private static final Set<ConnectionMode> ALL_CONNECTION_MODES = new HashSet<>();
+    private static final Set<ConnectionMode> ONLY_DIRECT_MODE = new HashSet<>();
+    private static final Set<ConnectionMode> ONLY_GATEWAY_MODE = new HashSet<>();
 
     BiConsumer<ResponseWrapper<?>, ExpectedResponseCharacteristics> validateExpectedResponseCharacteristics = (responseWrapper, expectedResponseCharacteristics) -> {
         assertThat(responseWrapper).isNotNull();
@@ -141,6 +158,12 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         CosmosAsyncClient cosmosAsyncClient = getClientBuilder().buildAsyncClient();
         this.sharedDatabase = getSharedCosmosDatabase(cosmosAsyncClient);
         this.sharedSinglePartitionContainer = getSharedSinglePartitionCosmosContainer(cosmosAsyncClient);
+
+        ONLY_GATEWAY_MODE.add(ConnectionMode.GATEWAY);
+        ONLY_DIRECT_MODE.add(ConnectionMode.DIRECT);
+
+        ALL_CONNECTION_MODES.add(ConnectionMode.DIRECT);
+        ALL_CONNECTION_MODES.add(ConnectionMode.GATEWAY);
 
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosAsyncClient);
         GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
@@ -422,90 +445,178 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         int errorSubStatusCodeToMockFromPartitionInUnhealthyRegion,
         int successStatusCode,
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailover,
-        ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover) {
+        ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover,
+        Set<ConnectionMode> allowedConnectionModes) {
 
-        TransportClient transportClientMock = Mockito.mock(TransportClient.class);
-        List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
-        Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
-        Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+        for (ConnectionMode connectionMode : allowedConnectionModes) {
 
-        if (COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder()).getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("testPpafWithServiceUnavailable does not run in the GATEWAY connectivity mode!");
+            if (connectionMode == ConnectionMode.DIRECT) {
+
+                TransportClient transportClientMock = Mockito.mock(TransportClient.class);
+                List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+                Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+                Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+                try {
+
+                    CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
+                        .perPartitionAutomaticFailoverEnabled(true)
+                        .preferredRegions(preferredRegions);
+
+                    CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                    cosmosAsyncClientValueHolder.v = asyncClient;
+
+                    CosmosAsyncContainer asyncContainer = asyncClient
+                        .getDatabase(this.sharedDatabase.getId())
+                        .getContainer(this.sharedSinglePartitionContainer.getId());
+
+                    RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+
+                    StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+                    ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
+                    ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+                    StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+
+                    ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+                    Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
+                        = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+
+                    assertThat(partitionKeyRangesForContainer).isNotNull();
+                    assertThat(partitionKeyRangesForContainer.v).isNotNull();
+                    assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
+
+                    PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+
+                    assertThat(preferredRegions).isNotNull();
+                    assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+
+                    String regionWithIssues = preferredRegions.get(0);
+                    URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues));
+
+                    ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+                    ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
+
+                    setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(operationType, successStatusCode));
+
+                    CosmosException cosmosException = createCosmosException(
+                        errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                        errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
+
+                    setupTransportClientToThrowCosmosException(
+                        transportClientMock,
+                        partitionKeyRangeWithIssues,
+                        locationEndpointWithIssues,
+                        cosmosException);
+
+                    TestItem testItem = TestItem.createNewItem();
+
+                    Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
+
+                    OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+                    operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+                    operationInvocationParamsWrapper.createdTestItem = testItem;
+                    operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+                    operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+
+                    ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+                    assertThat(responseBeforeFailover).isNotNull();
+                    this.validateExpectedResponseCharacteristics.accept(responseBeforeFailover, expectedResponseCharacteristicsBeforeFailover);
+
+                    ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                    this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsAfterFailover);
+                } catch (Exception e) {
+                    Assertions.fail("The test ran into an exception {}", e);
+                } finally {
+                    safeClose(cosmosAsyncClientValueHolder.v);
+                }
+            }
+
+            if (connectionMode == ConnectionMode.GATEWAY) {
+                HttpClient mockedHttpClient = Mockito.mock(HttpClient.class);
+                List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+                Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+                Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+
+                try {
+
+                    CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
+                        .perPartitionAutomaticFailoverEnabled(true)
+                        .gatewayMode()
+                        .preferredRegions(preferredRegions);
+
+                    CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                    cosmosAsyncClientValueHolder.v = asyncClient;
+
+                    CosmosAsyncContainer asyncContainer = asyncClient
+                        .getDatabase(this.sharedDatabase.getId())
+                        .getContainer(this.sharedSinglePartitionContainer.getId());
+
+                    RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+
+                    RxStoreModel rxStoreModel = ReflectionUtils.getGatewayProxy(rxDocumentClient);
+                    ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
+
+                    Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
+                        = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+
+                    assertThat(partitionKeyRangesForContainer).isNotNull();
+                    assertThat(partitionKeyRangesForContainer.v).isNotNull();
+                    assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
+
+                    PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+
+                    assertThat(preferredRegions).isNotNull();
+                    assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+
+                    String regionWithIssues = preferredRegions.get(0);
+                    URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues));
+
+                    setupHttpClientToReturnSuccessResponse(mockedHttpClient, successStatusCode);
+
+                    CosmosException cosmosException = createCosmosException(
+                        errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                        errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
+
+                    setupHttpClientToThrowCosmosException(
+                        mockedHttpClient,
+                        locationEndpointWithIssues,
+                        cosmosException);
+
+                    TestItem testItem = TestItem.createNewItem();
+
+                    Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
+
+                    OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+                    operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+                    operationInvocationParamsWrapper.createdTestItem = testItem;
+                    operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+                    operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+
+                    ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+
+                    assertThat(responseBeforeFailover).isNotNull();
+                    this.validateExpectedResponseCharacteristics.accept(responseBeforeFailover, expectedResponseCharacteristicsBeforeFailover);
+
+                    ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                    this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsAfterFailover);
+                } catch (Exception e) {
+                    Assertions.fail("The test ran into an exception {}", e);
+                } finally {
+                    safeClose(cosmosAsyncClientValueHolder.v);
+                }
+            }
         }
+    }
 
-        try {
+    @Test(groups = {"multi-region"}, dataProvider = "")
+    public void testPpafWithWriteFailoverWithEligibleErrorStatusCodesGw(OperationType operationType,
+                                                                        int errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                                                                        int errorSubStatusCodeToMockFromPartitionInUnhealthyRegion,
+                                                                        int successStatusCode,
+                                                                        ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailover,
+                                                                        ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover) {
 
-            CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
-                .perPartitionAutomaticFailoverEnabled(true)
-                .preferredRegions(preferredRegions);
-
-            CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
-            cosmosAsyncClientValueHolder.v = asyncClient;
-
-            CosmosAsyncContainer asyncContainer = asyncClient
-                .getDatabase(this.sharedDatabase.getId())
-                .getContainer(this.sharedSinglePartitionContainer.getId());
-
-            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
-
-            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
-            ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
-            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
-            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
-
-            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
-            Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
-                = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
-
-            assertThat(partitionKeyRangesForContainer).isNotNull();
-            assertThat(partitionKeyRangesForContainer.v).isNotNull();
-            assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
-
-            PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
-
-            assertThat(preferredRegions).isNotNull();
-            assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
-
-            String regionWithIssues = preferredRegions.get(0);
-            URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues));
-
-            ReflectionUtils.setTransportClient(storeReader, transportClientMock);
-            ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
-
-            setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(operationType, successStatusCode));
-
-            CosmosException cosmosException = createCosmosException(
-                errorStatusCodeToMockFromPartitionInUnhealthyRegion,
-                errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
-
-            setupTransportClientToThrowCosmosException(
-                transportClientMock,
-                partitionKeyRangeWithIssues,
-                locationEndpointWithIssues,
-                cosmosException);
-
-            TestItem testItem = TestItem.createNewItem();
-
-            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
-
-            OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
-            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
-            operationInvocationParamsWrapper.createdTestItem = testItem;
-            operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
-            operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
-
-            ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
-
-            assertThat(responseBeforeFailover).isNotNull();
-            this.validateExpectedResponseCharacteristics.accept(responseBeforeFailover, expectedResponseCharacteristicsBeforeFailover);
-
-            ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
-            this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsAfterFailover);
-        } catch (Exception e) {
-            Assertions.fail("The test ran into an exception {}", e);
-        } finally {
-            safeClose(cosmosAsyncClientValueHolder.v);
-        }
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithReadOps")
@@ -626,11 +737,26 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
             .thenReturn(Mono.error(cosmosException));
     }
 
+    private void setupHttpClientToThrowCosmosException(
+        HttpClient httpClientMock,
+        URI locationEndpointToRoute,
+        CosmosException cosmosException) {
+
+        Mockito.when(
+                httpClientMock.send(
+                    Mockito.argThat(argument -> argument.uri().equals(locationEndpointToRoute)), Mockito.any()))
+            .thenReturn(Mono.error(cosmosException));
+    }
+
     private void setupTransportClientToReturnSuccessResponse(
         TransportClient transportClientMock,
         StoreResponse storeResponse) {
 
         Mockito.when(transportClientMock.invokeResourceOperationAsync(Mockito.any(), Mockito.any())).thenReturn(Mono.just(storeResponse));
+    }
+
+    private void setupHttpClientToReturnSuccessResponse(HttpClient httpClientMock, int statusCode) {
+        Mockito.when(httpClientMock.send(Mockito.any(), Mockito.any())).thenReturn(Mono.just(createResponse(statusCode, "")));
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getPartitionKeyRangesForContainer(
@@ -1161,6 +1287,51 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         public FakeBatchResponse setRetryAfterMilliseconds(String retryAfterMilliseconds) {
             this.retryAfterMilliseconds = retryAfterMilliseconds;
             return this;
+        }
+    }
+
+    private HttpResponse createResponse(int statusCode, String response) {
+        HttpResponse httpResponse = new HttpResponse() {
+            @Override
+            public int statusCode() {
+                return statusCode;
+            }
+
+            @Override
+            public String headerValue(String name) {
+                return null;
+            }
+
+            @Override
+            public HttpHeaders headers() {
+                return new HttpHeaders();
+            }
+
+            @Override
+            public Mono<ByteBuf> body() {
+                try {
+                    return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
+                        response));
+                    // todo: change / validate to use JsonProcessingException
+                } catch (Exception e) {
+                    return Mono.error(e);
+                }
+            }
+
+            @Override
+            public Mono<String> bodyAsString() {
+                try {
+                    return Mono.just(OBJECT_MAPPER.writeValueAsString(getTestPojoObject()));
+                } catch (JsonProcessingException e) {
+                    return Mono.error(e);
+                }
+            }
+        };
+
+        try {
+            return httpResponse.withRequest(new HttpRequest(HttpMethod.POST, TestConfigurations.HOST, 443));
+        } catch (URISyntaxException e) {
+            return httpResponse;
         }
     }
 }
