@@ -9,7 +9,7 @@ import com.azure.developer.loadtesting.models.AutoStopCriteria;
 import com.azure.developer.loadtesting.models.CertificateMetadata;
 import com.azure.developer.loadtesting.models.FunctionFlexConsumptionResourceConfiguration;
 import com.azure.developer.loadtesting.models.LoadTestConfiguration;
-import com.azure.developer.loadtesting.models.OptionalLoadTestConfig;
+import com.azure.developer.loadtesting.models.OptionalLoadTestConfiguration;
 import com.azure.developer.loadtesting.models.PassFailCriteria;
 import com.azure.developer.loadtesting.models.PassFailMetric;
 import com.azure.developer.loadtesting.models.PassFailServerMetric;
@@ -163,21 +163,21 @@ public class JsonMergePatchHelper {
         return loadTestConfigurationAccessor;
     }
 
-    private static OptionalLoadTestConfigAccessor optionalLoadTestConfigAccessor;
+    private static OptionalLoadTestConfigurationAccessor optionalLoadTestConfigurationAccessor;
 
-    public interface OptionalLoadTestConfigAccessor {
-        OptionalLoadTestConfig prepareModelForJsonMergePatch(OptionalLoadTestConfig optionalLoadTestConfig,
-            boolean jsonMergePatchEnabled);
+    public interface OptionalLoadTestConfigurationAccessor {
+        OptionalLoadTestConfiguration prepareModelForJsonMergePatch(
+            OptionalLoadTestConfiguration optionalLoadTestConfiguration, boolean jsonMergePatchEnabled);
 
-        boolean isJsonMergePatch(OptionalLoadTestConfig optionalLoadTestConfig);
+        boolean isJsonMergePatch(OptionalLoadTestConfiguration optionalLoadTestConfiguration);
     }
 
-    public static void setOptionalLoadTestConfigAccessor(OptionalLoadTestConfigAccessor accessor) {
-        optionalLoadTestConfigAccessor = accessor;
+    public static void setOptionalLoadTestConfigurationAccessor(OptionalLoadTestConfigurationAccessor accessor) {
+        optionalLoadTestConfigurationAccessor = accessor;
     }
 
-    public static OptionalLoadTestConfigAccessor getOptionalLoadTestConfigAccessor() {
-        return optionalLoadTestConfigAccessor;
+    public static OptionalLoadTestConfigurationAccessor getOptionalLoadTestConfigurationAccessor() {
+        return optionalLoadTestConfigurationAccessor;
     }
 
     private static RegionalConfigurationAccessor regionalConfigurationAccessor;

@@ -19,12 +19,6 @@ public final class TestProfileRunStatus extends ExpandableStringEnum<TestProfile
     public static final TestProfileRunStatus ACCEPTED = fromString("ACCEPTED");
 
     /**
-     * Test profile run is not yet started.
-     */
-    @Generated
-    public static final TestProfileRunStatus NOTSTARTED = fromString("NOTSTARTED");
-
-    /**
      * Test profile run has started executing.
      */
     @Generated
@@ -84,4 +78,10 @@ public final class TestProfileRunStatus extends ExpandableStringEnum<TestProfile
     public static Collection<TestProfileRunStatus> values() {
         return values(TestProfileRunStatus.class);
     }
+
+    /**
+     * Test profile run is not yet started.
+     */
+    @Generated
+    public static final TestProfileRunStatus NOT_STARTED = fromString("NOTSTARTED");
 }

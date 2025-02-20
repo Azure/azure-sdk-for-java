@@ -39,7 +39,7 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
      * Configuration for quick load test
      */
     @Generated
-    private OptionalLoadTestConfig optionalLoadTestConfig;
+    private OptionalLoadTestConfiguration optionalLoadTestConfig;
 
     /*
      * Region distribution configuration for the load test.
@@ -141,21 +141,8 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
      * @return the optionalLoadTestConfig value.
      */
     @Generated
-    public OptionalLoadTestConfig getOptionalLoadTestConfig() {
+    public OptionalLoadTestConfiguration getOptionalLoadTestConfig() {
         return this.optionalLoadTestConfig;
-    }
-
-    /**
-     * Set the optionalLoadTestConfig property: Configuration for quick load test.
-     *
-     * @param optionalLoadTestConfig the optionalLoadTestConfig value to set.
-     * @return the LoadTestConfiguration object itself.
-     */
-    @Generated
-    public LoadTestConfiguration setOptionalLoadTestConfig(OptionalLoadTestConfig optionalLoadTestConfig) {
-        this.optionalLoadTestConfig = optionalLoadTestConfig;
-        this.updatedProperties.add("optionalLoadTestConfig");
-        return this;
     }
 
     /**
@@ -229,10 +216,10 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
             if (this.optionalLoadTestConfig == null) {
                 jsonWriter.writeNullField("optionalLoadTestConfig");
             } else {
-                JsonMergePatchHelper.getOptionalLoadTestConfigAccessor()
+                JsonMergePatchHelper.getOptionalLoadTestConfigurationAccessor()
                     .prepareModelForJsonMergePatch(this.optionalLoadTestConfig, true);
                 jsonWriter.writeJsonField("optionalLoadTestConfig", this.optionalLoadTestConfig);
-                JsonMergePatchHelper.getOptionalLoadTestConfigAccessor()
+                JsonMergePatchHelper.getOptionalLoadTestConfigurationAccessor()
                     .prepareModelForJsonMergePatch(this.optionalLoadTestConfig, false);
             }
         }
@@ -269,7 +256,8 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
                 } else if ("quickStartTest".equals(fieldName)) {
                     deserializedLoadTestConfiguration.quickStartTest = reader.getNullable(JsonReader::getBoolean);
                 } else if ("optionalLoadTestConfig".equals(fieldName)) {
-                    deserializedLoadTestConfiguration.optionalLoadTestConfig = OptionalLoadTestConfig.fromJson(reader);
+                    deserializedLoadTestConfiguration.optionalLoadTestConfig
+                        = OptionalLoadTestConfiguration.fromJson(reader);
                 } else if ("regionalLoadTestConfig".equals(fieldName)) {
                     List<RegionalConfiguration> regionalLoadTestConfig
                         = reader.readArray(reader1 -> RegionalConfiguration.fromJson(reader1));
@@ -317,6 +305,19 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
     public LoadTestConfiguration setSplitAllCsvs(Boolean splitAllCsvs) {
         this.splitAllCsvs = splitAllCsvs;
         this.updatedProperties.add("splitAllCsvs");
+        return this;
+    }
+
+    /**
+     * Set the optionalLoadTestConfig property: Configuration for quick load test.
+     *
+     * @param optionalLoadTestConfig the optionalLoadTestConfig value to set.
+     * @return the LoadTestConfiguration object itself.
+     */
+    @Generated
+    public LoadTestConfiguration setOptionalLoadTestConfig(OptionalLoadTestConfiguration optionalLoadTestConfig) {
+        this.optionalLoadTestConfig = optionalLoadTestConfig;
+        this.updatedProperties.add("optionalLoadTestConfig");
         return this;
     }
 }

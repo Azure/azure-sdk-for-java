@@ -158,7 +158,7 @@
     "com.azure.developer.loadtesting.models.MetricUnit": "Microsoft.LoadTestService.MetricUnit",
     "com.azure.developer.loadtesting.models.MetricValue": "Microsoft.LoadTestService.MetricValue",
     "com.azure.developer.loadtesting.models.NameAndDescription": "Microsoft.LoadTestService.NameAndDescription",
-    "com.azure.developer.loadtesting.models.OptionalLoadTestConfig": "Microsoft.LoadTestService.OptionalLoadTestConfig",
+    "com.azure.developer.loadtesting.models.OptionalLoadTestConfiguration": "Microsoft.LoadTestService.OptionalLoadTestConfiguration",
     "com.azure.developer.loadtesting.models.PFMetrics": "Microsoft.LoadTestService.PFMetrics",
     "com.azure.developer.loadtesting.models.PassFailAction": "Microsoft.LoadTestService.PassFailAction",
     "com.azure.developer.loadtesting.models.PassFailAggregationFunction": "Microsoft.LoadTestService.PassFailAggregationFunction",
