@@ -1,12 +1,11 @@
 pr:
   branches:
     include:
-    # JRS - These are commented so the pipeline will only run in pipelinev3 until it's ready
-    # - main
-    # - feature/*
-    # - hotfix/*
-    # - release/*
-    # - restapi*
+    - main
+    - feature/*
+    - hotfix/*
+    - release/*
+    - restapi*
     - pipelinev3*
   paths:
     include:
