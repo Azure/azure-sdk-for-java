@@ -12,14 +12,14 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskSku model = BinaryData.fromString("{\"name\":\"Standard_LRS\"}").toObject(DiskSku.class);
-        Assertions.assertEquals(DiskSkuName.STANDARD_LRS, model.name());
+        DiskSku model = BinaryData.fromString("{\"name\":\"StandardSSD_ZRS\"}").toObject(DiskSku.class);
+        Assertions.assertEquals(DiskSkuName.STANDARD_SSD_ZRS, model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskSku model = new DiskSku().withName(DiskSkuName.STANDARD_LRS);
+        DiskSku model = new DiskSku().withName(DiskSkuName.STANDARD_SSD_ZRS);
         model = BinaryData.fromObject(model).toObject(DiskSku.class);
-        Assertions.assertEquals(DiskSkuName.STANDARD_LRS, model.name());
+        Assertions.assertEquals(DiskSkuName.STANDARD_SSD_ZRS, model.name());
     }
 }

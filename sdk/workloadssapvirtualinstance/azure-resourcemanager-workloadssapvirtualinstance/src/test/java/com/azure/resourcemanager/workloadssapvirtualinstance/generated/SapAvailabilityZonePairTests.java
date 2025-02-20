@@ -12,9 +12,9 @@ public final class SapAvailabilityZonePairTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapAvailabilityZonePair model
-            = BinaryData.fromString("{\"zoneA\":7560134099351640834,\"zoneB\":6203658775874976787}")
+            = BinaryData.fromString("{\"zoneA\":4540769988062318340,\"zoneB\":6053074748827024831}")
                 .toObject(SapAvailabilityZonePair.class);
-        Assertions.assertEquals(7560134099351640834L, model.zoneA());
-        Assertions.assertEquals(6203658775874976787L, model.zoneB());
+        Assertions.assertEquals(4540769988062318340L, model.zoneA());
+        Assertions.assertEquals(6053074748827024831L, model.zoneB());
     }
 }

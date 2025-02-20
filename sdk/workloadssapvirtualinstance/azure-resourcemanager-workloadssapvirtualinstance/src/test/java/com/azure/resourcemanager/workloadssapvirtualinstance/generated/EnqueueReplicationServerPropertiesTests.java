@@ -11,7 +11,7 @@ public final class EnqueueReplicationServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EnqueueReplicationServerProperties model = BinaryData.fromString(
-            "{\"ersVersion\":\"EnqueueReplicator2\",\"instanceNo\":\"alm\",\"hostname\":\"tdaaygdvwvg\",\"kernelVersion\":\"ohgwxrtfudxepxg\",\"kernelPatch\":\"agvrvmnpkuk\",\"ipAddress\":\"i\",\"health\":\"Healthy\"}")
+            "{\"ersVersion\":\"EnqueueReplicator2\",\"instanceNo\":\"vraeaeneq\",\"hostname\":\"arrwlquu\",\"kernelVersion\":\"fqka\",\"kernelPatch\":\"wiipfpub\",\"ipAddress\":\"bwwift\",\"health\":\"Degraded\"}")
             .toObject(EnqueueReplicationServerProperties.class);
     }
 
