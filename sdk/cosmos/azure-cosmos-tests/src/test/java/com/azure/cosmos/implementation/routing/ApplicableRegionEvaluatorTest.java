@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.PointOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import org.assertj.core.api.Assertions;
@@ -267,6 +268,7 @@ public class ApplicableRegionEvaluatorTest {
     private static GlobalEndpointManager handleDatabaseAccountType(DatabaseAccountTypes databaseAccountType) {
 
         GlobalEndpointManager globalEndpointManager;
+        LocationCache locationCache;
         DatabaseAccountManagerInternal databaseAccountManagerInternal;
         ConnectionPolicy connectionPolicy;
         DatabaseAccount databaseAccount;
@@ -299,7 +301,9 @@ public class ApplicableRegionEvaluatorTest {
                 Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
 
                 globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-                globalEndpointManager.init();
+
+                locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+                locationCache.onDatabaseAccountRead(databaseAccount);
 
                 return globalEndpointManager;
             case SINGLE_WRITE_ACCOUNT_WITH_TWO_REGIONS:
@@ -328,7 +332,9 @@ public class ApplicableRegionEvaluatorTest {
                 Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
 
                 globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-                globalEndpointManager.init();
+
+                locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+                locationCache.onDatabaseAccountRead(databaseAccount);
 
                 return globalEndpointManager;
             case SINGLE_WRITE_ACCOUNT_WITH_THREE_REGIONS:
@@ -358,7 +364,9 @@ public class ApplicableRegionEvaluatorTest {
                 Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
 
                 globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-                globalEndpointManager.init();
+
+                locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+                locationCache.onDatabaseAccountRead(databaseAccount);
 
                 return globalEndpointManager;
             case MULTI_WRITE_ACCOUNT_WITH_TWO_REGIONS:
@@ -388,7 +396,9 @@ public class ApplicableRegionEvaluatorTest {
                 Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
 
                 globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-                globalEndpointManager.init();
+
+                locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+                locationCache.onDatabaseAccountRead(databaseAccount);
 
                 return globalEndpointManager;
             case MULTI_WRITE_ACCOUNT_WITH_THREE_REGIONS:
@@ -420,7 +430,8 @@ public class ApplicableRegionEvaluatorTest {
                 Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
 
                 globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-                globalEndpointManager.init();
+                locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+                locationCache.onDatabaseAccountRead(databaseAccount);
 
                 return globalEndpointManager;
             case ACCOUNT_WITH_ONE_REGION_CLIENT_WITH_NO_PREFERRED_REGION:
@@ -448,7 +459,9 @@ public class ApplicableRegionEvaluatorTest {
                 Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
 
                 globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-                globalEndpointManager.init();
+
+                locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+                locationCache.onDatabaseAccountRead(databaseAccount);
 
                 return globalEndpointManager;
             case SINGLE_WRITE_ACCOUNT_WITH_TWO_REGIONS_CLIENT_WITH_NO_PREFERRED_REGION:
@@ -477,7 +490,9 @@ public class ApplicableRegionEvaluatorTest {
                 Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
 
                 globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-                globalEndpointManager.init();
+
+                locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+                locationCache.onDatabaseAccountRead(databaseAccount);
 
                 return globalEndpointManager;
             case SINGLE_WRITE_ACCOUNT_WITH_THREE_REGIONS_CLIENT_WITH_NO_PREFERRED_REGION:
@@ -507,7 +522,9 @@ public class ApplicableRegionEvaluatorTest {
                 Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
 
                 globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-                globalEndpointManager.init();
+
+                locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+                locationCache.onDatabaseAccountRead(databaseAccount);
 
                 return globalEndpointManager;
             case MULTI_WRITE_ACCOUNT_WITH_TWO_REGIONS_CLIENT_WITH_NO_PREFERRED_REGION:
@@ -537,7 +554,9 @@ public class ApplicableRegionEvaluatorTest {
                 Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
 
                 globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-                globalEndpointManager.init();
+
+                locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+                locationCache.onDatabaseAccountRead(databaseAccount);
 
                 return globalEndpointManager;
             case MULTI_WRITE_ACCOUNT_WITH_THREE_REGIONS_CLIENT_WITH_NO_PREFERRED_REGION:
@@ -569,7 +588,9 @@ public class ApplicableRegionEvaluatorTest {
                 Mockito.when(databaseAccountManagerInternal.getConnectionPolicy()).thenReturn(connectionPolicy);
 
                 globalEndpointManager = new GlobalEndpointManager(databaseAccountManagerInternal, connectionPolicy, new Configs());
-                globalEndpointManager.init();
+
+                locationCache = ReflectionUtils.getLocationCache(globalEndpointManager);
+                locationCache.onDatabaseAccountRead(databaseAccount);
 
                 return globalEndpointManager;
             default:
