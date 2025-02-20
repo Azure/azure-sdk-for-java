@@ -21,9 +21,11 @@ import java.util.Map;
  */
 @Fluent
 public final class ChatCompletionsOptions implements JsonSerializable<ChatCompletionsOptions> {
+
     static {
         ChatCompletionsOptionsAccessHelper
             .setAccessor(new ChatCompletionsOptionsAccessHelper.ChatCompletionsOptionsAccessor() {
+
                 @Override
                 public void setStream(ChatCompletionsOptions options, boolean stream) {
                     options.setStream(stream);
