@@ -23,7 +23,7 @@ public class AzureKeyVaultSslBundleProperties extends SslBundleProperties {
     /**
      * Whether to enable refresh certificate when get untrusted certificate.
      */
-    private Boolean refreshCertificatesWhenHaveUntrustedCertificate;
+    private boolean refreshCertificatesWhenHaveUntrustedCertificate;
 
     /**
      * Time interval to refresh all Key Vault certificate.
@@ -33,7 +33,7 @@ public class AzureKeyVaultSslBundleProperties extends SslBundleProperties {
     /**
      * Whether to inherit JCA properties, merge credential and profile properties into current bundle properties.
      */
-    private Boolean inherit = Boolean.TRUE;
+    private boolean inherit = true;
 
     @NestedConfigurationProperty
     private final AzureKeyVaultJcaCertificatePathsProperties certificatePaths = new AzureKeyVaultJcaCertificatePathsProperties();
@@ -44,11 +44,11 @@ public class AzureKeyVaultSslBundleProperties extends SslBundleProperties {
     @NestedConfigurationProperty
     private final AzureKeyVaultJcaProfileConfigurationProperties profile = new AzureKeyVaultJcaProfileConfigurationProperties();
 
-    public Boolean getInherit() {
+    public boolean isInherit() {
         return inherit;
     }
 
-    public void setInherit(Boolean inherit) {
+    public void setInherit(boolean inherit) {
         this.inherit = inherit;
     }
 
@@ -60,11 +60,11 @@ public class AzureKeyVaultSslBundleProperties extends SslBundleProperties {
         this.endpoint = endpoint;
     }
 
-    public Boolean getRefreshCertificatesWhenHaveUntrustedCertificate() {
+    public boolean isRefreshCertificatesWhenHaveUntrustedCertificate() {
         return refreshCertificatesWhenHaveUntrustedCertificate;
     }
 
-    public void setRefreshCertificatesWhenHaveUntrustedCertificate(Boolean refreshCertificatesWhenHaveUntrustedCertificate) {
+    public void setRefreshCertificatesWhenHaveUntrustedCertificate(boolean refreshCertificatesWhenHaveUntrustedCertificate) {
         this.refreshCertificatesWhenHaveUntrustedCertificate = refreshCertificatesWhenHaveUntrustedCertificate;
     }
 

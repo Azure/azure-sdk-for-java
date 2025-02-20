@@ -106,7 +106,7 @@ public class AzureKeyVaultSslBundlesRegistrar implements SslBundleRegistrar, Res
     private void buildMergedKeyVaultSslBundleProperties(AzureKeyVaultJcaProperties jcaProperties,
                                                         Map<String, AzureKeyVaultSslBundleProperties> azureKeyVault) {
         azureKeyVault.forEach((bundleName, bundleProperties) -> {
-            if (bundleProperties.getInherit() != null && !bundleProperties.getInherit()) {
+            if (!bundleProperties.isInherit()) {
                 return;
             }
 
@@ -171,10 +171,8 @@ public class AzureKeyVaultSslBundlesRegistrar implements SslBundleRegistrar, Res
             putSpringPropertyToSystemProperty(String.valueOf(bundleProperties.getCertificatesRefreshInterval().toMillis()),
                 "azure.keyvault.jca.certificates-refresh-interval");
         }
-        if (bundleProperties.getRefreshCertificatesWhenHaveUntrustedCertificate() != null) {
-            putSpringPropertyToSystemProperty(bundleProperties.getRefreshCertificatesWhenHaveUntrustedCertificate().toString(),
-                "azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate");
-        }
+        putSpringPropertyToSystemProperty(Boolean.toString(bundleProperties.isRefreshCertificatesWhenHaveUntrustedCertificate()),
+            "azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate");
         putPathToSystemProperty(bundleProperties.getCertificatePaths().getWellKnown(), "azure.cert-path.well-known");
         putPathToSystemProperty(bundleProperties.getCertificatePaths().getCustom(), "azure.cert-path.custom");
     }
@@ -212,7 +210,7 @@ public class AzureKeyVaultSslBundlesRegistrar implements SslBundleRegistrar, Res
     /**
      * The method is used to make the properties in "application.properties" readable in azure-security-keyvault-jca.
      * "application.properties" is analyzed by Spring, and azure-security-keyvault-jca does not depend on Spring.
-     * Put the properties into System.getProperties() can make them readable in azure-security-keyvault-jca.
+     * Put the property into System.getProperties() can make them readable in azure-security-keyvault-jca.
      */
     private void putSpringPropertyToSystemProperty(Object propertyValue, String targetKey) {
         if (propertyValue == null) {
