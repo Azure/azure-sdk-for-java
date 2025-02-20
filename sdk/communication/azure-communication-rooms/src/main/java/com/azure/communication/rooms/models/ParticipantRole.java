@@ -19,6 +19,9 @@ public final class ParticipantRole extends ExpandableStringEnum<ParticipantRole>
     /** Static value Consumer for ParticipantRole. */
     public static final ParticipantRole CONSUMER = fromString("Consumer");
 
+    /** Static value Consumer for ParticipantRole. */
+    public static final ParticipantRole COLLABORATOR = fromString("Collaborator");
+
     /**
      * Creates a new instance of {@link ParticipantRole} with no string value.
      *

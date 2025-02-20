@@ -270,7 +270,7 @@ public final class AzureCommunicationRoomServiceImplBuilder implements
     @Generated
     public AzureCommunicationRoomServiceImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-04-15";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2025-03-07";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureCommunicationRoomServiceImpl client = new AzureCommunicationRoomServiceImpl(localPipeline,
@@ -297,8 +297,7 @@ public final class AzureCommunicationRoomServiceImplBuilder implements
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
@@ -306,15 +305,12 @@ public final class AzureCommunicationRoomServiceImplBuilder implements
         if (azureKeyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy("Authorization", azureKeyCredential));
         }
-        this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+        this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .clientOptions(localClientOptions)
-            .build();
+            .httpClient(httpClient).clientOptions(localClientOptions).build();
         return httpPipeline;
     }
 }
