@@ -80,11 +80,6 @@ stages:
                 # gpg-sign and create the flattened directory for ESRP bulk publish
                 # Note: The maven release requires the files to be local GPG signed
                 # Dev feed publishes use the gpg-sign-and-deply to do it in one step
-  #                   parameters:
-  #                     ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-  #                     OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
-  #                     Target: EsrpRelease
-  #                     JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
                 - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                 - template: /eng/pipelines/templates/steps/gpg-sign-and-flatten.yml
                   parameters:
@@ -202,7 +197,6 @@ stages:
         - job: TagRepository
           displayName: "Create release tag"
           condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-          environment: ${{ parameters.Environment }}
           dependsOn: VerifyReleaseVersion
           pool:
             name: azsdk-pool-mms-win-2022-general
@@ -233,6 +227,7 @@ stages:
           timeoutInMinutes: 120
           environment: ${{ parameters.Environment }}
           dependsOn: TagRepository
+
           templateContext:
             type: releaseJob
             isProduction: true
@@ -240,6 +235,7 @@ stages:
             - input: pipelineArtifact
               artifactName: '${{parameters.ArtifactName}}-esrp-flattened'
               targetPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened'
+
           pool:
             name: azsdk-pool-mms-win-2022-general
             image: azsdk-pool-mms-win-2022-1espt
