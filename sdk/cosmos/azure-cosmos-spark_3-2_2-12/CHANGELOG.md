@@ -2,8 +2,8 @@
 
 ### 4.37.0 (2025-02-20)
 
-#### Bugs Fixed
-* Block `ChangeFeedProcessor` from starting by throwing an `IllegalStateException` when the lease container contains leases with the same lease prefix but different `ChangeFeedMode` - [PR 43798](https://github.com/Azure/azure-sdk-for-java/pull/43798).
+#### Other Changes
+* Updated netty dependency
 
 ### 4.36.1 (2025-02-08)
 
