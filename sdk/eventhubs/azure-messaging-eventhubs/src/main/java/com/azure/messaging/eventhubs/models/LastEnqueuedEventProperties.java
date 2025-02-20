@@ -29,7 +29,9 @@ public class LastEnqueuedEventProperties {
      *     the information has not been retrieved, yet.
      * @param retrievalTime The date and time that the information was retrieved. {@code null} if the information
      *     has not been retrieved, yet.
+     * @deprecated Constructor is deprecated. Use {@link #LastEnqueuedEventProperties(Long, String, Instant, Instant)}
      */
+    @Deprecated
     public LastEnqueuedEventProperties(Long lastSequenceNumber, Long lastOffset, Instant lastEnqueuedTime,
         Instant retrievalTime) {
         this(lastSequenceNumber, String.valueOf(lastOffset), lastEnqueuedTime, retrievalTime);
