@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.ForbiddenException;
@@ -15,8 +16,10 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyReader;
 import com.azure.cosmos.implementation.directconnectivity.ConsistencyWriter;
@@ -30,6 +33,10 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.guava25.base.Function;
+import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.http.HttpHeaders;
+import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
@@ -48,6 +55,10 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
+import io.netty.buffer.ByteBufUtil;
+import io.netty.handler.codec.http.HttpMethod;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 import org.testng.SkipException;
@@ -58,12 +69,16 @@ import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -78,6 +93,10 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor COSMOS_CLIENT_BUILDER_ACCESSOR
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+    private static final Set<ConnectionMode> ALL_CONNECTION_MODES = new HashSet<>();
+    private static final Set<ConnectionMode> ONLY_DIRECT_MODE = new HashSet<>();
+    private static final Set<ConnectionMode> ONLY_GATEWAY_MODE = new HashSet<>();
 
     BiConsumer<ResponseWrapper<?>, ExpectedResponseCharacteristics> validateExpectedResponseCharacteristics = (responseWrapper, expectedResponseCharacteristics) -> {
         assertThat(responseWrapper).isNotNull();
@@ -142,6 +161,12 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         this.sharedDatabase = getSharedCosmosDatabase(cosmosAsyncClient);
         this.sharedSinglePartitionContainer = getSharedSinglePartitionCosmosContainer(cosmosAsyncClient);
 
+        ONLY_GATEWAY_MODE.add(ConnectionMode.GATEWAY);
+        ONLY_DIRECT_MODE.add(ConnectionMode.DIRECT);
+
+        ALL_CONNECTION_MODES.add(ConnectionMode.DIRECT);
+        ALL_CONNECTION_MODES.add(ConnectionMode.GATEWAY);
+
         RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(cosmosAsyncClient);
         GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
         DatabaseAccount databaseAccountSnapshot = globalEndpointManager.getLatestDatabaseAccount();
@@ -153,9 +178,9 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
     public Object[][] ppafTestConfigsWithWriteOps() {
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailover = new ExpectedResponseCharacteristics()
-                .setExpectedMinRetryCount(1)
-                .setShouldFinalResponseHaveSuccess(true)
-                .setExpectedRegionsContactedCount(2);
+            .setExpectedMinRetryCount(1)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(2);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForRequestTimeout = new ExpectedResponseCharacteristics()
             .setExpectedMinRetryCount(0)
@@ -163,449 +188,422 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
             .setExpectedRegionsContactedCount(1);
 
         ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover = new ExpectedResponseCharacteristics()
-                .setExpectedMinRetryCount(0)
-                .setExpectedMaxRetryCount(0)
-                .setShouldFinalResponseHaveSuccess(true)
-                .setExpectedRegionsContactedCount(1);
+            .setExpectedMinRetryCount(0)
+            .setExpectedMaxRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(true)
+            .setExpectedRegionsContactedCount(1);
 
         return new Object[][]{
             {
+                "Test failover handling for CREATE when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Create,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.CREATED,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for REPLACE when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Replace,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for UPSERT when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for DELETE when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Delete,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for PATCH when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Patch,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for BATCH when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Batch,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for CREATE when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Create,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.CREATED,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for REPLACE when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Replace,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for UPSERT when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for DELETE when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Delete,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for PATCH when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Patch,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for BATCH when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Batch,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for CREATE when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Create,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.CREATED,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for REPLACE when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Replace,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for UPSERT when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for DELETE when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Delete,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for PATCH when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Patch,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for BATCH when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Batch,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for DELETE when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Create,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
                 HttpConstants.StatusCodes.CREATED,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for REPLACE when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Replace,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for UPSERT when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for DELETE when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Delete,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for PATCH when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Patch,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
-                expectedResponseCharacteristicsAfterFailover
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for BATCH when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Batch,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
-                expectedResponseCharacteristicsAfterFailover
-            }
-        };
-    }
-
-    @DataProvider(name = "ppafTestConfigsWithReadOps")
-    public Object[][] ppafTestConfigsWithReadOps() {
-
-        ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailover = new ExpectedResponseCharacteristics()
-            .setExpectedMinRetryCount(1)
-            .setExpectedRegionsContactedCount(2)
-            .setShouldFinalResponseHaveSuccess(true);
-
-        return new Object[][]{
-            {
-                OperationType.Create,
-                OperationType.Read,
-                HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
-                HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
-                new ExpectedResponseCharacteristics()
-                    .setExpectedMinRetryCount(0)
-                    .setExpectedRegionsContactedCount(1)
-                    .setShouldFinalResponseHaveSuccess(true)
-                    .setExpectedMaxRetryCount(0)
-            },
-            {
-                OperationType.Create,
-                OperationType.Query,
-                HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
-                HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
-                new ExpectedResponseCharacteristics()
-                    .setExpectedMinRetryCount(0)
-                    .setExpectedRegionsContactedCount(2)
-                    .setShouldFinalResponseHaveSuccess(true)
-                    .setExpectedMaxRetryCount(0)
-            },
-            {
-                OperationType.Create,
-                OperationType.ReadFeed,
-                HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
-                HttpConstants.StatusCodes.NOT_MODIFIED,
-                expectedResponseCharacteristicsBeforeFailover,
-                new ExpectedResponseCharacteristics()
-                    .setExpectedMinRetryCount(0)
-                    .setExpectedRegionsContactedCount(1)
-                    .setShouldFinalResponseHaveSuccess(true)
-                    .setExpectedMaxRetryCount(0)
+                expectedResponseCharacteristicsAfterFailover,
+                ALL_CONNECTION_MODES
             }
         };
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
+        String testType,
         OperationType operationType,
         int errorStatusCodeToMockFromPartitionInUnhealthyRegion,
         int errorSubStatusCodeToMockFromPartitionInUnhealthyRegion,
         int successStatusCode,
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailover,
-        ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover) {
+        ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover,
+        Set<ConnectionMode> allowedConnectionModes) {
 
-        TransportClient transportClientMock = Mockito.mock(TransportClient.class);
-        List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
-        Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
-        Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
+        ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
+        ConnectionMode connectionMode = connectionPolicy.getConnectionMode();
 
-        if (COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder()).getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("testPpafWithServiceUnavailable does not run in the GATEWAY connectivity mode!");
+        if (!allowedConnectionModes.contains(connectionMode)) {
+            throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
         }
 
-        try {
+        if (connectionMode == ConnectionMode.DIRECT) {
 
-            CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
-                .perPartitionAutomaticFailoverEnabled(true)
-                .preferredRegions(preferredRegions);
+            TransportClient transportClientMock = Mockito.mock(TransportClient.class);
+            List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+            Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+            Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
 
-            CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
-            cosmosAsyncClientValueHolder.v = asyncClient;
+            try {
 
-            CosmosAsyncContainer asyncContainer = asyncClient
-                .getDatabase(this.sharedDatabase.getId())
-                .getContainer(this.sharedSinglePartitionContainer.getId());
+                CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
+                    .perPartitionAutomaticFailoverEnabled(true)
+                    .preferredRegions(preferredRegions);
 
-            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+                CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                cosmosAsyncClientValueHolder.v = asyncClient;
 
-            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
-            ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
-            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
-            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+                CosmosAsyncContainer asyncContainer = asyncClient
+                    .getDatabase(this.sharedDatabase.getId())
+                    .getContainer(this.sharedSinglePartitionContainer.getId());
 
-            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
-            Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
-                = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+                RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
 
-            assertThat(partitionKeyRangesForContainer).isNotNull();
-            assertThat(partitionKeyRangesForContainer.v).isNotNull();
-            assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
+                StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
+                ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
+                ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
+                StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
 
-            PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+                ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+                Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
+                    = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
 
-            assertThat(preferredRegions).isNotNull();
-            assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+                assertThat(partitionKeyRangesForContainer).isNotNull();
+                assertThat(partitionKeyRangesForContainer.v).isNotNull();
+                assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
 
-            String regionWithIssues = preferredRegions.get(0);
-            URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues));
+                PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
 
-            ReflectionUtils.setTransportClient(storeReader, transportClientMock);
-            ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
+                assertThat(preferredRegions).isNotNull();
+                assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
-            setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(operationType, successStatusCode));
+                String regionWithIssues = preferredRegions.get(0);
+                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues));
 
-            CosmosException cosmosException = createCosmosException(
-                errorStatusCodeToMockFromPartitionInUnhealthyRegion,
-                errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
+                ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+                ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
 
-            setupTransportClientToThrowCosmosException(
-                transportClientMock,
-                partitionKeyRangeWithIssues,
-                locationEndpointWithIssues,
-                cosmosException);
+                setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(operationType, successStatusCode));
 
-            TestItem testItem = TestItem.createNewItem();
+                CosmosException cosmosException = createCosmosException(
+                    errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                    errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
 
-            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
+                setupTransportClientToThrowCosmosException(
+                    transportClientMock,
+                    partitionKeyRangeWithIssues,
+                    locationEndpointWithIssues,
+                    cosmosException);
 
-            OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
-            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
-            operationInvocationParamsWrapper.createdTestItem = testItem;
-            operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
-            operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
+                TestItem testItem = TestItem.createNewItem();
 
-            ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
 
-            assertThat(responseBeforeFailover).isNotNull();
-            this.validateExpectedResponseCharacteristics.accept(responseBeforeFailover, expectedResponseCharacteristicsBeforeFailover);
+                OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+                operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+                operationInvocationParamsWrapper.createdTestItem = testItem;
+                operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+                operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
 
-            ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
-            this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsAfterFailover);
-        } catch (Exception e) {
-            Assertions.fail("The test ran into an exception {}", e);
-        } finally {
-            safeClose(cosmosAsyncClientValueHolder.v);
-        }
-    }
+                ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
 
-    @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithReadOps")
-    public void testPpafReadFailoverPostWriteWithEligibleErrorStatusCodes(
-        OperationType writeOperationType,
-        OperationType readOperationType,
-        int errorStatusCodeToMockFromPartitionInUnhealthyRegion,
-        int errorSubStatusCodeToMockFromPartitionInUnhealthyRegion,
-        int successStatusCodeToMockForReadRequestFromHealthyRegion,
-        ExpectedResponseCharacteristics expectedResponseCharacteristicsForWriteOperationBeforeFailover,
-        ExpectedResponseCharacteristics expectedResponseCharacteristicsForReadOperationAfterFailover) {
+                assertThat(responseBeforeFailover).isNotNull();
+                this.validateExpectedResponseCharacteristics.accept(responseBeforeFailover, expectedResponseCharacteristicsBeforeFailover);
 
-        TransportClientMock transportClientMock = Mockito.mock(TransportClientMock.class);
-        List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
-        Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
-        Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
-
-        if (COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder()).getConnectionMode() == ConnectionMode.GATEWAY) {
-            throw new SkipException("testPpafWithServiceUnavailable does not run in the GATEWAY connectivity mode!");
+                ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsAfterFailover);
+            } catch (Exception e) {
+                Assertions.fail("The test ran into an exception {}", e);
+            } finally {
+                safeClose(cosmosAsyncClientValueHolder.v);
+            }
         }
 
-        try {
+        if (connectionMode == ConnectionMode.GATEWAY) {
+            HttpClient mockedHttpClient = Mockito.mock(HttpClient.class);
+            List<String> preferredRegions = this.accountLevelLocationReadableLocationContext.serviceOrderedReadableRegions;
+            Map<String, String> readableRegionNameToEndpoint = this.accountLevelLocationReadableLocationContext.regionNameToEndpoint;
+            Utils.ValueHolder<CosmosAsyncClient> cosmosAsyncClientValueHolder = new Utils.ValueHolder<>();
 
-            CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
-                .perPartitionAutomaticFailoverEnabled(true)
-                .preferredRegions(preferredRegions);
+            try {
 
-            CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
-            cosmosAsyncClientValueHolder.v = asyncClient;
+                CosmosClientBuilder cosmosClientBuilder = getClientBuilder()
+                    .perPartitionAutomaticFailoverEnabled(true)
+                    .preferredRegions(preferredRegions);
 
-            CosmosAsyncContainer asyncContainer = asyncClient
-                .getDatabase(this.sharedDatabase.getId())
-                .getContainer(this.sharedSinglePartitionContainer.getId());
+                CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
+                cosmosAsyncClientValueHolder.v = asyncClient;
 
-            RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
+                CosmosAsyncContainer asyncContainer = asyncClient
+                    .getDatabase(this.sharedDatabase.getId())
+                    .getContainer(this.sharedSinglePartitionContainer.getId());
 
-            StoreClient storeClient = ReflectionUtils.getStoreClient(rxDocumentClient);
-            ReplicatedResourceClient replicatedResourceClient = ReflectionUtils.getReplicatedResourceClient(storeClient);
+                // populates collection cache and pkrange cache
+                asyncContainer.getFeedRanges().block();
 
-            ConsistencyReader consistencyReader = ReflectionUtils.getConsistencyReader(replicatedResourceClient);
-            ConsistencyWriter consistencyWriter = ReflectionUtils.getConsistencyWriter(replicatedResourceClient);
+                RxDocumentClientImpl rxDocumentClient = (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(asyncClient);
 
-            GlobalEndpointManager globalEndpointManager = rxDocumentClient.getGlobalEndpointManager();
+                RxStoreModel rxStoreModel = ReflectionUtils.getGatewayProxy(rxDocumentClient);
 
-            Utils.ValueHolder<List<PartitionKeyRange>> partitionKeyRangesForContainer
-                = getPartitionKeyRangesForContainer(asyncContainer, rxDocumentClient).block();
+                assertThat(preferredRegions).isNotNull();
+                assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
-            assertThat(partitionKeyRangesForContainer.v).isNotNull();
-            assertThat(partitionKeyRangesForContainer.v.size()).isGreaterThanOrEqualTo(1);
+                String regionWithIssues = preferredRegions.get(0);
+                URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues) + "dbs/" + this.sharedDatabase.getId() + "/colls/" + this.sharedSinglePartitionContainer.getId() + "/docs");
 
-            PartitionKeyRange partitionKeyRangeWithIssues = partitionKeyRangesForContainer.v.get(0);
+                ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
 
-            assertThat(preferredRegions).isNotNull();
-            assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
+                setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, successStatusCode);
 
-            String regionWithIssues = preferredRegions.get(0);
-            URI locationEndpointWithIssues = new URI(readableRegionNameToEndpoint.get(regionWithIssues));
+                CosmosException cosmosException = createCosmosException(
+                    errorStatusCodeToMockFromPartitionInUnhealthyRegion,
+                    errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
 
-            ReflectionUtils.setTransportClient(consistencyWriter, transportClientMock);
+                setupHttpClientToThrowCosmosException(
+                    mockedHttpClient,
+                    locationEndpointWithIssues,
+                    cosmosException);
 
-            StoreReader storeReader = ReflectionUtils.getStoreReader(consistencyReader);
+                TestItem testItem = TestItem.createNewItem();
 
-            ReflectionUtils.setTransportClient(storeReader, transportClientMock);
+                Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> dataPlaneOperation = resolveDataPlaneOperation(operationType);
 
-            Mockito.when(transportClientMock.getGlobalEndpointManager()).thenReturn(globalEndpointManager);
+                OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
+                operationInvocationParamsWrapper.asyncContainer = asyncContainer;
+                operationInvocationParamsWrapper.createdTestItem = testItem;
+                operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
+                operationInvocationParamsWrapper.patchItemRequestOptions = new CosmosPatchItemRequestOptions();
 
-            setupTransportClientToReturnSuccessResponse(transportClientMock, constructStoreResponse(readOperationType, successStatusCodeToMockForReadRequestFromHealthyRegion));
+                ResponseWrapper<?> responseBeforeFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
 
-            CosmosException cosmosException = createCosmosException(
-                errorStatusCodeToMockFromPartitionInUnhealthyRegion,
-                errorSubStatusCodeToMockFromPartitionInUnhealthyRegion);
+                assertThat(responseBeforeFailover).isNotNull();
+                this.validateExpectedResponseCharacteristics.accept(responseBeforeFailover, expectedResponseCharacteristicsBeforeFailover);
 
-            setupTransportClientToThrowCosmosException(
-                transportClientMock,
-                partitionKeyRangeWithIssues,
-                locationEndpointWithIssues,
-                cosmosException);
-
-            TestItem testItem = TestItem.createNewItem();
-
-            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> writeDataPlaneOperationBeforeFailover = resolveDataPlaneOperation(writeOperationType);
-
-            OperationInvocationParamsWrapper operationInvocationParamsWrapper = new OperationInvocationParamsWrapper();
-            operationInvocationParamsWrapper.asyncContainer = asyncContainer;
-            operationInvocationParamsWrapper.createdTestItem = testItem;
-            operationInvocationParamsWrapper.itemRequestOptions = new CosmosItemRequestOptions();
-
-            ResponseWrapper<?> responseBeforeFailover = writeDataPlaneOperationBeforeFailover.apply(operationInvocationParamsWrapper);
-
-            assertThat(responseBeforeFailover).isNotNull();
-            this.validateExpectedResponseCharacteristics.accept(responseBeforeFailover, expectedResponseCharacteristicsForWriteOperationBeforeFailover);
-
-            Function<OperationInvocationParamsWrapper, ResponseWrapper<?>> readDataPlaneOperationAfterFailover = resolveDataPlaneOperation(readOperationType);
-
-            ResponseWrapper<?> responseAfterFailover = readDataPlaneOperationAfterFailover.apply(operationInvocationParamsWrapper);
-            this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsForReadOperationAfterFailover);
-        } catch (Exception e) {
-            Assertions.fail("The test ran into an exception {}", e);
-        } finally {
-            safeClose(cosmosAsyncClientValueHolder.v);
+                ResponseWrapper<?> responseAfterFailover = dataPlaneOperation.apply(operationInvocationParamsWrapper);
+                this.validateExpectedResponseCharacteristics.accept(responseAfterFailover, expectedResponseCharacteristicsAfterFailover);
+            } catch (Exception e) {
+                Assertions.fail("The test ran into an exception {}", e);
+            } finally {
+                safeClose(cosmosAsyncClientValueHolder.v);
+            }
         }
     }
 
@@ -616,13 +614,27 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         CosmosException cosmosException) {
 
         Mockito.when(
-            transportClientMock.invokeResourceOperationAsync(
-                Mockito.any(),
-                Mockito.argThat(argument ->
-                    argument.requestContext.resolvedPartitionKeyRange
-                        .getId()
-                        .equals(partitionKeyRange.getId()) &&
-                        argument.requestContext.locationEndpointToRoute.equals(locationEndpointToRoute))))
+                transportClientMock.invokeResourceOperationAsync(
+                    Mockito.any(),
+                    Mockito.argThat(argument ->
+                        argument.requestContext.resolvedPartitionKeyRange
+                            .getId()
+                            .equals(partitionKeyRange.getId()) &&
+                            argument.requestContext.locationEndpointToRoute.equals(locationEndpointToRoute))))
+            .thenReturn(Mono.error(cosmosException));
+    }
+
+    private void setupHttpClientToThrowCosmosException(
+        HttpClient httpClientMock,
+        URI locationEndpointToRoute,
+        CosmosException cosmosException) {
+
+        Mockito.when(
+                httpClientMock.send(
+                    Mockito.argThat(argument -> {
+                        URI uri = argument.uri();
+                        return uri.toString().contains(locationEndpointToRoute.toString());
+                    }), Mockito.any(Duration.class)))
             .thenReturn(Mono.error(cosmosException));
     }
 
@@ -631,6 +643,10 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         StoreResponse storeResponse) {
 
         Mockito.when(transportClientMock.invokeResourceOperationAsync(Mockito.any(), Mockito.any())).thenReturn(Mono.just(storeResponse));
+    }
+
+    private void setupHttpClientToReturnSuccessResponse(HttpClient httpClientMock, OperationType operationType, int statusCode) {
+        Mockito.when(httpClientMock.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class))).thenReturn(Mono.just(createResponse(statusCode, operationType, getTestPojoObject())));
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getPartitionKeyRangesForContainer(
@@ -702,6 +718,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
             return storeResponseBuilder.build();
         }
     }
+
 
     private static class AccountLevelLocationContext {
         private final List<String> serviceOrderedReadableRegions;
@@ -1042,7 +1059,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         }
 
         @Override
-        public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {}
+        public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
+        }
 
         @Override
         protected GlobalEndpointManager getGlobalEndpointManager() {
@@ -1055,13 +1073,16 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         }
 
         @Override
-        public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {}
+        public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        }
 
         @Override
-        public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {}
+        public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        }
 
         @Override
-        public void close() throws Exception {}
+        public void close() throws Exception {
+        }
     }
 
     private static class ExpectedResponseCharacteristics {
@@ -1161,6 +1182,81 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         public FakeBatchResponse setRetryAfterMilliseconds(String retryAfterMilliseconds) {
             this.retryAfterMilliseconds = retryAfterMilliseconds;
             return this;
+        }
+    }
+
+    private HttpResponse createResponse(int statusCode, OperationType operationType, TestPojo testPojo) {
+        HttpResponse httpResponse = new HttpResponse() {
+            @Override
+            public int statusCode() {
+                return statusCode;
+            }
+
+            @Override
+            public String headerValue(String name) {
+                return null;
+            }
+
+            @Override
+            public HttpHeaders headers() {
+                return new HttpHeaders();
+            }
+
+            @Override
+            public Mono<ByteBuf> body() {
+                try {
+
+                    if (operationType == OperationType.Batch) {
+                        FakeBatchResponse fakeBatchResponse = new FakeBatchResponse();
+
+                        fakeBatchResponse
+                            .seteTag("1")
+                            .setStatusCode(HttpConstants.StatusCodes.OK)
+                            .setSubStatusCode(HttpConstants.SubStatusCodes.UNKNOWN)
+                            .setRequestCharge(1.0d)
+                            .setResourceBody(getTestPojoObject())
+                            .setRetryAfterMilliseconds("1");
+
+                        return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
+                            OBJECT_MAPPER.writeValueAsString(Arrays.asList(fakeBatchResponse))));
+                    }
+
+                    return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT,
+                        OBJECT_MAPPER.writeValueAsString(testPojo)));
+                } catch (JsonProcessingException e) {
+                    return Mono.error(e);
+                }
+            }
+
+            @Override
+            public Mono<String> bodyAsString() {
+                try {
+
+                    if (operationType == OperationType.Batch) {
+                        FakeBatchResponse fakeBatchResponse = new FakeBatchResponse();
+
+                        fakeBatchResponse
+                            .seteTag("1")
+                            .setStatusCode(HttpConstants.StatusCodes.OK)
+                            .setSubStatusCode(HttpConstants.SubStatusCodes.UNKNOWN)
+                            .setRequestCharge(1.0d)
+                            .setResourceBody(getTestPojoObject())
+                            .setRetryAfterMilliseconds("1");
+
+                        return Mono.just(OBJECT_MAPPER.writeValueAsString(Arrays.asList(fakeBatchResponse)));
+                    }
+
+                    return Mono.just(OBJECT_MAPPER.writeValueAsString(testPojo));
+                } catch (JsonProcessingException e) {
+                    return Mono.error(e);
+                }
+            }
+        };
+
+        try {
+            return httpResponse.withRequest(new HttpRequest(HttpMethod.POST, TestConfigurations.HOST, 443));
+        } catch (URISyntaxException e) {
+            return httpResponse;
         }
     }
 }

@@ -51,14 +51,17 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
             return false;
         }
 
-        ConnectionPolicy connectionPolicy = this.globalEndpointManager.getConnectionPolicy();
+        checkNotNull(request, "Argument 'request' cannot be null!");
+        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
-        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
+
+        if (request.getResourceType() != ResourceType.Document) {
             return false;
         }
 
-        checkNotNull(request, "Argument 'request' cannot be null!");
-        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
+        if (request.getOperationType() == OperationType.QueryPlan) {
+            return false;
+        }
 
         PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRangeForPerPartitionAutomaticFailover;
         String resolvedCollectionRid = request.requestContext.resolvedCollectionRid;
@@ -68,14 +71,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
         }
 
         if (StringUtils.isEmpty(resolvedCollectionRid)) {
-            return false;
-        }
-
-        if (request.getResourceType() != ResourceType.Document) {
-            return false;
-        }
-
-        if (request.getOperationType() == OperationType.QueryPlan) {
             return false;
         }
 
@@ -105,12 +100,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
     public boolean tryMarkEndpointAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request) {
 
         if (!this.isPerPartitionAutomaticFailoverEnabled) {
-            return false;
-        }
-
-        ConnectionPolicy connectionPolicy = this.globalEndpointManager.getConnectionPolicy();
-
-        if (connectionPolicy.getConnectionMode() != ConnectionMode.DIRECT) {
             return false;
         }
 
@@ -180,6 +169,10 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover {
 
         checkNotNull(resourceType, "Argument 'resourceType' cannot be null!");
         checkNotNull(operationType, "Argument 'operationType' cannot be null!");
+
+        if (request.getOperationType() == OperationType.QueryPlan) {
+            return false;
+        }
 
         if (resourceType == ResourceType.Document ||
             (resourceType == ResourceType.StoredProcedure && operationType == OperationType.ExecuteJavaScript)) {
