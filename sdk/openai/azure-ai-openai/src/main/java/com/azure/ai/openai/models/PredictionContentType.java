@@ -13,7 +13,7 @@ import java.util.Collection;
 public final class PredictionContentType extends ExpandableStringEnum<PredictionContentType> {
 
     /**
-     * .
+     * Predicted content is of type content.
      */
     @Generated
     public static final PredictionContentType CONTENT = fromString("content");

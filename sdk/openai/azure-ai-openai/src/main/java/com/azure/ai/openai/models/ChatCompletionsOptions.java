@@ -906,13 +906,10 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     /**
      * {@inheritDoc}
      */
+    @Generated
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
-        if (this.toolChoice != null) {
-            jsonWriter.writeRawField("tool_choice", this.toolChoice.toString());
-        }
         jsonWriter.writeArrayField("messages", this.messages, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
         if (this.functionCall != null) {
@@ -938,7 +935,21 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
         jsonWriter.writeBooleanField("logprobs", this.logprobs);
         jsonWriter.writeNumberField("top_logprobs", this.topLogprobs);
         jsonWriter.writeJsonField("response_format", this.responseFormat);
+        jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        if (this.toolChoice != null) {
+            jsonWriter.writeFieldName("tool_choice");
+            this.toolChoice.writeTo(jsonWriter);
+        }
         jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
+        jsonWriter.writeBooleanField("store", this.store);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("reasoning_effort",
+            this.reasoningEffort == null ? null : this.reasoningEffort.toString());
+        jsonWriter.writeJsonField("user_security_context", this.userSecurityContext);
+        jsonWriter.writeArrayField("modalities", this.modalities,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeJsonField("prediction", this.prediction);
+        jsonWriter.writeJsonField("audio", this.audio);
         return jsonWriter.writeEndObject();
     }
 

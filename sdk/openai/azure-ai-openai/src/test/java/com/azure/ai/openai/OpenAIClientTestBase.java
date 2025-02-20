@@ -10,6 +10,7 @@ import com.azure.ai.openai.implementation.Parameters;
 import com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper;
 import com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper;
 import com.azure.ai.openai.models.AddUploadPartRequest;
+import com.azure.ai.openai.models.AudioOutputParameters;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionOptions;
@@ -21,6 +22,7 @@ import com.azure.ai.openai.models.AzureChatExtensionDataSourceResponseCitation;
 import com.azure.ai.openai.models.AzureChatExtensionRetrievedDocument;
 import com.azure.ai.openai.models.AzureChatExtensionsMessageContext;
 import com.azure.ai.openai.models.ChatChoice;
+import com.azure.ai.openai.models.ChatCompletionModality;
 import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
@@ -30,6 +32,7 @@ import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormat;
 import com.azure.ai.openai.models.ChatCompletionsJsonSchemaResponseFormatJsonSchema;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolDefinition;
+import com.azure.ai.openai.models.ChatMessageAudioContentItem;
 import com.azure.ai.openai.models.ChatMessageImageContentItem;
 import com.azure.ai.openai.models.ChatMessageImageUrl;
 import com.azure.ai.openai.models.ChatMessageTextContentItem;
@@ -67,7 +70,10 @@ import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.InputAudioContent;
+import com.azure.ai.openai.models.InputAudioFormat;
 import com.azure.ai.openai.models.OpenAIFile;
+import com.azure.ai.openai.models.OutputAudioFormat;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
@@ -94,6 +100,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -483,6 +490,27 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("tts-1", getSpeechGenerationOptions());
     }
 
+    void getChatCompletionsWithTextPromptAudioResponse(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
+            Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")));
+        chatCompletionsOptions.setModalities(Arrays.asList(ChatCompletionModality.TEXT, ChatCompletionModality.AUDIO));
+        chatCompletionsOptions.setStore(true);
+        chatCompletionsOptions.setAudio(new AudioOutputParameters(SpeechVoice.ALLOY, OutputAudioFormat.WAV));
+        testRunner.accept("gpt-4o-audio-preview", chatCompletionsOptions);
+    }
+
+    void getChatCompletionsWithAudioPromptAudioResponse(BiConsumer<String, ChatCompletionsOptions> testRunner) {
+        byte[] file = BinaryData.fromFile(openTestResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")).toBytes();
+
+        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
+                Arrays.asList(new ChatRequestUserMessage(Arrays.asList(
+                        new ChatMessageAudioContentItem(new InputAudioContent(Base64.getEncoder().encodeToString(file), InputAudioFormat.WAV))
+                ))));
+        chatCompletionsOptions.setModalities(Arrays.asList(ChatCompletionModality.TEXT, ChatCompletionModality.AUDIO));
+        chatCompletionsOptions.setStore(true);
+        chatCompletionsOptions.setAudio(new AudioOutputParameters(SpeechVoice.ALLOY, OutputAudioFormat.WAV));
+        testRunner.accept("gpt-4o-audio-preview", chatCompletionsOptions);
+    }
     // Files
 
     void uploadTextFileRunner(BiConsumer<FileDetails, FilePurpose> testRunner) {
