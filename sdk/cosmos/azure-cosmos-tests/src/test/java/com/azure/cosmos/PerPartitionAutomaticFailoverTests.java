@@ -195,6 +195,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
 
         return new Object[][]{
             {
+                "Test failover handling for CREATE when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Create,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
@@ -204,6 +205,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for REPLACE when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Replace,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
@@ -213,6 +215,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for UPSERT when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
@@ -222,6 +225,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for DELETE when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Delete,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
@@ -231,6 +235,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for PATCH when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Patch,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
@@ -240,6 +245,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for BATCH when GONE / SERVER_GENERATED_410 is injected into first preferred region for a specific server partition.",
                 OperationType.Batch,
                 HttpConstants.StatusCodes.GONE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
@@ -249,6 +255,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ONLY_DIRECT_MODE
             },
             {
+                "Test failover handling for CREATE when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Create,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
@@ -258,6 +265,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for REPLACE when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Replace,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
@@ -267,6 +275,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for UPSERT when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
@@ -276,6 +285,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for DELETE when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Delete,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
@@ -285,6 +295,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for PATCH when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Patch,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
@@ -294,6 +305,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for BATCH when SERVICE_UNAVAILABLE / SERVER_GENERATED_503 is injected into first preferred region for a specific server partition.",
                 OperationType.Batch,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
@@ -303,6 +315,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for CREATE when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Create,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
@@ -312,6 +325,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for REPLACE when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Replace,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
@@ -321,6 +335,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for UPSERT when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
@@ -330,6 +345,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for DELETE when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Delete,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
@@ -339,6 +355,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for PATCH when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Patch,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
@@ -348,6 +365,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for BATCH when FORBIDDEN / FORBIDDEN_WRITEFORBIDDEN is injected into first preferred region for a specific server partition.",
                 OperationType.Batch,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
@@ -357,6 +375,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for DELETE when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Create,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
@@ -366,6 +385,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for REPLACE when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Replace,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
@@ -375,6 +395,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for UPSERT when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
@@ -384,6 +405,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for DELETE when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Delete,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
@@ -393,6 +415,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for PATCH when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Patch,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
@@ -402,6 +425,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 ALL_CONNECTION_MODES
             },
             {
+                "Test failover handling for BATCH when REQUEST_TIMEOUT / UNKNOWN is injected into first preferred region for a specific server partition.",
                 OperationType.Batch,
                 HttpConstants.StatusCodes.REQUEST_TIMEOUT,
                 HttpConstants.SubStatusCodes.UNKNOWN,
@@ -409,63 +433,13 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
                 expectedResponseCharacteristicsAfterFailover,
                 ALL_CONNECTION_MODES
-            }
-        };
-    }
-
-    @DataProvider(name = "ppafTestConfigsWithReadOps")
-    public Object[][] ppafTestConfigsWithReadOps() {
-
-        ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailover = new ExpectedResponseCharacteristics()
-            .setExpectedMinRetryCount(1)
-            .setExpectedRegionsContactedCount(2)
-            .setShouldFinalResponseHaveSuccess(true);
-
-        return new Object[][]{
-            {
-                OperationType.Create,
-                OperationType.Read,
-                HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
-                HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
-                new ExpectedResponseCharacteristics()
-                    .setExpectedMinRetryCount(0)
-                    .setExpectedRegionsContactedCount(1)
-                    .setShouldFinalResponseHaveSuccess(true)
-                    .setExpectedMaxRetryCount(0)
-            },
-            {
-                OperationType.Create,
-                OperationType.Query,
-                HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
-                HttpConstants.StatusCodes.OK,
-                expectedResponseCharacteristicsBeforeFailover,
-                new ExpectedResponseCharacteristics()
-                    .setExpectedMinRetryCount(0)
-                    .setExpectedRegionsContactedCount(2)
-                    .setShouldFinalResponseHaveSuccess(true)
-                    .setExpectedMaxRetryCount(0)
-            },
-            {
-                OperationType.Create,
-                OperationType.ReadFeed,
-                HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
-                HttpConstants.StatusCodes.NOT_MODIFIED,
-                expectedResponseCharacteristicsBeforeFailover,
-                new ExpectedResponseCharacteristics()
-                    .setExpectedMinRetryCount(0)
-                    .setExpectedRegionsContactedCount(1)
-                    .setShouldFinalResponseHaveSuccess(true)
-                    .setExpectedMaxRetryCount(0)
             }
         };
     }
 
     @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
+        String testType,
         OperationType operationType,
         int errorStatusCodeToMockFromPartitionInUnhealthyRegion,
         int errorSubStatusCodeToMockFromPartitionInUnhealthyRegion,
@@ -478,7 +452,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         ConnectionMode connectionMode = connectionPolicy.getConnectionMode();
 
         if (!allowedConnectionModes.contains(connectionMode)) {
-            throw new SkipException("Test with ID : {} not eligible for specified connection mode.");
+            throw new SkipException(String.format("Test with type : %s not eligible for specified connection mode %s.", testType, connectionMode));
         }
 
         if (connectionMode == ConnectionMode.DIRECT) {
