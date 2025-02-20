@@ -171,7 +171,8 @@ public class TelemetryItemExporter {
         for (String instrumentationKey : iKeys) {
             // Tests could set  the connection string with a short one
             if (instrumentationKey.length() > charactersToKeepAtEnd) {
-                String maskedIKey = "*" + instrumentationKey.substring(instrumentationKey.length() - charactersToKeepAtEnd);
+                String maskedIKey
+                    = "*" + instrumentationKey.substring(instrumentationKey.length() - charactersToKeepAtEnd);
                 json = json.replace(instrumentationKey, maskedIKey);
             }
         }
