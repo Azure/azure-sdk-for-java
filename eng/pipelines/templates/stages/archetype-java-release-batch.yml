@@ -202,22 +202,19 @@ stages:
             name: azsdk-pool-mms-win-2022-general
             image: azsdk-pool-mms-win-2022-1espt
             os: windows
-          strategy:
-            runOnce:
-              deploy:
-                steps:
-                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                  - template: /eng/common/pipelines/templates/steps/retain-run.yml
-                  # No pattern, just download everything that's been signed
-                  - download: current
-                    displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
-                    artifact: ${{parameters.ArtifactName}}-signed
-                  - ${{ each artifact in parameters.Artifacts }}:
-                    - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
-                      parameters:
-                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
-                        PackageRepository: Maven
-                        ReleaseSha: $(Build.SourceVersion)
+            steps:
+              - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              - template: /eng/common/pipelines/templates/steps/retain-run.yml
+              # No pattern, just download everything that's been signed
+              - download: current
+                displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+                artifact: ${{parameters.ArtifactName}}-signed
+              - ${{ each artifact in parameters.Artifacts }}:
+                - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                  parameters:
+                    ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                    PackageRepository: Maven
+                    ReleaseSha: $(Build.SourceVersion)
 
         - deployment: PublishESRPPackage
           displayName: "Publish to Maven Central via ESRP"
