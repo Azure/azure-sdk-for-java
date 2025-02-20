@@ -130,15 +130,6 @@ public final class CertificateClientJavaDocCodeSnippets {
      */
     public void createCertificateCodeSnippets() {
         CertificateClient certificateClient = getCertificateClient();
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map
-        CertificatePolicy certificatePolicyPkcsSelf = new CertificatePolicy("Self",
-            "CN=SelfSignedJavaPkcs12");
-        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificateSyncPoller = certificateClient
-            .beginCreateCertificate("certificateName", certificatePolicyPkcsSelf, true, new HashMap<>());
-        certificateSyncPoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
-        KeyVaultCertificate createdCertificate = certificateSyncPoller.getFinalResult();
-        System.out.printf("Certificate created with name %s%n", createdCertificate.getName());
-        // END: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map
 
         // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy
         CertificatePolicy certPolicy = new CertificatePolicy("Self",
@@ -149,6 +140,28 @@ public final class CertificateClientJavaDocCodeSnippets {
         KeyVaultCertificate cert = certPoller.getFinalResult();
         System.out.printf("Certificate created with name %s%n", cert.getName());
         // END: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map
+        CertificatePolicy policy = new CertificatePolicy("Self",
+            "CN=SelfSignedJavaPkcs12");
+        Map<String, String> tags = new HashMap<>();
+        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certificateSyncPoller = certificateClient
+            .beginCreateCertificate("certificateName", policy, true, tags);
+        certificateSyncPoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        KeyVaultCertificate createdCertificate = certificateSyncPoller.getFinalResult();
+        System.out.printf("Certificate created with name %s%n", createdCertificate.getName());
+        // END: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Boolean
+        CertificatePolicy certificatePolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
+        Map<String, String> certTags = new HashMap<>();
+        SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> poller
+            = certificateClient.beginCreateCertificate("certificateName", certificatePolicy, true, certTags,
+            true);
+        poller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+        KeyVaultCertificate certificate = poller.getFinalResult();
+        System.out.printf("Certificate created with name %s%n", certificate.getName());
+        // END: com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Boolean
     }
 
     /**
