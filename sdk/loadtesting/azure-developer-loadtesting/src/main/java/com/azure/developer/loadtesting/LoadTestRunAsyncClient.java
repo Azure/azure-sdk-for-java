@@ -767,7 +767,7 @@ public final class LoadTestRunAsyncClient {
      *             maxResponseTimeInMs: Integer (Optional)
      *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
-     *             duration: Integer (Optional)
+     *             duration: Long (Optional)
      *         }
      *         regionalLoadTestConfig (Optional): [
      *              (Optional){
@@ -1015,7 +1015,7 @@ public final class LoadTestRunAsyncClient {
      *             maxResponseTimeInMs: Integer (Optional)
      *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
-     *             duration: Integer (Optional)
+     *             duration: Long (Optional)
      *         }
      *         regionalLoadTestConfig (Optional): [
      *              (Optional){
@@ -1187,7 +1187,7 @@ public final class LoadTestRunAsyncClient {
      *             maxResponseTimeInMs: Integer (Optional)
      *             virtualUsers: Integer (Optional)
      *             rampUpTime: Integer (Optional)
-     *             duration: Integer (Optional)
+     *             duration: Long (Optional)
      *         }
      *         regionalLoadTestConfig (Optional): [
      *              (Optional){
