@@ -8,6 +8,9 @@
 
   <Match>
     <Bug pattern="XXE_XMLSTREAMREADER" />
-    <Class name="com.azure.xml.XmlReader" />
+    <Or>
+      <Class name="com.azure.xml.XmlReader" />
+      <Class name="com.azure.xml.implementation.JavaWrapperXmlInputFactoryFacade" />
+    </Or>
   </Match>
 </FindBugsFilter>
