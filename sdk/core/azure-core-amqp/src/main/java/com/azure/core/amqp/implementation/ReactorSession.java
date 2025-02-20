@@ -16,6 +16,7 @@ import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.handler.DeliverySettleMode;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.amqp.implementation.ProtonSession.ProtonChannel;
 import com.azure.core.amqp.implementation.ProtonSession.ProtonSessionClosedException;
@@ -277,13 +278,8 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        // Note: As part of removing the v1 stack receiver, the 'createConsumer' invoked below will be updated by
-        // removing
-        // ConsumerFactory parameter and adding two additional parameters (DeliverySettleMode,
-        // includeDeliveryTagInMessage).
-        // Here we've to pass (DeliverySettleMode.SETTLE_ON_DELIVERY, false) as the values for those two parameters.
         return createConsumer(linkName, entityPath, timeout, retry, null, null, null, SenderSettleMode.UNSETTLED,
-            ReceiverSettleMode.SECOND, new ConsumerFactory(DeliverySettleMode.SETTLE_ON_DELIVERY, false))
+            ReceiverSettleMode.SECOND, DeliverySettleMode.SETTLE_ON_DELIVERY, false)
                 .or(onClosedError("Connection closed while waiting for new receive link.", entityPath, linkName))
                 .cast(AmqpLink.class);
     }
@@ -383,15 +379,14 @@ public class ReactorSession implements AmqpSession {
      * @param receiverDesiredCapabilities Capabilities that the receiver link supports.
      * @param senderSettleMode Amqp {@link SenderSettleMode} mode for receiver.
      * @param receiverSettleMode Amqp {@link ReceiverSettleMode} mode for receiver.
-     * @param consumerFactory a temporary parameter to support both v1 and v2 receivers. When removing the v1
-     *       receiver support, two new parameters, 'ReceiverSettleMode' and 'includeDeliveryTagInMessage' will be introduced,
-     *       and 'consumerFactory' will be removed.
+     * @param settlingMode The {@link DeliverySettleMode} to use.
+     * @param includeDeliveryTagInMessage Whether or not to include the delivery tag in the message.
      * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
      */
     protected Mono<AmqpReceiveLink> createConsumer(String linkName, String entityPath, Duration timeout,
         AmqpRetryPolicy retry, Map<Symbol, Object> sourceFilters, Map<Symbol, Object> receiverProperties,
         Symbol[] receiverDesiredCapabilities, SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode,
-        ConsumerFactory consumerFactory) {
+        DeliverySettleMode settlingMode, boolean includeDeliveryTagInMessage) {
 
         if (isDisposed()) {
             LoggingEventBuilder logBuilder
@@ -438,7 +433,7 @@ public class ReactorSession implements AmqpSession {
 
                                 return getSubscription(linkNameKey, entityPath, sourceFilters, receiverProperties,
                                     receiverDesiredCapabilities, senderSettleMode, receiverSettleMode, tokenManager,
-                                    consumerFactory);
+                                    settlingMode, includeDeliveryTagInMessage);
                             });
 
                         final ProtonSessionClosedException error = computed.getError();
@@ -622,7 +617,7 @@ public class ReactorSession implements AmqpSession {
     private LinkSubscription<AmqpReceiveLink> getSubscription(String linkName, String entityPath,
         Map<Symbol, Object> sourceFilters, Map<Symbol, Object> receiverProperties, Symbol[] receiverDesiredCapabilities,
         SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode, TokenManager tokenManager,
-        ConsumerFactory consumerFactory) {
+        DeliverySettleMode settlingMode, boolean includeDeliveryTagInMessage) {
 
         final Receiver receiver;
         try {
@@ -658,10 +653,15 @@ public class ReactorSession implements AmqpSession {
             receiver.setDesiredCapabilities(receiverDesiredCapabilities);
         }
 
-        // When removing v1 receiver support, the type 'ConsumerFactory' will be deleted, and we'll replace
-        // the logic here with the logic in ConsumerFactory.createConsumer' that uses the new v2 receiver types.
-        final AmqpReceiveLink reactorReceiver = consumerFactory.createConsumer(amqpConnection, linkName, entityPath,
-            receiver, tokenManager, provider, handlerProvider, linkProvider, retryOptions);
+        final String connectionId = amqpConnection.getId();
+        final String hostname = amqpConnection.getFullyQualifiedNamespace();
+        final AmqpMetricsProvider metricsProvider = handlerProvider.getMetricProvider(hostname, entityPath);
+        final ReceiveLinkHandler2 handler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName,
+            entityPath, settlingMode, includeDeliveryTagInMessage, provider.getReactorDispatcher(), retryOptions);
+        BaseHandler.setHandler(receiver, handler);
+        receiver.open();
+        final AmqpReceiveLink reactorReceiver = linkProvider.createReceiveLink(amqpConnection, entityPath, receiver,
+            handler, tokenManager, provider.getReactorDispatcher(), retryOptions, metricsProvider);
 
         final Disposable subscription = reactorReceiver.getEndpointStates().subscribe(state -> {
         }, error -> {

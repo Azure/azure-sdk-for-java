@@ -73,7 +73,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         ServiceBusAmqpLinkProvider linkProvider, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, boolean distributedTransactionsSupport) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, true);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         this.connectionId = connectionId;
         this.handlerProvider = handlerProvider;

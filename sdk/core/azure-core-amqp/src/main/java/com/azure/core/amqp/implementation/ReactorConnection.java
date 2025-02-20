@@ -100,15 +100,11 @@ public class ReactorConnection implements AmqpConnection {
      * @param messageSerializer Serializer to translate objects to and from proton-j {@link Message messages}.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
-     * @param isV2 (temporary) flag to use either v1 or v2 stack.
-     * @param useSessionChannelCache indicates if {@link ReactorSessionCache} and {@link RequestResponseChannelCache}
-     *     should be used when in v2 mode.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
         ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode, boolean isV2,
-        boolean useSessionChannelCache) {
+        SenderSettleMode senderSettleMode, ReceiverSettleMode receiverSettleMode) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
