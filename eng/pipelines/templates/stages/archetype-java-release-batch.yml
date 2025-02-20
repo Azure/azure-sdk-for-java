@@ -72,25 +72,35 @@ stages:
                     ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}'
                     ArtifactName: '${{parameters.ArtifactName}}-signed'
 
+                # JRS - Downloading the ESRP signed artifacts
+                - download: current
+                  displayName: 'Download Signed Artifacts'
+                  artifact: ${{parameters.ArtifactName}}-signed
+
                 # gpg-sign and create the flattened directory for ESRP bulk publish
                 # Note: The maven release requires the files to be local GPG signed
                 # Dev feed publishes use the gpg-sign-and-deply to do it in one step
+  #                   parameters:
+  #                     ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+  #                     OutputDirectory: $(Pipeline.Workspace)/EsrpPackages
+  #                     Target: EsrpRelease
+  #                     JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
                 - template: tools/gpg/gpg.yml@azure-sdk-build-tools
                 - template: /eng/pipelines/templates/steps/gpg-sign-and-flatten.yml
                   parameters:
-                    ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
+                    ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
                     OutputDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-gpg-signed
                     FlattenedESRPDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened
                 # Publish the packages-esrp-gpg-signed, which is the intermediate directory
                 # prior to flattening
                 - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                   parameters:
-                    ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}'
+                    ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-gpg-signed'
                     ArtifactName: '${{parameters.ArtifactName}}-esrp-gpg-signed'
                 # The packages-esrp-flattened will be used for the ESRP publish
                 - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                   parameters:
-                    ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}'
+                    ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened'
                     ArtifactName: '${{parameters.ArtifactName}}-esrp-flattened'
 
   # # We generate two interdependent stages for each artifact listed in the ci.yml file, creates the release

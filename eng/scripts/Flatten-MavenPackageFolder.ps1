@@ -12,6 +12,10 @@ Set-StrictMode -Version 2.0
 
 $ErrorActionPreference = "Stop"
 
+$SignedDirectory = Resolve-Path $SignedDirectory
+$FlattenedDirectory = $ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($FlattenedDirectory)
+
+Write-Host "Copying $SignedDirectory to $FlattenedDirectory to flatten"
 Copy-Item -Path $SignedDirectory -Destination $FlattenedDirectory -Recurse
 
 $files = Get-ChildItem -Path $FlattenedDirectory -Recurse -File -Force -ErrorAction Stop
