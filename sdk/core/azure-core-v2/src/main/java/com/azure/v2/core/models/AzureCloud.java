@@ -3,9 +3,12 @@
 
 package com.azure.v2.core.models;
 
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.utils.ExpandableEnum;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -27,7 +30,7 @@ public final class AzureCloud implements ExpandableEnum<String> {
      */
     public static final AzureCloud AZURE_US_GOVERNMENT_CLOUD = fromString("AZURE_US_GOVERNMENT");
 
-    private String cloudName;
+    private final String cloudName;
 
     private AzureCloud(String cloudName) {
         this.cloudName = cloudName;
@@ -42,18 +45,25 @@ public final class AzureCloud implements ExpandableEnum<String> {
         if (cloudName == null) {
             return null;
         }
-
-        AzureCloud existingCloudName = VALUES.get(cloudName);
-
-        if (existingCloudName != null) {
-            return existingCloudName;
-        }
-
         return VALUES.computeIfAbsent(cloudName, AzureCloud::new);
     }
 
     @Override
     public String getValue() {
+        return this.cloudName;
+    }
+
+    /**
+     * Gets all known {@link AzureCloud} values.
+     *
+     * @return The known {@link AzureCloud} values.
+     */
+    public static Collection<AzureCloud> values() {
+        return VALUES.values();
+    }
+
+    @Override
+    public String toString() {
         return this.cloudName;
     }
 }
