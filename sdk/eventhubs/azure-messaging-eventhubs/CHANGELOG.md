@@ -4,11 +4,15 @@
 
 ### Features Added
 
+- Added support for geo-replication capability. ([44272](https://github.com/Azure/azure-sdk-for-java/pull/44272))
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+- Deprecated `getOffset()` that returns a `Long`.  Replaced with `getOffsetString()`.
 
 ## 5.20.0 (2025-02-11)
 
