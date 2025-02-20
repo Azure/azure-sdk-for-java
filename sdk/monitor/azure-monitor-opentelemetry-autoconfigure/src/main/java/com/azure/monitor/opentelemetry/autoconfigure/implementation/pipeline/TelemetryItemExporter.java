@@ -167,11 +167,11 @@ public class TelemetryItemExporter {
     private static String maskIKeys(List<TelemetryItem> telemetryItems, String json) {
         Set<String> iKeys
             = telemetryItems.stream().map(TelemetryItem::getInstrumentationKey).collect(Collectors.toSet());
-        int charactersToSkip = 13;
+        int charactersToKeepAtEnd = 13;
         for (String instrumentationKey : iKeys) {
             // Tests could set  the connection string with a short one
-            if (instrumentationKey.length() > charactersToSkip) {
-                String maskedIKey = "*" + instrumentationKey.substring(instrumentationKey.length() - charactersToSkip);
+            if (instrumentationKey.length() > charactersToKeepAtEnd) {
+                String maskedIKey = "*" + instrumentationKey.substring(instrumentationKey.length() - charactersToKeepAtEnd);
                 json = json.replace(instrumentationKey, maskedIKey);
             }
         }
