@@ -108,131 +108,162 @@ stages:
   # # effectively burn the version number. For testing of packages prior to burning the version number -
   # # the Validation step below publishes a package to a "burner" feed which is cleaned up after the
   # # pipeline completes.
-  # - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
-  #   - stage:
-  #     displayName: 'Releasing: ${{ length(parameters.Artifacts) }} libraries'
-  #     dependsOn: Signing
-  #     condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
-  #     variables:
-  #       - template: /eng/pipelines/templates/variables/globals.yml
-  #       # Convert artifact parameter objects to json and set them as variables to be used in
-  #       # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
-  #       # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
-  #       - name: ArtifactsJson
-  #         value: '${{ convertToJson(parameters.Artifacts) }}'
-  #     jobs:
-  #       - job: VerifyReleaseVersion
-  #         displayName: "Verify release versions"
-  #         condition: ne(variables['Skip.VersionVerification'], 'true')
-  #         pool:
-  #           name: azsdk-pool-mms-ubuntu-2004-general
-  #           image: azsdk-pool-mms-ubuntu-2004-1espt
-  #           os: linux
+  - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
+    - stage:
+      displayName: 'Releasing: ${{ length(parameters.Artifacts) }} libraries'
+      dependsOn: Signing
+      condition: and(succeeded(), ne(variables['SetDevVersion'], 'true'), ne(variables['Skip.Release'], 'true'), ne(variables['Build.Repository.Name'], 'Azure/azure-sdk-for-java-pr'))
+      variables:
+        - template: /eng/pipelines/templates/variables/globals.yml
+        # Convert artifact parameter objects to json and set them as variables to be used in
+        # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
+        # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
+        - name: ArtifactsJson
+          value: '${{ convertToJson(parameters.Artifacts) }}'
+      jobs:
+        - job: VerifyReleaseVersion
+          displayName: "Verify release versions"
+          condition: ne(variables['Skip.VersionVerification'], 'true')
+          pool:
+            name: azsdk-pool-mms-ubuntu-2004-general
+            image: azsdk-pool-mms-ubuntu-2004-1espt
+            os: linux
 
-  #         steps:
-  #           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-  #             parameters:
-  #               Paths:
-  #                 - 'sdk/${{ parameters.ServiceDirectory }}'
-  #                 - '**/*.xml'
-  #                 - '!sdk/**/test-recordings'
-  #                 - '!sdk/**/session-records'
+          steps:
+            - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+              parameters:
+                Paths:
+                  - 'sdk/${{ parameters.ServiceDirectory }}'
+                  - '**/*.xml'
+                  - '!sdk/**/test-recordings'
+                  - '!sdk/**/session-records'
 
-  #           - download: current
-  #             displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
-  #             artifact: ${{parameters.ArtifactName}}-signed
-  #           - task: UsePythonVersion@0
-  #             displayName: 'Use Python $(PythonVersion)'
-  #             inputs:
-  #               versionSpec: $(PythonVersion)
+            - download: current
+              displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
+              artifact: ${{parameters.ArtifactName}}-signed
+            - task: UsePythonVersion@0
+              displayName: 'Use Python $(PythonVersion)'
+              inputs:
+                versionSpec: $(PythonVersion)
 
-  #           - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
-  #             parameters:
-  #               PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
-  #               ServiceDirectory: "template"
-  #               TestPipeline: ${{ parameters.TestPipeline }}
+            - template: /eng/common/pipelines/templates/steps/set-test-pipeline-version.yml
+              parameters:
+                PackageNames: "azure-sdk-template,azure-sdk-template-two,azure-sdk-template-three"
+                ServiceDirectory: "template"
+                TestPipeline: ${{ parameters.TestPipeline }}
 
-  #           # Do all the verifications for all the artifacts after the sparse-checkout
-  #           - pwsh: |
-  #               $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
-  #               $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-  #               python --version
-  #               foreach($artifact in $ArtifactsList) {
-  #                 python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai $($artifact.name) --gi $($artifact.groupId)
-  #               }
-  #             displayName: 'Verify artifact versions for release'
+            # Do all the verifications for all the artifacts after the sparse-checkout
+            - pwsh: |
+                $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
+                $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+                python --version
+                foreach($artifact in $ArtifactsList) {
+                  python eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --vv --ai $($artifact.name) --gi $($artifact.groupId)
+                }
+              displayName: 'Verify artifact versions for release'
 
-  #           # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the
-  #           # need to list dependencies in the POM. The flattened POM is generated and won't comply with our versioning
-  #           # validation, so omit uberJars from the artifacts list to verify.
-  #           - pwsh: |
-  #               $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
-  #               $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
-  #               foreach($artifact in $ArtifactsList) {
-  #                 $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-  #               }
-  #             displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
+            # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the
+            # need to list dependencies in the POM. The flattened POM is generated and won't comply with our versioning
+            # validation, so omit uberJars from the artifacts list to verify.
+            - pwsh: |
+                $ArtifactsList = $('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId, uberJar | Where-Object -Not "uberJar")
+                $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
+                foreach($artifact in $ArtifactsList) {
+                  $(Build.SourcesDirectory)/eng/versioning/scan_for_unreleased_dependencies.ps1 $($artifact.groupId) $($artifact.name) $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+                }
+              displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
 
-  #           - ${{ each artifact in parameters.Artifacts }}:
-  #             - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
-  #               - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-  #                 parameters:
-  #                   PackageName: ${{artifact.name}}
-  #                   ServiceName: ${{parameters.ServiceDirectory}}
-  #                   ForRelease: true
-  #             # Verify both TypeSpec and swagger specification are from the main branch of Azure/azure-rest-api-specs repo.
-  #             - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
-  #               parameters:
-  #                 PackageName: ${{artifact.name}}
-  #                 ServiceDirectory: ${{parameters.ServiceDirectory}}
-  #                 ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-  #           # Given a list of libraries to release, verify that the list of libraries has full transitive closure.
-  #           # This prevents us from releasing a library whose dependency is not being released. UberJar needs to be
-  #           # be passed in, we skip check on UberJars but we still do need to fail correctly if the user didn't
-  #           # select any artifacts to be released.
-  #           - task: PowerShell@2
-  #             displayName: Verify Release Set
-  #             inputs:
-  #               pwsh: true
-  #               filePath: $(Build.SourcesDirectory)/eng/versioning/verify_release_set.ps1
-  #               arguments: >
-  #                 -ServiceDirectory $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
-  #                 -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId, uberJar)
+            - ${{ each artifact in parameters.Artifacts }}:
+              - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
+                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                  parameters:
+                    PackageName: ${{artifact.name}}
+                    ServiceName: ${{parameters.ServiceDirectory}}
+                    ForRelease: true
+              # Verify both TypeSpec and swagger specification are from the main branch of Azure/azure-rest-api-specs repo.
+              - template: /eng/common/pipelines/templates/steps/verify-restapi-spec-location.yml
+                parameters:
+                  PackageName: ${{artifact.name}}
+                  ServiceDirectory: ${{parameters.ServiceDirectory}}
+                  ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+            # Given a list of libraries to release, verify that the list of libraries has full transitive closure.
+            # This prevents us from releasing a library whose dependency is not being released. UberJar needs to be
+            # be passed in, we skip check on UberJars but we still do need to fail correctly if the user didn't
+            # select any artifacts to be released.
+            - task: PowerShell@2
+              displayName: Verify Release Set
+              inputs:
+                pwsh: true
+                filePath: $(Build.SourcesDirectory)/eng/versioning/verify_release_set.ps1
+                arguments: >
+                  -ServiceDirectory $(Build.SourcesDirectory)/sdk/${{parameters.ServiceDirectory}}
+                  -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId, uberJar)
 
-  #       - deployment: TagRepository
-  #         displayName: "Create release tag"
-  #         condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
-  #         environment: ${{ parameters.Environment }}
-  #         dependsOn: VerifyReleaseVersion
-  #         pool:
-  #           name: azsdk-pool-mms-win-2022-general
-  #           image: azsdk-pool-mms-win-2022-1espt
-  #           os: windows
-  #         strategy:
-  #           runOnce:
-  #             deploy:
-  #               steps:
-  #                 - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-  #                 - template: /eng/common/pipelines/templates/steps/retain-run.yml
-  #                 # No pattern, just download everything that's been signed
-  #                 - download: current
-  #                   displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
-  #                   artifact: ${{parameters.ArtifactName}}-signed
-  #                 - ${{ each artifact in parameters.Artifacts }}:
-  #                   - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
-  #                     parameters:
-  #                       ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
-  #                       PackageRepository: Maven
-  #                       ReleaseSha: $(Build.SourceVersion)
+        - job: TagRepository
+          displayName: "Create release tag"
+          condition: and(succeeded(), ne(variables['Skip.TagRepository'], 'true'))
+          environment: ${{ parameters.Environment }}
+          dependsOn: VerifyReleaseVersion
+          pool:
+            name: azsdk-pool-mms-win-2022-general
+            image: azsdk-pool-mms-win-2022-1espt
+            os: windows
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                  - template: /eng/common/pipelines/templates/steps/retain-run.yml
+                  # No pattern, just download everything that's been signed
+                  - download: current
+                    displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
+                    artifact: ${{parameters.ArtifactName}}-signed
+                  - ${{ each artifact in parameters.Artifacts }}:
+                    - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
+                      parameters:
+                        ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
+                        PackageRepository: Maven
+                        ReleaseSha: $(Build.SourceVersion)
 
-  #       - deployment: PublishPackage
-  #         displayName: "Publish to Maven Central"
+        - deployment: PublishESRPPackage
+          displayName: "Publish to Maven Central via ESRP"
+          condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
+          # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
+          # this is here to ensure larger areas (30+) libraries don't time out.
+          timeoutInMinutes: 120
+          environment: ${{ parameters.Environment }}
+          dependsOn: TagRepository
+          templateContext:
+            type: releaseJob
+            isProduction: true
+            inputs:
+            - input: pipelineArtifact
+              artifactName: '${{parameters.ArtifactName}}-esrp-flattened'
+              targetPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened'
+          pool:
+            name: azsdk-pool-mms-win-2022-general
+            image: azsdk-pool-mms-win-2022-1espt
+            os: windows
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                  - template: /eng/pipelines/templates/steps/java-esrp-publishing.yml
+                    parameters:
+                      FlattenedDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened
+                  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+                    parameters:
+                      ArtifactName: ${{parameters.ArtifactName}}-esrp-$(System.JobAttempt)
+                      ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened
+
+  #       - job: PublishDevFeedPackage
+  #         displayName: "Publish to Java Dev feed"
   #         condition: and(succeeded(), ne(variables['Skip.PublishPackage'], 'true'))
   #         # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
   #         # this is here to ensure larger areas (30+) libraries don't time out.
   #         timeoutInMinutes: 120
   #         environment: ${{ parameters.Environment }}
-  #         dependsOn: TagRepository
+  #         dependsOn: PublishESRPPackage
   #         pool:
   #           name: azsdk-pool-mms-win-2022-general
   #           image: azsdk-pool-mms-win-2022-1espt
@@ -291,7 +322,7 @@ stages:
   #                     ArtifactName: ${{parameters.ArtifactName}}-signed
   #                     SourceRootPath: $(Pipeline.Workspace)/azure-sdk-for-java
 
-  #       - deployment: UpdatePackageVersion
+  #       - job: UpdatePackageVersion
   #         displayName: "Update Package Version"
   #         condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
   #         environment: ${{ parameters.Environment }}
