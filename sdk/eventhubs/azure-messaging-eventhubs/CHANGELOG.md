@@ -12,7 +12,7 @@
 
 ### Other Changes
 
-- Deprecated `getOffset()` that returns a `Long`.  Replaced with `getOffsetString()`.
+- The `getOffset()` method, which returns a `Long`, has been deprecated in `EventData`, `SystemProperties`, and `Checkpoint`. Replaced with `getOffsetString()`.
 
 ## 5.20.0 (2025-02-11)
 
