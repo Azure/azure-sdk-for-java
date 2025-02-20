@@ -450,7 +450,7 @@ com.azure.resourcemanager:azure-resourcemanager-recoveryservicesdatareplication;
 com.azure.resourcemanager:azure-resourcemanager-networkanalytics;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-springappdiscovery;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-astro;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-workloadssapvirtualinstance;1.0.0-beta.1;1.0.0
+com.azure.resourcemanager:azure-resourcemanager-workloadssapvirtualinstance;1.0.0-beta.1;1.1.0
 com.azure.resourcemanager:azure-resourcemanager-largeinstance;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-migrationdiscoverysap;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-storageactions;1.0.0-beta.2;1.0.0-beta.3
