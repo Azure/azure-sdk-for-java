@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.67.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.67.0 (2025-02-20)
 
 #### Bugs Fixed
-
-#### Other Changes
+* Fixed an issue in change feed processor where records are skipped and excessive requests are prefetched. - See [PR 43788](https://github.com/Azure/azure-sdk-for-java/pull/43788)
 
 ### 4.66.1 (2025-02-08)
 
