@@ -79,6 +79,8 @@ public class ChatRequestMessage implements JsonSerializable<ChatRequestMessage> 
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("system".equals(discriminatorValue)) {
                     return ChatRequestSystemMessage.fromJson(readerToUse.reset());
+                } else if ("developer".equals(discriminatorValue)) {
+                    return ChatRequestDeveloperMessage.fromJson(readerToUse.reset());
                 } else if ("user".equals(discriminatorValue)) {
                     return ChatRequestUserMessage.fromJson(readerToUse.reset());
                 } else if ("assistant".equals(discriminatorValue)) {
