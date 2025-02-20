@@ -31,7 +31,7 @@ namespace: com.azure.communication.rooms
 generate-client-as-impl: true
 custom-types: RoomJoinPolicy
 custom-types-subpackage: models
-models-subpackage: implementation.models
+models-subpackage: models
 generate-client-interfaces: false
 service-interface-as-public: true
 generate-sync-async-clients: false

@@ -4,9 +4,9 @@
 
 package com.azure.communication.rooms.implementation;
 
-import com.azure.communication.rooms.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.rooms.implementation.models.ParticipantsCollection;
-import com.azure.communication.rooms.implementation.models.RoomParticipant;
+import com.azure.communication.rooms.models.CommunicationErrorResponseException;
+import com.azure.communication.rooms.models.ParticipantsCollection;
+import com.azure.communication.rooms.models.RoomParticipant;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
