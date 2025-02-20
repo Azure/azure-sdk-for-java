@@ -111,7 +111,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             // First element returns the prompt filter results (no output tokens are present)
             assertFalse(CoreUtils.isNullOrEmpty(completionsArray[0].getPromptFilterResults()));
             // Choices (output tokens) are present in all the elements in between
-            for(int i = 1; i < completionsArray.length - 2; i++) {
+            for (int i = 1; i < completionsArray.length - 2; i++) {
                 assertCompletionsStream(completionsArray[i]);
             }
 
@@ -227,7 +227,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsTextPromptAudioResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsTextPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsWithTextPromptAudioResponse((deploymentId, options) -> {
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
@@ -259,7 +260,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsAudioPromptAudioResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsAudioPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsWithAudioPromptAudioResponse((deploymentId, options) -> {
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
@@ -586,16 +588,16 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 } else if (i == totalCompletions - 1) {
                     // The last contains only the token usage
                     assertEquals(0, completions.getChoices().size());
-                    assertEquals(completions.getUsage().getCompletionTokens() + completions.getUsage().getPromptTokens(),
-                            completions.getUsage().getTotalTokens());
+                    assertEquals(
+                        completions.getUsage().getCompletionTokens() + completions.getUsage().getPromptTokens(),
+                        completions.getUsage().getTotalTokens());
                 } else {
                     // The rest of the intermediary messages have the text generation content filter set
                     assertNull(completions.getPromptFilterResults());
                     Choice choice = completions.getChoices().get(0);
                     assertNotNull(choice);
                     if (choice.getFinishReason() == null) {
-                        assertSafeChoiceContentFilterResults(
-                                choice.getContentFilterResults());
+                        assertSafeChoiceContentFilterResults(choice.getContentFilterResults());
                     }
                 }
                 i++;

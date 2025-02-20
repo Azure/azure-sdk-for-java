@@ -212,7 +212,8 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsTextPromptAudioResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsTextPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsWithTextPromptAudioResponse((deploymentId, options) -> {
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
@@ -244,7 +245,8 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetChatCompletionsAudioPromptAudioResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsAudioPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsWithAudioPromptAudioResponse((deploymentId, options) -> {
             ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);

@@ -10,6 +10,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Base64;
 
 /**
  * A structured chat content item containing audio data.
@@ -38,6 +39,17 @@ public final class InputAudioContent implements JsonSerializable<InputAudioConte
     @Generated
     public InputAudioContent(String data, InputAudioFormat format) {
         this.data = data;
+        this.format = format;
+    }
+
+    /**
+     * Creates an instance of InputAudioContent class.
+     *
+     * @param data - the audio data to set.
+     * @param format - the format to set.
+     */
+    public InputAudioContent(byte[] data, InputAudioFormat format) {
+        this.data = Base64.getEncoder().encodeToString(data);
         this.format = format;
     }
 

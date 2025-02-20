@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.models.AudioResponseData;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
@@ -226,6 +227,74 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertChatCompletions(1, resultChatCompletions);
                 })
                 .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsTextPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatCompletionsWithTextPromptAudioResponse((deploymentId, options) -> {
+            StepVerifier.create(client.getChatCompletions(deploymentId, options)).assertNext(chatCompletions -> {
+                ChatChoice choice = chatCompletions.getChoices().get(0);
+                ChatResponseMessage message = choice.getMessage();
+
+                // Assert that the message has content
+                assertEquals(ChatRole.ASSISTANT, message.getRole());
+                AudioResponseData audioResponse = message.getAudio();
+                assertNotNull(audioResponse);
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getId()));
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getData()));
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getTranscript()));
+                assertNotNull(audioResponse.getExpiresAt());
+
+                // Assert finish reason
+                assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+                CompletionsUsage usage = chatCompletions.getUsage();
+
+                // assert that we only used audio tokens for the response
+                assertNotNull(usage);
+                assertNotNull(usage.getPromptTokensDetails());
+                assertNotNull(usage.getCompletionTokensDetails());
+
+                assertEquals(0, usage.getPromptTokensDetails().getAudioTokens());
+                assertTrue(usage.getCompletionTokensDetails().getAudioTokens() > 0);
+            }).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsAudioPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatCompletionsWithAudioPromptAudioResponse((deploymentId, options) -> {
+            StepVerifier.create(client.getChatCompletions(deploymentId, options)).assertNext(chatCompletions -> {
+                ChatChoice choice = chatCompletions.getChoices().get(0);
+                ChatResponseMessage message = choice.getMessage();
+
+                // Assert that the message has content
+                assertEquals(ChatRole.ASSISTANT, message.getRole());
+                AudioResponseData audioResponse = message.getAudio();
+                assertNotNull(audioResponse);
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getId()));
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getData()));
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getTranscript()));
+                assertNotNull(audioResponse.getExpiresAt());
+
+                // Assert finish reason
+                assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+                CompletionsUsage usage = chatCompletions.getUsage();
+
+                // assert that we only used audio tokens for the response
+                assertNotNull(usage);
+                assertNotNull(usage.getPromptTokensDetails());
+                assertNotNull(usage.getCompletionTokensDetails());
+
+                assertTrue(usage.getPromptTokensDetails().getAudioTokens() > 0);
+                assertTrue(usage.getCompletionTokensDetails().getAudioTokens() > 0);
+            }).verifyComplete();
         });
     }
 

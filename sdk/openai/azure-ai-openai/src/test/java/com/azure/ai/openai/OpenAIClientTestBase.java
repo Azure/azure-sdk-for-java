@@ -100,7 +100,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -491,8 +490,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatCompletionsWithTextPromptAudioResponse(BiConsumer<String, ChatCompletionsOptions> testRunner) {
-        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
-            Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")));
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage("What is the weather in Seattle?")));
         chatCompletionsOptions.setModalities(Arrays.asList(ChatCompletionModality.TEXT, ChatCompletionModality.AUDIO));
         chatCompletionsOptions.setStore(true);
         chatCompletionsOptions.setAudio(new AudioOutputParameters(SpeechVoice.ALLOY, OutputAudioFormat.WAV));
@@ -500,12 +499,12 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void getChatCompletionsWithAudioPromptAudioResponse(BiConsumer<String, ChatCompletionsOptions> testRunner) {
-        byte[] file = BinaryData.fromFile(openTestResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")).toBytes();
+        byte[] file
+            = BinaryData.fromFile(openTestResourceFile("realtime_whats_the_weather_pcm16_24khz_mono.wav")).toBytes();
 
-        ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
-                Arrays.asList(new ChatRequestUserMessage(Arrays.asList(
-                        new ChatMessageAudioContentItem(new InputAudioContent(Base64.getEncoder().encodeToString(file), InputAudioFormat.WAV))
-                ))));
+        ChatCompletionsOptions chatCompletionsOptions
+            = new ChatCompletionsOptions(Arrays.asList(new ChatRequestUserMessage(
+                Arrays.asList(new ChatMessageAudioContentItem(new InputAudioContent(file, InputAudioFormat.WAV))))));
         chatCompletionsOptions.setModalities(Arrays.asList(ChatCompletionModality.TEXT, ChatCompletionModality.AUDIO));
         chatCompletionsOptions.setStore(true);
         chatCompletionsOptions.setAudio(new AudioOutputParameters(SpeechVoice.ALLOY, OutputAudioFormat.WAV));
