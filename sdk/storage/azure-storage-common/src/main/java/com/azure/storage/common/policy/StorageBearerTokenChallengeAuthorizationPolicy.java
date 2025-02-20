@@ -69,16 +69,23 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         String scope = challenges.get("resource_id");
         String authorization = challenges.get("authorization_uri");
 
-        if (scope != null && authorization != null) {
+        if (scope != null) {
             scope += DEFAULT_SCOPE;
             scopes = new String[] { scope };
             scopes = getScopes(context, scopes);
+        }
 
+        if (authorization != null) {
             String tenantId = extractTenantIdFromUri(authorization);
             TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
-
             return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
         }
+
+        if (scope != null) {
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes);
+            return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
+        }
+
         return Mono.just(false);
     }
 
