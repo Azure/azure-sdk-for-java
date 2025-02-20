@@ -10,6 +10,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorConnectionCache;
+import com.azure.core.amqp.implementation.handler.MessageWithDeliveryTag;
 import com.azure.core.exception.AzureException;
 import com.azure.core.test.utils.metrics.TestGauge;
 import com.azure.core.test.utils.metrics.TestHistogram;
@@ -23,7 +24,6 @@ import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
-import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
@@ -511,7 +511,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
 
-        final MessageWithLockToken message = mock(MessageWithLockToken.class);
+        final MessageWithDeliveryTag message = mock(MessageWithDeliveryTag.class);
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
@@ -600,7 +600,7 @@ class ServiceBusReceiverAsyncClientTest {
         final UUID lockTokenUuid = UUID.randomUUID();
         final String lockToken1 = lockTokenUuid.toString();
 
-        final MessageWithLockToken message = mock(MessageWithLockToken.class);
+        final MessageWithDeliveryTag message = mock(MessageWithDeliveryTag.class);
 
         when(receivedMessage.getLockToken()).thenReturn(lockToken1);
 
@@ -693,7 +693,7 @@ class ServiceBusReceiverAsyncClientTest {
 
         final OffsetDateTime expiration = OffsetDateTime.now().plus(Duration.ofMinutes(5));
 
-        final MessageWithLockToken message = mock(MessageWithLockToken.class);
+        final MessageWithDeliveryTag message = mock(MessageWithDeliveryTag.class);
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
 
@@ -733,8 +733,8 @@ class ServiceBusReceiverAsyncClientTest {
         final long sequenceNumber = 10L;
         final long sequenceNumber2 = 15L;
 
-        final MessageWithLockToken message = mock(MessageWithLockToken.class);
-        final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
+        final MessageWithDeliveryTag message = mock(MessageWithDeliveryTag.class);
+        final MessageWithDeliveryTag message2 = mock(MessageWithDeliveryTag.class);
 
         when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
         when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
