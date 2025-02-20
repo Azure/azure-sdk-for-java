@@ -874,12 +874,12 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 return messages.size() == 1 ? link.send(messages.get(0)) : link.send(messages);
             }
         }).onErrorMap(RequestResponseChannelClosedException.class, e -> {
-            // When the current connection is being disposed, the V1 ConnectionProcessor or V2 ReactorConnectionCache
-            // can produce a new connection if downstream request. In this context, treat
+            // When the current connection is being disposed, the ReactorConnectionCache can produce a new connection
+            // if downstream request. In this context, treat
             // RequestResponseChannelClosedException error from the following two sources as retry-able so that
             // retry can obtain a new connection -
             // 1. error from the RequestResponseChannel scoped to the current connection being disposed,
-            // 2. error from the V2 RequestResponseChannelCache scoped to the current connection being disposed.
+            // 2. error from the RequestResponseChannelCache scoped to the current connection being disposed.
             //
             return new AmqpException(true, e.getMessage(), e, null);
         });

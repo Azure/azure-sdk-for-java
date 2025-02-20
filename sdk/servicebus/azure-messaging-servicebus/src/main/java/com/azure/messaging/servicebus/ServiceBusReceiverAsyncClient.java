@@ -1611,26 +1611,25 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         //
         final Mono<ServiceBusReceiveLink> retryableReceiveLinkMono
             = RetryUtil.withRetry(receiveLinkMono.onErrorMap(RequestResponseChannelClosedException.class, e -> {
-                // When the current connection is being disposed, the V1 ConnectionProcessor or V2 ReactorConnectionCache
-                // can produce a new connection if downstream request. In this context, treat
-                // RequestResponseChannelClosedException error from the following two sources as retry-able so that
-                // retry can obtain a new connection -
+                // When the current connection is being disposed, the ReactorConnectionCache can produce a new connection
+                // if downstream request. In this context, treat RequestResponseChannelClosedException error from the
+                // following two sources as retry-able so that retry can obtain a new connection -
                 // 1. error from the RequestResponseChannel scoped to the current connection being disposed,
-                // 2. error from the V2 RequestResponseChannelCache scoped to the current connection being disposed.
+                // 2. error from the RequestResponseChannelCache scoped to the current connection being disposed.
                 //
                 return new AmqpException(true, e.getMessage(), e, null);
             }), connectionCache.getRetryOptions(), "Failed to create receive link " + linkName, true);
 
-        // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below
-        // 'AmqpReceiveLinkProcessor'. Obviously, the processor requests a link when there is a downstream subscriber.
-        // It also requests a new link (i.e. retry) when the current link it holds gets terminated
+        // receiveLinkFlux is a Flux that produces a new AmqpReceiveLink each time it receives a request from the below
+        // 'MessageFlux'. Obviously, the MessageFlux requests a link when there is a downstream subscriber. It also requests
+        // a new link (i.e. retry) when the current link it holds gets terminated
         // (e.g., when the service decides to close that link).
         //
         final Flux<ServiceBusReceiveLink> receiveLinkFlux = retryableReceiveLinkMono.repeat()
             // The re-subscribe nature of 'MonoRepeat' following the emission of a link will cause the 'MonoFlatmap' (the
-            // upstream of repeat operator) to cache the same link. When ServiceBusReceiveLinkProcessor later requests a new link,
+            // upstream of repeat operator) to cache the same link. When MessageFlux later requests a new link,
             // the corresponding request from the 'MonoRepeat' will be answered with the cached (and closed) link by the
-            // 'MonoFlatmap'. We'll filter out these cached (closed) links to avoid ServiceBusReceiveLinkProcessor from doing
+            // 'MonoFlatmap'. We'll filter out these cached (closed) links to avoid MessageFlux from doing
             // unusable work (creating subscriptions and attempting to place the credit) on those links and associated logging.
             // See the PR description (https://github.com/Azure/azure-sdk-for-java/pull/33204) for more details.
             .filter(link -> !link.isDisposed());
