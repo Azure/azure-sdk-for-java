@@ -118,14 +118,6 @@
 
     <dependency>
       <groupId>io.netty</groupId>
-      <artifactId>netty-tcnative-boringssl-static</artifactId>
-      <version>2.0.69.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
-      <classifier>linux-x86_64</classifier>
-<!--      <classifier>windows-x86_64</classifier>-->
-    </dependency>
-
-    <dependency>
-      <groupId>io.netty</groupId>
       <artifactId>netty-common</artifactId>
       <version>4.1.115.Final</version>  <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
     </dependency>
