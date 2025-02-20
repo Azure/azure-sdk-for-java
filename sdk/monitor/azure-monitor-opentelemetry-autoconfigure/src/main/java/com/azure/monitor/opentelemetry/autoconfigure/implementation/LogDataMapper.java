@@ -90,14 +90,14 @@ public class LogDataMapper {
             sampleRate = getSampleRate(log);
         }
 
+        if (stack != null) {
+            return createExceptionTelemetryItem(log, stack, sampleRate);
+        }
+
         Attributes attributes = log.getAttributes();
         String customEventName = attributes.get(AttributeKey.stringKey(CUSTOM_EVENT_NAME));
         if (customEventName != null) {
             return createEventTelemetryItem(log, attributes, customEventName, sampleRate);
-        }
-
-        if (stack != null) {
-            return createExceptionTelemetryItem(log, attributes, stack, sampleRate);
         }
 
         return createMessageTelemetryItem(log, attributes, sampleRate);
@@ -151,8 +151,7 @@ public class LogDataMapper {
         return telemetryBuilder.build();
     }
 
-    private TelemetryItem createExceptionTelemetryItem(LogRecordData log, Attributes attributes, String stack,
-        @Nullable Double sampleRate) {
+    private TelemetryItem createExceptionTelemetryItem(LogRecordData log, String stack, @Nullable Double sampleRate) {
         ExceptionTelemetryBuilder telemetryBuilder = ExceptionTelemetryBuilder.create();
         telemetryInitializer.accept(telemetryBuilder, log.getResource());
 
@@ -162,6 +161,7 @@ public class LogDataMapper {
         setSampleRate(telemetryBuilder, sampleRate);
 
         // update tags
+        Attributes attributes = log.getAttributes();
         MAPPINGS.map(attributes, telemetryBuilder);
 
         SpanDataMapper.setExceptions(stack, log.getAttributes(), telemetryBuilder);
