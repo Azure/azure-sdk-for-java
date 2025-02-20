@@ -4,11 +4,11 @@
 
 package com.azure.communication.rooms.implementation;
 
-import com.azure.communication.rooms.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.rooms.implementation.models.CreateRoomRequest;
-import com.azure.communication.rooms.implementation.models.RoomModel;
-import com.azure.communication.rooms.implementation.models.RoomsCollection;
-import com.azure.communication.rooms.implementation.models.UpdateRoomRequest;
+import com.azure.communication.rooms.models.CommunicationErrorResponseException;
+import com.azure.communication.rooms.models.CreateRoomRequest;
+import com.azure.communication.rooms.models.RoomModel;
+import com.azure.communication.rooms.models.RoomsCollection;
+import com.azure.communication.rooms.models.UpdateRoomRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;

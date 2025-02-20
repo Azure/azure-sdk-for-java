@@ -21,7 +21,7 @@ To update generated files for rooms service, run the following command
 ### Code generation settings
 ``` yaml
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/91813ca7a287fe944262e992413ce4d51d987276/specification/communication/data-plane/Rooms/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/634e844ef2cc7a8968bc960683e44a531263ad63/specification/communication/data-plane/Rooms/readme.md
 use: '@autorest/java@4.1.27'
 java: true
 title: AzureCommunicationRoomService
@@ -31,7 +31,7 @@ namespace: com.azure.communication.rooms
 generate-client-as-impl: true
 custom-types: RoomJoinPolicy
 custom-types-subpackage: models
-models-subpackage: implementation.models
+models-subpackage: models
 generate-client-interfaces: false
 service-interface-as-public: true
 generate-sync-async-clients: false
