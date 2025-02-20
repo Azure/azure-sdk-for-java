@@ -15,7 +15,6 @@ import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -280,6 +279,8 @@ public class NettyAsyncHttpClientBuilder {
 
         if (protocolVersions != null) {
             nettyHttpClient = nettyHttpClient.protocol(toNettyProtocol(protocolVersions));
+        } else {
+            nettyHttpClient = nettyHttpClient.protocol(HttpProtocol.HTTP11);
         }
 
         return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy, addProxyHandler);
@@ -287,18 +288,23 @@ public class NettyAsyncHttpClientBuilder {
 
     private static HttpProtocol[] toNettyProtocol(EnumSet<HttpProtocolVersion> protocolVersions) {
         HttpProtocol[] httpProtocols = new HttpProtocol[protocolVersions.size()];
+        int i = 0;
         for (HttpProtocolVersion version : protocolVersions) {
             switch (version) {
                 case HTTP_1_1:
-                    httpProtocols[0] = HttpProtocol.HTTP11;
+                    httpProtocols[i] = HttpProtocol.HTTP11;
                     break;
+
                 case HTTP_2:
-                    httpProtocols[0] = HttpProtocol.H2;
+                    httpProtocols[i] = HttpProtocol.H2;
                     break;
+
                 default:
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Unsupported protocol version: " + version));
+                    throw LOGGER
+                        .logExceptionAsError(new IllegalArgumentException("Unsupported protocol version: " + version));
             }
+
+            i++;
         }
 
         return httpProtocols;

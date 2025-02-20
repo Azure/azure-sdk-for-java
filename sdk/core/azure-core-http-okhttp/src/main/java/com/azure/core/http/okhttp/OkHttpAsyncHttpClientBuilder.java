@@ -20,6 +20,7 @@ import okhttp3.Protocol;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -413,9 +414,8 @@ public class OkHttpAsyncHttpClientBuilder {
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
         if (buildProxyOptions != null) {
-            httpClientBuilder.proxySelector(
-                new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(), buildProxyOptions::getAddress,
-                    buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder.proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
+                buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
                 ProxyAuthenticator proxyAuthenticator
@@ -432,6 +432,8 @@ public class OkHttpAsyncHttpClientBuilder {
         // Set the protocol versions.
         if (this.protocolVersions != null) {
             httpClientBuilder.protocols(toOkHttpProtocol(this.protocolVersions));
+        } else {
+            httpClientBuilder.protocols(Collections.singletonList(Protocol.HTTP_1_1));
         }
 
         return new OkHttpAsyncHttpClient(httpClientBuilder.build(),
@@ -445,9 +447,11 @@ public class OkHttpAsyncHttpClientBuilder {
                 case HTTP_1_1:
                     protocols.add(Protocol.HTTP_1_1);
                     break;
+
                 case HTTP_2:
                     protocols.add(Protocol.HTTP_2);
                     break;
+
                 default:
                     throw LOGGER.logExceptionAsError(
                         new IllegalArgumentException("'protocolVersions' must contain HTTP_1_1 (HTTP/1.1)."));

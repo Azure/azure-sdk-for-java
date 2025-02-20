@@ -5,14 +5,16 @@ package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
-import com.azure.core.validation.http.models.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.ConfigurationSource;
+import com.azure.core.validation.http.models.TestConfigurationSource;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpVersion;
 import io.vertx.core.http.impl.HttpClientImpl;
 import io.vertx.core.net.SocketAddress;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,7 @@ import reactor.test.StepVerifier;
 import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
@@ -37,6 +40,7 @@ import static io.vertx.core.net.SocketAddress.inetSocketAddress;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -260,5 +264,31 @@ public class VertxHttpClientBuilderTests {
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl)))
             .expectNextCount(1)
             .verifyComplete();
+    }
+
+    @Test
+    public void noHttpProtocolResultsInJustHttp11() {
+        VertxHttpClient client = (VertxHttpClient) new VertxHttpClientBuilder().build();
+
+        HttpVersion version = ((HttpClientImpl) client.client).options().getProtocolVersion();
+        assertEquals(HttpVersion.HTTP_1_1, version);
+    }
+
+    @Test
+    public void missingHttp11InHttpProtocolsThrows() {
+        assertThrows(IllegalArgumentException.class,
+            () -> new VertxHttpClientBuilder().setProtocolVersions(EnumSet.noneOf(HttpProtocolVersion.class)));
+        assertThrows(IllegalArgumentException.class,
+            () -> new VertxHttpClientBuilder().setProtocolVersions(EnumSet.of(HttpProtocolVersion.HTTP_2)));
+    }
+
+    @Test
+    public void settingHttp2InHttpProtocolsAllowsHttp2() {
+        VertxHttpClient client = (VertxHttpClient) new VertxHttpClientBuilder()
+            .setProtocolVersions(EnumSet.of(HttpProtocolVersion.HTTP_2, HttpProtocolVersion.HTTP_1_1))
+            .build();
+
+        HttpVersion version = ((HttpClientImpl) client.client).options().getProtocolVersion();
+        assertEquals(HttpVersion.HTTP_2, version);
     }
 }
