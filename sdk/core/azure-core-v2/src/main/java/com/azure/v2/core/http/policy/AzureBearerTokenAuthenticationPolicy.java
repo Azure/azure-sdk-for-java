@@ -10,8 +10,14 @@ import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.credentials.AccessToken;
 import io.clientcore.core.credentials.TokenCredential;
 import io.clientcore.core.credentials.TokenRequestContext;
-import io.clientcore.core.http.models.*;
-import io.clientcore.core.http.pipeline.*;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.BearerTokenAuthenticationPolicy;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 
