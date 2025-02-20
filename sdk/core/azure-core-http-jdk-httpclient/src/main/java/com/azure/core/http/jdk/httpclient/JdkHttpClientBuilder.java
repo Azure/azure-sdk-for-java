@@ -4,6 +4,7 @@
 package com.azure.core.http.jdk.httpclient;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpClientProxySelector;
 import com.azure.core.util.Configuration;
@@ -19,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Properties;
@@ -63,6 +65,7 @@ public class JdkHttpClientBuilder {
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
+    private EnumSet<HttpProtocolVersion> protocolVersions;
 
     /**
      * Creates JdkHttpClientBuilder.
@@ -228,6 +231,26 @@ public class JdkHttpClientBuilder {
     }
 
     /**
+     * Sets the {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_1_1} must be included in the set of versions.
+     * <p>
+     * If the value is not set, only {@link HttpProtocolVersion#HTTP_1_1} can be used.
+     *
+     * @param protocolVersions The {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * @return The updated {@link JdkHttpClientBuilder} object.
+     */
+    public JdkHttpClientBuilder setProtocolVersions(EnumSet<HttpProtocolVersion> protocolVersions) {
+        if (protocolVersions != null && !protocolVersions.contains(HttpProtocolVersion.HTTP_1_1)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'protocolVersions' must contain HTTP_1_1 (HTTP/1.1)."));
+        }
+
+        this.protocolVersions = (protocolVersions == null) ? null : EnumSet.copyOf(protocolVersions);
+        return this;
+    }
+
+    /**
      * Build a HttpClient with current configurations.
      *
      * @return a {@link HttpClient}.
@@ -235,9 +258,6 @@ public class JdkHttpClientBuilder {
     public HttpClient build() {
         java.net.http.HttpClient.Builder httpClientBuilder
             = this.httpClientBuilder == null ? java.net.http.HttpClient.newBuilder() : this.httpClientBuilder;
-
-        // Azure JDK http client supports HTTP 1.1 by default.
-        httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
 
         httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()));
 
@@ -269,6 +289,18 @@ public class JdkHttpClientBuilder {
                     new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
             }
         }
+
+        // The JDK HttpClientBuilder only allows configuring a single choice.
+        // If HTTP/2 is chosen it will attempt to use it, if not available it will fall back to HTTP/1.1.
+        // If HTTP/1.1 is chosen it will not attempt to use HTTP/2.
+        // The default if version is not set is HTTP/2, which we don't want. So, if HTTP/2 is not in the set we
+        // set the version explicitly to HTTP/1.1.
+        if (protocolVersions != null && protocolVersions.contains(HttpProtocolVersion.HTTP_2)) {
+            httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_2);
+        } else {
+            httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
+        }
+
         return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
             writeTimeout, responseTimeout, readTimeout);
     }

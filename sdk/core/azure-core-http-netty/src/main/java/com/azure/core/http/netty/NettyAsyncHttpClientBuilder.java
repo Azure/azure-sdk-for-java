@@ -3,6 +3,7 @@
 
 package com.azure.core.http.netty;
 
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
@@ -14,6 +15,7 @@ import com.azure.core.util.AuthorizationChallengeHandler;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -24,6 +26,7 @@ import io.netty.resolver.DefaultAddressResolverGroup;
 import io.netty.resolver.NoopAddressResolverGroup;
 import reactor.netty.Connection;
 import reactor.netty.NettyPipeline;
+import reactor.netty.http.HttpProtocol;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.http.client.HttpClientRequest;
 import reactor.netty.http.client.HttpResponseDecoderSpec;
@@ -35,6 +38,7 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
@@ -130,6 +134,7 @@ public class NettyAsyncHttpClientBuilder {
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
+    private EnumSet<HttpProtocolVersion> protocolVersions;
 
     /**
      * Creates a new builder instance, where a builder is capable of generating multiple instances of {@link
@@ -273,7 +278,30 @@ public class NettyAsyncHttpClientBuilder {
             }
         }
 
+        if (protocolVersions != null) {
+            nettyHttpClient = nettyHttpClient.protocol(toNettyProtocol(protocolVersions));
+        }
+
         return new NettyAsyncHttpClient(nettyHttpClient, disableBufferCopy, addProxyHandler);
+    }
+
+    private static HttpProtocol[] toNettyProtocol(EnumSet<HttpProtocolVersion> protocolVersions) {
+        HttpProtocol[] httpProtocols = new HttpProtocol[protocolVersions.size()];
+        for (HttpProtocolVersion version : protocolVersions) {
+            switch (version) {
+                case HTTP_1_1:
+                    httpProtocols[0] = HttpProtocol.HTTP11;
+                    break;
+                case HTTP_2:
+                    httpProtocols[0] = HttpProtocol.H2;
+                    break;
+                default:
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "Unsupported protocol version: " + version));
+            }
+        }
+
+        return httpProtocols;
     }
 
     /**
@@ -520,6 +548,26 @@ public class NettyAsyncHttpClientBuilder {
      */
     public NettyAsyncHttpClientBuilder readTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_1_1} must be included in the set of versions.
+     * <p>
+     * If the value is not set, only {@link HttpProtocolVersion#HTTP_1_1} can be used.
+     *
+     * @param protocolVersions The {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * @return The updated {@link NettyAsyncHttpClientBuilder} object.
+     */
+    public NettyAsyncHttpClientBuilder setProtocolVersions(EnumSet<HttpProtocolVersion> protocolVersions) {
+        if (protocolVersions != null && !protocolVersions.contains(HttpProtocolVersion.HTTP_1_1)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'protocolVersions' must contain HTTP_1_1 (HTTP/1.1)."));
+        }
+
+        this.protocolVersions = (protocolVersions == null) ? null : EnumSet.copyOf(protocolVersions);
         return this;
     }
 

@@ -63,6 +63,7 @@ public class VertxHttpClientProvider implements HttpClientProvider {
             .writeTimeout(clientOptions.getWriteTimeout())
             .responseTimeout(clientOptions.getResponseTimeout())
             .readTimeout(clientOptions.getReadTimeout())
+            .setProtocolVersions(clientOptions.getProtocolVersions())
             .build();
     }
 }

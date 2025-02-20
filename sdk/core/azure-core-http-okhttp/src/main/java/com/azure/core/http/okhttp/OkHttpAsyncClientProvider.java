@@ -73,7 +73,8 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
             .configuration(clientOptions.getConfiguration())
             .connectionTimeout(clientOptions.getConnectTimeout())
             .writeTimeout(clientOptions.getWriteTimeout())
-            .readTimeout(clientOptions.getReadTimeout());
+            .readTimeout(clientOptions.getReadTimeout())
+            .setProtocolVersions(clientOptions.getProtocolVersions());
 
         Integer poolSize = clientOptions.getMaximumConnectionPoolSize();
         int maximumConnectionPoolSize = (poolSize != null && poolSize > 0) ? poolSize : 5; // By default, OkHttp uses a

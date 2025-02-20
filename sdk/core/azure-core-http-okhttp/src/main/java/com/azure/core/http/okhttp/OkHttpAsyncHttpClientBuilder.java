@@ -4,6 +4,7 @@
 package com.azure.core.http.okhttp;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.okhttp.implementation.OkHttpProxySelector;
@@ -15,9 +16,11 @@ import okhttp3.ConnectionPool;
 import okhttp3.Dispatcher;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 
@@ -128,6 +131,7 @@ public class OkHttpAsyncHttpClientBuilder {
     private ProxyOptions proxyOptions;
     private Configuration configuration;
     private boolean followRedirects;
+    private EnumSet<HttpProtocolVersion> protocolVersions;
 
     /**
      * Creates OkHttpAsyncHttpClientBuilder.
@@ -334,6 +338,26 @@ public class OkHttpAsyncHttpClientBuilder {
     }
 
     /**
+     * Sets the {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_1_1} must be included in the set of versions.
+     * <p>
+     * If the value is not set, only {@link HttpProtocolVersion#HTTP_1_1} can be used.
+     *
+     * @param protocolVersions The {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * @return The updated {@link OkHttpAsyncHttpClientBuilder} object.
+     */
+    public OkHttpAsyncHttpClientBuilder setProtocolVersions(EnumSet<HttpProtocolVersion> protocolVersions) {
+        if (protocolVersions != null && !protocolVersions.contains(HttpProtocolVersion.HTTP_1_1)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'protocolVersions' must contain HTTP_1_1 (HTTP/1.1)."));
+        }
+
+        this.protocolVersions = (protocolVersions == null) ? null : EnumSet.copyOf(protocolVersions);
+        return this;
+    }
+
+    /**
      * <p>Sets the followRedirect flag on the underlying OkHttp-backed {@link com.azure.core.http.HttpClient}.</p>
      *
      * <p>If this is set to 'true' redirects will be followed automatically, and
@@ -359,11 +383,11 @@ public class OkHttpAsyncHttpClientBuilder {
 
         // Add each interceptor that has been added.
         for (Interceptor interceptor : this.networkInterceptors) {
-            httpClientBuilder = httpClientBuilder.addNetworkInterceptor(interceptor);
+            httpClientBuilder.addNetworkInterceptor(interceptor);
         }
 
         // Configure operation timeouts.
-        httpClientBuilder = httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()))
+        httpClientBuilder.connectTimeout(getTimeout(connectionTimeout, getDefaultConnectTimeout()))
             .writeTimeout(getTimeout(writeTimeout, getDefaultWriteTimeout()))
             .readTimeout(getTimeout(readTimeout, getDefaultReadTimeout()));
 
@@ -374,12 +398,12 @@ public class OkHttpAsyncHttpClientBuilder {
 
         // If set use the configured connection pool.
         if (this.connectionPool != null) {
-            httpClientBuilder = httpClientBuilder.connectionPool(connectionPool);
+            httpClientBuilder.connectionPool(connectionPool);
         }
 
         // If set use the configured dispatcher.
         if (this.dispatcher != null) {
-            httpClientBuilder = httpClientBuilder.dispatcher(dispatcher);
+            httpClientBuilder.dispatcher(dispatcher);
         }
 
         Configuration buildConfiguration
@@ -389,15 +413,15 @@ public class OkHttpAsyncHttpClientBuilder {
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
         if (buildProxyOptions != null) {
-            httpClientBuilder
-                = httpClientBuilder.proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
-                    buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder.proxySelector(
+                new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(), buildProxyOptions::getAddress,
+                    buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
                 ProxyAuthenticator proxyAuthenticator
                     = new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword());
 
-                httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
+                httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());
             }
         }
@@ -405,7 +429,31 @@ public class OkHttpAsyncHttpClientBuilder {
         // Set the followRedirects property.
         httpClientBuilder.followRedirects(this.followRedirects);
 
+        // Set the protocol versions.
+        if (this.protocolVersions != null) {
+            httpClientBuilder.protocols(toOkHttpProtocol(this.protocolVersions));
+        }
+
         return new OkHttpAsyncHttpClient(httpClientBuilder.build(),
             getTimeout(responseTimeout, getDefaultResponseTimeout()));
+    }
+
+    private static List<Protocol> toOkHttpProtocol(EnumSet<HttpProtocolVersion> protocolVersions) {
+        List<Protocol> protocols = new ArrayList<>(protocolVersions.size());
+        for (HttpProtocolVersion protocolVersion : protocolVersions) {
+            switch (protocolVersion) {
+                case HTTP_1_1:
+                    protocols.add(Protocol.HTTP_1_1);
+                    break;
+                case HTTP_2:
+                    protocols.add(Protocol.HTTP_2);
+                    break;
+                default:
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException("'protocolVersions' must contain HTTP_1_1 (HTTP/1.1)."));
+            }
+        }
+
+        return protocols;
     }
 }

@@ -76,7 +76,8 @@ public final class NettyAsyncHttpClientProvider implements HttpClientProvider {
             .connectTimeout(clientOptions.getConnectTimeout())
             .writeTimeout(clientOptions.getWriteTimeout())
             .responseTimeout(clientOptions.getResponseTimeout())
-            .readTimeout(clientOptions.getReadTimeout());
+            .readTimeout(clientOptions.getReadTimeout())
+            .setProtocolVersions(clientOptions.getProtocolVersions());
 
         ConnectionProvider.Builder connectionProviderBuilder = ConnectionProvider.builder("azure-sdk");
         connectionProviderBuilder.maxIdleTime(clientOptions.getConnectionIdleTimeout());
