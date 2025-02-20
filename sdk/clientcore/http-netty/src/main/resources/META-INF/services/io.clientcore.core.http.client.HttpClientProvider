@@ -1,1 +1,1 @@
-io.clientcore.http.okhttp3.OkHttpHttpClientProvider
+io.clientcore.http.netty.NettyHttpClientProvider
