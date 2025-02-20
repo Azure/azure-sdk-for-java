@@ -311,6 +311,62 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         });
     }
 
+    @Disabled("There is no instance supporting this feature yet")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsReasoningEffortLow(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsWithReasoningEffortForAzure((deploymentId, options) -> {
+            StepVerifier.create(client.getChatCompletions(deploymentId, options)).assertNext(chatCompletions -> {
+                ChatChoice choice = chatCompletions.getChoices().get(0);
+                ChatResponseMessage message = choice.getMessage();
+
+                // Assert that the message has content
+                assertEquals(ChatRole.ASSISTANT, message.getRole());
+                assertFalse(CoreUtils.isNullOrEmpty(message.getContent()));
+
+                // Assert finish reason
+                assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+                CompletionsUsage usage = chatCompletions.getUsage();
+
+                // assert that we only used audio tokens for the response
+                assertNotNull(usage);
+                assertNotNull(usage.getPromptTokensDetails());
+                assertNotNull(usage.getCompletionTokensDetails());
+
+                assertTrue(usage.getCompletionTokensDetails().getReasoningTokens() > 0);
+            }).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsPrediction(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsWithPredictionForAzure((deploymentId, options) -> {
+            StepVerifier.create(client.getChatCompletions(deploymentId, options)).assertNext(chatCompletions -> {
+                ChatChoice choice = chatCompletions.getChoices().get(0);
+                ChatResponseMessage message = choice.getMessage();
+
+                // Assert that the message has content
+                assertEquals(ChatRole.ASSISTANT, message.getRole());
+                assertFalse(CoreUtils.isNullOrEmpty(message.getContent()));
+
+                // Assert finish reason
+                assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+                CompletionsUsage usage = chatCompletions.getUsage();
+
+                // assert that we only used audio tokens for the response
+                assertNotNull(usage);
+                assertNotNull(usage.getPromptTokensDetails());
+                assertNotNull(usage.getCompletionTokensDetails());
+
+                assertTrue(usage.getCompletionTokensDetails().getAcceptedPredictionTokens() > 0);
+                assertTrue(usage.getCompletionTokensDetails().getRejectedPredictionTokens() > 0);
+            }).verifyComplete();
+        });
+    }
+
     @Disabled("Unrecognized request argument supplied: max_completion_tokens")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
