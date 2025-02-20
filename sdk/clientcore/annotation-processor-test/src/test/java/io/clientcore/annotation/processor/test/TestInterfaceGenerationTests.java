@@ -12,27 +12,29 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.shared.HttpClientTestsServer;
-import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.ByteArrayBinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
+import io.clientcore.core.shared.HttpClientTestsServer;
+import io.clientcore.core.shared.LocalTestServer;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
+import java.io.IOException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 import static io.clientcore.core.http.models.ResponseBodyMode.BUFFER;
 import static io.clientcore.core.http.models.ResponseBodyMode.DESERIALIZE;
 import static io.clientcore.core.http.models.ResponseBodyMode.IGNORE;
 import static io.clientcore.core.http.models.ResponseBodyMode.STREAM;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestInterfaceGenerationTests {
     private static LocalTestServer server;
@@ -178,11 +180,48 @@ public class TestInterfaceGenerationTests {
         }
     }
 
-    protected HttpClient getHttpClient() {
+    @Test
+    public void requestWithByteArrayReturnType() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        final byte[] result = testInterface.getByteArray(getServerUri(false));
+
+        assertNotNull(result);
+        assertEquals(100, result.length);
+    }
+
+    /**
+     * Tests that the response body is correctly returned as a byte array.
+     */
+    @Test
+    @Disabled("Disabled until we confirm the behavior of the HostParam annotation")
+    public void requestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
+        //https://github.com/Azure/azure-sdk-for-java/issues/44298
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        final byte[] result
+            = testInterface.getByteArray("http", "localhost:" + server.getHttpPort(), 100);
+
+        assertNotNull(result);
+        assertEquals(result.length, 100);
+    }
+
+    /**
+     * Tests that a response with no return type is correctly handled.
+     */
+    @Test
+    public void getRequestWithNoReturn() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
+        assertDoesNotThrow(() -> testInterface.getNothing(getServerUri(false)));
+    }
+
+    private HttpClient getHttpClient() {
         return new OkHttpHttpClientProvider().getSharedInstance();
     }
 
-    protected String getServerUri(boolean secure) {
+    private String getServerUri(boolean secure) {
         return secure ? server.getHttpsUri() : server.getHttpUri();
     }
+
 }

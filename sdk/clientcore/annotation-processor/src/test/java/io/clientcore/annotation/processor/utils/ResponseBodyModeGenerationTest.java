@@ -26,7 +26,7 @@ public class ResponseBodyModeGenerationTest {
     void generateResponseBodyModeWithoutRequestOptions() {
         BlockStmt body = new BlockStmt();
         ResponseBodyModeGeneration.generateResponseBodyMode(body, "String");
-        assertTrue(body.toString().contains("responseBodyMode = ResponseBodyMode.DESERIALIZE"));
+        assertTrue(body.toString().contains("responseBodyMode = ResponseBodyMode.BUFFER"));
     }
 
     @Test

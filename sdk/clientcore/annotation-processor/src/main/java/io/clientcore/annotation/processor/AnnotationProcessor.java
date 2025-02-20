@@ -167,6 +167,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         HttpRequestContext method = new HttpRequestContext();
         method.setHost(templateInput.getHost());
         method.setMethodName(requestMethod.getSimpleName().toString());
+        method.setIsConvenience(requestMethod.isDefault());
 
         // Extract @HttpRequestInformation annotation details
         final HttpRequestInformation httpRequestInfo = requestMethod.getAnnotation(HttpRequestInformation.class);

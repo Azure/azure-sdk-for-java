@@ -4,6 +4,8 @@
 package io.clientcore.annotation.processor.utils;
 
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.expr.CastExpr;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
@@ -14,10 +16,11 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.models.binarydata.BinaryData;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+
+import static io.clientcore.annotation.processor.templating.JavaParserTemplateProcessor.isPrimitiveOrWrapper;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -42,13 +45,8 @@ public final class ResponseBodyModeGeneration {
             .setCondition(StaticJavaParser
                 .parseExpression("requestOptions != null && requestOptions.getResponseBodyMode() != null"))
             .setThenStmt(StaticJavaParser.parseBlock("{ responseBodyMode = requestOptions.getResponseBodyMode(); }"))
-            .setElseStmt(StaticJavaParser
-                .parseBlock("{ responseBodyMode = ResponseBodyMode." + (returnTypeName.contains("InputStream")
-                    ? "STREAM"
-                    : returnTypeName.contains("byte[]")
-                        ? "BYTES"
-                        : returnTypeName.contains("BinaryData") ? "IGNORE" : "DESERIALIZE")
-                    + "; }"));
+            // default ResponseBodyMode = BUFFER
+            .setElseStmt(StaticJavaParser.parseBlock("{ responseBodyMode = ResponseBodyMode.BUFFER; }"));
         body.addStatement(ifStmt);
     }
 
@@ -122,7 +120,18 @@ public final class ResponseBodyModeGeneration {
                 createResponseIfNecessary(body);
             }
         } else {
+            generateResponseBodyMode(body, returnTypeName);
             handleRestResponseReturnType(body, returnTypeName, method);
+            if (!isPrimitiveOrWrapper(returnTypeName)) {
+                closeResponse(body);
+                CastExpr castExpr
+                    = new CastExpr(StaticJavaParser.parseClassOrInterfaceType(returnTypeName), new NameExpr("result")
+                    // Casting the variable 'result'
+                    );
+
+                // Add the cast statement to the method body
+                body.addStatement(new ReturnStmt(castExpr));
+            }
         }
     }
 

@@ -125,14 +125,15 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         //FieldSpec endpoint = FieldSpec.builder(String.class, "endpoint", Modifier.PRIVATE, Modifier.FINAL)
         //    .build();
 
+        // TODO: Disable these features until the Service interface requirements are determined for Service Version
         // Create the serviceVersion field
-        String serviceVersionClassName
-            = serviceInterfaceShortName.substring(0, serviceInterfaceShortName.indexOf("ClientService"))
-                + "ServiceVersion";
-        String serviceVersionFullName
-            = packageName.substring(0, packageName.lastIndexOf(".")) + "." + serviceVersionClassName;
-        compilationUnit.addImport(serviceVersionFullName);
-        classBuilder.addField(serviceVersionClassName, "serviceVersion", Modifier.Keyword.PRIVATE);
+        // String serviceVersionClassName
+        //    = serviceInterfaceShortName.substring(0, serviceInterfaceShortName.indexOf("ClientService"))
+        //        + "ServiceVersion";
+        //String serviceVersionFullName
+        //    = packageName.substring(0, packageName.lastIndexOf(".")) + "." + serviceVersionClassName;
+        //compilationUnit.addImport(serviceVersionFullName);
+        //classBuilder.addField(serviceVersionClassName, "serviceVersion", Modifier.Keyword.PRIVATE);
 
         // Create the constructor
         compilationUnit.addImport(JsonSerializer.class);
@@ -142,7 +143,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .setBody(StaticJavaParser.parseBlock(
                 "{ this.defaultPipeline = defaultPipeline; this.serializer = serializer == null ? new JsonSerializer() : serializer; }"));
 
-        classBuilder.addField(String.class, "apiVersion", Modifier.Keyword.PRIVATE);
+        // TODO: Disable these features until the Service interface requirements are determined for Service Version
+        //classBuilder.addField(String.class, "apiVersion", Modifier.Keyword.PRIVATE);
 
         // Add instance field
         classBuilder.addField(serviceInterfaceShortName, "instance", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC);
@@ -156,8 +158,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 .parseBlock("{ return new " + serviceInterfaceImplShortName + "(pipeline, serializer); }"));
 
         configurePipelineMethod(classBuilder.addMethod("getPipeline", Modifier.Keyword.PUBLIC));
-        configureServiceVersionMethod(classBuilder.addMethod("getServiceVersion", Modifier.Keyword.PUBLIC),
-            serviceVersionClassName);
+        // TODO: Disable these features until the Service interface requirements are determined for Service Version
+        //configureServiceVersionMethod(classBuilder.addMethod("getServiceVersion", Modifier.Keyword.PUBLIC),
+        //    serviceVersionClassName);
 
         getGeneratedServiceMethods(templateInput);
         addDeserializeHelperMethod();
@@ -194,11 +197,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
     void getGeneratedServiceMethods(TemplateInput templateInput) {
         for (HttpRequestContext method : templateInput.getHttpRequestContexts()) {
-            boolean generatePublicOnly = method.getMethodName().contains("Convenience");
-
-            if (generatePublicOnly) {
-                configurePublicMethod(classBuilder.addMethod(method.getMethodName()), method);
-            } else {
+            if (!method.isConvenience()) {
                 configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method);
             }
         }
@@ -251,38 +250,36 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     void configurePublicMethod(MethodDeclaration publicMethod, HttpRequestContext method) {
-        // TODO (alzimmer): For now throw @SuppressWarnings({"unchecked", "cast"}) on generated methods while we
-        //  improve / fix the generated code to no longer need it.
+        // Set method properties
         publicMethod.setName(method.getMethodName())
             .setModifiers(Modifier.Keyword.PUBLIC)
             .addAnnotation(new SingleMemberAnnotationExpr(new Name("SuppressWarnings"),
                 new ArrayInitializerExpr(
-                    new NodeList<>(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
+                    NodeList.nodeList(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
             .addMarkerAnnotation(Override.class)
             .setType(inferTypeNameFromReturnType(method.getMethodReturnType()));
 
-        // add method parameters, with Context at the end
-        for (HttpRequestContext.MethodParameter parameter : method.getParameters()) {
-            if (parameter.getName().equals("endpoint") || parameter.getName().equals("apiVersion")) {
-                continue;
-            }
-            publicMethod.addParameter(parameter.getShortTypeName(), parameter.getName());
-        }
+        // Add parameters
+        method.getParameters().forEach(param -> publicMethod.addParameter(param.getShortTypeName(), param.getName()));
 
-        // add call to the overloaded version of this method
+        // Generate method signature params
         String params = method.getParameters()
             .stream()
             .map(HttpRequestContext.MethodParameter::getName)
-            .reduce((a, b) -> a + ", " + b)
-            .orElse("");
+            .collect(Collectors.joining(", "));
 
-        if (!"void".equals(method.getMethodReturnType())) {
-            String callerMethodName = method.getMethodName().replace("Convenience", "").concat("Response");
+        if (!isVoidReturnType(method.getMethodReturnType())) {
+            // adjust the convenience method naming to remove "Convenience" to existing method name and append Response
+            String callerMethodName = method.getMethodName().replace("Convenience", "") + "Response";
             publicMethod.setBody(
                 new BlockStmt().addStatement(new ReturnStmt(callerMethodName + "(" + params + ").getValue()")));
         } else {
             publicMethod.setBody(StaticJavaParser.parseBlock("{" + method.getMethodName() + "(" + params + ")}"));
         }
+    }
+
+    private boolean isVoidReturnType(String returnType) {
+        return "void".equals(returnType) || "java.lang.Void".equals(returnType);
     }
 
     private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method) {
@@ -345,6 +342,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         } else {
             body.addStatement(StaticJavaParser.parseStatement("String host = " + method.getHost() + ";"));
         }
+
         Statement statement
             = StaticJavaParser.parseStatement("HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod."
                 + method.getHttpMethod() + ").setUri(host);");
@@ -401,25 +399,26 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
         Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
-        if (!"void".equals(returnTypeName) && !"java.lang.Void".equals(returnTypeName)) {
+        if (!isVoidReturnType(returnTypeName)) {
+            if (!isPrimitiveOrWrapper(returnTypeName)
+                && returnTypeName.startsWith("io.clientcore.core.http.models.Response<")) {
+                // Extract the variable declaration
+                if (statement.isExpressionStmt()) {
+                    statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
+                        variableDeclarationExpr.getVariables().forEach(variable -> {
+                            // Parse the full response type with generics from returnTypeName
+                            ClassOrInterfaceType responseType
+                                = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
 
-            // Extract the variable declaration
-            if (statement.isExpressionStmt()) {
-                statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
-                    variableDeclarationExpr.getVariables().forEach(variable -> {
-                        // Parse the full response type with generics from returnTypeName
-                        ClassOrInterfaceType responseType = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
+                            // Set the new type for the variable
+                            variable.setType(responseType);
 
-                        // Set the new type for the variable
-                        variable.setType(responseType);
-
-                        // Only add a cast if it's NOT a generic type
-                        if (!returnTypeName.startsWith("Response<")) {
                             CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
                             variable.setInitializer(castExpression);
-                        }
+
+                        });
                     });
-                });
+                }
             }
         }
         statement.setLineComment("Send the request through the pipeline");
@@ -430,6 +429,32 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
 
         generateResponseHandling(body, returnTypeName, method);
+    }
+
+    /**
+     * Helper method to check if a type is a primitive or its wrapper.
+     * @param typeName the return type string value
+     * @return boolean if the return type string is primitive type
+     */
+    public static boolean isPrimitiveOrWrapper(String typeName) {
+        // TODO: This helper method will be removed once the return type issue is fixed
+        return "int".equals(typeName)
+            || "java.lang.Integer".equals(typeName)
+            || "double".equals(typeName)
+            || "java.lang.Double".equals(typeName)
+            || "long".equals(typeName)
+            || "java.lang.Long".equals(typeName)
+            || "short".equals(typeName)
+            || "java.lang.Short".equals(typeName)
+            || "float".equals(typeName)
+            || "java.lang.Float".equals(typeName)
+            || "boolean".equals(typeName)
+            || "java.lang.Boolean".equals(typeName)
+            || "char".equals(typeName)
+            || "java.lang.Character".equals(typeName)
+            || "byte".equals(typeName)
+            || "java.lang.Byte".equals(typeName)
+            || typeName.endsWith("[]");  // Catch all array types
     }
 
     private void validateResponseStatus(BlockStmt body, HttpRequestContext method) {

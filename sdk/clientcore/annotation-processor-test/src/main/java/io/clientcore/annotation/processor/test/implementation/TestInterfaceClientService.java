@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 
-@ServiceInterface(name = "myService", host = "https://somecloud.com")
+@ServiceInterface(name = "myService")
 public interface TestInterfaceClientService {
     static TestInterfaceClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer) {
         if (pipeline == null) {
@@ -78,20 +78,34 @@ public interface TestInterfaceClientService {
     // Need to add RequestOptions to specify ResponseBodyMode, which is otherwise provided by convenience methods
     @SuppressWarnings({ "unchecked", "cast" })
     @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
-    HttpBinJSON putConvenience(String uri, int putBody, RequestOptions options);
+    default HttpBinJSON putConvenience(String uri, int putBody, RequestOptions options) {
+        return putResponse(uri, putBody, options).getValue();
+    }
 
     @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
     Response<HttpBinJSON> putResponse(@HostParam("uri") String uri,
         @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
 
     @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
-    HttpBinJSON postStreamConvenience(@HostParam("uri") String uri,
-                           @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
+    default HttpBinJSON postStreamConvenience(@HostParam("uri") String uri,
+                           @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options) {
+        return postStreamResponse(uri, putBody, options).getValue();
+    }
 
     @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
     Response<HttpBinJSON> postStreamResponse(@HostParam("uri") String uri,
                                              @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
 
+    // Service 1
+    @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = {200})
+    byte[] getByteArray(@HostParam("uri") String uri);
 
+    // Service 2
+    @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/{numberOfBytes}", expectedStatusCodes = { 200 })
+    byte[] getByteArray(@HostParam("scheme") String scheme, @HostParam("hostName") String hostName,
+        @PathParam("numberOfBytes") int numberOfBytes);
 
+    // Service 3
+    @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = { 200 })
+    void getNothing(@HostParam("uri") String uri);
 }
