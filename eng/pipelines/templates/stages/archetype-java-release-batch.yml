@@ -244,10 +244,6 @@ stages:
                   - template: /eng/pipelines/templates/steps/java-esrp-publishing.yml
                     parameters:
                       FlattenedDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened
-                  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-                    parameters:
-                      ArtifactName: ${{parameters.ArtifactName}}-esrp-$(System.JobAttempt)
-                      ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-esrp-flattened
 
   #       - job: PublishDevFeedPackage
   #         displayName: "Publish to Java Dev feed"
