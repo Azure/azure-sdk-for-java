@@ -4,6 +4,11 @@
 
 ### Features Added
 
+* Enabled support for emitting Application Insights Custom Events from
+  OpenTelemetry LogRecords when the `microsoft.custom_event.name` attribute is
+  present. 
+  ([#44262](https://github.com/Azure/azure-sdk-for-net/pull/44262))
+
 ### Breaking Changes
 
 ### Bugs Fixed
