@@ -89,7 +89,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
     /*
      * The size of the virtual machine hosting the Compute Node. For information about available sizes of virtual
      * machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
-     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).
      */
     @Generated
     private String vmSize;
@@ -284,7 +284,7 @@ public final class BatchNode implements JsonSerializable<BatchNode> {
     /**
      * Get the vmSize property: The size of the virtual machine hosting the Compute Node. For information about
      * available sizes of virtual machines in Pools, see Choose a VM size for Compute Nodes in an Azure Batch Pool
-     * (https://docs.microsoft.com/azure/batch/batch-pool-vm-sizes).
+     * (https://learn.microsoft.com/azure/batch/batch-pool-vm-sizes).
      *
      * @return the vmSize value.
      */
