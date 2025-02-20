@@ -9,7 +9,7 @@ import java.util.Collection;
 
 /**
  * The provisioning state of the private link service connection. Valid values are Updating, Deleting, Failed,
- * Succeeded, or Incomplete.
+ * Succeeded, Incomplete, or Canceled.
  */
 public final class PrivateLinkServiceConnectionProvisioningState
     extends ExpandableStringEnum<PrivateLinkServiceConnectionProvisioningState> {

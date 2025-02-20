@@ -5,9 +5,8 @@
 package com.azure.resourcemanager.search.models;
 
 /**
- * Describes whether the search service is compliant or not with respect to having non-customer-encrypted resources. If
- * a service has more than one non-customer-encrypted resource and 'Enforcement' is 'enabled' then the service will be
- * marked as 'nonCompliant'.
+ * Returns the status of search service compliance with respect to non-CMK-encrypted objects. If a service has more than
+ * one unencrypted object, and enforcement is enabled, the service is marked as noncompliant.
  */
 public enum SearchEncryptionComplianceStatus {
     /**
