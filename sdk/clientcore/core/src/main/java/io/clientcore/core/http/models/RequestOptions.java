@@ -8,10 +8,12 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.implementation.http.rest.UriEscapers;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.Context;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.Context;
+import io.clientcore.core.utils.SharedExecutorService;
 
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 import java.util.function.Consumer;
 
 /**
@@ -42,7 +44,7 @@ import java.util.function.Consumer;
  * To <a href="https://petstore.swagger.io/#/pet/addPet">add a new pet to the pet store</a>, an HTTP POST call should be
  * made to the service with the details of the pet that is to be added. The details of the pet are included as the
  * request body in JSON format.
- *
+ * <p>
  * The JSON structure for the request is defined as follows:
  *
  * <pre>{@code
@@ -121,6 +123,7 @@ public final class RequestOptions {
     private boolean locked;
     private ClientLogger logger;
     private InstrumentationContext instrumentationContext;
+    private ExecutorService asyncExecutor;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
@@ -174,9 +177,7 @@ public final class RequestOptions {
      * otherwise a new header will be created.</p>
      *
      * @param header The header key.
-     *
      * @return The updated {@link RequestOptions} object.
-     *
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions addHeader(HttpHeader header) {
@@ -186,7 +187,6 @@ public final class RequestOptions {
         }
 
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header));
-
         return this;
     }
 
@@ -197,9 +197,7 @@ public final class RequestOptions {
      *
      * @param header The header key.
      * @param value The header value.
-     *
      * @return The updated {@link RequestOptions} object.
-     *
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setHeader(HttpHeaderName header, String value) {
@@ -209,7 +207,6 @@ public final class RequestOptions {
         }
 
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
-
         return this;
     }
 
@@ -219,9 +216,7 @@ public final class RequestOptions {
      *
      * @param parameterName The name of the query parameter.
      * @param value The value of the query parameter.
-     *
      * @return The updated {@link RequestOptions} object.
-     *
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions addQueryParam(String parameterName, String value) {
@@ -236,9 +231,7 @@ public final class RequestOptions {
      * @param parameterName The name of the query parameter.
      * @param value The value of the query parameter.
      * @param encoded Whether this query parameter is already encoded.
-     *
      * @return The updated {@link RequestOptions} object.
-     *
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions addQueryParam(String parameterName, String value, boolean encoded) {
@@ -263,9 +256,7 @@ public final class RequestOptions {
      * modifications made on a {@link RequestOptions} object are applied in order on the request.
      *
      * @param requestCallback The request callback.
-     *
      * @return The updated {@link RequestOptions} object.
-     *
      * @throws NullPointerException If {@code requestCallback} is {@code null}.
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
@@ -278,7 +269,6 @@ public final class RequestOptions {
         Objects.requireNonNull(requestCallback, "'requestCallback' cannot be null.");
 
         this.requestCallback = this.requestCallback.andThen(requestCallback);
-
         return this;
     }
 
@@ -286,9 +276,7 @@ public final class RequestOptions {
      * Sets the body to send as part of the {@link HttpRequest}.
      *
      * @param requestBody the request body data
-     *
      * @return The updated {@link RequestOptions} object.
-     *
      * @throws NullPointerException If {@code requestBody} is {@code null}.
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
@@ -301,7 +289,6 @@ public final class RequestOptions {
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
 
         this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
-
         return this;
     }
 
@@ -309,9 +296,7 @@ public final class RequestOptions {
      * Sets the additional context on the request that is passed during the service call.
      *
      * @param context Additional context that is passed during the service call.
-     *
      * @return The updated {@link RequestOptions} object.
-     *
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setContext(Context context) {
@@ -321,7 +306,6 @@ public final class RequestOptions {
         }
 
         this.context = context;
-
         return this;
     }
 
@@ -331,7 +315,6 @@ public final class RequestOptions {
      * @param key The key to add to the context.
      * @param value The value to add to the context.
      * @return The updated {@link RequestOptions} object.
-     *
      * @see #setContext(Context)
      */
     public RequestOptions putContext(Object key, Object value) {
@@ -341,7 +324,6 @@ public final class RequestOptions {
         }
 
         this.context = this.context.put(key, value);
-
         return this;
     }
 
@@ -353,9 +335,7 @@ public final class RequestOptions {
      *
      * @param responseBodyMode The configuration indicating how the body of the resulting HTTP response should be
      * handled.
-     *
      * @return The updated {@link RequestOptions} object.
-     *
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setResponseBodyMode(ResponseBodyMode responseBodyMode) {
@@ -365,7 +345,6 @@ public final class RequestOptions {
         }
 
         this.responseBodyMode = responseBodyMode;
-
         return this;
     }
 
@@ -373,9 +352,7 @@ public final class RequestOptions {
      * Sets the {@link ClientLogger} used to log the request and response.
      *
      * @param logger The {@link ClientLogger} used to log the request and response.
-     *
      * @return The updated {@link RequestOptions} object.
-     *
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setLogger(ClientLogger logger) {
@@ -385,7 +362,36 @@ public final class RequestOptions {
         }
 
         this.logger = logger;
+        return this;
+    }
 
+    /**
+     * Gets the {@link ExecutorService} used to execute async operations.
+     * <p>
+     * If null, the default {@link SharedExecutorService} will be used.
+     *
+     * @return The {@link ExecutorService} used to execute async operations.
+     */
+    public ExecutorService getAsyncExecutor() {
+        return asyncExecutor;
+    }
+
+    /**
+     * Sets the {@link ExecutorService} used to execute async operations.
+     * <p>
+     * If null, the default {@link SharedExecutorService} will be used.
+     *
+     * @param asyncExecutor The {@link ExecutorService} used to execute async operations.
+     * @return The updated {@link RequestOptions} object.
+     * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
+     */
+    public RequestOptions setAsyncExecutor(ExecutorService asyncExecutor) {
+        if (locked) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("This instance of RequestOptions is immutable. Cannot set async executor."));
+        }
+
+        this.asyncExecutor = asyncExecutor;
         return this;
     }
 
@@ -396,7 +402,6 @@ public final class RequestOptions {
      */
     private RequestOptions lock() {
         locked = true;
-
         return this;
     }
 
@@ -424,9 +429,7 @@ public final class RequestOptions {
      * Sets the {@link InstrumentationContext} used to instrument the request.
      *
      * @param instrumentationContext The {@link InstrumentationContext} used to instrument the request.
-     *
      * @return The updated {@link RequestOptions} object.
-     *
      * @throws IllegalStateException if this instance is obtained by calling {@link RequestOptions#none()}.
      */
     public RequestOptions setInstrumentationContext(InstrumentationContext instrumentationContext) {
@@ -436,7 +439,6 @@ public final class RequestOptions {
         }
 
         this.instrumentationContext = instrumentationContext;
-
         return this;
     }
 }

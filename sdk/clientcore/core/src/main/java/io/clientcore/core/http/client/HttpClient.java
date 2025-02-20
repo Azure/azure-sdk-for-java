@@ -4,6 +4,7 @@
 package io.clientcore.core.http.client;
 
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.client.DefaultHttpClientProvider;
 import io.clientcore.core.utils.SharedExecutorService;
@@ -11,6 +12,7 @@ import io.clientcore.core.utils.SharedExecutorService;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.ExecutorService;
 
 /**
  * A generic interface for sending HTTP requests and getting responses.
@@ -28,6 +30,11 @@ public interface HttpClient {
     /**
      * Sends the provided request asynchronously.
      * <p>
+     * The asynchronous request will be sent using the {@link ExecutorService} provided in the
+     * {@link HttpRequest#getRequestOptions()} ({@link RequestOptions#getAsyncExecutor()}) if the {@link RequestOptions}
+     * and the {@link ExecutorService} is not null. If either is null, the request will be sent using a shared
+     * {@link SharedExecutorService}.
+     * <p>
      * If an I/O error occurs while sending the request or receiving the response, the returned
      * {@link CompletableFuture} will complete exceptionally.
      *
@@ -35,18 +42,21 @@ public interface HttpClient {
      * @return A CompletableFuture that will complete with the response.
      */
     default CompletableFuture<Response<?>> sendAsync(HttpRequest request) {
-        // TODO (alzimmer): Few thoughts here.
-        //  Is this API checked with IOException as the synchronous API is? Or is it mentioned in docs that getting the
-        //  result of the CompletableFuture may throw IOException if one occurred while sending the request?
-        //  Does this API need to accept an ExecutorService to manage which thread the CompletableFuture is executed on?
-        //  Or, does this return an extension type of CompletableFuture that can set the ExecutorService after the fact?
+        ExecutorService asyncExecutor = (request.getRequestOptions() != null)
+            ? request.getRequestOptions().getAsyncExecutor()
+            : null;
+
+        if (asyncExecutor == null) {
+            asyncExecutor = SharedExecutorService.getInstance();
+        }
+
         return CompletableFuture.supplyAsync(() -> {
             try {
                 return send(request);
             } catch (IOException e) {
                 throw new CompletionException(e);
             }
-        }, SharedExecutorService.getInstance());
+        }, asyncExecutor);
     }
 
     /**

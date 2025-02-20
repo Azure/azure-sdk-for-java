@@ -11,6 +11,7 @@ import io.clientcore.core.implementation.http.HttpPipelineCallState;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * The HTTP pipeline that HTTP requests and responses will flow through.
@@ -63,12 +64,23 @@ public final class HttpPipeline {
      * Sends the request through the pipeline.
      *
      * @param request THe HTTP request to send.
-     *
      * @return An {@link Response}.
      */
     public Response<?> send(HttpRequest request) {
         HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
 
         return next.process();
+    }
+
+    /**
+     * Sends the request through the pipeline asynchronously.
+     *
+     * @param request The HTTP request to send.
+     * @return A {@link CompletableFuture} that will complete with the {@link Response}.
+     */
+    public CompletableFuture<Response<?>> sendAsync(HttpRequest request) {
+        HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
+
+        return next.processAsync();
     }
 }
