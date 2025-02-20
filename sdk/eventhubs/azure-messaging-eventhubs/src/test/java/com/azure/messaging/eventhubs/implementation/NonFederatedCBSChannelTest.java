@@ -181,7 +181,7 @@ class NonFederatedCBSChannelTest extends IntegrationTestBase {
             ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
             TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
             super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-                messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, true, true);
+                messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         }
 
         private Mono<RequestResponseChannel> getCBSChannel(String linkName) {

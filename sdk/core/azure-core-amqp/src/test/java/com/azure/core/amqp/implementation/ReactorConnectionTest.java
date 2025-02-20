@@ -182,8 +182,7 @@ class ReactorConnectionTest {
             .thenReturn(sessionHandler, sessionHandler2, null);
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true,
-            true);
+            linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         // Setting up onConnectionRemoteOpen.
         when(connectionEvent.getConnection()).thenReturn(connectionProtonJ);
@@ -514,7 +513,7 @@ class ReactorConnectionTest {
         // Act and Assert
         final ReactorConnection connectionBad
             = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider, linkProvider,
-                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, true);
+                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         StepVerifier.create(connectionBad.getClaimsBasedSecurityNode()).expectErrorSatisfies(error -> {
             assertTrue(error instanceof AmqpException);
@@ -742,8 +741,7 @@ class ReactorConnectionTest {
             .thenReturn(sessionHandler);
 
         connection = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, reactorHandlerProvider,
-            linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true,
-            true);
+            linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
     }
 
     @Test
@@ -753,7 +751,7 @@ class ReactorConnectionTest {
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final ReactorConnection connection2
             = new ReactorConnection(CONNECTION_ID, connectionOptions, provider, reactorHandlerProvider, linkProvider,
-                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, true);
+                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
 
@@ -780,7 +778,7 @@ class ReactorConnectionTest {
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
         final ReactorConnection connection2
             = new ReactorConnection(CONNECTION_ID, connectionOptions, provider, reactorHandlerProvider, linkProvider,
-                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true, true);
+                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST);
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
 
