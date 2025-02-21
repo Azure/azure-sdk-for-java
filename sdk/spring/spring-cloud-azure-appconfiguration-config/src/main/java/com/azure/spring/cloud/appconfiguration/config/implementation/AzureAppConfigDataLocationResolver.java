@@ -17,7 +17,6 @@ import org.springframework.boot.context.config.ConfigDataLocationResolver;
 import org.springframework.boot.context.config.ConfigDataLocationResolverContext;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.boot.context.config.Profiles;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.context.properties.bind.BindHandler;
 import org.springframework.boot.context.properties.bind.Bindable;
 import org.springframework.boot.context.properties.bind.Binder;
@@ -26,10 +25,8 @@ import org.springframework.util.StringUtils;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
-import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 
-@EnableConfigurationProperties(AppConfigurationProviderProperties.class)
 public class AzureAppConfigDataLocationResolver
     implements ConfigDataLocationResolver<AzureAppConfigDataResource> {
 
@@ -72,31 +69,22 @@ public class AzureAppConfigDataLocationResolver
         ConfigDataLocationResolverContext resolverContext, ConfigDataLocation location, Profiles profiles)
         throws ConfigDataLocationNotFoundException {
 
-        Holder holder = loadProperties(resolverContext);
+        AppConfigurationProperties properties = loadProperties(resolverContext);
         List<AzureAppConfigDataResource> locations = new ArrayList<>();
 
-        for (ConfigStore store : holder.properties.getStores()) {
+        for (ConfigStore store : properties.getStores()) {
             locations.add(
-                new AzureAppConfigDataResource(store, profiles, holder.appProperties, START_UP.get(),
-                    holder.properties.getRefreshInterval()));
+                new AzureAppConfigDataResource(store, profiles, START_UP.get(), properties.getRefreshInterval()));
         }
         START_UP.set(false);
         return locations;
     }
 
-    protected Holder loadProperties(ConfigDataLocationResolverContext context) {
+    protected AppConfigurationProperties loadProperties(ConfigDataLocationResolverContext context) {
         Binder binder = context.getBinder();
         BindHandler bindHandler = getBindHandler(context);
-        AppConfigurationProperties properties;
-        AppConfigurationProviderProperties appProperties;
-        Holder holder = new Holder();
-
-        properties = binder.bind(AppConfigurationProperties.CONFIG_PREFIX,
+        AppConfigurationProperties properties = binder.bind(AppConfigurationProperties.CONFIG_PREFIX,
             Bindable.of(AppConfigurationProperties.class), bindHandler).get();
-
-        appProperties = binder.bind(AppConfigurationProviderProperties.CONFIG_PREFIX,
-            Bindable.of(AppConfigurationProviderProperties.class), bindHandler)
-            .orElseGet(AppConfigurationProviderProperties::new);
 
         properties.validateAndInit();
         ReplicaLookUp replicaLookup = null;
@@ -107,22 +95,13 @@ public class AzureAppConfigDataLocationResolver
             LOGGER.info("Failed to find DNS Entry for config store while looking for replicas.");
         }
 
-        AzureAppConfigurationBootstrapRegistrar.register(context, binder, properties, appProperties, replicaLookup);
+        AzureAppConfigurationBootstrapRegistrar.register(context, binder, properties, replicaLookup);
 
-        holder.properties = properties;
-        holder.appProperties = appProperties;
-
-        return holder;
+        return properties;
     }
 
     private BindHandler getBindHandler(ConfigDataLocationResolverContext context) {
         return context.getBootstrapContext().getOrElse(BindHandler.class, null);
-    }
-
-    private class Holder {
-        AppConfigurationProperties properties;
-
-        AppConfigurationProviderProperties appProperties;
     }
 
 }

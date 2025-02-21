@@ -14,7 +14,6 @@ import org.springframework.boot.context.config.ConfigData;
 import org.springframework.boot.context.config.ConfigDataLoader;
 import org.springframework.boot.context.config.ConfigDataLoaderContext;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.logging.DeferredLog;
 import org.springframework.boot.logging.DeferredLogFactory;
 import org.springframework.core.env.EnumerablePropertySource;
@@ -24,12 +23,10 @@ import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
-import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
 
-@EnableConfigurationProperties(AppConfigurationProviderProperties.class)
 public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfigDataResource> {
 
     private static Log logger = new DeferredLog();
@@ -45,6 +42,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     private FeatureFlagClient featureFlagClient;
     
     private Context requestContext;
+
+    private static final Instant START_DATE = Instant.now();
+
+    private static final Integer PREKILL_TIME = 5;
 
     public AzureAppConfigDataLoader(DeferredLogFactory logFactory) {
         logger = logFactory.getLog(getClass());
@@ -200,8 +201,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
     private void delayException() {
         Instant currentDate = Instant.now();
-        Instant preKillTIme = resource.getAppProperties().getStartDate()
-            .plusSeconds(resource.getAppProperties().getPrekillTime());
+        Instant preKillTIme = START_DATE.plusSeconds(PREKILL_TIME);
         if (currentDate.isBefore(preKillTIme)) {
             long diffInMillies = Math.abs(preKillTIme.toEpochMilli() - currentDate.toEpochMilli());
             try {
