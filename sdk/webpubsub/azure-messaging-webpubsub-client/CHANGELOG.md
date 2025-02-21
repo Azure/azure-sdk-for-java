@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.0.10 (2025-03-11)
 
 ### Features Added
 
@@ -17,6 +17,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+- Upgraded `netty-codec-http` from `4.1.115.Final` to version `4.1.118.Final`.
 
 ## 1.0.9 (2024-12-04)
 
