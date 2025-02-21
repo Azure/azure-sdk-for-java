@@ -12,28 +12,28 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * The key verify result.
+ * The key vault error exception.
  */
 @Immutable
-public final class KeyVerifyResult implements JsonSerializable<KeyVerifyResult> {
+public final class KeyVaultError implements JsonSerializable<KeyVaultError> {
     /*
-     * True if the signature is verified, otherwise false.
+     * The key vault server error.
      */
-    private Boolean value;
+    private Error error;
 
     /**
-     * Creates an instance of KeyVerifyResult class.
+     * Creates an instance of KeyVaultError class.
      */
-    public KeyVerifyResult() {
+    public KeyVaultError() {
     }
 
     /**
-     * Get the value property: True if the signature is verified, otherwise false.
+     * Get the error property: The key vault server error.
      * 
-     * @return the value value.
+     * @return the error value.
      */
-    public Boolean isValue() {
-        return this.value;
+    public Error getError() {
+        return this.error;
     }
 
     /**
@@ -46,28 +46,28 @@ public final class KeyVerifyResult implements JsonSerializable<KeyVerifyResult> 
     }
 
     /**
-     * Reads an instance of KeyVerifyResult from the JsonReader.
+     * Reads an instance of KeyVaultError from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of KeyVerifyResult if the JsonReader was pointing to an instance of it, or null if it was
+     * @return An instance of KeyVaultError if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the KeyVerifyResult.
+     * @throws IOException If an error occurs while reading the KeyVaultError.
      */
-    public static KeyVerifyResult fromJson(JsonReader jsonReader) throws IOException {
+    public static KeyVaultError fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            KeyVerifyResult deserializedKeyVerifyResult = new KeyVerifyResult();
+            KeyVaultError deserializedKeyVaultError = new KeyVaultError();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("value".equals(fieldName)) {
-                    deserializedKeyVerifyResult.value = reader.getNullable(JsonReader::getBoolean);
+                if ("error".equals(fieldName)) {
+                    deserializedKeyVaultError.error = Error.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedKeyVerifyResult;
+            return deserializedKeyVaultError;
         });
     }
 }
