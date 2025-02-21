@@ -11,6 +11,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
@@ -27,6 +28,7 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
 
     @BeforeEach
     public void setup() {
+        MockitoAnnotations.openMocks(this);
         scopes = new String[]{"https://storage.azure.com/.default"};
         mockCredential = mock(TokenCredential.class);
     }
