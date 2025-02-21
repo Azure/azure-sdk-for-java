@@ -59,6 +59,10 @@ public interface TestInterfaceClientService {
     @HttpRequestInformation(method = HttpMethod.HEAD, path = "my/uri/path", expectedStatusCodes = { 200 })
     void testHeadMethod();
 
+
+    @HttpRequestInformation(method = HttpMethod.HEAD, path = "my/uri/path", expectedStatusCodes = { 200, 207 })
+    boolean testBooleanHeadMethod();
+
     @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
     Response<Void> testMethodReturnsResponseVoid();
 

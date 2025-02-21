@@ -27,7 +27,6 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -38,8 +37,6 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.utils.CodegenUtil;
-
-import javax.annotation.processing.ProcessingEnvironment;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.io.Writer;
@@ -50,6 +47,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.annotation.processing.ProcessingEnvironment;
 
 import static io.clientcore.annotation.processor.utils.ResponseBodyModeGeneration.generateResponseHandling;
 
@@ -145,9 +143,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
 
         // TODO: Disable these features until the Service interface requirements are determined for Service Version
         //classBuilder.addField(String.class, "apiVersion", Modifier.Keyword.PRIVATE);
-
-        // Add instance field
-        classBuilder.addField(serviceInterfaceShortName, "instance", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC);
 
         // Add the static getNewInstance method
         classBuilder.addMethod("getNewInstance", Modifier.Keyword.PUBLIC, Modifier.Keyword.STATIC)
@@ -355,7 +350,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             return;
         }
 
-        body.tryAddImportToParentCompilationUnit(HttpHeaders.class);
         body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
 
         for (Map.Entry<String, String> header : method.getHeaders().entrySet()) {
@@ -507,8 +501,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             }
             // Set the content type header if it is not already set in the headers
             if (!isContentTypeSetInHeaders) {
-                body.tryAddImportToParentCompilationUnit(ContentType.class);
-                setContentTypeHeader(body, contentType);
+                body.addStatement(StaticJavaParser.parseStatement(
+                    "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, \"" + contentType + "\");"));
             }
             if ("io.clientcore.core.models.binarydata.BinaryData".equals(parameterType)) {
                 body.tryAddImportToParentCompilationUnit(BinaryData.class);
@@ -531,35 +525,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 }
             }
             updateRequestWithBodyContent(body, isJson, parameterType, parameterName);
-        }
-    }
-
-    private static void setContentTypeHeader(BlockStmt body, String contentType) {
-        switch (contentType) {
-            case ContentType.APPLICATION_JSON:
-                body.addStatement(StaticJavaParser.parseStatement(
-                    "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_JSON);"));
-                break;
-
-            case ContentType.APPLICATION_OCTET_STREAM:
-                body.addStatement(StaticJavaParser.parseStatement(
-                    "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM);"));
-                break;
-
-            case ContentType.APPLICATION_X_WWW_FORM_URLENCODED:
-                body.addStatement(StaticJavaParser.parseStatement(
-                    "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_X_WWW_FORM_URLENCODED);"));
-                break;
-
-            case ContentType.TEXT_EVENT_STREAM:
-                body.addStatement(StaticJavaParser.parseStatement(
-                    "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.TEXT_EVENT_STREAM);"));
-                break;
-
-            default:
-                body.addStatement(StaticJavaParser
-                    .parseStatement("httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, " + contentType + ");"));
-                break;
         }
     }
 

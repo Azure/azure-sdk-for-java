@@ -3,6 +3,8 @@
 
 package io.clientcore.core.utils;
 
+import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.ResponseBodyMode;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
@@ -61,6 +63,21 @@ public final class CodegenUtil {
                 return null;
             }
         };
+    }
+
+    /**
+     * Retrieve the ResponseBodyMode from RequestOptions or use the default ResponseBodyMode.BUFFER.
+     * @param requestOptions the request options set on the HttpRequest
+     * @return the ResponseBodyMode from RequestOptions or ResponseBodyMode.BUFFER
+     */
+    public static ResponseBodyMode getOrDefaultResponseBodyMode(RequestOptions requestOptions) {
+        ResponseBodyMode responseBodyMode;
+        if (requestOptions != null && requestOptions.getResponseBodyMode() != null) {
+            responseBodyMode = requestOptions.getResponseBodyMode();
+        } else {
+            responseBodyMode = ResponseBodyMode.BUFFER;
+        }
+        return responseBodyMode;
     }
 
     // Private Ctr

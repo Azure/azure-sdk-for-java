@@ -17,15 +17,16 @@ import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.utils.Context;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.models.binarydata.BinaryData;
-
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
@@ -40,13 +41,6 @@ import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Annotation processor that generates client code based on annotated interfaces.
@@ -147,20 +141,14 @@ public class AnnotationProcessor extends AbstractProcessor {
     }
 
     private void addImports(TemplateInput templateInput) {
-        templateInput.addImport(Context.class.getName());
         templateInput.addImport(BinaryData.class.getName());
-        templateInput.addImport(HttpHeaders.class.getName());
         templateInput.addImport(HttpPipeline.class.getName());
         templateInput.addImport(HttpHeaderName.class.getName());
         templateInput.addImport(HttpMethod.class.getName());
         templateInput.addImport(HttpResponse.class.getName());
         templateInput.addImport(HttpRequest.class.getName());
         templateInput.addImport(Response.class.getName());
-        templateInput.addImport(Map.class.getName());
-        templateInput.addImport(HashMap.class.getName());
-        templateInput.addImport(Arrays.class.getName());
         templateInput.addImport(Void.class.getName());
-        templateInput.addImport(List.class.getName());
     }
 
     private HttpRequestContext createHttpRequestContext(ExecutableElement requestMethod, TemplateInput templateInput) {

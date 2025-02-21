@@ -18,15 +18,19 @@ public class ResponseBodyModeGenerationTest {
     @Test
     void generateResponseBodyModeWithRequestOptions() {
         BlockStmt body = new BlockStmt();
-        ResponseBodyModeGeneration.generateResponseBodyMode(body, "String");
-        assertTrue(body.toString().contains("responseBodyMode = requestOptions.getResponseBodyMode()"));
+        ResponseBodyModeGeneration.generateResponseBodyMode(body);
+        assertTrue(body.toString()
+            .contains(
+                "ResponseBodyMode responseBodyMode = CodegenUtil.getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
     }
 
     @Test
     void generateResponseBodyModeWithoutRequestOptions() {
         BlockStmt body = new BlockStmt();
-        ResponseBodyModeGeneration.generateResponseBodyMode(body, "String");
-        assertTrue(body.toString().contains("responseBodyMode = ResponseBodyMode.BUFFER"));
+        ResponseBodyModeGeneration.generateResponseBodyMode(body);
+        assertTrue(body.toString()
+            .contains(
+                "ResponseBodyMode responseBodyMode = CodegenUtil.getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
     }
 
     @Test
