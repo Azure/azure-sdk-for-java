@@ -25,3 +25,5 @@ extends:
       API_VERSION_GA: '2024-06-01'
     MatrixFilters:
       - JavaTestVersion=^(?!1.8).*
+      - exclude:
+        - name: ubuntu2004_121_nettyhttp_FromSource_SkipRebuild_Verify

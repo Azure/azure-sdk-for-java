@@ -89,6 +89,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     // Azure-Only Test
+    @Disabled("Find a way to live testing Azure Entra ID in pipeline")
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureAdTokenOnly")
     public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel) {
