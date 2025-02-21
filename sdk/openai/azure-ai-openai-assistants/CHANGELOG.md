@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.5 (2025-02-21)
 
 ### Features Added
 
@@ -14,9 +14,13 @@
 
 - Removed `AssistantsApiResponseFormatMode.NONE`.
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` to version `1.4.0`.
+- Upgraded `azure-core` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` to version `1.15.10`.
 
 ## 1.0.0-beta.4 (2024-08-29)
 
