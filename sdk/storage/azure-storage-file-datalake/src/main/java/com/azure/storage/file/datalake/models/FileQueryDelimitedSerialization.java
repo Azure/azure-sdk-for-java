@@ -7,17 +7,12 @@ package com.azure.storage.file.datalake.models;
  * Defines the input or output delimited (CSV) serialization for a blob quick query request.
  */
 public class FileQueryDelimitedSerialization implements FileQuerySerialization {
+
     private char columnSeparator;
     private char fieldQuote;
     private char escapeChar;
     private boolean headersPresent;
     private char recordSeparator;
-
-    /**
-     * Creates a new instance of {@link FileQueryDelimitedSerialization}.
-     */
-    public FileQueryDelimitedSerialization() {
-    }
 
     /**
      * Gets the column separator.
@@ -74,16 +69,16 @@ public class FileQueryDelimitedSerialization implements FileQuerySerialization {
     }
 
     /**
-     * Gets whether headers are present.
-     * @return Whether headers are present.
+     * Gets whether or not headers are present.
+     * @return Whether or not headers are present.
      */
     public boolean isHeadersPresent() {
         return headersPresent;
     }
 
     /**
-     * Sets whether headers are present.
-     * @param headersPresent Whether headers are present.
+     * Sets whether or not headers are present.
+     * @param headersPresent Whether or not headers are present.
      * @return the updated FileQueryDelimitedSerialization object.
      */
     public FileQueryDelimitedSerialization setHeadersPresent(boolean headersPresent) {
