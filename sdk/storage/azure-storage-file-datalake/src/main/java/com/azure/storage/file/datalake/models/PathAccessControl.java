@@ -9,6 +9,7 @@ import java.util.List;
  * This class contains properties that are gettable and settable for path access control.
  */
 public class PathAccessControl {
+
     private final List<PathAccessControlEntry> accessControlList;
     private final String group;
     private final String owner;
