@@ -1,14 +1,9 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.0.0-beta.3 (2025-02-24)
 
 ### Bugs Fixed
-
-### Other Changes
+- [Fix live metric warning](https://github.com/Azure/azure-sdk-for-java/pull/44211)
 
 ## 1.0.0-beta.2 (2025-01-31)
 
