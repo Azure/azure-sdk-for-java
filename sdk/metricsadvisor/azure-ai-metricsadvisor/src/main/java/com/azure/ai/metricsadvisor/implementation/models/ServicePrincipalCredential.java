@@ -17,34 +17,14 @@ import java.util.UUID;
 @Fluent
 public final class ServicePrincipalCredential extends DataSourceCredential {
     /*
-     * Type of data source credential
-     */
-    private DataSourceCredentialType dataSourceCredentialType = DataSourceCredentialType.SERVICE_PRINCIPAL;
-
-    /*
      * The parameters property.
      */
     private ServicePrincipalParam parameters;
-
-    /*
-     * Unique id of data source credential
-     */
-    private UUID dataSourceCredentialId;
 
     /**
      * Creates an instance of ServicePrincipalCredential class.
      */
     public ServicePrincipalCredential() {
-    }
-
-    /**
-     * Get the dataSourceCredentialType property: Type of data source credential.
-     * 
-     * @return the dataSourceCredentialType value.
-     */
-    @Override
-    public DataSourceCredentialType getDataSourceCredentialType() {
-        return this.dataSourceCredentialType;
     }
 
     /**
@@ -68,16 +48,6 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
     }
 
     /**
-     * Get the dataSourceCredentialId property: Unique id of data source credential.
-     * 
-     * @return the dataSourceCredentialId value.
-     */
-    @Override
-    public UUID getDataSourceCredentialId() {
-        return this.dataSourceCredentialId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -95,17 +65,16 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataSourceCredentialType",
+            DataSourceCredentialType.SERVICE_PRINCIPAL == null
+                ? null
+                : DataSourceCredentialType.SERVICE_PRINCIPAL.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
         jsonWriter.writeJsonField("parameters", this.parameters);
-        jsonWriter.writeStringField("dataSourceCredentialType",
-            this.dataSourceCredentialType == null ? null : this.dataSourceCredentialType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -115,7 +84,8 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
      * @param jsonReader The JsonReader being read.
      * @return An instance of ServicePrincipalCredential if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the ServicePrincipalCredential.
      */
     public static ServicePrincipalCredential fromJson(JsonReader jsonReader) throws IOException {
@@ -125,18 +95,22 @@ public final class ServicePrincipalCredential extends DataSourceCredential {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("dataSourceCredentialName".equals(fieldName)) {
+                if ("dataSourceCredentialType".equals(fieldName)) {
+                    String dataSourceCredentialType = reader.getString();
+                    if (!"ServicePrincipal".equals(dataSourceCredentialType)) {
+                        throw new IllegalStateException(
+                            "'dataSourceCredentialType' was expected to be non-null and equal to 'ServicePrincipal'. The found 'dataSourceCredentialType' was '"
+                                + dataSourceCredentialType + "'.");
+                    }
+                } else if ("dataSourceCredentialName".equals(fieldName)) {
                     deserializedServicePrincipalCredential.setDataSourceCredentialName(reader.getString());
                 } else if ("dataSourceCredentialId".equals(fieldName)) {
-                    deserializedServicePrincipalCredential.dataSourceCredentialId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedServicePrincipalCredential.setDataSourceCredentialId(
+                        reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("dataSourceCredentialDescription".equals(fieldName)) {
                     deserializedServicePrincipalCredential.setDataSourceCredentialDescription(reader.getString());
                 } else if ("parameters".equals(fieldName)) {
                     deserializedServicePrincipalCredential.parameters = ServicePrincipalParam.fromJson(reader);
-                } else if ("dataSourceCredentialType".equals(fieldName)) {
-                    deserializedServicePrincipalCredential.dataSourceCredentialType
-                        = DataSourceCredentialType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

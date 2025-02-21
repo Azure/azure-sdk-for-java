@@ -1,35 +1,23 @@
 # Release History
 
-## 12.26.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.25.2 (2025-02-21)
 
 ### Other Changes
 
-## 12.26.0-beta.1 (2025-02-11)
+#### Dependency Updates
 
-### Features Added
-- Added support for NFS over REST. 
-- Added support for service version 2025-05-05.
+- Upgraded `azure-storage-common` from `12.28.0` to version `12.28.1`.
+- Upgraded `azure-xml` from `1.1.0` to version `1.2.0`.
+- Upgraded `azure-core` from `1.54.0` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.6` to version `1.15.10`.
 
-### Breaking Changes
-- The following APIs no longer send the x-ms-file-permission, x-ms-file-attributes, x-ms-file-creation-time, and x-ms-file-last-write-time request headers by default. These headers have been optional in the REST API since x-ms-version 2021-06-08:
-  - ShareDirectoryClient/ShareDirectoryAsyncClient.createWithResponse()
-  - ShareDirectoryClient/ShareDirectoryAsyncClient.setPropertiesWithResponse()
-  - ShareFileClient/ShareFileAsyncClient.createWithResponse()
-  - ShareFileClient/ShareFileAsyncClient.beginCopy()
-  - ShareFileClient/ShareFileAsyncClient.setPropertiesWithResponse()
 
 ## 12.25.1 (2024-12-04)
 
 ### Bugs Fixed
 - `ShareFileClient.downloadToFile()` now retries for a maximum of 5 times when the download fails due to a network error.
-  Previously, the maximum number of retries was unintentionally higher (maximum of 15), which could lead to writing in
-  incorrect positions in the file when retried more than 5 times.
+Previously, the maximum number of retries was unintentionally higher (maximum of 15), which could lead to writing in 
+incorrect positions in the file when retried more than 5 times.
 
 ## 12.25.0 (2024-11-13)
 

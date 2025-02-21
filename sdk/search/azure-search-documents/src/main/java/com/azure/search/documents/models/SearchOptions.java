@@ -4,6 +4,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.implementation.models.SearchRequest;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,14 +15,16 @@ import java.util.List;
 @Fluent
 public final class SearchOptions {
     /*
-     * A value that specifies whether to fetch the total count of results. Default is false. Setting this value to true
-     * may have a performance impact. Note that the count returned is an approximation.
+     * A value that specifies whether to fetch the total count of results.
+     * Default is false. Setting this value to true may have a performance
+     * impact. Note that the count returned is an approximation.
      */
     private Boolean includeTotalCount;
 
     /*
-     * The list of facet expressions to apply to the search query. Each facet expression contains a field name,
-     * optionally followed by a comma-separated list of name:value pairs.
+     * The list of facet expressions to apply to the search query. Each facet
+     * expression contains a field name, optionally followed by a
+     * comma-separated list of name:value pairs.
      */
     private List<String> facets;
 
@@ -31,115 +34,119 @@ public final class SearchOptions {
     private String filter;
 
     /*
-     * The list of field names to use for hit highlights. Only searchable fields can be used for hit highlighting.
+     * The list of field names to use for hit highlights. Only searchable
+     * fields can be used for hit highlighting.
      */
     private List<String> highlightFields;
 
     /*
-     * A string tag that is appended to hit highlights. Must be set with highlightPreTag. Default is &lt;/em&gt;.
+     * A string tag that is appended to hit highlights. Must be set with
+     * highlightPreTag. Default is &lt;/em&gt;.
      */
     private String highlightPostTag;
 
     /*
-     * A string tag that is prepended to hit highlights. Must be set with highlightPostTag. Default is &lt;em&gt;.
+     * A string tag that is prepended to hit highlights. Must be set with
+     * highlightPostTag. Default is &lt;em&gt;.
      */
     private String highlightPreTag;
 
     /*
-     * A number between 0 and 100 indicating the percentage of the index that must be covered by a search query in order
-     * for the query to be reported as a success. This parameter can be useful for ensuring search availability even for
-     * services with only one replica. The default is 100.
+     * A number between 0 and 100 indicating the percentage of the index that
+     * must be covered by a search query in order for the query to be reported
+     * as a success. This parameter can be useful for ensuring search
+     * availability even for services with only one replica. The default is
+     * 100.
      */
     private Double minimumCoverage;
 
     /*
-     * The list of OData $orderby expressions by which to sort the results. Each expression can be either a field name
-     * or a call to either the geo.distance() or the search.score() functions. Each expression can be followed by asc to
-     * indicate ascending, and desc to indicate descending. The default is ascending order. Ties will be broken by the
-     * match scores of documents. If no OrderBy is specified, the default sort order is descending by document match
-     * score. There can be at most 32 $orderby clauses.
+     * The list of OData $orderby expressions by which to sort the results.
+     * Each expression can be either a field name or a call to either the
+     * geo.distance() or the search.score() functions. Each expression can be
+     * followed by asc to indicate ascending, and desc to indicate descending.
+     * The default is ascending order. Ties will be broken by the match scores
+     * of documents. If no OrderBy is specified, the default sort order is
+     * descending by document match score. There can be at most 32 $orderby
+     * clauses.
      */
     private List<String> orderBy;
 
     /*
-     * A value that specifies the syntax of the search query. The default is 'simple'. Use 'full' if your query uses the
-     * Lucene query syntax.
+     * A value that specifies the syntax of the search query. The default is
+     * 'simple'. Use 'full' if your query uses the Lucene query syntax.
      */
     private QueryType queryType;
 
     /*
-     * The list of parameter values to be used in scoring functions (for example, referencePointParameter) using the
-     * format name-values. For example, if the scoring profile defines a function with a parameter called 'mylocation'
-     * the parameter string would be "mylocation--122.2,44.8" (without the quotes).
+     * The list of parameter values to be used in scoring functions (for
+     * example, referencePointParameter) using the format name-values. For
+     * example, if the scoring profile defines a function with a parameter
+     * called 'mylocation' the parameter string would be
+     * "mylocation--122.2,44.8" (without the quotes).
      */
     private List<ScoringParameter> scoringParameters;
 
     /*
-     * The name of a scoring profile to evaluate match scores for matching documents in order to sort the results.
+     * The name of a scoring profile to evaluate match scores for matching
+     * documents in order to sort the results.
      */
     private String scoringProfile;
 
     /*
-     * The list of field names to which to scope the full-text search. When using fielded
-     * search (fieldName:searchExpression) in a full Lucene query, the field names of each fielded search expression
-     * take precedence over any field names listed in this parameter.
+     * The list of field names to which to scope the full-text search. When
+     * using fielded search (fieldName:searchExpression) in a full Lucene
+     * query, the field names of each fielded search expression take precedence
+     * over any field names listed in this parameter.
      */
     private List<String> searchFields;
 
     /*
-     * A value that specifies whether any or all of the search terms must be matched in order to count the document as a
-     * match.
+     * A value that specifies whether any or all of the search terms must be
+     * matched in order to count the document as a match.
      */
     private SearchMode searchMode;
 
     /*
-     * A value that specifies whether we want to calculate scoring statistics (such as document frequency) globally for
-     * more consistent scoring, or locally, for lower latency.
+     * A value that specifies whether we want to calculate scoring statistics
+     * (such as document frequency) globally for more consistent scoring, or
+     * locally, for lower latency.
      */
     private ScoringStatistics scoringStatistics;
 
     /*
-     * A value to be used to create a sticky session, which can help to get more consistent results. As long as the same
-     * sessionId is used, a best-effort attempt will be made to target the same replica set. Be wary that reusing the
-     * same sessionID values repeatedly can interfere with the load balancing of the requests across replicas and
-     * adversely affect the performance of the search service. The value used as sessionId cannot start with a '_'
-     * character.
+     * A value to be used to create a sticky session, which can help to get
+     * more consistent results. As long as the same sessionId is used, a
+     * best-effort attempt will be made to target the same replica set. Be wary
+     * that reusing the same sessionID values repeatedly can interfere with the
+     * load balancing of the requests across replicas and adversely affect the
+     * performance of the search service. The value used as sessionId cannot
+     * start with a '_' character.
      */
     private String sessionId;
 
     /*
-     * The list of fields to retrieve. If unspecified, all fields marked as retrievable in the schema are included.
+     * The list of fields to retrieve. If unspecified, all fields marked as
+     * retrievable in the schema are included.
      */
     private List<String> select;
 
     /*
-     * The number of search results to skip. This value cannot be greater than 100,000. If you need to scan documents in
-     * sequence, but cannot use $skip due to this limitation, consider using $orderby on a totally-ordered key and
-     * $filter with a range query instead.
+     * The number of search results to skip. This value cannot be greater than
+     * 100,000. If you need to scan documents in sequence, but cannot use $skip
+     * due to this limitation, consider using $orderby on a totally-ordered key
+     * and $filter with a range query instead.
      */
     private Integer skip;
 
     /*
-     * The number of search results to retrieve. This can be used in conjunction with $skip to implement client-side
-     * paging of search results. If results are truncated due to server-side paging, the response will include a
-     * continuation token that can be used to issue another Search request for the next page of results.
+     * The number of search results to retrieve. This can be used in
+     * conjunction with $skip to implement client-side paging of search
+     * results. If results are truncated due to server-side paging, the
+     * response will include a continuation token that can be used to issue
+     * another Search request for the next page of results.
      */
     private Integer top;
-
-    /*
-     * Enables a debugging tool that can be used to further explore your search results.
-     */
-    private QueryDebugMode debug;
-
-    /*
-     * The language of the query.
-     */
-    private QueryLanguage queryLanguage;
-
-    /*
-     * Improve search recall by spell-correcting individual search query terms.
-     */
-    private QuerySpellerType speller;
 
     private SemanticSearchOptions semanticSearchOptions;
     private VectorSearchOptions vectorSearchOptions;
@@ -567,66 +574,6 @@ public final class SearchOptions {
      */
     public SearchOptions setTop(Integer top) {
         this.top = top;
-        return this;
-    }
-
-    /**
-     * Get the debug property: Enables a debugging tool that can be used to further explore your search results.
-     *
-     * @return the debug value.
-     */
-    public QueryDebugMode getDebug() {
-        return this.debug;
-    }
-
-    /**
-     * Set the debug property: Enables a debugging tool that can be used to further explore your search results.
-     *
-     * @param debug the debug value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setDebug(QueryDebugMode debug) {
-        this.debug = debug;
-        return this;
-    }
-
-    /**
-     * Get the queryLanguage property: The language of the query.
-     *
-     * @return the queryLanguage value.
-     */
-    public QueryLanguage getQueryLanguage() {
-        return this.queryLanguage;
-    }
-
-    /**
-     * Set the queryLanguage property: The language of the query.
-     *
-     * @param queryLanguage the queryLanguage value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setQueryLanguage(QueryLanguage queryLanguage) {
-        this.queryLanguage = queryLanguage;
-        return this;
-    }
-
-    /**
-     * Get the speller property: Improve search recall by spell-correcting individual search query terms.
-     *
-     * @return the speller value.
-     */
-    public QuerySpellerType getSpeller() {
-        return this.speller;
-    }
-
-    /**
-     * Set the speller property: Improve search recall by spell-correcting individual search query terms.
-     *
-     * @param speller the speller value to set.
-     * @return the SearchOptions object itself.
-     */
-    public SearchOptions setSpeller(QuerySpellerType speller) {
-        this.speller = speller;
         return this;
     }
 

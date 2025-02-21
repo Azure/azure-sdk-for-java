@@ -48,7 +48,6 @@ import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.DownloadRetryOptions;
 import com.azure.storage.file.share.models.FilePermissionFormat;
-import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
@@ -60,7 +59,6 @@ import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
-import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
@@ -71,7 +69,6 @@ import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
-import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
@@ -411,7 +408,7 @@ public class ShareFileAsyncClient {
         ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, null,
-                null, metadata, requestConditions, context));
+                metadata, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -461,10 +458,9 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileInfo>> createWithResponse(ShareFileCreateOptions options) {
         try {
-            StorageImplUtils.assertNotNull("options", options);
             return withContext(context -> createWithResponse(options.getSize(), options.getShareFileHttpHeaders(),
                 options.getSmbProperties(), options.getFilePermission(), options.getFilePermissionFormat(),
-                options.getPosixProperties(), options.getMetadata(), options.getRequestConditions(), context));
+                options.getMetadata(), options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -472,23 +468,26 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileInfo>> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        FilePosixProperties fileposixProperties, Map<String, String> metadata, ShareRequestConditions requestConditions,
-        Context context) {
-        context = context == null ? Context.NONE : context;
+        Map<String, String> metadata, ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-        fileposixProperties = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
 
         // Checks that file permission and file permission key are valid
         ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
+        // If file permission and file permission key are both not set then set default value
+        filePermission = smbProperties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
+        String filePermissionKey = smbProperties.getFilePermissionKey();
+
+        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
+        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
+        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
+
         return azureFileStorageClient.getFiles()
-            .createWithResponseAsync(shareName, filePath, maxSize, null, metadata, filePermission, filePermissionFormat,
-                smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
-                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
-                fileposixProperties.getGroup(), fileposixProperties.getFileMode(), fileposixProperties.getFileType(),
-                httpHeaders, context)
+            .createWithResponseAsync(shareName, filePath, maxSize, fileAttributes, null, metadata, filePermission,
+                filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
+                requestConditions.getLeaseId(), httpHeaders, context)
             .map(ModelHelper::createFileInfoResponse);
     }
 
@@ -700,15 +699,18 @@ public class ShareFileAsyncClient {
                 "Both CopyableFileSmbPropertiesList.isSetChangedOn and smbProperties.fileChangeTime cannot be set."));
         }
 
-        String fileAttributes
-            = list.isFileAttributes() ? null : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
-        String fileCreationTime
-            = list.isCreatedOn() ? null : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+        String fileAttributes = list.isFileAttributes()
+            ? FileConstants.COPY_SOURCE
+            : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+        String fileCreationTime = list.isCreatedOn()
+            ? FileConstants.COPY_SOURCE
+            : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
         String fileLastWriteTime = list.isLastWrittenOn()
-            ? null
+            ? FileConstants.COPY_SOURCE
             : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
-        String fileChangedOnTime
-            = list.isChangedOn() ? null : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
+        String fileChangedOnTime = list.isChangedOn()
+            ? FileConstants.COPY_SOURCE
+            : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
 
         final CopyFileSmbInfo copyFileSmbInfo
             = new CopyFileSmbInfo().setFilePermissionCopyMode(options.getPermissionCopyModeType())
@@ -721,18 +723,13 @@ public class ShareFileAsyncClient {
 
         final String copySource = Utility.encodeUrlPath(sourceUrl);
 
-        FilePosixProperties fileposixProperties
-            = options.getPosixProperties() == null ? new FilePosixProperties() : options.getPosixProperties();
-
         return new PollerFlux<>(interval, (pollingContext) -> {
             try {
                 return withContext(context -> azureFileStorageClient.getFiles()
                     .startCopyWithResponseAsync(shareName, filePath, copySource, null, options.getMetadata(),
                         options.getFilePermission(), options.getFilePermissionFormat(),
-                        tempSmbProperties.getFilePermissionKey(), finalRequestConditions.getLeaseId(),
-                        fileposixProperties.getOwner(), fileposixProperties.getGroup(),
-                        fileposixProperties.getFileMode(), options.getModeCopyMode(), options.getOwnerCopyMode(),
-                        copyFileSmbInfo, context)).map(response -> {
+                        tempSmbProperties.getFilePermissionKey(), finalRequestConditions.getLeaseId(), copyFileSmbInfo,
+                        context)).map(response -> {
                             final FilesStartCopyHeaders headers = response.getDeserializedHeaders();
                             copyId.set(headers.getXMsCopyId());
 
@@ -1709,7 +1706,7 @@ public class ShareFileAsyncClient {
         FileSmbProperties smbProperties, String filePermission, ShareRequestConditions requestConditions) {
         try {
             return withContext(context -> setPropertiesWithResponse(newFileSize, httpHeaders, smbProperties,
-                filePermission, null, null, requestConditions, context));
+                filePermission, null, requestConditions, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1762,12 +1759,9 @@ public class ShareFileAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareFileInfo>> setPropertiesWithResponse(ShareFileSetPropertiesOptions options) {
         try {
-            StorageImplUtils.assertNotNull("options", options);
-            ShareFilePermission filePermission
-                = options.getFilePermissions() == null ? new ShareFilePermission() : options.getFilePermissions();
             return withContext(context -> setPropertiesWithResponse(options.getSizeInBytes(), options.getHttpHeaders(),
-                options.getSmbProperties(), filePermission.getPermission(), filePermission.getPermissionFormat(),
-                options.getPosixProperties(), options.getRequestConditions(), context));
+                options.getSmbProperties(), options.getFilePermissions().getPermission(),
+                options.getFilePermissions().getPermissionFormat(), options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1775,21 +1769,27 @@ public class ShareFileAsyncClient {
 
     Mono<Response<ShareFileInfo>> setPropertiesWithResponse(long newFileSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, FilePermissionFormat filePermissionFormat,
-        FilePosixProperties fileposixProperties, ShareRequestConditions requestConditions, Context context) {
-        context = context == null ? Context.NONE : context;
+        ShareRequestConditions requestConditions, Context context) {
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-        fileposixProperties = fileposixProperties == null ? new FilePosixProperties() : fileposixProperties;
 
         // Checks that file permission and file permission key are valid
         ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
+        // If file permission and file permission key are both not set then set default value
+        filePermission = smbProperties.setFilePermission(filePermission, FileConstants.PRESERVE);
+        String filePermissionKey = smbProperties.getFilePermissionKey();
+
+        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
+        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
+        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
+        context = context == null ? Context.NONE : context;
+
         return azureFileStorageClient.getFiles()
-            .setHttpHeadersWithResponseAsync(shareName, filePath, null, newFileSize, filePermission,
-                filePermissionFormat, smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
-                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
-                smbProperties.getFileChangeTimeString(), requestConditions.getLeaseId(), fileposixProperties.getOwner(),
-                fileposixProperties.getGroup(), fileposixProperties.getFileMode(), httpHeaders, context)
+            .setHttpHeadersWithResponseAsync(shareName, filePath, fileAttributes, null, newFileSize, filePermission,
+                filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime,
+                requestConditions.getLeaseId(), httpHeaders, context)
             .map(ModelHelper::setPropertiesResponse);
     }
 
@@ -3341,60 +3341,5 @@ public class ShareFileAsyncClient {
         Consumer<String> stringToSignHandler, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), stringToSignHandler, context);
-    }
-
-    /**
-     * NFS only. Creates a hard link to the file specified by path.
-     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String -->
-     * <pre>
-     * hardLinkClient.createHardLink&#40;sourceClient.getFilePath&#40;&#41;&#41;
-     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Link count is is %s.&quot;,
-     *         result.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#String -->
-     *
-     * @param targetFile Path of the file to create the hard link to, not including the share. For example,
-     * {@code targetDirectory/targetSubDirectory/.../targetFile}
-     * @return A {@link Mono} containing a {@link ShareFileInfo} describing the state of the hard link.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ShareFileInfo> createHardLink(String targetFile) {
-        return createHardLinkWithResponse(new ShareFileCreateHardLinkOptions(targetFile)).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * NFS only. Creates a hard link to the file specified by path.
-     * <!-- src_embed com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions -->
-     * <pre>
-     * ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;;
-     * hardLinkClient.createHardLinkWithResponse&#40;options&#41;
-     *     .subscribe&#40;result -&gt; System.out.printf&#40;&quot;Link count is is %s.&quot;,
-     *         result.getValue&#40;&#41;.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.share.ShareFileAsyncClient.createHardLink#ShareFileCreateHardLinkOptions -->
-     *
-     * @param options {@link ShareFileCreateHardLinkOptions}
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains
-     * {@link ShareFileInfo} describing the state of the hard link.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ShareFileInfo>> createHardLinkWithResponse(ShareFileCreateHardLinkOptions options) {
-        try {
-            StorageImplUtils.assertNotNull("options", options);
-            return withContext(context -> createHardLinkWithResponse(options.getTargetFile(),
-                options.getRequestConditions(), context));
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
-    }
-
-    Mono<Response<ShareFileInfo>> createHardLinkWithResponse(String targetFile,
-        ShareRequestConditions requestConditions, Context context) {
-        context = context == null ? Context.NONE : context;
-        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
-        return this.azureFileStorageClient.getFiles()
-            .createHardLinkWithResponseAsync(shareName, filePath, targetFile, null, null,
-                requestConditions.getLeaseId(), context)
-            .map(ModelHelper::createHardLinkResponse);
     }
 }

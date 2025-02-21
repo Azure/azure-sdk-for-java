@@ -138,12 +138,11 @@ function FindAllArtifactsThatNeedPatching($ArtifactInfos, $AllDependenciesWithVe
         foreach($depId in $arInfo.Dependencies.Keys) {
             $depVersion = $arInfo.Dependencies[$depId]
 
-            if($depVersion -ne $AllDependenciesWithVersion[$depId]) {
-                $currentGAOrPatchVersion = $arInfo.LatestGAOrPatchVersion
-                $newPatchVersion = GetPatchVersion -ReleaseVersion $currentGAOrPatchVersion
-                $arInfo.FutureReleasePatchVersion = $newPatchVersion
-                $AllDependenciesWithVersion[$arId] = $newPatchVersion
-            }
+
+            $currentGAOrPatchVersion = $arInfo.LatestGAOrPatchVersion
+            $newPatchVersion = GetPatchVersion -ReleaseVersion $currentGAOrPatchVersion
+            $arInfo.FutureReleasePatchVersion = $newPatchVersion
+            $AllDependenciesWithVersion[$arId] = $newPatchVersion
         }
     }
 }

@@ -68,12 +68,6 @@ public final class EmailMessage {
     private Boolean userEngagementTrackingDisabled;
 
     /**
-     * Creates a new isntance of {@link EmailMessage}.
-     */
-    public EmailMessage() {
-    }
-
-    /**
      * Get the headers property: Custom email headers to be passed.
      *
      * @return the headers value.

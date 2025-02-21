@@ -19,13 +19,6 @@ public final class AssetConversionOptions {
     private String outputBlobPrefix;
     private String outputAssetFilename;
 
-    /**
-     * Creates options for a conversion.
-     */
-    public AssetConversionOptions() {
-
-    }
-
     // input setters
     /**
      * Set the inputStorageContainerUrl property: The URL of the Azure blob storage container containing the input model.

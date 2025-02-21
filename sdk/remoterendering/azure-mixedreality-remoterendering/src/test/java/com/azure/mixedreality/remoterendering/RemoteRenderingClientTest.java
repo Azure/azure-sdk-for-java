@@ -3,7 +3,6 @@
 
 package com.azure.mixedreality.remoterendering;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.mixedreality.remoterendering.implementation.models.ErrorResponseException;
@@ -93,8 +92,8 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         String conversionId = getRandomId("failedConversionNoAccess");
 
-        HttpResponseException ex
-            = assertThrows(HttpResponseException.class, () -> client.beginConversion(conversionId, conversionOptions));
+        ErrorResponseException ex
+            = assertThrows(ErrorResponseException.class, () -> client.beginConversion(conversionId, conversionOptions));
 
         assertTrue(ex.getMessage().contains(RESPONSE_CODE_403));
 
@@ -128,13 +127,9 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
 
         assertEquals(AssetConversionStatus.FAILED, conversion.getStatus());
         assertNotNull(conversion.getError());
-        assertEquals(conversion.getError().getCode(), "InputContainerError");
-        // Message: "Could not find the asset file in the storage account. Please make sure all paths and names are correct and the file is uploaded to storage."
-        assertNotNull(conversion.getError().getMessage());
-        assertTrue(conversion.getError()
-            .getMessage()
-            .toLowerCase(Locale.ROOT)
-            .contains("could not find the asset file in the storage account"));
+        // Invalid input provided. Check logs in output container for details.
+        assertTrue(conversion.getError().getMessage().toLowerCase(Locale.ROOT).contains("invalid input"));
+        assertTrue(conversion.getError().getMessage().toLowerCase(Locale.ROOT).contains("logs"));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -144,13 +139,14 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
         BeginSessionOptions options
             = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(RenderingSessionSize.STANDARD);
 
-        String sessionId = getRandomId("sessionTest2");
+        String sessionId = getRandomId("sessionTest");
 
         SyncPoller<RenderingSession, RenderingSession> sessionPoller
             = setSyncPollerPollInterval(client.beginSession(sessionId, options));
 
         RenderingSession session0 = sessionPoller.poll().getValue();
 
+        assertEquals(options.getSize(), session0.getSize());
         assertEquals(sessionId, session0.getId());
 
         RenderingSession sessionProperties = client.getSession(sessionId);
@@ -165,6 +161,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
             || (readyRenderingSession.getMaxLeaseTime().toMinutes() == 5));
         assertNotNull(readyRenderingSession.getHostname());
         assertNotEquals(readyRenderingSession.getArrInspectorPort(), 0);
+        assertEquals(readyRenderingSession.getSize(), options.getSize());
 
         UpdateSessionOptions updateOptions2 = new UpdateSessionOptions().maxLeaseTime(Duration.ofMinutes(6));
         assertEquals(6, updateOptions2.getMaxLeaseTime().toMinutes());

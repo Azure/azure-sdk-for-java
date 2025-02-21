@@ -509,8 +509,7 @@ public class SearchIndexerAsyncClient {
         }
         try {
             return restClient.getDataSources()
-                .createOrUpdateWithResponseAsync(dataSource.getName(), dataSource, ifMatch, null,
-                    ignoreResetRequirements, null, context)
+                .createOrUpdateWithResponseAsync(dataSource.getName(), dataSource, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -926,8 +925,7 @@ public class SearchIndexerAsyncClient {
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
             return restClient.getIndexers()
-                .createOrUpdateWithResponseAsync(indexer.getName(), indexer, ifMatch, null, ignoreResetRequirements,
-                    disableCacheReprocessingChangeDetection, null, context)
+                .createOrUpdateWithResponseAsync(indexer.getName(), indexer, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
@@ -1592,8 +1590,7 @@ public class SearchIndexerAsyncClient {
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
             return restClient.getSkillsets()
-                .createOrUpdateWithResponseAsync(skillset.getName(), skillset, ifMatch, null, ignoreResetRequirements,
-                    disableCacheReprocessingChangeDetection, null, context)
+                .createOrUpdateWithResponseAsync(skillset.getName(), skillset, ifMatch, null, null, context)
                 .onErrorMap(MappingUtils::exceptionMapper);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);

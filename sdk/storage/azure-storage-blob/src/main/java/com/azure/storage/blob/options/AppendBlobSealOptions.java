@@ -12,17 +12,10 @@ import com.azure.storage.blob.models.BlobRequestConditions;
  */
 @Fluent
 public class AppendBlobSealOptions {
+
     private AppendBlobRequestConditions requestConditions;
 
     /**
-     * Creates a new instance of {@link AppendBlobSealOptions}.
-     */
-    public AppendBlobSealOptions() {
-    }
-
-    /**
-     * Gets the {@link AppendBlobRequestConditions}.
-     *
      * @return {@link AppendBlobRequestConditions}
      */
     public AppendBlobRequestConditions getRequestConditions() {
@@ -30,8 +23,6 @@ public class AppendBlobSealOptions {
     }
 
     /**
-     * Sets the {@link AppendBlobRequestConditions}.
-     *
      * @param requestConditions {@link BlobRequestConditions}
      * @return The updated options.
      */

@@ -4,19 +4,13 @@
 package com.azure.communication.chat.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
 import java.util.List;
 
 /**
  * The Chat Services error.
  */
 @Fluent
-public final class ChatError implements JsonSerializable<ChatError> {
+public final class ChatError {
 
     private final String code;
 
@@ -89,53 +83,4 @@ public final class ChatError implements JsonSerializable<ChatError> {
         return this.innerError;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", code);
-        jsonWriter.writeStringField("message", message);
-        jsonWriter.writeStringField("target", target);
-        jsonWriter.writeArrayField("details", details, (writer, error) -> error.toJson(writer));
-        jsonWriter.writeJsonField("innerError", innerError);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ChatError from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatError if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ChatError.
-     */
-    public static ChatError fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String code = null;
-            String message = null;
-            String target = null;
-            List<ChatError> details = null;
-            ChatError innerError = null;
-            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("code".equals(fieldName)) {
-                    code = reader.getString();
-                } else if ("message".equals(fieldName)) {
-                    message = reader.getString();
-                } else if ("target".equals(fieldName)) {
-                    target = reader.getString();
-                } else if ("details".equals(fieldName)) {
-                    details = reader.readArray(ChatError::fromJson);
-                } else if ("innerError".equals(fieldName)) {
-                    innerError = ChatError.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new ChatError(message, code, target, details, innerError);
-        });
-    }
 }

@@ -1,14 +1,13 @@
 # Release History
 
-## 2.11.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 2.10.1 (2025-02-21)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
+
 
 ## 2.10.0 (2024-11-26)
 

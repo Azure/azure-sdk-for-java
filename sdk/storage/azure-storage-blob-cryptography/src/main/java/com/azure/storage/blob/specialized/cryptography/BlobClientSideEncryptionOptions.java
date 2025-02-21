@@ -16,12 +16,6 @@ public class BlobClientSideEncryptionOptions {
     private long authenticatedRegionDataLength = GCM_ENCRYPTION_REGION_LENGTH;
 
     /**
-     * Creates a new instance of {@link BlobClientSideEncryptionOptions}.
-     */
-    public BlobClientSideEncryptionOptions() {
-    }
-
-    /**
      * Gets the length of the authenticated region data.
      * @return the length of the authenticated region data.
      */

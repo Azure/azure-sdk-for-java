@@ -82,7 +82,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.28.0</version>
+    <version>4.28.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -514,4 +514,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 [CloudEvent]: https://github.com/cloudevents/spec/blob/master/spec.md
 
 
-
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventgrid%2Fazure-messaging-eventgrid%2FREADME.png)

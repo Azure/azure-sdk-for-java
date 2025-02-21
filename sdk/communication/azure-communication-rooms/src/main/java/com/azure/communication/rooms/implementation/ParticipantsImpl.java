@@ -30,23 +30,17 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in Participants.
- */
+/** An instance of this class provides access to all the operations defined in Participants. */
 public final class ParticipantsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final ParticipantsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AzureCommunicationRoomServiceImpl client;
 
     /**
      * Initializes an instance of ParticipantsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ParticipantsImpl(AzureCommunicationRoomServiceImpl client) {
@@ -107,7 +101,7 @@ public final class ParticipantsImpl {
 
     /**
      * Get participants in a room.
-     * 
+     *
      * @param roomId The id of the room to get participants from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -125,7 +119,7 @@ public final class ParticipantsImpl {
 
     /**
      * Get participants in a room.
-     * 
+     *
      * @param roomId The id of the room to get participants from.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +137,7 @@ public final class ParticipantsImpl {
 
     /**
      * Get participants in a room.
-     * 
+     *
      * @param roomId The id of the room to get participants from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -157,7 +151,7 @@ public final class ParticipantsImpl {
 
     /**
      * Get participants in a room.
-     * 
+     *
      * @param roomId The id of the room to get participants from.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +167,7 @@ public final class ParticipantsImpl {
 
     /**
      * Get participants in a room.
-     * 
+     *
      * @param roomId The id of the room to get participants from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -191,7 +185,7 @@ public final class ParticipantsImpl {
 
     /**
      * Get participants in a room.
-     * 
+     *
      * @param roomId The id of the room to get participants from.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +204,7 @@ public final class ParticipantsImpl {
 
     /**
      * Get participants in a room.
-     * 
+     *
      * @param roomId The id of the room to get participants from.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -225,7 +219,7 @@ public final class ParticipantsImpl {
 
     /**
      * Get participants in a room.
-     * 
+     *
      * @param roomId The id of the room to get participants from.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +235,7 @@ public final class ParticipantsImpl {
 
     /**
      * Update participants in a room.
-     * 
+     *
      * @param roomId The id of the room to update the participants in.
      * @param updateParticipantsRequest An updated set of participants of the room.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,7 +252,7 @@ public final class ParticipantsImpl {
 
     /**
      * Update participants in a room.
-     * 
+     *
      * @param roomId The id of the room to update the participants in.
      * @param updateParticipantsRequest An updated set of participants of the room.
      * @param context The context to associate with this operation.
@@ -277,7 +271,7 @@ public final class ParticipantsImpl {
 
     /**
      * Update participants in a room.
-     * 
+     *
      * @param roomId The id of the room to update the participants in.
      * @param updateParticipantsRequest An updated set of participants of the room.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,7 +287,7 @@ public final class ParticipantsImpl {
 
     /**
      * Update participants in a room.
-     * 
+     *
      * @param roomId The id of the room to update the participants in.
      * @param updateParticipantsRequest An updated set of participants of the room.
      * @param context The context to associate with this operation.
@@ -310,7 +304,7 @@ public final class ParticipantsImpl {
 
     /**
      * Update participants in a room.
-     * 
+     *
      * @param roomId The id of the room to update the participants in.
      * @param updateParticipantsRequest An updated set of participants of the room.
      * @param context The context to associate with this operation.
@@ -328,7 +322,7 @@ public final class ParticipantsImpl {
 
     /**
      * Update participants in a room.
-     * 
+     *
      * @param roomId The id of the room to update the participants in.
      * @param updateParticipantsRequest An updated set of participants of the room.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -343,15 +337,14 @@ public final class ParticipantsImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of participants in a room along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoomParticipant>> listNextSinglePageAsync(String nextLink) {
@@ -363,16 +356,15 @@ public final class ParticipantsImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of participants in a room along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RoomParticipant>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -384,10 +376,9 @@ public final class ParticipantsImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -404,10 +395,9 @@ public final class ParticipantsImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.

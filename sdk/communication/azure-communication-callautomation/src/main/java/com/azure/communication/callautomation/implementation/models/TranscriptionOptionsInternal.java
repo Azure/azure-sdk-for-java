@@ -174,9 +174,6 @@ public final class TranscriptionOptionsInternal implements JsonSerializable<Tran
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

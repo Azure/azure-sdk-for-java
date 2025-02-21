@@ -13,20 +13,13 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
  */
 @Fluent
 public final class ShareFileDownloadOptions {
+
     private ShareFileRange range;
     private Boolean rangeContentMd5Requested;
     private ShareRequestConditions requestConditions;
     private DownloadRetryOptions retryOptions;
 
     /**
-     * Creates a new instance of {@link ShareFileDownloadOptions}.
-     */
-    public ShareFileDownloadOptions() {
-    }
-
-    /**
-     * Gets the range of bytes over which to list ranges, inclusively.
-     *
      * @return The range of bytes over which to list ranges, inclusively.
      */
     public ShareFileRange getRange() {
@@ -34,8 +27,6 @@ public final class ShareFileDownloadOptions {
     }
 
     /**
-     * Sets the range of bytes over which to list ranges, inclusively.
-     *
      * @param range The range of bytes over which to list ranges, inclusively.
      * @return The updated options.
      */
@@ -45,18 +36,14 @@ public final class ShareFileDownloadOptions {
     }
 
     /**
-     * Gets whether the service returns the MD5 hash for the range.
-     *
-     * @return Whether the service returns the MD5 hash for the range.
+     * @return Whether or not the service returns the MD5 hash for the range.
      */
     public Boolean isRangeContentMd5Requested() {
         return rangeContentMd5Requested;
     }
 
     /**
-     * Sets whether the service returns the MD5 hash for the range.
-     *
-     * @param rangeContentMd5Requested Whether the service returns the MD5 hash for the range.
+     * @param rangeContentMd5Requested Whether or not the service returns the MD5 hash for the range.
      * @return The updated options.
      */
     public ShareFileDownloadOptions setRangeContentMd5Requested(Boolean rangeContentMd5Requested) {
@@ -65,8 +52,6 @@ public final class ShareFileDownloadOptions {
     }
 
     /**
-     * Gets the {@link ShareRequestConditions}.
-     *
      * @return {@link ShareRequestConditions}
      */
     public ShareRequestConditions getRequestConditions() {
@@ -74,8 +59,6 @@ public final class ShareFileDownloadOptions {
     }
 
     /**
-     * Sets the {@link ShareRequestConditions} for the file.
-     *
      * @param requestConditions {@link ShareRequestConditions} for the file.
      * @return The updated options.
      */
@@ -85,8 +68,6 @@ public final class ShareFileDownloadOptions {
     }
 
     /**
-     * Gets the {@link DownloadRetryOptions}.
-     *
      * @return {@link DownloadRetryOptions}
      */
     public DownloadRetryOptions getRetryOptions() {
@@ -94,8 +75,6 @@ public final class ShareFileDownloadOptions {
     }
 
     /**
-     * Sets the {@link DownloadRetryOptions}.
-     *
      * @param retryOptions {@link DownloadRetryOptions}
      * @return The updated options.
      */

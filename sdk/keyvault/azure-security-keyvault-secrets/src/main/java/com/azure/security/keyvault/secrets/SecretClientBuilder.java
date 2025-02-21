@@ -114,7 +114,6 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
     private final Map<String, String> properties;
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private HttpPipeline builtPipeline;
     private String vaultUrl;
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
@@ -154,7 +153,7 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretClient buildClient() {
-        return new SecretClient(getClientImpl(), vaultUrl);
+        return new SecretClient(buildInnerClient(), vaultUrl);
     }
 
     /**
@@ -176,10 +175,10 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public SecretAsyncClient buildAsyncClient() {
-        return new SecretAsyncClient(getClientImpl(), vaultUrl);
+        return new SecretAsyncClient(buildInnerClient(), vaultUrl);
     }
 
-    private SecretClientImpl getClientImpl() {
+    private SecretClientImpl buildInnerClient() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
         String buildEndpoint = getBuildEndpoint(buildConfiguration);
@@ -189,12 +188,10 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
                 .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
-        if (version == null) {
-            version = SecretServiceVersion.getLatest();
-        }
+        SecretServiceVersion serviceVersion = version != null ? version : SecretServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new SecretClientImpl(pipeline, vaultUrl, version);
+            return new SecretClientImpl(pipeline, serviceVersion.getVersion());
         }
 
         if (credential == null) {
@@ -238,13 +235,13 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
         Tracer tracer = TracerProvider.getDefaultProvider()
             .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
-        builtPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)
             .tracer(tracer)
             .build();
 
-        return new SecretClientImpl(builtPipeline, vaultUrl, version);
+        return new SecretClientImpl(pipeline, serviceVersion.getVersion());
     }
 
     /**
@@ -516,10 +513,5 @@ public final class SecretClientBuilder implements TokenCredentialTrait<SecretCli
         } catch (MalformedURLException ex) {
             return null;
         }
-    }
-
-    // For testing purposes
-    HttpPipeline getPipelineForTest() {
-        return pipeline != null ? pipeline : builtPipeline;
     }
 }

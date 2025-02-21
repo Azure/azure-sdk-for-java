@@ -45,25 +45,6 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
         assertThrows(HttpResponseException.class, () -> callRecording.getState(RECORDING_ID).block());
     }
 
-    @Test
-    public void recordingOperationsWithCallConnectionIdTest() {
-        CallAutomationAsyncClient callingServerClient
-            = CallAutomationUnitTestBase.getCallAutomationAsyncClient(recordingOperationsResponses);
-        callRecording = callingServerClient.getCallRecordingAsync();
-
-        validateRecordingState(
-            callRecording.start(
-                new StartRecordingOptions(CALL_CONNECTION_ID).setRecordingStateCallbackUrl("https://localhost/")),
-            RecordingState.ACTIVE);
-
-        validateOperationWithRecordingState(callRecording.pause(RECORDING_ID), RecordingState.INACTIVE);
-
-        validateOperationWithRecordingState(callRecording.resume(RECORDING_ID), RecordingState.ACTIVE);
-
-        validateOperation(callRecording.stop(RECORDING_ID));
-        assertThrows(HttpResponseException.class, () -> callRecording.getState(RECORDING_ID).block());
-    }
-
     private void validateRecordingState(Publisher<RecordingStateResult> publisher, RecordingState status) {
         StepVerifier.create(publisher)
             .consumeNextWith(recordingStateResponse -> validateRecording(recordingStateResponse, status))

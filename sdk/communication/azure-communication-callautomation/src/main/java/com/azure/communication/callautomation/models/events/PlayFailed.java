@@ -15,7 +15,6 @@ import java.io.IOException;
 public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
 
     private PlayFailed() {
-        this.failedPlaySourceIndex = null;
     }
 
     /*

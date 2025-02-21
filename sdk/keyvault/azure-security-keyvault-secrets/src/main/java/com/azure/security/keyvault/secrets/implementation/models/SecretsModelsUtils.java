@@ -122,31 +122,7 @@ public final class SecretsModelsUtils {
         }
 
         DeletedSecret deletedSecret = new DeletedSecret();
-
-        deletedSecret.getProperties()
-            .setContentType(deletedSecretBundle.getContentType())
-            .setTags(deletedSecretBundle.getTags());
-
-        DeletedSecretHelper.setId(deletedSecret, deletedSecretBundle.getId());
-        DeletedSecretHelper.setKeyId(deletedSecret, deletedSecretBundle.getKid());
-        DeletedSecretHelper.setManaged(deletedSecret, deletedSecretBundle.isManaged());
-
-        SecretAttributes secretAttributes = deletedSecretBundle.getAttributes();
-
-        if (secretAttributes != null) {
-            deletedSecret.getProperties()
-                .setEnabled(secretAttributes.isEnabled())
-                .setExpiresOn(secretAttributes.getExpires())
-                .setNotBefore(secretAttributes.getNotBefore());
-
-            DeletedSecretHelper.setCreatedOn(deletedSecret, secretAttributes.getCreated());
-            DeletedSecretHelper.setUpdatedOn(deletedSecret, secretAttributes.getUpdated());
-            DeletedSecretHelper.setRecoveryLevel(deletedSecret, secretAttributes.getRecoveryLevel().toString());
-            DeletedSecretHelper.setRecoverableDays(deletedSecret, secretAttributes.getRecoverableDays());
-        }
-
-        unpackId(deletedSecretBundle.getId(), name -> DeletedSecretHelper.setName(deletedSecret, name),
-            version -> DeletedSecretHelper.setVersion(deletedSecret, version));
+        setSecretPropertiesValues(deletedSecretBundle, deletedSecret.getProperties());
 
         DeletedSecretHelper.setRecoveryId(deletedSecret, deletedSecretBundle.getRecoveryId());
         DeletedSecretHelper.setScheduledPurgeDate(deletedSecret, deletedSecretBundle.getScheduledPurgeDate());
@@ -161,30 +137,7 @@ public final class SecretsModelsUtils {
         }
 
         DeletedSecret deletedSecret = new DeletedSecret();
-
-        deletedSecret.getProperties()
-            .setContentType(deletedSecretItem.getContentType())
-            .setTags(deletedSecretItem.getTags());
-
-        DeletedSecretHelper.setId(deletedSecret, deletedSecretItem.getId());
-        DeletedSecretHelper.setManaged(deletedSecret, deletedSecretItem.isManaged());
-
-        SecretAttributes secretAttributes = deletedSecretItem.getAttributes();
-
-        if (secretAttributes != null) {
-            deletedSecret.getProperties()
-                .setEnabled(secretAttributes.isEnabled())
-                .setExpiresOn(secretAttributes.getExpires())
-                .setNotBefore(secretAttributes.getNotBefore());
-
-            DeletedSecretHelper.setCreatedOn(deletedSecret, secretAttributes.getCreated());
-            DeletedSecretHelper.setUpdatedOn(deletedSecret, secretAttributes.getUpdated());
-            DeletedSecretHelper.setRecoveryLevel(deletedSecret, secretAttributes.getRecoveryLevel().toString());
-            DeletedSecretHelper.setRecoverableDays(deletedSecret, secretAttributes.getRecoverableDays());
-        }
-
-        unpackId(deletedSecretItem.getId(), name -> DeletedSecretHelper.setName(deletedSecret, name),
-            version -> DeletedSecretHelper.setVersion(deletedSecret, version));
+        setSecretPropertiesValues(deletedSecretItem, deletedSecret.getProperties());
 
         DeletedSecretHelper.setRecoveryId(deletedSecret, deletedSecretItem.getRecoveryId());
         DeletedSecretHelper.setScheduledPurgeDate(deletedSecret, deletedSecretItem.getScheduledPurgeDate());

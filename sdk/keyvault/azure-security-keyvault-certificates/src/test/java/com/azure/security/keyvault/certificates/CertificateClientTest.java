@@ -3,7 +3,6 @@
 
 package com.azure.security.keyvault.certificates;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -16,6 +15,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -169,7 +169,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.beginCreateCertificate("", CertificatePolicy.getDefault()),
-            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -651,7 +651,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.createIssuer(new CertificateIssuer("", "")),
-            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -660,7 +660,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         createCertificateClient(httpClient, serviceVersion);
 
         assertResponseException(() -> certificateClient.createIssuer(new CertificateIssuer("", null)),
-            HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD);
+            KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -883,7 +883,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
             KeyVaultCertificateWithPolicy importedCertificate
                 = certificateClient.importCertificate(importCertificateOptions);
 
-            assertTrue("73b4319cdf38e0797084535d9c02fd04d4b2b2e6"
+            assertTrue("db1497bc2c82b365c5c7c73f611513ee117790a9"
                 .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
             assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
@@ -891,12 +891,8 @@ public class CertificateClientTest extends CertificateClientTestBase {
             X509Certificate x509Certificate
                 = assertDoesNotThrow(() -> loadCerToX509Certificate(importedCertificate.getCer()));
 
-            assertTrue(x509Certificate.getSubjectX500Principal()
-                .getName()
-                .contains("CN=Test,OU=Test,O=Contoso,L=Redmond,ST=WA,C=US"));
-            assertTrue(x509Certificate.getIssuerX500Principal()
-                .getName()
-                .contains("CN=Test,OU=Test,O=Contoso,L=Redmond,ST=WA,C=US"));
+            assertEquals("CN=KeyVaultTest", x509Certificate.getSubjectX500Principal().getName());
+            assertEquals("CN=KeyVaultTest", x509Certificate.getIssuerX500Principal().getName());
         });
     }
 
@@ -964,7 +960,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         assertResponseException(
             () -> certificateClient.mergeCertificate(new MergeCertificateOptions(
                 testResourceNamer.randomName("testCert", 20), Collections.singletonList("test".getBytes()))),
-            ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND);
+            KeyVaultErrorException.class, HttpURLConnection.HTTP_NOT_FOUND);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
