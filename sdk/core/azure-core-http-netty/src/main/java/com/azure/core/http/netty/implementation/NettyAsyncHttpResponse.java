@@ -11,6 +11,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
+import reactor.netty.NettyInbound;
+import reactor.netty.channel.ChannelOperations;
 import reactor.netty.http.client.HttpClientResponse;
 
 import java.io.InputStream;
@@ -19,7 +21,6 @@ import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 
-import static com.azure.core.http.netty.implementation.NettyUtility.closeConnection;
 import static com.azure.core.http.netty.implementation.NettyUtility.deepCopyBuffer;
 
 /**
@@ -103,17 +104,20 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // complete. This introduces a previously seen, but in a different flavor, race condition where the write
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        Mono.using(() -> this,
-            response -> Mono
-                .<Void>create(sink -> response.bodyIntern()
-                    .subscribe(new ByteBufWriteSubscriber(channel::write, sink, getContentLength())))
-                .subscribeOn(Schedulers.boundedElastic()),
-            NettyAsyncHttpResponse::close).block();
+        Mono.<Void>create(
+            sink -> bodyIntern().subscribe(new ByteBufWriteSubscriber(channel::write, sink, getContentLength())))
+            .subscribeOn(Schedulers.boundedElastic())
+            .block();
     }
 
     @Override
     public void close() {
-        closeConnection(reactorNettyConnection);
+        NettyInbound inbound = reactorNettyConnection.inbound();
+        if (inbound instanceof ChannelOperations<?, ?>) {
+            ((ChannelOperations<?, ?>) inbound).discard();
+        } else {
+            inbound.receive().ignoreElements().block();
+        }
     }
 
     private ByteBufFlux bodyIntern() {
