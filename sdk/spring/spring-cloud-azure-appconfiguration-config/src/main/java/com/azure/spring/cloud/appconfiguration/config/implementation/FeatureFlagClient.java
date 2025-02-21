@@ -167,8 +167,8 @@ class FeatureFlagClient {
     /**
      * @return the properties
      */
-    public Map<String, Feature> getProperties() {
-        return properties;
+    public List<Feature> getFeatureFlags() {
+        return properties.values().stream().toList();
     }
 
 }
