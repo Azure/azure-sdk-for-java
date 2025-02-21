@@ -25,7 +25,7 @@ public final class EventDataHelper {
         Map<String, Object> map = new LinkedHashMap<>();
 
         map.put("body", eventData.getBodyAsString());
-        map.put("offset", eventData.getOffset());
+        map.put("offset", eventData.getOffsetString());
         map.put("sequenceNumber", eventData.getSequenceNumber());
         map.put("enqueuedTime", eventData.getEnqueuedTime());
 

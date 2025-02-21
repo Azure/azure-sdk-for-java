@@ -115,7 +115,7 @@ public class EventHubsMessageConverter extends AbstractJacksonAzureMessageConver
     private Map<String, Object> getSystemProperties(EventData azureMessage) {
         Map<String, Object> result = new HashMap<>(azureMessage.getSystemProperties());
         result.put(EventHubsHeaders.ENQUEUED_TIME, azureMessage.getEnqueuedTime());
-        result.put(EventHubsHeaders.OFFSET, azureMessage.getOffset());
+        result.put(EventHubsHeaders.OFFSET, azureMessage.getOffsetString());
         result.put(EventHubsHeaders.SEQUENCE_NUMBER, azureMessage.getSequenceNumber());
         result.put(AzureHeaders.PARTITION_KEY, azureMessage.getPartitionKey());
         return result;

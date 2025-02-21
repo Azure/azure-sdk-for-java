@@ -115,7 +115,7 @@ public class EventHubsBatchMessageConverter extends AbstractJacksonAzureMessageC
 
         for (EventData event : events) {
             enqueueTimeList.add(event.getEnqueuedTime());
-            offSetList.add(event.getOffset());
+            offSetList.add(event.getOffsetString());
             sequenceNumberList.add(event.getSequenceNumber());
             partitionKeyList.add(event.getPartitionKey());
             batchConvertedSystemProperties.add(event.getSystemProperties());
