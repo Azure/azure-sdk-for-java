@@ -371,4 +371,25 @@ public class RestProxyTests {
         Duration response = testInterface.testDuration(request, request, requestOptions).getValue();
         Assertions.assertEquals(request, response);
     }
+
+    @ServiceInterface(name = "typeService", host = "https://somecloud.com")
+    interface TestMediaTypeTextService {
+        @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
+        Response<String> testText(@HeaderParam("Accept") String accept, RequestOptions requestOptions);
+    }
+
+    @Test
+    public void canProcessMediaTypeText() {
+        TestMediaTypeTextService testInterface
+            = RestProxy.create(TestMediaTypeTextService.class,
+                new HttpPipelineBuilder().httpClient(request -> Response.create(request, 200,
+                    new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/plain"), BinaryData.fromString("text")))
+                    .build(),
+                new JsonSerializer());
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+
+        // java.lang.UnsupportedOperationException: None of the provided serializers support the format: TEXT
+        String text = testInterface.testText("text/plain", requestOptions).getValue();
+        Assertions.assertEquals("text", text);
+    }
 }
