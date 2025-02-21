@@ -14,7 +14,7 @@ import java.io.IOException;
  */
 public interface HttpClient {
     /**
-     * Sends the provided request synchronously with contextual information.
+     * Sends the provided request with contextual information.
      *
      * @param request The HTTP request to send.
      * @return The response.
