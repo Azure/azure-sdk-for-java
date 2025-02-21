@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Use `getOffsetString()` to persist checkpoints rather than `getOffset()`, which is deprecated.  ([44272](https://github.com/Azure/azure-sdk-for-java/pull/44272))
+
 ### Breaking Changes
 
 ### Bugs Fixed
