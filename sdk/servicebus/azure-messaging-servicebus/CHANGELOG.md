@@ -1,5 +1,17 @@
 # Release History
 
+## 7.17.9 (2025-02-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-xml` from `1.1.0` to version `1.2.0`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+- Upgraded `azure-core-amqp` from `2.9.12` to version `2.9.15`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+
+
 ## 7.17.8 (2025-01-09)
 
 ### Features Added
