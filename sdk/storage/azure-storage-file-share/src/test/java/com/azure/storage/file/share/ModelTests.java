@@ -58,7 +58,8 @@ public class ModelTests {
 
     @Test
     void uploadZeroLengthFails() {
-        assertThrows(IllegalArgumentException.class,
-            () -> new ShareFileUploadRangeOptions(new ByteArrayInputStream(new byte[0]), 0));
+        assertThrows(IllegalArgumentException.class, () -> {
+            new ShareFileUploadRangeOptions(new ByteArrayInputStream(new byte[0]), 0);
+        });
     }
 }
