@@ -41,6 +41,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.stream.Stream;
@@ -298,6 +299,10 @@ public class RestProxyTests {
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
         Response<EnumType> testEnum(@QueryParam(value = "query") EnumType queryParam,
             @BodyParam(value = "application/json") EnumType requestBody, RequestOptions requestOptions);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
+        Response<Duration> testDuration(@QueryParam(value = "query") Duration queryParam,
+            @BodyParam(value = "application/json") Duration requestBody, RequestOptions requestOptions);
     }
 
     // the pipeline mirror a JSON string from request to response
@@ -318,7 +323,7 @@ public class RestProxyTests {
         TestTypeService testInterface = RestProxy.create(TestTypeService.class, MIRROR_PIPELINE, new JsonSerializer());
         RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
 
-        // java.lang.ClassCastException: class java.lang.String cannot be cast to class java.time.OffsetDateTime (java.lang.String and java.time.OffsetDateTime are in module java.base of loader 'bootstrap')
+        // java.lang.ClassCastException: class java.lang.String cannot be cast to class java.time.OffsetDateTime
         OffsetDateTime request = OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC);
         OffsetDateTime response = testInterface.testOffsetDateTime(request, request, requestOptions).getValue();
         Assertions.assertEquals(request, response);
@@ -353,6 +358,17 @@ public class RestProxyTests {
 
         EnumType request = EnumType.ENUM;
         EnumType response = testInterface.testEnum(request, request, requestOptions).getValue();
+        Assertions.assertEquals(request, response);
+    }
+
+    @Test
+    public void canProcessDuration() {
+        TestTypeService testInterface = RestProxy.create(TestTypeService.class, MIRROR_PIPELINE, new JsonSerializer());
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+
+        // java.lang.ClassCastException: class java.lang.String cannot be cast to class java.time.Duration
+        Duration request = Duration.ofMinutes(30);
+        Duration response = testInterface.testDuration(request, request, requestOptions).getValue();
         Assertions.assertEquals(request, response);
     }
 }
