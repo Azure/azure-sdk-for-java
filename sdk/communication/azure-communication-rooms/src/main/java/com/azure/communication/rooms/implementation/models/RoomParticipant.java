@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class RoomParticipant implements JsonSerializable<RoomParticipant> {
     /*
      * Raw ID representation of the communication identifier. Please refer to the following document for additional
-     * information on Raw ID. <br>
+     * information on Raw ID. <br />
      * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#
      * raw-id-representation
      */
@@ -37,7 +37,7 @@ public final class RoomParticipant implements JsonSerializable<RoomParticipant> 
 
     /**
      * Get the rawId property: Raw ID representation of the communication identifier. Please refer to the following
-     * document for additional information on Raw ID. &lt;br&gt;
+     * document for additional information on Raw ID. &lt;br /&gt;
      * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#raw-id-representation.
      * 
      * @return the rawId value.
@@ -48,7 +48,7 @@ public final class RoomParticipant implements JsonSerializable<RoomParticipant> 
 
     /**
      * Set the rawId property: Raw ID representation of the communication identifier. Please refer to the following
-     * document for additional information on Raw ID. &lt;br&gt;
+     * document for additional information on Raw ID. &lt;br /&gt;
      * https://learn.microsoft.com/azure/communication-services/concepts/identifiers?pivots=programming-language-rest#raw-id-representation.
      * 
      * @param rawId the rawId value to set.
