@@ -453,19 +453,6 @@ public final class TestRun implements JsonSerializable<TestRun> {
     }
 
     /**
-     * Set the loadTestConfiguration property: The load test configuration.
-     *
-     * @param loadTestConfiguration the loadTestConfiguration value to set.
-     * @return the TestRun object itself.
-     */
-    @Generated
-    public TestRun setLoadTestConfiguration(LoadTestConfiguration loadTestConfiguration) {
-        this.loadTestConfiguration = loadTestConfiguration;
-        this.updatedProperties.add("loadTestConfiguration");
-        return this;
-    }
-
-    /**
      * Get the testArtifacts property: Collection of test run artifacts.
      *
      * @return the testArtifacts value.
@@ -769,7 +756,6 @@ public final class TestRun implements JsonSerializable<TestRun> {
             jsonWriter.writeJsonField("certificate", this.certificate);
             jsonWriter.writeMapField("environmentVariables", this.environmentVariables,
                 (writer, element) -> writer.writeString(element));
-            jsonWriter.writeJsonField("loadTestConfiguration", this.loadTestConfiguration);
             jsonWriter.writeStringField("displayName", this.displayName);
             jsonWriter.writeStringField("testId", this.testId);
             jsonWriter.writeStringField("description", this.description);
@@ -844,17 +830,6 @@ public final class TestRun implements JsonSerializable<TestRun> {
                         writer.writeNull();
                     }
                 });
-            }
-        }
-        if (updatedProperties.contains("loadTestConfiguration")) {
-            if (this.loadTestConfiguration == null) {
-                jsonWriter.writeNullField("loadTestConfiguration");
-            } else {
-                JsonMergePatchHelper.getLoadTestConfigurationAccessor()
-                    .prepareModelForJsonMergePatch(this.loadTestConfiguration, true);
-                jsonWriter.writeJsonField("loadTestConfiguration", this.loadTestConfiguration);
-                JsonMergePatchHelper.getLoadTestConfigurationAccessor()
-                    .prepareModelForJsonMergePatch(this.loadTestConfiguration, false);
             }
         }
         if (updatedProperties.contains("displayName")) {

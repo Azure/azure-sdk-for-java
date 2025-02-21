@@ -18,13 +18,13 @@ import java.io.IOException;
 public final class TestRunOutputArtifacts implements JsonSerializable<TestRunOutputArtifacts> {
 
     /*
-     * File info
+     * The test run results file
      */
     @Generated
     private TestRunFileInfo resultFileInfo;
 
     /*
-     * File info
+     * The test run report with metrics
      */
     @Generated
     private TestRunFileInfo logsFileInfo;
@@ -49,7 +49,7 @@ public final class TestRunOutputArtifacts implements JsonSerializable<TestRunOut
     }
 
     /**
-     * Get the resultFileInfo property: File info.
+     * Get the resultFileInfo property: The test run results file.
      *
      * @return the resultFileInfo value.
      */
@@ -59,7 +59,7 @@ public final class TestRunOutputArtifacts implements JsonSerializable<TestRunOut
     }
 
     /**
-     * Get the logsFileInfo property: File info.
+     * Get the logsFileInfo property: The test run report with metrics.
      *
      * @return the logsFileInfo value.
      */

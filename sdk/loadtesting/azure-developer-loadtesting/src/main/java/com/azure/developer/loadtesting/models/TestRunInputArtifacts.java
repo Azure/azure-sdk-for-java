@@ -25,19 +25,19 @@ public final class TestRunInputArtifacts implements JsonSerializable<TestRunInpu
     private TestRunFileInfo configFileInfo;
 
     /*
-     * File info
+     * The test script file for the test run
      */
     @Generated
     private TestRunFileInfo testScriptFileInfo;
 
     /*
-     * File info
+     * The user properties file
      */
     @Generated
     private TestRunFileInfo userPropFileInfo;
 
     /*
-     * File info
+     * The zip file for all input artifacts
      */
     @Generated
     private TestRunFileInfo inputArtifactsZipFileInfo;
@@ -72,7 +72,7 @@ public final class TestRunInputArtifacts implements JsonSerializable<TestRunInpu
     }
 
     /**
-     * Get the testScriptFileInfo property: File info.
+     * Get the testScriptFileInfo property: The test script file for the test run.
      *
      * @return the testScriptFileInfo value.
      */
@@ -82,7 +82,7 @@ public final class TestRunInputArtifacts implements JsonSerializable<TestRunInpu
     }
 
     /**
-     * Get the userPropFileInfo property: File info.
+     * Get the userPropFileInfo property: The user properties file.
      *
      * @return the userPropFileInfo value.
      */
@@ -92,7 +92,7 @@ public final class TestRunInputArtifacts implements JsonSerializable<TestRunInpu
     }
 
     /**
-     * Get the inputArtifactsZipFileInfo property: File info.
+     * Get the inputArtifactsZipFileInfo property: The zip file for all input artifacts.
      *
      * @return the inputArtifactsZipFileInfo value.
      */
