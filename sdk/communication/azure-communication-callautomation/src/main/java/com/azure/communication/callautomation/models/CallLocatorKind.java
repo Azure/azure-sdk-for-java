@@ -9,6 +9,7 @@ import java.util.Collection;
 
 /** Defines values for CallLocatorKind. */
 public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind> {
+
     /** Static value groupCallLocator for CallLocatorKind. */
     public static final CallLocatorKind GROUP_CALL_LOCATOR = fromString("groupCallLocator");
 
@@ -17,15 +18,6 @@ public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind>
 
     /** Static value serverCallLocator for CallLocatorKind. */
     public static final CallLocatorKind ROOM_CALL_LOCATOR = fromString("roomCallLocator");
-
-    /**
-     * Creates an instance of {@link CallLocatorKind} with no string value.
-     *
-     * @deprecated Please use {@link #fromString(String)} to create an instance of CallLocatorKind.
-     */
-    @Deprecated
-    public CallLocatorKind() {
-    }
 
     /**
      * Creates or finds a CallLocatorKind from its string representation.
@@ -37,11 +29,7 @@ public final class CallLocatorKind extends ExpandableStringEnum<CallLocatorKind>
         return fromString(name, CallLocatorKind.class);
     }
 
-    /**
-     * Get the collection of CallLocatorKind values.
-     *
-     * @return known CallLocatorKind values.
-     */
+    /** @return known CallLocatorKind values. */
     public static Collection<CallLocatorKind> values() {
         return values(CallLocatorKind.class);
     }
