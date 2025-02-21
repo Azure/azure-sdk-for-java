@@ -34,6 +34,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -94,10 +95,9 @@ import java.util.Map;
 public final class KeyVaultAccessControlClientBuilder
     implements TokenCredentialTrait<KeyVaultAccessControlClientBuilder>, HttpTrait<KeyVaultAccessControlClientBuilder>,
     ConfigurationTrait<KeyVaultAccessControlClientBuilder> {
-
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientBuilder.class);
-    private static final String AZURE_KEY_VAULT_RBAC = "azure-security-keyvault-administration.properties";
+    private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
@@ -150,14 +150,11 @@ public final class KeyVaultAccessControlClientBuilder
     public KeyVaultAccessControlClient buildClient() {
         Configuration buildConfiguration = validateEndpointAndGetConfiguration();
         serviceVersion = getServiceVersion();
-
         if (pipeline != null) {
             return new KeyVaultAccessControlClient(vaultUrl, pipeline, serviceVersion);
         }
-
-        HttpPipeline builtPipeline = getPipeline(buildConfiguration, serviceVersion);
-
-        return new KeyVaultAccessControlClient(vaultUrl, builtPipeline, serviceVersion);
+        HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
+        return new KeyVaultAccessControlClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
     /**
@@ -177,26 +174,23 @@ public final class KeyVaultAccessControlClientBuilder
     public KeyVaultAccessControlAsyncClient buildAsyncClient() {
         Configuration buildConfiguration = validateEndpointAndGetConfiguration();
         serviceVersion = getServiceVersion();
-
         if (pipeline != null) {
             return new KeyVaultAccessControlAsyncClient(vaultUrl, pipeline, serviceVersion);
         }
-
-        HttpPipeline builtPipeline = getPipeline(buildConfiguration, serviceVersion);
-
-        return new KeyVaultAccessControlAsyncClient(vaultUrl, builtPipeline, serviceVersion);
+        HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
+        return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
     private Configuration validateEndpointAndGetConfiguration() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
             throw LOGGER
-                .logExceptionAsError(new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
-
         return buildConfiguration;
     }
 
@@ -444,7 +438,6 @@ public final class KeyVaultAccessControlClientBuilder
     @Override
     public KeyVaultAccessControlClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
-
         return this;
     }
 
