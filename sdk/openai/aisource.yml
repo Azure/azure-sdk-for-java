@@ -17,6 +17,9 @@ extends:
       - name: azure-ai-openai
         groupId: com.azure
         safeName: azureaiopenai
+    CloudConfig:
+      Public:
+        ServiceConnection: azure-sdk-tests-openai
     EnvVars:
       AZURE_OPENAI_ENDPOINT: $(AOAI-ENDPOINT-SWEDENCENTRAL)
       AZURE_OPENAI_KEY: $(AOAI-API-KEY-SWEDENCENTRAL)
