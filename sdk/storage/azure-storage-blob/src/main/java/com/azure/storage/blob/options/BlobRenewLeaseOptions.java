@@ -11,17 +11,10 @@ import com.azure.storage.blob.models.BlobLeaseRequestConditions;
  */
 @Fluent
 public class BlobRenewLeaseOptions {
+
     private BlobLeaseRequestConditions requestConditions;
 
     /**
-     * Creates a new instance of {@link BlobRenewLeaseOptions}.
-     */
-    public BlobRenewLeaseOptions() {
-    }
-
-    /**
-     * Gets the {@link BlobLeaseRequestConditions}.
-     *
      * @return {@link BlobLeaseRequestConditions}
      */
     public BlobLeaseRequestConditions getRequestConditions() {
@@ -29,8 +22,6 @@ public class BlobRenewLeaseOptions {
     }
 
     /**
-     * Sets the {@link BlobLeaseRequestConditions}.
-     *
      * @param requestConditions {@link BlobLeaseRequestConditions}
      * @return The updated options.
      */

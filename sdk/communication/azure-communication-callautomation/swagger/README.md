@@ -23,16 +23,15 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4
+autorest README.md --java --use=@autorest/java@4.1.27 --use=@autorest/modelerfour@4.27.0
 ```
 
 ### Code generation settings
 
 ``` yaml
-tag: package-2024-09-01-preview
-use: '@autorest/java@4.1.29'
+tag: package-2024-09-15
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/d1bedfa9c084a2e3f9cbeb075c532d691c3c0095/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/5c9d5f957d76d9fea9c513f494660c6c5d3e809a/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -62,9 +61,6 @@ directive:
     from: CallConnectionProperties
     to: CallConnectionPropertiesInternal
 - rename-model:
-    from: ConnectRequest
-    to: ConnectRequestInternal
-- rename-model:
     from: CallingOperationResultDetails
     to: CallingOperationResultDetailsInternal
 - rename-model:
@@ -91,6 +87,9 @@ directive:
 - rename-model:
     from: CreateCallRequest
     to: CreateCallRequestInternal
+- rename-model:
+    from: ConnectRequest
+    to: ConnectRequestInternal
 - rename-model:
     from: AnswerCallRequest
     to: AnswerCallRequestInternal
@@ -182,12 +181,6 @@ directive:
     from: MuteParticipantsResult
     to: MuteParticipantsResultInternal
 - rename-model:
-    from: UnmuteParticipantsRequest
-    to: UnmuteParticipantsRequestInternal
-- rename-model:
-    from: UnmuteParticipantsResponse
-    to: UnmuteParticipantsResponseInternal
-- rename-model:
     from: CollectTonesResult
     to: CollectTonesResultInternal
 - rename-model:
@@ -215,9 +208,6 @@ directive:
     from: UpdateTranscriptionRequest
     to: UpdateTranscriptionRequestInternal
 - rename-model:
-    from: StartDialogRequest
-    to: StartDialogRequestInternal
-- rename-model:
     from: RecordingStorageKind
     to: RecordingStorageType
 
@@ -234,6 +224,7 @@ directive:
 - remove-model: PlayFailed
 - remove-model: PlayStarted
 - remove-model: PlayCanceled
+- remove-model: HoldFailed
 - remove-model: ResultInfo
 - remove-model: RecognizeCompleted
 - remove-model: RecognizeFailed
@@ -248,17 +239,6 @@ directive:
 - remove-model: SpeechResult
 - remove-model: CancelAddParticipantSucceeded
 - remove-model: CancelAddParticipantFailed
-- remove-model: DialogCompleted
-- remove-model: DialogConsent
-- remove-model: DialogFailed
-- remove-model: DialogHangup
-- remove-model: DialogLanguageChange
-- remove-model: DialogSensitivityUpdate
-- remove-model: DialogStarted
-- remove-model: DialogTransfer
-- remove-model: DialogFailed
-- remove-model: TeamsComplianceRecordingStateChanged
-- remove-model: TeamsRecordingStateChanged
 - remove-model: TranscriptionStarted
 - remove-model: TranscriptionResumed
 - remove-model: TranscriptionStopped
@@ -270,13 +250,7 @@ directive:
 - remove-model: ConnectFailed
 - remove-model: CreateCallFailed
 - remove-model: AnswerFailed
-- remove-model: HoldFailed
-- remove-model: HoldAudioStarted
-- remove-model: HoldAudioComplteted
-- remove-model: HoldAudioResumed
-- remove-model: HoldAudioPaused
-- remove-model: PlayPaused
-- remove-model: PlayResumed
+
 
 ```
 
@@ -379,6 +353,7 @@ directive:
   transform: >
     $.name = "StopTonesInternal";
 ```
+
 
 ### Rename RecognizeInputType to RecognizeInputTypeInternal
 
@@ -548,14 +523,4 @@ directive:
   where: $.definitions.MediaStreamingSubscriptionState["x-ms-enum"]
   transform: >
     $.name = "MediaStreamingSubscriptionStateInternal";
-```
-
-### Rename AudioFormat to AudioFormatInternal
-
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.AudioFormat["x-ms-enum"]
-  transform: >
-    $.name = "AudioFormatInternal";
 ```

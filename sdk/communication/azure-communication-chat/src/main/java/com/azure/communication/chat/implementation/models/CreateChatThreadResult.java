@@ -5,26 +5,24 @@
 package com.azure.communication.chat.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * Result of the create chat thread operation.
  */
 @Fluent
-public final class CreateChatThreadResult implements JsonSerializable<CreateChatThreadResult> {
+public final class CreateChatThreadResult {
     /*
      * Chat thread.
      */
+    @JsonProperty(value = "chatThread")
     private ChatThreadProperties chatThread;
 
     /*
      * The participants that failed to be added to the chat thread.
      */
+    @JsonProperty(value = "invalidParticipants", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommunicationError> invalidParticipants;
 
     /**
@@ -60,45 +58,5 @@ public final class CreateChatThreadResult implements JsonSerializable<CreateChat
      */
     public List<CommunicationError> getInvalidParticipants() {
         return this.invalidParticipants;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("chatThread", this.chatThread);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CreateChatThreadResult from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CreateChatThreadResult if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CreateChatThreadResult.
-     */
-    public static CreateChatThreadResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CreateChatThreadResult deserializedCreateChatThreadResult = new CreateChatThreadResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("chatThread".equals(fieldName)) {
-                    deserializedCreateChatThreadResult.chatThread = ChatThreadProperties.fromJson(reader);
-                } else if ("invalidParticipants".equals(fieldName)) {
-                    List<CommunicationError> invalidParticipants
-                        = reader.readArray(reader1 -> CommunicationError.fromJson(reader1));
-                    deserializedCreateChatThreadResult.invalidParticipants = invalidParticipants;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCreateChatThreadResult;
-        });
     }
 }

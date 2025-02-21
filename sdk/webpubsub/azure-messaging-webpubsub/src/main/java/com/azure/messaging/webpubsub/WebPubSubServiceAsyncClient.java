@@ -60,20 +60,8 @@ public final class WebPubSubServiceAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
         final WebPubSubClientProtocol webPubSubClientProtocol = options.getWebPubSubClientProtocol();
-        final String path;
-        switch (webPubSubClientProtocol.toString()) {
-            case "mqtt":
-                path = "clients/mqtt/hubs/";
-                break;
-
-            case "socketio":
-                path = "clients/socketio/hubs/";
-                break;
-
-            default:
-                path = "client/hubs/";
-                break;
-        }
+        final String path
+            = webPubSubClientProtocol.equals(WebPubSubClientProtocol.MQTT) ? "clients/mqtt/hubs/" : "client/hubs/";
         if (this.keyCredential == null) {
             return this.serviceClient
                 .generateClientTokenWithResponseAsync(hub, configureClientAccessTokenRequestOptions(options))

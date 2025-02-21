@@ -27,7 +27,7 @@ public final class AcsMicrosoftTeamsAppIdentifier implements JsonSerializable<Ac
     private CommunicationCloudEnvironmentModel cloud;
 
     /**
-     * Creates an instance of AcsMicrosoftTeamsAppIdentifier class.
+     * Creates an instance of MicrosoftTeamsAppIdentifier class.
      */
     public AcsMicrosoftTeamsAppIdentifier() {
     }
@@ -45,7 +45,7 @@ public final class AcsMicrosoftTeamsAppIdentifier implements JsonSerializable<Ac
      * Set the appId property: The Id of the Microsoft Teams application.
      * 
      * @param appId the appId value to set.
-     * @return the AcsMicrosoftTeamsAppIdentifier object itself.
+     * @return the MicrosoftTeamsAppIdentifier object itself.
      */
     public AcsMicrosoftTeamsAppIdentifier setAppId(String appId) {
         this.appId = appId;
@@ -67,7 +67,7 @@ public final class AcsMicrosoftTeamsAppIdentifier implements JsonSerializable<Ac
      * missing.
      * 
      * @param cloud the cloud value to set.
-     * @return the AcsMicrosoftTeamsAppIdentifier object itself.
+     * @return the MicrosoftTeamsAppIdentifier object itself.
      */
     public AcsMicrosoftTeamsAppIdentifier setCloud(CommunicationCloudEnvironmentModel cloud) {
         this.cloud = cloud;
@@ -86,33 +86,33 @@ public final class AcsMicrosoftTeamsAppIdentifier implements JsonSerializable<Ac
     }
 
     /**
-     * Reads an instance of AcsMicrosoftTeamsAppIdentifier from the JsonReader.
+     * Reads an instance of MicrosoftTeamsAppIdentifier from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsMicrosoftTeamsAppIdentifier if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     * @return An instance of MicrosoftTeamsAppIdentifier if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AcsMicrosoftTeamsAppIdentifier.
+     * @throws IOException If an error occurs while reading the MicrosoftTeamsAppIdentifier.
      */
     public static AcsMicrosoftTeamsAppIdentifier fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsMicrosoftTeamsAppIdentifier deserializedAcsMicrosoftTeamsAppIdentifier
+            AcsMicrosoftTeamsAppIdentifier deserializedMicrosoftTeamsAppIdentifier
                 = new AcsMicrosoftTeamsAppIdentifier();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("appId".equals(fieldName)) {
-                    deserializedAcsMicrosoftTeamsAppIdentifier.appId = reader.getString();
+                    deserializedMicrosoftTeamsAppIdentifier.appId = reader.getString();
                 } else if ("cloud".equals(fieldName)) {
-                    deserializedAcsMicrosoftTeamsAppIdentifier.cloud
+                    deserializedMicrosoftTeamsAppIdentifier.cloud
                         = CommunicationCloudEnvironmentModel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAcsMicrosoftTeamsAppIdentifier;
+            return deserializedMicrosoftTeamsAppIdentifier;
         });
     }
 }

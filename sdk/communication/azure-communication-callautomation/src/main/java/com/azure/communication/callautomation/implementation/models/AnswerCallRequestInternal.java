@@ -27,11 +27,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     private String callbackUri;
 
     /*
-     * Used by customer to send custom calling context to targets when answering On-Behalf-Of call
-     */
-    private CustomCallingContext customCallingContext;
-
-    /*
      * A customer set value used to track the answering of a call.
      */
     private String operationContext;
@@ -45,16 +40,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      * The identifier of the call automation entity which answers the call
      */
     private CommunicationUserIdentifierModel answeredBy;
-
-    /*
-     * Media Streaming Options.
-     */
-    private MediaStreamingOptionsInternal mediaStreamingOptions;
-
-    /*
-     * Transcription Options.
-     */
-    private TranscriptionOptionsInternal transcriptionOptions;
 
     /**
      * Creates an instance of AnswerCallRequestInternal class.
@@ -99,28 +84,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
      */
     public AnswerCallRequestInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets when answering
-     * On-Behalf-Of call.
-     * 
-     * @return the customCallingContext value.
-     */
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
-    }
-
-    /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets when answering
-     * On-Behalf-Of call.
-     * 
-     * @param customCallingContext the customCallingContext value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
         return this;
     }
 
@@ -186,46 +149,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
     }
 
     /**
-     * Get the mediaStreamingOptions property: Media Streaming Options.
-     * 
-     * @return the mediaStreamingOptions value.
-     */
-    public MediaStreamingOptionsInternal getMediaStreamingOptions() {
-        return this.mediaStreamingOptions;
-    }
-
-    /**
-     * Set the mediaStreamingOptions property: Media Streaming Options.
-     * 
-     * @param mediaStreamingOptions the mediaStreamingOptions value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setMediaStreamingOptions(MediaStreamingOptionsInternal mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionOptions property: Transcription Options.
-     * 
-     * @return the transcriptionOptions value.
-     */
-    public TranscriptionOptionsInternal getTranscriptionOptions() {
-        return this.transcriptionOptions;
-    }
-
-    /**
-     * Set the transcriptionOptions property: Transcription Options.
-     * 
-     * @param transcriptionOptions the transcriptionOptions value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setTranscriptionOptions(TranscriptionOptionsInternal transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -233,12 +156,9 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("incomingCallContext", this.incomingCallContext);
         jsonWriter.writeStringField("callbackUri", this.callbackUri);
-        jsonWriter.writeJsonField("customCallingContext", this.customCallingContext);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeJsonField("callIntelligenceOptions", this.callIntelligenceOptions);
         jsonWriter.writeJsonField("answeredBy", this.answeredBy);
-        jsonWriter.writeJsonField("mediaStreamingOptions", this.mediaStreamingOptions);
-        jsonWriter.writeJsonField("transcriptionOptions", this.transcriptionOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -262,8 +182,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
                     deserializedAnswerCallRequestInternal.incomingCallContext = reader.getString();
                 } else if ("callbackUri".equals(fieldName)) {
                     deserializedAnswerCallRequestInternal.callbackUri = reader.getString();
-                } else if ("customCallingContext".equals(fieldName)) {
-                    deserializedAnswerCallRequestInternal.customCallingContext = CustomCallingContext.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedAnswerCallRequestInternal.operationContext = reader.getString();
                 } else if ("callIntelligenceOptions".equals(fieldName)) {
@@ -272,12 +190,6 @@ public final class AnswerCallRequestInternal implements JsonSerializable<AnswerC
                 } else if ("answeredBy".equals(fieldName)) {
                     deserializedAnswerCallRequestInternal.answeredBy
                         = CommunicationUserIdentifierModel.fromJson(reader);
-                } else if ("mediaStreamingOptions".equals(fieldName)) {
-                    deserializedAnswerCallRequestInternal.mediaStreamingOptions
-                        = MediaStreamingOptionsInternal.fromJson(reader);
-                } else if ("transcriptionOptions".equals(fieldName)) {
-                    deserializedAnswerCallRequestInternal.transcriptionOptions
-                        = TranscriptionOptionsInternal.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

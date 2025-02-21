@@ -51,4 +51,4 @@ This project welcomes contributions and suggestions. See [Contributing][sdk_read
 [sample_get_schema_id]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/schemaregistry/azure-data-schemaregistry/src/samples/java/com/azure/data/schemaregistry/GetSchemaIdSample.java
 [sample_get_schema_id_async]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/schemaregistry/azure-data-schemaregistry/src/samples/java/com/azure/data/schemaregistry/GetSchemaIdSampleAsync.java
 
-
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%schemaregistry%2Fazure-data-schemaregistry%2Fsrc%2Fsamples%2README.png)

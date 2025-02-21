@@ -22,14 +22,6 @@ public class DataLakeFileOutputStreamOptions {
     private DataLakeRequestConditions requestConditions;
 
     /**
-     * Creates a new instance of {@link DataLakeFileOutputStreamOptions}.
-     */
-    public DataLakeFileOutputStreamOptions() {
-    }
-
-    /**
-     * Gets the {@link ParallelTransferOptions}.
-     *
      * @return {@link ParallelTransferOptions}
      */
     public ParallelTransferOptions getParallelTransferOptions() {
@@ -37,8 +29,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Sets the {@link ParallelTransferOptions}.
-     *
      * @param parallelTransferOptions {@link ParallelTransferOptions}
      * @return The updated options.
      */
@@ -48,8 +38,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Gets the {@link PathHttpHeaders}.
-     *
      * @return {@link PathHttpHeaders}
      */
     public PathHttpHeaders getHeaders() {
@@ -57,8 +45,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Sets the {@link PathHttpHeaders}.
-     *
      * @param headers {@link PathHttpHeaders}
      * @return The updated options.
      */
@@ -68,8 +54,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Gets the metadata to associate with the file.
-     *
      * @return The metadata to associate with the file.
      */
     public Map<String, String> getMetadata() {
@@ -77,8 +61,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Sets the metadata to associate with the file.
-     *
      * @param metadata The metadata to associate with the file.
      * @return The updated options
      */
@@ -88,8 +70,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Gets the tags to associate with the file.
-     *
      * @return The tags to associate with the file.
      */
     public Map<String, String> getTags() {
@@ -97,8 +77,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Sets the tags to associate with the file.
-     *
      * @param tags The tags to associate with the file.
      * @return The updated options.
      */
@@ -108,8 +86,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Gets the {@link AccessTier}.
-     *
      * @return {@link AccessTier}
      */
     public AccessTier getAccessTier() {
@@ -117,8 +93,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Sets the {@link AccessTier}.
-     *
      * @param tier {@link AccessTier}
      * @return The updated options.
      */
@@ -128,8 +102,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Gets the {@link DataLakeRequestConditions}.
-     *
      * @return {@link DataLakeRequestConditions}
      */
     public DataLakeRequestConditions getRequestConditions() {
@@ -137,8 +109,6 @@ public class DataLakeFileOutputStreamOptions {
     }
 
     /**
-     * Sets the {@link DataLakeRequestConditions}.
-     *
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return The updated options.
      */

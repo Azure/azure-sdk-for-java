@@ -1027,8 +1027,7 @@ public final class SearchClient {
                 = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
                     createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
                     result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
-                    result.getSemanticPartialResponseType(), result.getDebugInfo(),
-                    result.getSemanticQueryRewritesResultType());
+                    result.getSemanticPartialResponseType());
             if (continuationToken == null) {
                 firstPageResponseWrapper.setFirstPageResponse(page);
             }

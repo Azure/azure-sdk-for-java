@@ -35,8 +35,9 @@ import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
-import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationClientImpl;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
+import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -98,7 +99,7 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
     HttpTrait<KeyVaultSettingsClientBuilder>, ConfigurationTrait<KeyVaultSettingsClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClientBuilder.class);
-    private static final String AZURE_KEY_VAULT_RBAC = "azure-security-keyvault-administration.properties";
+    private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -394,13 +395,11 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
      *
      * @return an instance of KeyVaultSettingsClientImpl.
      */
-    private KeyVaultAdministrationClientImpl buildImplClient() {
+    private KeyVaultSettingsClientImpl buildImplClient() {
         HttpPipeline buildPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-
         KeyVaultAdministrationServiceVersion version
             = (serviceVersion != null) ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
-
-        return new KeyVaultAdministrationClientImpl(buildPipeline, vaultUrl, version);
+        return new KeyVaultSettingsClientImpl(buildPipeline, version.getVersion());
     }
 
     private HttpPipeline createHttpPipeline() {
@@ -413,7 +412,7 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
 
         if (vaultUrl == null) {
             throw LOGGER
-                .logExceptionAsError(new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
@@ -472,7 +471,7 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
      * @return an instance of KeyVaultSettingsAsyncClient.
      */
     public KeyVaultSettingsAsyncClient buildAsyncClient() {
-        return new KeyVaultSettingsAsyncClient(buildImplClient());
+        return new KeyVaultSettingsAsyncClient(vaultUrl, buildImplClient());
     }
 
     /**
@@ -481,6 +480,6 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
      * @return an instance of KeyVaultSettingsClient.
      */
     public KeyVaultSettingsClient buildClient() {
-        return new KeyVaultSettingsClient(buildImplClient());
+        return new KeyVaultSettingsClient(vaultUrl, buildImplClient());
     }
 }

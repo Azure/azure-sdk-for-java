@@ -9,7 +9,6 @@ import com.azure.core.util.paging.PageRetrieverSync;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.util.SemanticSearchResultsAccessHelper;
-import com.azure.search.documents.models.DebugInfo;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SemanticSearchResults;
@@ -132,16 +131,5 @@ public final class SearchPagedIterable extends PagedIterableBase<SearchResult, S
         return metadataSupplier != null
             ? SemanticSearchResultsAccessHelper.create(metadataSupplier.get().getFirstPageResponse())
             : pagedFlux.getSemanticResults().block();
-    }
-
-    /**
-     * The debug information that can be used to further explore your search results.
-     *
-     * @return The debug information that can be used to further explore your search results.
-     */
-    public DebugInfo getDebugInfo() {
-        return metadataSupplier != null
-            ? metadataSupplier.get().getFirstPageResponse().getDebugInfo()
-            : pagedFlux.getDebugInfo().block();
     }
 }

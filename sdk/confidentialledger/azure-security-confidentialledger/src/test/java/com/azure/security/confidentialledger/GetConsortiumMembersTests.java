@@ -7,13 +7,17 @@ package com.azure.security.confidentialledger;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.json.models.JsonObject;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public final class GetConsortiumMembersTests extends ConfidentialLedgerClientTestBase {
     @Test
-    public void testGetConsortiumMembersTests() {
+    public void testGetConsortiumMembersTests() throws Exception {
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> pagedIterableResponse
             = confidentialLedgerClient.listConsortiumMembers(requestOptions);
@@ -21,8 +25,18 @@ public final class GetConsortiumMembersTests extends ConfidentialLedgerClientTes
         pagedIterableResponse.streamByPage().forEach(resp -> {
             Assertions.assertEquals(200, resp.getStatusCode());
             resp.getValue().forEach(item -> {
-                JsonObject responseBodyJson = item.toObject(JsonObject.class);
-                Assertions.assertNotNull(responseBodyJson.getProperty("id"));
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode responseBodyJson = null;
+
+                try {
+                    responseBodyJson = objectMapper.readTree(item.toBytes());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Assertions.assertTrue(false);
+                }
+
+                Assertions.assertNotNull(responseBodyJson.get("id"));
             });
         });
     }

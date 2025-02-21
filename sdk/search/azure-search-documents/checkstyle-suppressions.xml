@@ -48,21 +48,4 @@
   <suppress files="com.azure.search.documents.SearchIndexingBufferedAsyncSender.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.search.documents.SearchIndexingBufferedSender.java" checks="com.azure.tools.checkstyle.checks.ServiceClientCheck" />
   <suppress files="com.azure.search.documents.implementation.batching.SearchIndexingPublisher.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.BM25SimilarityAlgorithm.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.ClassicSimilarityAlgorithm.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.CognitiveServicesAccount.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.DataChangeDetectionPolicy.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.DefaultCognitiveServicesAccount.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.BM25SimilarityAlgorithm.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.NativeBlobSoftDeleteDeletionDetectionPolicy.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.SearchIndexerDataIdentity.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.SearchIndexerDataNoneIdentity.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.SimilarityAlgorithm.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.indexes.models.SqlIntegratedChangeTrackingPolicy.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.models.VectorizableImageBinaryQuery.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.models.VectorizableImageUrlQuery.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.models.VectorQuery.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
-  <suppress files="com.azure.search.documents.models.VectorThreshold.java" checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" />
 </suppressions>

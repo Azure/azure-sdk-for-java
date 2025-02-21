@@ -131,6 +131,15 @@ public class CallAutomationClientBuilderUnitTests {
     }
 
     @Test
+    public void argumentExceptionOnConnectionStringAndEndpoint() {
+        assertThrows(IllegalArgumentException.class,
+            () -> builder.connectionString(MOCK_CONNECTION_STRING)
+                .endpoint(MOCK_URL)
+                .httpClient(new NoOpHttpClient())
+                .buildAsyncClient());
+    }
+
+    @Test
     public void argumentExceptionOnEmptyConnectionString() {
         assertThrows(NullPointerException.class,
             () -> builder.connectionString("").httpClient(new NoOpHttpClient()).buildAsyncClient());

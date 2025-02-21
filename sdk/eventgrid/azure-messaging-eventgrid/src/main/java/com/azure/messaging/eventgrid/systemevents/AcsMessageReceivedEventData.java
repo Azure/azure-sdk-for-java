@@ -26,29 +26,14 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     private String content;
 
     /*
-     * Message ID. Format is Guid as string.
-     */
-    private String messageId;
-
-    /*
      * The received message channel Kind
      */
     private AcsMessageChannelKind channelKind;
 
     /*
-     * WhatsApp Message Type
-     */
-    private String messageType;
-
-    /*
      * The received message media content
      */
     private AcsMessageMediaContent mediaContent;
-
-    /*
-     * The received message reaction content
-     */
-    private AcsMessageReactionContent reaction;
 
     /*
      * The received message context
@@ -92,26 +77,6 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     }
 
     /**
-     * Get the messageId property: Message ID. Format is Guid as string.
-     *
-     * @return the messageId value.
-     */
-    public String getMessageId() {
-        return this.messageId;
-    }
-
-    /**
-     * Set the messageId property: Message ID. Format is Guid as string.
-     *
-     * @param messageId the messageId value to set.
-     * @return the AcsMessageReceivedEventData object itself.
-     */
-    public AcsMessageReceivedEventData setMessageId(String messageId) {
-        this.messageId = messageId;
-        return this;
-    }
-
-    /**
      * Get the channelKind property: The received message channel Kind.
      *
      * @return the channelKind value.
@@ -132,26 +97,6 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
     }
 
     /**
-     * Get the messageType property: WhatsApp Message Type.
-     *
-     * @return the messageType value.
-     */
-    public String getMessageType() {
-        return this.messageType;
-    }
-
-    /**
-     * Set the messageType property: WhatsApp Message Type.
-     *
-     * @param messageType the messageType value to set.
-     * @return the AcsMessageReceivedEventData object itself.
-     */
-    public AcsMessageReceivedEventData setMessageType(String messageType) {
-        this.messageType = messageType;
-        return this;
-    }
-
-    /**
      * Get the mediaContent property: The received message media content.
      *
      * @return the mediaContent value.
@@ -168,26 +113,6 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      */
     public AcsMessageReceivedEventData setMediaContent(AcsMessageMediaContent mediaContent) {
         this.mediaContent = mediaContent;
-        return this;
-    }
-
-    /**
-     * Get the reaction property: The received message reaction content.
-     *
-     * @return the reaction value.
-     */
-    public AcsMessageReactionContent getReaction() {
-        return this.reaction;
-    }
-
-    /**
-     * Set the reaction property: The received message reaction content.
-     *
-     * @param reaction the reaction value to set.
-     * @return the AcsMessageReceivedEventData object itself.
-     */
-    public AcsMessageReceivedEventData setReaction(AcsMessageReactionContent reaction) {
-        this.reaction = reaction;
         return this;
     }
 
@@ -291,12 +216,9 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getReceivedTimestamp()));
         jsonWriter.writeJsonField("error", getError());
-        jsonWriter.writeStringField("messageType", this.messageType);
         jsonWriter.writeStringField("content", this.content);
-        jsonWriter.writeStringField("messageId", this.messageId);
         jsonWriter.writeStringField("channelType", this.channelKind == null ? null : this.channelKind.toString());
         jsonWriter.writeJsonField("media", this.mediaContent);
-        jsonWriter.writeJsonField("reaction", this.reaction);
         jsonWriter.writeJsonField("context", this.context);
         jsonWriter.writeJsonField("button", this.button);
         jsonWriter.writeJsonField("interactive", this.interactiveContent);
@@ -309,7 +231,6 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsMessageReceivedEventData if the JsonReader was pointing to an instance of it, or null
      * if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsMessageReceivedEventData.
      */
     public static AcsMessageReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
@@ -327,19 +248,13 @@ public final class AcsMessageReceivedEventData extends AcsMessageEventData {
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("error".equals(fieldName)) {
                     deserializedAcsMessageReceivedEventData.setError(AcsMessageChannelEventError.fromJson(reader));
-                } else if ("messageType".equals(fieldName)) {
-                    deserializedAcsMessageReceivedEventData.messageType = reader.getString();
                 } else if ("content".equals(fieldName)) {
                     deserializedAcsMessageReceivedEventData.content = reader.getString();
-                } else if ("messageId".equals(fieldName)) {
-                    deserializedAcsMessageReceivedEventData.messageId = reader.getString();
                 } else if ("channelType".equals(fieldName)) {
                     deserializedAcsMessageReceivedEventData.channelKind
                         = AcsMessageChannelKind.fromString(reader.getString());
                 } else if ("media".equals(fieldName)) {
                     deserializedAcsMessageReceivedEventData.mediaContent = AcsMessageMediaContent.fromJson(reader);
-                } else if ("reaction".equals(fieldName)) {
-                    deserializedAcsMessageReceivedEventData.reaction = AcsMessageReactionContent.fromJson(reader);
                 } else if ("context".equals(fieldName)) {
                     deserializedAcsMessageReceivedEventData.context = AcsMessageContext.fromJson(reader);
                 } else if ("button".equals(fieldName)) {

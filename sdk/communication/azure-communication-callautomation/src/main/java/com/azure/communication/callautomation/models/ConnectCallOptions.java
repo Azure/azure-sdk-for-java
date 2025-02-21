@@ -30,16 +30,6 @@ public final class ConnectCallOptions {
     private CallIntelligenceOptions callIntelligenceOptions;
 
     /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-    /**
-     * Transcription Configuration.
-     */
-    private TranscriptionOptions transcriptionOptions;
-
-    /**
      * Creates a new instance of ConnectCallOptions
      * @param callLocator - The CallLocator
      * @param callbackUrl - The CallbackUrl
@@ -104,46 +94,6 @@ public final class ConnectCallOptions {
     */
     public ConnectCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Get the Transcription configuration.
-     *
-     * @return the transcriptionOptions
-     */
-    public TranscriptionOptions getTranscriptionOptions() {
-        return transcriptionOptions;
-    }
-
-    /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingOptions.
-     */
-    public MediaStreamingOptions getMediaStreamingOptions() {
-        return mediaStreamingOptions;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming options.
-     * @return the ConnectCallOptions object itself.
-     */
-    public ConnectCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-    * Set the transcription configuration.
-    *
-    * @param transcriptionOptions The transcription options.
-    * @return the ConnectCallOptions object itself.
-    */
-    public ConnectCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
-        this.transcriptionOptions = transcriptionOptions;
         return this;
     }
 }

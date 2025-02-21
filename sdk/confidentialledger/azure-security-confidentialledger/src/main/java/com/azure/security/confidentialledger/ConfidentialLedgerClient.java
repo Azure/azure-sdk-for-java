@@ -16,41 +16,35 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.security.confidentialledger.implementation.ConfidentialLedgerClientImpl;
 
-/**
- * Initializes a new instance of the synchronous ConfidentialLedgerClient type.
- */
+/** Initializes a new instance of the synchronous ConfidentialLedgerClient type. */
 @ServiceClient(builder = ConfidentialLedgerClientBuilder.class)
 public final class ConfidentialLedgerClient {
     @Generated
-    private final ConfidentialLedgerClientImpl serviceClient;
+    private final ConfidentialLedgerAsyncClient client;
 
     /**
      * Initializes an instance of ConfidentialLedgerClient class.
-     * 
-     * @param serviceClient the service client implementation.
+     *
+     * @param client the async client.
      */
     @Generated
-    ConfidentialLedgerClient(ConfidentialLedgerClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    ConfidentialLedgerClient(ConfidentialLedgerAsyncClient client) {
+        this.client = client;
     }
 
     /**
-     * Gets the constitution used for governance.
-     * 
      * The constitution is a script that assesses and applies proposals from consortium members.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     digest: String (Required)
      *     script: String (Required)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -61,24 +55,26 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getConstitutionWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getConstitutionWithResponse(requestOptions);
+        return this.client.getConstitutionWithResponse(requestOptions).block();
     }
 
     /**
-     * Lists the consortium members.
-     * 
      * Consortium members can manage the Confidential Ledger.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
-     *     certificate: String (Required)
-     *     id: String (Required)
+     *     members (Required): [
+     *          (Required){
+     *             certificate: String (Required)
+     *             id: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -89,17 +85,15 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listConsortiumMembers(RequestOptions requestOptions) {
-        return this.serviceClient.listConsortiumMembers(requestOptions);
+        return new PagedIterable<>(this.client.listConsortiumMembers(requestOptions));
     }
 
     /**
-     * Gets quotes for all nodes of the Confidential Ledger.
-     * 
      * A quote is an SGX enclave measurement that can be used to verify the validity of a node and its enclave.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     currentNodeId: String (Required)
      *     enclaveQuotes (Required): {
@@ -111,9 +105,8 @@ public final class ConfidentialLedgerClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -124,110 +117,115 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEnclaveQuotesWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getEnclaveQuotesWithResponse(requestOptions);
+        return this.client.getEnclaveQuotesWithResponse(requestOptions).block();
     }
 
     /**
-     * Retrieves a list of collection ids present in the Confidential Ledger
-     * 
      * Collection ids are user-created collections of ledger entries.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
-     *     collectionId: String (Required)
+     *     collections (Required): [
+     *          (Required){
+     *             collectionId: String (Required)
+     *         }
+     *     ]
+     *     nextLink: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paginated collections returned in response to a query as paginated response with {@link PagedIterable}.
+     * @return collections returned in response to a query as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions) {
-        return this.serviceClient.listCollections(requestOptions);
+        return new PagedIterable<>(this.client.listCollections(requestOptions));
     }
 
     /**
-     * Gets ledger entries from a collection corresponding to a range.
-     * 
      * A collection id may optionally be specified. Only entries in the specified (or default) collection will be
      * returned.
-     * <p><strong>Query Parameters</strong></p>
+     *
+     * <p><strong>Query Parameters</strong>
+     *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
-     * <tr><td>fromTransactionId</td><td>String</td><td>No</td><td>Specify the first transaction ID in a
-     * range.</td></tr>
-     * <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
+     *     <tr><td>fromTransactionId</td><td>String</td><td>No</td><td>Specify the first transaction ID in a range.</td></tr>
+     *     <tr><td>toTransactionId</td><td>String</td><td>No</td><td>Specify the last transaction ID in a range.</td></tr>
      * </table>
+     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
-     *     contents: String (Required)
-     *     collectionId: String (Optional)
-     *     transactionId: String (Optional)
+     *     state: String(Loading/Ready) (Required)
+     *     nextLink: String (Optional)
+     *     entries (Required): [
+     *          (Required){
+     *             contents: String (Required)
+     *             collectionId: String (Optional)
+     *             transactionId: String (Optional)
+     *         }
+     *     ]
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return paginated ledger entries returned in response to a query as paginated response with
-     * {@link PagedIterable}.
+     * @return paginated ledger entries returned in response to a query as paginated response with {@link
+     *     PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listLedgerEntries(RequestOptions requestOptions) {
-        return this.serviceClient.listLedgerEntries(requestOptions);
+        return new PagedIterable<>(this.client.listLedgerEntries(requestOptions));
     }
 
     /**
-     * Writes a ledger entry.
-     * 
      * A collection id may optionally be specified.
-     * <p><strong>Query Parameters</strong></p>
+     *
+     * <p><strong>Query Parameters</strong>
+     *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
+     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     contents: String (Required)
      *     collectionId: String (Optional)
      *     transactionId: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     collectionId: String (Required)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param entry Ledger entry.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -235,32 +233,32 @@ public final class ConfidentialLedgerClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return returned as a result of a write to the Confidential Ledger, the transaction id in the response indicates
-     * when the write will become durable along with {@link Response}.
+     *     when the write will become durable along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createLedgerEntryWithResponse(BinaryData entry, RequestOptions requestOptions) {
-        return this.serviceClient.createLedgerEntryWithResponse(entry, requestOptions);
+        return this.client.createLedgerEntryWithResponse(entry, requestOptions).block();
     }
 
     /**
-     * Gets the ledger entry at the specified transaction id. A collection id may optionally be specified to indicate
-     * the collection from which to fetch the value.
-     * 
      * To return older ledger entries, the relevant sections of the ledger must be read from disk and validated. To
      * prevent blocking within the enclave, the response will indicate whether the entry is ready and part of the
      * response, or if the loading is still ongoing.
-     * <p><strong>Query Parameters</strong></p>
+     *
+     * <p><strong>Query Parameters</strong>
+     *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
+     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     state: String(Loading/Ready) (Required)
      *     entry (Optional): {
@@ -269,9 +267,8 @@ public final class ConfidentialLedgerClient {
      *         transactionId: String (Optional)
      *     }
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param transactionId Identifies a write transaction.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -283,15 +280,15 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getLedgerEntryWithResponse(String transactionId, RequestOptions requestOptions) {
-        return this.serviceClient.getLedgerEntryWithResponse(transactionId, requestOptions);
+        return this.client.getLedgerEntryWithResponse(transactionId, requestOptions).block();
     }
 
     /**
      * Gets a receipt certifying ledger contents at a particular transaction id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     receipt (Optional): {
      *         cert: String (Optional)
@@ -317,9 +314,8 @@ public final class ConfidentialLedgerClient {
      *     state: String(Loading/Ready) (Required)
      *     transactionId: String (Required)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param transactionId Identifies a write transaction.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -331,22 +327,21 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getReceiptWithResponse(String transactionId, RequestOptions requestOptions) {
-        return this.serviceClient.getReceiptWithResponse(transactionId, requestOptions);
+        return this.client.getReceiptWithResponse(transactionId, requestOptions).block();
     }
 
     /**
      * Gets the status of an entry identified by a transaction id.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     state: String(Committed/Pending) (Required)
      *     transactionId: String (Required)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param transactionId Identifies a write transaction.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -358,32 +353,32 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTransactionStatusWithResponse(String transactionId, RequestOptions requestOptions) {
-        return this.serviceClient.getTransactionStatusWithResponse(transactionId, requestOptions);
+        return this.client.getTransactionStatusWithResponse(transactionId, requestOptions).block();
     }
 
     /**
-     * Gets the current value available in the ledger.
-     * 
      * A collection id may optionally be specified.
-     * <p><strong>Query Parameters</strong></p>
+     *
+     * <p><strong>Query Parameters</strong>
+     *
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>collectionId</td><td>String</td><td>No</td><td>The collection id.</td></tr>
      * </table>
+     *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     contents: String (Required)
      *     collectionId: String (Optional)
      *     transactionId: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -394,12 +389,12 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCurrentLedgerEntryWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getCurrentLedgerEntryWithResponse(requestOptions);
+        return this.client.getCurrentLedgerEntryWithResponse(requestOptions).block();
     }
 
     /**
      * Deletes a user from the Confidential Ledger.
-     * 
+     *
      * @param userId The user id, either an AAD object ID or certificate fingerprint.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -411,22 +406,21 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteUserWithResponse(String userId, RequestOptions requestOptions) {
-        return this.serviceClient.deleteUserWithResponse(userId, requestOptions);
+        return this.client.deleteUserWithResponse(userId, requestOptions).block();
     }
 
     /**
      * Gets a user.
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     assignedRole: String(Administrator/Contributor/Reader) (Required)
      *     userId: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param userId The user id, either an AAD object ID or certificate fingerprint.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -438,35 +432,30 @@ public final class ConfidentialLedgerClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getUserWithResponse(String userId, RequestOptions requestOptions) {
-        return this.serviceClient.getUserWithResponse(userId, requestOptions);
+        return this.client.getUserWithResponse(userId, requestOptions).block();
     }
 
     /**
-     * Adds a user or updates a user's fields.
-     * 
      * A JSON merge patch is applied for existing users.
-     * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     assignedRole: String(Administrator/Contributor/Reader) (Required)
      *     userId: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
-     * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
      * {
      *     assignedRole: String(Administrator/Contributor/Reader) (Required)
      *     userId: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param userId The user id, either an AAD object ID or certificate fingerprint.
      * @param userDetails Details about a Confidential Ledger user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -480,6 +469,6 @@ public final class ConfidentialLedgerClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateUserWithResponse(String userId, BinaryData userDetails,
         RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateUserWithResponse(userId, userDetails, requestOptions);
+        return this.client.createOrUpdateUserWithResponse(userId, userDetails, requestOptions).block();
     }
 }

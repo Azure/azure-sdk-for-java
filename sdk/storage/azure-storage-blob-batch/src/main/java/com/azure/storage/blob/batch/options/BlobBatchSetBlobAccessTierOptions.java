@@ -16,6 +16,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
  */
 @Fluent
 public class BlobBatchSetBlobAccessTierOptions {
+
     private static final ClientLogger LOGGER = new ClientLogger(BlobBatchSetBlobAccessTierOptions.class);
 
     private final BlobUrlParts blobUrlParts;
@@ -25,11 +26,8 @@ public class BlobBatchSetBlobAccessTierOptions {
     private String tagsConditions;
 
     /**
-     * Creates a new instance of {@link BlobBatchSetBlobAccessTierOptions}.
-     *
      * @param blobUrl Url of the blob to set access tier. Blob names must be encoded to UTF-8.
      * @param tier {@link AccessTier} to set on each blob.
-     * @throws NullPointerException If {@code blobUrl} or {@code tier} is null.
      */
     public BlobBatchSetBlobAccessTierOptions(String blobUrl, AccessTier tier) {
         StorageImplUtils.assertNotNull("blobUrl", blobUrl);
@@ -39,12 +37,9 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Creates a new instance of {@link BlobBatchSetBlobAccessTierOptions}.
-     *
      * @param containerName Name of the container to set access tier.
      * @param blobName Name of the blob to set access tier. Blob names must be encoded to UTF-8.
      * @param tier {@link AccessTier} to set on each blob.
-     * @throws NullPointerException If {@code containerName}, {@code blobName}, or {@code tier} is null.
      */
     public BlobBatchSetBlobAccessTierOptions(String containerName, String blobName, AccessTier tier) {
         StorageImplUtils.assertNotNull("containerName", containerName);
@@ -57,8 +52,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Get the URL of the blob to set its access tier.
-     *
      * @return Url of the blob to set its access tier.
      */
     public String getBlobUrl() {
@@ -66,8 +59,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Gets the container name of the blob to set its access tier.
-     *
      * @return Container of the blob to set its access tier.
      */
     public String getBlobContainerName() {
@@ -75,8 +66,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Gets the name of the blob to set its access tier.
-     *
      * @return Name of the blob to set its access tier.
      */
     public String getBlobName() {
@@ -84,8 +73,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Gets the identifier of the blob to set its access tier.
-     *
      * @return Identifier of the blob to set its access tier.
      */
     public String getBlobIdentifier() {
@@ -107,8 +94,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Gets the version id of the blob to set its access tier.
-     *
      * @return Version id of the blob to set its access tier.
      */
     public String getVersionId() {
@@ -116,8 +101,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Sets the version id of the blob to set its access tier.
-     *
      * @param versionId Version id of the blob to set its access tier.
      * @return The updated BlobBatchSetBlobsAccessTierOptions.
      */
@@ -127,8 +110,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Gets the snapshot of the blob to set its access tier.
-     *
      * @return Snapshot of the blob to set its access tier.
      */
     public String getSnapshot() {
@@ -136,8 +117,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Sets the snapshot of the blob to set its access tier.
-     *
      * @param snapshot Snapshot of the blob to set its access tier.
      * @return The updated BlobBatchSetBlobsAccessTierOptions.
      */
@@ -147,8 +126,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Gets the tier to set for the blob.
-     *
      * @return The new tier for the blob.
      */
     public AccessTier getTier() {
@@ -156,8 +133,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Gets the priority to set for re-hydrating blob.
-     *
      * @return Priority to set for re-hydrating blob.
      */
     public RehydratePriority getPriority() {
@@ -165,8 +140,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Sets the priority to set for re-hydrating blob.
-     *
      * @param priority Priority to set for re-hydrating blob.
      * @return The updated BlobBatchSetBlobsAccessTierOptions.
      */
@@ -176,8 +149,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Gets the lease ID the active lease on the blob must match.
-     *
      * @return The lease ID the active lease on the blob must match.
      */
     public String getLeaseId() {
@@ -185,8 +156,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Sets the lease ID the active lease on the blobs must match.
-     *
      * @param leaseId The lease ID the active lease on the blobs must match.
      * @return The updated BlobBatchSetBlobsAccessTierOptions.
      */
@@ -196,8 +165,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Gets the SQL statement that apply to the tags of the blob.
-     *
      * @return The SQL statement that apply to the tags of the blob.
      */
     public String getTagsConditions() {
@@ -205,8 +172,6 @@ public class BlobBatchSetBlobAccessTierOptions {
     }
 
     /**
-     * Sets the SQL statement that apply to the tags of the blob.
-     *
      * @param tagsConditions The SQL statement that apply to the tags of the blob.
      * @return The updated BlobBatchSetBlobsAccessTierOptions.
      */

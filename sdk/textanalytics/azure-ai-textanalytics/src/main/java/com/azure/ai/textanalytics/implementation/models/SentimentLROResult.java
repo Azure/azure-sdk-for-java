@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -125,8 +124,8 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
                 reader.nextToken();
 
                 if ("lastUpdateDateTime".equals(fieldName)) {
-                    deserializedSentimentLROResult.setLastUpdateDateTime(reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                    deserializedSentimentLROResult.setLastUpdateDateTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("status".equals(fieldName)) {
                     deserializedSentimentLROResult.setStatus(State.fromString(reader.getString()));
                 } else if ("taskName".equals(fieldName)) {

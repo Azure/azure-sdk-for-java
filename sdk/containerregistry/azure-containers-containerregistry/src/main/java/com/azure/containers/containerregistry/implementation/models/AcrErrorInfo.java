@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * Error information.
- */
+/** Error information. */
 @Fluent
 public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
     /*
@@ -31,15 +29,13 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
      */
     private Object detail;
 
-    /**
-     * Creates an instance of AcrErrorInfo class.
-     */
+    /** Creates an instance of AcrErrorInfo class. */
     public AcrErrorInfo() {
     }
 
     /**
      * Get the code property: Error code.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -48,7 +44,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
 
     /**
      * Set the code property: Error code.
-     * 
+     *
      * @param code the code value to set.
      * @return the AcrErrorInfo object itself.
      */
@@ -59,7 +55,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
 
     /**
      * Get the message property: Error message.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -68,7 +64,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
 
     /**
      * Set the message property: Error message.
-     * 
+     *
      * @param message the message value to set.
      * @return the AcrErrorInfo object itself.
      */
@@ -79,7 +75,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
 
     /**
      * Get the detail property: Error details.
-     * 
+     *
      * @return the detail value.
      */
     public Object getDetail() {
@@ -88,7 +84,7 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
 
     /**
      * Set the detail property: Error details.
-     * 
+     *
      * @param detail the detail value to set.
      * @return the AcrErrorInfo object itself.
      */
@@ -97,24 +93,21 @@ public final class AcrErrorInfo implements JsonSerializable<AcrErrorInfo> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("code", this.code);
         jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeUntypedField("detail", this.detail);
+        jsonWriter.writeUntyped(this.detail);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of AcrErrorInfo from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcrErrorInfo if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcrErrorInfo.
      */
     public static AcrErrorInfo fromJson(JsonReader jsonReader) throws IOException {

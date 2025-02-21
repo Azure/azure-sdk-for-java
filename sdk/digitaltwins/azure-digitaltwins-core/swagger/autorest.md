@@ -37,16 +37,21 @@ input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e79e929
 
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.39'
 java: true
+add-context-parameter: true
 namespace: com.azure.digitaltwins.core
 add-credentials: true
 sync-methods: none
 generate-client-as-impl: true
 implementation-subpackage: implementation
 models-subpackage: implementation.models
+context-client-method-parameter: true
 custom-types-subpackage: models
 required-fields-as-ctor-args: true
+service-interface-as-public: true
+generic-response-type: true
+no-custom-headers: true
 ```
 
 ## This directive removes the specified enum values from the swagger so the code generator will expose IfNonMatch header as an option instead of always attaching it to requests with its only default value.

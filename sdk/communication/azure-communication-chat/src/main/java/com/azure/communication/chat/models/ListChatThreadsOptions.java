@@ -16,12 +16,6 @@ public final class ListChatThreadsOptions {
     private OffsetDateTime startTime;
 
     /**
-     * Creates an instance of {@link ListChatThreadsOptions}.
-     */
-    public ListChatThreadsOptions() {
-    }
-
-    /**
      * Gets the maximum page size. It represents the number of threads being requested.
      *
      * @return The maximum page size.

@@ -26,10 +26,8 @@ public final class LifetimeAction implements JsonSerializable<LifetimeAction> {
      * @param action The action type of this LifetimeAction.
      */
     public LifetimeAction(CertificatePolicyAction action) {
-        this.impl
-            = new com.azure.security.keyvault.certificates.implementation.models.LifetimeAction().setAction(new Action()
-                .setActionType(com.azure.security.keyvault.certificates.implementation.models.CertificatePolicyAction
-                    .fromString(action.toString())));
+        this.impl = new com.azure.security.keyvault.certificates.implementation.models.LifetimeAction()
+            .setAction(new Action().setActionType(action));
     }
 
     LifetimeAction(com.azure.security.keyvault.certificates.implementation.models.LifetimeAction impl) {
@@ -90,9 +88,7 @@ public final class LifetimeAction implements JsonSerializable<LifetimeAction> {
      * @return the lifetime action
      */
     public CertificatePolicyAction getAction() {
-        return impl.getAction() == null
-            ? null
-            : CertificatePolicyAction.fromString(impl.getAction().getActionType().toString());
+        return impl.getAction() == null ? null : impl.getAction().getActionType();
     }
 
     @Override

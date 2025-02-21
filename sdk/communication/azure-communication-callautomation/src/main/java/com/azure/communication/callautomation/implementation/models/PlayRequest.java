@@ -29,6 +29,11 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
     private List<CommunicationIdentifierModel> playTo;
 
     /*
+     * If set play can barge into other existing queued-up/currently-processing requests.
+     */
+    private Boolean interruptCallMediaOperation;
+
+    /*
      * Defines options for playing the audio.
      */
     private PlayOptionsInternal playOptions;
@@ -89,6 +94,28 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
      */
     public PlayRequest setPlayTo(List<CommunicationIdentifierModel> playTo) {
         this.playTo = playTo;
+        return this;
+    }
+
+    /**
+     * Get the interruptCallMediaOperation property: If set play can barge into other existing
+     * queued-up/currently-processing requests.
+     * 
+     * @return the interruptCallMediaOperation value.
+     */
+    public Boolean isInterruptCallMediaOperation() {
+        return this.interruptCallMediaOperation;
+    }
+
+    /**
+     * Set the interruptCallMediaOperation property: If set play can barge into other existing
+     * queued-up/currently-processing requests.
+     * 
+     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
+     * @return the PlayRequest object itself.
+     */
+    public PlayRequest setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
+        this.interruptCallMediaOperation = interruptCallMediaOperation;
         return this;
     }
 
@@ -164,6 +191,7 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("playSources", this.playSources, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("playTo", this.playTo, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
         jsonWriter.writeJsonField("playOptions", this.playOptions);
         jsonWriter.writeStringField("operationContext", this.operationContext);
         jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
@@ -194,6 +222,8 @@ public final class PlayRequest implements JsonSerializable<PlayRequest> {
                     List<CommunicationIdentifierModel> playTo
                         = reader.readArray(reader1 -> CommunicationIdentifierModel.fromJson(reader1));
                     deserializedPlayRequest.playTo = playTo;
+                } else if ("interruptCallMediaOperation".equals(fieldName)) {
+                    deserializedPlayRequest.interruptCallMediaOperation = reader.getNullable(JsonReader::getBoolean);
                 } else if ("playOptions".equals(fieldName)) {
                     deserializedPlayRequest.playOptions = PlayOptionsInternal.fromJson(reader);
                 } else if ("operationContext".equals(fieldName)) {

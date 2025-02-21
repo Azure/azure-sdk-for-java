@@ -14,14 +14,6 @@ public class PathGetPropertiesOptions {
     private Boolean userPrincipalName;
 
     /**
-     * Creates a new instance of {@link PathGetPropertiesOptions}.
-     */
-    public PathGetPropertiesOptions() {
-    }
-
-    /**
-     * Gets the {@link DataLakeRequestConditions}.
-     *
      * @return {@link DataLakeRequestConditions}
      */
     public DataLakeRequestConditions getRequestConditions() {
@@ -29,8 +21,6 @@ public class PathGetPropertiesOptions {
     }
 
     /**
-     * Sets the {@link DataLakeRequestConditions}.
-     *
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return The updated options.
      */
@@ -40,8 +30,6 @@ public class PathGetPropertiesOptions {
     }
 
     /**
-     * Gets the value for the x-ms-upn header.
-     *
      * @return The value for the x-ms-upn header.
      */
     public Boolean isUserPrincipalName() {
@@ -49,8 +37,6 @@ public class PathGetPropertiesOptions {
     }
 
     /**
-     * Sets the value for the x-ms-upn header.
-     *
      * @param userPrincipalName The value for the x-ms-upn header.
      * @return The updated options.
      */

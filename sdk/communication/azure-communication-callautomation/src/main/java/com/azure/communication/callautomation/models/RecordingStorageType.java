@@ -16,11 +16,8 @@ public final class RecordingStorageType extends ExpandableStringEnum<RecordingSt
     public static final RecordingStorageType AZURE_BLOB_STORAGE = fromString("AzureBlobStorage");
 
     /**
-     * Creates an instance of {@link RecordingStorageType} with no string value.
-     *
-     * @deprecated Please use {@link #fromString(String)} to create an instance of RecordingStorageType.
+     * Creates a new instance of RecordingStorageType value.
      */
-    @Deprecated
     public RecordingStorageType() {
     }
 

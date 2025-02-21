@@ -105,7 +105,7 @@ public class PathRemoveAccessControlEntry {
 
     /**
      * Parses the provided string into a {@code PathAccessControlEntry}.
-     * <p>
+     *
      * Must be of the format "[scope:][type]:[id]".
      *
      * @param str The string representation of the ACL.

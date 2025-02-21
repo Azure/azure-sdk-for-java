@@ -11,6 +11,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
 import java.nio.channels.SeekableByteChannel;
@@ -23,6 +25,7 @@ public class DownloadImage {
     private static final String ENDPOINT = "https://registryName.azurecr.io";
     private static final String REPOSITORY = "samples/nginx";
     private static final String OUT_DIRECTORY = getTempDirectory();
+    private static final ObjectMapper PRETTY_PRINT = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private static final DefaultAzureCredential CREDENTIAL = new DefaultAzureCredentialBuilder().build();
 
     public static void main(String[] args) throws IOException {
@@ -36,7 +39,7 @@ public class DownloadImage {
         GetManifestResult manifestResult = contentClient.getManifest("latest");
 
         OciImageManifest manifest = manifestResult.getManifest().toObject(OciImageManifest.class);
-        System.out.printf("Got manifest:\n%s\n", manifest.toJsonString());
+        System.out.printf("Got manifest:\n%s\n", PRETTY_PRINT.writeValueAsString(manifest));
 
         String configFileName = manifest.getConfiguration().getDigest() + ".json";
         contentClient.downloadStream(manifest.getConfiguration().getDigest(), createFileChannel(configFileName));

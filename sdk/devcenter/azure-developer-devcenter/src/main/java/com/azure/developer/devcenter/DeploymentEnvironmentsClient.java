@@ -46,8 +46,7 @@ public final class DeploymentEnvironmentsClient {
      * Lists the environments for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -72,8 +71,7 @@ public final class DeploymentEnvironmentsClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -93,8 +91,7 @@ public final class DeploymentEnvironmentsClient {
      * Lists the environments for a project and user.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -119,8 +116,7 @@ public final class DeploymentEnvironmentsClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -143,8 +139,7 @@ public final class DeploymentEnvironmentsClient {
      * Gets an environment.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -169,8 +164,7 @@ public final class DeploymentEnvironmentsClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -194,8 +188,7 @@ public final class DeploymentEnvironmentsClient {
      * Creates or updates an environment.
      * <p><strong>Request Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -220,13 +213,11 @@ public final class DeploymentEnvironmentsClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      * 
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     parameters (Optional): {
      *         String: Object (Required)
@@ -251,8 +242,7 @@ public final class DeploymentEnvironmentsClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -278,8 +268,7 @@ public final class DeploymentEnvironmentsClient {
      * Deletes an environment and all its associated resources.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -302,8 +291,7 @@ public final class DeploymentEnvironmentsClient {
      *         }
      *     }
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
@@ -327,13 +315,11 @@ public final class DeploymentEnvironmentsClient {
      * Lists all of the catalogs available for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -353,13 +339,11 @@ public final class DeploymentEnvironmentsClient {
      * Gets the specified catalog within the project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param catalogName Name of the catalog.
@@ -381,8 +365,7 @@ public final class DeploymentEnvironmentsClient {
      * Lists all environment definitions available for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -405,8 +388,7 @@ public final class DeploymentEnvironmentsClient {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -426,8 +408,7 @@ public final class DeploymentEnvironmentsClient {
      * Lists all environment definitions available within a catalog.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -450,8 +431,7 @@ public final class DeploymentEnvironmentsClient {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param catalogName The name of the catalog.
@@ -473,8 +453,7 @@ public final class DeploymentEnvironmentsClient {
      * Get an environment definition from a catalog.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     id: String (Required)
      *     name: String (Required)
@@ -497,8 +476,7 @@ public final class DeploymentEnvironmentsClient {
      *     parametersSchema: String (Optional)
      *     templatePath: String (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param catalogName Name of the catalog.
@@ -522,15 +500,13 @@ public final class DeploymentEnvironmentsClient {
      * Lists all environment types configured for a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     deploymentTargetId: String (Required)
      *     status: String(Enabled/Disabled) (Required)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
