@@ -46,7 +46,7 @@ import java.util.Map;
 public final class StorageAccountsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/NfsV3AccountCreate.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/NfsV3AccountCreate.json
      */
     /**
      * Sample code: NfsV3AccountCreate.
@@ -74,7 +74,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountCreatePremiumBlockBlobStorage.json
      */
     /**
@@ -105,7 +105,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountCreateWithImmutabilityPolicy.json
      */
     /**
@@ -134,7 +134,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountCreateAllowedCopyScopeToPrivateLink.json
      */
     /**
@@ -174,7 +174,7 @@ public final class StorageAccountsCreateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountCreate.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountCreate.json
      */
     /**
      * Sample code: StorageAccountCreate.
@@ -214,7 +214,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountCreateEnablePublicNetworkAccess.json
      */
     /**
@@ -255,7 +255,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountCreateAllowedCopyScopeToAAD.json
      */
     /**
@@ -293,7 +293,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountCreateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
@@ -330,7 +330,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountCreateDisallowPublicNetworkAccess.json
      */
     /**
@@ -371,7 +371,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountCreateDnsEndpointTypeToStandard.json
      */
     /**
@@ -414,7 +414,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountCreateDnsEndpointTypeToAzureDnsZone.json
      */
     /**
@@ -457,7 +457,7 @@ public final class StorageAccountsCreateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountCreateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**

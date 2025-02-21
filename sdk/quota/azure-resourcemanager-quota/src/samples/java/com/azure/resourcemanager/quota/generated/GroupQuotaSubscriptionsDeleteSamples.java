@@ -10,8 +10,8 @@ package com.azure.resourcemanager.quota.generated;
 public final class GroupQuotaSubscriptionsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/GroupQuotasSubscriptions
-     * /DeleteGroupQuotaSubscriptions.json
+     * specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/GroupQuotasSubscriptions/
+     * DeleteGroupQuotaSubscriptions.json
      */
     /**
      * Sample code: GroupQuotaSubscriptions_Delete_Subscriptions.

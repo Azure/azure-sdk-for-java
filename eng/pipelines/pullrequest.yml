@@ -15,9 +15,9 @@ pr:
     # pr->paths->exclude. These are paths only, not individual files
     exclude:
     - sdk/batch/microsoft-azure-batch/ # track 1
-    - sdk/boms # pom only release pipeline
-    - sdk/cosmos # emulator tests
-    - sdk/e2e # no pipeline, nothing to build
+    - sdk/boms/ # pom only release pipeline
+    - sdk/cosmos/ # emulator tests
+    - sdk/e2e/ # no pipeline, nothing to build
     - sdk/cognitiveservices/ms-azure-cs-autosuggest/ # track 1
     - sdk/cognitiveservices/ms-azure-cs-computervision/ # track 1
     - sdk/cognitiveservices/ms-azure-cs-contentmoderator/ # track 1
@@ -40,7 +40,7 @@ pr:
     - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
     - sdk/mediaservices/microsoft-azure-media/ # track 1
     - sdk/servicebus/microsoft-azure-servicebus/ # track 1
-    - sdk/spring
+    - sdk/spring/
 
 parameters:
   - name: Service
@@ -58,9 +58,9 @@ extends:
     # needs to be added/removed here.
     ExcludePaths:
     - sdk/batch/microsoft-azure-batch/ # track 1
-    - sdk/boms # pom only release pipeline
-    - sdk/cosmos # emulator tests
-    - sdk/e2e # no pipeline, nothing to build
+    - sdk/boms/ # pom only release pipeline
+    - sdk/cosmos/ # emulator tests
+    - sdk/e2e/ # no pipeline, nothing to build
     - sdk/cognitiveservices/ms-azure-cs-autosuggest/ # track 1
     - sdk/cognitiveservices/ms-azure-cs-computervision/ # track 1
     - sdk/cognitiveservices/ms-azure-cs-contentmoderator/ # track 1
@@ -83,4 +83,4 @@ extends:
     - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
     - sdk/mediaservices/microsoft-azure-media/ # track 1
     - sdk/servicebus/microsoft-azure-servicebus/ # track 1
-    - sdk/spring
+    - sdk/spring/

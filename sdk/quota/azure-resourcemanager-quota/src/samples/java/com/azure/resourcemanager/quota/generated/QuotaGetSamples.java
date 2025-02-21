@@ -9,8 +9,8 @@ package com.azure.resourcemanager.quota.generated;
  */
 public final class QuotaGetSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/
-     * getNetworkOneSkuQuotaLimit.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/getNetworkOneSkuQuotaLimit.json
      */
     /**
      * Sample code: Quotas_UsagesRequest_ForNetwork.
@@ -25,8 +25,8 @@ public final class QuotaGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/
-     * getComputeOneSkuQuotaLimit.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/getComputeOneSkuQuotaLimit.json
      */
     /**
      * Sample code: Quotas_Get_Request_ForCompute.

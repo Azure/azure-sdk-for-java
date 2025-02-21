@@ -45,7 +45,7 @@ import java.util.Map;
  */
 public final class StorageAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountUpdateWithImmutabilityPolicy.json
      */
     /**
@@ -70,7 +70,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountUpdateUserAssignedIdentityWithFederatedIdentityClientId.json
      */
     /**
@@ -107,7 +107,7 @@ public final class StorageAccountsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountEnableAD.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountEnableAD.json
      */
     /**
      * Sample code: StorageAccountEnableAD.
@@ -134,7 +134,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountUpdateAllowedCopyScopeToAAD.json
      */
     /**
@@ -174,7 +174,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountUpdateDisablePublicNetworkAccess.json
      */
     /**
@@ -216,7 +216,7 @@ public final class StorageAccountsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountEnableCMK.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountEnableCMK.json
      */
     /**
      * Sample code: StorageAccountEnableCMK.
@@ -242,7 +242,7 @@ public final class StorageAccountsUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/StorageAccountUpdate.json
+     * specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/StorageAccountUpdate.json
      */
     /**
      * Sample code: StorageAccountUpdate.
@@ -284,7 +284,7 @@ public final class StorageAccountsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2023-05-01/examples/
+     * x-ms-original-file: specification/storage/resource-manager/Microsoft.Storage/stable/2024-01-01/examples/
      * StorageAccountUpdateUserAssignedEncryptionIdentityWithCMK.json
      */
     /**

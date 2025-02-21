@@ -13,8 +13,7 @@ import com.azure.resourcemanager.quota.models.GroupQuotasEntityPatchProperties;
 public final class GroupQuotasUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/GroupQuotas/
-     * PatchGroupQuotas.json
+     * specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/GroupQuotas/PatchGroupQuotas.json
      */
     /**
      * Sample code: GroupQuotas_Patch_Request_ForCompute.
