@@ -111,7 +111,6 @@ public final class KeyVaultKeyStore extends KeyStoreSpi {
      * <p>
      * The constructor uses System.getProperty for
      * <code>azure.keyvault.uri</code>,
-     * <code>azure.keyvault.aadAuthenticationUrl</code>,
      * <code>azure.keyvault.tenantId</code>,
      * <code>azure.keyvault.clientId</code>,
      * <code>azure.keyvault.clientSecret</code> and
