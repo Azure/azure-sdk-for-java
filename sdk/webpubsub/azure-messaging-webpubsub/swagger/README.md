@@ -31,18 +31,24 @@ autorest
 ``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/webpubsub/data-plane/WebPubSub/stable/2024-01-01/webpubsub.json
 java: true
-use: '@autorest/java@4.1.42'
+use: '@autorest/java@4.1.29'
 output-folder: ..
 namespace: com.azure.messaging.webpubsub
+generate-client-interfaces: false
 sync-methods: all
 client-side-validations: true
 license-header: MICROSOFT_MIT_SMALL
+add-context-parameter: true
+context-client-method-parameter: true
+required-parameter-client-methods: false 
 generate-client-as-impl: true
+service-interface-as-public: true
 use-iterable: true
 data-plane: true
 generate-sync-async-clients: true
 service-name: WebPubSubService
 generate-builder-per-client: false
+use-key-credential: false
 partial-update: true
 disable-client-builder: true
 service-versions:

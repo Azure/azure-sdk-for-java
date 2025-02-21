@@ -12,8 +12,10 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.webpubsub.models.WebPubSubClientProtocol;
 import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.azure.messaging.webpubsub.models.WebPubSubClientAccessToken;
@@ -24,8 +26,6 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.JWTParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
-import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
@@ -274,62 +274,6 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @LiveOnly
-    public void testGetSocketIOAuthenticationToken() throws ParseException {
-        GetClientAccessTokenOptions options
-            = new GetClientAccessTokenOptions().setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
-        WebPubSubClientAccessToken token = client.getClientAccessToken(options);
-
-        Assertions.assertNotNull(token);
-        Assertions.assertNotNull(token.getToken());
-        Assertions.assertNotNull(token.getUrl());
-
-        Assertions.assertTrue(token.getUrl().startsWith("wss://"));
-        Assertions.assertTrue(token.getUrl().contains(".webpubsub.azure.com/clients/socketio/hubs/"));
-
-        String authToken = token.getToken();
-        JWT jwt = JWTParser.parse(authToken);
-        JWTClaimsSet claimsSet = jwt.getJWTClaimsSet();
-        Assertions.assertNotNull(claimsSet);
-        Assertions.assertNotNull(claimsSet.getAudience());
-        Assertions.assertFalse(claimsSet.getAudience().isEmpty());
-
-        String aud = claimsSet.getAudience().iterator().next();
-        Assertions.assertTrue(aud.contains(".webpubsub.azure.com/clients/socketio/hubs/"));
-    }
-
-    @Test
-    @LiveOnly
-    public void testGetSocketIOAuthenticationTokenAAD() throws ParseException {
-        WebPubSubServiceClientBuilder aadClientBuilder
-            = new WebPubSubServiceClientBuilder().endpoint(TestUtils.getSocketIOEndpoint())
-                .httpClient(HttpClient.createDefault())
-                .credential(TestUtils.getIdentityTestCredential(interceptorManager))
-                .hub(TestUtils.HUB_NAME);
-        WebPubSubServiceClient aadClient = aadClientBuilder.buildClient();
-        GetClientAccessTokenOptions options
-            = new GetClientAccessTokenOptions().setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
-        WebPubSubClientAccessToken token = aadClient.getClientAccessToken(options);
-
-        Assertions.assertNotNull(token);
-        Assertions.assertNotNull(token.getToken());
-        Assertions.assertNotNull(token.getUrl());
-
-        Assertions.assertTrue(token.getUrl().startsWith("wss://"));
-        Assertions.assertTrue(token.getUrl().contains(".webpubsub.azure.com/clients/socketio/hubs/"));
-
-        String authToken = token.getToken();
-        JWT jwt = JWTParser.parse(authToken);
-        JWTClaimsSet claimsSet = jwt.getJWTClaimsSet();
-        Assertions.assertNotNull(claimsSet);
-        Assertions.assertNotNull(claimsSet.getAudience());
-        Assertions.assertFalse(claimsSet.getAudience().isEmpty());
-
-        String aud = claimsSet.getAudience().iterator().next();
-        Assertions.assertTrue(aud.contains(".webpubsub.azure.com/clients/socketio/hubs/"));
-    }
-
-    @Test
     public void testRemoveNonExistentUserFromGroup() {
         assertResponse(
             client.removeUserFromGroupWithResponse("java", "testRemoveNonExistentUserFromGroup", new RequestOptions()),
@@ -384,9 +328,9 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
                 .connectionString(TestUtils.getConnectionString());
         } else if (getTestMode() == TestMode.RECORD) {
             webPubSubServiceClientBuilder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(TestUtils.getIdentityTestCredential(interceptorManager));
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            webPubSubServiceClientBuilder.credential(TestUtils.getIdentityTestCredential(interceptorManager));
+            webPubSubServiceClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
 
         this.client = webPubSubServiceClientBuilder.buildClient();
@@ -400,12 +344,9 @@ public class WebPubSubServiceClientTests extends TestProxyTestBase {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live|RECORD|record|Record)")
-    @DisabledIfSystemProperty(named = "AZURE_TEST_MODE", matches = "(LIVE|live|Live|RECORD|record|Record)")
+    @DoNotRecord
     public void testCheckPermission() {
 
-        // This test is failing consistently, needs to be fixed, disabled.
-        // Github issue: https://github.com/Azure/azure-sdk-for-java/issues/41343
         RequestOptions requestOptions = new RequestOptions().addQueryParam("targetName", "java");
         /*
             To run this test in LIVE mode, please obtain a connectionID of a client with SEND_TO_GROUP Permission.

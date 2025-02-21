@@ -49,7 +49,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Initializes an instance of WebPubSubsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     WebPubSubsImpl(WebPubSubServiceClientImpl client) {
@@ -60,7 +60,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public WebPubSubServiceVersion getServiceVersion() {
@@ -556,16 +556,14 @@ public final class WebPubSubsImpl {
     /**
      * Add filtered connections to multiple groups.
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * {
      *     groups: Iterable<String> (Optional)
      *     filter: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param groupsToAdd Target groups and connection filter.
@@ -580,11 +578,12 @@ public final class WebPubSubsImpl {
     public Mono<Response<Void>> addConnectionsToGroupsWithResponseAsync(String hub, BinaryData groupsToAdd,
         RequestOptions requestOptions) {
         if (hub == null) {
-            throw LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null."));
+            return Mono.error(
+                LOGGER.atError().log(new IllegalArgumentException("Parameter hub is required and cannot be null.")));
         }
         if (groupsToAdd == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Parameter groupsToAdd is required and cannot be null."));
+            return Mono.error(LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter groupsToAdd is required and cannot be null.")));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.addConnectionsToGroups(this.client.getEndpoint(), hub,
@@ -594,16 +593,14 @@ public final class WebPubSubsImpl {
     /**
      * Add filtered connections to multiple groups.
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * {
      *     groups: Iterable<String> (Optional)
      *     filter: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param groupsToAdd Target groups and connection filter.
@@ -640,7 +637,7 @@ public final class WebPubSubsImpl {
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -671,7 +668,7 @@ public final class WebPubSubsImpl {
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -709,15 +706,13 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * {
      *     token: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -756,15 +751,13 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * {
      *     token: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -787,16 +780,14 @@ public final class WebPubSubsImpl {
     /**
      * Remove filtered connections from multiple groups.
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * {
      *     groups: Iterable<String> (Optional)
      *     filter: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param groupsToRemove Target groups and connection filter.
@@ -825,16 +816,14 @@ public final class WebPubSubsImpl {
     /**
      * Remove filtered connections from multiple groups.
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * {
      *     groups: Iterable<String> (Optional)
      *     filter: String (Optional)
      * }
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param groupsToRemove Target groups and connection filter.
@@ -877,13 +866,11 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * BinaryData
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param contentType Upload file type. Allowed values: "application/json", "application/octet-stream",
@@ -932,13 +919,11 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * BinaryData
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param contentType Upload file type. Allowed values: "application/json", "application/octet-stream",
@@ -979,7 +964,7 @@ public final class WebPubSubsImpl {
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param connectionId Target connection Id.
@@ -1014,7 +999,7 @@ public final class WebPubSubsImpl {
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param connectionId Target connection Id.
@@ -1042,13 +1027,11 @@ public final class WebPubSubsImpl {
     /**
      * Check if the connection with the given connectionId exists.
      * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * boolean
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param connectionId The connection Id.
@@ -1075,13 +1058,11 @@ public final class WebPubSubsImpl {
     /**
      * Check if the connection with the given connectionId exists.
      * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * boolean
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param connectionId The connection Id.
@@ -1118,13 +1099,11 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * BinaryData
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param connectionId The connection Id.
@@ -1174,13 +1153,11 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * BinaryData
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param connectionId The connection Id.
@@ -1219,7 +1196,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Remove a connection from all groups.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param connectionId Target connection Id.
@@ -1247,7 +1224,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Remove a connection from all groups.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param connectionId Target connection Id.
@@ -1276,13 +1253,11 @@ public final class WebPubSubsImpl {
     /**
      * Check if there are any client connections inside the given group.
      * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * boolean
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -1308,13 +1283,11 @@ public final class WebPubSubsImpl {
     /**
      * Check if there are any client connections inside the given group.
      * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * boolean
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -1347,7 +1320,7 @@ public final class WebPubSubsImpl {
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -1383,7 +1356,7 @@ public final class WebPubSubsImpl {
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -1424,13 +1397,11 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * BinaryData
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -1483,13 +1454,11 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * BinaryData
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -1527,7 +1496,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Remove a connection from the target group.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -1559,7 +1528,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Remove a connection from the target group.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -1591,7 +1560,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Add a connection to the target group.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -1623,7 +1592,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Add a connection to the target group.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -1664,7 +1633,7 @@ public final class WebPubSubsImpl {
      * name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
@@ -1707,7 +1676,7 @@ public final class WebPubSubsImpl {
      * name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
@@ -1751,13 +1720,11 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * boolean
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
@@ -1799,13 +1766,11 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * boolean
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
@@ -1846,7 +1811,7 @@ public final class WebPubSubsImpl {
      * name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
@@ -1889,7 +1854,7 @@ public final class WebPubSubsImpl {
      * name.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup. Allowed values:
@@ -1924,13 +1889,11 @@ public final class WebPubSubsImpl {
     /**
      * Check if there are any client connections connected for the given user.
      * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * boolean
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param userId Target user Id.
@@ -1957,13 +1920,11 @@ public final class WebPubSubsImpl {
     /**
      * Check if there are any client connections connected for the given user.
      * <p><strong>Response Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * boolean
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param userId Target user Id.
@@ -1997,7 +1958,7 @@ public final class WebPubSubsImpl {
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param userId The user Id.
@@ -2034,7 +1995,7 @@ public final class WebPubSubsImpl {
      * <tr><td>reason</td><td>String</td><td>No</td><td>The reason closing the client connection.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param userId The user Id.
@@ -2074,13 +2035,11 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * BinaryData
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param userId The user Id.
@@ -2132,13 +2091,11 @@ public final class WebPubSubsImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Request Body Schema</strong></p>
-     * 
-     * <pre>
-     * {@code
+     *
+     * <pre>{@code
      * BinaryData
-     * }
-     * </pre>
-     * 
+     * }</pre>
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param userId The user Id.
@@ -2177,7 +2134,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Remove a user from all groups.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param userId Target user Id.
@@ -2205,7 +2162,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Remove a user from all groups.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param userId Target user Id.
@@ -2233,7 +2190,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Remove a user from the target group.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -2265,7 +2222,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Remove a user from the target group.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -2297,7 +2254,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Add a user to the target group.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
@@ -2329,7 +2286,7 @@ public final class WebPubSubsImpl {
 
     /**
      * Add a user to the target group.
-     * 
+     *
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      * characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
