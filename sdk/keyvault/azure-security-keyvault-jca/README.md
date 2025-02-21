@@ -491,10 +491,8 @@ az role assignment create \
 
 replace ${PARAM_YOUR_JAR_FILE_PATH} with the path of your jar file, replace ${PARAM_JCA_PROVIDER_JAR_PATH} with the path of the jca provider jar.
 
-Check your output, if you see the following message, it means the jar is signed successfully.
-```
-jar signed.
-```
+Check your output, if you see the `jar signed` message, it means the jar is signed successfully.
+ ![Jar Signed](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/keyvault/azure-security-keyvault-jca/resources/jarsigned.png)
 
 ### Verify with Jarsigner
 After signing, you can verify the JAR file with:
@@ -502,10 +500,8 @@ After signing, you can verify the JAR file with:
 jarsigner -verify -verbose -certs signerjar.jar
 ```
 
-Check your output, if you see the following message, it means the jar is verified successfully.
-```
-jar verified.
-```
+Check your output, if you see the `jar verified` message, it means the jar is verified successfully.
+ ![Jar Verified](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/keyvault/azure-security-keyvault-jca/resources/jarverified.png)
 
 ### Clean up Resources
 ```bash
