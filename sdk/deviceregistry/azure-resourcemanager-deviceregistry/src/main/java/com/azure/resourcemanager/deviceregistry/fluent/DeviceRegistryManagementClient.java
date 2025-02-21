@@ -80,39 +80,4 @@ public interface DeviceRegistryManagementClient {
      * @return the BillingContainersClient object.
      */
     BillingContainersClient getBillingContainers();
-
-    /**
-     * Gets the DiscoveredAssetsClient object to access its operations.
-     * 
-     * @return the DiscoveredAssetsClient object.
-     */
-    DiscoveredAssetsClient getDiscoveredAssets();
-
-    /**
-     * Gets the DiscoveredAssetEndpointProfilesClient object to access its operations.
-     * 
-     * @return the DiscoveredAssetEndpointProfilesClient object.
-     */
-    DiscoveredAssetEndpointProfilesClient getDiscoveredAssetEndpointProfiles();
-
-    /**
-     * Gets the SchemaRegistriesClient object to access its operations.
-     * 
-     * @return the SchemaRegistriesClient object.
-     */
-    SchemaRegistriesClient getSchemaRegistries();
-
-    /**
-     * Gets the SchemasClient object to access its operations.
-     * 
-     * @return the SchemasClient object.
-     */
-    SchemasClient getSchemas();
-
-    /**
-     * Gets the SchemaVersionsClient object to access its operations.
-     * 
-     * @return the SchemaVersionsClient object.
-     */
-    SchemaVersionsClient getSchemaVersions();
 }
