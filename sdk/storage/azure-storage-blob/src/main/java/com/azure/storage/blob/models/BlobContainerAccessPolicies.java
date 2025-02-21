@@ -27,8 +27,6 @@ public class BlobContainerAccessPolicies {
     }
 
     /**
-     * Gets the level of public access the container allows.
-     *
      * @return the level of public access the container allows.
      */
     public PublicAccessType getBlobAccessType() {
@@ -36,8 +34,6 @@ public class BlobContainerAccessPolicies {
     }
 
     /**
-     * Gets the {@link BlobSignedIdentifier BlobSignedIdentifiers} associated with the container.
-     *
      * @return the {@link BlobSignedIdentifier BlobSignedIdentifiers} associated with the container.
      */
     public List<BlobSignedIdentifier> getIdentifiers() {

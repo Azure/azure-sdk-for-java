@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Immutable
 public class ObjectReplicationPolicy {
+
     private final String policyId;
     private final List<ObjectReplicationRule> objectReplicationRules;
 
@@ -29,8 +30,6 @@ public class ObjectReplicationPolicy {
     }
 
     /**
-     * Gets the policy id.
-     *
      * @return The policy id.
      */
     public String getPolicyId() {
@@ -38,9 +37,8 @@ public class ObjectReplicationPolicy {
     }
 
     /**
-     * Gets the rules associated with this policy to the status of the replication associated with that rule.
-     *
-     * @return The rules associated with this policy to the status of the replication associated with that rule.
+     * @return A {@code List} of rules associated with this policy to the status of the replication associated with that
+     * rule.
      */
     public List<ObjectReplicationRule> getRules() {
         return this.objectReplicationRules;
