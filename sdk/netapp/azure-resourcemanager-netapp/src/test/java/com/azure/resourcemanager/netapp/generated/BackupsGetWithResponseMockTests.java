@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.Backup;
@@ -21,22 +21,22 @@ public final class BackupsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"backupId\":\"kflrmymy\",\"creationDate\":\"2021-01-15T03:01:33Z\",\"provisioningState\":\"lhrisw\",\"size\":4374005645819181573,\"label\":\"iov\",\"backupType\":\"Scheduled\",\"failureReason\":\"xuugqkc\",\"volumeResourceId\":\"otiowlxteqd\",\"useExistingSnapshot\":true,\"snapshotName\":\"wdtgukranblw\",\"backupPolicyResourceId\":\"qlkccuzgygqwaho\",\"isLargeVolume\":true},\"id\":\"gniiprglvaw\",\"name\":\"wzdufypivlsbb\",\"type\":\"pmcubkmifoxxkub\"}";
+            = "{\"properties\":{\"backupId\":\"vvtzejetjkl\",\"creationDate\":\"2021-03-04T18:59:07Z\",\"provisioningState\":\"yjuzkdb\",\"size\":700409671675457936,\"label\":\"rzvh\",\"backupType\":\"Manual\",\"failureReason\":\"rhtgvgzpcrrkol\",\"volumeResourceId\":\"w\",\"useExistingSnapshot\":false,\"snapshotName\":\"mwrokcdxfzzzwyja\",\"backupPolicyResourceId\":\"tlhguynuchl\"},\"id\":\"ltxdwhmozu\",\"name\":\"gzvlnsnn\",\"type\":\"zfpafolpymwamxqz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Backup response = manager.backups()
-            .getWithResponse("ihywartspph", "ixkykxd", "sj", "emmucfxh", com.azure.core.util.Context.NONE)
+            .getWithResponse("z", "iblkujr", "lfojuidjp", "uyjucejikzo", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("iov", response.label());
-        Assertions.assertEquals("otiowlxteqd", response.volumeResourceId());
-        Assertions.assertEquals(true, response.useExistingSnapshot());
-        Assertions.assertEquals("wdtgukranblw", response.snapshotName());
+        Assertions.assertEquals("rzvh", response.label());
+        Assertions.assertEquals("w", response.volumeResourceId());
+        Assertions.assertEquals(false, response.useExistingSnapshot());
+        Assertions.assertEquals("mwrokcdxfzzzwyja", response.snapshotName());
     }
 }

@@ -10,19 +10,18 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.MountTargetProperties;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
-import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
 import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
+import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
-import com.azure.resourcemanager.netapp.models.ListQuotaReportResponse;
 import com.azure.resourcemanager.netapp.models.NetworkFeatures;
 import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PlacementKeyValuePairs;
@@ -36,7 +35,6 @@ import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
 import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.Volume;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePatch;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePatchPropertiesExportPolicy;
@@ -181,10 +179,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this.innerModel().dataProtection();
     }
 
-    public AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit() {
-        return this.innerModel().acceptGrowCapacityPoolForShortTermCloneSplit();
-    }
-
     public Boolean isRestoring() {
         return this.innerModel().isRestoring();
     }
@@ -247,6 +241,10 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
         return this.innerModel().coolAccessRetrievalPolicy();
+    }
+
+    public CoolAccessTieringPolicy coolAccessTieringPolicy() {
+        return this.innerModel().coolAccessTieringPolicy();
     }
 
     public String unixPermissions() {
@@ -337,14 +335,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public String originatingResourceId() {
         return this.innerModel().originatingResourceId();
-    }
-
-    public Long inheritedSizeInBytes() {
-        return this.innerModel().inheritedSizeInBytes();
-    }
-
-    public VolumeLanguage language() {
-        return this.innerModel().language();
     }
 
     public Region region() {
@@ -473,14 +463,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         serviceManager.volumes().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public void splitCloneFromParent() {
-        serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
-    }
-
-    public void splitCloneFromParent(Context context) {
-        serviceManager.volumes().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
-    }
-
     public void breakFileLocks() {
         serviceManager.volumes().breakFileLocks(resourceGroupName, accountName, poolName, volumeName);
     }
@@ -498,14 +480,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         Context context) {
         return serviceManager.volumes()
             .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context);
-    }
-
-    public ListQuotaReportResponse listQuotaReport() {
-        return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName);
-    }
-
-    public ListQuotaReportResponse listQuotaReport(Context context) {
-        return serviceManager.volumes().listQuotaReport(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void breakReplication() {
@@ -730,13 +704,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withAcceptGrowCapacityPoolForShortTermCloneSplit(
-        AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit) {
-        this.innerModel()
-            .withAcceptGrowCapacityPoolForShortTermCloneSplit(acceptGrowCapacityPoolForShortTermCloneSplit);
-        return this;
-    }
-
     public VolumeImpl withIsRestoring(Boolean isRestoring) {
         this.innerModel().withIsRestoring(isRestoring);
         return this;
@@ -847,6 +814,16 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         }
     }
 
+    public VolumeImpl withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy) {
+        if (isInCreateMode()) {
+            this.innerModel().withCoolAccessTieringPolicy(coolAccessTieringPolicy);
+            return this;
+        } else {
+            this.updateBody.withCoolAccessTieringPolicy(coolAccessTieringPolicy);
+            return this;
+        }
+    }
+
     public VolumeImpl withUnixPermissions(String unixPermissions) {
         if (isInCreateMode()) {
             this.innerModel().withUnixPermissions(unixPermissions);
@@ -919,11 +896,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
 
     public VolumeImpl withIsLargeVolume(Boolean isLargeVolume) {
         this.innerModel().withIsLargeVolume(isLargeVolume);
-        return this;
-    }
-
-    public VolumeImpl withLanguage(VolumeLanguage language) {
-        this.innerModel().withLanguage(language);
         return this;
     }
 
