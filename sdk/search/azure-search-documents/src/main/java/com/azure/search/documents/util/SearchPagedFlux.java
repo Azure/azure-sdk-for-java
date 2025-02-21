@@ -8,7 +8,6 @@ import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.search.documents.implementation.models.SearchFirstPageResponseWrapper;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.util.SemanticSearchResultsAccessHelper;
-import com.azure.search.documents.models.DebugInfo;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SemanticSearchResults;
@@ -112,19 +111,5 @@ public final class SearchPagedFlux extends PagedFluxBase<SearchResult, SearchPag
     public Mono<SemanticSearchResults> getSemanticResults() {
         return metadataSupplier.get()
             .map(metadata -> SemanticSearchResultsAccessHelper.create(metadata.getFirstPageResponse()));
-    }
-
-    /**
-     * The debug information that can be used to further explore your search results.
-     *
-     * @return The debug information that can be used to further explore your search results.
-     */
-    public Mono<DebugInfo> getDebugInfo() {
-        return metadataSupplier.get().flatMap(metaData -> {
-            if (metaData.getFirstPageResponse().getDebugInfo() == null) {
-                return Mono.empty();
-            }
-            return Mono.just(metaData.getFirstPageResponse().getDebugInfo());
-        });
     }
 }
