@@ -189,7 +189,7 @@ com.azure:azure-sdk-template-three;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-storage-blob;12.29.0;12.30.0-beta.2
 com.azure:azure-storage-blob-batch;12.25.0;12.26.0-beta.2
 com.azure:azure-storage-blob-changefeed;12.0.0-beta.28;12.0.0-beta.29
-com.azure:azure-storage-blob-cryptography;12.28.0;12.29.0-beta.2
+com.azure:azure-storage-blob-cryptography;12.28.0;12.28.1
 com.azure:azure-storage-blob-nio;12.0.0-beta.29;12.0.0-beta.30
 com.azure:azure-storage-common;12.28.0;12.28.1
 com.azure:azure-storage-file-share;12.25.1;12.26.0-beta.2
