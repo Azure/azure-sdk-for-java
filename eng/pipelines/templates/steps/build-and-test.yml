@@ -126,8 +126,9 @@ steps:
 
   - ${{ else }}:
     - pwsh: |
-        $javaTestVersion = "$(JavaTestVersion)".Substring(2)
-        $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_`$javaTestVersion`_X64")
+        export JavaTestVersion=8
+        $javaTestVersion = "$(JavaTestVersion)"
+        $javaHomeValue = [System.Environment]::GetEnvironmentVariable("JAVA_HOME_$javaTestVersion`_X64")
         Write-Host "Setting PowerShellJavaHome to '$javaHomeValue'"
         Write-Host "##vso[task.setvariable variable=PowerShellJavaHome;]$javaHomeValue"
       displayName: 'Set PowerShellJavaHome'
