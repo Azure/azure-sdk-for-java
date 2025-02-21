@@ -58,7 +58,7 @@ public class CachingTokenCredentialProvider implements TokenCredentialProvider {
             LOGGER.verbose("Retrieving token credential from cache.");
         } else {
             LOGGER.verbose("Caching token credential.");
-            cache.putIfAbsent(tokenCredentialCacheKey, fn.apply(delegate));
+            cache.put(tokenCredentialCacheKey, fn.apply(delegate));
         }
 
         return cache.get(tokenCredentialCacheKey);
