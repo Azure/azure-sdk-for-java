@@ -4,6 +4,26 @@
 
 ### Features Added
 
+- For `ChatCompletionOptions`:
+  - `store` (bool), which enables saving outputs for FT (distillation)
+  - `metadata` (string/string map), used with `store`
+  - `reasoning_effort` (enum string, `low`, `medium`, `high`) to configure how hard `o1` thinks
+  - `developer` message role (`system` replacement for `o1` and newer models) now available. Other than the name, it's identical
+  - `prediction` added for predicted outputs
+  - `modalities` added ("text" | "audio") for audio input support
+  - `audio` added for audio content options (voice, format, etc.)
+  - user role message content part representation for audio input added
+  - **AZURE-ONLY** User Security Context (for Defender for Cloud Integration)
+    - Azure chat request bodies now have a user_security_context property
+    - These are JSON objects that have application_name, end_user_id, end_user_tenant_id, and source_ip, all optional string properties
+
+- For `ChatCompletions`:
+  - audio output added as `ChatMessageAudioContentItem`
+  - parity usage updates:
+    - `PromptTokensDetails` gets `AudioTokens`
+    - `CompletionTokensDetails` gets `AcceptedPredictionTokens`, `RejectedPredictionTokens`, and `AudioTokens`
+
+
 ### Breaking Changes
 
 ### Bugs Fixed
