@@ -14,6 +14,7 @@ pr:
     # any excludes here. The reason being is that we can't access
     # pr->paths->exclude. These are paths only, not individual files
     exclude:
+    - eng/versioning
     - sdk/batch/microsoft-azure-batch/ # track 1
     - sdk/boms # pom only release pipeline
     - sdk/cosmos # emulator tests
@@ -57,6 +58,7 @@ extends:
     # See pr->paths->exclude comment above. Anything added/removed there
     # needs to be added/removed here.
     ExcludePaths:
+    - eng/versioning
     - sdk/batch/microsoft-azure-batch/ # track 1
     - sdk/boms # pom only release pipeline
     - sdk/cosmos # emulator tests
