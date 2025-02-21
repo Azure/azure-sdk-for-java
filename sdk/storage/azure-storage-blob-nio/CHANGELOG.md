@@ -3,6 +3,7 @@
 ## 12.0.0-beta.30 (Unreleased)
 
 ### Features Added
+- Added support for TokenCredentials configurations for Authentication against Microsoft EntraID 
 
 ### Breaking Changes
 
