@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxStoreModel;
@@ -59,6 +60,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.timeout.ReadTimeoutException;
 import org.assertj.core.api.Assertions;
 import org.mockito.Mockito;
 import org.testng.SkipException;
@@ -68,8 +70,10 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -92,7 +96,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
     private AccountLevelLocationContext accountLevelLocationReadableLocationContext;
     private static final ImplementationBridgeHelpers.CosmosClientBuilderHelper.CosmosClientBuilderAccessor COSMOS_CLIENT_BUILDER_ACCESSOR
         = ImplementationBridgeHelpers.CosmosClientBuilderHelper.getCosmosClientBuilderAccessor();
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     private static final Set<ConnectionMode> ALL_CONNECTION_MODES = new HashSet<>();
     private static final Set<ConnectionMode> ONLY_DIRECT_MODE = new HashSet<>();
@@ -158,6 +162,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
     @BeforeClass(groups = {"multi-region"})
     public void beforeClass() {
         CosmosAsyncClient cosmosAsyncClient = getClientBuilder().buildAsyncClient();
+
         this.sharedDatabase = getSharedCosmosDatabase(cosmosAsyncClient);
         this.sharedSinglePartitionContainer = getSharedSinglePartitionCosmosContainer(cosmosAsyncClient);
 
@@ -187,6 +192,16 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
             .setShouldFinalResponseHaveSuccess(false)
             .setExpectedRegionsContactedCount(1);
 
+        ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(false)
+            .setExpectedRegionsContactedCount(1);
+
+        ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable = new ExpectedResponseCharacteristics()
+            .setExpectedMinRetryCount(0)
+            .setShouldFinalResponseHaveSuccess(false)
+            .setExpectedRegionsContactedCount(1);
+
         ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover = new ExpectedResponseCharacteristics()
             .setExpectedMinRetryCount(0)
             .setExpectedMaxRetryCount(0)
@@ -202,6 +217,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.CREATED,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -212,6 +229,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -222,6 +241,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -232,6 +253,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -242,6 +265,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -252,6 +277,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ONLY_DIRECT_MODE
             },
             {
@@ -262,6 +289,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.CREATED,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -272,6 +301,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -282,6 +313,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -292,6 +325,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -302,6 +337,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -312,6 +349,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -322,6 +361,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.CREATED,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -332,6 +373,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -342,6 +385,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -352,6 +397,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -362,6 +409,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -372,6 +421,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailover,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -382,6 +433,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.CREATED,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -392,6 +445,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -402,6 +457,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -412,6 +469,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.NOT_MODIFIED,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -422,6 +481,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
             },
             {
@@ -432,7 +493,225 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 HttpConstants.StatusCodes.OK,
                 expectedResponseCharacteristicsBeforeFailoverForRequestTimeout,
                 expectedResponseCharacteristicsAfterFailover,
+                false,
+                false,
                 ALL_CONNECTION_MODES
+            },
+            {
+                "Test failover handling for DELETE when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.CREATED,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for REPLACE when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for UPSERT when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for DELETE when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for PATCH when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for BATCH when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Batch,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for DELETE when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.CREATED,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for REPLACE when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for UPSERT when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for DELETE when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for PATCH when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for BATCH when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Batch,
+                HttpConstants.StatusCodes.REQUEST_TIMEOUT,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointReadTimeout,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                true,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for CREATE when REQUEST_TIMEOUT / GATEWAY_ENDPOINT_READ_TIMEOUT is injected into first preferred region for a specific server partition.",
+                OperationType.Create,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.CREATED,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                false,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for REPLACE when SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE is injected into first preferred region for a specific server partition.",
+                OperationType.Replace,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                false,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for UPSERT when SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE is injected into first preferred region for a specific server partition.",
+                OperationType.Upsert,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                false,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for DELETE when SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE is injected into first preferred region for a specific server partition.",
+                OperationType.Delete,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.NOT_MODIFIED,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                false,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for PATCH when SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE is injected into first preferred region for a specific server partition.",
+                OperationType.Patch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                false,
+                ONLY_GATEWAY_MODE
+            },
+            {
+                "Test failover handling for BATCH when SERVICE_UNAVAILABLE / GATEWAY_ENDPOINT_UNAVAILABLE is injected into first preferred region for a specific server partition.",
+                OperationType.Batch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailoverForGatewayEndpointUnavailable,
+                expectedResponseCharacteristicsAfterFailover,
+                true,
+                false,
+                ONLY_GATEWAY_MODE
             }
         };
     }
@@ -446,6 +725,8 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         int successStatusCode,
         ExpectedResponseCharacteristics expectedResponseCharacteristicsBeforeFailover,
         ExpectedResponseCharacteristics expectedResponseCharacteristicsAfterFailover,
+        boolean shouldThrowNetworkError,
+        boolean shouldThrowReadTimeoutExceptionWhenNetworkError,
         Set<ConnectionMode> allowedConnectionModes) {
 
         ConnectionPolicy connectionPolicy = COSMOS_CLIENT_BUILDER_ACCESSOR.getConnectionPolicy(getClientBuilder());
@@ -563,6 +844,9 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
 
                 RxStoreModel rxStoreModel = ReflectionUtils.getGatewayProxy(rxDocumentClient);
 
+                GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
+
                 assertThat(preferredRegions).isNotNull();
                 assertThat(preferredRegions.size()).isGreaterThanOrEqualTo(1);
 
@@ -571,7 +855,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
 
                 ReflectionUtils.setGatewayHttpClient(rxStoreModel, mockedHttpClient);
 
-                setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, successStatusCode);
+                setupHttpClientToReturnSuccessResponse(mockedHttpClient, operationType, databaseAccount, successStatusCode);
 
                 CosmosException cosmosException = createCosmosException(
                     errorStatusCodeToMockFromPartitionInUnhealthyRegion,
@@ -580,7 +864,9 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
                 setupHttpClientToThrowCosmosException(
                     mockedHttpClient,
                     locationEndpointWithIssues,
-                    cosmosException);
+                    cosmosException,
+                    shouldThrowNetworkError,
+                    shouldThrowReadTimeoutExceptionWhenNetworkError);
 
                 TestItem testItem = TestItem.createNewItem();
 
@@ -627,8 +913,33 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
     private void setupHttpClientToThrowCosmosException(
         HttpClient httpClientMock,
         URI locationEndpointToRoute,
-        CosmosException cosmosException) {
+        CosmosException cosmosException,
+        boolean shouldThrowNetworkError,
+        boolean shouldThrowReadTimeoutExceptionWhenNetworkError) {
 
+        if (shouldThrowNetworkError) {
+            if (shouldThrowReadTimeoutExceptionWhenNetworkError) {
+                Mockito.when(
+                        httpClientMock.send(
+                            Mockito.argThat(argument -> {
+                                URI uri = argument.uri();
+                                return uri.toString().contains(locationEndpointToRoute.toString());
+                            }), Mockito.any(Duration.class)))
+                    .thenReturn(Mono.error(new ReadTimeoutException()));
+            } else {
+                Mockito.when(
+                        httpClientMock.send(
+                            Mockito.argThat(argument -> {
+                                URI uri = argument.uri();
+                                return uri.toString().contains(locationEndpointToRoute.toString());
+                            }), Mockito.any(Duration.class)))
+                    .thenReturn(Mono.error(new SocketTimeoutException()));
+            }
+
+            return;
+        }
+
+        // simulates regional failover with error being bubbled up by RxGatewayStoreModel which uses the mocked HttpClient
         Mockito.when(
                 httpClientMock.send(
                     Mockito.argThat(argument -> {
@@ -645,8 +956,40 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         Mockito.when(transportClientMock.invokeResourceOperationAsync(Mockito.any(), Mockito.any())).thenReturn(Mono.just(storeResponse));
     }
 
-    private void setupHttpClientToReturnSuccessResponse(HttpClient httpClientMock, OperationType operationType, int statusCode) {
-        Mockito.when(httpClientMock.send(Mockito.any(HttpRequest.class), Mockito.any(Duration.class))).thenReturn(Mono.just(createResponse(statusCode, operationType, getTestPojoObject())));
+    private void setupHttpClientToReturnSuccessResponse(HttpClient httpClientMock, OperationType operationType, DatabaseAccount databaseAccount, int statusCode) {
+
+        Mockito
+            .when(httpClientMock.send(Mockito.argThat(argument -> {
+
+                if (argument == null) {
+                    return false;
+                }
+
+            URI uri = argument.uri();
+            String uriStr = uri.toString();
+
+            // basically a DatabaseAccount call
+            return !uriStr.contains("docs") &&
+                !uriStr.contains("dbs") &&
+                !uriStr.contains("colls") &&
+                !uri.toString().contains("pkranges");
+        }), Mockito.any(Duration.class)))
+            .thenReturn(Mono.just(createResponse(statusCode, operationType, ResourceType.DatabaseAccount, databaseAccount, getTestPojoObject())));
+
+        Mockito
+            .when(httpClientMock.send(Mockito.argThat(argument -> {
+
+                if (argument == null) {
+                    return false;
+                }
+
+                URI uri = argument.uri();
+                String uriStr = uri.toString();
+
+                // basically a Document call
+                return uriStr.contains("docs");
+            }), Mockito.any(Duration.class)))
+            .thenReturn(Mono.just(createResponse(statusCode, operationType, ResourceType.Document, databaseAccount, getTestPojoObject())));
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getPartitionKeyRangesForContainer(
@@ -1185,7 +1528,7 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         }
     }
 
-    private HttpResponse createResponse(int statusCode, OperationType operationType, TestPojo testPojo) {
+    private HttpResponse createResponse(int statusCode, OperationType operationType, ResourceType resourceType, DatabaseAccount databaseAccount, TestPojo testPojo) {
         HttpResponse httpResponse = new HttpResponse() {
             @Override
             public int statusCode() {
@@ -1205,6 +1548,10 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
             @Override
             public Mono<ByteBuf> body() {
                 try {
+
+                    if (resourceType == ResourceType.DatabaseAccount) {
+                        return Mono.just(ByteBufUtil.writeUtf8(ByteBufAllocator.DEFAULT, databaseAccount.toJson()));
+                    }
 
                     if (operationType == OperationType.Batch) {
                         FakeBatchResponse fakeBatchResponse = new FakeBatchResponse();
@@ -1231,6 +1578,10 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
             @Override
             public Mono<String> bodyAsString() {
                 try {
+
+                    if (resourceType == ResourceType.DatabaseAccount) {
+                        return Mono.just(databaseAccount.toJson());
+                    }
 
                     if (operationType == OperationType.Batch) {
                         FakeBatchResponse fakeBatchResponse = new FakeBatchResponse();
