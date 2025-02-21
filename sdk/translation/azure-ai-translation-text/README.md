@@ -252,11 +252,11 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [product_documentation]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-reference
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://learn.microsoft.com/java/azure/jdk/
+[jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 
-[azure_cli]: https://learn.microsoft.com/cli/azure
+[azure_cli]: https://docs.microsoft.com/cli/azure
 [azure_portal]: https://portal.azure.com
 
 [translator_auth]: https://learn.microsoft.com/azure/cognitive-services/translator/reference/v3-0-reference#authentication
