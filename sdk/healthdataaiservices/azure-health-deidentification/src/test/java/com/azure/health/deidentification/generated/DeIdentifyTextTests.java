@@ -5,14 +5,9 @@
 package com.azure.health.deidentification.generated;
 
 import com.azure.health.deidentification.models.DeidentificationContent;
+import com.azure.health.deidentification.models.DeidentificationCustomizationOptions;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
-import com.azure.health.deidentification.models.PhiCategory;
-import com.azure.health.deidentification.models.PhiEntity;
-import com.azure.health.deidentification.models.PhiTaggerResult;
-import com.azure.health.deidentification.models.StringIndex;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -23,34 +18,14 @@ public final class DeIdentifyTextTests extends DeidentificationClientTestBase {
     @Disabled
     public void testDeIdentifyTextTests() {
         // method invocation
-        DeidentificationResult response = deidentificationClient
-            .deidentify(new DeidentificationContent("Hello my name is John Smith.").setOperation(OperationType.REDACT)
-                .setDataType(DocumentDataType.PLAINTEXT)
-                .setRedactionFormat("[{type}]"));
+        DeidentificationResult response
+            = deidentificationClient.deidentifyText(new DeidentificationContent("Hello my name is John Smith.")
+                .setOperation(DeidentificationOperationType.REDACT)
+                .setCustomizations(new DeidentificationCustomizationOptions().setRedactionFormat("[{type}]")));
 
         // response assertion
         Assertions.assertNotNull(response);
         // verify property "outputText"
         Assertions.assertEquals("Hello my name is [name].", response.getOutputText());
-        // verify property "taggerResult"
-        PhiTaggerResult responseTaggerResult = response.getTaggerResult();
-        Assertions.assertNotNull(responseTaggerResult);
-        List<PhiEntity> responseTaggerResultEntities = responseTaggerResult.getEntities();
-        PhiEntity responseTaggerResultEntitiesFirstItem = responseTaggerResultEntities.iterator().next();
-        Assertions.assertNotNull(responseTaggerResultEntitiesFirstItem);
-        Assertions.assertEquals(PhiCategory.PATIENT, responseTaggerResultEntitiesFirstItem.getCategory());
-        StringIndex responseTaggerResultEntitiesFirstItemOffset = responseTaggerResultEntitiesFirstItem.getOffset();
-        Assertions.assertNotNull(responseTaggerResultEntitiesFirstItemOffset);
-        Assertions.assertEquals(17, responseTaggerResultEntitiesFirstItemOffset.getUtf8());
-        Assertions.assertEquals(17, responseTaggerResultEntitiesFirstItemOffset.getUtf16());
-        Assertions.assertEquals(17, responseTaggerResultEntitiesFirstItemOffset.getCodePoint());
-        StringIndex responseTaggerResultEntitiesFirstItemLength = responseTaggerResultEntitiesFirstItem.getLength();
-        Assertions.assertNotNull(responseTaggerResultEntitiesFirstItemLength);
-        Assertions.assertEquals(10, responseTaggerResultEntitiesFirstItemLength.getUtf8());
-        Assertions.assertEquals(10, responseTaggerResultEntitiesFirstItemLength.getUtf16());
-        Assertions.assertEquals(10, responseTaggerResultEntitiesFirstItemLength.getCodePoint());
-        Assertions.assertEquals("John Smith", responseTaggerResultEntitiesFirstItem.getText());
-        Assertions.assertEquals(0.83D, responseTaggerResultEntitiesFirstItem.getConfidenceScore());
-        Assertions.assertEquals("0x000000000000000", responseTaggerResult.getEtag());
     }
 }
