@@ -54,7 +54,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-email</artifactId>
-    <version>1.0.19</version>
+    <version>1.0.20</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
