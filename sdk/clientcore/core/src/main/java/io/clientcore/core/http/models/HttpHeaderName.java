@@ -62,12 +62,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
             return null;
         }
 
-        HttpHeaderName httpHeaderName = VALUES.get(name);
-
-        if (httpHeaderName != null) {
-            return httpHeaderName;
-        }
-
         return VALUES.computeIfAbsent(name, HttpHeaderName::new);
     }
 
