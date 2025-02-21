@@ -15,21 +15,21 @@ public final class DiskVolumeConfigurationTests {
     public void testDeserialize() throws Exception {
         DiskVolumeConfiguration model = BinaryData
             .fromString(
-                "{\"count\":4836526931131367321,\"sizeGB\":31147603080003868,\"sku\":{\"name\":\"Premium_LRS\"}}")
+                "{\"count\":394231563888289143,\"sizeGB\":736999913427384233,\"sku\":{\"name\":\"Premium_LRS\"}}")
             .toObject(DiskVolumeConfiguration.class);
-        Assertions.assertEquals(4836526931131367321L, model.count());
-        Assertions.assertEquals(31147603080003868L, model.sizeGB());
+        Assertions.assertEquals(394231563888289143L, model.count());
+        Assertions.assertEquals(736999913427384233L, model.sizeGB());
         Assertions.assertEquals(DiskSkuName.PREMIUM_LRS, model.sku().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskVolumeConfiguration model = new DiskVolumeConfiguration().withCount(4836526931131367321L)
-            .withSizeGB(31147603080003868L)
+        DiskVolumeConfiguration model = new DiskVolumeConfiguration().withCount(394231563888289143L)
+            .withSizeGB(736999913427384233L)
             .withSku(new DiskSku().withName(DiskSkuName.PREMIUM_LRS));
         model = BinaryData.fromObject(model).toObject(DiskVolumeConfiguration.class);
-        Assertions.assertEquals(4836526931131367321L, model.count());
-        Assertions.assertEquals(31147603080003868L, model.sizeGB());
+        Assertions.assertEquals(394231563888289143L, model.count());
+        Assertions.assertEquals(736999913427384233L, model.sizeGB());
         Assertions.assertEquals(DiskSkuName.PREMIUM_LRS, model.sku().name());
     }
 }

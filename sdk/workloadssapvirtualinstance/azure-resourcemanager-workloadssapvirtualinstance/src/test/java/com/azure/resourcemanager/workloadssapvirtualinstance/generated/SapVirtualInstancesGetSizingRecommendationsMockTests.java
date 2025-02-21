@@ -6,8 +6,8 @@ package com.azure.resourcemanager.workloadssapvirtualinstance.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.workloadssapvirtualinstance.WorkloadsSapVirtualInstanceManager;
 import com.azure.resourcemanager.workloadssapvirtualinstance.models.SapDatabaseScaleMethod;
@@ -33,19 +33,19 @@ public final class SapVirtualInstancesGetSizingRecommendationsMockTests {
         WorkloadsSapVirtualInstanceManager manager = WorkloadsSapVirtualInstanceManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SapSizingRecommendationResult response = manager.sapVirtualInstances()
-            .getSizingRecommendationsWithResponse("pn",
-                new SapSizingRecommendationRequest().withAppLocation("saz")
+            .getSizingRecommendationsWithResponse("xyfwnylrcool",
+                new SapSizingRecommendationRequest().withAppLocation("ttpkiwkkbnujrywv")
                     .withEnvironment(SapEnvironmentType.NON_PROD)
-                    .withSapProduct(SapProductType.S4HANA)
-                    .withDeploymentType(SapDeploymentType.SINGLE_SERVER)
-                    .withSaps(12239624100997197L)
-                    .withDbMemory(17918194548495452L)
-                    .withDatabaseType(SapDatabaseType.DB2)
+                    .withSapProduct(SapProductType.OTHER)
+                    .withDeploymentType(SapDeploymentType.THREE_TIER)
+                    .withSaps(9175524620575954054L)
+                    .withDbMemory(3158870233768803594L)
+                    .withDatabaseType(SapDatabaseType.HANA)
                     .withDbScaleMethod(SapDatabaseScaleMethod.SCALE_UP)
-                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_ZONE),
+                    .withHighAvailabilityType(SapHighAvailabilityType.AVAILABILITY_SET),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

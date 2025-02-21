@@ -13,19 +13,19 @@ public final class SapDiskConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapDiskConfiguration model = BinaryData.fromString(
-            "{\"recommendedConfiguration\":{\"count\":3916115769735637263,\"sizeGB\":3926893940031522022,\"sku\":{\"name\":\"Premium_LRS\"}},\"supportedConfigurations\":[{\"sku\":{\"name\":\"Premium_ZRS\"},\"sizeGB\":7022736295865930419,\"minimumSupportedDiskCount\":2456249512258979423,\"maximumSupportedDiskCount\":5814437001624716680,\"iopsReadWrite\":1796224915838134100,\"mbpsReadWrite\":3194122656774081781,\"diskTier\":\"owwquuvxz\"}]}")
+            "{\"recommendedConfiguration\":{\"count\":6855898880348717340,\"sizeGB\":4972928354083349711,\"sku\":{\"name\":\"Premium_ZRS\"}},\"supportedConfigurations\":[{\"sku\":{\"name\":\"Premium_LRS\"},\"sizeGB\":6861155578766594130,\"minimumSupportedDiskCount\":4489175795860033731,\"maximumSupportedDiskCount\":6506912961841032355,\"iopsReadWrite\":6737445379863438751,\"mbpsReadWrite\":3102181687094481130,\"diskTier\":\"cblylpstdbhhxsr\"}]}")
             .toObject(SapDiskConfiguration.class);
-        Assertions.assertEquals(3916115769735637263L, model.recommendedConfiguration().count());
-        Assertions.assertEquals(3926893940031522022L, model.recommendedConfiguration().sizeGB());
-        Assertions.assertEquals(DiskSkuName.PREMIUM_LRS, model.recommendedConfiguration().sku().name());
-        Assertions.assertEquals(DiskSkuName.PREMIUM_ZRS, model.supportedConfigurations().get(0).sku().name());
-        Assertions.assertEquals(7022736295865930419L, model.supportedConfigurations().get(0).sizeGB());
-        Assertions.assertEquals(2456249512258979423L,
+        Assertions.assertEquals(6855898880348717340L, model.recommendedConfiguration().count());
+        Assertions.assertEquals(4972928354083349711L, model.recommendedConfiguration().sizeGB());
+        Assertions.assertEquals(DiskSkuName.PREMIUM_ZRS, model.recommendedConfiguration().sku().name());
+        Assertions.assertEquals(DiskSkuName.PREMIUM_LRS, model.supportedConfigurations().get(0).sku().name());
+        Assertions.assertEquals(6861155578766594130L, model.supportedConfigurations().get(0).sizeGB());
+        Assertions.assertEquals(4489175795860033731L,
             model.supportedConfigurations().get(0).minimumSupportedDiskCount());
-        Assertions.assertEquals(5814437001624716680L,
+        Assertions.assertEquals(6506912961841032355L,
             model.supportedConfigurations().get(0).maximumSupportedDiskCount());
-        Assertions.assertEquals(1796224915838134100L, model.supportedConfigurations().get(0).iopsReadWrite());
-        Assertions.assertEquals(3194122656774081781L, model.supportedConfigurations().get(0).mbpsReadWrite());
-        Assertions.assertEquals("owwquuvxz", model.supportedConfigurations().get(0).diskTier());
+        Assertions.assertEquals(6737445379863438751L, model.supportedConfigurations().get(0).iopsReadWrite());
+        Assertions.assertEquals(3102181687094481130L, model.supportedConfigurations().get(0).mbpsReadWrite());
+        Assertions.assertEquals("cblylpstdbhhxsr", model.supportedConfigurations().get(0).diskTier());
     }
 }

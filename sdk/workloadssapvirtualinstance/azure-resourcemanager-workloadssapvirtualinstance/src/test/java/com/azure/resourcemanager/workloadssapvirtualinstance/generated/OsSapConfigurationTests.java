@@ -13,22 +13,21 @@ public final class OsSapConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OsSapConfiguration model = BinaryData.fromString(
-            "{\"deployerVmPackages\":{\"url\":\"cqibycnojv\",\"storageAccountId\":\"mefqsgzvahapjyzh\"},\"sapFqdn\":\"gqzcjr\"}")
+            "{\"deployerVmPackages\":{\"url\":\"x\",\"storageAccountId\":\"kpycgklwndnhjd\"},\"sapFqdn\":\"whvylw\"}")
             .toObject(OsSapConfiguration.class);
-        Assertions.assertEquals("cqibycnojv", model.deployerVmPackages().url());
-        Assertions.assertEquals("mefqsgzvahapjyzh", model.deployerVmPackages().storageAccountId());
-        Assertions.assertEquals("gqzcjr", model.sapFqdn());
+        Assertions.assertEquals("x", model.deployerVmPackages().url());
+        Assertions.assertEquals("kpycgklwndnhjd", model.deployerVmPackages().storageAccountId());
+        Assertions.assertEquals("whvylw", model.sapFqdn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OsSapConfiguration model = new OsSapConfiguration()
-            .withDeployerVmPackages(
-                new DeployerVmPackages().withUrl("cqibycnojv").withStorageAccountId("mefqsgzvahapjyzh"))
-            .withSapFqdn("gqzcjr");
+            .withDeployerVmPackages(new DeployerVmPackages().withUrl("x").withStorageAccountId("kpycgklwndnhjd"))
+            .withSapFqdn("whvylw");
         model = BinaryData.fromObject(model).toObject(OsSapConfiguration.class);
-        Assertions.assertEquals("cqibycnojv", model.deployerVmPackages().url());
-        Assertions.assertEquals("mefqsgzvahapjyzh", model.deployerVmPackages().storageAccountId());
-        Assertions.assertEquals("gqzcjr", model.sapFqdn());
+        Assertions.assertEquals("x", model.deployerVmPackages().url());
+        Assertions.assertEquals("kpycgklwndnhjd", model.deployerVmPackages().storageAccountId());
+        Assertions.assertEquals("whvylw", model.sapFqdn());
     }
 }
