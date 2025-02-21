@@ -67,7 +67,7 @@ class EventPositionConverterTests {
         properties.setOffset("123");
 
         EventPosition converted = EVENT_POSITION_CONVERTER.convert(properties);
-        EventPosition expected = EventPosition.fromOffset(123L);
+        EventPosition expected = EventPosition.fromOffsetString("123");
         assertEquals(expected, converted);
         assertFalse(expected.isInclusive());
     }
@@ -79,7 +79,7 @@ class EventPositionConverterTests {
         properties.setInclusive(true);
 
         EventPosition converted = EVENT_POSITION_CONVERTER.convert(properties);
-        EventPosition expected = EventPosition.fromOffset(123L);
+        EventPosition expected = EventPosition.fromOffsetString("123");
         assertEquals(expected, converted);
         assertFalse(expected.isInclusive());
     }
