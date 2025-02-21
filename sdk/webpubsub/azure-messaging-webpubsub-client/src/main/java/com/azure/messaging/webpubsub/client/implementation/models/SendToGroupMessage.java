@@ -3,12 +3,7 @@
 
 package com.azure.messaging.webpubsub.client.implementation.models;
 
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-
-import java.io.IOException;
-import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
 public final class SendToGroupMessage extends WebPubSubMessageAck {
 
@@ -22,10 +17,12 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
 
     private Object data;
 
+    @JsonGetter
     public String getType() {
         return TYPE;
     }
 
+    @JsonGetter
     public String getGroup() {
         return group;
     }
@@ -41,6 +38,7 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
         return this;
     }
 
+    @JsonGetter
     public Boolean isNoEcho() {
         return noEcho;
     }
@@ -50,6 +48,7 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
         return this;
     }
 
+    @JsonGetter
     public String getDataType() {
         return dataType;
     }
@@ -59,6 +58,7 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
         return this;
     }
 
+    @JsonGetter
     public Object getData() {
         return data;
     }
@@ -66,51 +66,5 @@ public final class SendToGroupMessage extends WebPubSubMessageAck {
     public SendToGroupMessage setData(Object data) {
         this.data = data;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("type", TYPE)
-            .writeNumberField("ackId", getAckId())
-            .writeStringField("group", group)
-            .writeBooleanField("noEcho", noEcho)
-            .writeStringField("dataType", dataType)
-            .writeStringField("data", Objects.toString(data, null))
-            .writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SendToGroupMessage from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SendToGroupMessage if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SendToGroupMessage.
-     */
-    public static SendToGroupMessage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SendToGroupMessage sendToGroupMessage = new SendToGroupMessage();
-
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("ackId".equals(fieldName)) {
-                    sendToGroupMessage.setAckId(reader.getNullable(JsonReader::getLong));
-                } else if ("group".equals(fieldName)) {
-                    sendToGroupMessage.group = reader.getString();
-                } else if ("noEcho".equals(fieldName)) {
-                    sendToGroupMessage.noEcho = reader.getNullable(JsonReader::getBoolean);
-                } else if ("dataType".equals(fieldName)) {
-                    sendToGroupMessage.dataType = reader.getString();
-                } else if ("data".equals(fieldName)) {
-                    sendToGroupMessage.data = reader.readUntyped();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return sendToGroupMessage;
-        });
     }
 }

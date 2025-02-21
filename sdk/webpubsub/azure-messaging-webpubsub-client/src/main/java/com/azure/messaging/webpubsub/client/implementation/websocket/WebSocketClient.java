@@ -4,7 +4,6 @@
 package com.azure.messaging.webpubsub.client.implementation.websocket;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
 
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -13,6 +12,6 @@ import java.util.function.Consumer;
 public interface WebSocketClient {
 
     WebSocketSession connectToServer(ClientEndpointConfiguration cec, String path,
-        AtomicReference<ClientLogger> loggerReference, Consumer<WebPubSubMessage> messageHandler,
+        AtomicReference<ClientLogger> loggerReference, Consumer<Object> messageHandler,
         Consumer<WebSocketSession> openHandler, Consumer<CloseReason> closeHandler);
 }

@@ -4,6 +4,7 @@
 package com.azure.messaging.webpubsub.client.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -36,6 +37,7 @@ public final class WebPubSubProtocolType extends ExpandableStringEnum<WebPubSubP
      * @param name a name to look for.
      * @return the corresponding WebPubSubProtocolType.
      */
+    @JsonCreator
     public static WebPubSubProtocolType fromString(String name) {
         return fromString(name, WebPubSubProtocolType.class);
     }

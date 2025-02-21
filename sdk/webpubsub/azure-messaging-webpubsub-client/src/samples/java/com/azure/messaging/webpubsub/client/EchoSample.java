@@ -46,6 +46,7 @@ public final class EchoSample {
         client.addOnGroupMessageEventHandler(event -> {
             String group = event.getGroup();
             if (groupName.equals(event.getGroup())
+                && !userName.equals(event.getFromUserId())
                 && (event.getDataFormat() == WebPubSubDataFormat.TEXT || event.getDataFormat() == WebPubSubDataFormat.JSON)) {
 
                 String text = parseMessageEvent(event);
@@ -55,7 +56,7 @@ public final class EchoSample {
                     client.stop();
                 } else {
                     // echo the message text
-                    System.out.println("Received: " + text);
+                    client.sendToGroup(group, "Received: " + text);
                 }
             }
         });
@@ -71,13 +72,8 @@ public final class EchoSample {
     }
 
     private static String parseMessageEvent(GroupMessageEvent event) {
-        if (event.getDataFormat() == WebPubSubDataFormat.TEXT) {
-            return event.getData().toString();
-        }
-        if (event.getDataFormat() == WebPubSubDataFormat.JSON) {
-            return event.getData().toString();
-        }
-
-        return "unknown format: " + event.getDataFormat();
+        return event.getDataFormat() == WebPubSubDataFormat.TEXT
+            ? event.getData().toString()
+            : event.getData().toObject(String.class);
     }
 }
