@@ -13,14 +13,16 @@ import com.azure.security.confidentialledger.certificate.ConfidentialLedgerCerti
 
 public class GetLedgerIdentity {
     public static void main(String[] args) {
-        ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient
-            = new ConfidentialLedgerCertificateClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .certificateEndpoint("identity.confidential-ledger.core.azure.com")
-                .buildClient();
+        ConfidentialLedgerCertificateClient confidentialLedgerCertificateClient =
+                new ConfidentialLedgerCertificateClientBuilder()
+                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .certificateEndpoint("identity.confidential-ledger.core.azure.com")
+                        .buildClient();
         // BEGIN:com.azure.security.confidentialledger.certificate.generated.getledgeridentity.getledgeridentity
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response
-            = confidentialLedgerCertificateClient.getLedgerIdentityWithResponse("contoso-ledger-12345", requestOptions);
+        Response<BinaryData> response =
+                confidentialLedgerCertificateClient.getLedgerIdentityWithResponse(
+                        "contoso-ledger-12345", requestOptions);
         // END:com.azure.security.confidentialledger.certificate.generated.getledgeridentity.getledgeridentity
     }
 }
