@@ -105,12 +105,6 @@ public final class SpecializedBlobClientBuilder implements TokenCredentialTrait<
     private BlobAudience audience;
 
     /**
-     * Creates a new instance of {@link SpecializedBlobClientBuilder}.
-     */
-    public SpecializedBlobClientBuilder() {
-    }
-
-    /**
      * Creates a {@link AppendBlobClient} based on options set in the Builder. AppendBlobClients are used to perform
      * append blob specific operations such as {@link AppendBlobClient#appendBlock(InputStream, long) append block},
      * only use this when the blob is known to be an append blob.

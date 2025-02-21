@@ -18,11 +18,8 @@ public class PageBlobCopyIncrementalOptions {
     private PageBlobCopyIncrementalRequestConditions requestConditions;
 
     /**
-     * Creates a new instance of {@link PageBlobCopyIncrementalOptions}.
-     *
      * @param source The source page blob.
      * @param snapshot The snapshot on the copy source.
-     * @throws NullPointerException If {@code source} or {@code snapshot} is null.
      */
     public PageBlobCopyIncrementalOptions(String source, String snapshot) {
         StorageImplUtils.assertNotNull("source", source);
@@ -32,8 +29,6 @@ public class PageBlobCopyIncrementalOptions {
     }
 
     /**
-     * Gets the source page blob.
-     *
      * @return The source page blob.
      */
     public String getSource() {
@@ -41,8 +36,6 @@ public class PageBlobCopyIncrementalOptions {
     }
 
     /**
-     * Gets the snapshot on the copy source.
-     *
      * @return The snapshot on the copy source.
      */
     public String getSnapshot() {
@@ -50,8 +43,6 @@ public class PageBlobCopyIncrementalOptions {
     }
 
     /**
-     * Gets the {@link PageBlobCopyIncrementalRequestConditions} for the destination.
-     *
      * @return {@link PageBlobCopyIncrementalRequestConditions} for the destination.
      */
     public PageBlobCopyIncrementalRequestConditions getRequestConditions() {
@@ -59,8 +50,6 @@ public class PageBlobCopyIncrementalOptions {
     }
 
     /**
-     * Sets the {@link PageBlobCopyIncrementalRequestConditions} for the blob.
-     *
      * @param requestConditions {@link PageBlobCopyIncrementalRequestConditions} for the blob.
      * @return The updated options.
      */

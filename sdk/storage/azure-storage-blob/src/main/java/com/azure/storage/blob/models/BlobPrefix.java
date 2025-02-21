@@ -23,12 +23,6 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
     private String name;
 
     /**
-     * Creates an instance of BlobPrefix.
-     */
-    public BlobPrefix() {
-    }
-
-    /**
      * Get the name property: The Name property.
      *
      * @return the name value.
