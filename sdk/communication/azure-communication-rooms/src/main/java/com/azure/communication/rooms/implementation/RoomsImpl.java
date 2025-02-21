@@ -37,23 +37,17 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in Rooms.
- */
+/** An instance of this class provides access to all the operations defined in Rooms. */
 public final class RoomsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final RoomsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final AzureCommunicationRoomServiceImpl client;
 
     /**
      * Initializes an instance of RoomsImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     RoomsImpl(AzureCommunicationRoomServiceImpl client) {
@@ -62,8 +56,8 @@ public final class RoomsImpl {
     }
 
     /**
-     * The interface defining all the services for AzureCommunicationRoomServiceRooms to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for AzureCommunicationRoomServiceRooms to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AzureCommunicationRo")
@@ -153,7 +147,7 @@ public final class RoomsImpl {
 
     /**
      * Creates a new room.
-     * 
+     *
      * @param createRoomRequest The create room request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -171,7 +165,7 @@ public final class RoomsImpl {
 
     /**
      * Creates a new room.
-     * 
+     *
      * @param createRoomRequest The create room request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -190,7 +184,7 @@ public final class RoomsImpl {
 
     /**
      * Creates a new room.
-     * 
+     *
      * @param createRoomRequest The create room request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -204,7 +198,7 @@ public final class RoomsImpl {
 
     /**
      * Creates a new room.
-     * 
+     *
      * @param createRoomRequest The create room request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,7 +213,7 @@ public final class RoomsImpl {
 
     /**
      * Creates a new room.
-     * 
+     *
      * @param createRoomRequest The create room request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,7 +232,7 @@ public final class RoomsImpl {
 
     /**
      * Creates a new room.
-     * 
+     *
      * @param createRoomRequest The create room request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -252,7 +246,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves all created rooms.
-     * 
+     *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of rooms along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -269,7 +263,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves all created rooms.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -286,7 +280,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves all created rooms.
-     * 
+     *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of rooms as paginated response with {@link PagedFlux}.
@@ -298,7 +292,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves all created rooms.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -313,7 +307,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves all created rooms.
-     * 
+     *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of rooms along with {@link PagedResponse}.
@@ -329,7 +323,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves all created rooms.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -347,7 +341,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves all created rooms.
-     * 
+     *
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of rooms as paginated response with {@link PagedIterable}.
@@ -359,7 +353,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves all created rooms.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -373,7 +367,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves an existing room by id.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -389,7 +383,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves an existing room by id.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -405,7 +399,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves an existing room by id.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -419,7 +413,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves an existing room by id.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,7 +428,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves an existing room by id.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -450,7 +444,7 @@ public final class RoomsImpl {
 
     /**
      * Retrieves an existing room by id.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -464,7 +458,7 @@ public final class RoomsImpl {
 
     /**
      * Update a room with given changes.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @param updateRoomRequest The update room request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -481,7 +475,7 @@ public final class RoomsImpl {
 
     /**
      * Update a room with given changes.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @param updateRoomRequest The update room request.
      * @param context The context to associate with this operation.
@@ -500,7 +494,7 @@ public final class RoomsImpl {
 
     /**
      * Update a room with given changes.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @param updateRoomRequest The update room request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -515,7 +509,7 @@ public final class RoomsImpl {
 
     /**
      * Update a room with given changes.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @param updateRoomRequest The update room request.
      * @param context The context to associate with this operation.
@@ -532,7 +526,7 @@ public final class RoomsImpl {
 
     /**
      * Update a room with given changes.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @param updateRoomRequest The update room request.
      * @param context The context to associate with this operation.
@@ -550,7 +544,7 @@ public final class RoomsImpl {
 
     /**
      * Update a room with given changes.
-     * 
+     *
      * @param roomId The id of the room requested.
      * @param updateRoomRequest The update room request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -565,7 +559,7 @@ public final class RoomsImpl {
 
     /**
      * Delete a room.
-     * 
+     *
      * @param roomId The id of the room to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -581,7 +575,7 @@ public final class RoomsImpl {
 
     /**
      * Delete a room.
-     * 
+     *
      * @param roomId The id of the room to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -597,7 +591,7 @@ public final class RoomsImpl {
 
     /**
      * Delete a room.
-     * 
+     *
      * @param roomId The id of the room to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -611,7 +605,7 @@ public final class RoomsImpl {
 
     /**
      * Delete a room.
-     * 
+     *
      * @param roomId The id of the room to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -626,7 +620,7 @@ public final class RoomsImpl {
 
     /**
      * Delete a room.
-     * 
+     *
      * @param roomId The id of the room to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,7 +636,7 @@ public final class RoomsImpl {
 
     /**
      * Delete a room.
-     * 
+     *
      * @param roomId The id of the room to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -655,10 +649,9 @@ public final class RoomsImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -674,10 +667,9 @@ public final class RoomsImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -694,10 +686,9 @@ public final class RoomsImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -713,10 +704,9 @@ public final class RoomsImpl {
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The URL to get the next list of items
-     * 
-     * The nextLink parameter.
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
