@@ -8,7 +8,11 @@ import io.clientcore.core.http.annotations.BodyParam;
 import io.clientcore.core.http.annotations.HeaderParam;
 import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
+import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
@@ -18,6 +22,12 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonToken;
+import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.utils.Base64Uri;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,8 +38,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -214,5 +227,132 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline, new JsonSerializer());
 
         testInterface.testListNext(nextLinkUri).close();
+    }
+
+    public enum EnumType implements JsonSerializable<EnumType> {
+        ENUM("enum");
+
+        private final String value;
+
+        EnumType(String value) {
+            this.value = value;
+        }
+
+        public static EnumType fromString(String value) {
+            if (value == null) {
+                return null;
+            }
+            EnumType[] items = EnumType.values();
+            for (EnumType item : items) {
+                if (item.toString().equalsIgnoreCase(value)) {
+                    return item;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return this.value;
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            return jsonWriter.writeString(this.value);
+        }
+
+        public static EnumType fromJson(JsonReader jsonReader) throws IOException {
+            JsonToken nextToken = jsonReader.nextToken();
+            if (nextToken == JsonToken.NULL) {
+                return null;
+            }
+            if (nextToken != JsonToken.STRING) {
+                throw new IllegalStateException(String.format("Unexpected JSON token for %s", nextToken));
+            }
+            return EnumType.fromString(jsonReader.getString());
+        }
+    }
+
+    @ServiceInterface(name = "typeService", host = "https://somecloud.com")
+    interface TestTypeService {
+        @HttpRequestInformation(
+            method = HttpMethod.POST,
+            path = "my/uri/path",
+            expectedStatusCodes = { 200 },
+            returnValueWireType = OffsetDateTime.class)
+        Response<OffsetDateTime> testOffsetDateTime(@QueryParam(value = "query") OffsetDateTime queryParam,
+            @BodyParam(value = "application/json") OffsetDateTime requestBody, RequestOptions requestOptions);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
+        Response<byte[]> testBase64(@BodyParam(value = "application/json") byte[] requestBody,
+            RequestOptions requestOptions);
+
+        @HttpRequestInformation(
+            method = HttpMethod.POST,
+            path = "my/uri/path",
+            expectedStatusCodes = { 200 },
+            returnValueWireType = Base64Uri.class)
+        Response<byte[]> testBase64Uri(@QueryParam(value = "query") Base64Uri queryParam,
+            @BodyParam(value = "application/json") Base64Uri requestBody, RequestOptions requestOptions);
+
+        @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
+        Response<EnumType> testEnum(@QueryParam(value = "query") EnumType queryParam,
+            @BodyParam(value = "application/json") EnumType requestBody, RequestOptions requestOptions);
+    }
+
+    // the pipeline mirror a JSON string from request to response
+    private static final HttpPipeline MIRROR_PIPELINE = new HttpPipelineBuilder().httpClient(request -> {
+        String query = request.getUri().getQuery();
+        if (query != null && query.startsWith("query=")) {
+            String queryValue = query.substring("query=".length());
+
+            String bodyValue = request.getBody().toObject(String.class);
+            Assertions.assertEquals(queryValue, bodyValue);
+        }
+
+        return Response.create(request, 200, new HttpHeaders(), request.getBody());
+    }).build();
+
+    @Test
+    public void canProcessDateTime() {
+        TestTypeService testInterface = RestProxy.create(TestTypeService.class, MIRROR_PIPELINE, new JsonSerializer());
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+
+        // java.lang.ClassCastException: class java.lang.String cannot be cast to class java.time.OffsetDateTime (java.lang.String and java.time.OffsetDateTime are in module java.base of loader 'bootstrap')
+        OffsetDateTime request = OffsetDateTime.now().withOffsetSameInstant(ZoneOffset.UTC);
+        OffsetDateTime response = testInterface.testOffsetDateTime(request, request, requestOptions).getValue();
+        Assertions.assertEquals(request, response);
+    }
+
+    @Test
+    public void canProcessBase64() {
+        TestTypeService testInterface = RestProxy.create(TestTypeService.class, MIRROR_PIPELINE, new JsonSerializer());
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+
+        // Base64 in response is not decoded
+        byte[] request = "test".getBytes(StandardCharsets.UTF_8);
+        byte[] response = testInterface.testBase64(request, requestOptions).getValue();
+        Assertions.assertArrayEquals(request, response);
+    }
+
+    @Test
+    public void canProcessBase64Uri() {
+        TestTypeService testInterface = RestProxy.create(TestTypeService.class, MIRROR_PIPELINE, new JsonSerializer());
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+
+        // https://github.com/Azure/azure-sdk-for-java/pull/44287
+        Base64Uri request = Base64Uri.encode("test".getBytes(StandardCharsets.UTF_8));
+        byte[] response = testInterface.testBase64Uri(request, request, requestOptions).getValue();
+        Assertions.assertEquals(request, Base64Uri.encode(response));
+    }
+
+    @Test
+    public void canProcessEnum() {
+        TestTypeService testInterface = RestProxy.create(TestTypeService.class, MIRROR_PIPELINE, new JsonSerializer());
+        RequestOptions requestOptions = new RequestOptions().setResponseBodyMode(ResponseBodyMode.DESERIALIZE);
+
+        EnumType request = EnumType.ENUM;
+        EnumType response = testInterface.testEnum(request, request, requestOptions).getValue();
+        Assertions.assertEquals(request, response);
     }
 }
