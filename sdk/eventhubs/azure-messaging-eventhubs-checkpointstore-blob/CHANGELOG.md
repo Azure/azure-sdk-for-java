@@ -1,16 +1,16 @@
 # Release History
 
-## 1.21.0-beta.1 (Unreleased)
+## 1.21.0-beta.1 (2025-02-21)
 
 ### Features Added
 
 - Use `getOffsetString()` to persist checkpoints rather than `getOffset()`, which is deprecated.  ([44272](https://github.com/Azure/azure-sdk-for-java/pull/44272))
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.20.0` to version `5.21.0-beta.1`.
 
 ## 1.20.3 (2025-02-11)
 
