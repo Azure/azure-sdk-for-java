@@ -12,6 +12,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.Oper
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AksResourceAttributes;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.semconv.ServiceAttributes;
@@ -167,14 +168,8 @@ public class TelemetryItemExporter {
     private static String maskIKeys(List<TelemetryItem> telemetryItems, String json) {
         Set<String> iKeys
             = telemetryItems.stream().map(TelemetryItem::getInstrumentationKey).collect(Collectors.toSet());
-        int charactersToKeepAtEnd = 13;
         for (String instrumentationKey : iKeys) {
-            // Tests could set  the connection string with a short one
-            if (instrumentationKey.length() > charactersToKeepAtEnd) {
-                String maskedIKey
-                    = "*" + instrumentationKey.substring(instrumentationKey.length() - charactersToKeepAtEnd);
-                json = json.replace(instrumentationKey, maskedIKey);
-            }
+            json = json.replace(instrumentationKey, IKeyMasker.mask(instrumentationKey));
         }
         return json;
     }
