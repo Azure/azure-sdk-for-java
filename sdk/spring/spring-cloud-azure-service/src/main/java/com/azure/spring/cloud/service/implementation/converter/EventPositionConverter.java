@@ -35,13 +35,10 @@ public final class EventPositionConverter implements Converter<EventProcessorCli
             if (LATEST.equalsIgnoreCase(source.getOffset())) {
                 return EventPosition.latest();
             }
-            try {
-                long offset = Long.parseLong(source.getOffset());
-                return EventPosition.fromOffset(offset);
-            } catch (NumberFormatException exception) {
-                LOGGER.warn("The offset {} provided is not parsable, will ignore it", source.getOffset());
-            }
+
+            return EventPosition.fromOffsetString(source.getOffset());
         }
+
         if (source.getSequenceNumber() != null) {
             return EventPosition.fromSequenceNumber(source.getSequenceNumber(), source.isInclusive());
         }
