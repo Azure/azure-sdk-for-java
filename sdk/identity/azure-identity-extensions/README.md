@@ -22,7 +22,7 @@ token as a password to connect with MySQL.
 ### Authenticating with JDBC
 
 This picture shows how the JDBC authentication plugins provided by Azure Identity Extensions authenticate with managed identity.
-![Architecture](img/passwordless-connections-from-java-apps-to-data-services.jpg)
+![Architecture](https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/identity/azure-identity-extensions/img/passwordless-connections-from-java-apps-to-data-services.jpg)
 
 ## Examples
 For documentation on how to use this package, please refer to [Quickstart:Use Java and JDBC with Azure Database for MySQL](https://aka.ms/passwordless/quickstart/mysql) and [Quickstart:Use Java and JDBC with Azure Database for PostgreSQL](https://aka.ms/passwordless/quickstart/postgresql).
