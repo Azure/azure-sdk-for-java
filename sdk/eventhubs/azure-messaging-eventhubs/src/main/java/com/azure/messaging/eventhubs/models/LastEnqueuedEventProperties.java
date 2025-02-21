@@ -84,7 +84,7 @@ public class LastEnqueuedEventProperties {
      * Gets the offset of the last observed event enqueued in the partition.
      *
      * @return The offset of the last observed event enqueued in the partition. {@code null} if the information has not
-     *     been retrieved, or the offset cannot be represented as a string.
+     *     been retrieved, or the offset cannot be represented as a long.
      * @deprecated This value is obsolete and should no longer be used. Please use {@link #getOffsetString()} instead.
      */
     @Deprecated

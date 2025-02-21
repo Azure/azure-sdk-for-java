@@ -114,7 +114,8 @@ public class Checkpoint {
     /**
      * Gets the offset of the last successfully processed event to store as checkpoint.
      *
-     * @return The offset of the last successfully processed event to store as checkpoint.
+     * @return The offset of the last successfully processed event to store as checkpoint. {@code null} if the
+     *     information has not been set, or the offset cannot be represented as a long.
      * @deprecated This method is obsolete and should no longer be used. Please use {@link #getOffsetString()}
      */
     @Deprecated

@@ -65,7 +65,8 @@ final class SystemProperties implements Map<String, Object> {
     /**
      * Gets the offset within the Event Hubs stream.
      *
-     * @return The offset within the Event Hubs stream.
+     * @return The offset within the Event Hubs stream.  {@code null} if the information has not
+     *     been retrieved, or the offset cannot be represented as a long.
      * @deprecated This method is obsolete and should no longer be used. Please use {@link #getOffsetString()}.
      */
     @Deprecated
