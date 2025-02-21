@@ -44,7 +44,7 @@ public final class DevBoxImageReference implements JsonSerializable<DevBoxImageR
     private String osBuildNumber;
 
     /*
-     * The datetime that the backing image version was published, in RFC3339 format.
+     * The datetime that the backing image version was published.
      */
     @Generated
     private OffsetDateTime publishedDate;
@@ -97,7 +97,7 @@ public final class DevBoxImageReference implements JsonSerializable<DevBoxImageR
     }
 
     /**
-     * Get the publishedDate property: The datetime that the backing image version was published, in RFC3339 format.
+     * Get the publishedDate property: The datetime that the backing image version was published.
      *
      * @return the publishedDate value.
      */
