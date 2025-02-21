@@ -1,14 +1,3 @@
-- [Azure identity authentication extensions plugin library for Java](#azure-identity-authentication-extensions-plugin-library-for-java)
-  - [Getting started](#getting-started)
-    - [Prerequisites](#prerequisites)
-  - [Key concepts](#key-concepts)
-  - [Architecture](#architecture)
-    - [Authenticating with JDBC](#authenticating-with-jdbc)
-  - [Examples](#examples)
-  - [Troubleshooting](#troubleshooting)
-  - [Next steps](#next-steps)
-  - [Contributing](#contributing)
-    
 # Azure identity authentication extensions plugin library for Java
 
 This package contains authentication extensions to get a token from Microsoft Entra ID for Azure services, like Azure Database for MySQL.
