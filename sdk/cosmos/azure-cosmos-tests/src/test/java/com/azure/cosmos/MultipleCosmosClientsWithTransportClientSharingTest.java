@@ -126,7 +126,7 @@ public class MultipleCosmosClientsWithTransportClientSharingTest extends TestSui
 
         validateItemResponse(properties, itemResponse);
         String newPropValue = UUID.randomUUID().toString();
-        properties.set("newProp", newPropValue, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        properties.set("newProp", newPropValue);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();
         ModelBridgeInternal.setPartitionKey(options, new PartitionKey(properties.get("mypk")));
         // replace document

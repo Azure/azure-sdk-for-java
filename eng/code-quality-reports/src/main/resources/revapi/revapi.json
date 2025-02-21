@@ -204,7 +204,7 @@
         },
         {
           "code": "java.method.addedToInterface",
-          "new" : "method <T> long com.azure.spring.data.cosmos.core.CosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
+          "new" : "method long com.azure.spring.data.cosmos.core.CosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
@@ -718,6 +718,12 @@
           "ignore": true,
           "code" : "java.method.removed",
           "old" : "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
+          "justification": "The property is a constant, which should not be changed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters::withType(java.lang.String)",
           "justification": "The property is a constant, which should not be changed."
         }
       ]

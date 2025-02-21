@@ -13,6 +13,9 @@ trigger:
       - sdk/parents/azure-client-sdk-parent/
       - eng/pipelines/
       - eng/common/testproxy/
+    exclude:
+      - sdk/core/azure-core-v2
+      - sdk/core/azure-core-test-v2
 
 pr:
   branches:
@@ -28,6 +31,9 @@ pr:
       - sdk/parents/azure-client-sdk-parent/
       - eng/pipelines/
       - eng/common/testproxy/
+    exclude:
+      - sdk/core/azure-core-v2
+      - sdk/core/azure-core-test-v2
 
 parameters:
   - name: release_dependsonlivetests
@@ -171,6 +177,13 @@ extends:
       - name: perf-test-core
         groupId: com.azure
 
+    # This needs to be temporarily here for the PR pipeline.
+    MatrixConfigs:
+      - Name: Java_ci_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
     # Run separate version override tests using a different artifacts list
     # This matrix config overrides the ArtifactsJson variable
     AdditionalMatrixConfigs:
@@ -184,4 +197,3 @@ extends:
         parameters:
           AdditionalMatrixReplace:
             - TestFromSource=(.*)/true
-

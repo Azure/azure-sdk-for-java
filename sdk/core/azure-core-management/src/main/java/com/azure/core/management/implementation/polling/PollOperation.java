@@ -50,12 +50,14 @@ public final class PollOperation {
         return pollingContext -> {
             PollingState pollingState = PollingState.from(serializerAdapter, pollingContext);
             if (pollingState.getOperationStatus().isComplete()) {
-                return pollResponseMonoFromPollingState(serializerAdapter, pollResultType, pollingState);
+                return Mono.defer(
+                    () -> Mono.just(pollResponseFromPollingState(serializerAdapter, pollResultType, pollingState)));
             } else {
                 // InProgress|NonTerminal-Status
                 return doSinglePoll(pipeline, pollingState, context).flatMap(updatedState -> {
                     updatedState.store(pollingContext);
-                    return pollResponseMonoFromPollingState(serializerAdapter, pollResultType, updatedState);
+                    return Mono.defer(
+                        () -> Mono.just(pollResponseFromPollingState(serializerAdapter, pollResultType, updatedState)));
                 });
             }
         };
@@ -117,37 +119,6 @@ public final class PollOperation {
     }
 
     /**
-     * Create a PollResponse indicating service error.
-     *
-     * @param opStatus the long-running-operation errored status
-     * @param error the error description
-     * @param <T> the poll result type
-     * @return PollResponse
-     */
-    private static <T> Mono<PollResponse<PollResult<T>>> errorPollResponseMono(LongRunningOperationStatus opStatus,
-        Error error) {
-        PollResult<T> pollResult = new PollResult<>(new PollResult.Error(error.getMessage(),
-            error.getResponseStatusCode(), new HttpHeaders(error.getResponseHeaders()), error.getResponseBody()));
-        return Mono.just(new PollResponse<>(opStatus, pollResult));
-    }
-
-    /**
-     * Create a PollResponse indicating succeeded or in-progress LRO.
-     *
-     * @param serializerAdapter the serializer for any encoding and decoding
-     * @param opStatus the long-running-operation succeeded or in-progress status
-     * @param pollResponseBody the poll response body
-     * @param pollResultType the poll result type
-     * @param <T> the poll result type
-     * @return PollResponse
-     */
-    private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMono(SerializerAdapter serializerAdapter,
-        LongRunningOperationStatus opStatus, String pollResponseBody, Type pollResultType, Duration pollDelay) {
-        T result = deserialize(serializerAdapter, pollResponseBody, pollResultType);
-        return Mono.just(new PollResponse<>(opStatus, new PollResult<T>(result), pollDelay));
-    }
-
-    /**
      * Do a poll to retrieve the LRO status.
      *
      * @param pipeline the HttpPipeline for making poll request
@@ -170,32 +141,70 @@ public final class PollOperation {
                     .fromSupplier(() -> pollingState.update(response.getStatusCode(), response.getHeaders(), null))));
     }
 
-    private static <T> Mono<PollResponse<PollResult<T>>> pollResponseMonoFromPollingState(
-        SerializerAdapter serializerAdapter, Type pollResultType, PollingState pollingState) {
+    /**
+     * Gets the latest poll response from PollingState.
+     *
+     * @param serializerAdapter the serializer for any encoding and decoding
+     * @param pollResultType the poll result type
+     * @param pollingState the polling state
+     * @param <T> the poll result type
+     * @return the latest poll response
+     */
+    static <T> PollResponse<PollResult<T>> pollResponseFromPollingState(SerializerAdapter serializerAdapter,
+        Type pollResultType, PollingState pollingState) {
         if (pollingState.getOperationStatus().isComplete()) {
             if (pollingState.getOperationStatus() == LongRunningOperationStatus.FAILED
                 || pollingState.getOperationStatus() == LRO_CANCELLED) {
                 // Failed|Cancelled
                 Error lroInitError = pollingState.getSynchronouslyFailedLroError();
                 if (lroInitError != null) {
-                    return errorPollResponseMono(pollingState.getOperationStatus(), lroInitError);
+                    return errorPollResponse(pollingState.getOperationStatus(), lroInitError);
                 }
                 Error pollError = pollingState.getPollError();
                 if (pollError != null) {
-                    return errorPollResponseMono(pollingState.getOperationStatus(), pollError);
+                    return errorPollResponse(pollingState.getOperationStatus(), pollError);
                 }
                 throw new IllegalStateException(
                     "Either LroError or PollError must" + "be set when OperationStatus is in Failed|Cancelled State.");
             } else {
                 // Succeeded
-                return pollResponseMono(serializerAdapter, pollingState.getOperationStatus(),
+                return pollResponse(serializerAdapter, pollingState.getOperationStatus(),
                     pollingState.getLastResponseBody(), pollResultType, pollingState.getPollDelay());
             }
         } else {
             // InProgress|NonTerminal-Status
-            return pollResponseMono(serializerAdapter, pollingState.getOperationStatus(),
+            return pollResponse(serializerAdapter, pollingState.getOperationStatus(),
                 pollingState.getLastResponseBody(), pollResultType, pollingState.getPollDelay());
         }
+    }
+
+    /**
+     * Create a PollResponse indicating succeeded or in-progress LRO.
+     *
+     * @param serializerAdapter the serializer for any encoding and decoding
+     * @param operationStatus the long-running-operation succeeded or in-progress status
+     * @param pollResponseBody the poll response body
+     * @param pollResultType the poll result type
+     * @param <T> the poll result type
+     * @return PollResponse
+     */
+    static <T> PollResponse<PollResult<T>> pollResponse(SerializerAdapter serializerAdapter,
+        LongRunningOperationStatus operationStatus, String pollResponseBody, Type pollResultType, Duration pollDelay) {
+        T result = deserialize(serializerAdapter, pollResponseBody, pollResultType);
+        return new PollResponse<>(operationStatus, new PollResult<>(result), pollDelay);
+    }
+
+    /**
+     * Create a PollResponse indicating service error.
+     *
+     * @param operationStatus the long-running-operation errored status
+     * @param error the error description
+     * @param <T> the poll result type
+     * @return PollResponse
+     */
+    static <T> PollResponse<PollResult<T>> errorPollResponse(LongRunningOperationStatus operationStatus, Error error) {
+        return new PollResponse<>(operationStatus, new PollResult<>(new PollResult.Error(error.getMessage(),
+            error.getResponseStatusCode(), new HttpHeaders(error.getResponseHeaders()), error.getResponseBody())));
     }
 
     /**

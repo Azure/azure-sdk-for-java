@@ -5,7 +5,6 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.MockHttpResponse;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
@@ -27,15 +26,16 @@ public class HttpInstrumentationPolicyFallbackTests {
     public void simpleRequestTracingDisabled() throws IOException {
         HttpInstrumentationOptions tracingOffLoggingOnOptions
             = new HttpInstrumentationOptions().setTracingEnabled(false)
-                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS);
+                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS);
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(tracingOffLoggingOnOptions))
+            = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(tracingOffLoggingOnOptions))
                 .httpClient(request -> new MockHttpResponse(request, 200))
                 .build();
 
         // should not throw
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/"))) {
             assertEquals(200, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().get(TRACESTATE));
             assertNull(response.getRequest().getHeaders().get(TRACEPARENT));
@@ -46,15 +46,16 @@ public class HttpInstrumentationPolicyFallbackTests {
     @ValueSource(ints = { 200, 201, 206, 302, 400, 404, 500, 503 })
     public void simpleRequestTracingEnabled(int statusCode) throws IOException {
         HttpInstrumentationOptions tracingOnLoggingOnOptions
-            = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogDetailLevel.HEADERS);
+            = new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS);
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpInstrumentationPolicy(tracingOnLoggingOnOptions))
+            = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(tracingOnLoggingOnOptions))
                 .httpClient(request -> new MockHttpResponse(request, statusCode))
                 .build();
 
         // should not throw
-        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "https://localhost/"))) {
+        try (Response<?> response
+            = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/"))) {
             assertEquals(statusCode, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().get(TRACESTATE));
             assertNotNull(response.getRequest().getHeaders().get(TRACEPARENT));

@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.models.AudioResponseData;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
@@ -206,6 +207,127 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             ChatCompletions resultChatCompletions
                 = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages));
             assertChatCompletions(1, resultChatCompletions);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsTextPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsWithTextPromptAudioResponse((deploymentId, options) -> {
+            ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
+            ChatChoice choice = chatCompletions.getChoices().get(0);
+            ChatResponseMessage message = choice.getMessage();
+
+            // Assert that the message has content
+            assertEquals(ChatRole.ASSISTANT, message.getRole());
+            AudioResponseData audioResponse = message.getAudio();
+            assertNotNull(audioResponse);
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getId()));
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getData()));
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getTranscript()));
+            assertNotNull(audioResponse.getExpiresAt());
+
+            // Assert finish reason
+            assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+            CompletionsUsage usage = chatCompletions.getUsage();
+
+            // assert that we only used audio tokens for the response
+            assertNotNull(usage);
+            assertNotNull(usage.getPromptTokensDetails());
+            assertNotNull(usage.getCompletionTokensDetails());
+
+            assertEquals(0, usage.getPromptTokensDetails().getAudioTokens());
+            assertTrue(usage.getCompletionTokensDetails().getAudioTokens() > 0);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsAudioPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsWithAudioPromptAudioResponse((deploymentId, options) -> {
+            ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
+            ChatChoice choice = chatCompletions.getChoices().get(0);
+            ChatResponseMessage message = choice.getMessage();
+
+            // Assert that the message has content
+            assertEquals(ChatRole.ASSISTANT, message.getRole());
+            AudioResponseData audioResponse = message.getAudio();
+            assertNotNull(audioResponse);
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getId()));
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getData()));
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getTranscript()));
+            assertNotNull(audioResponse.getExpiresAt());
+
+            // Assert finish reason
+            assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+            CompletionsUsage usage = chatCompletions.getUsage();
+
+            // assert that we only used audio tokens for the response
+            assertNotNull(usage);
+            assertNotNull(usage.getPromptTokensDetails());
+            assertNotNull(usage.getCompletionTokensDetails());
+
+            assertTrue(usage.getPromptTokensDetails().getAudioTokens() > 0);
+            assertTrue(usage.getCompletionTokensDetails().getAudioTokens() > 0);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsReasoningEffortMedium(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsWithReasoningEffort((deploymentId, options) -> {
+            ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
+            ChatChoice choice = chatCompletions.getChoices().get(0);
+            ChatResponseMessage message = choice.getMessage();
+
+            // Assert that the message has content
+            assertEquals(ChatRole.ASSISTANT, message.getRole());
+            assertFalse(CoreUtils.isNullOrEmpty(message.getContent()));
+
+            // Assert finish reason
+            assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+            CompletionsUsage usage = chatCompletions.getUsage();
+
+            // assert that we only used audio tokens for the response
+            assertNotNull(usage);
+            assertNotNull(usage.getPromptTokensDetails());
+            assertNotNull(usage.getCompletionTokensDetails());
+
+            assertTrue(usage.getCompletionTokensDetails().getReasoningTokens() > 0);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsPrediction(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsWithPrediction((deploymentId, options) -> {
+            ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
+            ChatChoice choice = chatCompletions.getChoices().get(0);
+            ChatResponseMessage message = choice.getMessage();
+
+            // Assert that the message has content
+            assertEquals(ChatRole.ASSISTANT, message.getRole());
+            assertFalse(CoreUtils.isNullOrEmpty(message.getContent()));
+
+            // Assert finish reason
+            assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+            CompletionsUsage usage = chatCompletions.getUsage();
+
+            // assert that we only used audio tokens for the response
+            assertNotNull(usage);
+            assertNotNull(usage.getPromptTokensDetails());
+            assertNotNull(usage.getCompletionTokensDetails());
+
+            assertTrue(usage.getCompletionTokensDetails().getAcceptedPredictionTokens() > 0);
+            assertTrue(usage.getCompletionTokensDetails().getRejectedPredictionTokens() > 0);
+
         });
     }
 

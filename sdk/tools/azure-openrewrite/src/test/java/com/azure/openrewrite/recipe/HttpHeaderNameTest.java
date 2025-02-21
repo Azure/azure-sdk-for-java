@@ -8,17 +8,12 @@ import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-public class HttpHeaderNameTest implements RewriteTest {
+public class HttpHeaderNameTest extends RecipeTestBase {
     /**
      * HttpHeaderNameTest tests the recipe that changes
      * com.azure.core.http.HttpHeaderName to io.clientcore.core.http.models.HttpHeaderName.
      */
 
-    @Override
-    public void defaults(RecipeSpec spec) {
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-                "com.azure.openrewrite.migrateToVNext");
-    }
 
     /* Test to make sure HttpHeaderName type is changed */
     @Test

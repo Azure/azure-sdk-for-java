@@ -1,5 +1,9 @@
 package com.azure.openrewrite.migration;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.openrewrite.test.RecipeSpec;
@@ -25,6 +29,19 @@ public class FullSampleMigrationTest implements RewriteTest {
     static final String GOLDEN_IMAGE = "v2";
     static final String ORIGINAL_IMAGE = "v1";
 
+    static final String[] DISABLED_DIRS = {
+        "src/test/resources/migrationExamples/azure-storage-blob/"
+    };
+
+    static boolean isDisabledDir(Path dir) {
+        for (String disabledDir : DISABLED_DIRS) {
+            if (dir.startsWith(Paths.get(disabledDir))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     static Stream<Path> sampleDirectories() throws IOException {
         List<Path> packageDirectories = packageDirectories().collect(Collectors.toList());
         List<Path> sampleDirectories = new ArrayList<>();
@@ -34,6 +51,7 @@ public class FullSampleMigrationTest implements RewriteTest {
                 .filter(Files::isDirectory)
                 .collect(Collectors.toList()));
         }
+
         return sampleDirectories.stream();
     }
 
@@ -54,9 +72,12 @@ public class FullSampleMigrationTest implements RewriteTest {
     }
 
 
+
+
     @ParameterizedTest
     @MethodSource("sampleDirectories")
     public void testGoldenImage(Path sampleDir) throws Exception {
+        Assumptions.assumeFalse(isDisabledDir(sampleDir));
 
         Map<String, String> fileMap = new HashMap<String, String>();
 

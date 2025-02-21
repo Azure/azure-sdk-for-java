@@ -740,4 +740,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [quickstart_training]: https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstarts/get-started-sdks-rest-api?view=form-recog-3.0.0&pivots=programming-language-java
 [wiki_identity]: https://learn.microsoft.com/azure/developer/java/sdk/identity
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fformrecognizer%2Fazure-ai-formrecognizer%2FREADME.png)
+

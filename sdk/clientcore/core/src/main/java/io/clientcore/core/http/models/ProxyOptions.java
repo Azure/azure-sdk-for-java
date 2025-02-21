@@ -4,12 +4,12 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.auth.BasicChallengeHandler;
-import io.clientcore.core.util.auth.ChallengeHandler;
-import io.clientcore.core.util.auth.DigestChallengeHandler;
-import io.clientcore.core.util.configuration.Configuration;
-import io.clientcore.core.util.configuration.ConfigurationProperty;
-import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
+import io.clientcore.core.utils.BasicChallengeHandler;
+import io.clientcore.core.utils.ChallengeHandler;
+import io.clientcore.core.utils.DigestChallengeHandler;
+import io.clientcore.core.utils.configuration.Configuration;
+import io.clientcore.core.utils.configuration.ConfigurationProperty;
+import io.clientcore.core.utils.configuration.ConfigurationPropertyBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
@@ -23,12 +23,12 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.URL_FULL_KEY;
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
 
 /**
  * This represents proxy configuration to be used in http clients.
  */
-public class ProxyOptions {
+public final class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
     private static final String INVALID_PROXY_URI = "URI is invalid and is being ignored.";
 
@@ -260,14 +260,13 @@ public class ProxyOptions {
         // System proxy configuration is only possible through system properties.
         // Only use system proxies when the prerequisite property is 'true'.
         if (Boolean.parseBoolean(configuration.get(JAVA_SYSTEM_PROXY_PREREQUISITE))) {
-            proxyOptions
-                = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTPS_PROXY);
+            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.HTTPS_PROXY);
             if (proxyOptions != null) {
                 LOGGER.atVerbose().log("Using proxy created from HTTPS_PROXY environment variable.");
                 return proxyOptions;
             }
 
-            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTP_PROXY);
+            proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.HTTP_PROXY);
             if (proxyOptions != null) {
                 LOGGER.atVerbose().log("Using proxy created from HTTP_PROXY environment variable.");
                 return proxyOptions;
@@ -320,7 +319,7 @@ public class ProxyOptions {
 
             ProxyOptions proxyOptions = new ProxyOptions(Type.HTTP, socketAddress);
 
-            String nonProxyHostsString = configuration.get(Configuration.PROPERTY_NO_PROXY);
+            String nonProxyHostsString = configuration.get(Configuration.NO_PROXY);
             if (!isNullOrEmpty(nonProxyHostsString)) {
                 proxyOptions.nonProxyHosts = sanitizeNoProxy(nonProxyHostsString);
 

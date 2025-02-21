@@ -40,11 +40,9 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
     /*
      * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information about
      * available VM sizes for Pools using Images from the Virtual Machines Marketplace (pools created with
-     * virtualMachineConfiguration), see Sizes for Virtual Machines (Linux)
-     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
-     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
-     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
-     * series).
+     * virtualMachineConfiguration), see Sizes for Virtual Machines in Azure
+     * (https://learn.microsoft.com/azure/virtual-machines/sizes/overview). Batch supports all Azure VM sizes except
+     * STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      */
     @Generated
     private final String vmSize;
@@ -102,7 +100,7 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
      * enableAutoScale is set to false. It is required if enableAutoScale is set to true. The formula is checked for
      * validity before the Pool is created. If the formula is not valid, the Batch service rejects the request with
      * detailed error information. For more information about specifying this formula, see 'Automatically scale Compute
-     * Nodes in an Azure Batch Pool' (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
+     * Nodes in an Azure Batch Pool' (https://learn.microsoft.com/azure/batch/batch-automatic-scaling).
      */
     @Generated
     private String autoScaleFormula;
@@ -246,11 +244,9 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
     /**
      * Get the vmSize property: The size of virtual machines in the Pool. All virtual machines in a Pool are the same
      * size. For information about available VM sizes for Pools using Images from the Virtual Machines Marketplace
-     * (pools created with virtualMachineConfiguration), see Sizes for Virtual Machines (Linux)
-     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
-     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
-     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2
-     * series).
+     * (pools created with virtualMachineConfiguration), see Sizes for Virtual Machines in Azure
+     * (https://learn.microsoft.com/azure/virtual-machines/sizes/overview). Batch supports all Azure VM sizes except
+     * STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      *
      * @return the vmSize value.
      */
@@ -424,7 +420,7 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
      * formula is checked for validity before the Pool is created. If the formula is not valid, the Batch service
      * rejects the request with detailed error information. For more information about specifying this formula, see
      * 'Automatically scale Compute Nodes in an Azure Batch Pool'
-     * (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
+     * (https://learn.microsoft.com/azure/batch/batch-automatic-scaling).
      *
      * @return the autoScaleFormula value.
      */
@@ -439,7 +435,7 @@ public final class BatchPoolCreateContent implements JsonSerializable<BatchPoolC
      * formula is checked for validity before the Pool is created. If the formula is not valid, the Batch service
      * rejects the request with detailed error information. For more information about specifying this formula, see
      * 'Automatically scale Compute Nodes in an Azure Batch Pool'
-     * (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
+     * (https://learn.microsoft.com/azure/batch/batch-automatic-scaling).
      *
      * @param autoScaleFormula the autoScaleFormula value to set.
      * @return the BatchPoolCreateContent object itself.

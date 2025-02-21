@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.query.IndexProperty;
@@ -52,7 +51,7 @@ public final class CosmosVectorIndexSpec {
      * @return the SpatialSpec.
      */
     public CosmosVectorIndexSpec setPath(String path) {
-        this.jsonSerializable.set(Constants.Properties.PATH, path, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.jsonSerializable.set(Constants.Properties.PATH, path);
         return this;
     }
 
@@ -80,7 +79,7 @@ public final class CosmosVectorIndexSpec {
             throw new IllegalArgumentException(String.format("%s is an invalid index type. Valid index types are 'flat', 'quantizedFlat' or 'diskANN'.", type));
         }
         this.type = type;
-        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_TYPE, this.type);
 
         return this;
     }
@@ -112,7 +111,7 @@ public final class CosmosVectorIndexSpec {
     public CosmosVectorIndexSpec setQuantizationSizeInBytes(Integer quantizationByteSize) {
         if (validateIndexType(IndexProperty.QUANTIZATION_SIZE_IN_BYTES) && quantizationByteSize != null) {
             this.quantizationSizeInBytes = quantizationByteSize;
-            this.jsonSerializable.set(Constants.Properties.VECTOR_QUANTIZATION_SIZE_IN_BYTES, this.quantizationSizeInBytes, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.jsonSerializable.set(Constants.Properties.VECTOR_QUANTIZATION_SIZE_IN_BYTES, this.quantizationSizeInBytes);
         } else {
             this.quantizationSizeInBytes = null;
         }
@@ -145,7 +144,7 @@ public final class CosmosVectorIndexSpec {
     public CosmosVectorIndexSpec setIndexingSearchListSize(Integer indexingSearchListSize) {
         if (validateIndexType(IndexProperty.INDEXING_SEARCH_LIST_SIZE) && indexingSearchListSize != null) {
             this.indexingSearchListSize = indexingSearchListSize;
-            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE, this.indexingSearchListSize, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEXING_SEARCH_LIST_SIZE, this.indexingSearchListSize);
         } else {
             this.indexingSearchListSize = null;
         }

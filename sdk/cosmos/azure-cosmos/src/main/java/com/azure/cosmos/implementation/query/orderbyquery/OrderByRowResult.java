@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.query.orderbyquery;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
@@ -43,7 +42,7 @@ public final class OrderByRowResult<T> extends Document {
         final Object object = super.get("payload");
         if  (!ObjectNode.class.isAssignableFrom(object.getClass())) {
             Document document = new Document();
-            document.set(Constants.Properties.VALUE, object, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            document.set(Constants.Properties.VALUE, object);
             payload = document;
         } else {
             this.payload = super.getObject("payload", Document.class);

@@ -261,6 +261,33 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
+     * Get the messageOfTheDay property: A base64-encoded string which will be written to /etc/motd after decoding. This
+     * allows customization of the message of the day for Linux nodes. It must not be specified for Windows nodes. It
+     * must be a static string (i.e., will be printed raw and not be executed as a script).
+     * 
+     * @return the messageOfTheDay value.
+     */
+    public String messageOfTheDay() {
+        return this.innerProperties() == null ? null : this.innerProperties().messageOfTheDay();
+    }
+
+    /**
+     * Set the messageOfTheDay property: A base64-encoded string which will be written to /etc/motd after decoding. This
+     * allows customization of the message of the day for Linux nodes. It must not be specified for Windows nodes. It
+     * must be a static string (i.e., will be printed raw and not be executed as a script).
+     * 
+     * @param messageOfTheDay the messageOfTheDay value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withMessageOfTheDay(String messageOfTheDay) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withMessageOfTheDay(messageOfTheDay);
+        return this;
+    }
+
+    /**
      * Get the vnetSubnetId property: If this is not specified, a VNET and subnet will be generated and used. If no
      * podSubnetID is specified, this applies to nodes and pods, otherwise it applies to just nodes. This is of the
      * form:

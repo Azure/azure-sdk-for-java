@@ -23,16 +23,16 @@ import com.azure.resourcemanager.storage.fluent.ObjectReplicationPoliciesOperati
 import com.azure.resourcemanager.storage.fluent.OperationsClient;
 import com.azure.resourcemanager.storage.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.storage.fluent.PrivateLinkResourcesClient;
-import com.azure.resourcemanager.storage.fluent.QueuesClient;
 import com.azure.resourcemanager.storage.fluent.QueueServicesClient;
+import com.azure.resourcemanager.storage.fluent.QueuesClient;
 import com.azure.resourcemanager.storage.fluent.SkusClient;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.storage.fluent.StorageManagementClient;
 import com.azure.resourcemanager.storage.fluent.StorageTaskAssignmentInstancesReportsClient;
 import com.azure.resourcemanager.storage.fluent.StorageTaskAssignmentsClient;
 import com.azure.resourcemanager.storage.fluent.StorageTaskAssignmentsInstancesReportsClient;
-import com.azure.resourcemanager.storage.fluent.TablesClient;
 import com.azure.resourcemanager.storage.fluent.TableServicesClient;
+import com.azure.resourcemanager.storage.fluent.TablesClient;
 import com.azure.resourcemanager.storage.fluent.UsagesClient;
 import java.time.Duration;
 
@@ -479,7 +479,7 @@ public final class StorageManagementClientImpl extends AzureServiceClient implem
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-05-01";
+        this.apiVersion = "2024-01-01";
         this.blobServices = new BlobServicesClientImpl(this);
         this.blobContainers = new BlobContainersClientImpl(this);
         this.fileServices = new FileServicesClientImpl(this);

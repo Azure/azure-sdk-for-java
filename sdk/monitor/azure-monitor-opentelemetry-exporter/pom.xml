@@ -14,16 +14,22 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-  <version>1.0.0-beta.32</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+  <version>1.0.0-beta.33</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
 
   <name>Microsoft Azure SDK for OpenTelemetry Azure Monitor Exporter</name>
-  <description>This package contains Microsoft Azure SDK for OpenTelemetry Azure Monitor Exporter.</description>
+  <description>Please note, this package has been deprecated and will no longer be maintained.
+    We encourage you to upgrade to the replacement package, `azure-monitor-opentelemetry-autoconfigure`, to continue receiving updates.
+    Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.</description>
 
   <distributionManagement>
     <site>
       <id>azure-java-build-docs</id>
       <url>${site.url}/site/${project.artifactId}</url>
     </site>
+    <relocation>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-monitor-opentelemetry-autoconfigure</artifactId>
+    </relocation>
   </distributionManagement>
 
   <scm>
@@ -47,7 +53,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.55.2</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -57,7 +63,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.7</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.10</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.opentelemetry</groupId>
@@ -153,13 +159,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.52</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.55</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.7</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -171,7 +177,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.15.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.15.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

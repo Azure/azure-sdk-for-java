@@ -3,14 +3,22 @@
 
 package io.clientcore.annotation.processor.utils;
 
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.TypeName;
-import io.clientcore.core.http.models.HttpResponse;
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.expr.CastExpr;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ReturnStmt;
+import io.clientcore.annotation.processor.models.HttpRequestContext;
+import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.ResponseBodyMode;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+
+import static io.clientcore.annotation.processor.templating.JavaParserTemplateProcessor.isPrimitiveOrWrapper;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -20,133 +28,143 @@ public final class ResponseBodyModeGeneration {
     /**
      * Generates response body mode assignment based on request options and return type.
      *
-     * @param methodBuilder the method builder to append generated code.
-     * @param returnTypeName the return type of the method.
-     * @param useRequestOptions whether request options are used.
+     * @param body the method builder to append generated code.
      */
-    public static void generateResponseBodyMode(MethodSpec.Builder methodBuilder, TypeName returnTypeName,
-        boolean useRequestOptions) {
-        methodBuilder.addStatement("$T responseBodyMode = null", ResponseBodyMode.class);
-
-        // Assign responseBodyMode based on request options.
-        // TODO: Temporary fix for TestInterface
-        if (useRequestOptions) {
-            methodBuilder
-                .beginControlFlow("if (requestOptions != null && requestOptions.getResponseBodyMode() != null)")
-                .addStatement("responseBodyMode = requestOptions.getResponseBodyMode()")
-                .endControlFlow();
-        }
-
-        // Fallback to assignment based on return type if responseBodyMode is still null.
-        methodBuilder.beginControlFlow("if (responseBodyMode == null)");
-        if (returnTypeName.toString().contains("InputStream")) {
-            methodBuilder.addStatement("responseBodyMode = $T.STREAM", ResponseBodyMode.class);
-        } else if (returnTypeName.toString().contains("byte[]")) {
-            methodBuilder.addStatement("responseBodyMode = $T.BYTES", ResponseBodyMode.class);
-        } else if (returnTypeName.toString().contains("BinaryData")) {
-            methodBuilder.addStatement("responseBodyMode = $T.IGNORE", ResponseBodyMode.class);
-        } else {
-            methodBuilder.addStatement("responseBodyMode = $T.DESERIALIZE", ResponseBodyMode.class);
-        }
-        methodBuilder.endControlFlow();
+    public static void generateResponseBodyMode(BlockStmt body) {
+        body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
+        body.tryAddImportToParentCompilationUnit(RequestOptions.class);
+        body.addStatement(StaticJavaParser
+            .parseStatement("ResponseBodyMode responseBodyMode = CodegenUtil.getOrDefaultResponseBodyMode"
+                + "(httpRequest.getRequestOptions());"));
     }
 
     /**
      * Handles deserialization response mode logic.
      *
-     * @param methodBuilder the method builder to append generated code.
+     * @param body the method builder to append generated code.
+     * @param returnTypeName the return type of the method.
+     * @param method The Http method request context
      */
-    public static void handleDeserializeResponse(MethodSpec.Builder methodBuilder) {
-        methodBuilder.beginControlFlow("if (responseBodyMode == $T.DESERIALIZE)", ResponseBodyMode.class)
-            .addStatement("$T responseBody = response.getBody()", BinaryData.class)
-            .addStatement("$T.setValue(($T<?>) response, responseBody)", HttpResponseAccessHelper.class,
-                HttpResponse.class);
-    }
+    public static void handleResponseBody(BlockStmt body, String returnTypeName, HttpRequestContext method) {
+        body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
+        body.tryAddImportToParentCompilationUnit(HttpResponse.class);
+        body.tryAddImportToParentCompilationUnit(HttpResponseAccessHelper.class);
 
-    /**
-     * Handles non-deserialization response mode logic.
-     *
-     * @param methodBuilder the method builder to append generated code.
-     */
-    public static void handleNonDeserializeResponse(MethodSpec.Builder methodBuilder) {
-        methodBuilder.nextControlFlow("else")
-            .addStatement("$T responseBody = response.getBody()", BinaryData.class)
-            .addStatement("$T.setBodyDeserializer(($T<?>) response, (body) -> responseBody)",
-                HttpResponseAccessHelper.class, HttpResponse.class)
-            .endControlFlow();
+        if (method.getHttpMethod() == HttpMethod.HEAD && returnTypeName.contains("Boolean")
+            || returnTypeName.contains("boolean")) {
+            body.addStatement("Object result = (responseStatusCode / 100) == 2");
+        } else if (returnTypeName.contains("byte[]")) {
+            body.addStatement("byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;");
+
+            // if (returnValueWireType == Base64Uri.class) {
+            // responseBodyBytes = new Base64Uri(responseBodyBytes).decodedBytes();
+            // }
+
+            body.addStatement(
+                "Object result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;");
+        } else if (returnTypeName.contains("InputStream")) {
+            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = response.getBody();"));
+            body.addStatement("Object result = responseBody.toStream();");
+        } else if (returnTypeName.contains("BinaryData")) {
+            // BinaryData
+            //
+            // The raw response is directly used to create an instance of BinaryData which then provides
+            // different methods to read the response. The reading of the response is delayed until BinaryData
+            // is read and depending on which format the content is converted into, the response is not necessarily
+            // fully copied into memory resulting in lesser overall memory usage.
+            body.addStatement("Object result = response.getBody();");
+        } else {
+            body.addStatement(StaticJavaParser.parseStatement("String returnTypeName = \"" + returnTypeName + "\";"));
+            body.addStatement(
+                "Object result = decodeByteArray(response.getBody().toBytes(), serializer, returnTypeName);");
+        }
+        body.addStatement(StaticJavaParser.parseStatement("if (responseBodyMode == ResponseBodyMode.DESERIALIZE)"
+            + "{ HttpResponseAccessHelper.setValue((HttpResponse<?>) response, result); } else {"
+            + "HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response, (body) -> result); }"));
     }
 
     /**
      * Handles the generation of the complete response processing flow based on the return type.
      *
-     * @param methodBuilder the method builder to append generated code.
+     * @param body the method builder to append generated code.
      * @param returnTypeName the return type of the method.
-     * @param useRequestOptions whether request options are used.
+     * @param method whether request options are used.
      */
-    public static void generateResponseHandling(MethodSpec.Builder methodBuilder, TypeName returnTypeName,
-        boolean useRequestOptions) {
-        if (returnTypeName.toString().equals("void")) {
-            closeResponse(methodBuilder);
-            methodBuilder.addStatement("return");
-        } else if (returnTypeName.toString().equals("java.lang.Void")) {
-            closeResponse(methodBuilder);
+    public static void generateResponseHandling(BlockStmt body, String returnTypeName, HttpRequestContext method) {
+        if (returnTypeName.equals("void")) {
+            closeResponse(body);
+            body.addStatement(new ReturnStmt());
+        } else if (returnTypeName.equals("java.lang.Void")) {
+            closeResponse(body);
             // TODO: Fix whole namespace return type
-            methodBuilder.addStatement("return null");
-        } else if (returnTypeName.toString().contains("Response")) {
-            if (returnTypeName.toString().contains("Void")) {
-                closeResponse(methodBuilder);
-                createResponseIfNecessary(returnTypeName, methodBuilder);
+            body.addStatement(new ReturnStmt("null"));
+        } else if (returnTypeName.contains("Response")) {
+            if (returnTypeName.contains("Void")) {
+                closeResponse(body);
+                createResponseIfNecessary(body);
             } else {
-                generateResponseBodyMode(methodBuilder, returnTypeName, useRequestOptions);
-                handleDeserializeResponse(methodBuilder);
-                handleNonDeserializeResponse(methodBuilder);
-                createResponseIfNecessary(returnTypeName, methodBuilder);
+                generateResponseBodyMode(body);
+                handleResponseBody(body, returnTypeName, method);
+                createResponseIfNecessary(body);
             }
         } else {
-            handleResponseModeToCreateResponse(returnTypeName, methodBuilder);
+            handleRestResponseReturnType(body, returnTypeName, method);
+            if (!isPrimitiveOrWrapper(returnTypeName)) {
+                closeResponse(body);
+                CastExpr castExpr
+                    = new CastExpr(StaticJavaParser.parseClassOrInterfaceType(returnTypeName), new NameExpr("result"));
+
+                // Add the cast statement to the method body
+                body.addStatement(new ReturnStmt(castExpr));
+            }
         }
     }
 
-    private static void closeResponse(MethodSpec.Builder methodBuilder) {
-        methodBuilder.beginControlFlow("try")
-            .addStatement("response.close()")
-            .nextControlFlow("catch ($T e)", IOException.class)
-            .addStatement("throw LOGGER.logThrowableAsError(new $T(e))", UncheckedIOException.class)
-            .endControlFlow();
+    private static void closeResponse(BlockStmt body) {
+        body.tryAddImportToParentCompilationUnit(IOException.class);
+        body.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
+
+        body.addStatement(StaticJavaParser.parseStatement("try { response.close(); }"
+            + "catch (IOException e) { throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }"));
     }
 
     /**
      * Adds a return statement for response handling when necessary.
      *
-     * @param returnTypeName the return type of the method.
-     * @param methodBuilder the method builder to append generated code.
+     * @param body the method builder to append generated code.
      */
-    public static void createResponseIfNecessary(TypeName returnTypeName, MethodSpec.Builder methodBuilder) {
-        methodBuilder.addStatement("return ($T) response", returnTypeName);
+    public static void createResponseIfNecessary(BlockStmt body) {
+        body.addStatement(StaticJavaParser.parseStatement("return response;"));
     }
 
     /**
      * Handles different response processing modes based on the return type and method.
      *
+     * @param body the method builder to append generated code.
      * @param returnTypeName the return type of the method.
-     * @param methodBuilder the method builder to append generated code.
+     * @param method the HttpMethod context
      */
-    public static void handleResponseModeToCreateResponse(TypeName returnTypeName, MethodSpec.Builder methodBuilder) {
-        if (returnTypeName.toString().contains("Boolean") || returnTypeName.toString().contains("boolean")) {
-            methodBuilder.addStatement("return (response.getStatusCode() / 100) == 2");
-        } else if (returnTypeName.toString().contains("byte[]")) {
-            methodBuilder.addStatement("$T responseBody = response.getBody()", BinaryData.class)
-                .addStatement("byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null")
-                .addStatement(
-                    "return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null");
-        } else if (returnTypeName.toString().contains("InputStream")) {
-            methodBuilder.addStatement("$T responseBody = response.getBody()", BinaryData.class)
-                .addStatement("return responseBody.toStream()");
-        } else if (returnTypeName.toString().contains("BinaryData")) {
-            methodBuilder.addStatement("$T responseBody = response.getBody()", BinaryData.class);
+    public static void handleRestResponseReturnType(BlockStmt body, String returnTypeName, HttpRequestContext method) {
+        body.tryAddImportToParentCompilationUnit(BinaryData.class);
+        if (method.getHttpMethod() == HttpMethod.HEAD
+            && (returnTypeName.contains("Boolean") || returnTypeName.contains("boolean"))) {
+            closeResponse(body);
+            body.addStatement(new ReturnStmt("expectedResponse"));
+        } else if (returnTypeName.contains("byte[]")) {
+            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = response.getBody();"));
+            body.addStatement(StaticJavaParser
+                .parseStatement("byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;"));
+            closeResponse(body);
+            body.addStatement(StaticJavaParser.parseStatement(
+                "return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;"));
+        } else if (returnTypeName.contains("InputStream")) {
+            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = response.getBody();"));
+            body.addStatement(StaticJavaParser.parseStatement("return responseBody.toStream();"));
+        } else if (returnTypeName.contains("BinaryData")) {
+            body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = response.getBody();"));
+            closeResponse(body);
         } else {
-            methodBuilder.addStatement("$T responseBody = response.getBody()", BinaryData.class)
-                .addStatement("return decodeByteArray(responseBody.toBytes(), response, serializer, methodParser)");
+            handleResponseBody(body, returnTypeName, method);
         }
     }
 
