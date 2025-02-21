@@ -34,7 +34,7 @@ import static reactor.core.publisher.Sinks.EmitFailureHandler.FAIL_FAST;
 /**
  * A type for managing and abstracting operations on a QPid Proton-j low-level {@link Session} instance.
  */
-final class ProtonSession {
+public final class ProtonSession {
     private static final String SESSION_NOT_OPENED = "session has not been opened.";
     private static final String NOT_OPENING_DISPOSED_SESSION = "session is already disposed, not opening.";
     private static final String DISPOSED_MESSAGE_FORMAT = "Cannot create %s from a closed session.";
@@ -64,8 +64,9 @@ final class ProtonSession {
      * @param openTimeout the session open timeout.
      * @param logger the client logger.
      */
-    ProtonSession(String connectionId, String hostname, Connection connection, ReactorHandlerProvider handlerProvider,
-        ReactorProvider reactorProvider, String sessionName, Duration openTimeout, ClientLogger logger) {
+    public ProtonSession(String connectionId, String hostname, Connection connection,
+        ReactorHandlerProvider handlerProvider, ReactorProvider reactorProvider, String sessionName,
+        Duration openTimeout, ClientLogger logger) {
         this.connection = Objects.requireNonNull(connection, "'connection' cannot be null.");
         this.reactorProvider = Objects.requireNonNull(reactorProvider, "'reactorProvider' cannot be null.");
         Objects.requireNonNull(handlerProvider, "'handlerProvider' cannot be null.");
@@ -149,12 +150,12 @@ final class ProtonSession {
      * </p>
      * <p>
      * If the session (or parent Qpid Proton-j connection) is disposed after opening, any later operation attempts
-     * (e.g., creating sender, receiver, channel) will fail.
+     * (e.g., creating sender, receiver, channel on the session) will fail.
      * </p>
      * <p>
      * By design, no re-open attempt will be made within this type. Lifetime of a {@link ProtonSession} instance is
-     * scoped to life time of one low level Qpid Proton-j session instance it manages, which is scoped within the
-     * life time of qpid Proton-j Connection hosting it. Re-establishing session requires querying the connection-cache
+     * scoped to lifetime of one low level Qpid Proton-j session instance it manages, which is scoped within the
+     * lifetime of qpid Proton-j Connection hosting it. Re-establishing session requires querying the connection-cache
      * to obtain the latest connection (may not be same as the connection facilitated this session) then hosting and
      * opening a new {@link ProtonSession} on it. It means, upon a retriable {@link AmqpException} from any APIs (to
      * create sender, receiver, channel) in this type, the call sites needs to obtain a new {@link ProtonSession}
@@ -165,7 +166,7 @@ final class ProtonSession {
      * <p>
      * <ul>the mono can terminates with retriable {@link AmqpException} if
      *      <li>the session disposal happened while opening,</li>
-     *      <li>or the connection reactor thread got shutdown while opening.</li>
+     *      <li>or the connection reactor thread got shut down while opening.</li>
      * </ul>
      * </p>
      */
@@ -267,8 +268,6 @@ final class ProtonSession {
                 }
             }
         });
-        // TODO (anu): when removing v1 support, move the timeout to the call site, ReactorSession::channel(), so it
-        //  aligns with the placement of timeout for ReactorSession::open().
         return channel.timeout(timeout, Mono.error(() -> {
             final String message
                 = String.format(OBTAIN_CHANNEL_TIMEOUT_MESSAGE_FORMAT, getConnectionId(), getName(), name);
@@ -379,7 +378,7 @@ final class ProtonSession {
      * communication with the broker.
      * </p>
      */
-    static final class ProtonChannel {
+    public static final class ProtonChannel {
         private final String name;
         private final Sender sender;
         private final Receiver receiver;
@@ -391,7 +390,7 @@ final class ProtonSession {
          * @param sender the sender endpoint of the channel.
          * @param receiver the receiver endpoint of the channel.
          */
-        ProtonChannel(String name, Sender sender, Receiver receiver) {
+        public ProtonChannel(String name, Sender sender, Receiver receiver) {
             this.name = name;
             this.sender = sender;
             this.receiver = receiver;

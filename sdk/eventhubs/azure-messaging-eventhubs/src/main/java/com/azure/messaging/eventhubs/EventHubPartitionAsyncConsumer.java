@@ -29,7 +29,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
-    private final MessageFluxWrapper messageFlux;
+    private final Flux<Message> messageFlux;
     private final MessageSerializer messageSerializer;
     private final String fullyQualifiedNamespace;
     private final String eventHubName;
@@ -41,7 +41,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
 
     private volatile Long currentOffset;
 
-    EventHubPartitionAsyncConsumer(MessageFluxWrapper messageFlux, MessageSerializer messageSerializer,
+    EventHubPartitionAsyncConsumer(Flux<Message> messageFlux, MessageSerializer messageSerializer,
         String fullyQualifiedNamespace, String eventHubName, String consumerGroup, String partitionId,
         AtomicReference<Supplier<EventPosition>> currentEventPosition, boolean trackLastEnqueuedEventProperties) {
         this.initialPosition = Objects.requireNonNull(currentEventPosition.get().get(),
@@ -63,7 +63,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
             return offset == null ? initialPosition : EventPosition.fromOffset(offset);
         });
 
-        this.partitionEvents = messageFlux.flux().map(this::onMessageReceived).doOnNext(event -> {
+        this.partitionEvents = messageFlux.map(this::onMessageReceived).doOnNext(event -> {
             // Keep track of the last position so if the link goes down, we don't start from the original location.
             final Long offset = event.getData().getOffset();
             if (offset != null) {
@@ -84,10 +84,7 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
     @Override
     public void close() {
         if (!isDisposed.getAndSet(true)) {
-            if (!messageFlux.isTerminated()) {
-                // cancel only if the processor is not already terminated.
-                messageFlux.cancel();
-            }
+            // TODO (anu): add take until to message-flux to cancel the subscription.
             LOGGER.atInfo().addKeyValue(PARTITION_ID_KEY, this.partitionId).log("Closed consumer.");
         }
     }

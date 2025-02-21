@@ -6,9 +6,10 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import org.junit.jupiter.api.AfterEach;
@@ -75,8 +76,9 @@ public class ServiceBusSessionAcquirerIsolatedTest {
         sessionLinks.add(Mono.error(BROKER_TIMEOUT_ERROR));
         sessionLinks.add(Mono.error(BROKER_TIMEOUT_ERROR));
         final OnCreateSessionLink onCreateSessionLink = new OnCreateSessionLink(sessionLinks);
-        final ConnectionCacheWrapper cacheWrapper = createMockConnectionWrapper(onCreateSessionLink);
-        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(cacheWrapper, true);
+        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+            = createMockConnectionCache(onCreateSessionLink);
+        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(connectionCache, true);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(sessionAcquirer::acquire).thenAwait(AWAIT_DURATION).verifyErrorSatisfies(e -> {
@@ -96,8 +98,9 @@ public class ServiceBusSessionAcquirerIsolatedTest {
         final RuntimeException error = new RuntimeException();
         sessionLinks.add(Mono.error(error));
         final OnCreateSessionLink onCreateSessionLink = new OnCreateSessionLink(sessionLinks);
-        final ConnectionCacheWrapper cacheWrapper = createMockConnectionWrapper(onCreateSessionLink);
-        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(cacheWrapper, true);
+        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+            = createMockConnectionCache(onCreateSessionLink);
+        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(connectionCache, true);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(sessionAcquirer::acquire).thenAwait(AWAIT_DURATION).verifyErrorSatisfies(e -> {
@@ -116,8 +119,9 @@ public class ServiceBusSessionAcquirerIsolatedTest {
         final RuntimeException error = new RuntimeException();
         sessionLinks.add(Mono.error(error));
         final OnCreateSessionLink onCreateSessionLink = new OnCreateSessionLink(sessionLinks);
-        final ConnectionCacheWrapper cacheWrapper = createMockConnectionWrapper(onCreateSessionLink);
-        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(cacheWrapper, false);
+        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+            = createMockConnectionCache(onCreateSessionLink);
+        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(connectionCache, false);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(sessionAcquirer::acquire).thenAwait(AWAIT_DURATION).verifyErrorSatisfies(e -> {
@@ -136,8 +140,9 @@ public class ServiceBusSessionAcquirerIsolatedTest {
         final RuntimeException error = new RuntimeException();
         sessionLinks.add(Mono.error(error));
         final OnCreateSessionLink onCreateSessionLink = new OnCreateSessionLink(sessionLinks);
-        final ConnectionCacheWrapper cacheWrapper = createMockConnectionWrapper(onCreateSessionLink);
-        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(cacheWrapper, false);
+        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+            = createMockConnectionCache(onCreateSessionLink);
+        final ServiceBusSessionAcquirer sessionAcquirer = createSessionAcquirer(connectionCache, false);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(sessionAcquirer::acquire).thenAwait(AWAIT_DURATION).verifyErrorSatisfies(e -> {
@@ -147,21 +152,23 @@ public class ServiceBusSessionAcquirerIsolatedTest {
         Assertions.assertEquals(0, onCreateSessionLink.pending());
     }
 
-    private ConnectionCacheWrapper createMockConnectionWrapper(OnCreateSessionLink onCreateSessionLink) {
-        final ServiceBusAmqpConnection connection = mock(ServiceBusAmqpConnection.class);
+    @SuppressWarnings("unchecked")
+    private ReactorConnectionCache<ServiceBusReactorAmqpConnection>
+        createMockConnectionCache(OnCreateSessionLink onCreateSessionLink) {
+        final ServiceBusReactorAmqpConnection connection = mock(ServiceBusReactorAmqpConnection.class);
         when(connection.createReceiveLink(anyString(), anyString(), any(ServiceBusReceiveMode.class), any(),
             any(MessagingEntityType.class), anyString(), any())).thenAnswer(onCreateSessionLink);
 
-        final ConnectionCacheWrapper cacheWrapper = Mockito.mock(ConnectionCacheWrapper.class);
-        when(cacheWrapper.isV2()).thenReturn(true);
-        when(cacheWrapper.getConnection()).thenReturn(Mono.just(connection));
-        return cacheWrapper;
+        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache
+            = Mockito.mock(ReactorConnectionCache.class);
+        when(connectionCache.get()).thenReturn(Mono.just(connection));
+        return connectionCache;
     }
 
-    private ServiceBusSessionAcquirer createSessionAcquirer(ConnectionCacheWrapper cacheWrapper,
-        boolean isTimeoutRetryDisabled) {
+    private ServiceBusSessionAcquirer createSessionAcquirer(
+        ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache, boolean isTimeoutRetryDisabled) {
         return new ServiceBusSessionAcquirer(LOGGER, IDENTIFIER, ENTITY_PATH, ENTITY_TYPE, RECEIVE_MODE, TRY_TIMEOUT,
-            isTimeoutRetryDisabled, cacheWrapper);
+            isTimeoutRetryDisabled, connectionCache);
     }
 
     private static final class OnCreateSessionLink implements Answer<Mono<ServiceBusReceiveLink>> {
