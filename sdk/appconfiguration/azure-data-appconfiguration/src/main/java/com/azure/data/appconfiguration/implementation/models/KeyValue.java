@@ -5,7 +5,6 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -268,8 +267,8 @@ public final class KeyValue implements JsonSerializable<KeyValue> {
                 } else if ("value".equals(fieldName)) {
                     deserializedKeyValue.value = reader.getString();
                 } else if ("last_modified".equals(fieldName)) {
-                    deserializedKeyValue.lastModified = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedKeyValue.lastModified
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedKeyValue.tags = tags;
