@@ -1,21 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.core.http.policy;
+package io.clientcore.core.http.pipeline;
 
-import com.azure.v2.core.credentials.AccessToken;
-import com.azure.v2.core.credentials.TokenCredential;
-import com.azure.v2.core.credentials.TokenRequestContext;
-import com.azure.v2.core.implementation.AccessTokenCache;
+import io.clientcore.core.credentials.AccessToken;
+import io.clientcore.core.credentials.TokenCredential;
+import io.clientcore.core.credentials.TokenRequestContext;
+import io.clientcore.core.implementation.AccessTokenCache;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.HttpCredentialPolicy;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
-import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -23,23 +20,15 @@ import java.util.Objects;
  * <p>The {@code BearerTokenAuthenticationPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface.
  * This policy uses a {@link TokenCredential} to authenticate the request with a bearer token.</p>
  *
- * <p>This class is useful when you need to authorize requests with a bearer token from Azure. It ensures that the
+ * <p>This class is useful when you need to authorize requests with a bearer token. It ensures that the
  * requests are sent over HTTPS to prevent the token from being leaked.</p>
  *
- * <p><strong>Code sample:</strong></p>
- *
- * <p>In this example, a {@code BearerTokenAuthenticationPolicy} is created with a {@link TokenCredential} and a scope.
- * The policy can then added to the pipeline. The request sent via the pipeline will then include the
- * Authorization header with the bearer token.</p>
- *
- * <!-- src_embed com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
- * <!-- end com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
- *
- * @see HttpPipelinePolicy
- * @see TokenCredential
- * @see HttpPipeline
- * @see HttpRequest
- * @see Response
+ * @see io.clientcore.core.http.pipeline
+ * @see io.clientcore.core.http.pipeline.HttpPipelinePolicy
+ * @see io.clientcore.core.credentials.TokenCredential
+ * @see io.clientcore.core.http.pipeline.HttpPipeline
+ * @see io.clientcore.core.http.models.HttpRequest
+ * @see io.clientcore.core.http.models.Response
  */
 public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
@@ -63,10 +52,10 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     /**
      * Synchronously executed before sending the initial request and authenticates the request.
      *
-     * @param httpRequest The request context.
+     * @param httpRequest The request.
      */
-    public void authorizeRequestSync(HttpRequest httpRequest) {
-        setAuthorizationHeaderHelperSync(httpRequest, new TokenRequestContext().addScopes(scopes), false);
+    public void authorizeRequest(HttpRequest httpRequest) {
+        setAuthorizationHeaderHelper(httpRequest, new TokenRequestContext().addScopes(scopes), false);
     }
 
     /**
@@ -74,33 +63,12 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * header is received after the initial request and returns appropriate {@link TokenRequestContext} to be used for
      * re-authentication.
      *
-     * @param httpRequest The request context.
+     * @param httpRequest The request.
      * @param response The Http Response containing the authentication challenge header.
-     *
      * @return A boolean indicating if containing the {@link TokenRequestContext} for re-authentication
      */
-    public boolean authorizeRequestOnChallengeSync(HttpRequest httpRequest, Response<?> response) {
+    public boolean authorizeRequestOnChallenge(HttpRequest httpRequest, Response<?> response) {
         return false;
-    }
-
-    /**
-     * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
-     *
-     * @param request the HTTP request.
-     * @param tokenRequestContext the token request context to be used for token acquisition.
-     */
-    public void setAuthorizationHeaderSync(HttpRequest request, TokenRequestContext tokenRequestContext) {
-        setAuthorizationHeaderHelperSync(request, tokenRequestContext, true);
-    }
-
-    private void setAuthorizationHeaderHelperSync(HttpRequest httpRequest, TokenRequestContext tokenRequestContext,
-        boolean checkToForceFetchToken) {
-        AccessToken token = cache.getTokenSync(tokenRequestContext, checkToForceFetchToken);
-        setAuthorizationHeader(httpRequest.getHeaders(), token.getToken());
-    }
-
-    private static void setAuthorizationHeader(HttpHeaders headers, String token) {
-        headers.set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
     }
 
     @Override
@@ -111,16 +79,16 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
         }
         HttpPipelineNextPolicy nextPolicy = next.copy();
 
-        authorizeRequestSync(httpRequest);
+        authorizeRequest(httpRequest);
         Response<?> httpResponse = next.process();
         String authHeader = httpResponse.getHeaders().get(HttpHeaderName.WWW_AUTHENTICATE).getValue();
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-            if (authorizeRequestOnChallengeSync(httpRequest, httpResponse)) {
+            if (authorizeRequestOnChallenge(httpRequest, httpResponse)) {
                 // body needs to be closed or read to the end to release the connection
                 try {
                     httpResponse.close();
                 } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
+                    throw new RuntimeException(e);
                 }
                 return nextPolicy.process();
             } else {
@@ -128,5 +96,25 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
             }
         }
         return httpResponse;
+    }
+
+    /**
+     * Authorizes the request with the bearer token acquired using the specified {@code tokenRequestContext}
+     *
+     * @param context the HTTP pipeline context.
+     * @param tokenRequestContext the token request context to be used for token acquisition.
+     */
+    public void setAuthorizationHeader(HttpRequest context, TokenRequestContext tokenRequestContext) {
+        setAuthorizationHeaderHelper(context, tokenRequestContext, true);
+    }
+
+    private void setAuthorizationHeaderHelper(HttpRequest request, TokenRequestContext tokenRequestContext,
+        boolean checkToForceFetchToken) {
+        AccessToken token = cache.getToken(tokenRequestContext, checkToForceFetchToken);
+        setAuthorizationHeader(request.getHeaders(), token.getToken());
+    }
+
+    private static void setAuthorizationHeader(HttpHeaders headers, String token) {
+        headers.set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
     }
 }
