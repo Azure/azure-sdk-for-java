@@ -621,7 +621,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             || value instanceof Number
             || value instanceof Boolean
             || value instanceof Character
-            || value instanceof DateTimeRfc1123) {
+            || value instanceof DateTimeRfc1123
+            || value instanceof Base64Uri) {
 
             return String.valueOf(value);
         } else if (value instanceof OffsetDateTime) {
