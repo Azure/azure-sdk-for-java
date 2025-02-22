@@ -146,16 +146,18 @@ public final class AppendBlobAppendBlockFromUrlOptions {
     }
 
     /**
-     * Gets the sourceShareTokenIntent for the file share.
+     * Optional, only applicable (but required) when the source is Azure Storage Files and using token authentication.
+     * Gets the intent of the request.
      *
-     * @return the FileShareTokenIntent for the file share.
+     * @return the {@link FileShareTokenIntent} for the file share.
      */
     public FileShareTokenIntent getSourceShareTokenIntent() {
         return sourceShareTokenIntent;
     }
 
     /**
-     * Sets the sourceShareTokenIntent for the file share.
+     * Optional, only applicable (but required) when the source is Azure Storage Files and using token authentication.
+     * Sets the intent of the request.
      *
      * @param sourceShareTokenIntent Used to indicate the intent of the request.
      * @return The updated options.
