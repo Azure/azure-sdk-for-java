@@ -4,16 +4,19 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpVersion;
 import io.vertx.core.net.ProxyType;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 import java.util.concurrent.CountDownLatch;
@@ -45,6 +48,7 @@ public class VertxHttpClientBuilder {
     private Configuration configuration;
     private HttpClientOptions httpClientOptions;
     private Vertx vertx;
+    private EnumSet<HttpProtocolVersion> protocolVersions;
 
     /**
      * Creates an instance of {@link VertxHttpClientBuilder}.
@@ -186,6 +190,26 @@ public class VertxHttpClientBuilder {
     }
 
     /**
+     * Sets the {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_1_1} must be included in the set of versions.
+     * <p>
+     * If the value is not set, only {@link HttpProtocolVersion#HTTP_1_1} can be used.
+     *
+     * @param protocolVersions The {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * @return The updated {@link VertxHttpClientBuilder} object.
+     */
+    public VertxHttpClientBuilder setProtocolVersions(EnumSet<HttpProtocolVersion> protocolVersions) {
+        if (protocolVersions != null && !protocolVersions.contains(HttpProtocolVersion.HTTP_1_1)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'protocolVersions' must contain HTTP_1_1 (HTTP/1.1)."));
+        }
+
+        this.protocolVersions = (protocolVersions == null) ? null : EnumSet.copyOf(protocolVersions);
+        return this;
+    }
+
+    /**
      * Creates a new Vert.x {@link HttpClient} instance on every call, using the configuration set in the builder at the
      * time of the build method call.
      *
@@ -248,6 +272,16 @@ public class VertxHttpClientBuilder {
 
                 buildOptions.setProxyOptions(vertxProxyOptions);
             }
+        }
+
+        // The Vert.x HttpClientOptions only allows configuring a single choice.
+        // If HTTP/2 is chosen it will attempt to use it, if not available it will fall back to HTTP/1.1.
+        // If HTTP/1.1 is chosen it will not attempt to use HTTP/2.
+        // The default if version is not set is HTTP/1.1.
+        if (protocolVersions != null && protocolVersions.contains(HttpProtocolVersion.HTTP_2)) {
+            buildOptions.setProtocolVersion(HttpVersion.HTTP_2);
+        } else {
+            buildOptions.setProtocolVersion(HttpVersion.HTTP_1_1);
         }
 
         io.vertx.core.http.HttpClient client = configuredVertx.createHttpClient(buildOptions);
