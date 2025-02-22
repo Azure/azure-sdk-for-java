@@ -21,6 +21,15 @@ public final class ReadmeSamples {
         // END: readme-sample-create-client
     }
 
+    public void createAsyncClient() {
+        // BEGIN: readme-sample-create-async-client
+        DeidentificationAsyncClient deidentificationAsyncClient = new DeidentificationClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("DEID_ENDPOINT"))
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
+        // END: readme-sample-create-async-client
+    }
+
     /**
      * Code snippet for handling exception
      */

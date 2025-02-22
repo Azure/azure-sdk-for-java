@@ -10,17 +10,18 @@ import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 
-public class BeginDeidentifyDocuments {
+public class BeginDeidentifyDocumentsAsync {
     public static void main(String[] args) {
-        DeidentificationClient deidentificationClient = new DeidentificationClientBuilder()
+        DeidentificationAsyncClient deidentificationClient = new DeidentificationClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "endpoint"))
             .credential(new DefaultAzureCredentialBuilder().build())
-            .buildClient();
+            .buildAsyncClient();
 
-        // BEGIN:com.azure.health.deidentification.samples.begin_deidentify_documents
+        // BEGIN:com.azure.health.deidentification.samples.begin_deidentify_documents_async
         String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
         DeidentificationJob job = new DeidentificationJob(
             new SourceStorageLocation(storageLocation, "data/example_patient_1"),
@@ -31,10 +32,22 @@ public class BeginDeidentifyDocuments {
         job.setOperation(DeidentificationOperationType.REDACT);
 
         String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME", "MyJob-" + Instant.now().toEpochMilli());
-        DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
-            .waitForCompletion()
-            .getValue();
-        System.out.println(jobName + " - " + result.getStatus());
-        // END:com.azure.health.deidentification.samples.begin_deidentify_documents
+        Mono<DeidentificationJob> jobMono = deidentificationClient.beginDeidentifyDocuments(jobName, job)
+            .last()
+            .flatMap(pollResponse -> {
+                if (pollResponse.getStatus().isComplete()) {
+                    System.out.println("Polling completed successfully");
+                    return pollResponse.getFinalResult();
+                } else {
+                    return Mono.error(new RuntimeException("Polling completed unsuccessfully with status:"
+                        + pollResponse.getStatus()));
+                }
+            });
+
+        jobMono.subscribe(
+            jobResult -> System.out.println(jobResult.getName() + " - " + jobResult.getStatus()),
+            error -> System.err.println("Error: " + error)
+        );
+        // END:com.azure.health.deidentification.samples.begin_deidentify_documents_async
     }
 }

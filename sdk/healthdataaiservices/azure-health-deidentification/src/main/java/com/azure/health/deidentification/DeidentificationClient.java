@@ -46,7 +46,7 @@ public final class DeidentificationClient {
      *
      * Resource read operation template.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -116,7 +116,7 @@ public final class DeidentificationClient {
      *
      * Long-running resource create or replace operation template.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -164,9 +164,9 @@ public final class DeidentificationClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -244,7 +244,7 @@ public final class DeidentificationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -319,7 +319,7 @@ public final class DeidentificationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -371,7 +371,7 @@ public final class DeidentificationClient {
      *
      * If the job is already complete, this will have no effect.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -458,7 +458,7 @@ public final class DeidentificationClient {
      *
      * A remote procedure call (RPC) operation.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -471,9 +471,9 @@ public final class DeidentificationClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -573,9 +573,8 @@ public final class DeidentificationClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DeidentificationJob items as paginated response with {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedIterable<DeidentificationJob> listJobs(String continuationToken) {
+    PagedIterable<DeidentificationJob> listJobs(String continuationToken) {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
         if (continuationToken != null) {

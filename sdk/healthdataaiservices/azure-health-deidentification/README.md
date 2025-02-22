@@ -82,7 +82,7 @@ Callers should wait for the operation to be completed by calling `getFinalResult
 ```java com.azure.health.deidentification.samples.begin_deidentify_documents
 String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
 DeidentificationJob job = new DeidentificationJob(
-    new SourceStorageLocation(storageLocation, "example_patient_1"),
+    new SourceStorageLocation(storageLocation, "data/example_patient_1"),
     new TargetStorageLocation(storageLocation, "_output")
         .setOverwrite(true)
 );
@@ -134,7 +134,7 @@ System.out.println("De-identified output: " + (result != null ? result.getOutput
 ```java com.azure.health.deidentification.samples.begin_deidentify_documents
 String storageLocation = "https://" + Configuration.getGlobalConfiguration().get("STORAGE_ACCOUNT_NAME") + ".blob.core.windows.net/" + Configuration.getGlobalConfiguration().get("STORAGE_CONTAINER_NAME");
 DeidentificationJob job = new DeidentificationJob(
-    new SourceStorageLocation(storageLocation, "example_patient_1"),
+    new SourceStorageLocation(storageLocation, "data/example_patient_1"),
     new TargetStorageLocation(storageLocation, "_output")
         .setOverwrite(true)
 );
