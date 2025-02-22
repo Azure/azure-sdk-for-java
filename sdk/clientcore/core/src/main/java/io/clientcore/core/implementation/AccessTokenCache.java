@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.core.implementation;
+package io.clientcore.core.implementation;
 
 import io.clientcore.core.credentials.AccessToken;
 import io.clientcore.core.credentials.TokenCredential;
 import io.clientcore.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
-import io.clientcore.core.instrumentation.logging.LoggingEvent;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -21,7 +20,6 @@ import java.util.function.Supplier;
 
 /**
  * A token cache that supports caching a token and refreshing it.
- * TODO: @g2vinay, make the implementation in client-core public API and remove it from this layer.
  */
 public final class AccessTokenCache {
     // The delay after a refresh to attempt another token refresh
@@ -33,10 +31,12 @@ public final class AccessTokenCache {
     // AccessTokenCache is a commonly used class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(AccessTokenCache.class);
     private final AtomicReference<AccessTokenCacheInfo> cacheInfo;
+    private final TokenCredential tokenCredential;
     // Stores the last authenticated token request context. The cached token is valid under this context.
     private TokenRequestContext tokenRequestContext;
     private final Supplier<AccessToken> tokenSupplierSync;
     private final Predicate<AccessToken> shouldRefresh;
+
     // Used for sync flow.
     private final Lock lock;
 
@@ -47,9 +47,12 @@ public final class AccessTokenCache {
      */
     public AccessTokenCache(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
+        this.tokenCredential = tokenCredential;
         this.cacheInfo = new AtomicReference<>(new AccessTokenCacheInfo(null, OffsetDateTime.now()));
-        this.shouldRefresh
-            = accessToken -> OffsetDateTime.now().isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
+        this.shouldRefresh = accessToken -> OffsetDateTime.now()
+            .isAfter(accessToken.getRefreshAt() == null
+                ? accessToken.getExpiresAt().minus(REFRESH_OFFSET)
+                : accessToken.getRefreshAt());
         this.tokenSupplierSync = () -> tokenCredential.getToken(this.tokenRequestContext);
         this.lock = new ReentrantLock();
     }
@@ -61,16 +64,16 @@ public final class AccessTokenCache {
      * @param checkToForceFetchToken The flag indicating whether to force fetch a new token or not.
      * @return The Publisher that emits an AccessToken
      */
-    public AccessToken getTokenSync(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
+    public AccessToken getToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         lock.lock();
         try {
-            return retrieveTokenSync(tokenRequestContext, checkToForceFetchToken).get();
+            return retrieveToken(tokenRequestContext, checkToForceFetchToken).get();
         } finally {
             lock.unlock();
         }
     }
 
-    private Supplier<AccessToken> retrieveTokenSync(TokenRequestContext tokenRequestContext,
+    private Supplier<AccessToken> retrieveToken(TokenRequestContext tokenRequestContext,
         boolean checkToForceFetchToken) {
         return () -> {
             if (tokenRequestContext == null) {
@@ -121,7 +124,7 @@ public final class AccessTokenCache {
             try {
                 if (tokenRefresh != null) {
                     AccessToken token = tokenRefresh.get();
-                    buildTokenRefreshLog(LogLevel.INFORMATIONAL, cachedToken, now).log("Acquired a new access token.");
+                    logTokenRefresh(LogLevel.VERBOSE, cachedToken, now, "Acquired a new access token.");
                     OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now().plus(REFRESH_DELAY);
                     AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(token, nextTokenRefreshTime);
                     this.cacheInfo.set(updatedInfo);
@@ -130,8 +133,7 @@ public final class AccessTokenCache {
                     return fallback;
                 }
             } catch (Throwable error) {
-                buildTokenRefreshLog(LogLevel.ERROR, cachedToken, now).log("Failed to acquire a new access token.",
-                    error);
+                logTokenRefresh(LogLevel.ERROR, cachedToken, now, "Failed to acquire a new access token.");
                 OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now();
                 AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(cachedToken, nextTokenRefreshTime);
                 this.cacheInfo.set(updatedInfo);
@@ -147,22 +149,20 @@ public final class AccessTokenCache {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null
                 ? tokenRequestContext.getClaims() == null
-                : (tokenRequestContext.getClaims() == null
-                    ? false
-                    : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+                : (tokenRequestContext.getClaims() != null
+                    && tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
-    private static LoggingEvent buildTokenRefreshLog(LogLevel level, AccessToken cache, OffsetDateTime now) {
-        LoggingEvent logBuilder = LOGGER.atLevel(level);
+    private static void logTokenRefresh(LogLevel level, AccessToken cache, OffsetDateTime now, String prefix) {
         if (cache == null || !LOGGER.canLogAtLevel(level)) {
-            return logBuilder;
+            LOGGER.atLevel(level).log(prefix);
         }
 
-        Duration tte = Duration.between(now, cache.getExpiresAt());
-        return logBuilder.addKeyValue("expiresAt", cache.getExpiresAt())
-            .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
-            .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
-            .addKeyValue("expired", tte.isNegative());
+        Duration tte = cache.getDurationUntilExpiration();
+
+        LOGGER.atLevel(LogLevel.VERBOSE)
+            .log(String.format("%s. expiresAt: %s, tteSeconds: %s, retryAfterSeconds: %s, expired: %s",
+                cache.getExpiresAt(), String.valueOf(tte.abs().getSeconds()), REFRESH_DELAY_STRING, tte.isNegative()));
     }
 }
