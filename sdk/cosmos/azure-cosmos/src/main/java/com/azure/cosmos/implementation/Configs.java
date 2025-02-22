@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
@@ -287,6 +287,9 @@ public class Configs {
 
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
+
+    private static final boolean DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = false;
+    private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
 
     private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
     private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
@@ -576,7 +579,7 @@ public class Configs {
 
         String valueFromEnvVariable = System.getenv(PREVENT_INVALID_ID_CHARS_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return!Boolean.parseBoolean(valueFromEnvVariable);
+            return !Boolean.parseBoolean(valueFromEnvVariable);
         }
 
         return DEFAULT_PREVENT_INVALID_ID_CHARS;
@@ -882,6 +885,17 @@ public class Configs {
                     String.valueOf(DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN)));
 
         return Boolean.parseBoolean(shouldOptInDefaultPartitionLevelCircuitBreakerConfig);
+    }
+
+    public static boolean isPerPartitionAutomaticFailoverEnabled() {
+        String isPerPartitionAutomaticFailoverEnabledAsString =
+            System.getProperty(
+                IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)),
+                    String.valueOf(DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)));
+
+        return Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsString);
     }
 
     public static CosmosMicrometerMetricsConfig getMetricsConfig() {

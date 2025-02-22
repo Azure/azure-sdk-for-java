@@ -10,7 +10,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.fasterxml.jackson.core.JsonGenerator;
