@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys;
 
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Base64Url;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
@@ -15,6 +16,7 @@ import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
+import com.azure.security.keyvault.keys.models.KeyAttestation;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyExportEncryptionAlgorithm;
 import com.azure.security.keyvault.keys.models.KeyOperation;
@@ -231,7 +233,7 @@ public final class KeyClientJavaDocCodeSnippets {
     public void getKeyWithResponse() {
         KeyClient keyClient = createClient();
         // BEGIN: com.azure.security.keyvault.keys.KeyClient.getKeyWithResponse#String-String-Context
-        String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
+        String keyVersion = "<key-version>";
         Response<KeyVaultKey> getKeyResponse =
             keyClient.getKeyWithResponse("keyName", keyVersion, new Context("key1", "value1"));
 
@@ -254,7 +256,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.KeyClient.getKey#String
 
         // BEGIN: com.azure.security.keyvault.keys.KeyClient.getKey#String-String
-        String keyVersion = "6A385B124DEF4096AF1361A85B16C204";
+        String keyVersion = "<key-version>";
         KeyVaultKey keyWithVersion = keyClient.getKey("keyName", keyVersion);
 
         System.out.printf("Retrieved key with name: %s and: id %s%n", keyWithVersion.getName(),
@@ -544,7 +546,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.KeyClient.releaseKey#String-String
 
         // BEGIN: com.azure.security.keyvault.keys.KeyClient.releaseKey#String-String-String
-        String myKeyVersion = "6A385B124DEF4096AF1361A85B16C204";
+        String myKeyVersion = "<key-version>";
         String myTargetAttestationToken = "someAttestationToken";
         ReleaseKeyResult releaseKeyVersionResult =
             keyClient.releaseKey("keyName", myKeyVersion, myTargetAttestationToken);
@@ -553,7 +555,7 @@ public final class KeyClientJavaDocCodeSnippets {
         // END: com.azure.security.keyvault.keys.KeyClient.releaseKey#String-String-String
 
         // BEGIN: com.azure.security.keyvault.keys.KeyClient.releaseKeyWithResponse#String-String-String-ReleaseKeyOptions-Context
-        String releaseKeyVersion = "6A385B124DEF4096AF1361A85B16C204";
+        String releaseKeyVersion = "<key-version>";
         String someTargetAttestationToken = "someAttestationToken";
         ReleaseKeyOptions releaseKeyOptions = new ReleaseKeyOptions()
             .setAlgorithm(KeyExportEncryptionAlgorithm.RSA_AES_KEY_WRAP_256)
@@ -658,5 +660,57 @@ public final class KeyClientJavaDocCodeSnippets {
         System.out.printf("Response received successfully with status code: %d. Updated key rotation policy"
             + "with id: %s%n", keyRotationPolicyResponse.getStatusCode(), keyRotationPolicyResponse.getValue().getId());
         // END: com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicy-Context
+    }
+
+    /**
+     * Generates a code sample for using {@link KeyClient#getKeyAttestation(String)}.
+     */
+    public void getKeyAttestation() {
+        KeyClient keyClient = createClient();
+        // BEGIN: com.azure.security.keyvault.keys.KeyClient.getKeyAttestation#String
+        KeyVaultKey keyVaultKey = keyClient.getKeyAttestation("keyName");
+
+        System.out.printf("Retrieved key with name: %s and: id %s%n", keyVaultKey.getName(),
+            keyVaultKey.getId());
+
+        KeyAttestation keyAttestationInfo = keyVaultKey.getProperties().getKeyAttestation();
+
+        System.out.printf("Attestation information details: %n"
+                + "Certificate PEM file: %s%n"
+                + "Private key attestation: %s%n"
+                + "Public key attestation: %s%n"
+                + "Version: %s",
+            Base64Url.encode(keyAttestationInfo.getCertificatePemFile()),
+            Base64Url.encode(keyAttestationInfo.getPrivateKeyAttestation()),
+            Base64Url.encode(keyAttestationInfo.getPublicKeyAttestation()),
+            keyAttestationInfo.getVersion());
+        // END: com.azure.security.keyvault.keys.KeyClient.getKeyAttestation#String
+    }
+
+    /**
+     * Generates a code sample for using {@link KeyClient#getKeyAttestationWithResponse(String, String, Context)}.
+     */
+    public void getKeyAttestationWithResponse() {
+        KeyClient keyClient = createClient();
+        // BEGIN: com.azure.security.keyvault.keys.KeyClient.getKeyAttestationWithResponse#String-String-Context
+        String keyVersion = "<key-version>";
+        Response<KeyVaultKey> getKeyResponse =
+            keyClient.getKeyAttestationWithResponse("keyName", keyVersion, new Context("key1", "value1"));
+        KeyVaultKey keyVaultKey = getKeyResponse.getValue();
+
+        System.out.printf("Retrieved key with name: %s and: id %s%n", keyVaultKey.getName(), keyVaultKey.getId());
+
+        KeyAttestation keyAttestationInfo = keyVaultKey.getProperties().getKeyAttestation();
+
+        System.out.printf("Attestation information details: %n"
+                + "Certificate PEM file: %s%n"
+                + "Private key attestation: %s%n"
+                + "Public key attestation: %s%n"
+                + "Version: %s",
+            Base64Url.encode(keyAttestationInfo.getCertificatePemFile()),
+            Base64Url.encode(keyAttestationInfo.getPrivateKeyAttestation()),
+            Base64Url.encode(keyAttestationInfo.getPublicKeyAttestation()),
+            keyAttestationInfo.getVersion());
+        // END: com.azure.security.keyvault.keys.KeyClient.getKeyAttestationWithResponse#String-String-Context
     }
 }
