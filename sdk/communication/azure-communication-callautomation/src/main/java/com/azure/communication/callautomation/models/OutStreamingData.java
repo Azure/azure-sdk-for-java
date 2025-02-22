@@ -33,7 +33,7 @@ public class OutStreamingData {
 
     /**
      * Constructor
-     * 
+     *
      * @param kind media kind type on the out streaming data
      */
     public OutStreamingData(MediaKind kind) {
@@ -84,7 +84,7 @@ public class OutStreamingData {
      * @param audioData the audioData to set
      * @return the string of outstreaming data
      * @throws IOException when failed to serilize the data
-     * 
+     *
      */
     public static String getStreamingDataForOutbound(byte[] audioData) throws IOException {
         OutStreamingData data = new OutStreamingData(MediaKind.AUDIO_DATA);
@@ -96,7 +96,7 @@ public class OutStreamingData {
      * Get the stop audiofor outbound
      * @return the string of outstreaming data
      * @throws IOException throws exception when failed to serialize
-     * 
+     *
      */
     public static String getStopAudioForOutbound() throws IOException {
         OutStreamingData data = new OutStreamingData(MediaKind.STOP_AUDIO);
@@ -122,7 +122,7 @@ public class OutStreamingData {
 
     /**
      * convert to json
-     * @param jsonWriter json writer 
+     * @param jsonWriter json writer
      * @return return json writeer
      * @throws IOException hrows exception when fails to serialize
      */
@@ -133,7 +133,7 @@ public class OutStreamingData {
         if (this.audioData != null) {
             jsonWriter.writeFieldName("audioData");
             jsonWriter.writeStartObject();
-            jsonWriter.writeRawField("data", Base64.getEncoder().encodeToString(this.audioData.getData()));
+            jsonWriter.writeStringField("data", Base64.getEncoder().encodeToString(this.audioData.getData()));
             jsonWriter.writeNullField("timestamp");
             jsonWriter.writeNullField("participant");
             jsonWriter.writeBooleanField("isSilent", this.audioData.isSilent());
