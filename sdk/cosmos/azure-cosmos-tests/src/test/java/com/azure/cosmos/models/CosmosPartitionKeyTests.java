@@ -70,7 +70,17 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "emulator-vnext" }, timeOut = SETUP_TIMEOUT)
+    public void before_CosmosPartitionKeyTestsEmulatorVNext() throws URISyntaxException, IOException {
+        assertThat(this.client).isNull();
+        this.client = getClientBuilder()
+            .gatewayMode()
+            .contentResponseOnWriteEnabled(true)
+            .buildAsyncClient();
+        createdDatabase = getSharedCosmosDatabase(client);
+    }
+
+    @AfterClass(groups = { "emulator", "emulator-vnext" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
@@ -134,7 +144,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         assertThat(body).contains("\"id\":\"" + NON_PARTITIONED_CONTAINER_DOCUEMNT_ID + "\"");
     }
 
-    @Test(groups = { "emulator" })
+    @Test(groups = { "emulator", "emulator-vnext" })
     public void nonPartitionedCollectionOperations() throws Exception {
         createContainerWithoutPk();
         CosmosAsyncContainer createdContainer = createdDatabase.getContainer(NON_PARTITIONED_CONTAINER_ID);
@@ -287,7 +297,7 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
         validateQuerySuccess(queryFlux.byPage(), queryValidator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT*100)
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT*100)
     public void multiPartitionCollectionReadDocumentWithNoPk() throws InterruptedException {
         String partitionedCollectionId = "PartitionedCollection" + UUID.randomUUID().toString();
         String IdOfDocumentWithNoPk = UUID.randomUUID().toString();
