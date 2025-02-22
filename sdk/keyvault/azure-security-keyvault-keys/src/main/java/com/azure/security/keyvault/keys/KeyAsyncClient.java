@@ -2097,4 +2097,66 @@ public final class KeyAsyncClient {
             return monoError(LOGGER, e);
         }
     }
+
+    /**
+     * Gets the public part of the latest version of the specified {@link KeyVaultKey key}, including its attestation
+     * information. The get key operation is applicable to all {@link KeyType key types} and it requires the
+     * {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the latest version of the {@link KeyVaultKey key} in the key vault, including its attestation
+     * information. Subscribes to the call asynchronously and prints out the {@link KeyVaultKey retrieved key} details
+     * when a response has been received.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestation#String -->
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestation#String -->
+     *
+     * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
+     *
+     * @return A {@link Mono} containing the requested {@link KeyVaultKey key}. The content of the key is {@code null}
+     * if {@code name} is {@code null} or empty.
+     *
+     * @throws HttpResponseException If a valid {@code name} and a non-null/empty {@code version} is specified.
+     * @throws ResourceNotFoundException When a {@link KeyVaultKey key} with the provided {@code name} doesn't exist in
+     * the key vault or an empty/{@code null} {@code name} and a non-null/empty {@code version} is provided.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyVaultKey> getKeyAttestation(String name) {
+        return getKeyAttestationWithResponse(name, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Gets the public part of the specified {@link KeyVaultKey key} and key version, including its attestation
+     * information. The get key operation is applicable to all {@link KeyType key types} and it requires the
+     * {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the latest version of the {@link KeyVaultKey key} in the key vault, including its attestation
+     * information. Subscribes to the call asynchronously and prints out the {@link KeyVaultKey retrieved key} details
+     * when a response has been received.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestationWithResponse#String-String -->
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKeyAttestationWithResponse#String-String -->
+     *
+     * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
+     * @param version The version of the key to retrieve. If this is an empty String or null, this call is
+     * equivalent to calling {@link KeyAsyncClient#getKey(String)}, with the latest version being retrieved.
+     *
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
+     * requested {@link KeyVaultKey key}. The content of the key is {@code null} if both {@code name} and
+     * {@code version} are {@code null} or empty.
+     *
+     * @throws HttpResponseException If a valid {@code name} and a non-null/empty {@code version} is specified.
+     * @throws ResourceNotFoundException When a {@link KeyVaultKey key} with the provided {@code name} doesn't exist in
+     * the key vault or an empty/{@code null} {@code name} and a non-null/empty {@code version} is provided.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<KeyVaultKey>> getKeyAttestationWithResponse(String name, String version) {
+        try {
+            return implClient.getKeyAttestationWithResponseAsync(name, version, EMPTY_OPTIONS)
+                .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapGetKeyException)
+                .map(response -> new SimpleResponse<>(response,
+                    createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
+        } catch (RuntimeException e) {
+            return monoError(LOGGER, e);
+        }
+    }
 }

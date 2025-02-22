@@ -2146,4 +2146,64 @@ public final class KeyClient {
         return new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue()
             .toObject(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy.class)));
     }
+
+    /**
+     * Gets the public part of the latest version of the specified {@link KeyVaultKey key}, including its key
+     * attestation information. The get key operation is applicable to all {@link KeyType key types} and it requires the
+     * {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the latest version of the {@link KeyVaultKey key} in the key vault, including its attestation
+     * information. Prints out the details of the {@link KeyVaultKey retrieved key}.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKeyAttestation#String -->
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.getKeyAttestation#String -->
+     *
+     * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
+     *
+     * @return The requested {@link KeyVaultKey key}. The content of the {@link KeyVaultKey key}  is {@code null} if
+     * both {@code name} and {@code version} are {@code null} or empty.
+     *
+     * @throws HttpResponseException If a valid {@code name} and a non-null/empty {@code version} is specified.
+     * @throws ResourceNotFoundException When a {@link KeyVaultKey key} with the provided {@code name} doesn't exist in
+     * the key vault or an empty/{@code null} {@code name} and a non-null/empty {@code version} is provided.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyVaultKey getKeyAttestation(String name) {
+        return getKeyWithResponse(name, "", Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the public part of the specified {@link KeyVaultKey key} and key version, including its key attestation
+     * information. The get key operation is applicable to all {@link KeyType key types} and it requires the
+     * {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a specific version of the {@link KeyVaultKey key} in the key vault, including its attestation
+     * information. Prints out the details of the {@link KeyVaultKey retrieved key}.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKeyAttestationWithResponse#String-String-Context -->
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.getKeyAttestationWithResponse#String-String-Context -->
+     *
+     * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     * @param version The version of the {@link KeyVaultKey key}  to retrieve. If this is an empty string or
+     * {@code null}, this call is equivalent to calling {@link KeyClient#getKey(String)}, with the latest version
+     * being retrieved.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested
+     * {@link KeyVaultKey key}. The content of the {@link KeyVaultKey key} is {@code null} if both {@code name} and
+     * {@code version} are {@code null} or empty.
+     *
+     * @throws HttpResponseException If a valid {@code name} and a non-null/empty {@code version} is specified.
+     * @throws ResourceNotFoundException When a {@link KeyVaultKey key} with the provided {@code name} doesn't exist in
+     * the key vault or an empty/{@code null} {@code name} and a non-null/empty {@code version} is provided.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyVaultKey> getKeyAttestationWithResponse(String name, String version, Context context) {
+        Response<BinaryData> response = callWithMappedException(
+            () -> implClient.getKeyAttestationWithResponse(name, version, new RequestOptions().setContext(context)),
+            KeyAsyncClient::mapGetKeyException);
+
+        return new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
+    }
 }

@@ -28,7 +28,7 @@ public class KeysCustomizations extends Customization {
         ClassCustomization implClientClassCustomization = implPackageCustomization.getClass("KeyClientImpl");
         customizeClientImpl(implClientClassCustomization);
 
-        // Change the names of generated
+        // Change the names of the generated enum values.
         ClassCustomization keyCurveNameCustomization =
             libraryCustomization.getPackage("com.azure.security.keyvault.keys.models")
                 .getClass("KeyCurveName");
@@ -55,7 +55,7 @@ public class KeysCustomizations extends Customization {
         String classPath =
             "src/main/java/com/azure/security/keyvault/keys/implementation/KeyClientImpl.java";
 
-        replaceInFile(classCustomization, classPath, "KeyVault", "Key");
+        replaceInFile(classCustomization, classPath, new String[] { "KeyVault" }, new String[] { "Key" });
     }
 
     private static void customizeKeyCurveName(ClassCustomization classCustomization) {
@@ -72,7 +72,9 @@ public class KeysCustomizations extends Customization {
         String classPath =
             "src/main/java/com/azure/security/keyvault/keys/models/KeyCurveName.java";
 
-        replaceInFile(classCustomization, classPath, " For valid values, see JsonWebKeyCurveName.", "");
+        replaceInFile(classCustomization, classPath,
+            new String[] { " For valid values, see JsonWebKeyCurveName." },
+            new String[] { "" });
     }
 
     /**
@@ -81,34 +83,31 @@ public class KeysCustomizations extends Customization {
      *
      * @param classCustomization The class customization to use to edit the file.
      * @param classPath The path to the file to edit.
-     * @param strings The strings to replace. The first half of the strings will be replaced with the second half in the
-     * order they are provided.
+     * @param stringsToReplace The strings to replace.
+     * @param replacementStrings The strings to replace with.
      */
     private static void replaceInFile(ClassCustomization classCustomization, String classPath,
-        String... strings) {
+        String[] stringsToReplace, String[] replacementStrings) {
 
-        // Replace all instances of KeyVaultServiceVersion with KeyServiceVersion. We'll remove this once the
-        // TSP spec includes all service versions.
-        Editor editor = classCustomization.getEditor();
-        String fileContent = editor.getFileContent(classPath);
+        if (stringsToReplace != null && replacementStrings != null) {
+            Editor editor = classCustomization.getEditor();
+            String fileContent = editor.getFileContent(classPath);
 
-        // Ensure names has an even length.
-        if (strings.length % 2 != 0) {
-            throw new IllegalArgumentException("The 'names' parameter must have an even number of elements.");
+            // Ensure names has an even length.
+            if (stringsToReplace.length != replacementStrings.length) {
+                throw new IllegalArgumentException(
+                    "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
+            }
+
+            for (int i = 0; i < stringsToReplace.length; i++) {
+                fileContent = fileContent.replace(stringsToReplace[i], replacementStrings[i]);
+            }
+
+            editor.replaceFile(classPath, fileContent);
+        } else if (stringsToReplace != null || replacementStrings != null) {
+            throw new IllegalArgumentException(
+                "'stringsToReplace' must have the same number of elements as 'replacementStrings'.");
         }
-
-        for (int i = 0; i < (strings.length / 2); i++) {
-            fileContent = fileContent.replace(strings[i], strings[i + strings.length / 2]);
-        }
-
-        editor.replaceFile(classPath, fileContent);
-
-        // Uncomment once there's a new version of the AutoRest library out.
-        /*List<Range> ranges = editor.searchText(classPath, "KeyVaultServiceVersion");
-
-        for (Range range : ranges) {
-            editor.replace(classPath, range.getStart(), range.getEnd(), "KeyServiceVersion");
-        }*/
     }
 
     private static void replaceImport(CompilationUnit ast, String originalImport, String newImport) {
