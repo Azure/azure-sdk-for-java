@@ -9,6 +9,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * A type that invokes next policy in the pipeline.
@@ -46,6 +47,20 @@ public class HttpPipelineNextPolicy {
             }
         } else {
             return nextPolicy.process(this.state.getHttpRequest(), this);
+        }
+    }
+
+    public CompletableFuture<Response<?>> processAsync() {
+        // TODO (alzimmer): Do we need a different design for async where this is doing something like
+        //  CompletableFuture.thenCompose or CompletableFuture.thenApply, etc?
+        //  I would imagine in most cases we don't want any thread switching happening while executing the pipeline,
+        //  except maybe in the case of TokenCredentials where they might be making a network call to get a token.
+        HttpPipelinePolicy nextPolicy = state.getNextPolicy();
+
+        if (nextPolicy == null) {
+            return this.state.getPipeline().getHttpClient().sendAsync(this.state.getHttpRequest());
+        } else {
+            return nextPolicy.processAsync(this.state.getHttpRequest(), this);
         }
     }
 
