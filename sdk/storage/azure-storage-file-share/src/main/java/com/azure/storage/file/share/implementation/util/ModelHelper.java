@@ -633,7 +633,7 @@ public class ModelHelper {
     }
 
     public static Response<ShareFileInfo>
-    createSymbolicLinkResponse(final ResponseBase<FilesCreateSymbolicLinkHeaders, Void> response) {
+        createSymbolicLinkResponse(final ResponseBase<FilesCreateSymbolicLinkHeaders, Void> response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         FileSmbProperties smbProperties = FileSmbPropertiesHelper.create(response.getHeaders());
@@ -644,7 +644,7 @@ public class ModelHelper {
     }
 
     public static Response<ShareFileSymbolicLinkInfo>
-    getSymbolicLinkResponse(final ResponseBase<FilesGetSymbolicLinkHeaders, Void> response) {
+        getSymbolicLinkResponse(final ResponseBase<FilesGetSymbolicLinkHeaders, Void> response) {
         String eTag = response.getDeserializedHeaders().getETag();
         OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
         String linkText = response.getDeserializedHeaders().getXMsLinkText();

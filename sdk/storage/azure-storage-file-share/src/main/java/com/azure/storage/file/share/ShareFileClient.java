@@ -3165,12 +3165,44 @@ public class ShareFileClient {
         return ModelHelper.createHardLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
 
+    /**
+     * NFS only. Creates a symbolic link to a file specified by the path.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.createSymbolicLink#String -->
+     * <pre>
+     * ShareFileInfo response = symbolicLinkClient.createSymbolicLink&#40;sourceClient.getFilePath&#40;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Link count is %s.&quot;, response.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.createSymbolicLink#String -->
+     *
+     * @param linkText The absolute or relative path of the file to be linked to.
+     * @return A {@link ShareFileInfo} describing the state of the symbolic link.
+     */
     public ShareFileInfo createSymbolicLink(String linkText) {
         return createSymbolicLinkWithResponse(new ShareFileCreateSymbolicLinkOptions(linkText), null, Context.NONE)
             .getValue();
     }
 
-    public Response<ShareFileInfo> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options, Duration timeout, Context context) {
+    /**
+     * NFS only. Creates a symbolic link to a file specified by the path.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.createSymbolicLinkWithResponse#ShareFileCreateSymbolicLinkOptions-Duration-Context -->
+     * <pre>
+     * ShareFileCreateSymbolicLinkOptions options = new ShareFileCreateSymbolicLinkOptions&#40;sourceClient.getFilePath&#40;&#41;&#41;;
+     * ShareFileInfo response2 = symbolicLinkClient.createSymbolicLinkWithResponse&#40;options, null, null&#41;.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Link count is %s.&quot;, response2.getPosixProperties&#40;&#41;.getLinkCount&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.createSymbolicLinkWithResponse#ShareFileCreateSymbolicLinkOptions-Duration-Context -->
+     *
+     * @param options {@link ShareFileCreateSymbolicLinkOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains {@link ShareFileInfo}
+     * describing the state of the symbolic link.
+     */
+    public Response<ShareFileInfo> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options,
+        Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
         Context finalContext = context == null ? Context.NONE : context;
         ShareRequestConditions requestConditions
@@ -3178,23 +3210,52 @@ public class ShareFileClient {
 
         Callable<ResponseBase<FilesCreateSymbolicLinkHeaders, Void>> operation
             = () -> this.azureFileStorageClient.getFiles()
-            .createSymbolicLinkWithResponse(shareName, filePath, options.getLinkText(), null, options.getMetadata(), options.getFileCreationTime().toString(), options.getFileLastWriteTime().toString(),
-                null, requestConditions.getLeaseId(), options.getOwner(), options.getGroup(),finalContext);
+                .createSymbolicLinkWithResponse(shareName, filePath, options.getLinkText(), null, options.getMetadata(),
+                    options.getFileCreationTime().toString(), options.getFileLastWriteTime().toString(), null,
+                    requestConditions.getLeaseId(), options.getOwner(), options.getGroup(), finalContext);
 
         return ModelHelper.createSymbolicLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
 
     }
 
+    /**
+     * Reads the value of the symbolic link. Only applicable if this {@link ShareFileClient} is pointed
+     * at an NFS symbolic link.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.getSymbolicLink -->
+     * <pre>
+     * ShareFileSymbolicLinkInfo response = symbolicLinkClient.getSymbolicLink&#40;&#41;;
+     * System.out.printf&#40;&quot;Link text is %s.&quot;, response.getLinkText&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.getSymbolicLink -->
+     *
+     * @return A {@link ShareFileSymbolicLinkInfo} describing the symbolic link.
+     */
     public ShareFileSymbolicLinkInfo getSymbolicLink() {
         return getSymbolicLinkWithResponse(null, Context.NONE).getValue();
     }
 
-    public Response<ShareFileSymbolicLinkInfo> getSymbolicLinkWithResponse(Duration timeout, Context context){
+    /**
+     * Reads the value of the symbolic link. Only applicable if this {@link ShareFileClient} is pointed
+     * at an NFS symbolic link.
+     * <!-- src_embed com.azure.storage.file.share.ShareFileClient.getSymbolicLinkWithResponse#Duration-Context -->
+     * <pre>
+     * ShareFileSymbolicLinkInfo response2 = symbolicLinkClient.getSymbolicLinkWithResponse&#40;null, null&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Link text is %s.&quot;, response2.getLinkText&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareFileClient.getSymbolicLinkWithResponse#Duration-Context -->
+     *
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains {@link ShareFileSymbolicLinkInfo}
+     * describing the symbolic link.
+     */
+    public Response<ShareFileSymbolicLinkInfo> getSymbolicLinkWithResponse(Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
 
         Callable<ResponseBase<FilesGetSymbolicLinkHeaders, Void>> operation
             = () -> this.azureFileStorageClient.getFiles()
-            .getSymbolicLinkWithResponse(shareName, filePath, null, snapshot, null, finalContext);
+                .getSymbolicLinkWithResponse(shareName, filePath, null, snapshot, null, finalContext);
 
         return ModelHelper.getSymbolicLinkResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }
