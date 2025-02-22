@@ -16,6 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.BiFunction;
 
+import static com.azure.spring.cloud.core.implementation.util.ClassUtils.isPrimitive;
 import static com.azure.spring.cloud.core.implementation.util.ClassUtils.isPrimitiveDefaultValue;
 import static com.azure.spring.cloud.core.implementation.util.ClassUtils.isPrimitiveNonDefaultValue;
 
@@ -163,8 +164,9 @@ public final class AzurePropertiesUtils {
             Objects.isNull(srcValue) || isPrimitiveDefaultValue(propertyType, srcValue));
     }
 
-    static String[] findNonNullPropertyNames(Object source) {
+    public static String[] findNonNullPropertyNames(Object source) {
         return findPropertyNames(source, (propertyType, srcValue) ->
-            Objects.nonNull(srcValue) && isPrimitiveNonDefaultValue(propertyType, srcValue));
+            (!isPrimitive(propertyType) && Objects.nonNull(srcValue) && (propertyType != Class.class && srcValue != source.getClass()))
+                || (isPrimitive(propertyType) && isPrimitiveNonDefaultValue(propertyType, srcValue)));
     }
 }
