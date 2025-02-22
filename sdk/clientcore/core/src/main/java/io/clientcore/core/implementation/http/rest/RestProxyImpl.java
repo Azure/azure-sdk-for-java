@@ -270,8 +270,8 @@ public class RestProxyImpl {
     }
 
     /**
-     * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has 'disallowed status
-     * code' OR (2) emits provided response if it's status code ia allowed.
+     * Throws an exception if the provided response {@code decodedResponse} has 'disallowed status code' OR returns a
+     * response that has 'allowed status code'.
      *
      * <p>'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser or is in the int[]
      * of additional allowed status codes.</p>
