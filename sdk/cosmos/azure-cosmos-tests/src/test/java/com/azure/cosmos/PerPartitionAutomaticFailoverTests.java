@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RequestTimeoutException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxStoreModel;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
@@ -30,9 +29,6 @@ import com.azure.cosmos.implementation.directconnectivity.StoreClient;
 import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
-import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -43,7 +39,6 @@ import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
@@ -73,7 +68,6 @@ import reactor.core.publisher.Mono;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1392,40 +1386,6 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         public CosmosItemRequestOptions patchItemRequestOptions;
         public FeedRange feedRangeToDrainForChangeFeed;
         public FeedRange feedRangeForQuery;
-    }
-
-    static class TransportClientMock extends TransportClient {
-
-        @Override
-        protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
-            return null;
-        }
-
-        @Override
-        public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
-        }
-
-        @Override
-        protected GlobalEndpointManager getGlobalEndpointManager() {
-            return null;
-        }
-
-        @Override
-        public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
-            return null;
-        }
-
-        @Override
-        public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
-        }
-
-        @Override
-        public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
-        }
-
-        @Override
-        public void close() throws Exception {
-        }
     }
 
     private static class ExpectedResponseCharacteristics {
