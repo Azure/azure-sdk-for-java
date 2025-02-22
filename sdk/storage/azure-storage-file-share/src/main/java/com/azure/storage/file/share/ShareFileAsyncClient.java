@@ -97,6 +97,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ConcurrentModificationException;
@@ -3408,18 +3409,21 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
-            return withContext(context -> createSymbolicLinkWithResponse(options.getLinkText(),
+            return withContext(context -> createSymbolicLinkWithResponse(options.getLinkText(), options.getMetadata(), options.getFileCreationTime(), options.getFileLastWriteTime(), options.getOwner(), options.getGroup(),
                 options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(String linkText, ShareRequestConditions requestConditions, Context context) {
+    Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(String linkText, Map<String, String> metadata, OffsetDateTime fileCreationTime, OffsetDateTime fileLastWriteTime, String owner, String group, ShareRequestConditions requestConditions, Context context) {
         context = context == null ? Context.NONE : context;
+        requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+        String fileCreationTimeString = FileSmbProperties.parseFileSMBDate(fileCreationTime);
+        String fileLastWriteTimeString = FileSmbProperties.parseFileSMBDate(fileLastWriteTime);
         return this.azureFileStorageClient.getFiles()
-            .createSymbolicLinkWithResponseAsync(shareName, filePath, linkText, null, null,null, null, null,
-                requestConditions.getLeaseId(), null, null, context)
+            .createSymbolicLinkWithResponseAsync(shareName, filePath, linkText, null, metadata, fileCreationTimeString, fileLastWriteTimeString, null,
+                requestConditions.getLeaseId(), owner, group, context)
             .map(ModelHelper::createSymbolicLinkResponse);
     }
 
@@ -3429,7 +3433,7 @@ public class ShareFileAsyncClient {
 
     public Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse(){
         try{
-            return withContext(context -> getSymbolicLinkWithResponse(context));
+            return withContext(this::getSymbolicLinkWithResponse);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -3438,7 +3442,7 @@ public class ShareFileAsyncClient {
     Mono<Response<ShareFileSymbolicLinkInfo>> getSymbolicLinkWithResponse(Context context){
         context = context == null ? Context.NONE : context;
         return this.azureFileStorageClient.getFiles()
-            .getSymbolicLinkWithResponseAsync(shareName, filePath, null, null, null, context)
+            .getSymbolicLinkWithResponseAsync(shareName, filePath, null, snapshot, null, context)
             .map(ModelHelper::getSymbolicLinkResponse);
     }
 }
