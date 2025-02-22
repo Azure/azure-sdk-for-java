@@ -10,8 +10,11 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +24,8 @@ import java.util.Locale;
  * The storage authorization policy which supports challenge.
  */
 public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenAuthenticationPolicy {
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageBearerTokenChallengeAuthorizationPolicy.class);
 
     private static final String DEFAULT_SCOPE = "/.default";
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
@@ -65,13 +70,39 @@ public class StorageBearerTokenChallengeAuthorizationPolicy extends BearerTokenA
         Map<String, String> challenges = extractChallengeAttributes(authHeader, BEARER_TOKEN_PREFIX);
 
         String scope = challenges.get("resource_id");
+        String authorization = challenges.get("authorization_uri");
+
         if (scope != null) {
             scope += DEFAULT_SCOPE;
             scopes = new String[] { scope };
             scopes = getScopes(context, scopes);
-            return setAuthorizationHeader(context, new TokenRequestContext().addScopes(scopes)).thenReturn(true);
         }
+
+        if (authorization != null) {
+            String tenantId = extractTenantIdFromUri(authorization);
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes).setTenantId(tenantId);
+            return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
+        }
+
+        if (scope != null) {
+            TokenRequestContext tokenRequestContext = new TokenRequestContext().addScopes(scopes);
+            return setAuthorizationHeader(context, tokenRequestContext).thenReturn(true);
+        }
+
         return Mono.just(false);
+    }
+
+    private String extractTenantIdFromUri(String uri) {
+        try {
+            String[] segments = new URI(uri).getPath().split("/");
+            if (segments.length > 1) {
+                return segments[1];
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI: tenantId not found"));
+            }
+        } catch (URISyntaxException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Invalid authorization URI", e));
+        }
     }
 
     @Override
