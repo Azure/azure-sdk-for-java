@@ -13,17 +13,19 @@ import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.utils.Context;
 
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
+import java.util.List;
 
 @ServiceInterface(name = "myService")
 public interface TestInterfaceClientService {
@@ -77,6 +79,13 @@ public interface TestInterfaceClientService {
     @HttpRequestInformation(method = HttpMethod.DELETE, path = "/kv/{key}", expectedStatusCodes = { 204, 404 })
     Response<Void> deleteFoo(@PathParam("key") String key, @QueryParam("label") String label,
         @HeaderParam("Sync-Token") String syncToken);
+
+    @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
+    Response<List<Foo>> listFoo(@HostParam("uri") String uri, RequestOptions requestOptions, Context context);
+
+    @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
+    Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
+        RequestOptions requestOptions, Context context);
 
     // HttpClientTests
     // Need to add RequestOptions to specify ResponseBodyMode, which is otherwise provided by convenience methods
