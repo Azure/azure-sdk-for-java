@@ -78,6 +78,18 @@
       <version>12.24.0</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-messaging-servicebus</artifactId>
+      <version>7.17.8</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;dependency} -->
+      <optional>true</optional>
+      <exclusions>
+        <exclusion>
+          <groupId>com.fasterxml.jackson.dataformat</groupId>
+          <artifactId>jackson-dataformat-xml</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -88,6 +100,12 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>azure</artifactId>
       <version>1.20.4</version> <!-- {x-version-update;springboot3_org.testcontainers:azure;external_dependency} -->
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>mssqlserver</artifactId>
+      <version>1.20.4</version> <!-- {x-version-update;springboot3_org.testcontainers:mssqlserver;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -122,6 +140,12 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
       <version>1.20.4</version> <!-- {x-version-update;springboot3_org.testcontainers:junit-jupiter;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
+      <version>4.2.0</version> <!-- {x-version-update;org.awaitility:awaitility;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
