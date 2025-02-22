@@ -6,6 +6,7 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.RequestConditions;
+import com.azure.storage.blob.implementation.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopySourceTagsMode;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -29,6 +30,7 @@ public class BlobCopyFromUrlOptions {
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
     private BlobCopySourceTagsMode copySourceTags;
+    private FileShareTokenIntent fileShareTokenIntent;
 
     /**
      * Creates a new instance of {@link BlobCopyFromUrlOptions}.
@@ -237,4 +239,27 @@ public class BlobCopyFromUrlOptions {
         this.copySourceTags = copySourceTags;
         return this;
     }
+
+    /**
+     * Optional, only applicable (but required) when the source is Azure Storage Files and using token authentication.
+     * Gets the intent of the request.
+     *
+     * @return the {@link FileShareTokenIntent} for the file share.
+     */
+    public FileShareTokenIntent getFileShareTokenIntent() {
+        return fileShareTokenIntent;
+    }
+
+    /**
+     * Optional, only applicable (but required) when the source is Azure Storage Files and using token authentication.
+     * Sets the intent of the request.
+     *
+     * @param fileShareTokenIntent Used to indicate the intent of the request.
+     * @return The updated options.
+     */
+    public BlobCopyFromUrlOptions setFileShareTokenIntent(FileShareTokenIntent fileShareTokenIntent) {
+        this.fileShareTokenIntent = fileShareTokenIntent;
+        return this;
+    }
+
 }
