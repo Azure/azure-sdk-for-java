@@ -3,14 +3,14 @@
 
 package com.azure.v2.core.credentials;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import io.clientcore.core.credentials.TokenCredential;
+import io.clientcore.core.credentials.TokenRequestContext;
+
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
- * The {@link TokenRequestContext} is a class used to provide additional information and context when requesting an
+ * The {@link AzureTokenRequestContext} is a class used to provide additional information and context when requesting an
  * access token from an authentication source. It allows you to customize the token request and specify additional
  * parameters, such as scopes, claims, or authentication options.
  * </p>
@@ -18,23 +18,22 @@ import java.util.Objects;
  * <p>
  * The {@link TokenRequestContext} is typically used with authentication mechanisms that require more advanced
  * configurations or options, such as
- * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)</a>
- * authentication.
+ * <a href="https://learn.microsoft.com/entra/fundamentals/">Microsoft Entra ID</a> authentication.
  * </p>
  *
  * <p>
- * Here's a high-level overview of how you can use the {@link TokenRequestContext}:
+ * Here's a high-level overview of how you can use the {@link AzureTokenRequestContext}:
  * </p>
  *
  * <ol>
- * <li>Create an instance of the {@link TokenRequestContext} class and configure the required properties.
- * The {@link TokenRequestContext} class allows you to specify the scopes or resources for which you want to request
+ * <li>Create an instance of the {@link AzureTokenRequestContext} class and configure the required properties.
+ * The {@link AzureTokenRequestContext} class allows you to specify the scopes or resources for which you want to request
  * an access token, as well as any additional claims or options.</li>
  *
  * <li>Pass the TokenRequestContext instance to the appropriate authentication client or mechanism when
  * requesting an access token. The specific method or API to do this will depend on the authentication mechanism
- * you are using. For example, if you are using Azure Identity for AAD authentication, you would pass the
- * TokenRequestContext instance to the getToken method of the {@link TokenCredential} implementation.</li>
+ * you are using. For example, if you are using Azure Identity for MS Entra authentication, you would pass the
+ * AzureTokenRequestContext instance to the getToken method of the {@link TokenCredential} implementation.</li>
  *
  * <li>The authentication client or mechanism will handle the token request and return an access token that can
  * be used to authenticate and authorize requests to Azure services.</li>
@@ -44,25 +43,15 @@ import java.util.Objects;
  * @see TokenCredential
  */
 
-public class TokenRequestContext {
-    private final List<String> scopes;
-    private String claims;
+public class AzureTokenRequestContext extends TokenRequestContext {
     private String tenantId;
     private boolean enableCae;
 
     /**
      * Creates a token request instance.
      */
-    public TokenRequestContext() {
-        this.scopes = new ArrayList<>();
-    }
-
-    /**
-     * Gets the scopes required for the token.
-     * @return the scopes required for the token
-     */
-    public List<String> getScopes() {
-        return scopes;
+    public AzureTokenRequestContext() {
+        super();
     }
 
     /**
@@ -70,10 +59,9 @@ public class TokenRequestContext {
      * @param scopes the scopes required for the token
      * @return the TokenRequestContext itself
      */
-    public TokenRequestContext setScopes(List<String> scopes) {
-        Objects.requireNonNull(scopes, "'scopes' cannot be null.");
-        this.scopes.clear();
-        this.scopes.addAll(scopes);
+    @Override
+    public AzureTokenRequestContext setScopes(List<String> scopes) {
+        super.setScopes(scopes);
         return this;
     }
 
@@ -82,8 +70,9 @@ public class TokenRequestContext {
      * @param scopes one or more scopes to add
      * @return the TokenRequestContext itself
      */
-    public TokenRequestContext addScopes(String... scopes) {
-        this.scopes.addAll(Arrays.asList(scopes));
+    @Override
+    public AzureTokenRequestContext addScopes(String... scopes) {
+        super.addScopes(scopes);
         return this;
     }
 
@@ -96,21 +85,10 @@ public class TokenRequestContext {
      * @param claims the additional claims to be included in the token.
      * @return the updated TokenRequestContext itself
      */
-    public TokenRequestContext setClaims(String claims) {
-        this.claims = claims;
+    @Override
+    public AzureTokenRequestContext setClaims(String claims) {
+        super.setClaims(claims);
         return this;
-    }
-
-    /**
-     * Get the additional claims to be included in the token.
-     *
-     * @see <a href="https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter">
-     *     https://openid.net/specs/openid-connect-core-1_0-final.html#ClaimsParameter</a>
-     *
-     * @return the additional claims to be included in the token.
-     */
-    public String getClaims() {
-        return this.claims;
     }
 
     /**
@@ -119,7 +97,7 @@ public class TokenRequestContext {
      * @param tenantId the tenant to be used when requesting the token.
      * @return the updated TokenRequestContext itself
      */
-    public TokenRequestContext setTenantId(String tenantId) {
+    public AzureTokenRequestContext setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
@@ -146,7 +124,7 @@ public class TokenRequestContext {
      * the requested token.
      * @return the updated TokenRequestContext.
      */
-    public TokenRequestContext setCaeEnabled(boolean enableCae) {
+    public AzureTokenRequestContext setCaeEnabled(boolean enableCae) {
         this.enableCae = enableCae;
         return this;
     }

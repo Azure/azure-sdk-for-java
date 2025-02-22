@@ -21,6 +21,7 @@ module io.clientcore.core {
     exports io.clientcore.core.instrumentation;
     exports io.clientcore.core.instrumentation.logging;
     exports io.clientcore.core.instrumentation.metrics;
+
     exports io.clientcore.core.instrumentation.tracing;
     exports io.clientcore.core.serialization.json;
     exports io.clientcore.core.serialization.xml;
