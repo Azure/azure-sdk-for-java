@@ -18,7 +18,7 @@ import java.util.List;
 @Fluent
 public final class RoomsCollection implements JsonSerializable<RoomsCollection> {
     /*
-     * A collection of rooms
+     * A collection of rooms.
      */
     private List<RoomModel> value;
 
