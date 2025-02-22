@@ -16,6 +16,7 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathStatus;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
@@ -547,6 +548,36 @@ public class PathClientJavaDocCodeSamples {
             PathAccessControlEntry.serializeList(pac.getAccessControlList()), pac.getGroup(), pac.getOwner(),
             pac.getPermissions());
         // END: com.azure.storage.file.datalake.DataLakePathClient.getAccessControlWithResponse#boolean-DataLakeRequestConditions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#getStatus()}
+     */
+    public void getStatusCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getStatus
+        PathStatus response = client.getStatus();
+        System.out.printf("CreationTime: %s, Group: %s, Owner: %s, Permissions: %s",
+            response.getCreationTime(), response.getGroup(),
+            response.getOwner(), response.getPermissions());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getStatus
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathClient#getStatusWithResponse(DataLakeRequestConditions, Duration, Context)}
+     */
+    public void getStatusWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getStatusWithResponse#DataLakeRequestConditions-Duration-Context
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+
+        Response<PathStatus> response = client.getStatusWithResponse(
+            requestConditions, timeout, new Context(key1, value1));
+
+        PathStatus ps = response.getValue();
+
+        System.out.printf("CreationTime: %s, Group: %s, Owner: %s, Permissions: %s",
+            ps.getCreationTime(), ps.getGroup(), ps.getOwner(),
+            ps.getPermissions());
+        // END: com.azure.storage.file.datalake.DataLakePathClient.getStatusWithResponse#DataLakeRequestConditions-Duration-Context
     }
 
     /**

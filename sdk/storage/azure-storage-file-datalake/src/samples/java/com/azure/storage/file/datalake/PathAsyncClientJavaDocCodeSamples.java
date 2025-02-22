@@ -449,6 +449,32 @@ public class PathAsyncClientJavaDocCodeSamples {
     }
 
     /**
+     * Code snippets for {@link DataLakePathAsyncClient#getStatus()}
+     */
+    public void getStatusCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getStatus
+        client.getStatus().subscribe(
+            response -> System.out.printf("Creation Time: %s, Group: %s, Owner: %s, Permissions: %s",
+                response.getCreationTime(), response.getGroup(),
+                response.getOwner(), response.getPermissions()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getStatus
+    }
+
+    /**
+     * Code snippets for {@link DataLakePathAsyncClient#getStatusWithResponse(DataLakeRequestConditions)}
+     */
+    public void getStatusWithResponseCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getStatusWithResponse#DataLakeRequestConditions
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
+
+        client.getStatusWithResponse(requestConditions).subscribe(
+            response -> System.out.printf("Creation Time: %s, Group: %s, Owner: %s, Permissions: %s",
+                response.getValue().getCreationTime(),
+                response.getValue().getGroup(), response.getValue().getOwner(), response.getValue().getPermissions()));
+        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getStatusWithResponse#DataLakeRequestConditions
+    }
+
+    /**
      * Code snippet for {@link DataLakePathAsyncClient#generateUserDelegationSas(DataLakeServiceSasSignatureValues, UserDelegationKey)}
      * and {@link DataLakePathAsyncClient#generateSas(DataLakeServiceSasSignatureValues)}
      */
