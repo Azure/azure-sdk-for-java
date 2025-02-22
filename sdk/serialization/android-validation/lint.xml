@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+  <!-- Ignore newer version available warnings as we aren't concerned with always using the latest dependency. -->
+  <issue id="NewerVersionAvailable" severity="ignore" />
+
+  <!-- Ignore unknown nullness warnings as we don't use Nullable and NonNull. -->
+  <issue id="UnknownNullness" severity="ignore" />
+
+  <!-- Ignore Android Gradle plugin version warnings as this is a litmus test project. -->
+  <issue id="AndroidGradlePluginVersion" severity="ignore" />
+
+  <!-- Ignored Lamdba Last warnings as we aren't concerned with improving Koitlin interopability. -->
+  <issue id="LambdaLast" severity="ignore" />
+</lint>
