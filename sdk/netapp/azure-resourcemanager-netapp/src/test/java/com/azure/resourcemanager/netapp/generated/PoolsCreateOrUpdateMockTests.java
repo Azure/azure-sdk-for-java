@@ -6,8 +6,8 @@ package com.azure.resourcemanager.netapp.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.CapacityPool;
@@ -26,36 +26,35 @@ public final class PoolsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"etag\":\"v\",\"properties\":{\"poolId\":\"ufuqyrx\",\"size\":6853300792215489751,\"serviceLevel\":\"Premium\",\"provisioningState\":\"Succeeded\",\"totalThroughputMibps\":78.630066,\"utilizedThroughputMibps\":62.450417,\"customThroughputMibps\":8.434969,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Double\"},\"location\":\"fcdis\",\"tags\":{\"rxzbujr\":\"nxzhcze\",\"nlnzonzlrpi\":\"rhqvwrevkh\"},\"id\":\"yw\",\"name\":\"cvjtszcofiz\",\"type\":\"htd\"}";
+            = "{\"etag\":\"qxnmwmqt\",\"properties\":{\"poolId\":\"xyi\",\"size\":8723326269402268094,\"serviceLevel\":\"StandardZRS\",\"provisioningState\":\"Succeeded\",\"totalThroughputMibps\":15.086746,\"utilizedThroughputMibps\":61.958694,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"dqmeqwigpibudq\",\"tags\":{\"ybpmzznrtffyaq\":\"eb\",\"hvseufuqyrx\":\"tmhheioqa\",\"dgamquhiosrsj\":\"dlcgqlsismjqfr\"},\"id\":\"ivfcdisyirnx\",\"name\":\"hcz\",\"type\":\"xrxzbujrtr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         CapacityPool response = manager.pools()
-            .define("emwmdxmebwjs")
-            .withRegion("kpn")
-            .withExistingNetAppAccount("wxdzaumweoohgu", "fuzboyjathwtzolb")
-            .withSize(8437685781238493437L)
-            .withServiceLevel(ServiceLevel.FLEXIBLE)
-            .withTags(mapOf("dqmeqwigpibudq", "apm"))
-            .withCustomThroughputMibps(12.6477F)
+            .define("pifhpfeoajvgcxtx")
+            .withRegion("wsldrizetpwbr")
+            .withExistingNetAppAccount("bwnhhtql", "ehgpp")
+            .withSize(8087831620363185447L)
+            .withServiceLevel(ServiceLevel.STANDARD)
+            .withTags(mapOf("qzmiza", "libph", "ankjpdnjzh", "a", "lmuoyxprimrsopte", "joylh", "wxdzaumweoohgu",
+                "cjmeislstvasy"))
             .withQosType(QosType.AUTO)
-            .withCoolAccess(true)
-            .withEncryptionType(EncryptionType.SINGLE)
+            .withCoolAccess(false)
+            .withEncryptionType(EncryptionType.DOUBLE)
             .create();
 
-        Assertions.assertEquals("fcdis", response.location());
-        Assertions.assertEquals("nxzhcze", response.tags().get("rxzbujr"));
-        Assertions.assertEquals(6853300792215489751L, response.size());
-        Assertions.assertEquals(ServiceLevel.PREMIUM, response.serviceLevel());
-        Assertions.assertEquals(8.434969F, response.customThroughputMibps());
+        Assertions.assertEquals("dqmeqwigpibudq", response.location());
+        Assertions.assertEquals("eb", response.tags().get("ybpmzznrtffyaq"));
+        Assertions.assertEquals(8723326269402268094L, response.size());
+        Assertions.assertEquals(ServiceLevel.STANDARD_ZRS, response.serviceLevel());
         Assertions.assertEquals(QosType.MANUAL, response.qosType());
         Assertions.assertEquals(false, response.coolAccess());
-        Assertions.assertEquals(EncryptionType.DOUBLE, response.encryptionType());
+        Assertions.assertEquals(EncryptionType.SINGLE, response.encryptionType());
     }
 
     // Use "Map.of" if available

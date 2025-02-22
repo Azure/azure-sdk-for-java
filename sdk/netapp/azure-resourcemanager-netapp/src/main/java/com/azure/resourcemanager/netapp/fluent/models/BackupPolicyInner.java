@@ -133,7 +133,7 @@ public final class BackupPolicyInner extends Resource {
     }
 
     /**
-     * Get the backupPolicyId property: Backup Policy Resource ID.
+     * Get the backupPolicyId property: Backup Policy GUID ID.
      * 
      * @return the backupPolicyId value.
      */

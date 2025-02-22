@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class MountTargetPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MountTargetProperties model = BinaryData
-            .fromString(
-                "{\"mountTargetId\":\"rjerv\",\"fileSystemId\":\"aen\",\"ipAddress\":\"eh\",\"smbServerFqdn\":\"doy\"}")
+        MountTargetProperties model = BinaryData.fromString(
+            "{\"mountTargetId\":\"ndslgnayqigynduh\",\"fileSystemId\":\"vhqlkthumaqo\",\"ipAddress\":\"gycdu\",\"smbServerFqdn\":\"r\"}")
             .toObject(MountTargetProperties.class);
-        Assertions.assertEquals("aen", model.fileSystemId());
-        Assertions.assertEquals("doy", model.smbServerFqdn());
+        Assertions.assertEquals("vhqlkthumaqo", model.fileSystemId());
+        Assertions.assertEquals("r", model.smbServerFqdn());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MountTargetProperties model = new MountTargetProperties().withFileSystemId("aen").withSmbServerFqdn("doy");
+        MountTargetProperties model
+            = new MountTargetProperties().withFileSystemId("vhqlkthumaqo").withSmbServerFqdn("r");
         model = BinaryData.fromObject(model).toObject(MountTargetProperties.class);
-        Assertions.assertEquals("aen", model.fileSystemId());
-        Assertions.assertEquals("doy", model.smbServerFqdn());
+        Assertions.assertEquals("vhqlkthumaqo", model.fileSystemId());
+        Assertions.assertEquals("r", model.smbServerFqdn());
     }
 }
