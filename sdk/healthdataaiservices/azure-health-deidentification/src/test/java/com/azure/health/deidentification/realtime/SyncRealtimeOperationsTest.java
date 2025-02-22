@@ -7,8 +7,7 @@ import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.batch.BatchOperationTestBase;
 import com.azure.health.deidentification.models.DeidentificationContent;
 import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
+import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.PhiCategory;
 import org.junit.jupiter.api.Test;
 
@@ -27,10 +26,9 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.SURROGATE);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        content.setOperation(DeidentificationOperationType.SURROGATE);
 
-        DeidentificationResult result = deidentificationClient.deidentify(content);
+        DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
         assertNull(result.getTaggerResult());
         assertNotNull(result.getOutputText());
@@ -43,15 +41,12 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.TAG);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        content.setOperation(DeidentificationOperationType.TAG);
 
-        DeidentificationResult result = deidentificationClient.deidentify(content);
+        DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
         assertNotNull(result.getTaggerResult());
         assertNull(result.getOutputText());
-        assertNull(result.getTaggerResult().getEtag());
-        assertNull(result.getTaggerResult().getPath());
         assertFalse(result.getTaggerResult().getEntities().isEmpty());
         assertTrue(result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR)
             || result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));

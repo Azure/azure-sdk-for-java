@@ -22,7 +22,7 @@ $containerName = $DeploymentOutputs['HEALTHDATAAISERVICES_STORAGE_CONTAINER_NAME
 $testMode = "live"
 
 # Set the local folder path to upload
-$localFolderPath = "src\test\java\com\azure\health\deidentification\data"
+$localFolderPath = "src\test\resources\data"
 
 # Check if the connection string is present
 if ([string]::IsNullOrWhiteSpace($storageAccountName)) {
