@@ -2,8 +2,14 @@ trigger: none
 
 pr: none
 
-pool:
-  vmImage: 'ubuntu-20.04'
+parameters: # parameters(instead of variables) is used here for template compile time expressions
+  - name: RELEASE_TYPE
+    displayName: Release from
+    type: string
+    values:
+      - Swagger
+      - TypeSpec
+    default: Swagger
 
 variables:
   - group: Release Secrets for GitHub
@@ -13,8 +19,8 @@ variables:
     value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
   - name: NodeVersion
     value: '18.x'
-  - name: fromTypeSpec
-    value: $[ne(variables['TSP_CONFIG'], '')]
+  - name: JavaVersion
+    value: '17'
 
 steps:
   - bash: |
@@ -31,12 +37,12 @@ steps:
   - bash: |
       npm install -g autorest
     displayName: 'Install autorest'
-    condition: eq(variables.fromTypeSpec, false)
+    condition: ${{ eq(parameters.RELEASE_TYPE, 'Swagger') }}
 
   - bash: |
       npm install -g @azure-tools/typespec-client-generator-cli
     displayName: 'Install tsp-client'
-    condition: eq(variables.fromTypeSpec, true)
+    condition: ${{ eq(parameters.RELEASE_TYPE, 'TypeSpec') }}
 
   # - template: /eng/common/testproxy/test-proxy-tool.yml
   #   parameters:
@@ -49,7 +55,7 @@ steps:
       set -x
       ./eng/mgmt/automation/generate.py --tsp-config "$(TSP_CONFIG)" --version "$(VERSION)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
     displayName: Generation from TypeSpec
-    condition: eq(variables.fromTypeSpec, true)
+    condition: ${{ eq(parameters.RELEASE_TYPE, 'TypeSpec') }}
 
   - bash: |
       export PATH=$JAVA_HOME_11_X64/bin:$PATH
@@ -57,12 +63,12 @@ steps:
       set -x
       ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
     displayName: Generation from Swagger
-    condition: eq(variables.fromTypeSpec, false)
+    condition: ${{ eq(parameters.RELEASE_TYPE, 'Swagger') }}
 
   - template: /eng/common/pipelines/templates/steps/create-pull-request.yml
     parameters:
       PRBranchName: fluent-lite-generation-$(Build.BuildId)
-      ${{ if eq(variables.fromTypeSpec, true) }}:
+      ${{ if eq(parameters.RELEASE_TYPE, 'TypeSpec') }}: # Have to use parameter here. The ${{<expression>}} is compile time expression, it won't resolve against runtime variables.
         CommitMsg: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
         PRTitle: '[Automation] Generate Fluent Lite from TypeSpec $(README)'
       ${{ else }}:
