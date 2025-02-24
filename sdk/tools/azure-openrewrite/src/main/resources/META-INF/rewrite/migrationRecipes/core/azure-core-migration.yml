@@ -34,14 +34,6 @@ recipeList:
       oldFullyQualifiedTypeName: com.azure.core.http.policy.KeyCredentialPolicy
       newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.KeyCredentialPolicy
 
-
-  # Before: import com.azure.core.credential.KeyCredential;
-  # After: import io.clientcore.core.credential.KeyCredential;
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.credential.KeyCredential
-      newFullyQualifiedTypeName: io.clientcore.core.credential.KeyCredential
-
-
   # Before: import com.azure.core.client.traits.KeyCredentialTrait;
   # After: import io.clientcore.core.models.traits.KeyCredentialTrait;
   - org.openrewrite.java.ChangeType:
@@ -75,27 +67,27 @@ recipeList:
       newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.HttpPipelinePolicy
       ignoreDefinition: false
 
-  # Before: import com.azure.core.exception.ClientAuthenticationException;
+  # Before: import com.azure.core.exception.yml.ClientAuthenticationException;
   # After: import com.azure.core.v2.exception.ClientAuthenticationException;
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.exception.ClientAuthenticationException
+      oldFullyQualifiedTypeName: com.azure.core.exception.yml.ClientAuthenticationException
       newFullyQualifiedTypeName: com.azure.core.v2.exception.ClientAuthenticationException
 
-  # Before: import com.azure.core.exception.ResourceModifiedException;
+  # Before: import com.azure.core.exception.yml.ResourceModifiedException;
   # After: import com.azure.core.v2.exception.ResourceModifiedException;
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.exception.ResourceModifiedException
+      oldFullyQualifiedTypeName: com.azure.core.exception.yml.ResourceModifiedException
       newFullyQualifiedTypeName: com.azure.core.v2.exception.ResourceModifiedException
-  # Before: import com.azure.core.exception.ResourceNotFoundException;
+  # Before: import com.azure.core.exception.yml.ResourceNotFoundException;
   # After: import com.azure.core.v2.exception.ResourceNotFoundException;
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.exception.ResourceNotFoundException
+      oldFullyQualifiedTypeName: com.azure.core.exception.yml.ResourceNotFoundException
       newFullyQualifiedTypeName: com.azure.core.v2.exception.ResourceNotFoundException
 
-  # Before: import com.azure.core.exception.HttpResponseException;
+  # Before: import com.azure.core.exception.yml.HttpResponseException;
   # After: import io.clientcore.core.http.exception.HttpResponseException;
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.exception.HttpResponseException
+      oldFullyQualifiedTypeName: com.azure.core.exception.yml.HttpResponseException
       newFullyQualifiedTypeName: io.clientcore.core.http.exception.HttpResponseException
   # End azure-core-exception change type Recipes
 
