@@ -3,8 +3,6 @@
 
 package com.azure.v2.core.credentials;
 
-import io.clientcore.core.annotations.Metadata;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

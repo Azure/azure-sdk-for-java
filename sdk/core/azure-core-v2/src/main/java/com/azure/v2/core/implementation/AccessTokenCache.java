@@ -150,7 +150,7 @@ public final class AccessTokenCache {
 
     private static void logTokenRefresh(LogLevel level, AccessToken cache, OffsetDateTime now, String prefix) {
         if (cache == null || !LOGGER.canLogAtLevel(level)) {
-            LOGGER.atLevel(level).log(prefix);
+            return;
         }
 
         Duration tte = getDurationUntilExpiration(cache);
