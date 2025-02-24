@@ -1,6 +1,6 @@
 # Format;
 # <groupId>:<artifactId>;dependency-version;current-version
-#
+# JRS - WILL NOT BE CHECKED IN. Testing PR pipeline versioning excludes
 # The dependency-version is used by other Azure SDKs outside of the release group when listing the library as a Maven
 # dependency in its POM. The current-version is used by the library to denote its in-development version and as the
 # Maven dependency version for other Azure SDKs inside the same release group.
