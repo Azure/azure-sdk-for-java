@@ -6,4 +6,4 @@
  * Azure App Configuration REST API.
  * <!-- end generated doc -->
  */
-package com.azure.v2.data.appconfiguration.models;
+package com.azure.v2.data.appconfiguration.implementation.models;
