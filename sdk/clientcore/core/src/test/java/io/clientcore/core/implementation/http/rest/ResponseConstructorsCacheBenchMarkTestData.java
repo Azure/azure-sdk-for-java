@@ -8,12 +8,12 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.util.UriBuilder;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.implementation.util.JsonSerializer;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.utils.UriBuilder;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.ObjectSerializer;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -72,7 +72,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
     }
 
     private static final ObjectSerializer SERIALIZER = new JsonSerializer();
-    private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUri());
+    private static final HttpRequest HTTP_REQUEST = new HttpRequest().setMethod(HttpMethod.GET).setUri(createUri());
     private static final HttpHeaderName HELLO = HttpHeaderName.fromString("hello");
     private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set(HELLO, "world");
     private static final int RESPONSE_STATUS_CODE = 200;

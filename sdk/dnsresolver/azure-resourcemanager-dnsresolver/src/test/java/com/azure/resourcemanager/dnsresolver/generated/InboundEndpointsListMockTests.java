@@ -23,7 +23,7 @@ public final class InboundEndpointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"etag\":\"vvcnayr\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"nxxmueedndrdv\"},\"privateIpAddress\":\"kwqqtchealmf\",\"privateIpAllocationMethod\":\"Static\"},{\"subnet\":{\"id\":\"aygdvwvgpioh\"},\"privateIpAddress\":\"xrtfudxep\",\"privateIpAllocationMethod\":\"Static\"},{\"subnet\":{\"id\":\"agvrvmnpkuk\"},\"privateIpAddress\":\"i\",\"privateIpAllocationMethod\":\"Static\"}],\"provisioningState\":\"Updating\",\"resourceGuid\":\"wi\"},\"location\":\"njhf\",\"tags\":{\"rey\":\"mszkkfo\",\"elpcirelsfeaenwa\":\"kzikfjawneaivxwc\"},\"id\":\"fatkld\",\"name\":\"xbjhwuaanozjosph\",\"type\":\"oulpjrv\"}]}";
+            = "{\"value\":[{\"etag\":\"tpvjzbexilzznfqq\",\"properties\":{\"ipConfigurations\":[{\"subnet\":{\"id\":\"pmqtaru\"},\"privateIpAddress\":\"jmkcjhwqytj\",\"privateIpAllocationMethod\":\"Static\"}],\"provisioningState\":\"Succeeded\",\"resourceGuid\":\"ewgdrjervn\"},\"location\":\"nqpeh\",\"tags\":{\"nzdndslgna\":\"oygmift\"},\"id\":\"qig\",\"name\":\"nduhavhqlkthum\",\"type\":\"qolbgyc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,14 +32,13 @@ public final class InboundEndpointsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<InboundEndpoint> response
-            = manager.inboundEndpoints().list("melwuipiccjz", "z", 154268521, com.azure.core.util.Context.NONE);
+        PagedIterable<InboundEndpoint> response = manager.inboundEndpoints()
+            .list("sqfsubcgjbirxb", "ybsrfbjfdtwss", 22179172, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("njhf", response.iterator().next().location());
-        Assertions.assertEquals("mszkkfo", response.iterator().next().tags().get("rey"));
-        Assertions.assertEquals("nxxmueedndrdv", response.iterator().next().ipConfigurations().get(0).subnet().id());
-        Assertions.assertEquals("kwqqtchealmf",
-            response.iterator().next().ipConfigurations().get(0).privateIpAddress());
+        Assertions.assertEquals("nqpeh", response.iterator().next().location());
+        Assertions.assertEquals("oygmift", response.iterator().next().tags().get("nzdndslgna"));
+        Assertions.assertEquals("pmqtaru", response.iterator().next().ipConfigurations().get(0).subnet().id());
+        Assertions.assertEquals("jmkcjhwqytj", response.iterator().next().ipConfigurations().get(0).privateIpAddress());
         Assertions.assertEquals(IpAllocationMethod.STATIC,
             response.iterator().next().ipConfigurations().get(0).privateIpAllocationMethod());
     }

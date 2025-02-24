@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2025-02-21)
 
 ### Features Added
 
@@ -13,8 +13,14 @@
 
 ### Bugs Fixed
 
+- Fixes issue where text spanning more than a single WebSocketFrame are ignored. [#44130](https://github.com/Azure/azure-sdk-for-java/pull/44130)
+
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+- Upgraded `netty-codec-http` from `4.1.115.Final` to version `4.1.118.Final`.
 
 ## 1.0.9 (2024-12-04)
 

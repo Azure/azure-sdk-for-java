@@ -23,7 +23,7 @@ import java.util.Map;
 @Fluent
 public final class ScheduledAlertRule extends AlertRuleInner {
     /*
-     * The kind of the alert rule
+     * The alert rule kind
      */
     private AlertRuleKind kind = AlertRuleKind.SCHEDULED;
 
@@ -59,7 +59,7 @@ public final class ScheduledAlertRule extends AlertRuleInner {
     }
 
     /**
-     * Get the kind property: The kind of the alert rule.
+     * Get the kind property: The alert rule kind.
      * 
      * @return the kind value.
      */

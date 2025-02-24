@@ -38,6 +38,7 @@ import com.azure.storage.file.share.implementation.models.SourceLeaseAccessCondi
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
@@ -47,6 +48,7 @@ import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileItem;
+import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
@@ -342,26 +344,23 @@ public class ShareDirectoryClient {
         Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         ShareDirectoryCreateOptions finalOptions = options == null ? new ShareDirectoryCreateOptions() : options;
-        FileSmbProperties properties
+
+        FileSmbProperties smbProperties
             = finalOptions.getSmbProperties() == null ? new FileSmbProperties() : finalOptions.getSmbProperties();
+        FilePosixProperties fileposixProperties
+            = finalOptions.getPosixProperties() == null ? new FilePosixProperties() : finalOptions.getPosixProperties();
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(finalOptions.getFilePermission(), properties.getFilePermissionKey());
-
-        // If file permission and file permission key are both not set then set default value
-        String finalFilePermission
-            = properties.setFilePermission(finalOptions.getFilePermission(), FileConstants.FILE_PERMISSION_INHERIT);
-        String filePermissionKey = properties.getFilePermissionKey();
-
-        String fileAttributes = properties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
-        String fileCreationTime = properties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
-        String fileLastWriteTime = properties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
-        String fileChangeTime = properties.getFileChangeTimeString();
+        ModelHelper.validateFilePermissionAndKey(finalOptions.getFilePermission(),
+            smbProperties.getFilePermissionKey());
 
         Callable<ResponseBase<DirectoriesCreateHeaders, Void>> operation = () -> azureFileStorageClient.getDirectories()
-            .createWithResponse(shareName, directoryPath, fileAttributes, null, finalOptions.getMetadata(),
-                finalFilePermission, finalOptions.getFilePermissionFormat(), filePermissionKey, fileCreationTime,
-                fileLastWriteTime, fileChangeTime, finalContext);
+            .createWithResponse(shareName, directoryPath, null, finalOptions.getMetadata(),
+                finalOptions.getFilePermission(), finalOptions.getFilePermissionFormat(),
+                smbProperties.getFilePermissionKey(), smbProperties.getNtfsFileAttributesString(),
+                smbProperties.getFileCreationTimeString(), smbProperties.getFileLastWriteTimeString(),
+                smbProperties.getFileChangeTimeString(), fileposixProperties.getOwner(), fileposixProperties.getGroup(),
+                fileposixProperties.getFileMode(), finalContext);
 
         return ModelHelper.mapShareDirectoryInfo(sendRequest(operation, timeout, ShareStorageException.class));
     }
@@ -690,26 +689,8 @@ public class ShareDirectoryClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareDirectoryInfo> setPropertiesWithResponse(FileSmbProperties smbProperties,
         String filePermission, Duration timeout, Context context) {
-        Context finalContext = context == null ? Context.NONE : context;
-        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
-
-        // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
-
-        // If file permission and file permission key are both not set then set default value
-        String finalFilePermission = smbProperties.setFilePermission(filePermission, FileConstants.PRESERVE);
-        String filePermissionKey = smbProperties.getFilePermissionKey();
-
-        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
-        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
-        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
-        String fileChangeTime = smbProperties.getFileChangeTimeString();
-        Callable<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> operation
-            = () -> this.azureFileStorageClient.getDirectories()
-                .setPropertiesWithResponse(shareName, directoryPath, fileAttributes, null, finalFilePermission, null,
-                    filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, finalContext);
-
-        return ModelHelper.mapSetPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
+        return setPropertiesWithResponse(new ShareDirectorySetPropertiesOptions().setSmbProperties(smbProperties)
+            .setFilePermissions(new ShareFilePermission().setPermission(filePermission)), timeout, context);
     }
 
     /**
@@ -744,27 +725,27 @@ public class ShareDirectoryClient {
     public Response<ShareDirectoryInfo> setPropertiesWithResponse(ShareDirectorySetPropertiesOptions options,
         Duration timeout, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
-        FileSmbProperties smbProperties = options.getSmbProperties();
-        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+        ShareDirectorySetPropertiesOptions finalOptions
+            = options == null ? new ShareDirectorySetPropertiesOptions() : options;
+
+        FileSmbProperties smbProperties
+            = finalOptions.getSmbProperties() == null ? new FileSmbProperties() : finalOptions.getSmbProperties();
+        FilePosixProperties fileposixProperties
+            = finalOptions.getPosixProperties() == null ? new FilePosixProperties() : finalOptions.getPosixProperties();
+        ShareFilePermission filePermission
+            = finalOptions.getFilePermissions() == null ? new ShareFilePermission() : finalOptions.getFilePermissions();
 
         // Checks that file permission and file permission key are valid
-        ModelHelper.validateFilePermissionAndKey(options.getFilePermissions().getPermission(),
-            smbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission.getPermission(), smbProperties.getFilePermissionKey());
 
-        // If file permission and file permission key are both not set then set default value
-        String finalFilePermission
-            = smbProperties.setFilePermission(options.getFilePermissions().getPermission(), FileConstants.PRESERVE);
-        String filePermissionKey = smbProperties.getFilePermissionKey();
-
-        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.PRESERVE);
-        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.PRESERVE);
-        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.PRESERVE);
-        String fileChangeTime = smbProperties.getFileChangeTimeString();
         Callable<ResponseBase<DirectoriesSetPropertiesHeaders, Void>> operation
             = () -> this.azureFileStorageClient.getDirectories()
-                .setPropertiesWithResponse(shareName, directoryPath, fileAttributes, null, finalFilePermission,
-                    options.getFilePermissions().getPermissionFormat(), filePermissionKey, fileCreationTime,
-                    fileLastWriteTime, fileChangeTime, finalContext);
+                .setPropertiesWithResponse(shareName, directoryPath, null, filePermission.getPermission(),
+                    filePermission.getPermissionFormat(), smbProperties.getFilePermissionKey(),
+                    smbProperties.getNtfsFileAttributesString(), smbProperties.getFileCreationTimeString(),
+                    smbProperties.getFileLastWriteTimeString(), smbProperties.getFileChangeTimeString(),
+                    fileposixProperties.getOwner(), fileposixProperties.getGroup(), fileposixProperties.getFileMode(),
+                    finalContext);
 
         return ModelHelper.mapSetPropertiesResponse(sendRequest(operation, timeout, ShareStorageException.class));
     }

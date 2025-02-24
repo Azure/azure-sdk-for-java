@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-eventhubs</artifactId>
-  <version>5.20.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+  <version>5.21.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
 
   <name>Microsoft Azure client library for Event Hubs</name>
   <description>Libraries built on Microsoft Azure Event Hubs</description>
@@ -48,25 +48,25 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.55.2</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-amqp</artifactId>
-      <version>2.9.12</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
+      <version>2.9.15</version> <!-- {x-version-update;com.azure:azure-core-amqp;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.14.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.15.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.7</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -94,35 +94,35 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.52</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.55</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.46.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <version>1.46.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-exporter-logging</artifactId>
-      <version>1.43.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
+      <version>1.46.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-exporter-logging;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-experimental</artifactId>
-      <version>1.0.0-beta.56</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
+      <version>1.0.0-beta.59</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

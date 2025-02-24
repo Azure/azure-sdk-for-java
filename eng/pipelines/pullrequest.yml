@@ -1,0 +1,86 @@
+pr:
+  branches:
+    include:
+    - main
+    - feature/*
+    - hotfix/*
+    - release/*
+    - restapi*
+    - pipelinev3*
+  paths:
+    include:
+    - "*"
+    # Note: The ExcludePaths template below needs to duplicate
+    # any excludes here. The reason being is that we can't access
+    # pr->paths->exclude. These are paths only, not individual files
+    exclude:
+    - sdk/batch/microsoft-azure-batch/ # track 1
+    - sdk/boms/ # pom only release pipeline
+    - sdk/cosmos/ # emulator tests
+    - sdk/e2e/ # no pipeline, nothing to build
+    - sdk/cognitiveservices/ms-azure-cs-autosuggest/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-computervision/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-contentmoderator/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customimagesearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customsearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customvision-training/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-entitysearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-faceapi/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-imagesearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-luis-authoring/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-luis-runtime/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-newssearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-qnamaker/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-spellcheck/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-videosearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-visualsearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-websearch/ # track 1
+    - sdk/eventhubs/microsoft-azure-eventhubs/ # track 1
+    - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
+    - sdk/mediaservices/microsoft-azure-media/ # track 1
+    - sdk/servicebus/microsoft-azure-servicebus/ # track 1
+    - sdk/spring/
+
+parameters:
+  - name: Service
+    type: string
+    default: auto
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: ${{ parameters.Service }}
+    # This is Necessary since FromSource runs hover around 60,
+    # which is the default, and intermittently time out.
+    TimeoutInMinutes: 90
+    # See pr->paths->exclude comment above. Anything added/removed there
+    # needs to be added/removed here.
+    ExcludePaths:
+    - sdk/batch/microsoft-azure-batch/ # track 1
+    - sdk/boms/ # pom only release pipeline
+    - sdk/cosmos/ # emulator tests
+    - sdk/e2e/ # no pipeline, nothing to build
+    - sdk/cognitiveservices/ms-azure-cs-autosuggest/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-computervision/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-contentmoderator/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customimagesearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customsearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customvision-prediction/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-customvision-training/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-entitysearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-faceapi/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-imagesearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-luis-authoring/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-luis-runtime/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-newssearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-qnamaker/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-spellcheck/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-videosearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-visualsearch/ # track 1
+    - sdk/cognitiveservices/ms-azure-cs-websearch/ # track 1
+    - sdk/eventhubs/microsoft-azure-eventhubs/ # track 1
+    - sdk/eventhubs/microsoft-azure-eventhubs-eph/ # track 1
+    - sdk/mediaservices/microsoft-azure-media/ # track 1
+    - sdk/servicebus/microsoft-azure-servicebus/ # track 1
+    - sdk/spring/

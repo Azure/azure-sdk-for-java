@@ -101,6 +101,31 @@
     {
       "type": "Microsoft.EventHub/namespaces/eventhubs",
       "apiVersion": "2022-01-01-preview",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/connnection-string-auth')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {
+        "messageRetentionInDays": 1,
+        "partitionCount": 1,
+        "status": "Active"
+      }
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs/consumergroups",
+      "apiVersion": "2022-01-01-preview",
+      "name": "[concat(variables('eventHubsNamespaceName'), '/connnection-string-auth/$Default')]",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.EventHub/namespaces/eventhubs', variables('eventHubsNamespaceName'), 'connnection-string-auth')]",
+        "[resourceId('Microsoft.EventHub/namespaces', variables('eventHubsNamespaceName'))]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.EventHub/namespaces/eventhubs",
+      "apiVersion": "2022-01-01-preview",
       "name": "[concat(variables('eventHubsNamespaceName'), '/errorhandler-in-0')]",
       "location": "[variables('location')]",
       "dependsOn": [
@@ -465,6 +490,10 @@
     "AZURE_EVENTHUB_NAME_FOR_BINDER_SYNC": {
       "type": "string",
       "value": "test-eventhub-sync"
+    },
+    "AZURE_EVENT_HUBS_CONNECTION_STRING": {
+      "type": "string",
+      "value": "[listKeys(resourceId('Microsoft.EventHub/namespaces/authorizationRules', variables('eventHubsNamespaceName'), 'RootManageSharedAccessKey'), '2017-04-01').primaryConnectionString]"
     }
   }
 }

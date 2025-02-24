@@ -25,11 +25,6 @@ public final class DirectLineChannel extends Channel {
      */
     private DirectLineChannelProperties properties;
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of DirectLineChannel class.
      */
@@ -64,16 +59,6 @@ public final class DirectLineChannel extends Channel {
     public DirectLineChannel withProperties(DirectLineChannelProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -137,7 +122,7 @@ public final class DirectLineChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedDirectLineChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedDirectLineChannel.provisioningState = reader.getString();
+                    deserializedDirectLineChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedDirectLineChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

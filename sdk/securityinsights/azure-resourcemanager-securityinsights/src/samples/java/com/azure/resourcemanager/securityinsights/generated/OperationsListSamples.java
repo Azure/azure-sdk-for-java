@@ -10,8 +10,8 @@ package com.azure.resourcemanager.securityinsights.generated;
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
-     * operations/ListOperations.json
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/operations/
+     * ListOperations.json
      */
     /**
      * Sample code: Get all operations.

@@ -33,12 +33,11 @@ public interface GroupQuotasEntity {
     String type();
 
     /**
-     * Gets the properties property: Properties and filters for ShareQuota. The request parameter is optional, if there
-     * are no filters specified.
+     * Gets the properties property: Properties.
      * 
      * @return the properties value.
      */
-    GroupQuotasEntityBase properties();
+    GroupQuotasEntityProperties properties();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.

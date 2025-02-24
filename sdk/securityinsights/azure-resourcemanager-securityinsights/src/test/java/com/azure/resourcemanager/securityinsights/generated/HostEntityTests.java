@@ -13,15 +13,15 @@ public final class HostEntityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HostEntity model = BinaryData.fromString(
-            "{\"kind\":\"Host\",\"properties\":{\"azureID\":\"tbwjjirmuydgftt\",\"dnsDomain\":\"ofgeoagf\",\"hostName\":\"ftnxodwxmdajwiy\",\"isDomainJoined\":false,\"netBiosName\":\"evmdm\",\"ntDomain\":\"nlrstgf\",\"omsAgentID\":\"ljdncidtjvamy\",\"osFamily\":\"Unknown\",\"osVersion\":\"rg\",\"additionalData\":{\"oxuwhttnzqsaqm\":\"datagcvucgy\",\"dzzmssgpgv\":\"databgszplusdek\",\"squnycwztlv\":\"datakyejidbdq\",\"epwpwfk\":\"datawsnmrkkyjt\"},\"friendlyName\":\"uxuva\"},\"id\":\"pfpdof\",\"name\":\"ckcl\",\"type\":\"txluevs\"}")
+            "{\"kind\":\"Host\",\"properties\":{\"azureID\":\"dibgqjxgpnrhgov\",\"dnsDomain\":\"pikqmh\",\"hostName\":\"owjrmzvuporqz\",\"isDomainJoined\":false,\"netBiosName\":\"dzvkfvxcnqmxq\",\"ntDomain\":\"wokmvkhlggd\",\"omsAgentID\":\"em\",\"osFamily\":\"IOS\",\"osVersion\":\"sz\",\"additionalData\":{\"ljfp\":\"datawtglxx\",\"pqcbfrmbodthsq\":\"datapicrmnzhrgmqgjsx\",\"fr\":\"datagvriibakclac\",\"vsg\":\"dataxousxauzl\"},\"friendlyName\":\"ohqfzizv\"},\"id\":\"mmkjsvthnwpztek\",\"name\":\"vmribiat\",\"type\":\"gplucfotangcfhny\"}")
             .toObject(HostEntity.class);
-        Assertions.assertEquals(OSFamily.UNKNOWN, model.osFamily());
+        Assertions.assertEquals(OSFamily.IOS, model.osFamily());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HostEntity model = new HostEntity().withOsFamily(OSFamily.UNKNOWN);
+        HostEntity model = new HostEntity().withOsFamily(OSFamily.IOS);
         model = BinaryData.fromObject(model).toObject(HostEntity.class);
-        Assertions.assertEquals(OSFamily.UNKNOWN, model.osFamily());
+        Assertions.assertEquals(OSFamily.IOS, model.osFamily());
     }
 }

@@ -13,11 +13,17 @@ import java.util.List;
 @Fluent
 public interface HasHostname {
     /**
+     * Gets the associated host name, or the first one if there exists multiple host names.
+     *
      * @return the associated host name, or the first one if there exists multiple host names
      */
     String hostname();
 
-    /** @return the associated host names */
+    /**
+     * Gets the associated host names.
+     *
+     * @return the associated host names
+     */
     List<String> hostnames();
 
     /** Grouping of definition stages involving specifying the host name. */

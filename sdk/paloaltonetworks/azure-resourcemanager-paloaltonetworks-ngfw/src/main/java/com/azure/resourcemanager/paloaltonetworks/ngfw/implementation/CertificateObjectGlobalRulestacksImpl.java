@@ -30,13 +30,15 @@ public final class CertificateObjectGlobalRulestacksImpl implements CertificateO
     public PagedIterable<CertificateObjectGlobalRulestackResource> list(String globalRulestackName) {
         PagedIterable<CertificateObjectGlobalRulestackResourceInner> inner
             = this.serviceClient().list(globalRulestackName);
-        return Utils.mapPage(inner, inner1 -> new CertificateObjectGlobalRulestackResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CertificateObjectGlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CertificateObjectGlobalRulestackResource> list(String globalRulestackName, Context context) {
         PagedIterable<CertificateObjectGlobalRulestackResourceInner> inner
             = this.serviceClient().list(globalRulestackName, context);
-        return Utils.mapPage(inner, inner1 -> new CertificateObjectGlobalRulestackResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CertificateObjectGlobalRulestackResourceImpl(inner1, this.manager()));
     }
 
     public Response<CertificateObjectGlobalRulestackResource> getWithResponse(String globalRulestackName, String name,

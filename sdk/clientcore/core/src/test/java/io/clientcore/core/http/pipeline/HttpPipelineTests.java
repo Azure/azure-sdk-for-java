@@ -33,7 +33,7 @@ public class HttpPipelineTests {
     @Test
     public void withRequestPolicy() {
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
                 @Override
                 public Response<?> send(HttpRequest request) {
                     // do nothing
@@ -49,7 +49,7 @@ public class HttpPipelineTests {
     @Test
     public void withRequestOptions() {
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
+            = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(new NoOpHttpClient() {
                 @Override
                 public Response<?> send(HttpRequest request) {
                     // do nothing
@@ -74,7 +74,8 @@ public class HttpPipelineTests {
                 return new MockHttpResponse(request, 200);
             }
         }).build();
-        final Response<?> response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUri));
+        final Response<?> response
+            = httpPipeline.send(new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri));
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -94,7 +95,8 @@ public class HttpPipelineTests {
                 return new MockHttpResponse(request, 200);
             }
         }).build();
-        final Response<?> response = httpPipeline.send(new HttpRequest(expectedHttpMethod, expectedUri));
+        final Response<?> response
+            = httpPipeline.send(new HttpRequest().setMethod(expectedHttpMethod).setUri(expectedUri));
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());

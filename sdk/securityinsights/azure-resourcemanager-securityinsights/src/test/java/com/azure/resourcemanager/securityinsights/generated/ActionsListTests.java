@@ -14,27 +14,27 @@ public final class ActionsListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActionsList model = BinaryData.fromString(
-            "{\"nextLink\":\"jpsq\",\"value\":[{\"properties\":{\"workflowId\":\"o\",\"logicAppResourceId\":\"fdkfogk\"},\"etag\":\"gjofjd\",\"id\":\"qs\",\"name\":\"deupewnwrei\",\"type\":\"jzyflu\"},{\"properties\":{\"workflowId\":\"hmofc\",\"logicAppResourceId\":\"hs\"},\"etag\":\"urkdtmlx\",\"id\":\"kuksjtxukcdm\",\"name\":\"arcryuanzwuxzdxt\",\"type\":\"yrlhmwhfpmrqobm\"},{\"properties\":{\"workflowId\":\"knryrtihfxtij\",\"logicAppResourceId\":\"pzvgnwzsymglzufc\"},\"etag\":\"kohdbiha\",\"id\":\"fhfcb\",\"name\":\"y\",\"type\":\"a\"},{\"properties\":{\"workflowId\":\"hxqh\",\"logicAppResourceId\":\"bifpikxwczb\"},\"etag\":\"cnpqxuhivyqniwby\",\"id\":\"k\",\"name\":\"vd\",\"type\":\"mjgr\"}]}")
+            "{\"nextLink\":\"jpsq\",\"value\":[{\"etag\":\"poyfdkfogkn\",\"properties\":{\"workflowId\":\"ofjdde\",\"logicAppResourceId\":\"s\"},\"id\":\"eupewnwreitjz\",\"name\":\"flusarhmof\",\"type\":\"qhsmyurkdtml\"},{\"etag\":\"ekuksjtx\",\"properties\":{\"workflowId\":\"dmpa\",\"logicAppResourceId\":\"cryuan\"},\"id\":\"uxzdxtay\",\"name\":\"lhmwhfpmrqobm\",\"type\":\"u\"},{\"etag\":\"nryrtihf\",\"properties\":{\"workflowId\":\"jbpzvgnwzsymg\",\"logicAppResourceId\":\"zufcyzkohdbi\"},\"id\":\"nufhf\",\"name\":\"bj\",\"type\":\"s\"},{\"etag\":\"ithxqhabifpi\",\"properties\":{\"workflowId\":\"czbysc\",\"logicAppResourceId\":\"pqxu\"},\"id\":\"vyq\",\"name\":\"iwbybrkxvdumjg\",\"type\":\"tfwvukxgaudc\"}]}")
             .toObject(ActionsList.class);
-        Assertions.assertEquals("gjofjd", model.value().get(0).etag());
-        Assertions.assertEquals("o", model.value().get(0).workflowId());
-        Assertions.assertEquals("fdkfogk", model.value().get(0).logicAppResourceId());
+        Assertions.assertEquals("poyfdkfogkn", model.value().get(0).etag());
+        Assertions.assertEquals("ofjdde", model.value().get(0).workflowId());
+        Assertions.assertEquals("s", model.value().get(0).logicAppResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ActionsList model = new ActionsList().withValue(Arrays.asList(
-            new ActionResponseInner().withEtag("gjofjd").withWorkflowId("o").withLogicAppResourceId("fdkfogk"),
-            new ActionResponseInner().withEtag("urkdtmlx").withWorkflowId("hmofc").withLogicAppResourceId("hs"),
-            new ActionResponseInner().withEtag("kohdbiha")
-                .withWorkflowId("knryrtihfxtij")
-                .withLogicAppResourceId("pzvgnwzsymglzufc"),
-            new ActionResponseInner().withEtag("cnpqxuhivyqniwby")
-                .withWorkflowId("hxqh")
-                .withLogicAppResourceId("bifpikxwczb")));
+            new ActionResponseInner().withEtag("poyfdkfogkn").withWorkflowId("ofjdde").withLogicAppResourceId("s"),
+            new ActionResponseInner().withEtag("ekuksjtx").withWorkflowId("dmpa").withLogicAppResourceId("cryuan"),
+            new ActionResponseInner().withEtag("nryrtihf")
+                .withWorkflowId("jbpzvgnwzsymg")
+                .withLogicAppResourceId("zufcyzkohdbi"),
+            new ActionResponseInner().withEtag("ithxqhabifpi")
+                .withWorkflowId("czbysc")
+                .withLogicAppResourceId("pqxu")));
         model = BinaryData.fromObject(model).toObject(ActionsList.class);
-        Assertions.assertEquals("gjofjd", model.value().get(0).etag());
-        Assertions.assertEquals("o", model.value().get(0).workflowId());
-        Assertions.assertEquals("fdkfogk", model.value().get(0).logicAppResourceId());
+        Assertions.assertEquals("poyfdkfogkn", model.value().get(0).etag());
+        Assertions.assertEquals("ofjdde", model.value().get(0).workflowId());
+        Assertions.assertEquals("s", model.value().get(0).logicAppResourceId());
     }
 }

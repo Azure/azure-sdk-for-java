@@ -5,7 +5,7 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpPipelineCallState;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -50,13 +50,13 @@ public class HttpPipelineNextPolicy {
     }
 
     /**
-     * Creates a new instance of this instance.
+     * Copies the current state of the {@link HttpPipelineNextPolicy}.
+     * <p>
+     * This method must be used when a re-request is made in the pipeline.
      *
      * @return A new instance of this next pipeline policy.
      */
-    @SuppressWarnings("MethodDoesntCallSuperMethod")
-    @Override
-    public HttpPipelineNextPolicy clone() {
-        return new HttpPipelineNextPolicy(this.state.clone());
+    public HttpPipelineNextPolicy copy() {
+        return new HttpPipelineNextPolicy(this.state.copy());
     }
 }
