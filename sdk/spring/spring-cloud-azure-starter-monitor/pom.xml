@@ -19,7 +19,6 @@
     <maven.compiler.target>17</maven.compiler.target>
     <jacoco.skip>true</jacoco.skip> <!-- Most of the tests are done in the spring-cloud-azure-starter-monitor-test module. -->
     <spotless.skip>true</spotless.skip>
-    <javadoc.skip>true</javadoc.skip> <!-- No Java API exposed. -->
   </properties>
 
   <licenses>
