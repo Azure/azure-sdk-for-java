@@ -1,0 +1,13 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.annotation
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.migration.azure.core.annotation
+displayName: Migrate from azure.core.annotation to next generation stack
+description: This recipe migrates the Azure Storage Core library to the next generation stack.
+recipeList:
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.annotation.BodyParam
+      newFullyQualifiedTypeName: io.clientcore.core.annotation.BodyParam
