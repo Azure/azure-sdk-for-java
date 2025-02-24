@@ -32,7 +32,7 @@ public class CreateUpdateAndStartALoadTestRun {
         TestRun response = loadTestRunClient.createOrUpdateTestRun("12316678-1234-1234-1234-122451189012", new TestRun()
             .setPassFailCriteria(new PassFailCriteria()
                 .setPassFailMetrics(mapOf("fefd759d-7fe8-4f83-8b6d-aeebe0f491fe",
-                    new PassFailMetric().setClientMetric(PFMetrics.RESPONSE_TIME_MS)
+                    new PassFailMetric().setClientMetric(PFMetrics.RESPONSE_TIME_IN_MILLISECONDS)
                         .setAggregate(PassFailAggregationFunction.PERCENTAGE)
                         .setCondition(">")
                         .setValue(20.0D)

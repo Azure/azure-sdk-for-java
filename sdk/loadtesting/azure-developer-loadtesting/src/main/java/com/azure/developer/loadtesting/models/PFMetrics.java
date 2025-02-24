@@ -13,12 +13,6 @@ import java.util.Collection;
 public final class PFMetrics extends ExpandableStringEnum<PFMetrics> {
 
     /**
-     * Pass fail criteria for response time metric in milliseconds.
-     */
-    @Generated
-    public static final PFMetrics RESPONSE_TIME_MS = fromString("response_time_ms");
-
-    /**
      * Pass fail criteria for latency metric in milliseconds.
      */
     @Generated
@@ -35,12 +29,6 @@ public final class PFMetrics extends ExpandableStringEnum<PFMetrics> {
      */
     @Generated
     public static final PFMetrics REQUESTS = fromString("requests");
-
-    /**
-     * Pass fail criteria for request per second.
-     */
-    @Generated
-    public static final PFMetrics REQUESTS_PER_SEC = fromString("requests_per_sec");
 
     /**
      * Creates a new instance of PFMetrics value.
@@ -72,4 +60,16 @@ public final class PFMetrics extends ExpandableStringEnum<PFMetrics> {
     public static Collection<PFMetrics> values() {
         return values(PFMetrics.class);
     }
+
+    /**
+     * Pass fail criteria for response time metric in milliseconds.
+     */
+    @Generated
+    public static final PFMetrics RESPONSE_TIME_IN_MILLISECONDS = fromString("response_time_ms");
+
+    /**
+     * Pass fail criteria for request per second.
+     */
+    @Generated
+    public static final PFMetrics REQUESTS_PER_SECOND = fromString("requests_per_sec");
 }

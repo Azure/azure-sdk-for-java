@@ -37,7 +37,7 @@ public class CreateOrUpdateALoadTest {
                     .setPassFailMetrics(mapOf(
                         "fefd759d-7fe8-4f83-8b6d-aeebe0f491fe",
                         new PassFailMetric()
-                            .setClientMetric(PFMetrics.RESPONSE_TIME_MS)
+                            .setClientMetric(PFMetrics.RESPONSE_TIME_IN_MILLISECONDS)
                             .setAggregate(PassFailAggregationFunction.PERCENTAGE)
                             .setCondition(">")
                             .setValue(20.0D)
