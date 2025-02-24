@@ -19,7 +19,7 @@ import java.util.List;
 public final class TestRunInputArtifacts implements JsonSerializable<TestRunInputArtifacts> {
 
     /*
-     * File info
+     * The load test YAML file that contains the the test configuration
      */
     @Generated
     private TestRunFileInfo configFileInfo;
@@ -62,7 +62,7 @@ public final class TestRunInputArtifacts implements JsonSerializable<TestRunInpu
     }
 
     /**
-     * Get the configFileInfo property: File info.
+     * Get the configFileInfo property: The load test YAML file that contains the the test configuration.
      *
      * @return the configFileInfo value.
      */
