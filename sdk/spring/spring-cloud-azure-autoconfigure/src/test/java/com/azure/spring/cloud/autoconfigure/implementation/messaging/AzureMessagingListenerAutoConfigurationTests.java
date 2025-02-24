@@ -70,9 +70,9 @@ public class AzureMessagingListenerAutoConfigurationTests {
                 assertThat(context).hasBean("azureEventHubsListenerContainerFactory");
                 assertThat(context).hasBean("azureServiceBusListenerContainerFactory");
 
-                EventHubsMessageConverter eventHubsmessageConverter = context.getBean(EventHubsMessageConverter.class);
+                EventHubsMessageConverter eventHubsMessageConverter = context.getBean(EventHubsMessageConverter.class);
                 EventHubsMessageListenerContainerFactory eventHubsContainerFactory = (EventHubsMessageListenerContainerFactory) context.getBean("azureEventHubsListenerContainerFactory");
-                assertSame(eventHubsmessageConverter, eventHubsContainerFactory.getMessageConverter());
+                assertSame(eventHubsMessageConverter, eventHubsContainerFactory.getMessageConverter());
 
                 ServiceBusMessageConverter messageConverter = context.getBean(ServiceBusMessageConverter.class);
                 ServiceBusMessageListenerContainerFactory serviceBusContainerFactory = (ServiceBusMessageListenerContainerFactory) context.getBean("azureServiceBusListenerContainerFactory");
