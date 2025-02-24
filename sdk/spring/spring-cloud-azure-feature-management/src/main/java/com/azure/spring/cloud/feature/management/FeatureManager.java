@@ -191,10 +191,6 @@ public class FeatureManager {
 
         if (!featureFlag.isEnabled()) {
             this.assignDefaultDisabledReason(event);
-            if (featureFlag.getAllocation() != null) {
-                String variantName = featureFlag.getAllocation().getDefaultWhenDisabled();
-                event.setVariant(this.variantNameToVariant(featureFlag, variantName));
-            }
 
             // If a feature flag is disabled and override can't enable it
             return Mono.just(event.setEnabled(false));
@@ -218,8 +214,6 @@ public class FeatureManager {
 
             if (!event.isEnabled()) {
                 this.assignDefaultDisabledReason(event);
-                event.setVariant(
-                    this.variantNameToVariant(featureFlag, featureFlag.getAllocation().getDefaultWhenDisabled()));
                 return event;
             }
             this.assignVariant(event);
@@ -228,12 +222,18 @@ public class FeatureManager {
     }
 
     private void assignDefaultDisabledReason(EvaluationEvent event) {
+        Feature featureFlag = event.getFeature();
         event.setReason(VariantAssignmentReason.DEFAULT_WHEN_DISABLED);
         if (event.getFeature().getAllocation() == null) {
             return;
         }
         this.assignVariantOverride(event.getFeature().getVariants(),
             event.getFeature().getAllocation().getDefaultWhenDisabled(), false, event);
+
+        if (featureFlag.getAllocation() != null) {
+            String variantName = featureFlag.getAllocation().getDefaultWhenDisabled();
+            event.setVariant(this.variantNameToVariant(featureFlag, variantName));
+        }
     }
 
     private void assignDefaultEnabledVariant(EvaluationEvent event) {
