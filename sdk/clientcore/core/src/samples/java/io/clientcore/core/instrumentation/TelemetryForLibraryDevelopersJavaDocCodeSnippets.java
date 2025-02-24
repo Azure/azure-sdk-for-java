@@ -5,9 +5,9 @@ package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
+import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
@@ -240,26 +240,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
         final OperationInstrumentation operationInstrumentation = instrumentation.createOperationInstrumentation(downloadDetails);
 
-        if (!operationInstrumentation.shouldInstrument(requestOptions)) {
-            clientCall(requestOptions);
-            return;
-        }
-
-        if (requestOptions == null || requestOptions == RequestOptions.none()) {
-            requestOptions = new RequestOptions();
-        }
-
-        OperationInstrumentation.Scope scope = operationInstrumentation.startScope(requestOptions);
-
-        try {
-            clientCall(requestOptions);
-        } catch (Throwable t) {
-            // make sure to report any exceptions including unchecked ones.
-            scope.setError(getCause(t));
-            throw t;
-        } finally {
-            scope.close();
-        }
+        operationInstrumentation.instrument((updatedOptions, __) -> clientCall(updatedOptions), requestOptions);
 
         // END: io.clientcore.core.instrumentation.operation
     }
@@ -275,37 +256,19 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails("downloadContent", durationMetricName)
             .endpoint(serviceEndpoint);
 
-        RequestOptions requestOptions = null;
-
         final OperationInstrumentation operationInstrumentation = instrumentation.createOperationInstrumentation(downloadDetails);
 
-        if (!operationInstrumentation.shouldInstrument(requestOptions)) {
-            clientCall(requestOptions);
-            return;
-        }
-
-        if (requestOptions == null || requestOptions == RequestOptions.none()) {
-            requestOptions = new RequestOptions();
-        }
-
         // BEGIN: io.clientcore.core.instrumentation.enrich
-        OperationInstrumentation.Scope scope = operationInstrumentation.startScope(requestOptions);
-        Span span = scope.getInstrumentationContext().getSpan();
-        if (span.isRecording()) {
-            span.setAttribute("sample.content.id", "{content-id}");
-        }
+        operationInstrumentation.instrument((updatedOptions, instrumentationContext) -> {
+            Span span = instrumentationContext.getSpan();
+            if (span.isRecording()) {
+                span.setAttribute("sample.content.id", "{content-id}");
+            }
+
+            return clientCall(updatedOptions);
+        }, null);
 
         // END: io.clientcore.core.instrumentation.enrich
-
-        try {
-            clientCall(requestOptions);
-        } catch (Throwable t) {
-            // make sure to report any exceptions including unchecked ones.
-            scope.setError(getCause(t));
-            throw t;
-        } finally {
-            scope.close();
-        }
     }
 
     private Throwable getCause(Throwable t) {
@@ -409,7 +372,6 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
             .addPolicy(enrichingPolicy)
             .build();
 
-
         // END:  io.clientcore.core.instrumentation.enrichhttpspans
     }
 
@@ -417,7 +379,8 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     private void performOperation() {
     }
 
-    private void clientCall(RequestOptions options) {
+    private Response<?> clientCall(RequestOptions options) {
+        return null;
     }
 
     private void sendBatch(List<?> messages) {

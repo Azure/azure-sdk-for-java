@@ -423,42 +423,14 @@ public class SuppressionTests {
         }
 
         @SuppressWarnings("try")
-        public void protocolMethod(RequestOptions options) throws IOException {
-            if (!protocolInstrumentation.shouldInstrument(options)) {
-                Response<?> response
-                    = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"));
-                response.close();
-                return;
-            }
-
-            OperationInstrumentation.Scope scope = protocolInstrumentation.startScope(options);
-            try {
-                Response<?> response
-                    = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"));
-                response.close();
-            } catch (IOException e) {
-                scope.setError(e);
-                throw e;
-            } finally {
-                scope.close();
-            }
+        public Response<?> protocolMethod(RequestOptions options) {
+            return protocolInstrumentation.instrument(
+                (updatedOptions, __) -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost").setRequestOptions(updatedOptions)), options);
         }
 
         @SuppressWarnings("try")
-        public void convenienceMethod(RequestOptions options) throws IOException {
-            if (!convenienceInstrumentation.shouldInstrument(options)) {
-                protocolMethod(options);
-            }
-
-            OperationInstrumentation.Scope scope = convenienceInstrumentation.startScope(options);
-            try {
-                protocolMethod(options);
-            } catch (IOException e) {
-                scope.setError(e);
-                throw e;
-            } finally {
-                scope.close();
-            }
+        public Response<?> convenienceMethod(RequestOptions options) throws IOException {
+            return convenienceInstrumentation.instrument((updatedOptions, __) -> protocolMethod(updatedOptions), options);
         }
     }
 }

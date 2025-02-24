@@ -15,13 +15,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Codesnippets for {@link BinaryData}.
@@ -72,30 +69,6 @@ public class BinaryDataJavaDocCodeSnippet {
         BinaryData binaryData = BinaryData.fromBytes(data);
         System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
         // END: io.clientcore.core.util.BinaryData.fromBytes#byte
-    }
-
-    /**
-     * Codesnippets for {@link BinaryData#fromByteBuffer(ByteBuffer)}.
-     */
-    public void fromByteBuffer() {
-        // BEGIN: io.clientcore.core.util.BinaryData.fromByteBuffer#ByteBuffer
-        final ByteBuffer data = ByteBuffer.wrap("Some Data".getBytes(StandardCharsets.UTF_8));
-        BinaryData binaryData = BinaryData.fromByteBuffer(data);
-        System.out.println(binaryData);
-        // END: io.clientcore.core.util.BinaryData.fromByteBuffer#ByteBuffer
-    }
-
-    /**
-     * Codesnippets for {@link BinaryData#fromListByteBuffer(List)}.
-     */
-    public void fromListByteBuffer() {
-        // BEGIN: io.clientcore.core.util.BinaryData.fromListByteBuffer#List
-        final List<ByteBuffer> data = Stream.of("Some ", "data")
-            .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
-            .collect(Collectors.toList());
-        BinaryData binaryData = BinaryData.fromListByteBuffer(data);
-        System.out.println(binaryData);
-        // END: io.clientcore.core.util.BinaryData.fromListByteBuffer#List
     }
 
     /**

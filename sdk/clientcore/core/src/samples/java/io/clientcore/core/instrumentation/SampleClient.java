@@ -40,51 +40,18 @@ class SampleClient {
     }
 
     public Response<?> downloadContent(RequestOptions options) {
-        // BEGIN: io.clientcore.core.telemetry.instrumentation.shouldinstrument
-        if (!downloadContentInstrumentation.shouldInstrument(options)) {
-            return downloadImpl(options);
-        }
-        // END: io.clientcore.core.telemetry.instrumentation.shouldinstrument
-
-        if (options == null || options == RequestOptions.none()) {
-            options = new RequestOptions();
-        }
-
-        // BEGIN: io.clientcore.core.telemetry.instrumentation.startscope
-        OperationInstrumentation.Scope scope = downloadContentInstrumentation.startScope(options);
-        try {
-            return downloadImpl(options);
-        } catch (RuntimeException t) {
-            scope.setError(t);
-            throw t;
-        } finally {
-            scope.close();
-        }
-
-        // END: io.clientcore.core.telemetry.instrumentation.startscope
+        return downloadContentInstrumentation.instrument((updatedOptions, instrumentationContext) -> downloadImpl(updatedOptions), options);
     }
 
     public Response<?> create(RequestOptions options) {
-        if (!createInstrumentation.shouldInstrument(options)) {
-            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint));
-        }
-
-        if (options == null || options == RequestOptions.none()) {
-            options = new RequestOptions();
-        }
-
-        OperationInstrumentation.Scope scope = createInstrumentation.startScope(options);
-        try {
-            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint));
-        } catch (RuntimeException t) {
-            scope.setError(t);
-            throw t;
-        } finally {
-            scope.close();
-        }
+        return createInstrumentation.instrument((updatedOptions, instrumentationContext) -> createImpl(updatedOptions), options);
     }
 
     private Response<?> downloadImpl(RequestOptions options) {
-        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint));
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint).setRequestOptions(options));
+    }
+
+    private Response<?> createImpl(RequestOptions options) {
+        return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.POST).setUri(endpoint).setRequestOptions(options));
     }
 }

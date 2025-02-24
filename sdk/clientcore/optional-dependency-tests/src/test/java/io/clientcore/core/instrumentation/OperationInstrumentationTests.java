@@ -31,11 +31,13 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.net.URI;
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -85,8 +87,6 @@ public class OperationInstrumentationTests {
 
         OperationInstrumentation instr
             = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("call", "test"));
-        assertThrows(NullPointerException.class, () -> instr.startScope(null));
-        assertThrows(IllegalStateException.class, () -> instr.startScope(RequestOptions.none()));
     }
 
     @ParameterizedTest
@@ -96,21 +96,21 @@ public class OperationInstrumentationTests {
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
             new InstrumentedOperationDetails("call", "test").spanKind(kind).endpoint(DEFAULT_ENDPOINT));
 
-        RequestOptions options = new RequestOptions();
-        OperationInstrumentation.Scope scope = call.startScope(options);
+        AtomicReference<Span> current = new AtomicReference<>();
+        call.instrument((options, __) -> {
+            current.set(Span.current());
+            assertTrue(current.get().getSpanContext().isValid());
+            assertEquals(current.get().getSpanContext().getTraceId(), options.getInstrumentationContext().getTraceId());
+            assertEquals(current.get().getSpanContext().getSpanId(), options.getInstrumentationContext().getSpanId());
+            return "done";
+        }, null);
 
-        Span current = Span.current();
-        assertTrue(current.getSpanContext().isValid());
-        assertEquals(current.getSpanContext().getTraceId(), scope.getInstrumentationContext().getTraceId());
-        assertEquals(current.getSpanContext().getSpanId(), scope.getInstrumentationContext().getSpanId());
-
-        scope.close();
         assertFalse(Span.current().getSpanContext().isValid());
         assertEquals(1, exporter.getFinishedSpanItems().size());
         assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", kind, "localhost", 443L, null);
 
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
-        assertDurationMetric(metrics, "test", "call", "localhost", 443L, null, current.getSpanContext());
+        assertDurationMetric(metrics, "test", "call", "localhost", 443L, null, current.get().getSpanContext());
     }
 
     @Test
@@ -119,12 +119,8 @@ public class OperationInstrumentationTests {
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
             new InstrumentedOperationDetails("call", "test").endpoint(DEFAULT_ENDPOINT));
 
-        RequestOptions options = new RequestOptions();
-
-        OperationInstrumentation.Scope scope = call.startScope(options);
         RuntimeException error = new RuntimeException("Test error");
-        scope.setError(error);
-        scope.close();
+        assertThrows(RuntimeException.class, () -> call.instrument((o, __) -> { throw error; }, new RequestOptions()));
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -140,9 +136,7 @@ public class OperationInstrumentationTests {
         OperationInstrumentation call
             = instrumentation.createOperationInstrumentation(new InstrumentedOperationDetails("call", "test"));
 
-        RequestOptions options = new RequestOptions();
-
-        call.startScope(options).close();
+        call.instrument((o, c) -> "done", RequestOptions.none());
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -159,9 +153,7 @@ public class OperationInstrumentationTests {
         OperationInstrumentation call = instrumentation
             .createOperationInstrumentation(new InstrumentedOperationDetails("Call", "test").endpoint(endpoint));
 
-        RequestOptions options = new RequestOptions();
-
-        call.startScope(options).close();
+        call.instrument((o, c) -> "done", new RequestOptions());
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -180,12 +172,11 @@ public class OperationInstrumentationTests {
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
             new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
 
+        call.instrument((o, c) -> {
+            assertFalse(Span.current().getSpanContext().isValid());
+            return "done";
+        }, new RequestOptions());
         RequestOptions options = new RequestOptions();
-
-        assertTrue(call.shouldInstrument(options));
-        OperationInstrumentation.Scope scope = call.startScope(options);
-        assertFalse(Span.current().getSpanContext().isValid());
-        scope.close();
 
         assertEquals(0, exporter.getFinishedSpanItems().size());
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
@@ -200,10 +191,7 @@ public class OperationInstrumentationTests {
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
             new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
 
-        RequestOptions options = new RequestOptions();
-        assertTrue(call.shouldInstrument(options));
-        OperationInstrumentation.Scope scope = call.startScope(options);
-        scope.close();
+        call.instrument((o, c) -> "done", new RequestOptions());
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         assertCallSpan(exporter.getFinishedSpanItems().get(0), "call", SpanKind.CLIENT, "localhost", 443L, null);
@@ -211,18 +199,14 @@ public class OperationInstrumentationTests {
     }
 
     @Test
-    public void tracingAmdMetricsDisabled() {
+    public void tracingAndMetricsDisabled() {
         otelOptions.setTracingEnabled(false);
         otelOptions.setMetricsEnabled(false);
         Instrumentation instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         OperationInstrumentation call = instrumentation.createOperationInstrumentation(
             new InstrumentedOperationDetails("call", "test.client.operation.duration").endpoint(DEFAULT_ENDPOINT));
 
-        RequestOptions options = new RequestOptions();
-        assertFalse(call.shouldInstrument(options));
-        OperationInstrumentation.Scope scope = call.startScope(options);
-        scope.close();
-
+        call.instrument((o, c) -> "done", new RequestOptions());
         assertEquals(0, exporter.getFinishedSpanItems().size());
         assertEquals(0, meterReader.collectAllMetrics().size());
     }
@@ -247,17 +231,20 @@ public class OperationInstrumentationTests {
 
         RequestOptions options = new RequestOptions();
 
-        OperationInstrumentation.Scope scope1 = call1.startScope(options);
-        assertSame(scope1.getInstrumentationContext(), options.getInstrumentationContext());
-        OperationInstrumentation.Scope scope2 = call2.startScope(options);
-        assertSame(scope2.getInstrumentationContext(), options.getInstrumentationContext());
-        OperationInstrumentation.Scope scope3 = call3.startScope(options);
-        assertFalse(scope3.getInstrumentationContext().isValid());
-        assertSame(scope2.getInstrumentationContext(), options.getInstrumentationContext());
+        call1.instrument((o1, ctx1) -> {
+            assertTrue(ctx1.isValid());
+            assertSame(ctx1, options.getInstrumentationContext());
+            return call2.instrument((o2, ctx2) -> {
+                assertTrue(ctx2.isValid());
+                assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
+                return call3.instrument((o3, ctx3) -> {
+                    assertFalse(ctx3.isValid());
+                    assertSame(o2.getInstrumentationContext(), options.getInstrumentationContext());
 
-        scope3.close();
-        scope2.close();
-        scope1.close();
+                    return "done";
+                }, o2);
+            }, o1);
+        }, options);
 
         assertEquals(2, exporter.getFinishedSpanItems().size());
         SpanData spanData2 = exporter.getFinishedSpanItems().get(0);
@@ -285,18 +272,23 @@ public class OperationInstrumentationTests {
 
         RequestOptions options1 = new RequestOptions();
 
-        OperationInstrumentation.Scope scope1 = call1.startScope(options1);
-        InstrumentationContext parent = scope1.getInstrumentationContext();
+        AtomicReference<InstrumentationContext> parent = new AtomicReference<>();
+        call1.instrument((o, parentCtx) -> {
+            parent.set(parentCtx);
+            assertSame(parentCtx, options1.getInstrumentationContext());
+            String r1 = call2.instrument((o2, ctx2) -> {
+                assertTrue(ctx2.isValid());
+                assertSame(ctx2, options1.getInstrumentationContext());
+                return "done1";
+            }, o);
+            String r2 = call3.instrument((o3, ctx3) -> {
+                assertTrue(ctx3.isValid());
+                assertSame(ctx3, options1.getInstrumentationContext());
+                return "done2";
+            }, o);
 
-        OperationInstrumentation.Scope scope2
-            = call2.startScope(new RequestOptions().setInstrumentationContext(parent));
-        scope2.close();
-
-        OperationInstrumentation.Scope scope3
-            = call3.startScope(new RequestOptions().setInstrumentationContext(parent));
-        scope3.close();
-
-        scope1.close();
+            return r1 + r2;
+        }, options1);
 
         assertEquals(3, exporter.getFinishedSpanItems().size());
         SpanData spanData2 = exporter.getFinishedSpanItems().get(0);
@@ -305,9 +297,9 @@ public class OperationInstrumentationTests {
         assertCallSpan(spanData2, "call2", SpanKind.CLIENT, "localhost", 443L, null);
         assertCallSpan(spanData3, "call3", SpanKind.CLIENT, "localhost", 443L, null);
         assertCallSpan(spanData1, "call1", SpanKind.CONSUMER, "localhost", 443L, null);
-        assertEquals(parent.getTraceId(), spanData2.getSpanContext().getTraceId());
-        assertEquals(parent.getSpanId(), spanData2.getParentSpanContext().getSpanId());
-        assertEquals(parent.getTraceId(), spanData3.getSpanContext().getTraceId());
+        assertEquals(parent.get().getTraceId(), spanData2.getSpanContext().getTraceId());
+        assertEquals(parent.get().getSpanId(), spanData2.getParentSpanContext().getSpanId());
+        assertEquals(parent.get().getTraceId(), spanData3.getSpanContext().getTraceId());
 
         Collection<MetricData> metrics = meterReader.collectAllMetrics();
         assertEquals(3, metrics.size());
