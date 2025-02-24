@@ -85,8 +85,8 @@ public final class AccessTokenCache {
         // Check if the incoming token request context is different from the cached one. A different
         // token request context, requires to fetch a new token as the cached one won't work for the
         // passed in token request context.
-        boolean forceRefresh = (forceFetchToken && checkIfForceRefreshRequired(tokenRequestContext))
-            || this.tokenRequestContext == null;
+        boolean forceRefresh
+            = (forceFetchToken && checkIfForceRefreshRequired(tokenRequestContext)) || this.tokenRequestContext == null;
 
         if (forceRefresh) {
             this.tokenRequestContext = tokenRequestContext;
