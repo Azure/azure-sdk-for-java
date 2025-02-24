@@ -12,8 +12,18 @@ pr:
     - "*"
     # Note: The ExcludePaths template below needs to duplicate
     # any excludes here. The reason being is that we can't access
-    # pr->paths->exclude. These are paths only, not individual files
+    # pr->paths->exclude. Path matching is done with startsWith
+    # meaning that path entries should end with a trailing "/" in
+    # order to prevent greedy matching. Centralized versioning files
+    # are added to this list to prevent the PR pipeline from running
+    # when it shouldn't. When someone updates these files there will
+    # be other updates that'll cause the PR pipeline, or the appropriate
+    # pipeline if not PR, to run.
     exclude:
+    - eng/versioning/external_dependencies.txt
+    - eng/versioning/version_client.txt
+    - eng/versioning/version_data.txt
+    - eng/versioning/version_data_java_files.txt
     - sdk/batch/microsoft-azure-batch/ # track 1
     - sdk/boms/ # pom only release pipeline
     - sdk/cosmos/ # emulator tests
@@ -57,6 +67,10 @@ extends:
     # See pr->paths->exclude comment above. Anything added/removed there
     # needs to be added/removed here.
     ExcludePaths:
+    - eng/versioning/external_dependencies.txt
+    - eng/versioning/version_client.txt
+    - eng/versioning/version_data.txt
+    - eng/versioning/version_data_java_files.txt
     - sdk/batch/microsoft-azure-batch/ # track 1
     - sdk/boms/ # pom only release pipeline
     - sdk/cosmos/ # emulator tests
