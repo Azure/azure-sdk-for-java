@@ -83,5 +83,4 @@ public class FeatureFilterUtils {
         }
         return new BigInteger(1, reversedBytes);
     }
-
 }
