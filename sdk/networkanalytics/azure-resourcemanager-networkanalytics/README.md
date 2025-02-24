@@ -1,6 +1,6 @@
 # Azure Resource Manager Network Analytics client library for Java
 
-Please note, this package has been deprecated and will no longer be maintained after 03/14/2025.
+Please note, this package has been deprecated and will no longer be maintained after 03/14/2025. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 Azure Resource Manager Network Analytics client library for Java.
 
