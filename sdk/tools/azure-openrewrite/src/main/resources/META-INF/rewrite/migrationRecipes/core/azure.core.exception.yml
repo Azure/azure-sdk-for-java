@@ -37,7 +37,11 @@ recipeList:
   # HttpResponseException
   # --------------------------------------------------------------------
 
-  # TODO: API Removed. Triage replacement
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.exception.HttpResponseException
+      newFullyQualifiedTypeName: io.clientcore.core.http.exceptions.HttpResponseException
+
+  # TODO: Migrate Methods and Fields
 
   # --------------------------------------------------------------------
   # ResourceExistsException
