@@ -1,0 +1,110 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.http.rest
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.migration.azure.core.http.rest
+displayName: Migrate from azure.core.http.rest to next generation stack
+description: This recipe migrates azure.core.http.rest package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # EncodedParameter
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Page
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.Page
+      newFullyQualifiedTypeName: com.azure.v2.core.http.rest.Page
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # PagedFlux
+  # --------------------------------------------------------------------
+
+  # TODO: Async API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PagedFluxBase
+  # --------------------------------------------------------------------
+
+  # TODO: Async API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PagedIterable
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.PagedIterable
+      newFullyQualifiedTypeName: com.azure.v2.core.http.rest.PagedIterable
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # PagedResponseBase
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.PagedResponseBase
+      newFullyQualifiedTypeName: com.azure.v2.core.http.rest.PagedResponseBase
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # RequestOptions
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.RequestOptions
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.RequestOptions
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # Response
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.Response
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.Response
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ResponseBase
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.ResponseBase
+      newFullyQualifiedTypeName: com.azure.v2.core.http.rest.ResponseBase
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # RestProxy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.RestProxy
+      newFullyQualifiedTypeName: io.clientcore.core.http.RestProxy
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # SimpleResponse
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # StreamResponse
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
