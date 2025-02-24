@@ -79,6 +79,17 @@ extends:
         safeName: azuresdktemplate
         releaseInBatch: ${{ parameters.release_azuresdktemplate }}
         skipPublishDocMs: true
+        # If you're copying template for a new pipeline, remove triggeringPaths. Template is a default library
+        # to run tests for if any of the following paths change.
+        triggeringPaths:
+        - /.config
+        - /.devcontainer
+        - /.github
+        - /.vscode
+        - /common
+        - /doc
+        - /samples
+        - /sdk/parents
       - name: azure-sdk-template-two
         groupId: com.azure
         safeName: azuresdktemplatetwo
