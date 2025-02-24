@@ -31,7 +31,7 @@ public class AzureKeyVaultJcaAutoConfiguration extends AzureServiceConfiguration
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.cloud.azure.keyvault.jca")
+    @ConfigurationProperties(prefix = AzureKeyVaultJcaProperties.PREFIX)
     AzureKeyVaultJcaProperties azureKeyVaultJcaProperties() {
         return AzureGlobalPropertiesUtils.loadProperties(getAzureGlobalProperties(), new AzureKeyVaultJcaProperties());
     }

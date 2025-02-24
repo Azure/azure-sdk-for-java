@@ -3,23 +3,21 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties;
 
-import org.springframework.boot.autoconfigure.ssl.SslBundleProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
 
 /**
- * Azure Key Vault SSL Bundle properties.
+ * Azure Key Vault Key Store properties.
  *
  * @since 5.21.0
  */
-public class AzureKeyVaultSslBundleProperties extends SslBundleProperties {
+public class AzureKeyVaultKeyStoreProperties {
 
     /**
      * The key of Key Vault connection.
      */
     private String keyvaultRef;
-
     /**
      * Whether to enable refresh certificate when get untrusted certificate.
      */
@@ -30,20 +28,16 @@ public class AzureKeyVaultSslBundleProperties extends SslBundleProperties {
      */
     private Duration certificatesRefreshInterval;
 
-    /**
-     * Key Vault keystore properties.
-     */
-    @NestedConfigurationProperty
-    private final AzureKeyVaultKeyStoreProperties keystore = new AzureKeyVaultKeyStoreProperties();
-
-    /**
-     * Key Vault truststore properties.
-     */
-    @NestedConfigurationProperty
-    private final AzureKeyVaultKeyStoreProperties truststore = new AzureKeyVaultKeyStoreProperties();
-
     @NestedConfigurationProperty
     private final AzureKeyVaultJcaCertificatePathsProperties certificatePaths = new AzureKeyVaultJcaCertificatePathsProperties();
+
+    public String getKeyvaultRef() {
+        return keyvaultRef;
+    }
+
+    public void setKeyvaultRef(String keyvaultRef) {
+        this.keyvaultRef = keyvaultRef;
+    }
 
     public boolean isRefreshCertificatesWhenHaveUntrustedCertificate() {
         return refreshCertificatesWhenHaveUntrustedCertificate;
@@ -59,22 +53,6 @@ public class AzureKeyVaultSslBundleProperties extends SslBundleProperties {
 
     public void setCertificatesRefreshInterval(Duration certificatesRefreshInterval) {
         this.certificatesRefreshInterval = certificatesRefreshInterval;
-    }
-
-    public String getKeyvaultRef() {
-        return keyvaultRef;
-    }
-
-    public void setKeyvaultRef(String keyvaultRef) {
-        this.keyvaultRef = keyvaultRef;
-    }
-
-    public AzureKeyVaultKeyStoreProperties getKeystore() {
-        return keystore;
-    }
-
-    public AzureKeyVaultKeyStoreProperties getTruststore() {
-        return truststore;
     }
 
     public AzureKeyVaultJcaCertificatePathsProperties getCertificatePaths() {

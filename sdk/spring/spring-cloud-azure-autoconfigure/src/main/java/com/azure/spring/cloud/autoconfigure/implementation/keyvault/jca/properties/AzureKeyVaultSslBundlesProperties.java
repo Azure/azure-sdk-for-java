@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -15,7 +15,7 @@ public class AzureKeyVaultSslBundlesProperties {
 
     public static final String PREFIX = "spring.ssl.bundle";
 
-    private final Map<String, AzureKeyVaultSslBundleProperties> azureKeyvault = new LinkedHashMap<>();
+    private final Map<String, AzureKeyVaultSslBundleProperties> azureKeyvault = new HashMap<>();
 
     public Map<String, AzureKeyVaultSslBundleProperties> getAzureKeyvault() {
         return azureKeyvault;

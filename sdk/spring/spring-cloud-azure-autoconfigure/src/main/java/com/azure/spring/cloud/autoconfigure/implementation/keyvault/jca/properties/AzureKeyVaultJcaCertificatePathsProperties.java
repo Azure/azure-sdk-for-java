@@ -11,12 +11,12 @@ package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.propert
 public class AzureKeyVaultJcaCertificatePathsProperties {
 
     /**
-     * The path to put custom certificates
+     * The path to put custom certificates.
      */
     private String custom;
 
     /**
-     * The path to put well-known certificates
+     * The path to put well-known certificates.
      */
     private String wellKnown;
 

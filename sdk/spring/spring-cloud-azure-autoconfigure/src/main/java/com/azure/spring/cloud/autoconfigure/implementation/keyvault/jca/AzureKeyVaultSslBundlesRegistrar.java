@@ -4,7 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaConnectionProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultKeyStoreProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundleProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundlesProperties;
 import org.slf4j.Logger;
@@ -72,61 +74,58 @@ public class AzureKeyVaultSslBundlesRegistrar implements SslBundleRegistrar, Res
     @Override
     public void registerBundles(SslBundleRegistry registry) {
         if (!isKeyVaultJcaOnClasspath()) {
-            LOGGER.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "com.azure:azure-security-keyvault-jca doesn't exist in classpath."));
+            LOGGER.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "'com.azure:azure-security-keyvault-jca' doesn't exist in classpath."));
             return;
         }
 
         final Map<String, AzureKeyVaultSslBundleProperties> azureKeyVault = sslBundlesProperties.getAzureKeyvault();
         if (azureKeyVault.isEmpty()) {
-            LOGGER.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "spring.ssl.bundle.azure-keyvault is empty."));
+            LOGGER.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "'spring.ssl.bundle.azure-keyvault' is empty."));
             return;
         }
 
         final AtomicBoolean providerConfigured = new AtomicBoolean(false);
-        buildMergedKeyVaultSslBundleProperties(jcaProperties, azureKeyVault);
+        buildMergedKeyVaultJcaProperties();
+        buildMergedSslBundlesProperties();
+        final Map<String, AzureKeyVaultJcaConnectionProperties> connections = jcaProperties.getConnections();
         azureKeyVault.forEach((bundleName, bundleProperties) -> {
-            if (isSslBundlePropertiesNotSet(bundleProperties) && isCertificatePathsPropertiesNotSet(bundleProperties)) {
-                LOGGER.debug("Skip configuring Key Vault SSL bundle {}, because both spring.ssl.bundle.azure-keyvault.{}.endpoint and "
-                        + "spring.ssl.bundle.azure-keyvault.{}.key.alias must be configured at the same time; or at least one of spring.ssl.bundle.azure-keyvault.{}.certificate-paths.custom "
-                        + "and spring.ssl.bundle.azure-keyvault.{}.certificate-paths.well-known must be configured.",
-                    bundleName, bundleName, bundleName, bundleName, bundleName);
+            if (isKeyVaultPropertiesNotSet(bundleProperties) && isCertificatePathsPropertiesNotSet(bundleProperties)) {
+                LOGGER.debug("Skip configuring Key Vault SSL bundle '{}'. At least configure the 'keyvault-ref' of the truststore; "
+                    + "or one of 'certificate-paths.custom' and 'certificate-paths.well-known' must be configured.", bundleName);
                 return;
             }
 
-            configureJcaSystemProperties(bundleProperties);
-            if (providerConfigured.compareAndSet(false, true)) {
-                Security.removeProvider(KEY_VAULT_PROVIDER_NAME);
-                Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
-            }
-            registry.registerBundle(bundleName, getAzureKeyVaultSslBundle(bundleName, bundleProperties));
-            LOGGER.debug("Registered Azure Key Vault SSL bundle {}.", bundleName);
+            KeyStore keyVaultKeyStore = initilizeKeyVaultKeyStore("keystore", providerConfigured, bundleName,
+                connections.get(bundleProperties.getKeystore().getKeyvaultRef()), bundleProperties.getKeystore());
+            KeyStore keyVaultTruststore = initilizeKeyVaultKeyStore("truststore", providerConfigured, bundleName,
+                connections.get(bundleProperties.getTruststore().getKeyvaultRef()), bundleProperties.getTruststore());
+            SslStoreBundle sslStoreBundle = SslStoreBundle.of(keyVaultKeyStore, null, keyVaultTruststore);
+            SslBundleKey key = getSslBundleKey(bundleProperties.getKey());
+            SslBundle sslBundle = SslBundle.of(sslStoreBundle, key,
+                asSslOptions(bundleProperties.getOptions()),
+                bundleProperties.getProtocol(),
+                SslManagerBundle.from(sslStoreBundle, key));
+            registry.registerBundle(bundleName, sslBundle);
+            LOGGER.debug("Registered Azure Key Vault SSL bundle '{}'.", bundleName);
         });
     }
 
-    private void buildMergedKeyVaultSslBundleProperties(AzureKeyVaultJcaProperties jcaProperties,
-                                                        Map<String, AzureKeyVaultSslBundleProperties> azureKeyVault) {
-        azureKeyVault.forEach((bundleName, bundleProperties) -> {
-            if (!bundleProperties.isInherit()) {
-                return;
-            }
+    private KeyStore initilizeKeyVaultKeyStore(String storeName,
+                                               AtomicBoolean providerConfigured,
+                                               String bundleName,
+                                               AzureKeyVaultJcaConnectionProperties connectionProperties,
+                                               AzureKeyVaultKeyStoreProperties keyStoreProperties) {
+        if (connectionProperties == null && !StringUtils.hasText(keyStoreProperties.getCertificatePaths().getCustom())
+            && !StringUtils.hasText(keyStoreProperties.getCertificatePaths().getWellKnown())) {
+            LOGGER.debug("The {} parameter of Key Vault SSL bundle '{}' is null.", storeName, bundleName);
+            return null;
+        }
 
-            BeanUtils.copyProperties(jcaProperties, bundleProperties, findNonNullPropertyNames(bundleProperties));
-            BeanUtils.copyProperties(jcaProperties.getCredential(), bundleProperties.getCredential(), findNonNullPropertyNames(bundleProperties.getCredential()));
-            BeanUtils.copyProperties(jcaProperties.getProfile(), bundleProperties.getProfile(), findNonNullPropertyNames(bundleProperties.getProfile()));
-        });
-    }
-
-    private boolean isCertificatePathsPropertiesNotSet(AzureKeyVaultSslBundleProperties bundleProperties) {
-        return !StringUtils.hasText(bundleProperties.getCertificatePaths().getWellKnown())
-            && !StringUtils.hasText(bundleProperties.getCertificatePaths().getCustom());
-    }
-
-    private boolean isSslBundlePropertiesNotSet(AzureKeyVaultSslBundleProperties bundleProperties) {
-        return !StringUtils.hasText(bundleProperties.getEndpoint())
-            || (bundleProperties.getKey() == null || !StringUtils.hasText(bundleProperties.getKey().getAlias()));
-    }
-
-    private SslBundle getAzureKeyVaultSslBundle(String bundleName, AzureKeyVaultSslBundleProperties bundleProperties) {
+        configureJcaKeyStoreSystemProperties(connectionProperties, keyStoreProperties);
+        if (providerConfigured.compareAndSet(false, true)) {
+            Security.removeProvider(KEY_VAULT_PROVIDER_NAME);
+            Security.insertProviderAt(new KeyVaultJcaProvider(), 1);
+        }
         KeyStore azureKeyVaultKeyStore;
         try {
             if (hasEmbeddedTomcat()) {
@@ -140,14 +139,18 @@ public class AzureKeyVaultSslBundlesRegistrar implements SslBundleRegistrar, Res
             }
             azureKeyVaultKeyStore.load(null);
         } catch (CertificateException | KeyStoreException | IOException | NoSuchAlgorithmException | NoSuchProviderException e) {
-            throw new RuntimeException("Failed to load Key Vault certificates for bundle " + bundleName, e);
+            throw new RuntimeException("Failed to load Key Vault " + storeName + " for SSL bundle '" + bundleName + "'", e);
         }
-        SslStoreBundle sslStoreBundle = SslStoreBundle.of(azureKeyVaultKeyStore, null, azureKeyVaultKeyStore);
-        SslBundleKey key = getSslBundleKey(bundleProperties.getKey());
-        return SslBundle.of(sslStoreBundle, key,
-            asSslOptions(bundleProperties.getOptions()),
-            bundleProperties.getProtocol(),
-            SslManagerBundle.from(sslStoreBundle, key));
+        return azureKeyVaultKeyStore;
+    }
+
+    private boolean isCertificatePathsPropertiesNotSet(AzureKeyVaultSslBundleProperties bundleProperties) {
+        return !StringUtils.hasText(bundleProperties.getCertificatePaths().getWellKnown())
+            && !StringUtils.hasText(bundleProperties.getCertificatePaths().getCustom());
+    }
+
+    private boolean isKeyVaultPropertiesNotSet(AzureKeyVaultSslBundleProperties bundleProperties) {
+        return !StringUtils.hasText(bundleProperties.getKeystore().getKeyvaultRef()) && !StringUtils.hasText(bundleProperties.getTruststore().getKeyvaultRef());
     }
 
     private static SslOptions asSslOptions(SslBundleProperties.Options options) {
@@ -158,23 +161,42 @@ public class AzureKeyVaultSslBundlesRegistrar implements SslBundleRegistrar, Res
         return (key != null) ? SslBundleKey.of(key.getPassword(), key.getAlias()) : SslBundleKey.NONE;
     }
 
-    private void configureJcaSystemProperties(AzureKeyVaultSslBundleProperties bundleProperties) {
+    private void configureJcaKeyStoreSystemProperties(AzureKeyVaultJcaConnectionProperties connectionProperties,
+                                                      AzureKeyVaultKeyStoreProperties keyStoreProperties) {
         clearJcaSystemProperties();
-        putSpringPropertyToSystemProperty(bundleProperties.getEndpoint(), "azure.keyvault.uri");
-        putSpringPropertyToSystemProperty(bundleProperties.getProfile().getTenantId(), "azure.keyvault.tenant-id");
-        putSpringPropertyToSystemProperty(bundleProperties.getCredential().getClientId(), "azure.keyvault.client-id");
-        putSpringPropertyToSystemProperty(bundleProperties.getCredential().getClientSecret(), "azure.keyvault.client-secret");
-        if (bundleProperties.getCredential().isManagedIdentityEnabled()) {
-            putSpringPropertyToSystemProperty(bundleProperties.getCredential().getClientId(), "azure.keyvault.managed-identity");
+        if (connectionProperties != null) {
+            putSpringPropertyToSystemProperty(connectionProperties.getEndpoint(), "azure.keyvault.uri");
+            putSpringPropertyToSystemProperty(connectionProperties.getProfile().getTenantId(), "azure.keyvault.tenant-id");
+            putSpringPropertyToSystemProperty(connectionProperties.getCredential().getClientId(), "azure.keyvault.client-id");
+            putSpringPropertyToSystemProperty(connectionProperties.getCredential().getClientSecret(), "azure.keyvault.client-secret");
+            if (connectionProperties.getCredential().isManagedIdentityEnabled()) {
+                putSpringPropertyToSystemProperty(connectionProperties.getCredential().getClientId(), "azure.keyvault.managed-identity");
+            }
         }
-        if (bundleProperties.getCertificatesRefreshInterval() != null) {
-            putSpringPropertyToSystemProperty(String.valueOf(bundleProperties.getCertificatesRefreshInterval().toMillis()),
+        if (keyStoreProperties.getCertificatesRefreshInterval() != null) {
+            putSpringPropertyToSystemProperty(String.valueOf(keyStoreProperties.getCertificatesRefreshInterval().toMillis()),
                 "azure.keyvault.jca.certificates-refresh-interval");
         }
-        putSpringPropertyToSystemProperty(Boolean.toString(bundleProperties.isRefreshCertificatesWhenHaveUntrustedCertificate()),
+        putSpringPropertyToSystemProperty(Boolean.toString(keyStoreProperties.isRefreshCertificatesWhenHaveUntrustedCertificate()),
             "azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate");
-        putPathToSystemProperty(bundleProperties.getCertificatePaths().getWellKnown(), "azure.cert-path.well-known");
-        putPathToSystemProperty(bundleProperties.getCertificatePaths().getCustom(), "azure.cert-path.custom");
+        putPathToSystemProperty(keyStoreProperties.getCertificatePaths().getWellKnown(), "azure.cert-path.well-known");
+        putPathToSystemProperty(keyStoreProperties.getCertificatePaths().getCustom(), "azure.cert-path.custom");
+    }
+
+    private void buildMergedKeyVaultJcaProperties() {
+        jcaProperties.getConnections().forEach((connectionName, properties) -> {
+            BeanUtils.copyProperties(jcaProperties.getCredential(), properties.getCredential(), findNonNullPropertyNames(properties.getCredential()));
+            BeanUtils.copyProperties(jcaProperties.getProfile(), properties.getProfile(), findNonNullPropertyNames(properties.getProfile()));
+        });
+    }
+
+    private void buildMergedSslBundlesProperties() {
+        sslBundlesProperties.getAzureKeyvault().forEach((sslBundleName, properties) -> {
+            BeanUtils.copyProperties(properties, properties.getKeystore(), findNonNullPropertyNames(properties.getKeystore()));
+            BeanUtils.copyProperties(properties, properties.getKeystore().getCertificatePaths(), findNonNullPropertyNames(properties.getKeystore().getCertificatePaths()));
+            BeanUtils.copyProperties(properties, properties.getTruststore(), findNonNullPropertyNames(properties.getTruststore()));
+            BeanUtils.copyProperties(properties, properties.getTruststore().getCertificatePaths(), findNonNullPropertyNames(properties.getTruststore().getCertificatePaths()));
+        });
     }
 
     private void clearJcaSystemProperties() {
@@ -189,7 +211,7 @@ public class AzureKeyVaultSslBundlesRegistrar implements SslBundleRegistrar, Res
                     try {
                         return res.getFile();
                     } catch (IOException e) {
-                        throw new RuntimeException("Failed to load the cert path " + path, e);
+                        throw new RuntimeException("Failed to load the certificate path '" + path + "'", e);
                     }
                 })
                 .map(File::getAbsolutePath)

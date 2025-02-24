@@ -3,39 +3,21 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties;
 
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Azure Key Vault JCA properties.
  *
  * @since 5.21.0
  */
-public class AzureKeyVaultJcaProperties {
+public class AzureKeyVaultJcaProperties extends AzureKeyVaultJcaCommonProperties {
 
-    @NestedConfigurationProperty
-    private final AzureKeyVaultJcaTokenCredentialConfigurationProperties credential = new AzureKeyVaultJcaTokenCredentialConfigurationProperties();
+    public static final String PREFIX = "spring.cloud.azure.keyvault.jca";
+    // propertySources
+    private final Map<String, AzureKeyVaultJcaConnectionProperties> connections = new HashMap<>();
 
-    @NestedConfigurationProperty
-    private final AzureKeyVaultJcaProfileConfigurationProperties profile = new AzureKeyVaultJcaProfileConfigurationProperties();
-
-    /**
-     * Azure Key Vault endpoint.
-     */
-    private String endpoint;
-
-    public AzureKeyVaultJcaTokenCredentialConfigurationProperties getCredential() {
-        return credential;
-    }
-
-    public AzureKeyVaultJcaProfileConfigurationProperties getProfile() {
-        return profile;
-    }
-
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+    public Map<String, AzureKeyVaultJcaConnectionProperties> getConnections() {
+        return connections;
     }
 }

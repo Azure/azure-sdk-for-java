@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca;
 
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaConnectionProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundleProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundlesProperties;
@@ -57,7 +58,7 @@ public class AzureKeyVaultSslBundlesRegistrarTests {
             registrar.registerBundles(registry);
             then(registry).should(times(0)).registerBundle(anyString(), any());
             String allOutput = capturedOutput.getAll();
-            String log = "Skip configuring Key Vault SSL bundles because com.azure:azure-security-keyvault-jca "
+            String log = "Skip configuring Key Vault SSL bundles because 'com.azure:azure-security-keyvault-jca' "
                 + "doesn't exist in classpath.";
             assertTrue(allOutput.contains(log));
         }
@@ -68,94 +69,131 @@ public class AzureKeyVaultSslBundlesRegistrarTests {
         registrar.registerBundles(registry);
         then(registry).should(times(0)).registerBundle(anyString(), any());
         String allOutput = capturedOutput.getAll();
-        String log = "Skip configuring Key Vault SSL bundles because spring.ssl.bundle.azure-keyvault is empty.";
+        String log = "Skip configuring Key Vault SSL bundles because 'spring.ssl.bundle.azure-keyvault' is empty.";
         assertTrue(allOutput.contains(log));
     }
 
     @Test
     void configureSslBundleEndpointWithoutKeyName(CapturedOutput capturedOutput) {
-        jcaProperties.setEndpoint("https://test.vault.azure.net/");
-
         AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
         sslBundlesProperties.getAzureKeyvault().put("testBundle", bundleProperties);
 
         registrar.registerBundles(registry);
         then(registry).should(times(0)).registerBundle(anyString(), any());
         String allOutput = capturedOutput.getAll();
-        String log = "Skip configuring Key Vault SSL bundle testBundle, because both spring.ssl.bundle.azure-keyvault"
-            + ".testBundle.endpoint and "
-            + "spring.ssl.bundle.azure-keyvault.testBundle.key.alias must be configured at the same time; or at least"
-            + " one of "
-            + "spring.ssl.bundle.azure-keyvault.testBundle.certificate-paths.custom and spring.ssl.bundle"
-            + ".azure-keyvault.testBundle.certificate-paths.well-known "
-            + "must be configured.";
+        String log = "Skip configuring Key Vault SSL bundle 'testBundle'. At least configure the 'keyvault-ref' of the truststore; "
+            + "or one of 'certificate-paths.custom' and 'certificate-paths.well-known' must be configured.";
         assertTrue(allOutput.contains(log));
     }
 
     @Test
-    void registerKeyVaultCertificates(CapturedOutput capturedOutput) {
+    void registerKeyVaultSslBundle(CapturedOutput capturedOutput) {
         try (MockedStatic<KeyStore> keyStoreMockedStatic = mockStatic(KeyStore.class)) {
             String bundleName = "testBundle";
             KeyStore keyStore = Mockito.mock(KeyStore.class);
             keyStoreMockedStatic.when(() -> KeyStore.getInstance("AzureKeyVault")).thenReturn(keyStore);
 
-            jcaProperties.setEndpoint("https://test.vault.azure.net/");
+            String keyvaultName = "keyvault1";
+            AzureKeyVaultJcaConnectionProperties connectionProperties = new AzureKeyVaultJcaConnectionProperties();
+            connectionProperties.setEndpoint("https://test.vault.azure.net/");
+            jcaProperties.getConnections().put(keyvaultName, connectionProperties);
             AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
-            bundleProperties.getKey().setAlias("self-signed");
+            bundleProperties.getTruststore().setKeyvaultRef(keyvaultName);
 
             sslBundlesProperties.getAzureKeyvault().put(bundleName, bundleProperties);
             registrar.registerBundles(registry);
             then(registry).should(times(1)).registerBundle(eq(bundleName), any());
             String allOutput = capturedOutput.getAll();
-            String log = "Registered Azure Key Vault SSL bundle " + bundleName + ".";
-            assertTrue(allOutput.contains(log));
+            String keystoreLog = "The keystore parameter of Key Vault SSL bundle 'testBundle' is null.";
+            String registerLog = "Registered Azure Key Vault SSL bundle '" + bundleName + "'.";
+            assertTrue(allOutput.contains(keystoreLog) || allOutput.contains(registerLog));
         }
     }
 
     @Test
     void registerMultipleSslBundles(CapturedOutput capturedOutput) {
         try (MockedStatic<KeyStore> keyStoreMockedStatic = mockStatic(KeyStore.class)) {
-            String[] bundleNames = new String[] { "testBundle", "inheritedSslBundle", "notInheritedSslBundle",
-                "localCustom", "localWellKnown", "local" };
+            String[] bundleNames = new String[] {
+                "oneKeyVault",
+                "twoKeyVault",
+                "localCustom",
+                "localWellKnown",
+                "local"
+            };
             KeyStore keyStore = Mockito.mock(KeyStore.class);
             keyStoreMockedStatic.when(() -> KeyStore.getInstance("AzureKeyVault")).thenReturn(keyStore);
 
             Map<String, AzureKeyVaultSslBundleProperties> azureKeyVault = sslBundlesProperties.getAzureKeyvault();
-            jcaProperties.setEndpoint("https://test.vault.azure.net/");
-            AzureKeyVaultSslBundleProperties testBundle = new AzureKeyVaultSslBundleProperties();
-            testBundle.getKey().setAlias("self-signed");
-            azureKeyVault.put(bundleNames[0], testBundle);
 
-            AzureKeyVaultSslBundleProperties inheritedSslBundle = new AzureKeyVaultSslBundleProperties();
-            inheritedSslBundle.getKey().setAlias("tomcat");
-            azureKeyVault.put(bundleNames[1], inheritedSslBundle);
+            int index = 0;
+            AzureKeyVaultSslBundleProperties oneKeyVault = getBundlePropertiesWithOneKeyVault();
+            azureKeyVault.put(bundleNames[index++], oneKeyVault);
 
-            AzureKeyVaultSslBundleProperties notInheritedSslBundle = new AzureKeyVaultSslBundleProperties();
-            notInheritedSslBundle.setInherit(false);
-            notInheritedSslBundle.setEndpoint("https://test.vault.azure.net/");
-            notInheritedSslBundle.getKey().setAlias("jetty");
-            azureKeyVault.put(bundleNames[2], notInheritedSslBundle);
+            AzureKeyVaultSslBundleProperties twoKeyVault = getBundlePropertiesWithOneKeyVault();
+            azureKeyVault.put(bundleNames[index++], twoKeyVault);
 
-            AzureKeyVaultSslBundleProperties localCustom = new AzureKeyVaultSslBundleProperties();
-            localCustom.getCertificatePaths().setCustom("custom");
-            azureKeyVault.put(bundleNames[3], localCustom);
+            AzureKeyVaultSslBundleProperties localCustom = getBundlePropertiesWithLocalCustom();
+            azureKeyVault.put(bundleNames[index++], localCustom);
 
-            AzureKeyVaultSslBundleProperties localWellKnown = new AzureKeyVaultSslBundleProperties();
-            localWellKnown.getCertificatePaths().setWellKnown("wellKnown");
-            azureKeyVault.put(bundleNames[4], localWellKnown);
+            AzureKeyVaultSslBundleProperties localWellKnown = getBundlePropertiesWithLocalWellKnown();
+            azureKeyVault.put(bundleNames[index++], localWellKnown);
 
-            AzureKeyVaultSslBundleProperties local = new AzureKeyVaultSslBundleProperties();
-            local.getCertificatePaths().setWellKnown("localWellKnown");
-            local.getCertificatePaths().setCustom("localCustom");
-            azureKeyVault.put(bundleNames[5], local);
+            AzureKeyVaultSslBundleProperties local = getBundlePropertiesWithLocal();
+            azureKeyVault.put(bundleNames[index], local);
 
             registrar.registerBundles(registry);
             String allOutput = capturedOutput.getAll();
             Arrays.stream(bundleNames).forEach(bundleName -> {
                 then(registry).should(times(1)).registerBundle(eq(bundleName), any());
-                String log = "Registered Azure Key Vault SSL bundle " + bundleName + ".";
+                String log = "Registered Azure Key Vault SSL bundle '" + bundleName + "'.";
                 assertTrue(allOutput.contains(log));
             });
         }
+    }
+
+    private AzureKeyVaultSslBundleProperties getBundlePropertiesWithLocal() {
+        AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
+        bundleProperties.getCertificatePaths().setWellKnown("classpath:keyvault/certificate-paths/well-known");
+        bundleProperties.getCertificatePaths().setWellKnown("classpath:keyvault/certificate-paths/well-known");
+        return bundleProperties;
+    }
+
+    private AzureKeyVaultSslBundleProperties getBundlePropertiesWithLocalWellKnown() {
+        AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
+        bundleProperties.getCertificatePaths().setWellKnown("classpath:keyvault/certificate-paths/well-known");
+        return bundleProperties;
+    }
+
+    private AzureKeyVaultSslBundleProperties getBundlePropertiesWithLocalCustom() {
+        AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
+        bundleProperties.getCertificatePaths().setCustom("classpath:keyvault/certificate-paths/custom");
+        return bundleProperties;
+    }
+
+    private AzureKeyVaultSslBundleProperties getBundlePropertiesWithWtoKeyVault() {
+        String keyvault1 = "keyvault1";
+        AzureKeyVaultJcaConnectionProperties connection1Properties = new AzureKeyVaultJcaConnectionProperties();
+        connection1Properties.setEndpoint("https://test1.vault.azure.net/");
+        jcaProperties.getConnections().put(keyvault1, connection1Properties);
+
+        String keyvault2 = "keyvault2";
+        AzureKeyVaultJcaConnectionProperties connection2Properties = new AzureKeyVaultJcaConnectionProperties();
+        connection2Properties.setEndpoint("https://test2.vault.azure.net/");
+        jcaProperties.getConnections().put(keyvault2, connection2Properties);
+
+        AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
+        bundleProperties.getKeystore().setKeyvaultRef(keyvault1);
+        bundleProperties.getTruststore().setKeyvaultRef(keyvault2);
+        return bundleProperties;
+    }
+
+    private AzureKeyVaultSslBundleProperties getBundlePropertiesWithOneKeyVault() {
+        String keyvault1 = "keyvault1";
+        AzureKeyVaultJcaConnectionProperties connectionProperties = new AzureKeyVaultJcaConnectionProperties();
+        connectionProperties.setEndpoint("https://test1.vault.azure.net/");
+        jcaProperties.getConnections().put(keyvault1, connectionProperties);
+        AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
+        bundleProperties.setKeyvaultRef(keyvault1);
+        return bundleProperties;
     }
 }
