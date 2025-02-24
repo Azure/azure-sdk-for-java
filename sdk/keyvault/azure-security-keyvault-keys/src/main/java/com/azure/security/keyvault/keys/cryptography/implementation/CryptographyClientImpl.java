@@ -3,16 +3,11 @@
 
 package com.azure.security.keyvault.keys.cryptography.implementation;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.security.keyvault.keys.KeyAsyncClient;
-import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
@@ -26,12 +21,11 @@ import com.azure.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
+import com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils;
 import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
 import com.azure.security.keyvault.keys.implementation.models.KeyBundle;
 import com.azure.security.keyvault.keys.implementation.models.KeyOperationResult;
-import com.azure.security.keyvault.keys.implementation.models.KeyOperationsParameters;
-import com.azure.security.keyvault.keys.implementation.models.KeySignParameters;
-import com.azure.security.keyvault.keys.implementation.models.KeyVerifyParameters;
+import com.azure.security.keyvault.keys.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.keys.implementation.models.KeyVerifyResult;
 import com.azure.security.keyvault.keys.implementation.models.SecretKey;
 import com.azure.security.keyvault.keys.implementation.models.SecretRequestAttributes;
@@ -50,7 +44,7 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.mapWrapAlgorithm;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.transformSecretKey;
 import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.unpackAndValidateId;
-import static com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils.EMPTY_OPTIONS;
+import static com.azure.security.keyvault.keys.implementation.KeyVaultKeysUtils.callWithMappedException;
 import static com.azure.security.keyvault.keys.implementation.models.KeyVaultKeysModelsUtils.createKeyVaultKey;
 
 public final class CryptographyClientImpl {
@@ -78,7 +72,7 @@ public final class CryptographyClientImpl {
 
         this.keyId = keyId;
 
-        this.keyClient = new KeyClientImpl(pipeline, vaultUrl, KeyServiceVersion.valueOf(serviceVersion.toString()));
+        this.keyClient = new KeyClientImpl(pipeline, serviceVersion.getVersion());
         this.secretClient = new SecretMinClientImpl(pipeline, serviceVersion.getVersion());
     }
 
@@ -91,21 +85,27 @@ public final class CryptographyClientImpl {
     }
 
     public Mono<Response<KeyVaultKey>> getKeyAsync() {
-        return keyClient.getKeyWithResponseAsync(keyName, keyVersion, EMPTY_OPTIONS)
-            .onErrorMap(HttpResponseException.class, KeyAsyncClient::mapGetKeyException)
-            .map(response -> new SimpleResponse<>(response,
-                createKeyVaultKey(response.getValue().toObject(KeyBundle.class))));
+        return keyClient.getKeyWithResponseAsync(vaultUrl, keyName, keyVersion)
+            .doOnRequest(ignored -> LOGGER.verbose("Retrieving key - {}", keyName))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved key - {}", keyName))
+            .doOnError(error -> LOGGER.warning("Failed to get key - {}", keyName, error))
+            .onErrorMap(KeyVaultErrorException.class, KeyVaultKeysUtils::mapGetKeyException)
+            .map(response -> new SimpleResponse<>(response, createKeyVaultKey(response.getValue())));
     }
 
     public Response<KeyVaultKey> getKey(Context context) {
-        Response<BinaryData> response
-            = keyClient.getKeyWithResponse(keyName, keyVersion, new RequestOptions().setContext(context));
+        Response<KeyBundle> response
+            = callWithMappedException(() -> keyClient.getKeyWithResponse(vaultUrl, keyName, keyVersion, context),
+                KeyVaultKeysUtils::mapGetKeyException);
 
-        return new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
+        return new SimpleResponse<>(response, createKeyVaultKey(response.getValue()));
     }
 
     public Mono<JsonWebKey> getSecretKeyAsync() {
         return withContext(context -> secretClient.getSecretWithResponseAsync(vaultUrl, keyName, keyVersion, context))
+            .doOnRequest(ignored -> LOGGER.verbose("Retrieving key - {}", keyName))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved key - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to get key - {}", keyName, error))
             .map(response -> transformSecretKey(response.getValue()));
     }
 
@@ -117,9 +117,12 @@ public final class CryptographyClientImpl {
     public Mono<Response<SecretKey>> setSecretKeyAsync(SecretKey secret, Context context) {
         Objects.requireNonNull(secret, "The secret key cannot be null.");
 
-        return secretClient.setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(),
-            secret.getProperties().getTags(), secret.getProperties().getContentType(),
-            new SecretRequestAttributes(secret.getProperties()), context);
+        return secretClient
+            .setSecretWithResponseAsync(vaultUrl, secret.getName(), secret.getValue(), secret.getProperties().getTags(),
+                secret.getProperties().getContentType(), new SecretRequestAttributes(secret.getProperties()), context)
+            .doOnRequest(ignored -> LOGGER.verbose("Setting secret - {}", secret.getName()))
+            .doOnSuccess(response -> LOGGER.verbose("Set secret - {}", response.getValue().getName()))
+            .doOnError(error -> LOGGER.warning("Failed to set secret - {}", secret.getName(), error));
     }
 
     public Response<SecretKey> setSecretKey(SecretKey secret, Context context) {
@@ -146,19 +149,14 @@ public final class CryptographyClientImpl {
 
     private Mono<EncryptResult> encryptAsync(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv,
         byte[] additionalAuthenticatedData, Context context) {
-        KeyOperationsParameters keyOperationsParameters
-            = new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), plainText).setIv(iv)
-                .setAad(additionalAuthenticatedData);
-
         return keyClient
-            .encryptWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                new RequestOptions().setContext(context))
-            .map(response -> {
-                KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
-
-                return new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(),
-                    result.getAuthenticationTag(), result.getAdditionalAuthenticatedData());
-            });
+            .encryptAsync(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm), plainText, iv,
+                additionalAuthenticatedData, null, context)
+            .doOnRequest(ignored -> LOGGER.verbose("Encrypting content with algorithm - {}", algorithm))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved encrypted content with algorithm - {}", algorithm))
+            .doOnError(error -> LOGGER.warning("Failed to encrypt content with algorithm - {}", algorithm, error))
+            .map(result -> new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(),
+                result.getAuthenticationTag(), result.getAdditionalAuthenticatedData()));
     }
 
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
@@ -177,16 +175,11 @@ public final class CryptographyClientImpl {
 
     private EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plainText, byte[] iv,
         byte[] additionalAuthenticatedData, Context context) {
-        KeyOperationsParameters keyOperationsParameters
-            = new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), plainText).setIv(iv)
-                .setAad(additionalAuthenticatedData);
-
         KeyOperationResult result
             = keyClient
-                .encryptWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                    new RequestOptions().setContext(context))
-                .getValue()
-                .toObject(KeyOperationResult.class);
+                .encryptWithResponse(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm), plainText, iv,
+                    additionalAuthenticatedData, null, context)
+                .getValue();
 
         return new EncryptResult(result.getResult(), algorithm, keyId, result.getIv(), result.getAuthenticationTag(),
             result.getAdditionalAuthenticatedData());
@@ -209,20 +202,13 @@ public final class CryptographyClientImpl {
 
     private Mono<DecryptResult> decryptAsync(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
         byte[] additionalAuthenticatedData, byte[] authenticationTag, Context context) {
-
-        KeyOperationsParameters keyOperationsParameters
-            = new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), ciphertext).setIv(iv)
-                .setAad(additionalAuthenticatedData)
-                .setTag(authenticationTag);
-
         return keyClient
-            .decryptWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                new RequestOptions().setContext(context))
-            .map(response -> {
-                KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
-
-                return new DecryptResult(result.getResult(), algorithm, keyId);
-            });
+            .decryptAsync(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm), ciphertext, iv,
+                additionalAuthenticatedData, authenticationTag, context)
+            .map(result -> new DecryptResult(result.getResult(), algorithm, keyId))
+            .doOnRequest(ignored -> LOGGER.verbose("Decrypting content with algorithm - {}", algorithm))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved decrypted content with algorithm - {}", algorithm))
+            .doOnError(error -> LOGGER.warning("Failed to decrypt content with algorithm - {}", algorithm, error));
     }
 
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
@@ -241,18 +227,11 @@ public final class CryptographyClientImpl {
 
     private DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
         byte[] additionalAuthenticatedData, byte[] authenticationTag, Context context) {
-
-        KeyOperationsParameters keyOperationsParameters
-            = new KeyOperationsParameters(mapKeyEncryptionAlgorithm(algorithm), ciphertext).setIv(iv)
-                .setAad(additionalAuthenticatedData)
-                .setTag(authenticationTag);
-
         KeyOperationResult result
             = keyClient
-                .decryptWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                    new RequestOptions().setContext(context))
-                .getValue()
-                .toObject(KeyOperationResult.class);
+                .decryptWithResponse(vaultUrl, keyName, keyVersion, mapKeyEncryptionAlgorithm(algorithm), ciphertext,
+                    iv, additionalAuthenticatedData, authenticationTag, context)
+                .getValue();
 
         return new DecryptResult(result.getResult(), algorithm, keyId);
     }
@@ -261,30 +240,20 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
 
-        KeySignParameters keyOperationsParameters = new KeySignParameters(mapKeySignatureAlgorithm(algorithm), digest);
-
-        return keyClient
-            .signWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                new RequestOptions().setContext(context))
-            .map(response -> {
-                KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
-
-                return new SignResult(result.getResult(), algorithm, keyId);
-            });
+        return keyClient.signAsync(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm), digest, context)
+            .map(result -> new SignResult(result.getResult(), algorithm, keyId))
+            .doOnRequest(ignored -> LOGGER.verbose("Signing content with algorithm - {}", algorithm))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved signed content with algorithm - {}", algorithm))
+            .doOnError(error -> LOGGER.warning("Failed to sign content with algorithm - {}", algorithm, error));
     }
 
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
 
-        KeySignParameters keyOperationsParameters = new KeySignParameters(mapKeySignatureAlgorithm(algorithm), digest);
-
-        KeyOperationResult result
-            = keyClient
-                .signWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                    new RequestOptions().setContext(context))
-                .getValue()
-                .toObject(KeyOperationResult.class);
+        KeyOperationResult result = keyClient
+            .signWithResponse(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm), digest, context)
+            .getValue();
 
         return new SignResult(result.getResult(), algorithm, keyId);
     }
@@ -295,17 +264,12 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(digest, "Digest content cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
 
-        KeyVerifyParameters keyVerifyParameters
-            = new KeyVerifyParameters(mapKeySignatureAlgorithm(algorithm), digest, signature);
-
         return keyClient
-            .verifyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyVerifyParameters),
-                new RequestOptions().setContext(context))
-            .map(response -> {
-                KeyVerifyResult result = response.getValue().toObject(KeyVerifyResult.class);
-
-                return new VerifyResult(result.isValue(), algorithm, keyId);
-            });
+            .verifyAsync(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm), digest, signature, context)
+            .map(result -> new VerifyResult(result.isValue(), algorithm, keyId))
+            .doOnRequest(ignored -> LOGGER.verbose("Verifying content with algorithm - {}", algorithm))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved verified content with algorithm - {}", algorithm))
+            .doOnError(error -> LOGGER.warning("Failed to verify content with algorithm - {}", algorithm, error));
     }
 
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
@@ -313,15 +277,11 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(digest, "Digest content cannot be null.");
         Objects.requireNonNull(signature, "Signature to be verified cannot be null.");
 
-        KeyVerifyParameters keyVerifyParameters
-            = new KeyVerifyParameters(mapKeySignatureAlgorithm(algorithm), digest, signature);
-
         KeyVerifyResult result
             = keyClient
-                .verifyWithResponse(keyName, keyVersion, BinaryData.fromObject(keyVerifyParameters),
-                    new RequestOptions().setContext(context))
-                .getValue()
-                .toObject(KeyVerifyResult.class);
+                .verifyWithResponse(vaultUrl, keyName, keyVersion, mapKeySignatureAlgorithm(algorithm), digest,
+                    signature, context)
+                .getValue();
 
         return new VerifyResult(result.isValue(), algorithm, keyId);
     }
@@ -330,30 +290,23 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
 
-        KeyOperationsParameters keyOperationsParameters = new KeyOperationsParameters(mapWrapAlgorithm(algorithm), key);
-
         return keyClient
-            .wrapKeyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                new RequestOptions().setContext(context))
-            .map(response -> {
-                KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
-
-                return new WrapResult(result.getResult(), algorithm, keyId);
-            });
+            .wrapKeyAsync(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), key, null, null, null, context)
+            .map(result -> new WrapResult(result.getResult(), algorithm, keyId))
+            .doOnRequest(ignored -> LOGGER.verbose("Wrapping key content with algorithm - {}", algorithm))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved wrapped key content with algorithm - {}", algorithm))
+            .doOnError(error -> LOGGER.warning("Failed to verify content with algorithm - {}", algorithm, error));
     }
 
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(key, "Key content to be wrapped cannot be null.");
 
-        KeyOperationsParameters keyOperationsParameters = new KeyOperationsParameters(mapWrapAlgorithm(algorithm), key);
-
         KeyOperationResult result
             = keyClient
-                .wrapKeyWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                    new RequestOptions().setContext(context))
-                .getValue()
-                .toObject(KeyOperationResult.class);
+                .wrapKeyWithResponse(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), key, null, null, null,
+                    context)
+                .getValue();
 
         return new WrapResult(result.getResult(), algorithm, keyId);
     }
@@ -362,32 +315,23 @@ public final class CryptographyClientImpl {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
-        KeyOperationsParameters keyOperationsParameters
-            = new KeyOperationsParameters(mapWrapAlgorithm(algorithm), encryptedKey);
-
         return keyClient
-            .unwrapKeyWithResponseAsync(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                new RequestOptions().setContext(context))
-            .map(response -> {
-                KeyOperationResult result = response.getValue().toObject(KeyOperationResult.class);
-
-                return new UnwrapResult(result.getResult(), algorithm, keyId);
-            });
+            .unwrapKeyAsync(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), encryptedKey, null, null, null,
+                context)
+            .map(result -> new UnwrapResult(result.getResult(), algorithm, keyId))
+            .doOnRequest(ignored -> LOGGER.verbose("Unwrapping key content with algorithm - {}", algorithm))
+            .doOnSuccess(response -> LOGGER.verbose("Retrieved unwrapped key content with algorithm - {}", algorithm))
+            .doOnError(error -> LOGGER.warning("Failed to unwrap key content with algorithm - {}", algorithm, error));
     }
 
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
-        KeyOperationsParameters keyOperationsParameters
-            = new KeyOperationsParameters(mapWrapAlgorithm(algorithm), encryptedKey);
-
-        KeyOperationResult result
-            = keyClient
-                .unwrapKeyWithResponse(keyName, keyVersion, BinaryData.fromObject(keyOperationsParameters),
-                    new RequestOptions().setContext(context))
-                .getValue()
-                .toObject(KeyOperationResult.class);
+        KeyOperationResult result = keyClient
+            .unwrapKeyWithResponse(vaultUrl, keyName, keyVersion, mapWrapAlgorithm(algorithm), encryptedKey, null, null,
+                null, context)
+            .getValue();
 
         return new UnwrapResult(result.getResult(), algorithm, keyId);
     }

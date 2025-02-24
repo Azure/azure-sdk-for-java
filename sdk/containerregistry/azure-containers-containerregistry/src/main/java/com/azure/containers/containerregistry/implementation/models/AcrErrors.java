@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Acr error response describing why the operation failed.
- */
+/** Acr error response describing why the operation failed. */
 @Fluent
 public final class AcrErrors implements JsonSerializable<AcrErrors> {
     /*
@@ -22,15 +20,13 @@ public final class AcrErrors implements JsonSerializable<AcrErrors> {
      */
     private List<AcrErrorInfo> errors;
 
-    /**
-     * Creates an instance of AcrErrors class.
-     */
+    /** Creates an instance of AcrErrors class. */
     public AcrErrors() {
     }
 
     /**
      * Get the errors property: Array of detailed error.
-     * 
+     *
      * @return the errors value.
      */
     public List<AcrErrorInfo> getErrors() {
@@ -39,7 +35,7 @@ public final class AcrErrors implements JsonSerializable<AcrErrors> {
 
     /**
      * Set the errors property: Array of detailed error.
-     * 
+     *
      * @param errors the errors value to set.
      * @return the AcrErrors object itself.
      */
@@ -48,9 +44,6 @@ public final class AcrErrors implements JsonSerializable<AcrErrors> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -60,10 +53,10 @@ public final class AcrErrors implements JsonSerializable<AcrErrors> {
 
     /**
      * Reads an instance of AcrErrors from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcrErrors if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IOException If an error occurs while reading the AcrErrors.
      */
     public static AcrErrors fromJson(JsonReader jsonReader) throws IOException {

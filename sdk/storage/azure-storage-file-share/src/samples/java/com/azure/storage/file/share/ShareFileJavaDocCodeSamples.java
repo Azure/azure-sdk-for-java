@@ -28,7 +28,6 @@ import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
-import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
@@ -1249,26 +1248,5 @@ public class ShareFileJavaDocCodeSamples {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.share.ShareFileClient.deleteIfExistsWithResponse#ShareRequestConditions-duration-context
-    }
-
-    /**
-     * Generates a code sample for using {@link ShareFileClient#createHardLink(String)},
-     * {@link ShareFileClient#createHardLinkWithResponse(ShareFileCreateHardLinkOptions, Duration, Context)}
-     */
-    public void createHardLink() {
-        ShareFileClient sourceClient = createClientWithSASToken();
-        ShareFileClient hardLinkClient = createClientWithSASToken();
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.createHardLink#String
-        ShareFileInfo response = hardLinkClient.createHardLink(sourceClient.getFilePath());
-
-        System.out.printf("Link count is is %s.", response.getPosixProperties().getLinkCount());
-        // END: com.azure.storage.file.share.ShareFileClient.createHardLink#String
-
-        // BEGIN: com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context
-        ShareFileCreateHardLinkOptions options = new ShareFileCreateHardLinkOptions(sourceClient.getFilePath());
-        ShareFileInfo response2 = hardLinkClient.createHardLinkWithResponse(options, null, null).getValue();
-
-        System.out.printf("Link count is is %s.", response2.getPosixProperties().getLinkCount());
-        // END: com.azure.storage.file.share.ShareFileClient.createHardLink#ShareFileCreateHardLinkOptions-Duration-Context
     }
 }

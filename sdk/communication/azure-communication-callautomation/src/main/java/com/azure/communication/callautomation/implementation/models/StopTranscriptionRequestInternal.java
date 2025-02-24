@@ -21,12 +21,6 @@ public final class StopTranscriptionRequestInternal implements JsonSerializable<
      */
     private String operationContext;
 
-    /*
-     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     */
-    private String operationCallbackUri;
-
     /**
      * Creates an instance of StopTranscriptionRequestInternal class.
      */
@@ -53,38 +47,10 @@ public final class StopTranscriptionRequestInternal implements JsonSerializable<
         return this;
     }
 
-    /**
-     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * 
-     * @return the operationCallbackUri value.
-     */
-    public String getOperationCallbackUri() {
-        return this.operationCallbackUri;
-    }
-
-    /**
-     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
-     * 
-     * @param operationCallbackUri the operationCallbackUri value to set.
-     * @return the StopTranscriptionRequestInternal object itself.
-     */
-    public StopTranscriptionRequestInternal setOperationCallbackUri(String operationCallbackUri) {
-        this.operationCallbackUri = operationCallbackUri;
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("operationContext", this.operationContext);
-        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
         return jsonWriter.writeEndObject();
     }
 
@@ -106,8 +72,6 @@ public final class StopTranscriptionRequestInternal implements JsonSerializable<
 
                 if ("operationContext".equals(fieldName)) {
                     deserializedStopTranscriptionRequestInternal.operationContext = reader.getString();
-                } else if ("operationCallbackUri".equals(fieldName)) {
-                    deserializedStopTranscriptionRequestInternal.operationCallbackUri = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

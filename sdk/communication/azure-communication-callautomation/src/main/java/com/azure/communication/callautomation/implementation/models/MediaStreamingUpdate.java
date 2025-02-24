@@ -98,9 +98,6 @@ public final class MediaStreamingUpdate implements JsonSerializable<MediaStreami
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

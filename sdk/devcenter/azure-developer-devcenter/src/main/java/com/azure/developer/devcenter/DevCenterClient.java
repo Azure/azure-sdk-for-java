@@ -15,10 +15,10 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
-import com.azure.developer.devcenter.implementation.DevBoxesClientImpl;
 import com.azure.developer.devcenter.implementation.DevCenterClientImpl;
 import com.azure.developer.devcenter.models.DevCenterProject;
+import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
+import com.azure.developer.devcenter.implementation.DevBoxesClientImpl;
 
 /**
  * Initializes a new instance of the synchronous DevCenterClient type.
@@ -63,15 +63,13 @@ public final class DevCenterClient {
      * Lists all projects.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -90,15 +88,13 @@ public final class DevCenterClient {
      * Gets a project.
      * <p><strong>Response Body Schema</strong></p>
      * 
-     * <pre>
-     * {@code
+     * <pre>{@code
      * {
      *     name: String (Required)
      *     description: String (Optional)
      *     maxDevBoxesPerUser: Integer (Optional)
      * }
-     * }
-     * </pre>
+     * }</pre>
      *
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
