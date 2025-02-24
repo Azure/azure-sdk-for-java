@@ -1,18 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.traits;
+package com.azure.v2.core.traits;
 
-import io.clientcore.core.credentials.TokenCredential;
+import com.azure.v2.core.credentials.TokenCredential;
 
 /**
- * A {@link io.clientcore.core.traits Client Core Trait} providing a consistent interface for setting
+ * A {@link com.azure.v2.core.traits Core V2 Trait} providing a consistent interface for setting
  * {@link TokenCredential}.
- *
+
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
  * to return the concrete type, rather than the trait type.
  *
- * @see io.clientcore.core.traits
+ * @see com.azure.v2.core.traits
  * @see TokenCredential
  */
 public interface TokenCredentialTrait<T extends TokenCredentialTrait<T>> {

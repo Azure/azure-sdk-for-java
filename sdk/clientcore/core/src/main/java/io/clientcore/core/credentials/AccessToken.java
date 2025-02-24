@@ -3,7 +3,6 @@
 
 package io.clientcore.core.credentials;
 
-import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -24,7 +23,6 @@ import java.time.OffsetDateTime;
  * </p>
  *
  * @see io.clientcore.core.credentials
- * @see io.clientcore.core.credentials.TokenCredential
  */
 public class AccessToken {
     private final String token;
@@ -34,6 +32,7 @@ public class AccessToken {
 
     /**
      * Creates an access token instance.
+     * Defaults to Bearer for {@code tokenType}.
      *
      * @param token the token string.
      * @param expiresAt the expiration time.
@@ -47,6 +46,7 @@ public class AccessToken {
 
     /**
      * Creates an access token instance.
+     * Defaults to Bearer for {@code tokenType}.
      *
      * @param token the token string.
      * @param expiresAt the expiration time.
@@ -121,28 +121,5 @@ public class AccessToken {
      */
     public String getTokenType() {
         return tokenType;
-    }
-
-    /**
-     * Gets the {@link Duration} until the {@link AccessToken} expires.
-     * <p>
-     * The {@link Duration} is based on the {@link OffsetDateTime#now() current time} and may return a negative
-     * {@link Duration}, indicating that the {@link AccessToken} has expired.
-     *
-     * @return The {@link Duration} until the {@link AccessToken} expires.
-     */
-    public Duration getDurationUntilExpiration() {
-        // Call Duration.between with the 'cache.getExpiresAt' as the start Temporal and 'now' as the end Temporal as
-        // some TokenCredential implementations may use 'OffsetDateTime.MAX' as the expiration time. When comparing the
-        // time between now and 'OffsetDateTime.MAX', depending on the Java version, it may attempt to change the end
-        // Temporal's time zone to match the start Temporal's time zone. Since 'OffsetDateTime.MAX' uses the most
-        // minimal time zone offset, if the now time is using anything before that it will result in
-        // 'OffsetDateTime.MAX' needing to roll over its time to the next day which results in the 'year' value being
-        // incremented to a value outside the 'year' bounds allowed by OffsetDateTime.
-        //
-        // Changing to having the 'cache.getExpiresAt' means it is impossible for this rollover to occur as the start
-        // Temporal doesn't have its time zone modified. But it now means the time between value is inverted, so the
-        // result is 'negated()' to maintain current behaviors.
-        return Duration.between(expiresAt, OffsetDateTime.now()).negated();
     }
 }

@@ -3,18 +3,17 @@
 
 package com.azure.v2.core.http.policy;
 
-import com.azure.v2.core.credentials.AzureTokenRequestContext;
+import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.implementation.AccessTokenCache;
 import com.azure.v2.core.implementation.http.policy.AuthorizationChallengeParser;
 import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.credentials.AccessToken;
-import io.clientcore.core.credentials.TokenCredential;
-import io.clientcore.core.credentials.TokenRequestContext;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.BearerTokenAuthenticationPolicy;
+import io.clientcore.core.http.pipeline.HttpCredentialPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
@@ -40,8 +39,8 @@ import java.util.Objects;
  * @see HttpRequest
  * @see Response
  */
-public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticationPolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(AzureBearerTokenAuthenticationPolicy.class);
+public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
     private static final String BEARER = "Bearer";
 
     private final String[] scopes;
@@ -53,8 +52,7 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
      * @param credential the token credential to authenticate the request
      * @param scopes the scopes of authentication the credential should get token for
      */
-    public AzureBearerTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {
-        super(credential, scopes);
+    public BearerTokenAuthenticationPolicy(TokenCredential credential, String... scopes) {
         Objects.requireNonNull(credential);
         this.scopes = scopes;
         this.cache = new AccessTokenCache(credential);
@@ -65,9 +63,8 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
      *
      * @param httpRequest The request context.
      */
-    @Override
     public void authorizeRequest(HttpRequest httpRequest) {
-        setAuthorizationHeaderHelper(httpRequest, new AzureTokenRequestContext().addScopes(scopes).setCaeEnabled(true),
+        setAuthorizationHeaderHelper(httpRequest, new TokenRequestContext().addScopes(scopes).setCaeEnabled(true),
             false);
     }
 
@@ -83,10 +80,9 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
      * @param response The Http Response containing the authentication challenge header.
      * @return A boolean indicating if containing the {@link TokenRequestContext} for re-authentication
      */
-    @Override
     public boolean authorizeRequestOnChallenge(HttpRequest httpRequest, Response<?> response) {
         if (AuthorizationChallengeParser.isCaeClaimsChallenge(response)) {
-            AzureTokenRequestContext tokenRequestContext = getTokenRequestContextForCaeChallenge(response);
+            TokenRequestContext tokenRequestContext = getTokenRequestContextForCaeChallenge(response);
             if (tokenRequestContext != null) {
                 setAuthorizationHeader(httpRequest, tokenRequestContext);
                 return true;
@@ -102,14 +98,13 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
      * @param request the HTTP request.
      * @param tokenRequestContext the token request context to be used for token acquisition.
      */
-    @Override
     public void setAuthorizationHeader(HttpRequest request, TokenRequestContext tokenRequestContext) {
         setAuthorizationHeaderHelper(request, tokenRequestContext, true);
     }
 
     private void setAuthorizationHeaderHelper(HttpRequest httpRequest, TokenRequestContext tokenRequestContext,
         boolean checkToForceFetchToken) {
-        AccessToken token = cache.getTokenSync(tokenRequestContext, checkToForceFetchToken);
+        AccessToken token = cache.getToken(tokenRequestContext, checkToForceFetchToken);
         setAuthorizationHeader(httpRequest.getHeaders(), token.getToken());
     }
 
@@ -145,7 +140,7 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
         return httpResponse;
     }
 
-    private AzureTokenRequestContext getTokenRequestContextForCaeChallenge(Response<?> response) {
+    private TokenRequestContext getTokenRequestContextForCaeChallenge(Response<?> response) {
         String decodedClaims = null;
         String encodedClaims
             = AuthorizationChallengeParser.getChallengeParameterFromResponse(response, "Bearer", "claims");
@@ -164,6 +159,6 @@ public class AzureBearerTokenAuthenticationPolicy extends BearerTokenAuthenticat
             return null;
         }
 
-        return new AzureTokenRequestContext().setClaims(decodedClaims).addScopes(scopes).setCaeEnabled(true);
+        return new TokenRequestContext().setClaims(decodedClaims).addScopes(scopes).setCaeEnabled(true);
     }
 }
