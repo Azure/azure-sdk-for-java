@@ -205,7 +205,6 @@ public class FeatureManager {
     private Mono<EvaluationEvent> assignAllocation(Mono<EvaluationEvent> monoEvent) {
 
         return monoEvent.map(event -> {
-
             Feature featureFlag = event.getFeature();
 
             if (featureFlag.getVariants() == null || featureFlag.getAllocation() == null) {
@@ -243,6 +242,13 @@ public class FeatureManager {
         }
         this.assignVariantOverride(event.getFeature().getVariants(),
             event.getFeature().getAllocation().getDefaultWhenEnabled(), true, event);
+        Feature featureFlag = event.getFeature();
+
+        if (featureFlag.getAllocation() != null) {
+            event.setVariant(
+                this.variantNameToVariant(featureFlag, featureFlag.getAllocation().getDefaultWhenEnabled()));
+            return;
+        }
     }
 
     private void assignVariant(EvaluationEvent event) {
@@ -313,10 +319,6 @@ public class FeatureManager {
 
         if (variantName == null) {
             this.assignDefaultEnabledVariant(event);
-            if (featureFlag.getAllocation() != null) {
-                event.setVariant(this.variantNameToVariant(featureFlag, allocation.getDefaultWhenEnabled()));
-                return;
-            }
         }
 
         event.setVariant(variantNameToVariant(featureFlag, variantName));
