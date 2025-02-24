@@ -362,7 +362,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
                 }
 
                 eventData.setPartitionKeyAnnotation(options.getPartitionKey());
-                return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
+                return producer.enqueueEvent(eventData).then(Mono.fromCallable(() -> getBufferedEventCount()));
             });
         } else {
             return partitionIdsMono.flatMap(ids -> {
@@ -467,7 +467,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         final Sinks.Many<EventData> eventSink = Sinks.many().unicast().onBackpressureBuffer(eventQueue);
 
         return new EventHubBufferedPartitionProducer(client, partitionId, clientOptions, retryOptions, eventSink,
-            eventQueue, tracer);
+            tracer);
     }
 
     /**
