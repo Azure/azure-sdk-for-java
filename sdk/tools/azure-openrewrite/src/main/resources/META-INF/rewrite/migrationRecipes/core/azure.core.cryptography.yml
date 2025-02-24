@@ -1,0 +1,42 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.cryptography
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.migration.azure.core.cryptography
+displayName: Migrate from azure.core.cryptography to next generation stack
+description: This recipe migrates azure.core.cryptography package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # AsyncKeyEncryptionKey
+  # --------------------------------------------------------------------
+
+  # TODO: Async Library. Port to sync.
+
+  # --------------------------------------------------------------------
+  # AsyncKeyEncryptionKeyResolver
+  # --------------------------------------------------------------------
+
+  # TODO: Async Library. Port to sync.
+
+  # --------------------------------------------------------------------
+  # KeyEncryptionKey
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.cryptography.KeyEncryptionKey
+      newFullyQualifiedTypeName: com.azure.v2.core.cryptography.KeyEncryptionKey
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # KeyEncryptionKeyResolver
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.cryptography.KeyEncryptionKeyResolver
+      newFullyQualifiedTypeName: com.azure.v2.core.cryptography.KeyEncryptionKeyResolver
+
+  # TODO: Migrate Methods and Fields
