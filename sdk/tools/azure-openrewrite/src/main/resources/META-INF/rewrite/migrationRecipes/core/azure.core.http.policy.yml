@@ -1,0 +1,55 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for azure.core.http.policy
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.migration.azure.core.http.policy
+displayName: Migrate from azure.core.http.policy to next generation stack
+description: This recipe migrates azure.core.http.policy package to the next generation stack.
+recipeList:
+
+  # --------------------------------------------------------------------
+  # AddDatePolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.AddDatePolicy
+      newFullyQualifiedTypeName: com.azure.v2.core.http.policy.AddDatePolicy
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # AddHeadersFromContextPolicy
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # AddHeadersPolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.AddHeadersPolicy
+      newFullyQualifiedTypeName: com.azure.v2.core.http.policy.AddHeadersPolicy
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # AfterRetryPolicyProvider
+  # --------------------------------------------------------------------
+
+  # TODO: API Removed. Triage replacement
+
+  # --------------------------------------------------------------------
+  # AzureKeyCredentialPolicy
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.policy.AzureKeyCredentialPolicy
+      newFullyQualifiedTypeName: com.azure.v2.core.http.policy.AzureKeyCredentialPolicy
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+
