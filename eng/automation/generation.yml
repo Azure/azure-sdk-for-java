@@ -53,7 +53,7 @@ steps:
       export PATH=$JAVA_HOME_11_X64/bin:$PATH
       java -version
       set -x
-      ./eng/mgmt/automation/generate.py --tsp-config "$(TSP_CONFIG)" --version "$(VERSION)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
+      ./eng/automation/generate.py --tsp-config "$(TSP_CONFIG)" --version "$(VERSION)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
     displayName: Generation from TypeSpec
     condition: ${{ eq(parameters.RELEASE_TYPE, 'TypeSpec') }}
 
@@ -61,7 +61,7 @@ steps:
       export PATH=$JAVA_HOME_11_X64/bin:$PATH
       java -version
       set -x
-      ./eng/mgmt/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
+      ./eng/automation/generate.py --readme "$(README)" --tag "$(TAG)" --autorest-options="$(AUTOREST_OPTIONS)" --service "$(SERVICE)" --version "$(VERSION)" --suffix "$(SUFFIX)" --auto-commit-external-change --user-name "azure-sdk" --user-email "azuresdk@microsoft.com"
     displayName: Generation from Swagger
     condition: ${{ eq(parameters.RELEASE_TYPE, 'Swagger') }}
 
