@@ -155,9 +155,9 @@ public final class AccessTokenCache {
 
         Duration tte = getDurationUntilExpiration(cache);
 
-        LOGGER.atLevel(LogLevel.VERBOSE)
-            .log(String.format("%s. expiresAt: %s, tteSeconds: %s, retryAfterSeconds: %s, expired: %s",
-                cache.getExpiresAt(), String.valueOf(tte.abs().getSeconds()), REFRESH_DELAY_STRING, tte.isNegative()));
+        LOGGER.atLevel(level)
+            .log(String.format("%s. expiresAt: %s, tteSeconds: %s, retryAfterSeconds: %s, expired: %s", prefix,
+                cache.getExpiresAt(), tte.abs().getSeconds(), REFRESH_DELAY_STRING, tte.isNegative()));
     }
 
     private AccessToken getToken() {
