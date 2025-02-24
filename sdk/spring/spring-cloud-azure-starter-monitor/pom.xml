@@ -93,8 +93,8 @@
       <version>2.12.0</version> <!-- {x-version-update;io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;external_dependency} -->
     </dependency>
 
-    <!-- Redeclaration of the OpenTelemetry exporter dependencies if Spring Monitor is released
-     and the OpenTelemetry exporter on Maven has older OpenTelemetry versions -->
+    <!-- Redeclaration of the OpenTelemetry Autoconfigure dependencies if Spring Monitor is released
+     and the OpenTelemetry Autoconfigure on Maven has older OpenTelemetry versions -->
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
