@@ -43,8 +43,8 @@ public class RuntimeStackTests {
             }
         }).collect(Collectors.toSet());
         Set<String> supportedStacks = RuntimeStack.getAll().stream().map(RuntimeStack::toString).collect(Collectors.toSet());
-        Set<String> newStacks = latestStacks.stream().filter(stack -> !allCurrentStacks.contains(stack)).collect(Collectors.toSet());
-        Set<String> newDeprecated = supportedStacks.stream().filter(stack -> !latestStacks.contains(stack)).collect(Collectors.toSet());
+        List<String> newStacks = latestStacks.stream().filter(stack -> !allCurrentStacks.contains(stack)).distinct().sorted().collect(Collectors.toList());
+        List<String> newDeprecated = supportedStacks.stream().filter(stack -> !latestStacks.contains(stack)).distinct().sorted().collect(Collectors.toList());
         System.out.println("New stacks: " + newStacks);
         System.out.println("New deprecated stacks: " + newDeprecated);
     }
