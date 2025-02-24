@@ -3,7 +3,7 @@
 
 package io.clientcore.core.models;
 
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 
 /**
  * Code snippets for {@link Context}

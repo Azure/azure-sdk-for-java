@@ -3,7 +3,7 @@
 
 package io.clientcore.core.util.union;
 
-import io.clientcore.core.util.Union;
+import io.clientcore.core.utils.Union;
 
 // This is a simple example of how to use the Union type. It allows for multiple types to be stored in a single
 // property, and provides methods to consume the value based on its type.

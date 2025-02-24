@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.OPERATION_NAME_KEY;
@@ -68,15 +70,44 @@ public final class OperationInstrumentation {
     }
 
     /**
-     * Determines whether the client call should be instrumented.
+     * Instruments a client call which includes distributed tracing and duration metric.
+     * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
+     * <p>
+     * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
      *
-     * <!-- begin io.clientcore.core.telemetry.instrumentation.shouldinstrument -->
-     * <!-- end io.clientcore.core.telemetry.instrumentation.shouldinstrument -->
+     * @param call the call to instrument. Note: the call is executed in the scope of the instrumentation and should use updated request options passed to it.
+     * @param requestOptions the initial request options.
+     * @param <TResponse> the type of the response.
+     * @return the response.
+     * @throws RuntimeException if the call throws a runtime exception.
+     */
+    public <TResponse> TResponse instrument(BiFunction<RequestOptions, InstrumentationContext, TResponse> call, RequestOptions requestOptions) {
+        if (!shouldInstrument(requestOptions)) {
+            return call.apply(requestOptions, NoopInstrumentationContext.INSTANCE);
+        }
+
+        if (requestOptions == null || requestOptions == RequestOptions.none()) {
+            requestOptions = new RequestOptions();
+        }
+
+        OperationInstrumentation.Scope scope = startScope(requestOptions);
+        try {
+            return call.apply(requestOptions, scope.getInstrumentationContext());
+        } catch (RuntimeException t) {
+            scope.setError(t);
+            throw t;
+        } finally {
+            scope.close();
+        }
+    }
+
+    /**
+     * Determines whether the client call should be instrumented.
      *
      * @param requestOptions the request options.
      * @return {@code true} if the client call should be instrumented, otherwise {@code false}.
      */
-    public boolean shouldInstrument(RequestOptions requestOptions) {
+    private boolean shouldInstrument(RequestOptions requestOptions) {
         return instrumentation.shouldInstrument(spanKind,
             requestOptions == null ? null : requestOptions.getInstrumentationContext());
     }
@@ -90,19 +121,12 @@ public final class OperationInstrumentation {
      * The scope MUST be closed on the same thread that created it.
      * <p>
      * <strong>Closing the returned scope end the underlying span and records duration measurement.</strong>
-     *
-     * <!-- begin io.clientcore.core.telemetry.instrumentation.startscope -->
-     * <!-- end io.clientcore.core.telemetry.instrumentation.startscope -->
+     * <p>
      *
      * @param requestOptions the request options.
      * @return the scope.
      */
-    public Scope startScope(RequestOptions requestOptions) {
-        Objects.requireNonNull(requestOptions, "'requestOptions' cannot be null");
-        if (!shouldInstrument(requestOptions)) {
-            return Scope.NOOP;
-        }
-
+    private Scope startScope(RequestOptions requestOptions) {
         InstrumentationContext parent = requestOptions.getInstrumentationContext();
         Scope scope = new Scope(operationName, spanKind, commonAttributes, parent, tracer, callDuration);
 
@@ -116,8 +140,7 @@ public final class OperationInstrumentation {
     /**
      * Represents a scope for the client call that combines span and duration measurement.
      */
-    public static class Scope implements AutoCloseable {
-        static final Scope NOOP = new Scope();
+    private static class Scope implements AutoCloseable {
         private final Span span;
         private final InstrumentationContext instrumentationContext;
         private final InstrumentationAttributes commonAttributes;
@@ -125,14 +148,6 @@ public final class OperationInstrumentation {
         private final DoubleHistogram callDuration;
         private Throwable error;
         private TracingScope tracingScope;
-
-        private Scope() {
-            this.span = null;
-            this.instrumentationContext = NoopInstrumentationContext.INSTANCE;
-            this.commonAttributes = null;
-            this.startTimeNs = 0;
-            this.callDuration = null;
-        }
 
         Scope(String operationName, SpanKind kind, InstrumentationAttributes commonAttributes,
             InstrumentationContext parent, Tracer tracer, DoubleHistogram callDuration) {

@@ -3,11 +3,12 @@
 
 package io.clientcore.core.util;
 
-import io.clientcore.core.util.configuration.Configuration;
-import io.clientcore.core.util.configuration.ConfigurationBuilder;
-import io.clientcore.core.util.configuration.ConfigurationProperty;
-import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
-import io.clientcore.core.util.configuration.ConfigurationSource;
+import io.clientcore.core.utils.ExpandableEnum;
+import io.clientcore.core.utils.configuration.Configuration;
+import io.clientcore.core.utils.configuration.ConfigurationBuilder;
+import io.clientcore.core.utils.configuration.ConfigurationProperty;
+import io.clientcore.core.utils.configuration.ConfigurationPropertyBuilder;
+import io.clientcore.core.utils.configuration.ConfigurationSource;
 
 import java.time.Duration;
 import java.util.Collections;

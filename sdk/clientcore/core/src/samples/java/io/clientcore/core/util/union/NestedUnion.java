@@ -1,7 +1,7 @@
 package io.clientcore.core.util.union;
 
 import io.clientcore.core.implementation.GenericParameterizedType;
-import io.clientcore.core.util.Union;
+import io.clientcore.core.utils.Union;
 
 import java.util.Arrays;
 import java.util.List;

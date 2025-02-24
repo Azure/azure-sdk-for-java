@@ -3,7 +3,7 @@
 
 package io.clientcore.core.util.union;
 
-import io.clientcore.core.util.Union;
+import io.clientcore.core.utils.Union;
 
 // This is an example of a Model class that uses the Union type to allow for multiple types to be stored in a single
 // property. This is useful when you have a property that can be one of a few types, but you want to ensure that the

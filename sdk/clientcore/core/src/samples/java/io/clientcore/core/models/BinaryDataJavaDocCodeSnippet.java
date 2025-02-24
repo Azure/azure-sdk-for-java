@@ -3,10 +3,10 @@
 
 package io.clientcore.core.models;
 
+import io.clientcore.core.implementation.utils.JsonSerializer;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.implementation.util.JsonSerializer;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -72,30 +72,6 @@ public class BinaryDataJavaDocCodeSnippet {
         BinaryData binaryData = BinaryData.fromBytes(data);
         System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
         // END: io.clientcore.core.util.BinaryData.fromBytes#byte
-    }
-
-    /**
-     * Codesnippets for {@link BinaryData#fromByteBuffer(ByteBuffer)}.
-     */
-    public void fromByteBuffer() {
-        // BEGIN: io.clientcore.core.util.BinaryData.fromByteBuffer#ByteBuffer
-        final ByteBuffer data = ByteBuffer.wrap("Some Data".getBytes(StandardCharsets.UTF_8));
-        BinaryData binaryData = BinaryData.fromByteBuffer(data);
-        System.out.println(binaryData);
-        // END: io.clientcore.core.util.BinaryData.fromByteBuffer#ByteBuffer
-    }
-
-    /**
-     * Codesnippets for {@link BinaryData#fromListByteBuffer(List)}.
-     */
-    public void fromListByteBuffer() {
-        // BEGIN: io.clientcore.core.util.BinaryData.fromListByteBuffer#List
-        final List<ByteBuffer> data = Stream.of("Some ", "data")
-            .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
-            .collect(Collectors.toList());
-        BinaryData binaryData = BinaryData.fromListByteBuffer(data);
-        System.out.println(binaryData);
-        // END: io.clientcore.core.util.BinaryData.fromListByteBuffer#List
     }
 
     /**

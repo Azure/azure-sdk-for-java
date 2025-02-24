@@ -4,7 +4,7 @@
 package io.clientcore.core.util.union;
 
 import io.clientcore.core.implementation.GenericParameterizedType;
-import io.clientcore.core.util.Union;
+import io.clientcore.core.utils.Union;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
