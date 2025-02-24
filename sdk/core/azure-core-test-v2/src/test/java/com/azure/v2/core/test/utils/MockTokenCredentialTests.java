@@ -3,8 +3,8 @@
 
 package com.azure.v2.core.test.utils;
 
-import com.azure.v2.core.credentials.AccessToken;
 import com.azure.v2.core.credentials.TokenRequestContext;
+import io.clientcore.core.credentials.AccessToken;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
