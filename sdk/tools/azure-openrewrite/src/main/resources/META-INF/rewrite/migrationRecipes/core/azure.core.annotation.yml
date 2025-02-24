@@ -8,6 +8,210 @@ name: com.azure.openrewrite.migration.azure.core.annotation
 displayName: Migrate from azure.core.annotation to next generation stack
 description: This recipe migrates the Azure Storage Core library to the next generation stack.
 recipeList:
+  # --------------------------------------------------------------------
+  # BodyParam
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Delete
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ExpectedResponses
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Fluent
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ForumParam
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Generated
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Get
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Head
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HeaderCollection
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HeaderParam
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Headers
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Host
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # HostParam
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Immutable
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # JsonFlatten
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Options
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Patch
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # PathParam
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Post
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # Put
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # QueryParam
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ResumeOperation
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ReturnType
+  # --------------------------------------------------------------------
+
   - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.annotation.BodyParam
-      newFullyQualifiedTypeName: io.clientcore.core.annotation.BodyParam
+      oldFullyQualifiedTypeName: com.azure.core.annotation.ReturnType
+      newFullyQualifiedTypeName: io.clientcore.core.annotations.ReturnType
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ReturnValueWireType
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ServiceClient
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.annotation.ServiceClient
+      newFullyQualifiedTypeName: io.clientcore.core.annotations.ServiceClient
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ServiceClientBuilder
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.annotation.ServiceClientBuilder
+      newFullyQualifiedTypeName: io.clientcore.core.annotations.ServiceClientBuilder
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ServiceClientProtocol
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # ServiceInterface
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.annotation.ServiceInterface
+      newFullyQualifiedTypeName: io.clientcore.core.annotations.ServiceInterface
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # ServiceMethod
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.annotation.ServiceMethod
+      newFullyQualifiedTypeName: io.clientcore.core.annotations.ServiceMethod
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # UnexpectedResponseExceptionType
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+  # --------------------------------------------------------------------
+  # UnexpectedResponseExceptionTypes
+  # --------------------------------------------------------------------
+
+  # TODO: Removed API. Triage replacement
+
+
