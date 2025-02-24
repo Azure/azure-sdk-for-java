@@ -1,11 +1,116 @@
 # Release History
 
-## 1.0.0 (2025-02-21)
+## 1.0.0 (2025-02-24)
 
 - Azure Resource Manager Device Registry client library for Java. This package contains Microsoft Azure SDK for Device Registry Management SDK. Microsoft.DeviceRegistry Resource Provider management API. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
-### Other Changes
-- Initial GA release of azure-resourcemanager-deviceregistry.
+### Breaking Changes
+
+#### `models.DiscoveredEvent` was removed
+
+#### `models.Schema` was removed
+
+#### `models.DiscoveredAsset$Definition` was removed
+
+#### `models.SchemaProperties` was removed
+
+#### `models.DiscoveredAsset$DefinitionStages` was removed
+
+#### `models.DiscoveredAssets` was removed
+
+#### `implementation.models.SchemaListResult` was removed
+
+#### `models.SystemAssignedServiceIdentityType` was removed
+
+#### `models.SchemaRegistry$Definition` was removed
+
+#### `implementation.models.DiscoveredAssetEndpointProfileListResult` was removed
+
+#### `models.DiscoveredAssetEndpointProfile$Definition` was removed
+
+#### `models.SchemaVersion` was removed
+
+#### `models.DiscoveredDataPoint` was removed
+
+#### `models.Schema$DefinitionStages` was removed
+
+#### `models.Format` was removed
+
+#### `models.SchemaRegistryUpdateProperties` was removed
+
+#### `models.DiscoveredAssetEndpointProfile` was removed
+
+#### `models.SystemAssignedServiceIdentity` was removed
+
+#### `models.SchemaRegistryProperties` was removed
+
+#### `models.DiscoveredAssetEndpointProfile$DefinitionStages` was removed
+
+#### `models.DiscoveredAssetEndpointProfiles` was removed
+
+#### `models.SchemaVersion$DefinitionStages` was removed
+
+#### `models.SchemaVersionProperties` was removed
+
+#### `implementation.models.SchemaVersionListResult` was removed
+
+#### `models.DiscoveredAssetProperties` was removed
+
+#### `models.DiscoveredAssetEndpointProfile$UpdateStages` was removed
+
+#### `models.DiscoveredAssetEndpointProfileProperties` was removed
+
+#### `models.SchemaRegistry$UpdateStages` was removed
+
+#### `models.DiscoveredAssetEndpointProfileUpdateProperties` was removed
+
+#### `models.DiscoveredAsset$Update` was removed
+
+#### `implementation.models.SchemaRegistryListResult` was removed
+
+#### `models.DiscoveredAssetUpdateProperties` was removed
+
+#### `models.SchemaRegistry$Update` was removed
+
+#### `models.SchemaType` was removed
+
+#### `models.SchemaRegistries` was removed
+
+#### `models.SchemaRegistryUpdate` was removed
+
+#### `models.DiscoveredAsset$UpdateStages` was removed
+
+#### `models.Schema$Definition` was removed
+
+#### `models.SchemaVersion$Definition` was removed
+
+#### `models.Schemas` was removed
+
+#### `models.DiscoveredAssetEndpointProfile$Update` was removed
+
+#### `models.SchemaRegistry$DefinitionStages` was removed
+
+#### `models.SchemaVersions` was removed
+
+#### `models.DiscoveredAssetUpdate` was removed
+
+#### `models.DiscoveredAssetEndpointProfileUpdate` was removed
+
+#### `models.SchemaRegistry` was removed
+
+#### `implementation.models.DiscoveredAssetListResult` was removed
+
+#### `models.DiscoveredDataset` was removed
+
+#### `models.DiscoveredAsset` was removed
+
+#### `DeviceRegistryManager` was modified
+
+* `schemas()` was removed
+* `discoveredAssetEndpointProfiles()` was removed
+* `schemaVersions()` was removed
+* `discoveredAssets()` was removed
+* `schemaRegistries()` was removed
 
 ## 1.0.0-beta.2 (2024-12-16)
 
