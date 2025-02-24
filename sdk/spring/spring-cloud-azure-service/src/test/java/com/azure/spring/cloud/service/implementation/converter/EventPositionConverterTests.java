@@ -53,12 +53,13 @@ class EventPositionConverterTests {
     }
 
     @Test
-    void shouldGetLatestOffsetForUnknownOffset() {
+    void shouldSetOffsetForNonNumericalOffset() {
+        String randomValue = "random-unknown";
         StartPositionProperties properties = new StartPositionProperties();
-        properties.setOffset("random-unknown");
+        properties.setOffset(randomValue);
 
         EventPosition converted = EVENT_POSITION_CONVERTER.convert(properties);
-        assertEquals(EventPosition.latest(), converted);
+        assertEquals(EventPosition.fromOffsetString(randomValue), converted);
     }
 
     @Test
