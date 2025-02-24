@@ -190,7 +190,7 @@ public class FeatureManager {
         }
 
         if (!featureFlag.isEnabled()) {
-            this.assignDefaultDisabledVariant(event);
+            this.assignDefaultDisabledReason(event);
             if (featureFlag.getAllocation() != null) {
                 String variantName = featureFlag.getAllocation().getDefaultWhenDisabled();
                 event.setVariant(this.variantNameToVariant(featureFlag, variantName));
@@ -217,7 +217,7 @@ public class FeatureManager {
             }
 
             if (!event.isEnabled()) {
-                this.assignDefaultDisabledVariant(event);
+                this.assignDefaultDisabledReason(event);
                 event.setVariant(
                     this.variantNameToVariant(featureFlag, featureFlag.getAllocation().getDefaultWhenDisabled()));
                 return event;
@@ -227,7 +227,7 @@ public class FeatureManager {
         });
     }
 
-    private void assignDefaultDisabledVariant(EvaluationEvent event) {
+    private void assignDefaultDisabledReason(EvaluationEvent event) {
         event.setReason(VariantAssignmentReason.DEFAULT_WHEN_DISABLED);
         if (event.getFeature().getAllocation() == null) {
             return;
