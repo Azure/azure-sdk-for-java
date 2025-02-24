@@ -36,7 +36,7 @@ public final class AccessTokenCache {
     private final Lock lock;
 
     /**
-     * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
+     * Creates an instance of AccessTokenCache.
      *
      * @param tokenCredential the token credential to be used to acquire the token.
      */
@@ -55,7 +55,7 @@ public final class AccessTokenCache {
     }
 
     /**
-     * Synchronously get a token from either the cache or replenish the cache with a new token.
+     * Get a token from either the cache or replenish the cache with a new token.
      *
      * @param tokenRequestContext The request context for token acquisition.
      * @param checkToForceFetchToken The flag indicating whether to force fetch a new token or not.
@@ -70,7 +70,7 @@ public final class AccessTokenCache {
         }
     }
 
-    private AccessToken retrieveToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
+    private AccessToken retrieveToken(TokenRequestContext tokenRequestContext, boolean forceFetchToken) {
         if (tokenRequestContext == null) {
             throw LOGGER
                 .logThrowableAsError(new IllegalArgumentException("The token request context input cannot be null."));
@@ -85,7 +85,7 @@ public final class AccessTokenCache {
         // Check if the incoming token request context is different from the cached one. A different
         // token request context, requires to fetch a new token as the cached one won't work for the
         // passed in token request context.
-        boolean forceRefresh = (checkToForceFetchToken && checkIfForceRefreshRequired(tokenRequestContext))
+        boolean forceRefresh = (forceFetchToken && checkIfForceRefreshRequired(tokenRequestContext))
             || this.tokenRequestContext == null;
 
         if (forceRefresh) {

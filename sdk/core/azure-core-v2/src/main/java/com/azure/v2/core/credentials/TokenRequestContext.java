@@ -3,6 +3,8 @@
 
 package com.azure.v2.core.credentials;
 
+import io.clientcore.core.annotations.Metadata;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +34,7 @@ import java.util.Objects;
  *
  * <li>Pass the TokenRequestContext instance to the appropriate authentication client or mechanism when
  * requesting an access token. The specific method or API to do this will depend on the authentication mechanism
- * you are using. For example, if you are using Azure Identity for MS Entra authentication, you would pass the
+ * you are using. For example, if you are using Azure Identity for Microsoft Entra authentication, you would pass the
  * AzureTokenRequestContext instance to the getToken method of the {@link TokenCredential} implementation.</li>
  *
  * <li>The authentication client or mechanism will handle the token request and return an access token that can
@@ -42,7 +44,6 @@ import java.util.Objects;
  * @see com.azure.v2.core.credentials
  * @see TokenCredential
  */
-
 public class TokenRequestContext {
     private final List<String> scopes;
     private String claims;

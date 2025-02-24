@@ -8,7 +8,7 @@ import io.clientcore.core.credentials.AccessToken;
 import java.time.OffsetDateTime;
 
 /**
- * The Access Token Cache Info.
+ * The Access Token Cache Info holds the metadata used by {@link AccessTokenCache} to proactively refresh the token.
  */
 public class AccessTokenCacheInfo {
     private final AccessToken cache;

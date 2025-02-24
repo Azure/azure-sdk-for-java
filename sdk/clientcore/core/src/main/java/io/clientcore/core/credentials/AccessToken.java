@@ -38,10 +38,7 @@ public class AccessToken {
      * @param expiresAt the expiration time.
      */
     public AccessToken(String token, OffsetDateTime expiresAt) {
-        this.token = token;
-        this.expiresAt = expiresAt;
-        this.refreshAt = null;
-        this.tokenType = "Bearer";
+        this(token, expiresAt, null, "Bearer");
     }
 
     /**
@@ -53,10 +50,7 @@ public class AccessToken {
      * @param refreshAt the next token refresh time.
      */
     public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshAt) {
-        this.token = token;
-        this.expiresAt = expiresAt;
-        this.refreshAt = refreshAt;
-        this.tokenType = "Bearer";
+        this(token, expiresAt, refreshAt, "Bearer");
     }
 
     /**
@@ -94,11 +88,6 @@ public class AccessToken {
 
     /**
      * Gets the time when the token should refresh next, in UTC.
-     *
-     * <p>Note: This value can be null as it is not always provided. When it is provided,
-     * it overrides the default refresh offset used by the
-     * {@link io.clientcore.core.http.pipeline.BearerTokenAuthenticationPolicy} to proactively refresh the token.</p>
-     *
      * @return The time when the token should refresh next, in UTC.
      */
     public OffsetDateTime getRefreshAt() {

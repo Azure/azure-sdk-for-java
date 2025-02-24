@@ -7,14 +7,13 @@ import io.clientcore.core.credentials.AccessToken;
 
 /**
  * <p>
- * Token Credential interface serves as a fundamental component for managing and providing access tokens.
+ * The Token Credential interface serves as a fundamental component for managing and providing access tokens.
  * </p>
  *
  * <p>
- * The {@link TokenCredential} interface, offers {@link TokenCredential#getToken(TokenRequestContext)} methods.
- * These methods are responsible for retrieving an access token that can be used for bearer token authentication.
- * The scopes parameter specified as part of {@link TokenRequestContext} represents the resources
- * or permissions required for the token.
+ * The {@link TokenCredential#getToken(TokenRequestContext)} method is responsible for retrieving an access token that
+ * can be used for bearer token authentication. The scopes parameter specified as part of {@link TokenRequestContext}
+ * represents the resources or permissions required for the token.
  * </p>
  *
  * <p>
