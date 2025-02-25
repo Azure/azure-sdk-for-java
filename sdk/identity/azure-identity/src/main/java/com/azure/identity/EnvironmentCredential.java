@@ -65,6 +65,7 @@ import reactor.core.publisher.Mono;
  * @see EnvironmentCredentialBuilder
  */
 @Immutable
+@SuppressWarnings("deprecation")
 public class EnvironmentCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(EnvironmentCredential.class);
     private final TokenCredential tokenCredential;

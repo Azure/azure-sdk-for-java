@@ -38,7 +38,11 @@ import java.util.List;
  * <!-- end com.azure.identity.credential.usernamepasswordcredential.construct -->
  *
  * @see UsernamePasswordCredential
+ *
+ * @deprecated This credential is deprecated because it doesn't support multifactor authentication (MFA). See <a href="https://aka.ms/azsdk/identity/mfa">here</a> for details about MFA enforcement for Entra ID and migration guidance.
+ *
  */
+@Deprecated
 public class UsernamePasswordCredentialBuilder extends AadCredentialBuilderBase<UsernamePasswordCredentialBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(UsernamePasswordCredentialBuilder.class);
     private static final String CLASS_NAME = UsernamePasswordCredentialBuilder.class.getSimpleName();

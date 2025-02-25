@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Marked `UsernamePasswordCredential` and `UsernamePasswordCredentialBuilder` as deprecated. See https://aka.ms/azsdk/identity/mfa for details about MFA enforcement and migration guidance.  
+
 ## 1.15.3 (2025-02-20)
 
 ### Other Changes
