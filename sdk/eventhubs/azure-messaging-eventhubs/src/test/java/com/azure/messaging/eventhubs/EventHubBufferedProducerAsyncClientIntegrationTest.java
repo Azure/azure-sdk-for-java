@@ -114,11 +114,12 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final List<EventData> eventsToPublish = IntStream.range(0, numberOfEvents)
             .mapToObj(index -> new EventData(String.valueOf(index)))
             .collect(Collectors.toList());
+        final int expectedBufferSize = eventsToPublish.size();
 
         // Waiting for at least maxWaitTime because events will get published by then.
-        StepVerifier.create(producer.enqueueEvents(eventsToPublish)).assertNext(integer -> {
-            assertEquals(0, integer, "Do not expect anymore events in queue.");
-        }).thenAwait(maxWaitTime).expectComplete().verify(TIMEOUT);
+            StepVerifier.create(producer.enqueueEvents(eventsToPublish))
+                .assertNext(actual -> assertEquals(expectedBufferSize, actual))
+                .thenAwait(maxWaitTime).expectComplete().verify(TIMEOUT);
 
         assertTrue(countDownLatch.await(TIMEOUT.toMillis(), TimeUnit.MILLISECONDS), "Did not get enough messages.");
 
@@ -280,7 +281,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         }).subscribe());
 
         StepVerifier.create(producer.enqueueEvent(eventData, sendOptions))
-            .expectNext(0)
+            .expectNext(1)
             .expectComplete()
             .verify(TIMEOUT);
 
