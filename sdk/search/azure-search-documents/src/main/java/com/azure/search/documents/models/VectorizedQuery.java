@@ -105,24 +105,6 @@ public final class VectorizedQuery extends VectorQuery {
      * {@inheritDoc}
      */
     @Override
-    public VectorizedQuery setThreshold(VectorThreshold threshold) {
-        super.setThreshold(threshold);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public VectorizedQuery setFilterOverride(String filterOverride) {
-        super.setFilterOverride(filterOverride);
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeNumberField("k", getKNearestNeighborsCount());
@@ -130,8 +112,6 @@ public final class VectorizedQuery extends VectorQuery {
         jsonWriter.writeBooleanField("exhaustive", isExhaustive());
         jsonWriter.writeNumberField("oversampling", getOversampling());
         jsonWriter.writeNumberField("weight", getWeight());
-        jsonWriter.writeJsonField("threshold", getThreshold());
-        jsonWriter.writeStringField("filterOverride", getFilterOverride());
         jsonWriter.writeArrayField("vector", this.vector, (writer, element) -> writer.writeFloat(element));
         jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         return jsonWriter.writeEndObject();
@@ -153,8 +133,6 @@ public final class VectorizedQuery extends VectorQuery {
             Boolean exhaustive = null;
             Double oversampling = null;
             Float weight = null;
-            VectorThreshold threshold = null;
-            String filterOverride = null;
             boolean vectorFound = false;
             List<Float> vector = null;
             VectorQueryKind kind = VectorQueryKind.VECTOR;
@@ -171,10 +149,6 @@ public final class VectorizedQuery extends VectorQuery {
                     oversampling = reader.getNullable(JsonReader::getDouble);
                 } else if ("weight".equals(fieldName)) {
                     weight = reader.getNullable(JsonReader::getFloat);
-                } else if ("threshold".equals(fieldName)) {
-                    threshold = VectorThreshold.fromJson(reader);
-                } else if ("filterOverride".equals(fieldName)) {
-                    filterOverride = reader.getString();
                 } else if ("vector".equals(fieldName)) {
                     vector = reader.readArray(reader1 -> reader1.getFloat());
                     vectorFound = true;
@@ -191,8 +165,6 @@ public final class VectorizedQuery extends VectorQuery {
                 deserializedVectorizedQuery.setExhaustive(exhaustive);
                 deserializedVectorizedQuery.setOversampling(oversampling);
                 deserializedVectorizedQuery.setWeight(weight);
-                deserializedVectorizedQuery.setThreshold(threshold);
-                deserializedVectorizedQuery.setFilterOverride(filterOverride);
                 deserializedVectorizedQuery.kind = kind;
                 return deserializedVectorizedQuery;
             }
