@@ -1024,7 +1024,7 @@ public final class ConfigurationAsyncClient {
      *
      * @param selector Optional. Selector to filter configuration setting results from the service.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
-     * contains all the current settings in the service.
+     * contains all of the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1069,7 +1069,7 @@ public final class ConfigurationAsyncClient {
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
      * be the name of the snapshot.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
-     * contains all the current settings in the service.
+     * contains all of the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1099,7 +1099,7 @@ public final class ConfigurationAsyncClient {
      * @param fields Optional. The fields to select for the query response. If none are set, the service will return the
      * ConfigurationSettings with a default set of properties.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
-     * contains all the current settings in the service.
+     * contains all of the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
