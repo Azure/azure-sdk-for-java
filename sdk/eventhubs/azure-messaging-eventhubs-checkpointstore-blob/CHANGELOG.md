@@ -1,5 +1,14 @@
 # Release History
 
+## 1.20.4 (2025-02-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.20.0` to version `5.20.1`.
+
+
 ## 1.20.3 (2025-02-11)
 
 ### Other Changes
