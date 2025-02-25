@@ -38,6 +38,8 @@ import reactor.core.publisher.Mono;
  * </ul>
  *
  * <p>The required environment variables for username password authentication are as follows:</p>
+ * <p><strong>Deprecated</strong>: Username and password authentication doesn't support multifactor authentication (MFA).
+ *       For more details on Microsoft Entra MFA enforcement, see <a href="https://aka.ms/azsdk/identity/mfa">here</a>.</p>
  * <ul>
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME}</li>

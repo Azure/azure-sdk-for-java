@@ -301,13 +301,13 @@ Not all credentials honor this configuration. Credentials that authenticate thro
 
 ### Authenticate users
 
-|Credential|Usage|Example|Reference|
-|-|-|-|-|
-|[AuthorizationCodeCredential][cred_acc]|Authenticates a user with a previously obtained authorization code as part of an OAuth 2.0 auth code flow||[OAuth 2.0 auth code][cred_acc_ref]|
-|[DeviceCodeCredential][cred_dcc]|Interactively authenticates a user on devices with limited UI|[example][cred_dcc_example]|[device code authentication][cred_dcc_ref]|
-|[InteractiveBrowserCredential][cred_ibc]|Interactively authenticates a user with the default system browser|[example][cred_ibc_example]|[OAuth 2.0 auth code][cred_acc_ref]|
-|[OnBehalfOfCredential][cred_obo]|Propagates the delegated user identity and permissions through the request chain||[On-behalf-of authentication][cred_obo_ref]|
-|[UsernamePasswordCredential][cred_upc]|Authenticates a user with a username and password without multi-factor auth|[example][cred_upc_example]|[Username + password authentication][cred_upc_ref]|
+|Credential| Usage                                                                                                     |Example|Reference|
+|-|-----------------------------------------------------------------------------------------------------------|-|-|
+|[AuthorizationCodeCredential][cred_acc]| Authenticates a user with a previously obtained authorization code as part of an OAuth 2.0 auth code flow ||[OAuth 2.0 auth code][cred_acc_ref]|
+|[DeviceCodeCredential][cred_dcc]| Interactively authenticates a user on devices with limited UI                                             |[example][cred_dcc_example]|[device code authentication][cred_dcc_ref]|
+|[InteractiveBrowserCredential][cred_ibc]| Interactively authenticates a user with the default system browser                                        |[example][cred_ibc_example]|[OAuth 2.0 auth code][cred_acc_ref]|
+|[OnBehalfOfCredential][cred_obo]| Propagates the delegated user identity and permissions through the request chain                          ||[On-behalf-of authentication][cred_obo_ref]|
+|[UsernamePasswordCredential][cred_upc]| **Deprecated** Authenticates a user with a username and password without multi-factor auth                |[example][cred_upc_example]|[Username + password authentication][cred_upc_ref]|
 
 ### Authenticate via development tools
 
