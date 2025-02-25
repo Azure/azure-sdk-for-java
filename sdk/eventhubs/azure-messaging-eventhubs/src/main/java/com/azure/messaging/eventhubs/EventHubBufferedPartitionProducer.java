@@ -119,6 +119,8 @@ class EventHubBufferedPartitionProducer implements Closeable {
             }
 
             tracer.reportMessageSpan(eventData, eventData.getContext());
+
+            //TODO (conniey): Is this the right time to emit success. Or should we wait until it is added to batch?
             final Sinks.EmitResult emitResult = eventSink.tryEmitNext(eventData);
             if (emitResult.isSuccess()) {
                 sink.success();
