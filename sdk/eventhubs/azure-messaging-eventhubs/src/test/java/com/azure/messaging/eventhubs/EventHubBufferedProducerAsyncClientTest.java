@@ -160,7 +160,6 @@ public class EventHubBufferedProducerAsyncClientTest {
             clientOptions, partitionResolver, retryOptions, tracer)) {
 
             // Don't assert the count of events count because EventDataBatch is mocked.
-
             StepVerifier.create(bufferedClient.enqueueEvent(eventData, sendOptions))
                 .expectNextCount(1)
                 .expectComplete()
