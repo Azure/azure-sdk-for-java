@@ -52,10 +52,6 @@ extends:
       groupId: com.azure
       safeName: azureaitextanalytics
       ServiceDirectory: textanalytics
-    - name: azure-ai-contentsafety
-      groupId: com.azure
-      safeName: azureaicontentsafety
-      ServiceDirectory: contentsafety
     - name: azure-data-schemaregistry
       groupId: com.azure
       safeName: azuredataschemaregistry
