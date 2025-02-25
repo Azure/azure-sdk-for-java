@@ -80,17 +80,12 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
     }
 
     int getNumberOfEvents() {
-        Subscription downstream = downstreamSubscription;
+        final EventDataAggregatorMain downstream = downstreamSubscription;
         if (downstream == null) {
             return 0;
         }
 
-        if (!(downstream instanceof EventDataAggregatorMain)) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "Subscription is not of type EventDataAggregatorMain. Actual: " + downstream.getClass()));
-        }
-
-        return ((EventDataAggregatorMain) downstream).getNumberOfEventsInCurrentBatch();
+        return downstream.getNumberOfEventsInCurrentBatch();
     }
 
     /**
