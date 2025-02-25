@@ -67,8 +67,7 @@ public final class FileRange {
     }
 
     /**
-     * Gets the string representation of the FileRange.
-     * @return A string compliant with the format of the Azure Storage x-ms-range and Range headers.
+     * @return A {@code String} compliant with the format of the Azure Storage x-ms-range and Range headers.
      */
     @Override
     public String toString() {
@@ -81,8 +80,6 @@ public final class FileRange {
     }
 
     /**
-     * Gets the string representation of the FileRange for use in a header value.
-     *
      * @return {@link FileRange#toString()} if {@code count} isn't {@code null} or {@code offset} isn't 0, otherwise
      * null.
      */

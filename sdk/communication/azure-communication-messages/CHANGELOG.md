@@ -1,11 +1,15 @@
 # Release History
 
-## 1.2.0-beta.1 (2025-02-11)
+## 1.1.2 (2025-02-21)
 
-### Features Added
-- Added Interactive Message.
-- Added Reaction Message.
-- Added Sticker Message.
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` from `1.3.8` to version `1.3.9`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+- Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
 
 
 ## 1.1.1 (2024-12-04)
@@ -18,10 +22,11 @@
 - Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
 - Upgraded `azure-communication-common` from `1.3.7` to version `1.3.8`.
 
+
 ## 1.1.0 (2024-10-23)
 
 ### Features Added
-- Added ImageNotificationContent to send image message.
+- Added ImageNotificationContent to send image messgae.
 - Added DocumentNotificationContent to send document message.
 - Added VideoNotificationContent to send video message.
 - Added AudioNotificationContent to  send audio message.

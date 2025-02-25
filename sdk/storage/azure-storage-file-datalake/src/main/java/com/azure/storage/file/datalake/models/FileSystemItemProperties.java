@@ -11,6 +11,7 @@ import java.time.OffsetDateTime;
  * Properties of a file system.
  */
 public final class FileSystemItemProperties {
+
     private DateTimeRfc1123 lastModified;
     private String eTag;
     private LeaseStatusType leaseStatus;
@@ -21,12 +22,6 @@ public final class FileSystemItemProperties {
     private Boolean hasLegalHold;
     private String encryptionScope;
     private Boolean encryptionScopeOverridePrevented;
-
-    /**
-     * Creates a new instance of {@link FileSystemItemProperties}.
-     */
-    public FileSystemItemProperties() {
-    }
 
     /**
      * Get the lastModified property: The lastModified property.
@@ -76,7 +71,8 @@ public final class FileSystemItemProperties {
     }
 
     /**
-     * Get the leaseStatus property: Possible values include: 'locked', 'unlocked'.
+     * Get the leaseStatus property: Possible values include: 'locked',
+     * 'unlocked'.
      *
      * @return the leaseStatus value.
      */
@@ -85,7 +81,8 @@ public final class FileSystemItemProperties {
     }
 
     /**
-     * Set the leaseStatus property: Possible values include: 'locked', 'unlocked'.
+     * Set the leaseStatus property: Possible values include: 'locked',
+     * 'unlocked'.
      *
      * @param leaseStatus the leaseStatus value to set.
      * @return the FileSystemItemProperties object itself.
@@ -96,7 +93,8 @@ public final class FileSystemItemProperties {
     }
 
     /**
-     * Get the leaseState property: Possible values include: 'available', 'leased', 'expired', 'breaking', 'broken'.
+     * Get the leaseState property: Possible values include: 'available',
+     * 'leased', 'expired', 'breaking', 'broken'.
      *
      * @return the leaseState value.
      */
@@ -105,7 +103,8 @@ public final class FileSystemItemProperties {
     }
 
     /**
-     * Set the leaseState property: Possible values include: 'available', 'leased', 'expired', 'breaking', 'broken'.
+     * Set the leaseState property: Possible values include: 'available',
+     * 'leased', 'expired', 'breaking', 'broken'.
      *
      * @param leaseState the leaseState value to set.
      * @return the FileSystemItemProperties object itself.
@@ -116,7 +115,8 @@ public final class FileSystemItemProperties {
     }
 
     /**
-     * Get the leaseDuration property: Possible values include: 'infinite', 'fixed'.
+     * Get the leaseDuration property: Possible values include: 'infinite',
+     * 'fixed'.
      *
      * @return the leaseDuration value.
      */
@@ -125,7 +125,8 @@ public final class FileSystemItemProperties {
     }
 
     /**
-     * Set the leaseDuration property: Possible values include: 'infinite', 'fixed'.
+     * Set the leaseDuration property: Possible values include: 'infinite',
+     * 'fixed'.
      *
      * @param leaseDuration the leaseDuration value to set.
      * @return the FileSystemItemProperties object itself.
@@ -136,7 +137,8 @@ public final class FileSystemItemProperties {
     }
 
     /**
-     * Get the publicAccess property: Possible values include: 'container', 'blob'.
+     * Get the publicAccess property: Possible values include: 'container',
+     * 'blob'.
      *
      * @return the publicAccess value.
      */
@@ -145,7 +147,8 @@ public final class FileSystemItemProperties {
     }
 
     /**
-     * Set the publicAccess property: Possible values include: 'container', 'blob'.
+     * Set the publicAccess property: Possible values include: 'container',
+     * 'blob'.
      *
      * @param publicAccess the publicAccess value to set.
      * @return the FileSystemItemProperties object itself.
@@ -156,7 +159,8 @@ public final class FileSystemItemProperties {
     }
 
     /**
-     * Get the hasImmutabilityPolicy property: The hasImmutabilityPolicy property.
+     * Get the hasImmutabilityPolicy property: The hasImmutabilityPolicy
+     * property.
      *
      * @return the hasImmutabilityPolicy value.
      */
@@ -165,7 +169,8 @@ public final class FileSystemItemProperties {
     }
 
     /**
-     * Set the hasImmutabilityPolicy property: The hasImmutabilityPolicy property.
+     * Set the hasImmutabilityPolicy property: The hasImmutabilityPolicy
+     * property.
      *
      * @param hasImmutabilityPolicy the hasImmutabilityPolicy value to set.
      * @return the FileSystemItemProperties object itself.

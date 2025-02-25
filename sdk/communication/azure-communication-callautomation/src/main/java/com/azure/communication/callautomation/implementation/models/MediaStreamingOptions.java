@@ -41,16 +41,6 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
      */
     private Boolean startMediaStreaming;
 
-    /*
-     * A value indicating whether bidirectional streaming is enabled.
-     */
-    private Boolean enableBidirectional;
-
-    /*
-     * Specifies the audio format used for encoding, including sample rate and channel type.
-     */
-    private AudioFormat audioFormat;
-
     /**
      * Creates an instance of MediaStreamingOptions class.
      */
@@ -160,48 +150,6 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
     }
 
     /**
-     * Get the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
-     * 
-     * @return the enableBidirectional value.
-     */
-    public Boolean isEnableBidirectional() {
-        return this.enableBidirectional;
-    }
-
-    /**
-     * Set the enableBidirectional property: A value indicating whether bidirectional streaming is enabled.
-     * 
-     * @param enableBidirectional the enableBidirectional value to set.
-     * @return the MediaStreamingOptions object itself.
-     */
-    public MediaStreamingOptions setEnableBidirectional(Boolean enableBidirectional) {
-        this.enableBidirectional = enableBidirectional;
-        return this;
-    }
-
-    /**
-     * Get the audioFormat property: Specifies the audio format used for encoding, including sample rate and channel
-     * type.
-     * 
-     * @return the audioFormat value.
-     */
-    public AudioFormat getAudioFormat() {
-        return this.audioFormat;
-    }
-
-    /**
-     * Set the audioFormat property: Specifies the audio format used for encoding, including sample rate and channel
-     * type.
-     * 
-     * @param audioFormat the audioFormat value to set.
-     * @return the MediaStreamingOptions object itself.
-     */
-    public MediaStreamingOptions setAudioFormat(AudioFormat audioFormat) {
-        this.audioFormat = audioFormat;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -213,8 +161,6 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
         jsonWriter.writeStringField("audioChannelType",
             this.audioChannelType == null ? null : this.audioChannelType.toString());
         jsonWriter.writeBooleanField("startMediaStreaming", this.startMediaStreaming);
-        jsonWriter.writeBooleanField("enableBidirectional", this.enableBidirectional);
-        jsonWriter.writeStringField("audioFormat", this.audioFormat == null ? null : this.audioFormat.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -247,10 +193,6 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
                         = MediaStreamingAudioChannelTypeInternal.fromString(reader.getString());
                 } else if ("startMediaStreaming".equals(fieldName)) {
                     deserializedMediaStreamingOptions.startMediaStreaming = reader.getNullable(JsonReader::getBoolean);
-                } else if ("enableBidirectional".equals(fieldName)) {
-                    deserializedMediaStreamingOptions.enableBidirectional = reader.getNullable(JsonReader::getBoolean);
-                } else if ("audioFormat".equals(fieldName)) {
-                    deserializedMediaStreamingOptions.audioFormat = AudioFormat.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

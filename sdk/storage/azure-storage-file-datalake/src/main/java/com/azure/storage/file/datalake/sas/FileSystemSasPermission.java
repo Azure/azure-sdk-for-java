@@ -15,14 +15,23 @@ import java.util.Locale;
  */
 public final class FileSystemSasPermission {
     private boolean readPermission;
+
     private boolean addPermission;
+
     private boolean createPermission;
+
     private boolean writePermission;
+
     private boolean deletePermission;
+
     private boolean listPermission;
+
     private boolean movePermission;
+
     private boolean executePermission;
+
     private boolean manageOwnershipPermission;
+
     private boolean manageAccessControlPermission;
 
     /**
@@ -95,8 +104,6 @@ public final class FileSystemSasPermission {
     }
 
     /**
-     * Gets the read permission status.
-     *
      * @return the read permission status
      */
     public boolean hasReadPermission() {
@@ -115,8 +122,6 @@ public final class FileSystemSasPermission {
     }
 
     /**
-     * Gets the add permission status.
-     *
      * @return the add permission status
      */
     public boolean hasAddPermission() {
@@ -135,8 +140,6 @@ public final class FileSystemSasPermission {
     }
 
     /**
-     * Gets the create permission status.
-     *
      * @return the create permission status
      */
     public boolean hasCreatePermission() {
@@ -155,8 +158,6 @@ public final class FileSystemSasPermission {
     }
 
     /**
-     * Gets the write permission status.
-     *
      * @return the write permission status
      */
     public boolean hasWritePermission() {
@@ -175,8 +176,6 @@ public final class FileSystemSasPermission {
     }
 
     /**
-     * Gets the delete permission status.
-     *
      * @return the delete permission status
      */
     public boolean hasDeletePermission() {
@@ -195,8 +194,6 @@ public final class FileSystemSasPermission {
     }
 
     /**
-     * Gets the list permission status.
-     *
      * @return the list permission status
      */
     public boolean hasListPermission() {
@@ -215,8 +212,6 @@ public final class FileSystemSasPermission {
     }
 
     /**
-     * Gets the move permission status.
-     *
      * @return the move permission status.
      */
     public boolean hasMovePermission() {
@@ -235,8 +230,6 @@ public final class FileSystemSasPermission {
     }
 
     /**
-     * Gets the execute permission status.
-     *
      * @return the execute permission status.
      */
     public boolean hasExecutePermission() {
@@ -255,8 +248,6 @@ public final class FileSystemSasPermission {
     }
 
     /**
-     * Gets the manage ownership permission status.
-     *
      * @return the manage ownership permission status.
      */
     public boolean hasManageOwnershipPermission() {
@@ -275,8 +266,6 @@ public final class FileSystemSasPermission {
     }
 
     /**
-     * Gets the manage access control permission status.
-     *
      * @return the manage access control permission status.
      */
     public boolean hasManageAccessControlPermission() {
