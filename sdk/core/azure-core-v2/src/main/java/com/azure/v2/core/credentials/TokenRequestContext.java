@@ -33,7 +33,7 @@ import java.util.Objects;
  * <li>Pass the TokenRequestContext instance to the appropriate authentication client or mechanism when
  * requesting an access token. The specific method or API to do this will depend on the authentication mechanism
  * you are using. For example, if you are using Azure Identity for Microsoft Entra authentication, you would pass the
- * AzureTokenRequestContext instance to the getToken method of the {@link TokenCredential} implementation.</li>
+ * TokenRequestContext instance to the getToken method of the {@link TokenCredential} implementation.</li>
  *
  * <li>The authentication client or mechanism will handle the token request and return an access token that can
  * be used to authenticate and authorize requests to Azure services.</li>
@@ -81,6 +81,17 @@ public class TokenRequestContext {
      * @return the TokenRequestContext itself
      */
     public TokenRequestContext addScopes(String... scopes) {
+        Objects.requireNonNull(scopes, "The scopes parameter cannot be null.");
+
+        if (scopes.length == 0) {
+            throw new IllegalArgumentException("At least one scope must be provided.");
+        }
+
+        for (String scope : scopes) {
+            if (scope == null) {
+                throw new IllegalArgumentException("Scopes cannot contain null values.");
+            }
+        }
         this.scopes.addAll(Arrays.asList(scopes));
         return this;
     }

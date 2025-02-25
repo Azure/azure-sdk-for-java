@@ -12,38 +12,34 @@ import java.util.Objects;
 
 /**
  * <p>
- * The {@link OAuthTokenRequestProperties} is a class used to provide additional information and context when requesting an
+ * The {@link OAuthTokenRequestOptions} is a class used to provide additional information and context when requesting an
  * access token from an authentication source. It allows you to customize the token request and specify additional
  * parameters, such as scopes, claims, or authentication options.
  * </p>
  *
  * <p>
- * Here's a high-level overview of how you can use the {@link OAuthTokenRequestProperties}:
+ * Here's a high-level overview of how you can use the {@link OAuthTokenRequestOptions}:
  * </p>
  *
  * <ol>
- * <li>Create an instance of the {@link OAuthTokenRequestProperties} class and configure the required properties.
- * The {@link OAuthTokenRequestProperties} class allows you to specify the scopes or resources for which you want to request
- * an access token, as well as any additional claims.</li>
+ * <li>Create an instance of the {@link OAuthTokenRequestOptions} class and configure the required properties.
+ * The {@link OAuthTokenRequestOptions} class allows you to specify the scopes or resources for which you want to request
+ * an access token, as well as any additional properties.</li>
  *
- * <li>Pass the OAuthTokenRequestProperties instance to the appropriate authentication client or mechanism when
- * requesting an access token. The specific method or API to do this will depend on the authentication mechanism
- * you are using.</li>
- *
- * <li>The authentication client or mechanism will handle the token request and return an access token that can
+ * <li>The authentication client or mechanism will handle the token request options and return an access token that can
  * be used to authenticate.</li>
  * </ol>
  *
  * @see io.clientcore.core.credentials
  */
-public class OAuthTokenRequestProperties {
+public class OAuthTokenRequestOptions {
     private final List<String> scopes;
-    private Map<String, Object> params;
+    private final Map<String, Object> params;
 
     /**
      * Creates a token request instance.
      */
-    public OAuthTokenRequestProperties() {
+    public OAuthTokenRequestOptions() {
         this.scopes = new ArrayList<>();
         this.params = new HashMap<>();
     }
@@ -61,7 +57,7 @@ public class OAuthTokenRequestProperties {
      * @param scopes the scopes required for the token
      * @return the OAuthTokenRequestProperties itself
      */
-    public OAuthTokenRequestProperties setScopes(List<String> scopes) {
+    public OAuthTokenRequestOptions setScopes(List<String> scopes) {
         Objects.requireNonNull(scopes, "'scopes' cannot be null.");
         this.scopes.clear();
         this.scopes.addAll(scopes);
@@ -73,7 +69,19 @@ public class OAuthTokenRequestProperties {
      * @param scopes one or more scopes to add
      * @return the OAuthTokenRequestProperties itself
      */
-    public OAuthTokenRequestProperties addScopes(String... scopes) {
+    public OAuthTokenRequestOptions addScopes(String... scopes) {
+        Objects.requireNonNull(scopes, "'scopes' cannot be null.");
+
+        if (scopes.length == 0) {
+            throw new IllegalArgumentException("At least one scope must be provided.");
+        }
+
+        for (String scope : scopes) {
+            if (scope == null) {
+                throw new IllegalArgumentException("Scopes cannot contain null values.");
+            }
+        }
+
         this.scopes.addAll(Arrays.asList(scopes));
         return this;
     }
@@ -92,19 +100,20 @@ public class OAuthTokenRequestProperties {
      * @param params the additional parameters
      * @return the OAuthTokenRequestProperties itself
      */
-    public OAuthTokenRequestProperties setParams(Map<String, Object> params) {
-        this.params = params;
+    public OAuthTokenRequestOptions setParams(Map<String, Object> params) {
+        this.params.clear();
+        params.forEach((k, v) -> this.params.put(k, v));
         return this;
     }
 
     /**
-     * Adds the additional parameter required for the token.
+     * Sets the additional parameter required for the token.
      *
      * @param key the key
      * @param value the value
      * @return the OAuthTokenRequestProperties itself
      */
-    public OAuthTokenRequestProperties addParams(String key, String value) {
+    public OAuthTokenRequestOptions setParam(String key, String value) {
         this.params.put(key, value);
         return this;
     }
