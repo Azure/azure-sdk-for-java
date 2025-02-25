@@ -25,84 +25,6 @@ public final class PassFailAggregationFunction extends ExpandableStringEnum<Pass
     public static final PassFailAggregationFunction PERCENTAGE = fromString("percentage");
 
     /**
-     * Criteria applies for avg value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction AVG = fromString("avg");
-
-    /**
-     * Criteria applies for 50th percentile value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction P50 = fromString("p50");
-
-    /**
-     * Criteria applies for 75th percentile value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction P75 = fromString("p75");
-
-    /**
-     * Criteria applies for 90th percentile value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction P90 = fromString("p90");
-
-    /**
-     * Criteria applies for 95th percentile value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction P95 = fromString("p95");
-
-    /**
-     * Criteria applies for 96th percentile value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction P96 = fromString("p96");
-
-    /**
-     * Criteria applies for 97th percentile value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction P97 = fromString("p97");
-
-    /**
-     * Criteria applies for 98th percentile value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction P98 = fromString("p98");
-
-    /**
-     * Criteria applies for 99th percentile value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction P99 = fromString("p99");
-
-    /**
-     * Criteria applies for 99.9th percentile value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction P99_9 = fromString("p99.9");
-
-    /**
-     * Criteria applies for 99.99th percentile value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction P99_99 = fromString("p99.99");
-
-    /**
-     * Criteria applies for minimum value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction MIN = fromString("min");
-
-    /**
-     * Criteria applies for maximum value.
-     */
-    @Generated
-    public static final PassFailAggregationFunction MAX = fromString("max");
-
-    /**
      * Creates a new instance of PassFailAggregationFunction value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
@@ -132,4 +54,82 @@ public final class PassFailAggregationFunction extends ExpandableStringEnum<Pass
     public static Collection<PassFailAggregationFunction> values() {
         return values(PassFailAggregationFunction.class);
     }
+
+    /**
+     * Criteria applies for avg value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction AVERAGE = fromString("avg");
+
+    /**
+     * Criteria applies for 50th percentile value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction PERCENTILE50 = fromString("p50");
+
+    /**
+     * Criteria applies for 75th percentile value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction PERCENTILE75 = fromString("p75");
+
+    /**
+     * Criteria applies for 90th percentile value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction PERCENTILE90 = fromString("p90");
+
+    /**
+     * Criteria applies for 95th percentile value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction PERCENTILE95 = fromString("p95");
+
+    /**
+     * Criteria applies for 96th percentile value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction PERCENTILE96 = fromString("p96");
+
+    /**
+     * Criteria applies for 97th percentile value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction PERCENTILE97 = fromString("p97");
+
+    /**
+     * Criteria applies for 98th percentile value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction PERCENTILE98 = fromString("p98");
+
+    /**
+     * Criteria applies for 99th percentile value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction PERCENTILE99 = fromString("p99");
+
+    /**
+     * Criteria applies for 99.9th percentile value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction PERCENTILE999 = fromString("p99.9");
+
+    /**
+     * Criteria applies for 99.99th percentile value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction PERCENTILE9999 = fromString("p99.99");
+
+    /**
+     * Criteria applies for minimum value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction MINIMUM = fromString("min");
+
+    /**
+     * Criteria applies for maximum value.
+     */
+    @Generated
+    public static final PassFailAggregationFunction MAXIMUM = fromString("max");
 }
