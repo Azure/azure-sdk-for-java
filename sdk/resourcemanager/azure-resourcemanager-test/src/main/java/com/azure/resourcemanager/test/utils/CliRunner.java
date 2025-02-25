@@ -13,8 +13,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+/**
+ * Util to run Azure CLI command line and get result output string.
+ */
 public class CliRunner {
     private static final ClientLogger LOGGER = new ClientLogger(CliRunner.class);
+
+    private CliRunner() {
+    }
 
     /**
      * Run Azure CLI command and get output result.
