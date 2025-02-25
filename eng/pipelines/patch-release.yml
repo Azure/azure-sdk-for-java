@@ -24,10 +24,6 @@ extends:
       groupId: com.azure
       safeName: azureidentityextensions
       ServiceDirectory: identity/azure-identity-extensions
-    - name: azure-messaging-eventhubs-checkpointstore-blob
-      groupId: com.azure
-      safeName: azuremessagingeventhubscheckpointstoreblob
-      ServiceDirectory: eventhubs
     - name: azure-developer-loadtesting
       groupId: com.azure
       safeName: azuredeveloperloadtesting
@@ -76,18 +72,10 @@ extends:
       groupId: com.azure
       safeName: azuremonitoringestion
       ServiceDirectory: monitor
-    - name: azure-security-keyvault-keys
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultkeys
-      ServiceDirectory: keyvault
     - name: azure-data-schemaregistry-apacheavro
       groupId: com.azure
       safeName: azuredataschemaregistryapacheavro
       ServiceDirectory: schemaregistry
-    - name: azure-mixedreality-remoterendering
-      groupId: com.azure
-      safeName: azuremixedrealityremoterendering
-      ServiceDirectory: remoterendering
     - name: azure-search-documents
       groupId: com.azure
       safeName: azuresearch
@@ -100,8 +88,4 @@ extends:
       groupId: com.azure
       safeName: azureiotdeviceupdate
       ServiceDirectory: deviceupdate
-    - name: azure-security-keyvault-certificates
-      groupId: com.azure
-      safeName: azuresecuritykeyvaultcertificates
-      ServiceDirectory: keyvault
 
