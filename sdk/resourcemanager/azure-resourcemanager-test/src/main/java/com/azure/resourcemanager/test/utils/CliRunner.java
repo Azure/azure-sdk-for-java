@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 /**
  * Util to run Azure CLI command line and get result output string.
  */
-public class CliRunner {
+public final class CliRunner {
     private static final ClientLogger LOGGER = new ClientLogger(CliRunner.class);
 
     private CliRunner() {
