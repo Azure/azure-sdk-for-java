@@ -99,7 +99,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         // For multi-line LineComments they need to be added individually as orphan comments.
         compilationUnit.addOrphanComment(new LineComment("Copyright (c) Microsoft Corporation. All rights reserved."));
         compilationUnit.addOrphanComment(new LineComment("Licensed under the MIT License."));
-        compilationUnit.setPackageDeclaration(packageName);
+        compilationUnit.setPackageDeclaration("generated." + packageName);
         classBuilder = compilationUnit.addClass(serviceInterfaceImplShortName, Modifier.Keyword.PUBLIC);
 
         // Import the service interface using the fully qualified name.

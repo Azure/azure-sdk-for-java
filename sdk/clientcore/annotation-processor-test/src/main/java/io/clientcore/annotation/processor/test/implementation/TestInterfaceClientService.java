@@ -32,7 +32,8 @@ public interface TestInterfaceClientService {
             throw new IllegalArgumentException("pipeline cannot be null");
         }
         try {
-            Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.implementation.TestInterfaceClientServiceImpl");
+            Class<?> clazz = Class.forName("generated.io.clientcore.annotation.processor.test.implementation" +
+                ".TestInterfaceClientServiceImpl");
             return (TestInterfaceClientService) clazz
                 .getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class)
                 .invoke(null, pipeline, serializer);
