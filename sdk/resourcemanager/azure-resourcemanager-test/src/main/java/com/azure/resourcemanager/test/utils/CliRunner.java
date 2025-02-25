@@ -45,7 +45,7 @@ public class CliRunner {
 
         StringBuilder output = new StringBuilder();
         try (BufferedReader reader
-                 = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
+            = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8))) {
             String line;
             while (true) {
                 line = reader.readLine();
@@ -53,10 +53,9 @@ public class CliRunner {
                     break;
                 }
 
-                if (windowsProcessErrorMessage.matcher(line).find()
-                    || shProcessErrorMessage.matcher(line).find()) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(
-                        "AzureCliCredential authentication unavailable. Azure CLI not installed."
+                if (windowsProcessErrorMessage.matcher(line).find() || shProcessErrorMessage.matcher(line).find()) {
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("AzureCliCredential authentication unavailable. Azure CLI not installed."
                             + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
                             + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
                 }
@@ -71,22 +70,19 @@ public class CliRunner {
         if (process.exitValue() != 0) {
             if (processOutput.length() > 0) {
                 if (processOutput.contains("az login") || processOutput.contains("az account set")) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(
-                        "AzureCliCredential authentication unavailable. Azure CLI not installed."
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("AzureCliCredential authentication unavailable. Azure CLI not installed."
                             + "To mitigate this issue, please refer to the troubleshooting guidelines here at "
                             + "https://aka.ms/azsdk/java/identity/azclicredential/troubleshoot"));
                 }
-                throw LOGGER.logExceptionAsError(
-                    new ClientAuthenticationException(azCommand + " failed", null));
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(azCommand + " failed", null));
             } else {
-                throw LOGGER.logExceptionAsError(
-                    new ClientAuthenticationException("Failed to invoke Azure CLI ", null));
+                throw LOGGER
+                    .logExceptionAsError(new ClientAuthenticationException("Failed to invoke Azure CLI ", null));
             }
         }
 
-        LOGGER
-            .verbose(azCommand + " => A response was received from Azure CLI, deserializing the"
-                + " response.");
+        LOGGER.verbose(azCommand + " => A response was received from Azure CLI, deserializing the" + " response.");
 
         return processOutput;
     }

@@ -60,6 +60,7 @@ public class RuntimeStackTests {
         System.out.println("New deprecated stacks: " + newDeprecated);
     }
 
+    @SuppressWarnings("unchecked")
     private Set<String> getLatestStacks() throws IOException, InterruptedException {
         String cliOutput = CliRunner.run("az webapp list-runtimes --os linux");
         List<String> outputList
