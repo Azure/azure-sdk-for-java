@@ -721,6 +721,14 @@ private static void displaySexMismatches(RadiologyInsightsInferenceResult radiol
 }
 ```
 
+### Get Guidance Inference information
+
+Display information about the guidance
+
+```java com.azure.health.insights.radiologyinsights.displayresults.guidance
+
+```
+
 ## Troubleshooting
 
 ## Next steps
