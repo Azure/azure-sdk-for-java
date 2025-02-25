@@ -62,8 +62,6 @@ import java.util.concurrent.atomic.AtomicReference;
 @Fluent
 @Immutable
 public class AttestationTokenImpl implements AttestationToken {
-    private static final ClientLogger LOGGER = new ClientLogger(AttestationTokenImpl.class);
-
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     /**
@@ -71,12 +69,14 @@ public class AttestationTokenImpl implements AttestationToken {
      * @param serializedToken - Serialized JSON Web Token/JSON Web Signature object.
      */
     public AttestationTokenImpl(String serializedToken) {
+        logger = new ClientLogger(AttestationTokenImpl.class);
+
         this.rawToken = serializedToken;
         JOSEObject tokenAsJose;
         try {
             tokenAsJose = JOSEObject.parse(serializedToken);
         } catch (ParseException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e.toString()));
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
         }
         header = tokenAsJose.getHeader();
         // If this is not an unsecured token, grab the JWS headers.
@@ -88,6 +88,7 @@ public class AttestationTokenImpl implements AttestationToken {
         payload = tokenAsJose.getPayload();
     }
 
+    private final ClientLogger logger;
     private final String rawToken;
     private final Header header;
     private final JWSHeader jwsHeader;
@@ -108,7 +109,7 @@ public class AttestationTokenImpl implements AttestationToken {
             try {
                 return SERIALIZER_ADAPTER.deserialize(payload.toString(), returnType, SerializerEncoding.JSON);
             } catch (IOException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
             }
         }
     }
@@ -236,7 +237,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 try {
                     claimsSet = JWTClaimsSet.parse(claimSet);
                 } catch (ParseException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+                    throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
                 }
                 issuer.set(claimsSet.getIssuer());
             }
@@ -254,7 +255,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 Object iatObject = claimSet.get("iat");
                 if (iatObject != null) {
                     if (!(iatObject instanceof Long)) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(
+                        throw logger.logExceptionAsError(new RuntimeException(
                             String.format("Invalid type for IssuedAt: %s", iatObject.getClass().getName())));
                     }
 
@@ -276,7 +277,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 Object expObject = claimSet.get("exp");
                 if (expObject != null) {
                     if (!(expObject instanceof Long)) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(
+                        throw logger.logExceptionAsError(new RuntimeException(
                             String.format("Invalid type for ExpiresOn: %s", expiresOn.getClass().getName())));
                     }
 
@@ -298,7 +299,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 Object nbfObject = claimSet.get("nbf");
                 if (nbfObject != null) {
                     if (!(nbfObject instanceof Long)) {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(
+                        throw logger.logExceptionAsError(new RuntimeException(
                             String.format("Invalid type for NotBefore: %s", nbfObject.getClass().getName())));
                     }
 
@@ -349,7 +350,7 @@ public class AttestationTokenImpl implements AttestationToken {
     private void validateTokenIssuer(AttestationTokenValidationOptions options) {
         if (options.getExpectedIssuer() != null && this.getIssuer() != null) {
             if (!this.getIssuer().equals(options.getExpectedIssuer())) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(
+                throw logger.logExceptionAsError(new RuntimeException(
                     String.format("Token Validation Failed due to mismatched issuer. Expected issuer %s, but found %s",
                         options.getExpectedIssuer(), getIssuer())));
             }
@@ -365,7 +366,7 @@ public class AttestationTokenImpl implements AttestationToken {
             if (timeNow.isAfter(expirationTime)) {
                 final Duration timeDelta = Duration.between(timeNow, expirationTime);
                 if (timeDelta.abs().compareTo(options.getValidationSlack()) > 0) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
+                    throw logger.logExceptionAsError(new RuntimeException(String.format(
                         "Token Validation Failed due to expiration time. Current time: %tc Expiration time: %tc",
                         timeNow, this.getExpiresOn())));
                 }
@@ -377,7 +378,7 @@ public class AttestationTokenImpl implements AttestationToken {
             if (timeNow.isBefore(notBefore)) {
                 final Duration timeDelta = Duration.between(timeNow, notBefore);
                 if (timeDelta.abs().compareTo(options.getValidationSlack()) > 0) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
+                    throw logger.logExceptionAsError(new RuntimeException(String.format(
                         "Token Validation Failed due to NotBefore time. Current time: %tc Token becomes valid at: %tc",
                         timeNow, this.getNotBefore())));
                 }
@@ -402,7 +403,7 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             jwt.set(JWSObject.parse(rawToken));
         } catch (ParseException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
         AtomicReference<AttestationSigner> tokenSigner = new AtomicReference<>();
         List<AttestationSigner> candidateSigners = getCandidateSigners(signers);
@@ -418,7 +419,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 try {
                     verifier = new ECDSAVerifier(publicKey);
                 } catch (JOSEException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+                    throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
                 }
             }
 
@@ -429,7 +430,7 @@ public class AttestationTokenImpl implements AttestationToken {
                     break;
                 }
             } catch (JOSEException e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage()));
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
             }
         }
         return tokenSigner.get();
@@ -509,10 +510,11 @@ public class AttestationTokenImpl implements AttestationToken {
      * @throws RuntimeException exception that occurs at runtime.
      */
     public static AttestationToken createSecuredToken(AttestationSigningKey signingKey) {
+        ClientLogger logger = new ClientLogger(AttestationTokenImpl.class);
         try {
             signingKey.verify();
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         // The NimbusDS Library Payload object must have a body, so we have to
@@ -521,7 +523,7 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             certs.add(Base64.encode(signingKey.getCertificate().getEncoded()));
         } catch (CertificateEncodingException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256).x509CertChain(certs).build();
@@ -542,7 +544,7 @@ public class AttestationTokenImpl implements AttestationToken {
                 throw new RuntimeException("Assertion failure: Cannot have signer that is not either RSA or EC");
             }
         } catch (JOSEException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         String signedBody = header.toBase64URL() + ".";
@@ -550,7 +552,7 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             signature = signer.sign(header, signedBody.getBytes(StandardCharsets.UTF_8));
         } catch (JOSEException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e.toString());
         }
         return new AttestationTokenImpl(signedBody + "." + signature.toString());
 
@@ -564,10 +566,11 @@ public class AttestationTokenImpl implements AttestationToken {
      * @return Newly created secured attestation token based off the serialized body.
      */
     public static AttestationToken createSecuredToken(String stringBody, AttestationSigningKey signingKey) {
+        ClientLogger logger = new ClientLogger(AttestationTokenImpl.class);
         try {
             signingKey.verify();
         } catch (Exception e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         JWSObject securedObject;
@@ -577,7 +580,7 @@ public class AttestationTokenImpl implements AttestationToken {
         try {
             certs.add(Base64.encode(signingKey.getCertificate().getEncoded()));
         } catch (CertificateEncodingException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
         JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.RS256).x509CertChain(certs).build();
         JWSSigner signer = null;
@@ -594,14 +597,14 @@ public class AttestationTokenImpl implements AttestationToken {
                 signer = new ECDSASigner(privateKey);
             }
         } catch (JOSEException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         securedObject = new JWSObject(header, payload);
         try {
             securedObject.sign(signer);
         } catch (JOSEException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+            throw logger.logExceptionAsError(new RuntimeException(e.toString()));
         }
 
         return new AttestationTokenImpl(securedObject.serialize());
