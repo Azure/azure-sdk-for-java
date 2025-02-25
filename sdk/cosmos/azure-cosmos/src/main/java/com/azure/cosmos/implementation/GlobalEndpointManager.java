@@ -153,7 +153,7 @@ public class GlobalEndpointManager implements AutoCloseable {
             request.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoints.getGatewayLocationEndpoint());
         }
 
-        return serviceEndpoint;
+        return serviceEndpoints;
     }
 
     public URI resolveFaultInjectionServiceEndpoint(String region, boolean writeOnly) {
