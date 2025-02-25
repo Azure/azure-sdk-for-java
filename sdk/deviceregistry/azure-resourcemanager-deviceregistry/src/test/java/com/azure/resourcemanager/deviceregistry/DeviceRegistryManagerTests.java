@@ -47,7 +47,7 @@ public class DeviceRegistryManagerTests extends TestProxyTestBase {
     public void testList() {
         // The AssetEndpointProfile and Assets service must be supported by the service Kubernetes cluster with Azure Arc
         // and Microsoft.ExtendedLocation, but Kubernetes cluster with Azure Arc can only be created by script.
-        // so only add search test
+        // so only add List test
         List<Asset> assets = deviceRegistryManager.assets().list().stream().collect(Collectors.toList());
         Assertions.assertTrue(assets.isEmpty());
 
