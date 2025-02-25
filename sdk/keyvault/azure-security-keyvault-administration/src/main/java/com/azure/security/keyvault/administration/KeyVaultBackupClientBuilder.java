@@ -33,6 +33,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
+import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -93,7 +94,7 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
     HttpTrait<KeyVaultBackupClientBuilder>, ConfigurationTrait<KeyVaultBackupClientBuilder> {
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultBackupClientBuilder.class);
-    private static final String AZURE_KEY_VAULT_RBAC = "azure-security-keyvault-administration.properties";
+    private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
@@ -185,7 +186,7 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
 
         if (buildEndpoint == null) {
             throw LOGGER
-                .logExceptionAsError(new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
         return buildConfiguration;
     }
