@@ -255,9 +255,9 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
       $additionalPackages = $AllPkgProps | Where-Object { $_.ServiceDirectory -eq $changedService -or $_.ServiceDirectory.StartsWith("$changedService/")}
       foreach ($pkg in $additionalPackages) {
         if ($uniqueResultSet -notcontains $pkg -and $LocatedPackages -notcontains $pkg) {
-          # notice the lack of setting IncludedForValidation to true. This is because these "changed services"
-          # are specifically where a file within the service, but not an individual package within that service has changed.
-          # we want this package to be fully validated
+          # IncludedForValidation means that it's package that was indirectly included because it
+          # wasn't directly changed. For example, if someone changes a file in the root of sdk/core
+          # we add all of the core libraries that do not have direct changes as indirect packages.
           $pkg.IncludedForValidation = $true
           $uniqueResultSet += $pkg
         }
