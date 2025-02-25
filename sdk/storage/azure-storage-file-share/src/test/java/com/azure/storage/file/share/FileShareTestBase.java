@@ -11,7 +11,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
@@ -25,27 +24,18 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
-import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
-import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
-import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareAcquireLeaseOptions;
 import com.azure.storage.file.share.options.ShareBreakLeaseOptions;
-import com.azure.storage.file.share.options.ShareCreateOptions;
 import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -162,18 +152,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
     }
 
-    ByteBuffer getRandomByteBuffer(int size) {
-        return StorageCommonTestUtils.getRandomData(size, testResourceNamer);
-    }
-
-    java.io.File getRandomFile(int size) throws IOException {
-        return StorageCommonTestUtils.getRandomFile(size, testResourceNamer);
-    }
-
-    boolean compareFiles(File file1, File file2, long offset, long count) throws IOException {
-        return StorageCommonTestUtils.compareFiles(file1, file2, offset, count);
-    }
-
     protected ShareServiceClientBuilder getServiceClientBuilder(TestAccount account) {
         return getServiceClientBuilder(account.getCredential(), account.getFileEndpoint(), (HttpPipelinePolicy) null);
     }
@@ -286,18 +264,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         return builder.buildFileClient();
     }
 
-    protected ShareFileAsyncClient getFileAsyncClient(final String shareName, final String fileName,
-        Boolean allowTrailingDot, Boolean allowSourceTrailingDot) {
-        ShareFileClientBuilder builder = fileBuilderHelper(shareName, fileName);
-        if (allowTrailingDot != null) {
-            builder.allowTrailingDot(allowTrailingDot);
-        }
-        if (allowSourceTrailingDot != null) {
-            builder.allowSourceTrailingDot(allowSourceTrailingDot);
-        }
-        return builder.buildFileAsyncClient();
-    }
-
     protected ShareFileAsyncClient getFileAsyncClient(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         ShareFileClientBuilder builder = getFileClientBuilder(endpoint, policies);
@@ -338,14 +304,6 @@ public class FileShareTestBase extends TestProxyTestBase {
 
     protected static ShareLeaseClient createLeaseClient(ShareClient shareClient, String leaseId) {
         return new ShareLeaseClientBuilder().shareClient(shareClient).leaseId(leaseId).buildClient();
-    }
-
-    protected static ShareLeaseAsyncClient createLeaseClient(ShareAsyncClient shareClient, String leaseId) {
-        return new ShareLeaseClientBuilder().shareAsyncClient(shareClient).leaseId(leaseId).buildAsyncClient();
-    }
-
-    protected static ShareLeaseAsyncClient createLeaseClient(ShareAsyncClient shareClient) {
-        return createLeaseClient(shareClient, null);
     }
 
     protected ShareServiceClient getOAuthServiceClient(ShareServiceClientBuilder builder) {
@@ -416,20 +374,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         return StorageCommonTestUtils.getHttpClient(interceptorManager);
     }
 
-    protected ShareClient getPremiumNFSShareClient(String shareName) {
-        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
-        return premiumFileServiceClient
-            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol), null, null)
-            .getValue();
-    }
-
-    protected Mono<ShareAsyncClient> getPremiumNFSShareAsyncClient(String shareName) {
-        ShareProtocols enabledProtocol = ModelHelper.parseShareProtocols("NFS");
-        return premiumFileServiceAsyncClient
-            .createShareWithResponse(shareName, new ShareCreateOptions().setProtocols(enabledProtocol))
-            .flatMap(r -> Mono.just(r.getValue()));
-    }
-
     protected String getPrimaryConnectionString() {
         return ENVIRONMENT.getPrimaryAccount().getConnectionString();
     }
@@ -455,15 +399,6 @@ public class FileShareTestBase extends TestProxyTestBase {
             return responseLeaseId;
         } else {
             return leaseID;
-        }
-    }
-
-    protected Mono<String> setupFileLeaseCondition(ShareFileAsyncClient fc, String leaseID) {
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID) || Objects.equals(leaseID, GARBAGE_LEASE_ID)) {
-            return createLeaseClient(fc).acquireLease()
-                .map(responseLeaseId -> Objects.equals(leaseID, RECEIVED_LEASE_ID) ? responseLeaseId : leaseID);
-        } else {
-            return Mono.just(leaseID);
         }
     }
 
@@ -494,15 +429,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
     }
 
-    protected Mono<String> setupShareLeaseAsyncCondition(ShareAsyncClient sc, String leaseID) {
-        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
-            return createLeaseClient(sc).acquireLeaseWithResponse(new ShareAcquireLeaseOptions().setDuration(-1))
-                .map(response -> response.getValue());
-        } else {
-            return Mono.just(leaseID);
-        }
-    }
-
     @SuppressWarnings("unchecked")
     public static <T, E extends Exception> T retry(Supplier<T> action, Predicate<E> retryPredicate, int times,
         Duration delay) throws E, InterruptedException {
@@ -519,16 +445,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
         // Or handle the case when all retries are exhausted
         return null;
-    }
-
-    public Mono<Response<String>> retryAsync(Supplier<Mono<Response<String>>> action,
-        Predicate<ShareStorageException> retryPredicate, int times, Duration delay) {
-        return Flux.range(1, times).flatMap(attempt -> action.get().onErrorResume(ShareStorageException.class, e -> {
-            if (retryPredicate.test(e)) {
-                return Mono.delay(delay).then(Mono.empty());
-            }
-            return Mono.error(e);
-        })).next().switchIfEmpty(Mono.error(new RuntimeException("Retries exhausted")));
     }
 
     protected String getAuthToken() {
