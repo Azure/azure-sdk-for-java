@@ -204,7 +204,6 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
     [Parameter(Mandatory=$true)]
     $AllPkgProps
   )
-  $additionalValidationPackages = @()
   $uniqueResultSet = @()
 
   # this section will identify the list of packages that we should treat as
@@ -259,16 +258,10 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
           # notice the lack of setting IncludedForValidation to true. This is because these "changed services"
           # are specifically where a file within the service, but not an individual package within that service has changed.
           # we want this package to be fully validated
+          $pkg.IncludedForValidation = $true
           $uniqueResultSet += $pkg
         }
       }
-    }
-  }
-
-  foreach ($pkg in $additionalValidationPackages) {
-    if ($uniqueResultSet -notcontains $pkg -and $LocatedPackages -notcontains $pkg) {
-      $pkg.IncludedForValidation = $true
-      $uniqueResultSet += $pkg
     }
   }
 
