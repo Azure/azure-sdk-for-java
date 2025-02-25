@@ -4,11 +4,11 @@
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties;
 
 /**
- * Azure Key Vault JCA certificate paths properties.
+ * Azure Key Vault SSL Bundle certificate paths properties.
  *
  * @since 5.21.0
  */
-public class AzureKeyVaultJcaCertificatePathsProperties {
+public class AzureKeyVaultSslBundleCertificatePathsProperties {
 
     /**
      * The path to put custom certificates.

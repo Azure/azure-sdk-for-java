@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -11,13 +11,13 @@ import java.util.Map;
  *
  * @since 5.21.0
  */
-public class AzureKeyVaultJcaProperties extends AzureKeyVaultJcaCommonProperties {
+public class AzureKeyVaultJcaProperties {
 
     public static final String PREFIX = "spring.cloud.azure.keyvault.jca";
     // propertySources
-    private final Map<String, AzureKeyVaultJcaConnectionProperties> connections = new HashMap<>();
+    private final Map<String, AzureKeyVaultJcaVaultProperties> vaults = new LinkedHashMap<>();
 
-    public Map<String, AzureKeyVaultJcaConnectionProperties> getConnections() {
-        return connections;
+    public Map<String, AzureKeyVaultJcaVaultProperties> getVaults() {
+        return vaults;
     }
 }

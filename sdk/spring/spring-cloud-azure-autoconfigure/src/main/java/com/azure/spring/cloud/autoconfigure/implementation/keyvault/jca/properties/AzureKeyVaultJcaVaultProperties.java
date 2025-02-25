@@ -4,11 +4,11 @@
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties;
 
 /**
- * Azure Key Vault JCA connection properties.
+ * Azure Key Vault JCA vault properties.
  *
  * @since 5.21.0
  */
-public class AzureKeyVaultJcaConnectionProperties extends AzureKeyVaultJcaCommonProperties {
+public class AzureKeyVaultJcaVaultProperties extends AzureKeyVaultJcaVaultCommonProperties {
 
     /**
      * Azure Key Vault endpoint.

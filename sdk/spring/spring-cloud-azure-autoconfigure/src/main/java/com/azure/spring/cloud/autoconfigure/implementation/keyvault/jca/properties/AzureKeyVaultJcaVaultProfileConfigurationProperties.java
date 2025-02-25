@@ -3,7 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties;
 
-public class AzureKeyVaultJcaProfileConfigurationProperties {
+/**
+ * Azure Key Vault JCA vault profile configuration properties.
+ *
+ * @since 5.21.0
+ */
+public class AzureKeyVaultJcaVaultProfileConfigurationProperties {
 
     /**
      * Tenant ID to use when performing service principal authentication with Azure Key Vault.

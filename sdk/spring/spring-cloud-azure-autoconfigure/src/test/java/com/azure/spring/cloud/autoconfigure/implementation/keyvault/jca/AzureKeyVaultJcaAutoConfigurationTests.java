@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
-import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundlesProperties;
 import org.junit.jupiter.api.Test;
@@ -18,8 +17,7 @@ class AzureKeyVaultJcaAutoConfigurationTests {
     private static final String ENDPOINT = "https:/%s.vault.azure.net/";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureKeyVaultJcaAutoConfiguration.class,
-            AzureGlobalPropertiesAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureKeyVaultJcaAutoConfiguration.class));
 
     @Test
     void noJcaProviderClass() {

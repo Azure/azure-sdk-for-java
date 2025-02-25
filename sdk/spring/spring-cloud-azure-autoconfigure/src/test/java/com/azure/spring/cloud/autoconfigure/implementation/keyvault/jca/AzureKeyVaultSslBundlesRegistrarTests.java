@@ -3,7 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca;
 
-import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaConnectionProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundleCertificatePathsProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaVaultProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundleProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundlesProperties;
@@ -65,7 +66,7 @@ public class AzureKeyVaultSslBundlesRegistrarTests {
     }
 
     @Test
-    void notConfigureEndpointAndCertPath(CapturedOutput capturedOutput) {
+    void notConfigureSslBundlesAzureKeyvault(CapturedOutput capturedOutput) {
         registrar.registerBundles(registry);
         then(registry).should(times(0)).registerBundle(anyString(), any());
         String allOutput = capturedOutput.getAll();
@@ -74,7 +75,7 @@ public class AzureKeyVaultSslBundlesRegistrarTests {
     }
 
     @Test
-    void configureSslBundleEndpointWithoutKeyName(CapturedOutput capturedOutput) {
+    void notConfigureEndpointOrSslBundleProperties(CapturedOutput capturedOutput) {
         AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
         sslBundlesProperties.getAzureKeyvault().put("testBundle", bundleProperties);
 
@@ -82,7 +83,7 @@ public class AzureKeyVaultSslBundlesRegistrarTests {
         then(registry).should(times(0)).registerBundle(anyString(), any());
         String allOutput = capturedOutput.getAll();
         String log = "Skip configuring Key Vault SSL bundle 'testBundle'. At least configure the 'keyvault-ref' of the truststore; "
-            + "or one of 'certificate-paths.custom' and 'certificate-paths.well-known' must be configured.";
+            + "or configure one of 'certificate-paths.custom' and 'certificate-paths.well-known' properties of the truststore.";
         assertTrue(allOutput.contains(log));
     }
 
@@ -94,9 +95,9 @@ public class AzureKeyVaultSslBundlesRegistrarTests {
             keyStoreMockedStatic.when(() -> KeyStore.getInstance("AzureKeyVault")).thenReturn(keyStore);
 
             String keyvaultName = "keyvault1";
-            AzureKeyVaultJcaConnectionProperties connectionProperties = new AzureKeyVaultJcaConnectionProperties();
+            AzureKeyVaultJcaVaultProperties connectionProperties = new AzureKeyVaultJcaVaultProperties();
             connectionProperties.setEndpoint("https://test.vault.azure.net/");
-            jcaProperties.getConnections().put(keyvaultName, connectionProperties);
+            jcaProperties.getVaults().put(keyvaultName, connectionProperties);
             AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
             bundleProperties.getTruststore().setKeyvaultRef(keyvaultName);
 
@@ -153,33 +154,34 @@ public class AzureKeyVaultSslBundlesRegistrarTests {
 
     private AzureKeyVaultSslBundleProperties getBundlePropertiesWithLocal() {
         AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
-        bundleProperties.getCertificatePaths().setWellKnown("classpath:keyvault/certificate-paths/well-known");
-        bundleProperties.getCertificatePaths().setWellKnown("classpath:keyvault/certificate-paths/well-known");
+        AzureKeyVaultSslBundleCertificatePathsProperties certificatePaths = bundleProperties.getTruststore().getCertificatePaths();
+        certificatePaths.setWellKnown("classpath:keyvault/certificate-paths/well-known");
+        certificatePaths.setWellKnown("classpath:keyvault/certificate-paths/well-known");
         return bundleProperties;
     }
 
     private AzureKeyVaultSslBundleProperties getBundlePropertiesWithLocalWellKnown() {
         AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
-        bundleProperties.getCertificatePaths().setWellKnown("classpath:keyvault/certificate-paths/well-known");
+        bundleProperties.getTruststore().getCertificatePaths().setWellKnown("classpath:keyvault/certificate-paths/well-known");
         return bundleProperties;
     }
 
     private AzureKeyVaultSslBundleProperties getBundlePropertiesWithLocalCustom() {
         AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
-        bundleProperties.getCertificatePaths().setCustom("classpath:keyvault/certificate-paths/custom");
+        bundleProperties.getTruststore().getCertificatePaths().setCustom("classpath:keyvault/certificate-paths/custom");
         return bundleProperties;
     }
 
     private AzureKeyVaultSslBundleProperties getBundlePropertiesWithWtoKeyVault() {
         String keyvault1 = "keyvault1";
-        AzureKeyVaultJcaConnectionProperties connection1Properties = new AzureKeyVaultJcaConnectionProperties();
+        AzureKeyVaultJcaVaultProperties connection1Properties = new AzureKeyVaultJcaVaultProperties();
         connection1Properties.setEndpoint("https://test1.vault.azure.net/");
-        jcaProperties.getConnections().put(keyvault1, connection1Properties);
+        jcaProperties.getVaults().put(keyvault1, connection1Properties);
 
         String keyvault2 = "keyvault2";
-        AzureKeyVaultJcaConnectionProperties connection2Properties = new AzureKeyVaultJcaConnectionProperties();
+        AzureKeyVaultJcaVaultProperties connection2Properties = new AzureKeyVaultJcaVaultProperties();
         connection2Properties.setEndpoint("https://test2.vault.azure.net/");
-        jcaProperties.getConnections().put(keyvault2, connection2Properties);
+        jcaProperties.getVaults().put(keyvault2, connection2Properties);
 
         AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
         bundleProperties.getKeystore().setKeyvaultRef(keyvault1);
@@ -189,11 +191,11 @@ public class AzureKeyVaultSslBundlesRegistrarTests {
 
     private AzureKeyVaultSslBundleProperties getBundlePropertiesWithOneKeyVault() {
         String keyvault1 = "keyvault1";
-        AzureKeyVaultJcaConnectionProperties connectionProperties = new AzureKeyVaultJcaConnectionProperties();
+        AzureKeyVaultJcaVaultProperties connectionProperties = new AzureKeyVaultJcaVaultProperties();
         connectionProperties.setEndpoint("https://test1.vault.azure.net/");
-        jcaProperties.getConnections().put(keyvault1, connectionProperties);
+        jcaProperties.getVaults().put(keyvault1, connectionProperties);
         AzureKeyVaultSslBundleProperties bundleProperties = new AzureKeyVaultSslBundleProperties();
-        bundleProperties.setKeyvaultRef(keyvault1);
+        bundleProperties.getKeystore().setKeyvaultRef(keyvault1);
         return bundleProperties;
     }
 }

@@ -8,11 +8,11 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import java.time.Duration;
 
 /**
- * Azure Key Vault Key Store properties.
+ * Azure Key Vault SSL Bundle Key Store properties.
  *
  * @since 5.21.0
  */
-public class AzureKeyVaultKeyStoreProperties {
+public class AzureKeyVaultSslBundleKeyStoreProperties {
 
     /**
      * The key of Key Vault connection.
@@ -29,7 +29,7 @@ public class AzureKeyVaultKeyStoreProperties {
     private Duration certificatesRefreshInterval;
 
     @NestedConfigurationProperty
-    private final AzureKeyVaultJcaCertificatePathsProperties certificatePaths = new AzureKeyVaultJcaCertificatePathsProperties();
+    private final AzureKeyVaultSslBundleCertificatePathsProperties certificatePaths = new AzureKeyVaultSslBundleCertificatePathsProperties();
 
     public String getKeyvaultRef() {
         return keyvaultRef;
@@ -55,7 +55,7 @@ public class AzureKeyVaultKeyStoreProperties {
         this.certificatesRefreshInterval = certificatesRefreshInterval;
     }
 
-    public AzureKeyVaultJcaCertificatePathsProperties getCertificatePaths() {
+    public AzureKeyVaultSslBundleCertificatePathsProperties getCertificatePaths() {
         return certificatePaths;
     }
 }

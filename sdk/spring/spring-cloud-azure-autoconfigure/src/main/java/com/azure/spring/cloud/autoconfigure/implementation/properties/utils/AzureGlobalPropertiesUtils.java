@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.utils;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaProperties;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.ClientOptionsProvider;
@@ -64,18 +63,4 @@ public final class AzureGlobalPropertiesUtils {
         return target;
     }
 
-
-    /**
-     * Load the default value to an AzureKeyVaultJcaProperties properties from the global Azure properties.
-     *
-     * @param source The global Azure properties.
-     * @param target The properties of an AzureKeyVaultJcaProperties, it's not a AzureProperties implementation,
-     * only some of the properties are the same.
-     * @return The AzureKeyVaultJcaProperties.
-     */
-    public static AzureKeyVaultJcaProperties loadProperties(AzureGlobalProperties source, AzureKeyVaultJcaProperties target) {
-        BeanUtils.copyProperties(source.getProfile(), target.getProfile());
-        BeanUtils.copyProperties(source.getCredential(), target.getCredential());
-        return target;
-    }
 }
