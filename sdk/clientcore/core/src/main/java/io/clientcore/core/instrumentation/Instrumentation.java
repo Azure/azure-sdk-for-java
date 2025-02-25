@@ -194,13 +194,13 @@ public interface Instrumentation {
 
     /**
      * Creates the operation instrumentation.
-     * <!-- src_embed io.clientcore.core.telemetry.instrumentation.create -->
+     * <!-- src_embed io.clientcore.core.instrumentation.create -->
      * <pre>
      * InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails&#40;&quot;downloadContent&quot;,
      *     SAMPLE_CLIENT_DURATION_METRIC&#41;.endpoint&#40;endpoint&#41;;
      * this.downloadContentInstrumentation = instrumentation.createOperationInstrumentation&#40;downloadDetails&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.telemetry.instrumentation.create -->
+     * <!-- end io.clientcore.core.instrumentation.create -->
      *
      * @param operationDetails The details of the operation to be instrumented.
      * @return The operation instrumentation.

@@ -73,6 +73,12 @@ public final class OperationInstrumentation {
      * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
      * <p>
      * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
+     * <!-- src_embed io.clientcore.core.instrumentation.instrument -->
+     * <pre>
+     * return downloadContentInstrumentation.instrument&#40;&#40;updatedOptions, instrumentationContext&#41; -&gt;
+     *     downloadImpl&#40;updatedOptions&#41;, options&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.instrument -->
      *
      * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
      * @param requestOptions the initial request options.
@@ -192,7 +198,18 @@ public final class OperationInstrumentation {
 
         /**
          * Gets the instrumentation context identifying this call.
-         * <!-- begin io.clientcore.core.instrumentation.enrich -->
+         * <!-- src_embed io.clientcore.core.instrumentation.enrich -->
+         * <pre>
+         * operationInstrumentation.instrument&#40;&#40;updatedOptions, instrumentationContext&#41; -&gt; &#123;
+         *     Span span = instrumentationContext.getSpan&#40;&#41;;
+         *     if &#40;span.isRecording&#40;&#41;&#41; &#123;
+         *         span.setAttribute&#40;&quot;sample.content.id&quot;, &quot;&#123;content-id&#125;&quot;&#41;;
+         *     &#125;
+         *
+         *     return clientCall&#40;updatedOptions&#41;;
+         * &#125;, null&#41;;
+         *
+         * </pre>
          * <!-- end io.clientcore.core.instrumentation.enrich -->
          * @return The instrumentation context.
          */
