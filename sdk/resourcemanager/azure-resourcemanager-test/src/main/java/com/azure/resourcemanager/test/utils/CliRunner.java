@@ -65,8 +65,11 @@ public class CliRunner {
         String processOutput = output.toString();
 
         // wait(at most) 10 seconds for the process to complete
-        process.waitFor(10, TimeUnit.SECONDS);
+        boolean finished = process.waitFor(10, TimeUnit.SECONDS);
 
+        if (!finished) {
+            throw LOGGER.logExceptionAsError(new RuntimeException("Process did not complete within the expected time."));
+        }
         if (process.exitValue() != 0) {
             if (processOutput.length() > 0) {
                 if (processOutput.contains("az login") || processOutput.contains("az account set")) {
