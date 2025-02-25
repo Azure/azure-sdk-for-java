@@ -36,9 +36,9 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
 class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
     private static final ClientLogger LOGGER = new ClientLogger(EventDataAggregator.class);
 
-    private volatile Subscription downstreamSubscription;
-    private static final AtomicReferenceFieldUpdater<EventDataAggregator, Subscription> DOWNSTREAM_SUBSCRIPTION
-        = AtomicReferenceFieldUpdater.newUpdater(EventDataAggregator.class, Subscription.class,
+    private volatile EventDataAggregatorMain downstreamSubscription;
+    private static final AtomicReferenceFieldUpdater<EventDataAggregator, EventDataAggregatorMain> DOWNSTREAM_SUBSCRIPTION
+        = AtomicReferenceFieldUpdater.newUpdater(EventDataAggregator.class, EventDataAggregatorMain.class,
             "downstreamSubscription");
 
     private final Supplier<EventDataBatch> batchSupplier;
@@ -72,11 +72,11 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         final EventDataAggregatorMain subscription
             = new EventDataAggregatorMain(actual, namespace, options, batchSupplier, partitionId, LOGGER);
 
-        if (!Operators.setOnce(DOWNSTREAM_SUBSCRIPTION, this, subscription)) {
+        if (DOWNSTREAM_SUBSCRIPTION.compareAndSet(this, null, subscription)) {
+            source.subscribe(subscription);
+        } else {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("Cannot resubscribe to multiple upstreams."));
         }
-
-        source.subscribe(subscription);
     }
 
     int getNumberOfEvents() {
