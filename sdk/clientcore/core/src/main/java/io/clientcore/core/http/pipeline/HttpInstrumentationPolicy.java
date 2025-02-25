@@ -139,7 +139,6 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
  *     .addPolicy&#40;enrichingPolicy&#41;
  *     .build&#40;&#41;;
  *
- *
  * </pre>
  * <!-- end io.clientcore.core.instrumentation.enrichhttpspans -->
  *
