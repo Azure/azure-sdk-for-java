@@ -368,6 +368,9 @@ public final class AzureAppConfigurationClient {
     public Response<KeyValue> putKeyValueWithResponse(String key, String accept, RequestOptions requestOptions) {
         // Operation 'putKeyValue' can be invoked with multiple content-type. It is difficult to form a correct method
         // signature for convenience API, and hence the convenience API is not generated.
+        // Manual changes start
+        accept = "application/vnd.microsoft.appconfig.kv+json, application/problem+json";
+        // Manual changes end
         return this.serviceClient.putKeyValueWithResponse(key, accept, requestOptions);
     }
 
@@ -1306,6 +1309,13 @@ public final class AzureAppConfigurationClient {
         RequestOptions requestOptions = new RequestOptions();
         return getKeyValueWithResponse(key, accept, requestOptions).getValue();
     }
+
+    // Manual changes start
+    public KeyValue putKeyValue(String key, String accept) {
+        RequestOptions requestOptions = new RequestOptions();
+        return putKeyValueWithResponse(key, accept, requestOptions).getValue();
+    }
+    // Manual changes end
 
     /**
      * Deletes a key-value.

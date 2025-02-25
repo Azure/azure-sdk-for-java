@@ -3,6 +3,8 @@
 package com.azure.v2.data.appconfiguration;
 
 import com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientImpl;
+import com.azure.v2.data.appconfiguration.implementation.ConfigurationClientCredentials;
+import com.azure.v2.data.appconfiguration.implementation.ConfigurationCredentialsPolicy;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.ServiceClientBuilder;
 import io.clientcore.core.credentials.KeyCredential;
@@ -44,6 +46,8 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
 
     @Metadata(generated = true)
     private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    private String connectionString;
 
     /**
      * Create an instance of the AzureAppConfigurationClientBuilder.
@@ -187,6 +191,19 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
     private KeyCredential keyCredential;
 
     /**
+     * Sets the credential to use when authenticating HTTP requests. Also, sets the {@link #endpoint(String) endpoint}
+     * for this ConfigurationClientBuilder.
+     *
+     * @param connectionString Connection string in the format "endpoint={endpoint_value};id={id_value};
+     * secret={secret_value}"
+     * @return The updated ConfigurationClientBuilder object.
+     */
+    public AzureAppConfigurationClientBuilder connectionString(String connectionString) {
+        this.connectionString = connectionString;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}.
      */
     @Metadata(generated = true)
@@ -235,10 +252,18 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
      * 
      * @return an instance of AzureAppConfigurationClientImpl.
      */
-    @Metadata(generated = true)
+//    @Metadata(generated = true)
     private AzureAppConfigurationClientImpl buildInnerClient() {
+        // Manual changes start
+        if (connectionString.isEmpty()) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'connectionString' cannot be an empty string."));
+        }
+        ConfigurationClientCredentials credentialsLocal = new ConfigurationClientCredentials(connectionString);
+        this.endpoint = credentialsLocal.getBaseUri();
+        // Manual changes end
         this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline(credentialsLocal);
         AzureAppConfigurationServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : AzureAppConfigurationServiceVersion.getLatest();
         AzureAppConfigurationClientImpl client
@@ -253,8 +278,8 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Metadata(generated = true)
-    private HttpPipeline createHttpPipeline() {
+//    @Metadata(generated = true)
+    private HttpPipeline createHttpPipeline(ConfigurationClientCredentials credentials) {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpInstrumentationOptions localHttpInstrumentationOptions = this.httpInstrumentationOptions == null
@@ -268,6 +293,17 @@ public final class AzureAppConfigurationClientBuilder implements HttpTrait<Azure
         if (keyCredential != null) {
             policies.add(new KeyCredentialPolicy("authorization", keyCredential, "Bearer"));
         }
+
+        // Manual changes start
+        if (credentials != null) {
+            // Use credentialS based policy
+            policies.add(new ConfigurationCredentialsPolicy(credentials));
+        } else {
+            // Throw exception that credentials and tokenCredential cannot be null
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("Missing credential information while building a client."));
+        }
+        // Manual changes end
         policies.add(new HttpInstrumentationPolicy(localHttpInstrumentationOptions));
         policies.forEach(httpPipelineBuilder::addPolicy);
         return httpPipelineBuilder.build();

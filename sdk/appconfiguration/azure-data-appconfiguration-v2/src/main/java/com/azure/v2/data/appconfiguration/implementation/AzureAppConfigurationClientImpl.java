@@ -139,15 +139,17 @@ public final class AzureAppConfigurationClientImpl {
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> getKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+        Response<KeyValue> getKeyValue(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("key") String key);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> putKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+        Response<KeyValue> putKeyValue(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+                                       @PathParam("key") String key, @HeaderParam("Accept") String accept,
+                                        @BodyParam("application/json") KeyValue entity);
 
         @HttpRequestInformation(method = HttpMethod.DELETE, path = "/kv/{key}", expectedStatusCodes = { 200, 204 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> deleteKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+        Response<KeyValue> deleteKeyValue(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("key") String key);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -597,7 +599,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a single key-value.
      */
     public Response<KeyValue> getKeyValueWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.getKeyValue(this.getServiceVersion().getVersion(), key);
+        return service.getKeyValue(this.endpoint, this.getServiceVersion().getVersion(), key);
     }
 
     /**
@@ -666,7 +668,9 @@ public final class AzureAppConfigurationClientImpl {
      * @return a key-value pair representing application settings.
      */
     public Response<KeyValue> putKeyValueWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.putKeyValue(this.getServiceVersion().getVersion(), key);
+        // Manual changes start
+        return service.putKeyValue(this.endpoint, this.getServiceVersion().getVersion(), key, accept, new KeyValue().setValue("shawn"));
+        // Manual changes end
     }
 
     /**
@@ -713,7 +717,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a key-value pair representing application settings.
      */
     public Response<KeyValue> deleteKeyValueWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.deleteKeyValue(this.getServiceVersion().getVersion(), key);
+        return service.deleteKeyValue(this.endpoint, this.getServiceVersion().getVersion(), key);
     }
 
     /**

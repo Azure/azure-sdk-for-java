@@ -2,6 +2,7 @@
 
 module com.azure.v2.data.appconfiguration {
     requires transitive io.clientcore.core;
+    requires com.azure.v2.core;
 
     exports com.azure.v2.data.appconfiguration;
     exports com.azure.v2.data.appconfiguration.models;
