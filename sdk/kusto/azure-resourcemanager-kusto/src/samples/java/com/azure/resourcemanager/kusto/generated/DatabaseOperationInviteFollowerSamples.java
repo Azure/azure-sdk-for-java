@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class DatabaseOperationInviteFollowerSamples {
     /*
      * x-ms-original-file:
-     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2023-08-15/examples/KustoDatabaseInviteFollower
+     * specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2024-04-13/examples/KustoDatabaseInviteFollower
      * .json
      */
     /**

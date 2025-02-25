@@ -107,6 +107,8 @@ public final class DiagnosticsProvider {
     private final CosmosClientTelemetryConfig telemetryConfig;
     private final boolean shouldSystemExitOnError;
 
+    private final AtomicLong diagnosticsHandlerFailures = new AtomicLong(0);
+
     final Supplier<Double> samplingRateSnapshotSupplier;
 
 
@@ -208,6 +210,10 @@ public final class DiagnosticsProvider {
         }
 
         return null;
+    }
+
+    public long getDiagnosticHandlerFailuresSnapshot() {
+        return this.diagnosticsHandlerFailures.get();
     }
 
     /**
@@ -538,6 +544,7 @@ public final class DiagnosticsProvider {
                 try {
                     handler.handleDiagnostics(cosmosCtx, context);
                 } catch (Exception e) {
+                    this.diagnosticsHandlerFailures.incrementAndGet();
                     LOGGER.error("HandledDiagnostics failed. ", e);
                 }
             }
@@ -1698,6 +1705,7 @@ public final class DiagnosticsProvider {
         if (throwable instanceof Error) {
             handleFatalError((Error) throwable, systemExitCode);
         } else {
+            this.diagnosticsHandlerFailures.incrementAndGet();
             LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ",  throwable);
             throw new RuntimeException(throwable);
         }

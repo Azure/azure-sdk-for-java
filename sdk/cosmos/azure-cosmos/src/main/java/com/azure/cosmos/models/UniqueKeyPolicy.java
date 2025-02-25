@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -83,8 +82,8 @@ public final class UniqueKeyPolicy {
             }
             this.jsonSerializable.set(
                 Constants.Properties.UNIQUE_KEYS,
-                uniqueKeys,
-                CosmosItemSerializer.DEFAULT_SERIALIZER);
+                uniqueKeys
+            );
         }
     }
 

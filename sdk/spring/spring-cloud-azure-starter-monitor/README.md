@@ -96,10 +96,10 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/spring-cloud-azure-starter-monitor/src
 [package_mvn]: https://central.sonatype.com/artifact/com.azure.spring/spring-cloud-azure-starter-monitor
 [api_reference_doc]: https://opentelemetry.io/docs/instrumentation/java/automatic/spring-boot/
-[product_documentation]: https://docs.microsoft.com/azure/azure-monitor/overview
+[product_documentation]: https://learn.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free/
-[application_insights_resource]: https://docs.microsoft.com/azure/azure-monitor/app/create-new-resource
-[application_insights_intro]: https://docs.microsoft.com/azure/azure-monitor/app/app-insights-overview
+[application_insights_resource]: https://learn.microsoft.com/azure/azure-monitor/app/create-new-resource
+[application_insights_intro]: https://learn.microsoft.com/azure/azure-monitor/app/app-insights-overview
 [application_insights_java_agent_spring_boot]: https://learn.microsoft.com/azure/azure-monitor/app/java-spring-boot
 [azure_monitor_enable_opentelemetry]: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-enable?tabs=java-native
 [azure_monitor_configure_opentelemetry]: https://learn.microsoft.com/azure/azure-monitor/app/opentelemetry-configuration?tabs=java-native
@@ -109,4 +109,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%monitor%2Fazure-monitor-spring-native%2FREADME.png)
+

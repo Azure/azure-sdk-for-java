@@ -7,12 +7,8 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.ChangeFeedOperationState;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosBulkOperationResponse;
@@ -42,7 +38,6 @@ import reactor.core.scheduler.Schedulers;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.cosmos.CosmosBridgeInternal.getContextClient;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -151,7 +146,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
         }
         return collectionLink
             .queryChangeFeed(changeFeedRequestOptions, klass)
-            .byPage()
+            .byPage().take(1, true)
             .publishOn(this.scheduler);
     }
 

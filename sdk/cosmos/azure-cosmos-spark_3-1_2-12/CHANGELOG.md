@@ -1,11 +1,19 @@
 ## Release History
 
-### 4.36.0-beta.1 (Unreleased)
+### 4.37.0 (2025-02-20)
+
+#### Other Changes
+* Updated netty dependency
+
+### 4.36.1 (2025-02-08)
+
+#### Bugs Fixed
+* Fixed an issue in change feed where under certain rare race conditions records could be skipped and excessive requests are prefetched. - See [PR 43788](https://github.com/Azure/azure-sdk-for-java/pull/43788)
+
+### 4.36.0 (2025-01-14)
 
 #### Features Added
 * Added the udfs `GetFeedRangesForContainer` and `GetOverlappingFeedRange` to ease mapping of cosmos partition key to databricks table partition key. - See [PR 43092](https://github.com/Azure/azure-sdk-for-java/pull/43092)
-
-#### Breaking Changes
 
 #### Bugs Fixed
 * Added null checking for previous images for deletes in full fidelity change feed. - See [PR 43483](https://github.com/Azure/azure-sdk-for-java/pull/43483)

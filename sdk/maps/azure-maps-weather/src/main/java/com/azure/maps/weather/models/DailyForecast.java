@@ -4,6 +4,7 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -203,8 +204,8 @@ public final class DailyForecast implements JsonSerializable<DailyForecast> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("date".equals(fieldName)) {
-                    deserializedDailyForecast.dateTime
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedDailyForecast.dateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("temperature".equals(fieldName)) {
                     deserializedDailyForecast.temperature = WeatherValueRange.fromJson(reader);
                 } else if ("realFeelTemperature".equals(fieldName)) {

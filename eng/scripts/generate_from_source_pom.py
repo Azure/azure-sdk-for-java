@@ -36,10 +36,10 @@ default_project = Project(None, None, None, None)
 
 # azure-client-sdk-parent, azure-perf-test-parent, spring-boot-starter-parent, and azure-spring-boot-test-parent are
 # valid parent POMs for Track 2 libraries.
-valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-client-sdk-parent-v2', 'com.azure:azure-perf-test-parent', 'org.springframework.boot:spring-boot-starter-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'com.azure.cosmos.spark:azure-cosmos-spark_3_2-12', 'io.clientcore:clientcore-parent']
 
 # List of parent POMs that should be retained as projects to create a full from source POM.
-parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent']
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-client-sdk-parent-v2', 'com.azure:azure-perf-test-parent', 'com.azure.spring:azure-spring-boot-test-parent', 'io.clientcore:clientcore-parent']
 
 # From this file get to the root path of the repo.
 root_path = os.path.normpath(os.path.abspath(__file__) + '/../../../')
@@ -113,11 +113,13 @@ def create_from_source_pom(artifacts_list: str, additional_modules_list: str, se
         # the directory path needs to be added to the sparse checkout, otherwise it's one
         # directory up.
         proj_path = os.path.normpath(root_path + p.directory_path )
-        proj_path_with_yml = os.path.normpath(proj_path + "/ci.yml")
-        if os.path.exists(proj_path_with_yml):
-            sparse_checkout_directory = p.directory_path
-        else:
-            sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
+#         proj_path_with_yml = os.path.normpath(proj_path + "/ci.yml")
+#         if os.path.exists(proj_path_with_yml):
+#             sparse_checkout_directory = p.directory_path
+#         else:
+        # Temporarily commenting out if / else above to resolve sparse checkout issue when running Communication
+        # library From Source live tests (plus possibly more). Will be reverted once all library checkouts are resolved.
+        sparse_checkout_directory = '/'.join(p.directory_path.split('/')[0:-1])
 
         sparse_checkout_directories.add(sparse_checkout_directory)
 
@@ -314,6 +316,8 @@ def add_source_projects(source_projects: Set[Project], project_identifiers: Iter
 def project_uses_client_parent(project: Project, projects: Dict[str, Project]) -> bool:
     while project.parent_pom is not None:
         if project.parent_pom == 'com.azure:azure-client-sdk-parent':
+            return True
+        if project.parent_pom == 'io.clientcore:clientcore-parent':
             return True
         project = projects.get(project.parent_pom, default_project)
 

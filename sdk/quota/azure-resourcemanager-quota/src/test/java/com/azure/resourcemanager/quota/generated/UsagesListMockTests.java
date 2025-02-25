@@ -7,8 +7,8 @@ package com.azure.resourcemanager.quota.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
 import com.azure.resourcemanager.quota.models.CurrentUsagesBase;
@@ -23,21 +23,21 @@ public final class UsagesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"usages\":{\"value\":648285682,\"usagesType\":\"Individual\"},\"unit\":\"r\",\"name\":{\"value\":\"agxsdszuemps\",\"localizedValue\":\"kfzbeyvpnqicvi\"},\"resourceType\":\"kjj\",\"quotaPeriod\":\"xrbuukzclew\",\"isQuotaApplicable\":false,\"properties\":\"datawp\"},\"id\":\"ztzp\",\"name\":\"fn\",\"type\":\"ckw\"}]}";
+            = "{\"value\":[{\"properties\":{\"usages\":{\"value\":159300714,\"usagesType\":\"Combined\"},\"unit\":\"yynpcdpumnzgmwz\",\"name\":{\"value\":\"biknsorgjhxbld\",\"localizedValue\":\"wwrlkdmtncv\"},\"resourceType\":\"otllxdyhgsyo\",\"quotaPeriod\":\"gjltdtbnnhado\",\"isQuotaApplicable\":true,\"properties\":\"datavcikhnvpamqgx\"},\"id\":\"queziky\",\"name\":\"ggxkallatmelwuip\",\"type\":\"ccjzkzivgvv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         QuotaManager manager = QuotaManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<CurrentUsagesBase> response
-            = manager.usages().list("gaowpulpqblylsyx", com.azure.core.util.Context.NONE);
+            = manager.usages().list("atrwyhqmibzyh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(648285682, response.iterator().next().properties().usages().value());
-        Assertions.assertEquals(UsagesTypes.INDIVIDUAL, response.iterator().next().properties().usages().usagesType());
-        Assertions.assertEquals("agxsdszuemps", response.iterator().next().properties().name().value());
-        Assertions.assertEquals("kjj", response.iterator().next().properties().resourceType());
+        Assertions.assertEquals(159300714, response.iterator().next().properties().usages().value());
+        Assertions.assertEquals(UsagesTypes.COMBINED, response.iterator().next().properties().usages().usagesType());
+        Assertions.assertEquals("biknsorgjhxbld", response.iterator().next().properties().name().value());
+        Assertions.assertEquals("otllxdyhgsyo", response.iterator().next().properties().resourceType());
     }
 }

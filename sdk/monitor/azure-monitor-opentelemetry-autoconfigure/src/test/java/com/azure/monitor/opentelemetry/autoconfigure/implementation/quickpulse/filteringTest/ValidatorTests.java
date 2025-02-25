@@ -27,9 +27,7 @@ class ValidatorTests {
         List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndNoFilters();
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", telemetryType.getValue(), AggregationType.SUM,
             AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
-        assertFalse(validator.isValidDerivedMetricInfo(dmi));
-        DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithNoFilters(telemetryType);
-        assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup));
+        assertTrue(validator.validateDerivedMetricInfo(dmi).isPresent());
     }
 
     @ParameterizedTest
@@ -37,7 +35,7 @@ class ValidatorTests {
     void rejectInvalidTelemetryTypesForDocs(TelemetryType telemetryType) {
         Validator validator = new Validator();
         DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithNoFilters(telemetryType);
-        assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup));
+        assertTrue(validator.validateDocConjunctionGroupInfo(docGroup).isPresent());
     }
 
     @ParameterizedTest
@@ -47,9 +45,7 @@ class ValidatorTests {
         List<FilterConjunctionGroupInfo> filterGroups = createListWithOneFilterConjunctionGroupAndNoFilters();
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", telemetryType.getValue(), AggregationType.SUM,
             AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
-        assertTrue(validator.isValidDerivedMetricInfo(dmi));
-        DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithNoFilters(telemetryType);
-        assertTrue(validator.isValidDocConjunctionGroupInfo(docGroup));
+        assertFalse(validator.validateDerivedMetricInfo(dmi).isPresent());
     }
 
     @ParameterizedTest
@@ -57,7 +53,7 @@ class ValidatorTests {
     void acceptValidTelemetryTypeForDocs(TelemetryType telemetryType) {
         Validator validator = new Validator();
         DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithNoFilters(telemetryType);
-        assertTrue(validator.isValidDocConjunctionGroupInfo(docGroup));
+        assertFalse(validator.validateDocConjunctionGroupInfo(docGroup).isPresent());
     }
 
     @Test
@@ -66,7 +62,7 @@ class ValidatorTests {
         Validator validator = new Validator();
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.TRACE.getValue(),
             AggregationType.SUM, AggregationType.SUM, "CustomMetrics.property", filterGroups);
-        assertFalse(validator.isValidDerivedMetricInfo(dmi));
+        assertTrue(validator.validateDerivedMetricInfo(dmi).isPresent());
     }
 
     @Test
@@ -76,7 +72,7 @@ class ValidatorTests {
         Validator validator = new Validator();
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.TRACE.getValue(),
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
-        assertFalse(validator.isValidDerivedMetricInfo(dmi));
+        assertTrue(validator.validateDerivedMetricInfo(dmi).isPresent());
     }
 
     @ParameterizedTest
@@ -86,10 +82,7 @@ class ValidatorTests {
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.REQUEST.getValue(),
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         Validator validator = new Validator();
-        assertFalse(validator.isValidDerivedMetricInfo(dmi));
-
-        DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithOneFilter(TelemetryType.REQUEST, filter);
-        assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup));
+        assertTrue(validator.validateDerivedMetricInfo(dmi).isPresent());
     }
 
     @ParameterizedTest
@@ -97,7 +90,7 @@ class ValidatorTests {
     void rejectInvalidFiltersForDocs(FilterInfo filter) {
         Validator validator = new Validator();
         DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithOneFilter(TelemetryType.REQUEST, filter);
-        assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup));
+        assertTrue(validator.validateDocConjunctionGroupInfo(docGroup).isPresent());
     }
 
     @Test
@@ -114,12 +107,12 @@ class ValidatorTests {
 
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.REQUEST.getValue(),
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
-        assertFalse(validator.isValidDerivedMetricInfo(dmi));
+        assertTrue(validator.validateDerivedMetricInfo(dmi).isPresent());
 
         DocumentFilterConjunctionGroupInfo docGroup = new DocumentFilterConjunctionGroupInfo();
         docGroup.setFilters(filterGroup);
         docGroup.setTelemetryType(TelemetryType.REQUEST);
-        assertFalse(validator.isValidDocConjunctionGroupInfo(docGroup));
+        assertTrue(validator.validateDocConjunctionGroupInfo(docGroup).isPresent());
     }
 
     @ParameterizedTest
@@ -129,10 +122,7 @@ class ValidatorTests {
         DerivedMetricInfo dmi = createDerivedMetricInfo("random-id", TelemetryType.REQUEST.getValue(),
             AggregationType.SUM, AggregationType.SUM, DerivedMetricProjections.COUNT, filterGroups);
         Validator validator = new Validator();
-        assertTrue(validator.isValidDerivedMetricInfo(dmi));
-
-        DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithOneFilter(TelemetryType.REQUEST, filter);
-        assertTrue(validator.isValidDocConjunctionGroupInfo(docGroup));
+        assertFalse(validator.validateDerivedMetricInfo(dmi).isPresent());
     }
 
     @ParameterizedTest
@@ -140,7 +130,7 @@ class ValidatorTests {
     void acceptValidFiltersForDocs(FilterInfo filter) {
         Validator validator = new Validator();
         DocumentFilterConjunctionGroupInfo docGroup = createDocGroupWithOneFilter(TelemetryType.REQUEST, filter);
-        assertTrue(validator.isValidDocConjunctionGroupInfo(docGroup));
+        assertFalse(validator.validateDocConjunctionGroupInfo(docGroup).isPresent());
     }
 
     private static List<TelemetryType> invalidTelemetryTypes() {

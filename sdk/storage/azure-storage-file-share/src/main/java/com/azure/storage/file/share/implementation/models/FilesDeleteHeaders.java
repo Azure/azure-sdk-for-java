@@ -21,6 +21,11 @@ public final class FilesDeleteHeaders {
     private String xMsVersion;
 
     /*
+     * The x-ms-link-count property.
+     */
+    private Long xMsLinkCount;
+
+    /*
      * The x-ms-request-id property.
      */
     private String xMsRequestId;
@@ -32,6 +37,8 @@ public final class FilesDeleteHeaders {
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
 
+    private static final HttpHeaderName X_MS_LINK_COUNT = HttpHeaderName.fromString("x-ms-link-count");
+
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FilesDeleteHeaders class.
@@ -40,6 +47,10 @@ public final class FilesDeleteHeaders {
      */
     public FilesDeleteHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsLinkCount = rawHeaders.getValue(X_MS_LINK_COUNT);
+        if (xMsLinkCount != null) {
+            this.xMsLinkCount = Long.parseLong(xMsLinkCount);
+        }
         this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
@@ -64,6 +75,26 @@ public final class FilesDeleteHeaders {
      */
     public FilesDeleteHeaders setXMsVersion(String xMsVersion) {
         this.xMsVersion = xMsVersion;
+        return this;
+    }
+
+    /**
+     * Get the xMsLinkCount property: The x-ms-link-count property.
+     * 
+     * @return the xMsLinkCount value.
+     */
+    public Long getXMsLinkCount() {
+        return this.xMsLinkCount;
+    }
+
+    /**
+     * Set the xMsLinkCount property: The x-ms-link-count property.
+     * 
+     * @param xMsLinkCount the xMsLinkCount value to set.
+     * @return the FilesDeleteHeaders object itself.
+     */
+    public FilesDeleteHeaders setXMsLinkCount(Long xMsLinkCount) {
+        this.xMsLinkCount = xMsLinkCount;
         return this;
     }
 

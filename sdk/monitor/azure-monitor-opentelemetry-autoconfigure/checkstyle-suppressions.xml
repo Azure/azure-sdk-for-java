@@ -252,6 +252,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricProjections.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricAggregation.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Validator.java" checks="MissingJavadocTypeCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ConfigErrorTracker.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomDimensions.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.Feature.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.FeatureStatsbeat.java" checks="MissingJavadocTypeCheck" />
@@ -270,6 +271,8 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.CpuPerformanceCounterCalculator.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedTime.java" checks="MissingJavadocTypeCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker.java" checks="MissingJavadocTypeCheck" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.HostName.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParser.java" checks="MissingJavadocTypeCheck" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.StatusCode.java" checks="MissingJavadocTypeCheck" />
@@ -368,6 +371,7 @@
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.Filter" checks="MissingJavadocMethod" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.CustomDimensions" checks="MissingJavadocMethod" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.DerivedMetricProjections" checks="MissingJavadocMethod" />
+  <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.ConfigErrorTracker" checks="MissingJavadocMethod" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder" checks="DenyListedWords" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKsBuilder" checks="ServiceClientBuilder" />
   <suppress files="com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.*" checks="JavadocPackage" />

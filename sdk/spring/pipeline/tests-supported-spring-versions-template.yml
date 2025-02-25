@@ -39,7 +39,6 @@ parameters:
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
     parameters:
-      SupportedClouds: "Public,UsGov,China"
       TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
       Artifacts: ${{ parameters.Artifacts }}
       TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}

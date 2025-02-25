@@ -5,8 +5,10 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomStringUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import com.fasterxml.jackson.module.blackbird.BlackbirdModule;
@@ -115,5 +117,52 @@ public class UtilsTest {
         System.setProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS", "false");
         assertThat(Utils.shouldAllowUnquotedControlChars()).isFalse();
         System.clearProperty("COSMOS.ALLOW_UNQUOTED_CONTROL_CHARS");
+    }
+
+    @Test(groups = { "unit" })
+    public void serializationInclusionMode() {
+        assertThat(
+            Utils
+            .getDocumentObjectMapper(null)
+            .getSerializationConfig()
+            .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.USE_DEFAULTS, JsonInclude.Include.USE_DEFAULTS));
+
+        assertThat(
+            Utils
+                .getDocumentObjectMapper("")
+                .getSerializationConfig()
+                .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.USE_DEFAULTS, JsonInclude.Include.USE_DEFAULTS));
+        assertThat(
+            Utils
+                .getDocumentObjectMapper("aLWayS")
+                .getSerializationConfig()
+                .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.ALWAYS, JsonInclude.Include.ALWAYS));
+        assertThat(
+            Utils
+                .getDocumentObjectMapper("nONnull")
+                .getSerializationConfig()
+                .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL));
+        assertThat(
+            Utils
+                .getDocumentObjectMapper("nONEMPTY")
+                .getSerializationConfig()
+                .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.NON_EMPTY, JsonInclude.Include.NON_EMPTY));
+        assertThat(
+            Utils
+                .getDocumentObjectMapper("NonDefault")
+                .getSerializationConfig()
+                .getDefaultPropertyInclusion())
+            .isEqualTo(
+                JsonInclude.Value.construct(JsonInclude.Include.NON_DEFAULT, JsonInclude.Include.NON_DEFAULT));
     }
 }
