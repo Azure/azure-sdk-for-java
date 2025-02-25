@@ -1,5 +1,13 @@
 # Release History
 
+## 1.2.1 (2025-02-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+
+
 ## 1.2.0 (2025-02-11)
 
 ### Other Changes
