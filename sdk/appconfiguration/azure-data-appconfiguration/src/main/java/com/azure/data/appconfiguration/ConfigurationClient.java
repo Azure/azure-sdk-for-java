@@ -418,7 +418,7 @@ public final class ConfigurationClient {
      *
      * @param setting The setting to add based on its key and optional label combination.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A REST response containing the {@link ConfigurationSetting} that was created, or {@code null}, if a
+     * @return A REST response containing the the {@link ConfigurationSetting} that was created, or {@code null}, if a
      * key collision occurs or the key is an invalid value (which will also throw ServiceRequestException described
      * below).
      * @throws NullPointerException If {@code setting} is {@code null}.
@@ -439,7 +439,7 @@ public final class ConfigurationClient {
     }
 
     /**
-     * Creates or updates a configuration value in the service with the given key and the {@code label} is optional.
+     * Creates or updates a configuration value in the service with the given key and. the {@code label} is optional.
      *
      * <p><strong>Code Samples</strong></p>
      *

@@ -11,9 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * The AcrRefreshToken model.
- */
+/** The AcrRefreshToken model. */
 @Fluent
 public final class AcrRefreshToken implements JsonSerializable<AcrRefreshToken> {
     /*
@@ -21,15 +19,13 @@ public final class AcrRefreshToken implements JsonSerializable<AcrRefreshToken> 
      */
     private String refreshToken;
 
-    /**
-     * Creates an instance of AcrRefreshToken class.
-     */
+    /** Creates an instance of AcrRefreshToken class. */
     public AcrRefreshToken() {
     }
 
     /**
      * Get the refreshToken property: The refresh token to be used for generating access tokens.
-     * 
+     *
      * @return the refreshToken value.
      */
     public String getRefreshToken() {
@@ -38,7 +34,7 @@ public final class AcrRefreshToken implements JsonSerializable<AcrRefreshToken> 
 
     /**
      * Set the refreshToken property: The refresh token to be used for generating access tokens.
-     * 
+     *
      * @param refreshToken the refreshToken value to set.
      * @return the AcrRefreshToken object itself.
      */
@@ -47,9 +43,6 @@ public final class AcrRefreshToken implements JsonSerializable<AcrRefreshToken> 
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -59,10 +52,10 @@ public final class AcrRefreshToken implements JsonSerializable<AcrRefreshToken> 
 
     /**
      * Reads an instance of AcrRefreshToken from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcrRefreshToken if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the AcrRefreshToken.
      */
     public static AcrRefreshToken fromJson(JsonReader jsonReader) throws IOException {

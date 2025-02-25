@@ -8,14 +8,12 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 
-/**
- * Contains all response data for the createSession operation.
- */
+/** Contains all response data for the createSession operation. */
 public final class RemoteRenderingsCreateSessionResponse
     extends ResponseBase<RemoteRenderingsCreateSessionHeaders, SessionProperties> {
     /**
      * Creates an instance of RemoteRenderingsCreateSessionResponse.
-     * 
+     *
      * @param request the request which resulted in this RemoteRenderingsCreateSessionResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -27,11 +25,7 @@ public final class RemoteRenderingsCreateSessionResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /**
-     * Gets the deserialized response body.
-     * 
-     * @return the deserialized response body.
-     */
+    /** @return the deserialized response body. */
     @Override
     public SessionProperties getValue() {
         return super.getValue();

@@ -8,12 +8,10 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.search.documents.implementation.util.SearchPagedResponseAccessHelper;
-import com.azure.search.documents.models.DebugInfo;
 import com.azure.search.documents.models.FacetResult;
 import com.azure.search.documents.models.QueryAnswerResult;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SemanticErrorReason;
-import com.azure.search.documents.models.SemanticQueryRewritesResultType;
 import com.azure.search.documents.models.SemanticSearchResultsType;
 
 import java.util.List;
@@ -33,10 +31,8 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
     private final Double coverage;
     private final Map<String, List<FacetResult>> facets;
     private final List<QueryAnswerResult> queryAnswers;
-    private final DebugInfo debugInfo;
     private final SemanticErrorReason semanticErrorReason;
     private final SemanticSearchResultsType semanticSearchResultsType;
-    private final SemanticQueryRewritesResultType semanticQueryRewritesResultType;
 
     static {
         SearchPagedResponseAccessHelper.setAccessor(new SearchPagedResponseAccessHelper.SearchPagedResponseAccessor() {
@@ -69,17 +65,6 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
             public SemanticSearchResultsType getSemanticSearchResultsType(SearchPagedResponse response) {
                 return response.getSemanticSearchResultsType();
             }
-
-            @Override
-            public DebugInfo getDebugInfo(SearchPagedResponse response) {
-                return response.getDebugInfo();
-            }
-
-            @Override
-            public SemanticQueryRewritesResultType getSemanticQueryRewritesResultType(SearchPagedResponse response) {
-                return response.getSemanticQueryRewritesResultType();
-            }
-
         });
     }
 
@@ -112,28 +97,6 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
     public SearchPagedResponse(Response<List<SearchResult>> response, String continuationToken,
         Map<String, List<FacetResult>> facets, Long count, Double coverage, List<QueryAnswerResult> queryAnswers,
         SemanticErrorReason semanticErrorReason, SemanticSearchResultsType semanticSearchResultsType) {
-        this(response, continuationToken, facets, count, coverage, queryAnswers, semanticErrorReason,
-            semanticSearchResultsType, null, null);
-    }
-
-    /**
-     * Constructor
-     *
-     * @param response The response containing information such as the request, status code, headers, and values.
-     * @param continuationToken Continuation token for the next operation.
-     * @param facets Facets contained in the search.
-     * @param count Total number of documents available as a result for the search.
-     * @param coverage Percent of the index used in the search operation.
-     * @param queryAnswers Answers contained in the search.
-     * @param semanticErrorReason Reason that a partial response was returned for a semantic search request.
-     * @param semanticSearchResultsType Type of the partial response returned for a semantic search request.
-     * @param debugInfo Debug information that applies to the search results as a whole.
-     * @param semanticQueryRewritesResultType Type of the partial response returned for a semantic query rewrites request.
-     */
-    public SearchPagedResponse(Response<List<SearchResult>> response, String continuationToken,
-        Map<String, List<FacetResult>> facets, Long count, Double coverage, List<QueryAnswerResult> queryAnswers,
-        SemanticErrorReason semanticErrorReason, SemanticSearchResultsType semanticSearchResultsType,
-        DebugInfo debugInfo, SemanticQueryRewritesResultType semanticQueryRewritesResultType) {
         super(response.getRequest(), response.getStatusCode(), response.getHeaders(), response.getValue(),
             continuationToken, null);
 
@@ -144,8 +107,6 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
         this.queryAnswers = queryAnswers;
         this.semanticErrorReason = semanticErrorReason;
         this.semanticSearchResultsType = semanticSearchResultsType;
-        this.debugInfo = debugInfo;
-        this.semanticQueryRewritesResultType = semanticQueryRewritesResultType;
     }
 
     /**
@@ -210,24 +171,6 @@ public final class SearchPagedResponse extends PagedResponseBase<Void, SearchRes
      */
     SemanticSearchResultsType getSemanticSearchResultsType() {
         return semanticSearchResultsType;
-    }
-
-    /**
-     * The debug information that can be used to further explore your search results.
-     *
-     * @return The debug information that can be used to further explore your search results.
-     */
-    DebugInfo getDebugInfo() {
-        return debugInfo;
-    }
-
-    /**
-     * The type of the partial response returned for a semantic query rewrites request.
-     *
-     * @return Type of the partial response returned for a semantic query rewrites request if response was partial.
-     */
-    SemanticQueryRewritesResultType getSemanticQueryRewritesResultType() {
-        return semanticQueryRewritesResultType;
     }
 
     @Override

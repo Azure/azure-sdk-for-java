@@ -10,15 +10,6 @@
     </Or>
   </Match>
   <Match>
-    <Class name="com.azure.search.documents.models.QueryResultDocumentSubscores" />
-    <Bug pattern="EI_EXPOSE_REP" />
-    <Method name="getVectors" />
-  </Match>
-  <Match>
-    <Class name="com.azure.search.documents.indexes.models.AzureOpenAITokenizerParameters" />
-    <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2" />
-  </Match>
-  <Match>
     <Bug pattern="DMI_RANDOM_USED_ONLY_ONCE" />
     <Or>
       <Class name="com.azure.search.documents.SearchClientBuilderTests" />
@@ -137,8 +128,6 @@
       <Class name="com.azure.search.documents.test.environment.models.LoudHotel" />
       <Class name="com.azure.search.documents.test.environment.models.VectorHotel" />
       <Class name="com.azure.search.documents.util.SearchPagedResponse" />
-      <Class name="com.azure.search.documents.models.QueryRewritesValuesDebugInfo" />
-      <Class name="com.azure.search.documents.models.QueryRewritesDebugInfo" />
     </Or>
   </Match>
   <Match>
