@@ -74,7 +74,8 @@ public final class CliRunner {
         boolean finished = process.waitFor(10, TimeUnit.SECONDS);
 
         if (!finished) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Process did not complete within the expected time."));
+            throw LOGGER
+                .logExceptionAsError(new RuntimeException("Process did not complete within the expected time."));
         }
         if (process.exitValue() != 0) {
             if (processOutput.length() > 0) {
