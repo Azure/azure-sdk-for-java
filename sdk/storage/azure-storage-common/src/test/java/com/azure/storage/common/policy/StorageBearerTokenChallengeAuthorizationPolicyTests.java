@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -36,8 +37,12 @@ public class StorageBearerTokenChallengeAuthorizationPolicyTests {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
-        mocksCloseable.close();
+    public void afterEach() throws Exception {
+        Mockito.framework().clearInlineMock(this);
+
+        if (mocksCloseable != null) {
+            mocksCloseable.close();
+        }
     }
 
     @Test
