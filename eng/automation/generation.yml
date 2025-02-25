@@ -18,7 +18,7 @@ variables:
   - name: MAVEN_OPTS
     value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
   - name: NodeVersion
-    value: '18.x'
+    value: '20.x'
   - name: JavaVersion
     value: '17'
 
