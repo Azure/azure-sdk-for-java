@@ -241,7 +241,7 @@ BasicDigitalTwin basicDt = syncClient.getDigitalTwin(twinId, BasicDigitalTwin.cl
 
 ### Query digital twins
 
-Query the Azure Digital Twins instance for digital twins using the [Azure Digital Twins Query Store language](https://review.docs.microsoft.com/azure/digital-twins-v2/concepts-query-language?branch=pr-en-us-114648). Query calls support paging. Here's an example of how to query for digital twins and how to iterate over the results.
+Query the Azure Digital Twins instance for digital twins using the Azure Digital Twins Query Store language. Query calls support paging. Here's an example of how to query for digital twins and how to iterate over the results.
 
 ```java
 // This code snippet demonstrates the simplest way to iterate over the digital twin results, where paging
