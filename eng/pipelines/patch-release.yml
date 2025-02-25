@@ -8,22 +8,10 @@ extends:
       groupId: com.azure
       safeName: azureaimetricsadvisor
       ServiceDirectory: metricsadvisor
-    - name: azure-communication-chat
-      groupId: com.azure
-      safeName: azurecommunicationchatclient
-      ServiceDirectory: communication/azure-communication-chat
-    - name: azure-communication-callautomation
-      groupId: com.azure
-      safeName: azurecommunicationcallautomation
-      ServiceDirectory: communication/azure-communication-callautomation
     - name: azure-messaging-eventhubs-checkpointstore-blob
       groupId: com.azure
       safeName: azuremessagingeventhubscheckpointstoreblob
       ServiceDirectory: eventhubs
-    - name: azure-communication-identity
-      groupId: com.azure
-      safeName: azurecommunicationidentity
-      ServiceDirectory: communication/azure-communication-identity
     - name: azure-digitaltwins-core
       groupId: com.azure
       safeName: azuredigitaltwinscore
@@ -44,10 +32,6 @@ extends:
       groupId: com.azure
       safeName: azuresecurityattestation
       ServiceDirectory: attestation
-    - name: azure-communication-rooms
-      groupId: com.azure
-      safeName: azurecommunicationrooms
-      ServiceDirectory: communication/azure-communication-rooms
     - name: azure-ai-textanalytics
       groupId: com.azure
       safeName: azureaitextanalytics
@@ -56,22 +40,6 @@ extends:
       groupId: com.azure
       safeName: azuresecuritykeyvaultadministration
       ServiceDirectory: keyvault
-    - name: azure-communication-phonenumbers
-      groupId: com.azure
-      safeName: azurecommunicationphonenumbers
-      ServiceDirectory: communication/azure-communication-phonenumbers
-    - name: azure-storage-common
-      groupId: com.azure
-      safeName: azurestoragecommon
-      ServiceDirectory: storage
-    - name: azure-storage-blob
-      groupId: com.azure
-      safeName: azurestorageblob
-      ServiceDirectory: storage
-    - name: azure-storage-blob-cryptography
-      groupId: com.azure
-      safeName: azurestorageblobcryptography
-      ServiceDirectory: storage
     - name: azure-ai-translation-text
       groupId: com.azure
       safeName: azureaitranslationtext
@@ -80,44 +48,14 @@ extends:
       groupId: com.azure
       safeName: azuredataschemaregistry
       ServiceDirectory: schemaregistry
-    - name: azure-communication-email
-      groupId: com.azure
-      safeName: azurecommunicationemail
-      ServiceDirectory: communication/azure-communication-email
-    - name: azure-communication-jobrouter
-      groupId: com.azure
-      safeName: azurecommunicationjobrouterclient
-      ServiceDirectory: communication/azure-communication-jobrouter
-    - name: azure-storage-file-share
-      groupId: com.azure
-      safeName: azurestoragefileshare
-      ServiceDirectory: storage
     - name: azure-messaging-eventhubs
       groupId: com.azure
       safeName: azuremessagingeventhubs
       ServiceDirectory: eventhubs
-    - name: azure-communication-common
-      groupId: com.azure
-      safeName: azurecommunicationcommon
-      ServiceDirectory: communication/azure-communication-common
-    - name: azure-communication-messages
-      groupId: com.azure
-      safeName: azurecommunicationmessages
-      ServiceDirectory: communication/azure-communication-messages
-    - name: azure-storage-internal-avro
-      groupId: com.azure
-      safeName: azurestorageinternalavro
-      skipPublishDocMs: true
-      skipPublishDocGithubIo: true
-      ServiceDirectory: storage
     - name: azure-monitor-query
       groupId: com.azure
       safeName: azuremonitorquery
       ServiceDirectory: monitor
-    - name: azure-storage-file-datalake
-      groupId: com.azure
-      safeName: azurestoragefiledatalake
-      ServiceDirectory: storage
     - name: azure-messaging-eventgrid
       groupId: com.azure
       safeName: azuremessagingeventgrid
@@ -135,10 +73,6 @@ extends:
       safeName: azuresecuritykeyvaultjca
       skipPublishDocMs: true
       ServiceDirectory: keyvault
-    - name: azure-communication-sms
-      groupId: com.azure
-      safeName: azurecommunicationsms
-      ServiceDirectory: communication/azure-communication-sms
     - name: azure-identity-broker
       groupId: com.azure
       safeName: azureidentitybroker
@@ -147,10 +81,6 @@ extends:
       groupId: com.azure
       safeName: azuremessagingservicebus
       ServiceDirectory: servicebus
-    - name: azure-storage-blob-batch
-      groupId: com.azure
-      safeName: azurestorageblobbatch
-      ServiceDirectory: storage
     - name: azure-search-documents
       groupId: com.azure
       safeName: azuresearch
@@ -159,10 +89,6 @@ extends:
       groupId: com.azure
       safeName: azuresecuritykeyvaultsecrets
       ServiceDirectory: keyvault
-    - name: azure-storage-queue
-      groupId: com.azure
-      safeName: azurestoragequeue
-      ServiceDirectory: storage
     - name: azure-monitor-ingestion
       groupId: com.azure
       safeName: azuremonitoringestion
