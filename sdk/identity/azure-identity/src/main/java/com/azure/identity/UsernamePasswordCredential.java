@@ -53,7 +53,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * @see DeviceCodeCredential
  * @see InteractiveBrowserCredential
  *
- * @deprecated This credential is deprecated because it doesn't support multifactor authentication (MFA). See <a href="https://aka.ms/azsdk/identity/mfa">here</a> for details about MFA enforcement for Entra ID and migration guidance.
+ * @deprecated This credential is deprecated because it doesn't support multifactor authentication (MFA). See <a href="https://aka.ms/azsdk/identity/mfa">here</a> for details about MFA enforcement for Microsoft Entra ID and migration guidance.
  */
 @Immutable
 @Deprecated
