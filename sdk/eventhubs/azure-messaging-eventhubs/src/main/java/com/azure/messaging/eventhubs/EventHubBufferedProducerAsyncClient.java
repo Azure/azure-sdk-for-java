@@ -337,15 +337,17 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
         }
 
         if (!CoreUtils.isNullOrEmpty(options.getPartitionId())) {
-            if (!partitionProducers.containsKey(options.getPartitionId())) {
-                return monoError(logger, new IllegalArgumentException(
-                    "partitionId is not valid. Available ones: " + String.join(",", partitionProducers.keySet())));
-            }
+            return partitionIdsMono.flatMap(ids -> {
+                if (!partitionProducers.containsKey(options.getPartitionId())) {
+                    return monoError(logger, new IllegalArgumentException(
+                        "partitionId is not valid. Available ones: " + String.join(",", partitionProducers.keySet())));
+                }
 
-            final EventHubBufferedPartitionProducer producer
-                = partitionProducers.computeIfAbsent(options.getPartitionId(), key -> createPartitionProducer(key));
+                final EventHubBufferedPartitionProducer producer
+                    = partitionProducers.computeIfAbsent(options.getPartitionId(), key -> createPartitionProducer(key));
 
-            return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
+                return producer.enqueueEvent(eventData).then(Mono.fromCallable(() -> getBufferedEventCount()));
+            });
         }
 
         if (options.getPartitionKey() != null) {
@@ -371,7 +373,7 @@ public final class EventHubBufferedProducerAsyncClient implements Closeable {
                     = partitionProducers.computeIfAbsent(partitionId, key -> createPartitionProducer(key));
 
                 eventData.setPartitionKeyAnnotation(options.getPartitionKey());
-                return producer.enqueueEvent(eventData).thenReturn(getBufferedEventCount());
+                return producer.enqueueEvent(eventData).then(Mono.fromCallable(() -> getBufferedEventCount()));
             });
         }
     }
