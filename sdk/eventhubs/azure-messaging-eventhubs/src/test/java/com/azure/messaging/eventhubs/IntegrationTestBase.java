@@ -12,7 +12,6 @@ import com.azure.core.test.TestBase;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.ClientOptions;
-import com.azure.core.util.ConfigurationBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.SendOptions;
@@ -138,8 +137,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .retryOptions(RETRY_OPTIONS)
             .clientOptions(clientOptions)
             .transportType(AmqpTransportType.AMQP)
-            .scheduler(scheduler)
-            .configuration(new ConfigurationBuilder().putProperty("com.azure.messaging.eventhubs.v2", "true").build());
+            .scheduler(scheduler);
 
         if (shareConnection) {
             builder.shareConnection();

@@ -5,19 +5,16 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
-import com.azure.core.amqp.implementation.AmqpChannelProcessor;
 import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.core.amqp.implementation.ChannelCacheWrapper;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.ProtonSessionWrapper;
+import com.azure.core.amqp.implementation.ProtonSession;
 import com.azure.core.amqp.implementation.ReactorConnection;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorSession;
-import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.RequestResponseChannelCache;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
@@ -49,7 +46,6 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private final ClientLogger logger;
     private final TokenCredential tokenCredential;
     private final String connectionId;
-    private final ReactorProvider reactorProvider;
     private final ReactorHandlerProvider handlerProvider;
     private final AmqpLinkProvider linkProvider;
     private final TokenManagerProvider tokenManagerProvider;
@@ -57,8 +53,6 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     private final MessageSerializer messageSerializer;
     private final Scheduler scheduler;
     private final String eventHubName;
-    private final boolean isV2;
-    private final boolean useSessionChannelCache;
 
     private volatile ManagementChannel managementChannel;
 
@@ -75,19 +69,15 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
      */
     public EventHubReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions, String eventHubName,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider,
-        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer, boolean isV2,
-        boolean useSessionChannelCache) {
+        TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, isV2, useSessionChannelCache);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND);
         this.connectionId = connectionId;
-        this.reactorProvider = reactorProvider;
         this.handlerProvider = handlerProvider;
         this.linkProvider = linkProvider;
         this.tokenManagerProvider = tokenManagerProvider;
         this.messageSerializer = messageSerializer;
         this.eventHubName = eventHubName;
-        this.isV2 = isV2;
-        this.useSessionChannelCache = useSessionChannelCache;
         this.retryOptions = connectionOptions.getRetry();
         this.tokenCredential = connectionOptions.getTokenCredential();
         this.scheduler = connectionOptions.getScheduler();
@@ -171,24 +161,16 @@ public class EventHubReactorAmqpConnection extends ReactorConnection implements 
     }
 
     @Override
-    protected ReactorSession createSession(ProtonSessionWrapper session) {
+    protected ReactorSession createSession(ProtonSession session) {
         return new EventHubReactorSession(this, session, handlerProvider, linkProvider, getClaimsBasedSecurityNode(),
-            tokenManagerProvider, retryOptions, messageSerializer, isV2);
+            tokenManagerProvider, retryOptions, messageSerializer);
     }
 
     private synchronized ManagementChannel getOrCreateManagementChannel() {
         if (managementChannel == null) {
-            final ChannelCacheWrapper channelCache;
-            if (useSessionChannelCache) {
-                final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
-                final RequestResponseChannelCache cache = new RequestResponseChannelCache(this, MANAGEMENT_ADDRESS,
-                    MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, retryPolicy);
-                channelCache = new ChannelCacheWrapper(cache);
-            } else {
-                final AmqpChannelProcessor<RequestResponseChannel> cache
-                    = createRequestResponseChannel(MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, MANAGEMENT_ADDRESS);
-                channelCache = new ChannelCacheWrapper(cache);
-            }
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+            final RequestResponseChannelCache channelCache = new RequestResponseChannelCache(this, MANAGEMENT_ADDRESS,
+                MANAGEMENT_SESSION_NAME, MANAGEMENT_LINK_NAME, retryPolicy);
             managementChannel = new ManagementChannel(channelCache, eventHubName, tokenCredential, tokenManagerProvider,
                 this.messageSerializer, scheduler);
         }

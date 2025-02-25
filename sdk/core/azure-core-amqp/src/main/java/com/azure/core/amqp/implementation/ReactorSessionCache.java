@@ -153,8 +153,7 @@ final class ReactorSessionCache {
     private ReactorSession load(Connection connection, String name, Loader loader) {
         final ProtonSession protonSession = new ProtonSession(connectionId, fullyQualifiedNamespace, connection,
             handlerProvider, reactorProvider, name, openTimeout, logger);
-        // TODO (anu): Update loader signature to use 'ProtonSession' instead of 'ProtonSessionWrapper' when removing v1.
-        return loader.load(new ProtonSessionWrapper(protonSession));
+        return loader.load(protonSession);
     }
 
     /**
@@ -205,13 +204,10 @@ final class ReactorSessionCache {
          * Load a {@link ReactorSession} for caching.
          *
          * @param protonSession the {@link ProtonSession} to back the loaded {@link ReactorSession}.
-         * <p>
-         * TODO (anu): When removing v1, update signature to use 'ProtonSession' instead of wrapper.
-         * </p>
          *
          * @return the session to cache.
          */
-        ReactorSession load(ProtonSessionWrapper protonSession);
+        ReactorSession load(ProtonSession protonSession);
     }
 
     /**
