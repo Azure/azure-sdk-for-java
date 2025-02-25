@@ -15,7 +15,9 @@ public final class ListFileSystemsOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ListFileSystemsOptions.class);
 
     private FileSystemListDetails details;
+
     private String prefix;
+
     private Integer maxResultsPerPage;
 
     /**
@@ -26,8 +28,6 @@ public final class ListFileSystemsOptions {
     }
 
     /**
-     * Gets the details for listing specific file systems.
-     *
      * @return the details for listing specific file systems
      */
     public FileSystemListDetails getDetails() {
@@ -35,8 +35,6 @@ public final class ListFileSystemsOptions {
     }
 
     /**
-     * Sets the details for listing specific file systems.
-     *
      * @param details The details for listing specific file systems
      * @return the updated FileSystemListDetails object
      */

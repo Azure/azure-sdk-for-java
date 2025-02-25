@@ -38,7 +38,6 @@ public class FileParallelUploadOptions {
      * @param dataFlux The data to write to the file. Unlike other upload methods, this method does not require that
      * the {@code Flux} be replayable. In other words, it does not have to support multiple subscribers and is not
      * expected to produce the same values across subscriptions.
-     * @throws NullPointerException If {@code dataFlux} is null.
      */
     public FileParallelUploadOptions(Flux<ByteBuffer> dataFlux) {
         StorageImplUtils.assertNotNull("dataFlux", dataFlux);
@@ -52,7 +51,6 @@ public class FileParallelUploadOptions {
      * Constructs a new {@code FileParallelUploadOptions}.
      *
      * @param data The {@link BinaryData} to write to the file.
-     * @throws NullPointerException If {@code data} is null.
      */
     public FileParallelUploadOptions(BinaryData data) {
         StorageImplUtils.assertNotNull("data must not be null", data);
@@ -64,7 +62,7 @@ public class FileParallelUploadOptions {
 
     /**
      * Constructs a new {@code FileParallelUploadOptions}.
-     * <p>
+     *
      * Use {@link #FileParallelUploadOptions(InputStream)} instead to supply an InputStream without knowing the exact
      * length beforehand.
      *
@@ -73,8 +71,6 @@ public class FileParallelUploadOptions {
      * mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
-     * @throws NullPointerException If {@code dataStream} is null.
-     * @throws IllegalArgumentException If {@code length} is less than 0 or greater than {@link Long#MAX_VALUE}.
      * @deprecated length is no longer necessary; use {@link #FileParallelUploadOptions(InputStream)} instead.
      */
     @Deprecated
@@ -88,7 +84,6 @@ public class FileParallelUploadOptions {
      * @param dataStream The data to write to the blob. The data must be markable. This is in order to support retries.
      * If the data is not markable, consider wrapping your data source in a {@link java.io.BufferedInputStream} to add
      * mark support.
-     * @throws NullPointerException If {@code dataStream} is null.
      */
     public FileParallelUploadOptions(InputStream dataStream) {
         this(dataStream, null);

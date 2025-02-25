@@ -12,12 +12,6 @@ public class AccessControlChangeCounters {
     private long failedChangesCount;
 
     /**
-     * Creates a new instance of {@link AccessControlChangeCounters}.
-     */
-    public AccessControlChangeCounters() {
-    }
-
-    /**
      *  The number of directories where Access Control List has been updated successfully.
      *
      * @return The number of directories where Access Control List has been updated successfully.

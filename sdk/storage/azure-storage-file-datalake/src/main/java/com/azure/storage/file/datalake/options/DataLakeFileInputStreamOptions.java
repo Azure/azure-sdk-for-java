@@ -13,6 +13,7 @@ import com.azure.storage.file.datalake.models.FileRange;
  */
 @Fluent
 public final class DataLakeFileInputStreamOptions {
+
     private FileRange range;
     private DataLakeRequestConditions requestConditions;
     private Integer blockSize;
@@ -20,14 +21,6 @@ public final class DataLakeFileInputStreamOptions {
     private Boolean userPrincipalName;
 
     /**
-     * Creates a new instance of {@link DataLakeFileInputStreamOptions}.
-     */
-    public DataLakeFileInputStreamOptions() {
-    }
-
-    /**
-     * Gets the {@link FileRange}.
-     *
      * @return {@link FileRange}
      */
     public FileRange getRange() {
@@ -35,8 +28,6 @@ public final class DataLakeFileInputStreamOptions {
     }
 
     /**
-     * Sets the {@link FileRange}.
-     *
      * @param range {@link FileRange}
      * @return The updated options.
      */
@@ -46,8 +37,6 @@ public final class DataLakeFileInputStreamOptions {
     }
 
     /**
-     * Gets the {@link DataLakeRequestConditions}.
-     *
      * @return {@link DataLakeRequestConditions}
      */
     public DataLakeRequestConditions getRequestConditions() {
@@ -55,8 +44,6 @@ public final class DataLakeFileInputStreamOptions {
     }
 
     /**
-     * Sets the {@link DataLakeRequestConditions}.
-     *
      * @param requestConditions {@link DataLakeRequestConditions}
      * @return The updated options.
      */
@@ -66,10 +53,6 @@ public final class DataLakeFileInputStreamOptions {
     }
 
     /**
-     * Gets the size of each data chunk returned from the service. If block size is large, input stream will make
-     * fewer network calls, but each individual call will send more data and will therefore take longer.
-     * The default value is 4 MB.
-     *
      * @return The size of each data chunk returned from the service. If block size is large, input stream will make
      * fewer network calls, but each individual call will send more data and will therefore take longer.
      * The default value is 4 MB.
@@ -79,10 +62,6 @@ public final class DataLakeFileInputStreamOptions {
     }
 
     /**
-     * Sets the size of each data chunk returned from the service. If block size is large, input stream will make
-     * fewer network calls, but each individual call will send more data and will therefore take longer.
-     * The default value is 4 MB.
-     *
      * @param blockSize The size of each data chunk returned from the service. If block size is large, input stream
      * will make fewer network calls, but each individual call will send more data and will therefore take longer.
      * The default value is 4 MB.
@@ -94,8 +73,6 @@ public final class DataLakeFileInputStreamOptions {
     }
 
     /**
-     * Gets the {@link ConsistentReadControl} Default is E-Tag.
-     *
      * @return {@link ConsistentReadControl} Default is E-Tag.
      */
     public ConsistentReadControl getConsistentReadControl() {
@@ -103,8 +80,6 @@ public final class DataLakeFileInputStreamOptions {
     }
 
     /**
-     * Sets the {@link ConsistentReadControl} Default is E-Tag.
-     *
      * @param consistentReadControl {@link ConsistentReadControl} Default is E-Tag.
      * @return The updated options.
      */
@@ -114,8 +89,6 @@ public final class DataLakeFileInputStreamOptions {
     }
 
     /**
-     * Gets the value for the x-ms-upn header.
-     *
      * @return The value for the x-ms-upn header.
      */
     public Boolean isUserPrincipalName() {
@@ -123,8 +96,6 @@ public final class DataLakeFileInputStreamOptions {
     }
 
     /**
-     * Sets the value for the x-ms-upn header.
-     *
      * @param userPrincipalName The value for the x-ms-upn header.
      * @return The updated options.
      */

@@ -14,12 +14,6 @@ public class AccessControlChangeResult {
     private List<AccessControlChangeFailure> batchFailures;
 
     /**
-     * Creates a new instance of {@link AccessControlChangeResult}.
-     */
-    public AccessControlChangeResult() {
-    }
-
-    /**
      * Returns the {@link AccessControlChangeCounters}.
      *
      * @return {@link AccessControlChangeCounters}
