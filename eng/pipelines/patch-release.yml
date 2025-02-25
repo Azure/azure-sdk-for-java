@@ -56,10 +56,6 @@ extends:
       groupId: com.azure
       safeName: azureaicontentsafety
       ServiceDirectory: contentsafety
-    - name: azure-digitaltwins-core
-      groupId: com.azure
-      safeName: azuredigitaltwinscore
-      ServiceDirectory: digitaltwins
     - name: azure-data-schemaregistry
       groupId: com.azure
       safeName: azuredataschemaregistry
@@ -108,10 +104,6 @@ extends:
       groupId: com.azure
       safeName: azureiotdeviceupdate
       ServiceDirectory: deviceupdate
-    - name: azure-developer-devcenter
-      groupId: com.azure
-      safeName: azuredeveloperdevcenter
-      ServiceDirectory: devcenter
     - name: azure-security-keyvault-certificates
       groupId: com.azure
       safeName: azuresecuritykeyvaultcertificates
