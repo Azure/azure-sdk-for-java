@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.ERROR_TYPE_KEY;
 import static io.clientcore.core.implementation.instrumentation.AttributeKeys.OPERATION_NAME_KEY;
@@ -75,15 +74,18 @@ public final class OperationInstrumentation {
      * <p>
      * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
      *
-     * @param call the call to instrument. Note: the call is executed in the scope of the instrumentation and should use updated request options passed to it.
+     * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
      * @param requestOptions the initial request options.
      * @param <TResponse> the type of the response.
      * @return the response.
      * @throws RuntimeException if the call throws a runtime exception.
      */
-    public <TResponse> TResponse instrument(BiFunction<RequestOptions, InstrumentationContext, TResponse> call, RequestOptions requestOptions) {
+    public <TResponse> TResponse instrument(BiFunction<RequestOptions, InstrumentationContext, TResponse> operation,
+        RequestOptions requestOptions) {
+        Objects.requireNonNull(operation, "'operation' cannot be null");
+
         if (!shouldInstrument(requestOptions)) {
-            return call.apply(requestOptions, NoopInstrumentationContext.INSTANCE);
+            return operation.apply(requestOptions, NoopInstrumentationContext.INSTANCE);
         }
 
         if (requestOptions == null || requestOptions == RequestOptions.none()) {
@@ -92,7 +94,7 @@ public final class OperationInstrumentation {
 
         OperationInstrumentation.Scope scope = startScope(requestOptions);
         try {
-            return call.apply(requestOptions, scope.getInstrumentationContext());
+            return operation.apply(requestOptions, scope.getInstrumentationContext());
         } catch (RuntimeException t) {
             scope.setError(t);
             throw t;

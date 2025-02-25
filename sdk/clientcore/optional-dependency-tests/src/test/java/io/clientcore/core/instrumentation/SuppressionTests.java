@@ -424,13 +424,17 @@ public class SuppressionTests {
 
         @SuppressWarnings("try")
         public Response<?> protocolMethod(RequestOptions options) {
-            return protocolInstrumentation.instrument(
-                (updatedOptions, __) -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost").setRequestOptions(updatedOptions)), options);
+            return protocolInstrumentation.instrument((updatedOptions,
+                __) -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET)
+                    .setUri("https://localhost")
+                    .setRequestOptions(updatedOptions)),
+                options);
         }
 
         @SuppressWarnings("try")
         public Response<?> convenienceMethod(RequestOptions options) throws IOException {
-            return convenienceInstrumentation.instrument((updatedOptions, __) -> protocolMethod(updatedOptions), options);
+            return convenienceInstrumentation.instrument((updatedOptions, __) -> protocolMethod(updatedOptions),
+                options);
         }
     }
 }

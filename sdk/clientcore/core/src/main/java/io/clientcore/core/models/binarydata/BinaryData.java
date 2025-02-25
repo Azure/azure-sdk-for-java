@@ -244,16 +244,6 @@ public abstract class BinaryData implements Closeable {
      * as well. To safely update the {@link ByteBuffer} without impacting the BinaryData instance, perform an array copy
      * first.</p>
      *
-     * <p><strong>Create an instance from a ByteBuffer</strong></p>
-     *
-     * <!-- src_embed io.clientcore.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
-     * <pre>
-     * final ByteBuffer data = ByteBuffer.wrap&#40;&quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
-     * BinaryData binaryData = BinaryData.fromByteBuffer&#40;data&#41;;
-     * System.out.println&#40;binaryData&#41;;
-     * </pre>
-     * <!-- end io.clientcore.core.util.BinaryData.fromByteBuffer#ByteBuffer -->
-     *
      * @param data The {@link ByteBuffer} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link ByteBuffer}.
      * @throws NullPointerException If {@code data} is null.
@@ -271,16 +261,6 @@ public abstract class BinaryData implements Closeable {
      * array copy first.</p>
      *
      * <p><strong>Create an instance from a List&lt;ByteBuffer&gt;</strong></p>
-     *
-     * <!-- src_embed io.clientcore.core.util.BinaryData.fromListByteBuffer#List -->
-     * <pre>
-     * final List&lt;ByteBuffer&gt; data = Stream.of&#40;&quot;Some &quot;, &quot;data&quot;&#41;
-     *     .map&#40;s -&gt; ByteBuffer.wrap&#40;s.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;&#41;
-     *     .collect&#40;Collectors.toList&#40;&#41;&#41;;
-     * BinaryData binaryData = BinaryData.fromListByteBuffer&#40;data&#41;;
-     * System.out.println&#40;binaryData&#41;;
-     * </pre>
-     * <!-- end io.clientcore.core.util.BinaryData.fromListByteBuffer#List -->
      *
      * @param data The {@link List} of {@link ByteBuffer} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link List} of {@link ByteBuffer}.

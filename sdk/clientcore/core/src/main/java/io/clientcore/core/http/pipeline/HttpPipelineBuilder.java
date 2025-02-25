@@ -35,7 +35,7 @@ import java.util.Objects;
  * <pre>
  * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
  *     .httpClient&#40;HttpClient.getNewInstance&#40;&#41;&#41;
- *     .policies&#40;new HttpRetryPolicy&#40;&#41;&#41;
+ *     .addPolicy&#40;new HttpRetryPolicy&#40;&#41;&#41;
  *     .build&#40;&#41;;
  * </pre>
  * <!-- end io.clientcore.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->
