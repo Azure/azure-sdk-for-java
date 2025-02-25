@@ -24,11 +24,11 @@ class SampleClient {
         this.endpoint = endpoint;
         Instrumentation instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
 
-        // BEGIN: io.clientcore.core.telemetry.instrumentation.create
+        // BEGIN: io.clientcore.core.instrumentation.create
         InstrumentedOperationDetails downloadDetails = new InstrumentedOperationDetails("downloadContent",
             SAMPLE_CLIENT_DURATION_METRIC).endpoint(endpoint);
         this.downloadContentInstrumentation = instrumentation.createOperationInstrumentation(downloadDetails);
-        // END: io.clientcore.core.telemetry.instrumentation.create
+        // END: io.clientcore.core.instrumentation.create
 
         this.createInstrumentation = instrumentation.createOperationInstrumentation(
             new InstrumentedOperationDetails("create", SAMPLE_CLIENT_DURATION_METRIC)
@@ -40,7 +40,10 @@ class SampleClient {
     }
 
     public Response<?> downloadContent(RequestOptions options) {
-        return downloadContentInstrumentation.instrument((updatedOptions, instrumentationContext) -> downloadImpl(updatedOptions), options);
+        // BEGIN: io.clientcore.core.instrumentation.instrument
+        return downloadContentInstrumentation.instrument((updatedOptions, instrumentationContext) ->
+            downloadImpl(updatedOptions), options);
+        // END: io.clientcore.core.instrumentation.instrument
     }
 
     public Response<?> create(RequestOptions options) {
