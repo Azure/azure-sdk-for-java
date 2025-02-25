@@ -4,11 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
-import com.azure.spring.cloud.autoconfigure.implementation.AzureServiceConfigurationBase;
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundlesProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,11 +21,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(KeyVaultJcaProvider.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.keyvault.jca.enabled", havingValue = "true", matchIfMissing = true)
-public class AzureKeyVaultJcaAutoConfiguration extends AzureServiceConfigurationBase {
-
-    protected AzureKeyVaultJcaAutoConfiguration(AzureGlobalProperties azureProperties) {
-        super(azureProperties);
-    }
+public class AzureKeyVaultJcaAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = AzureKeyVaultJcaProperties.PREFIX)
@@ -44,8 +37,8 @@ public class AzureKeyVaultJcaAutoConfiguration extends AzureServiceConfiguration
 
     @Bean
     @ConditionalOnMissingBean
-    AzureKeyVaultSslBundlesRegistrar azureKeyVaultCertificateSslBundleRegistrar(AzureKeyVaultJcaProperties jcaProperties,
-                                                                                AzureKeyVaultSslBundlesProperties sslBundlesProperties) {
+    AzureKeyVaultSslBundlesRegistrar azureKeyVaultCertificateSslBundlesRegistrar(AzureKeyVaultJcaProperties jcaProperties,
+                                                                                 AzureKeyVaultSslBundlesProperties sslBundlesProperties) {
         return new AzureKeyVaultSslBundlesRegistrar(jcaProperties, sslBundlesProperties);
     }
 }

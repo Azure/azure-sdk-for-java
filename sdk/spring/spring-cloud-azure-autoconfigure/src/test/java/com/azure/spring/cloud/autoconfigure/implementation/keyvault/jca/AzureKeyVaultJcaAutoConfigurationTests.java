@@ -39,7 +39,7 @@ class AzureKeyVaultJcaAutoConfigurationTests {
     void keyVaultJca() {
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.keyvault.jca.endpoint=" + String.format(ENDPOINT, "mykv")
+                "spring.ssl.bundle.azure-keyvault.testBundle.truststore.certificate-paths.custom=classpath:keyvault/certificate-paths/custom"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultJcaAutoConfiguration.class);
