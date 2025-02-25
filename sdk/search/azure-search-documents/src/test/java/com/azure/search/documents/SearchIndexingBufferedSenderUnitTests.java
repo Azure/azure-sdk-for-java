@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -46,9 +47,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.search.documents.SearchTestBase.API_KEY;
 import static com.azure.search.documents.SearchTestBase.ENDPOINT;
 import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
-import static com.azure.search.documents.TestHelpers.getTestTokenCredential;
 import static com.azure.search.documents.TestHelpers.readJsonFileToList;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -68,7 +69,9 @@ public class SearchIndexingBufferedSenderUnitTests {
     }
 
     private static SearchClientBuilder getSearchClientBuilder() {
-        return new SearchClientBuilder().endpoint(ENDPOINT).indexName("index").credential(getTestTokenCredential());
+        return new SearchClientBuilder().endpoint(ENDPOINT)
+            .indexName("index")
+            .credential(new AzureKeyCredential(API_KEY));
     }
 
     private static HttpClient wrapWithAsserting(HttpClient wrappedHttpClient, boolean isSync) {
@@ -907,8 +910,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void
         operationsThrowAfterClientIsClosed(Consumer<SearchIndexingBufferedSender<Map<String, Object>>> operation) {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            = getSearchClientBuilder().bufferedSender(HOTEL_DOCUMENT_TYPE)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .buildSender();
@@ -950,8 +952,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void operationsThrowAfterClientIsClosedAsync(
         Function<SearchIndexingBufferedAsyncSender<Map<String, Object>>, Mono<Void>> operation) {
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            = getSearchClientBuilder().bufferedSender(HOTEL_DOCUMENT_TYPE)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .buildAsyncSender();
@@ -978,8 +979,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     @Test
     public void closingTwiceDoesNotThrow() {
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            = getSearchClientBuilder().bufferedSender(HOTEL_DOCUMENT_TYPE)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .buildSender();
@@ -992,8 +992,7 @@ public class SearchIndexingBufferedSenderUnitTests {
     @Test
     public void closingTwiceDoesNotThrowAsync() {
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
+            = getSearchClientBuilder().bufferedSender(HOTEL_DOCUMENT_TYPE)
                 .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
                 .autoFlush(false)
                 .buildAsyncSender();
@@ -1080,7 +1079,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
         AtomicLong firstFlushCompletionTime = new AtomicLong();
-        Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+        batchingClient.flush().doFinally(ignored -> {
             firstFlushCompletionTime.set(System.nanoTime());
             countDownLatch.countDown();
         }).subscribe();
@@ -1088,7 +1087,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         Thread.sleep(10); // Give the first operation a chance to start
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
-        Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+        batchingClient.flush().doFinally(ignored -> {
             secondFlushCompletionTime.set(System.nanoTime());
             countDownLatch.countDown();
         }).subscribe();
@@ -1176,21 +1175,19 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
         AtomicLong firstFlushCompletionTime = new AtomicLong();
-        Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+        batchingClient.flush().doFinally(ignored -> {
             firstFlushCompletionTime.set(System.nanoTime());
             countDownLatch.countDown();
         }).subscribe();
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
-        Mono.using(() -> 1, ignored -> batchingClient.close(), ignored -> {
+        batchingClient.close().doFinally(ignored -> {
             secondFlushCompletionTime.set(System.nanoTime());
             countDownLatch.countDown();
         }).subscribe();
 
         countDownLatch.await();
-        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get(),
-            () -> "Expected first flush attempt to complete before second flush attempt. First flush finished at "
-                + firstFlushCompletionTime.get() + ", second flush finished at " + secondFlushCompletionTime.get());
+        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get());
     }
 
     @Test
@@ -1436,14 +1433,10 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void emptyBatchIsNeverSent() {
         AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .addPolicy((context, next) -> {
-                    requestCount.incrementAndGet();
-                    return next.process();
-                })
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
-                .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
-                .buildSender();
+            = getSearchClientBuilder().addPolicy((context, next) -> {
+                requestCount.incrementAndGet();
+                return next.process();
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE).documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER).buildSender();
 
         batchingClient.flush();
 
@@ -1459,14 +1452,10 @@ public class SearchIndexingBufferedSenderUnitTests {
     public void emptyBatchIsNeverSentAsync() {
         AtomicInteger requestCount = new AtomicInteger();
         SearchIndexingBufferedAsyncSender<Map<String, Object>> batchingClient
-            = getSearchClientBuilder().httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
-                .addPolicy((context, next) -> {
-                    requestCount.incrementAndGet();
-                    return next.process();
-                })
-                .bufferedSender(HOTEL_DOCUMENT_TYPE)
-                .documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER)
-                .buildAsyncSender();
+            = getSearchClientBuilder().addPolicy((context, next) -> {
+                requestCount.incrementAndGet();
+                return next.process();
+            }).bufferedSender(HOTEL_DOCUMENT_TYPE).documentKeyRetriever(HOTEL_ID_KEY_RETRIEVER).buildAsyncSender();
 
         StepVerifier.create(batchingClient.flush()).verifyComplete();
 
