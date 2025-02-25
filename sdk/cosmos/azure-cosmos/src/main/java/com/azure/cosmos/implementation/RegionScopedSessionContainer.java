@@ -525,7 +525,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         List<String> regionNamesForRead = globalEndpointManager
             .getReadEndpoints()
             .stream()
-            .map(endpoint -> globalEndpointManager.getRegionName(endpoint, OperationType.Read))
+            .map(consolidatedReadLocationEndpoints -> globalEndpointManager.getRegionName(consolidatedReadLocationEndpoints.getGatewayLocationEndpoint(), OperationType.Read))
             .collect(Collectors.toList());
 
         checkNotNull(regionNamesForRead, "regionNamesForRead cannot be null!");

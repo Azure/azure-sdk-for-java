@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangePartitionKeyImpl;
 import com.azure.cosmos.implementation.guava25.base.Function;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -60,7 +61,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.lang.reflect.Field;
-import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -5144,8 +5144,8 @@ public class PartitionLevelCircuitBreakerTests extends FaultInjectionTestBase {
             return 0d;
         }
 
-        ConcurrentHashMap<URI, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
-            = (ConcurrentHashMap<URI, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
+        ConcurrentHashMap<LocationCache.RegionalEndpoints, LocationSpecificHealthContext> locationEndpointToLocationSpecificContextForPartition
+            = (ConcurrentHashMap<LocationCache.RegionalEndpoints, LocationSpecificHealthContext>) locationEndpointToLocationSpecificContextForPartitionField.get(partitionAndLocationSpecificUnavailabilityInfo);
 
         int count = 0;
         boolean failuresExist = false;

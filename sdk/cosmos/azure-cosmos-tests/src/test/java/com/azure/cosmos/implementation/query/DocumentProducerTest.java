@@ -28,6 +28,7 @@ import com.azure.cosmos.implementation.guava25.collect.Iterables;
 import com.azure.cosmos.implementation.guava25.collect.LinkedListMultimap;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderbyRowComparer;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.FeedResponse;
@@ -112,9 +113,9 @@ public class DocumentProducerTest {
     }
 
     private IRetryPolicyFactory mockDocumentClientIRetryPolicyFactory() {
-        URI url;
+        LocationCache.RegionalEndpoints regionalEndpoints;
         try {
-            url = new URI("http://localhost");
+            regionalEndpoints = new LocationCache.RegionalEndpoints(new URI("http://localhost"));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -122,7 +123,7 @@ public class DocumentProducerTest {
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
-        Mockito.doReturn(url).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+        Mockito.doReturn(regionalEndpoints).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         doReturn(false).when(globalEndpointManager).isClosed();
         return new RetryPolicy(mockDiagnosticsClientContext(), globalEndpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManager);
     }

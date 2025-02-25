@@ -298,12 +298,16 @@ public class RxGatewayStoreModel implements RxStoreModel {
         return httpHeaders;
     }
 
+    public URI getRootUri(RxDocumentServiceRequest request) {
+        return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayLocationEndpoint();
+    }
+
     private URI getUri(RxDocumentServiceRequest request) throws URISyntaxException {
         URI rootUri = request.getEndpointOverride();
         if (rootUri == null) {
             if (request.getIsMedia()) {
                 // For media read request, always use the write endpoint.
-                rootUri = this.globalEndpointManager.getWriteEndpoints().get(0);
+                rootUri = this.globalEndpointManager.getWriteEndpoints().get(0).getGatewayLocationEndpoint();
             } else {
                 rootUri = this.globalEndpointManager.resolveServiceEndpoint(request);
             }

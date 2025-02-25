@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -71,7 +72,8 @@ public class MetadataRequestRetryPolicy implements IRetryPolicy {
 
                     if (request.requestContext != null && request.requestContext.locationEndpointToRoute != null) {
 
-                        URI locationEndpointToRoute = request.requestContext.locationEndpointToRoute;
+                        LocationCache.RegionalEndpoints regionalEndpoints = request.requestContext.regionalEndpointsToRoute;
+                        URI locationEndpointToRoute = regionalEndpoints.getGatewayLocationEndpoint();
 
                         if (request.isReadOnlyRequest()) {
                             logger.warn("Marking the endpoint : {} as unavailable for read.", locationEndpointToRoute);

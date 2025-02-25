@@ -88,32 +88,32 @@ public class GlobalEndpointManager implements AutoCloseable {
         startRefreshLocationTimerAsync(true).block(maxInitializationTime);
     }
 
-    public UnmodifiableList<URI> getReadEndpoints() {
+    public UnmodifiableList<LocationCache.RegionalEndpoints> getReadEndpoints() {
         // readonly
         return this.locationCache.getReadEndpoints();
     }
 
-    public UnmodifiableList<URI> getWriteEndpoints() {
+    public UnmodifiableList<LocationCache.RegionalEndpoints> getWriteEndpoints() {
         //readonly
         return this.locationCache.getWriteEndpoints();
     }
 
-    public UnmodifiableList<URI> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<LocationCache.RegionalEndpoints> getApplicableReadEndpoints(RxDocumentServiceRequest request) {
         // readonly
         return this.locationCache.getApplicableReadEndpoints(request);
     }
 
-    public UnmodifiableList<URI> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
+    public UnmodifiableList<LocationCache.RegionalEndpoints> getApplicableWriteEndpoints(RxDocumentServiceRequest request) {
         //readonly
         return this.locationCache.getApplicableWriteEndpoints(request);
     }
 
-    public UnmodifiableList<URI> getApplicableReadEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<LocationCache.RegionalEndpoints> getApplicableReadEndpoints(List<String> excludedRegions) {
         // readonly
         return this.locationCache.getApplicableReadEndpoints(excludedRegions, Collections.emptyList());
     }
 
-    public UnmodifiableList<URI> getApplicableWriteEndpoints(List<String> excludedRegions) {
+    public UnmodifiableList<LocationCache.RegionalEndpoints> getApplicableWriteEndpoints(List<String> excludedRegions) {
         //readonly
         return this.locationCache.getApplicableWriteEndpoints(excludedRegions, Collections.emptyList());
     }
@@ -146,10 +146,11 @@ public class GlobalEndpointManager implements AutoCloseable {
                 });
     }
 
-    public URI resolveServiceEndpoint(RxDocumentServiceRequest request) {
-        URI serviceEndpoint = this.locationCache.resolveServiceEndpoint(request);
+    public LocationCache.RegionalEndpoints resolveServiceEndpoint(RxDocumentServiceRequest request) {
+        LocationCache.RegionalEndpoints serviceEndpoints = this.locationCache.resolveServiceEndpoint(request);
         if (request.faultInjectionRequestContext != null) {
-            request.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoint);
+            // TODO: integrate thin client into fault injection
+            request.faultInjectionRequestContext.setLocationEndpointToRoute(serviceEndpoints.getGatewayLocationEndpoint());
         }
 
         return serviceEndpoint;

@@ -21,6 +21,8 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.ModelBridgeUtils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Iterables;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -35,7 +37,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -62,6 +63,8 @@ public class LocationCacheTest {
     private final static URI Location4Endpoint = createUrl("https://location4.documents.azure.com");
 
     private static HashMap<String, URI> EndpointByLocation = new HashMap<>();
+
+    private final static Logger logger = LoggerFactory.getLogger(LocationCache.class);
 
     static {
         EndpointByLocation.put("location1", LocationCacheTest.Location1Endpoint);
@@ -480,9 +483,9 @@ public class LocationCacheTest {
     @Test(groups = "long")
     public void validateWriteEndpointOrderWithClientSideDisableMultipleWriteLocation()  throws Exception {
         this.initialize(false, true, false);
-        assertThat(this.cache.getWriteEndpoints().get(0)).isEqualTo(LocationCacheTest.Location1Endpoint);
-        assertThat(this.cache.getWriteEndpoints().get(1)).isEqualTo(LocationCacheTest.Location2Endpoint);
-        assertThat(this.cache.getWriteEndpoints().get(2)).isEqualTo(LocationCacheTest.Location3Endpoint);
+        assertThat(this.cache.getWriteEndpoints().get(0)).isEqualTo(new LocationCache.RegionalEndpoints(LocationCacheTest.Location1Endpoint));
+        assertThat(this.cache.getWriteEndpoints().get(1)).isEqualTo(new LocationCache.RegionalEndpoints(LocationCacheTest.Location2Endpoint));
+        assertThat(this.cache.getWriteEndpoints().get(2)).isEqualTo(new LocationCache.RegionalEndpoints(LocationCacheTest.Location3Endpoint));
     }
 
     @Test(groups = "unit", dataProvider = "excludedRegionsTestConfigs")
@@ -512,11 +515,11 @@ public class LocationCacheTest {
             request.requestContext.setExcludeRegions(excludedRegionsOnRequest);
 
             if (request.isReadOnlyRequest()) {
-                List<URI> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
+                List<LocationCache.RegionalEndpoints> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
                 assertThat(applicableReadEndpoints.size()).isEqualTo(expectedApplicableEndpoints.size());
                 expectedApplicableEndpoints.forEach(endpoint -> assertThat(expectedApplicableEndpoints.contains(endpoint)).isTrue());
             } else {
-                List<URI> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
+                List<LocationCache.RegionalEndpoints> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
                 assertThat(applicableWriteEndpoints.size()).isEqualTo(expectedApplicableEndpoints.size());
                 expectedApplicableEndpoints.forEach(endpoint -> assertThat(expectedApplicableEndpoints.contains(endpoint)).isTrue());
             }
@@ -532,8 +535,8 @@ public class LocationCacheTest {
         boolean isDefaultEndpointAlsoRegionalEndpoint) {
 
         this.initialize(true, true, isPreferredLocationsListEmpty, isDefaultEndpointAlsoRegionalEndpoint);
-        List<URI> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
-        List<URI> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
+        List<LocationCache.RegionalEndpoints> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
+        List<LocationCache.RegionalEndpoints> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
 
         if (request.isReadOnlyRequest()) {
             assertThat(applicableReadEndpoints.size()).isEqualTo(expectedApplicableReadEndpoints.size());
@@ -667,8 +670,8 @@ public class LocationCacheTest {
                         endpointDiscoveryEnabled,
                         isPreferredListEmpty);
 
-                UnmodifiableList<URI> currentWriteEndpoints = this.cache.getWriteEndpoints();
-                UnmodifiableList<URI> currentReadEndpoints = this.cache.getReadEndpoints();
+                UnmodifiableList<LocationCache.RegionalEndpoints> currentWriteEndpoints = this.cache.getWriteEndpoints();
+                UnmodifiableList<LocationCache.RegionalEndpoints> currentReadEndpoints = this.cache.getReadEndpoints();
                 for (int i = 0; i < readLocationIndex; i++) {
                     this.cache.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.getReadableLocations(), i).getEndpoint()));
                     this.endpointManager.markEndpointUnavailableForRead(createUrl(Iterables.get(this.databaseAccount.getReadableLocations(), i).getEndpoint()));;
@@ -775,7 +778,7 @@ public class LocationCacheTest {
         boolean isMostPreferredLocationUnavailableForRead = isFirstReadEndpointUnavailable;
         boolean isMostPreferredLocationUnavailableForWrite = useMultipleWriteLocations ?
                 false : isFirstWriteEndpointUnavailable;
-        if (this.preferredLocations.size() > 0 || isPreferredListEmpty) {
+        if (!this.preferredLocations.isEmpty() || isPreferredListEmpty) {
             String mostPreferredReadLocationName = (isPreferredListEmpty && endpointDiscoveryEnabled) ? preferredAvailableReadRegionsOrAccountLevelReadEndpoints.get(0) :
                 this.preferredLocations.stream()
                     .filter(location -> toStream(databaseAccount.getReadableLocations())
@@ -898,28 +901,28 @@ public class LocationCacheTest {
 
         // If current write endpoint is unavailable, write endpoints order doesn't change
         // ALL write requests flip-flop between current write and alternate write endpoint
-        UnmodifiableList<URI> writeEndpoints = this.cache.getWriteEndpoints();
+        UnmodifiableList<LocationCache.RegionalEndpoints> writeEndpoints = this.cache.getWriteEndpoints();
 
-        assertThat(firstAvailableWriteEndpoint).isEqualTo(writeEndpoints.get(0));
-        assertThat(secondAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, true));
-        assertThat(firstAvailableWriteEndpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, false));
+        assertThat(new LocationCache.RegionalEndpoints(firstAvailableWriteEndpoint)).isEqualTo(writeEndpoints.get(0));
+        assertThat(new LocationCache.RegionalEndpoints(secondAvailableWriteEndpoint)).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, true));
+        assertThat(new LocationCache.RegionalEndpoints(firstAvailableWriteEndpoint)).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Document, false));
 
         // Writes to other resource types should be directed to first/second write getEndpoint
-        assertThat(firstWriteEnpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, false));
-        assertThat(secondWriteEnpoint).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, true));
+        assertThat(new LocationCache.RegionalEndpoints(firstWriteEnpoint)).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, false));
+        assertThat(new LocationCache.RegionalEndpoints(secondWriteEnpoint)).isEqualTo(this.resolveEndpointForWriteRequest(ResourceType.Database, true));
 
         // Reads should be directed to available read endpoints regardless of resource type
-        assertThat(firstAvailableReadEndpoint).isEqualTo(this.resolveEndpointForReadRequest(true));
-        assertThat(firstAvailableReadEndpoint).isEqualTo(this.resolveEndpointForReadRequest(false));
+        assertThat(new LocationCache.RegionalEndpoints(firstAvailableReadEndpoint)).isEqualTo(this.resolveEndpointForReadRequest(true));
+        assertThat(new LocationCache.RegionalEndpoints(firstAvailableReadEndpoint)).isEqualTo(this.resolveEndpointForReadRequest(false));
     }
 
-    private URI resolveEndpointForReadRequest(boolean masterResourceType) {
+    private LocationCache.RegionalEndpoints resolveEndpointForReadRequest(boolean masterResourceType) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Read,
                 masterResourceType ? ResourceType.Database : ResourceType.Document);
         return this.cache.resolveServiceEndpoint(request);
     }
 
-    private URI resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
+    private LocationCache.RegionalEndpoints resolveEndpointForWriteRequest(ResourceType resourceType, boolean useAlternateWriteEndpoint) {
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, resourceType);
         request.requestContext.routeToLocation(useAlternateWriteEndpoint ? 1 : 0, resourceType.isCollectionChild());
         return this.cache.resolveServiceEndpoint(request);

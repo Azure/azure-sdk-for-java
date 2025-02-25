@@ -41,6 +41,10 @@ public class ShouldRetryResult {
         return new ShouldRetryResult(null, null, false, null, true);
     }
 
+    public static ShouldRetryResult noRetryOnNonRelatedException(Exception e) {
+        return new ShouldRetryResult(null, e, false, null, true);
+    }
+
     public static ShouldRetryResult noRetry(Quadruple<Boolean, Boolean, Duration, Integer> policyArg) {
         return new ShouldRetryResult(
             null,

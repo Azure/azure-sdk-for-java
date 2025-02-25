@@ -6,8 +6,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
-import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
-import io.netty.handler.ssl.SslContext;
 import org.testng.annotations.Test;
 
 import java.util.EnumSet;

@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenCon
 import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
+import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.CosmosContainerIdentity;
@@ -91,11 +92,11 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
         this.apiType = apiType;
 
-        for (URI endpoint : endpointManager.getWriteEndpoints()) {
-            this.getOrAddEndpoint(endpoint);
+        for (LocationCache.RegionalEndpoints endpoint : endpointManager.getWriteEndpoints()) {
+            this.getOrAddEndpoint(endpoint.getGatewayLocationEndpoint());
         }
-        for (URI endpoint : endpointManager.getReadEndpoints()) {
-            this.getOrAddEndpoint(endpoint);
+        for (LocationCache.RegionalEndpoints endpoint : endpointManager.getReadEndpoints()) {
+            this.getOrAddEndpoint(endpoint.getGatewayLocationEndpoint());
         }
     }
 
@@ -136,7 +137,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                     .getCosmosContainerIdentityAccessor()
                                     .getContainerLink(cosmosContainerIdentity);
 
-                                if (valueHolder == null || valueHolder.v == null || valueHolder.v.size() == 0) {
+                                if (valueHolder == null || valueHolder.v == null || valueHolder.v.isEmpty()) {
                                     logger.warn(
                                         "There is no pkRanges found for collection {}, no connections will be opened",
                                         collection.getResourceId());
@@ -154,8 +155,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                                 if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
                                     return Flux.fromIterable(this.endpointManager.getReadEndpoints().subList(0, proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
                                         .flatMap(readEndpoint -> {
-                                            if (this.addressCacheByEndpoint.containsKey(readEndpoint)) {
-                                                EndpointCache endpointCache = this.addressCacheByEndpoint.get(readEndpoint);
+                                            if (this.addressCacheByEndpoint.containsKey(readEndpoint.getGatewayLocationEndpoint())) {
+                                                EndpointCache endpointCache = this.addressCacheByEndpoint.get(readEndpoint.getGatewayLocationEndpoint());
                                                 return this.resolveAddressesPerCollection(
                                                         endpointCache,
                                                         containerLinkToPkrs.left,
@@ -272,8 +273,8 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     private IAddressResolver getAddressResolver(RxDocumentServiceRequest rxDocumentServiceRequest) {
-        URI endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
-        return this.getOrAddEndpoint(endpoint).addressResolver;
+        LocationCache.RegionalEndpoints endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
+        return this.getOrAddEndpoint(endpoint.getGatewayLocationEndpoint()).addressResolver;
     }
 
     private EndpointCache getOrAddEndpoint(URI endpoint) {
@@ -299,15 +300,15 @@ public class GlobalAddressResolver implements IAddressResolver {
         });
 
         if (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
-            List<URI> allEndpoints = new ArrayList<>(this.endpointManager.getWriteEndpoints());
-            allEndpoints.addAll(this.endpointManager.getReadEndpoints());
-            Collections.reverse(allEndpoints);
-            LinkedList<URI> endpoints = new LinkedList<>(allEndpoints);
+            List<LocationCache.RegionalEndpoints> allConsolidatedEndpoints = new ArrayList<>(this.endpointManager.getWriteEndpoints());
+            allConsolidatedEndpoints.addAll(this.endpointManager.getReadEndpoints());
+            Collections.reverse(allConsolidatedEndpoints);
+            LinkedList<LocationCache.RegionalEndpoints> endpoints = new LinkedList<>(allConsolidatedEndpoints);
             while (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
-                if (endpoints.size() > 0) {
-                    URI dequeueEndpoint = endpoints.pop();
-                    if (this.addressCacheByEndpoint.get(dequeueEndpoint) != null) {
-                        this.addressCacheByEndpoint.remove(dequeueEndpoint);
+                if (!endpoints.isEmpty()) {
+                    LocationCache.RegionalEndpoints dequeueEndpoint = endpoints.pop();
+                    if (this.addressCacheByEndpoint.get(dequeueEndpoint.getGatewayLocationEndpoint()) != null) {
+                        this.addressCacheByEndpoint.remove(dequeueEndpoint.getGatewayLocationEndpoint());
                     }
                 } else {
                     break;
