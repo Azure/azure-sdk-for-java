@@ -118,13 +118,9 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
             new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        StepVerifier.create(producer.send(events))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(producer.send(events)).expectComplete().verify(TIMEOUT);
 
-        StepVerifier.create(producer.send(Flux.just(events.get(0))))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(producer.send(Flux.just(events.get(0)))).expectComplete().verify(TIMEOUT);
 
         StepVerifier.create(producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("3")))
             .expectComplete()
