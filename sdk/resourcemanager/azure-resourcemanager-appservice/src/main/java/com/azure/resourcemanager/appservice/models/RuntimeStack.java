@@ -17,12 +17,6 @@ public class RuntimeStack {
     /** .NET Core v3.1. */
     public static final RuntimeStack NETCORE_V3_1 = COLLECTION.addValue(new RuntimeStack("DOTNETCORE", "3.1"));
 
-    /** .NET Core v6.0. */
-    public static final RuntimeStack NETCORE_V6_0 = COLLECTION.addValue(new RuntimeStack("DOTNETCORE", "6.0"));
-
-    /** .NET Core v7.0. */
-    public static final RuntimeStack NETCORE_V7_0 = COLLECTION.addValue(new RuntimeStack("DOTNETCORE", "7.0"));
-
     /** .NET Core v8.0. */
     public static final RuntimeStack NETCORE_V8_0 = COLLECTION.addValue(new RuntimeStack("DOTNETCORE", "8.0"));
 
@@ -59,9 +53,6 @@ public class RuntimeStack {
     /** Node.JS 14 LTS. */
     public static final RuntimeStack NODEJS_14_LTS = COLLECTION.addValue(new RuntimeStack("NODE", "14-lts"));
 
-    /** Node.JS 16 LTS. */
-    public static final RuntimeStack NODEJS_16_LTS = COLLECTION.addValue(new RuntimeStack("NODE", "16-lts"));
-
     /** Node.JS 18 LTS. */
     public static final RuntimeStack NODEJS_18_LTS = COLLECTION.addValue(new RuntimeStack("NODE", "18-lts"));
 
@@ -79,12 +70,6 @@ public class RuntimeStack {
 
     /** PHP 7.4. */
     public static final RuntimeStack PHP_7_4 = COLLECTION.addValue(new RuntimeStack("PHP", "7.4"));
-
-    /** PHP 8.0. */
-    public static final RuntimeStack PHP_8_0 = COLLECTION.addValue(new RuntimeStack("PHP", "8.0"));
-
-    /** PHP 8.1. */
-    public static final RuntimeStack PHP_8_1 = COLLECTION.addValue(new RuntimeStack("PHP", "8.1"));
 
     /** PHP 8.2. */
     public static final RuntimeStack PHP_8_2 = COLLECTION.addValue(new RuntimeStack("PHP", "8.2"));
