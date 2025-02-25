@@ -149,9 +149,13 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
          * @return Number of events in the current batch.
          */
         public int getNumberOfEventsInCurrentBatch() {
-            final EventDataBatch b = currentBatch;
+            final EventDataBatch b;
+            synchronized (lock) {
+                b = currentBatch;
+            }
 
             return b != null ? b.getCount() : 0;
+
         }
 
         /**
