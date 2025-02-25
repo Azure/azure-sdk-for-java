@@ -38,7 +38,8 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
 
     private volatile Subscription downstreamSubscription;
     private static final AtomicReferenceFieldUpdater<EventDataAggregator, Subscription> DOWNSTREAM_SUBSCRIPTION
-        = AtomicReferenceFieldUpdater.newUpdater(EventDataAggregator.class, Subscription.class, "downstreamSubscription");
+        = AtomicReferenceFieldUpdater.newUpdater(EventDataAggregator.class, Subscription.class,
+            "downstreamSubscription");
 
     private final Supplier<EventDataBatch> batchSupplier;
     private final String namespace;
@@ -71,7 +72,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         final EventDataAggregatorMain subscription
             = new EventDataAggregatorMain(actual, namespace, options, batchSupplier, partitionId, LOGGER);
 
-        if (!Operators.setOnce(DOWNSTREAM_SUBSCRIPTION, this, downstreamSubscription)) {
+        if (!Operators.setOnce(DOWNSTREAM_SUBSCRIPTION, this, subscription)) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("Cannot resubscribe to multiple upstreams."));
         }
 
