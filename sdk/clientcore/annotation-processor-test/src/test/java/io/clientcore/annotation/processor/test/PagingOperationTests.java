@@ -34,8 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  * Test class for verifying the deserialization of paged responses and their handling in code generation.
  */
 public class PagingOperationTests {
-    private static BinaryData FIRST_PAGE_RESPONSE = BinaryData.fromString("[{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}]");
-    private static BinaryData NEXTLINK_RESPONSE =  BinaryData.fromString("[{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}]");
+    private static final BinaryData FIRST_PAGE_RESPONSE = BinaryData.fromString("[{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}]");
+    private static final BinaryData NEXTLINK_RESPONSE =  BinaryData.fromString("[{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}]");
 
     /**
      * Verifies that a response containing a List is correctly handled when returning a List<Foo>.

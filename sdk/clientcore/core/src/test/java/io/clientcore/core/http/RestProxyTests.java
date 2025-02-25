@@ -54,9 +54,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests {@link RestProxy}.
  */
 public class RestProxyTests {
-    private static String FIRST_PAGE_RESPONSE
+    private static final String FIRST_PAGE_RESPONSE
         = "[{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}]";
-    private static String NEXTLINK_RESPONSE
+    private static final String NEXTLINK_RESPONSE
         = "[{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}]";
 
     @ServiceInterface(name = "myService", host = "https://somecloud.com")
@@ -344,8 +344,8 @@ public class RestProxyTests {
     }
 
     /**
-     * Converts a Response<T> to a PagedResponse<Foo>.
-     * Supports both Response<FooListResult> and Response<List<Foo>>.
+     * Converts a Response&lt;T&gt; to a PagedResponse&lt;Foo&gt;.
+     * Supports both Response&lt;FooListResult&gt; and Response&lt;List&lt;Foo&gt;&gt;.
      */
     @SuppressWarnings({ "unchecked", "cast" })
     private <T> PagedResponse<Foo> toPagedResponse(Response<T> response, String nextLink) {
