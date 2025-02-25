@@ -16,6 +16,7 @@ import com.azure.messaging.eventhubs.models.SendBatchFailedContext;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
+import reactor.core.Scannable;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -25,9 +26,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.io.Closeable;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -53,15 +51,15 @@ class EventHubBufferedPartitionProducer implements Closeable {
     private final Disposable publishSubscription;
     private final Sinks.Many<EventData> eventSink;
     private final CreateBatchOptions createBatchOptions;
-    private final Queue<EventData> eventQueue;
     private final AtomicBoolean isFlushing = new AtomicBoolean(false);
     private final Semaphore flushSemaphore = new Semaphore(1);
     private final PublishResultSubscriber publishResultSubscriber;
     private final EventHubsTracer tracer;
+    private final EventDataAggregator eventDataAggregator;
 
     EventHubBufferedPartitionProducer(EventHubProducerAsyncClient client, String partitionId,
         BufferedProducerClientOptions options, AmqpRetryOptions retryOptions, Sinks.Many<EventData> eventSink,
-        Queue<EventData> eventQueue, Tracer tracer) {
+        Tracer tracer) {
 
         this.client = client;
         this.partitionId = partitionId;
@@ -69,16 +67,14 @@ class EventHubBufferedPartitionProducer implements Closeable {
         this.createBatchOptions = new CreateBatchOptions().setPartitionId(partitionId);
         this.retryOptions = retryOptions;
         this.eventSink = eventSink;
-        this.eventQueue = eventQueue;
 
-        final Flux<EventDataBatch> eventDataBatchFlux = new EventDataAggregator(eventSink.asFlux(),
-            this::createNewBatch, client.getFullyQualifiedNamespace(), options, partitionId);
+        this.eventDataAggregator = new EventDataAggregator(this.eventSink.asFlux(), this::createNewBatch,
+            client.getFullyQualifiedNamespace(), options, partitionId);
 
         this.publishResultSubscriber = new PublishResultSubscriber(partitionId, options.getSendSucceededContext(),
-            options.getSendFailedContext(), eventQueue, flushSemaphore, isFlushing, retryOptions.getTryTimeout(),
-            LOGGER);
+            options.getSendFailedContext(), flushSemaphore, isFlushing, retryOptions.getTryTimeout(), LOGGER);
 
-        this.publishSubscription = publishEvents(eventDataBatchFlux).publishOn(Schedulers.boundedElastic(), 1)
+        this.publishSubscription = publishEvents(eventDataAggregator).publishOn(Schedulers.boundedElastic(), 1)
             .subscribeWith(publishResultSubscriber);
 
         this.tracer = new EventHubsTracer(tracer, client.getFullyQualifiedNamespace(), client.getEventHubName(), null);
@@ -166,7 +162,12 @@ class EventHubBufferedPartitionProducer implements Closeable {
      * @return the number of events in the queue.
      */
     int getBufferedEventCount() {
-        return eventQueue.size();
+        // The number of events waiting to be pushed downstream to the EventDataAggregator.
+        final int value = eventSink.scanOrDefault(Scannable.Attr.BUFFERED, 0);
+
+        // The number of events in the current batch.
+        final int currentBatch = eventDataAggregator.getNumberOfEvents();
+        return value + currentBatch;
     }
 
     /**
@@ -242,11 +243,13 @@ class EventHubBufferedPartitionProducer implements Closeable {
         }
     }
 
+    /**
+     * Subscribes to the results of a send {@link EventDataBatch} operation.
+     */
     private static class PublishResultSubscriber extends BaseSubscriber<PublishResult> {
         private final String partitionId;
         private final Consumer<SendBatchSucceededContext> onSucceed;
         private final Consumer<SendBatchFailedContext> onFailed;
-        private final Queue<EventData> dataQueue;
         private final Duration operationTimeout;
         private final ClientLogger logger;
 
@@ -255,12 +258,11 @@ class EventHubBufferedPartitionProducer implements Closeable {
         private MonoSink<Void> flushSink;
 
         PublishResultSubscriber(String partitionId, Consumer<SendBatchSucceededContext> onSucceed,
-            Consumer<SendBatchFailedContext> onFailed, Queue<EventData> dataQueue, Semaphore flushSemaphore,
-            AtomicBoolean flush, Duration operationTimeout, ClientLogger logger) {
+            Consumer<SendBatchFailedContext> onFailed, Semaphore flushSemaphore, AtomicBoolean flush,
+            Duration operationTimeout, ClientLogger logger) {
             this.partitionId = partitionId;
             this.onSucceed = onSucceed;
             this.onFailed = onFailed;
-            this.dataQueue = dataQueue;
             this.flushSemaphore = flushSemaphore;
             this.isFlushing = flush;
             this.operationTimeout = operationTimeout;
@@ -296,14 +298,7 @@ class EventHubBufferedPartitionProducer implements Closeable {
 
         @Override
         protected void hookOnComplete() {
-            logger.atInfo()
-                .addKeyValue(PARTITION_ID_KEY, partitionId)
-                .log("Publishing subscription completed. Clearing rest of queue.");
-
-            final List<EventData> events = new ArrayList<>(this.dataQueue);
-            this.dataQueue.clear();
-
-            onFailed.accept(new SendBatchFailedContext(events, partitionId, null));
+            logger.atInfo().addKeyValue(PARTITION_ID_KEY, partitionId).log("Publishing subscription completed.");
 
             tryCompleteFlush();
         }
@@ -346,13 +341,6 @@ class EventHubBufferedPartitionProducer implements Closeable {
          */
         private void tryCompleteFlush() {
             if (!isFlushing.get()) {
-                return;
-            }
-
-            if (!dataQueue.isEmpty()) {
-                logger.atVerbose()
-                    .addKeyValue(PARTITION_ID_KEY, partitionId)
-                    .log("Data queue is not empty. Not completing flush.");
                 return;
             }
 
