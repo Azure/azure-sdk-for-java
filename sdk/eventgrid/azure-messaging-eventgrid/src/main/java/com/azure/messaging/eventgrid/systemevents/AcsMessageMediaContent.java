@@ -36,11 +36,6 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      */
     private String caption;
 
-    /*
-     * Set to true if the sticker is animated; false otherwise.
-     */
-    private Boolean animated;
-
     /**
      * Creates an instance of AcsMessageMediaContent class.
      */
@@ -128,26 +123,6 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
     }
 
     /**
-     * Get the animated property: Set to true if the sticker is animated; false otherwise.
-     * 
-     * @return the animated value.
-     */
-    public Boolean isAnimated() {
-        return this.animated;
-    }
-
-    /**
-     * Set the animated property: Set to true if the sticker is animated; false otherwise.
-     * 
-     * @param animated the animated value to set.
-     * @return the AcsMessageMediaContent object itself.
-     */
-    public AcsMessageMediaContent setAnimated(Boolean animated) {
-        this.animated = animated;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -157,7 +132,6 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
         jsonWriter.writeStringField("id", this.mediaId);
         jsonWriter.writeStringField("fileName", this.fileName);
         jsonWriter.writeStringField("caption", this.caption);
-        jsonWriter.writeBooleanField("animated", this.animated);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,7 +141,6 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
      * @param jsonReader The JsonReader being read.
      * @return An instance of AcsMessageMediaContent if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AcsMessageMediaContent.
      */
     public static AcsMessageMediaContent fromJson(JsonReader jsonReader) throws IOException {
@@ -185,8 +158,6 @@ public final class AcsMessageMediaContent implements JsonSerializable<AcsMessage
                     deserializedAcsMessageMediaContent.fileName = reader.getString();
                 } else if ("caption".equals(fieldName)) {
                     deserializedAcsMessageMediaContent.caption = reader.getString();
-                } else if ("animated".equals(fieldName)) {
-                    deserializedAcsMessageMediaContent.animated = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }
