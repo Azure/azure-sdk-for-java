@@ -6,7 +6,6 @@ package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -21,44 +20,14 @@ import java.util.UUID;
 @Fluent
 public final class PeriodFeedback extends MetricFeedback {
     /*
-     * feedback type
-     */
-    private FeedbackType feedbackType = FeedbackType.PERIOD;
-
-    /*
      * The value property.
      */
     private PeriodFeedbackValue value;
-
-    /*
-     * user who gives this feedback
-     */
-    private String userPrincipal;
-
-    /*
-     * feedback created time
-     */
-    private OffsetDateTime createdTime;
-
-    /*
-     * feedback unique id
-     */
-    private UUID feedbackId;
 
     /**
      * Creates an instance of PeriodFeedback class.
      */
     public PeriodFeedback() {
-    }
-
-    /**
-     * Get the feedbackType property: feedback type.
-     * 
-     * @return the feedbackType value.
-     */
-    @Override
-    public FeedbackType getFeedbackType() {
-        return this.feedbackType;
     }
 
     /**
@@ -82,36 +51,6 @@ public final class PeriodFeedback extends MetricFeedback {
     }
 
     /**
-     * Get the userPrincipal property: user who gives this feedback.
-     * 
-     * @return the userPrincipal value.
-     */
-    @Override
-    public String getUserPrincipal() {
-        return this.userPrincipal;
-    }
-
-    /**
-     * Get the createdTime property: feedback created time.
-     * 
-     * @return the createdTime value.
-     */
-    @Override
-    public OffsetDateTime getCreatedTime() {
-        return this.createdTime;
-    }
-
-    /**
-     * Get the feedbackId property: feedback unique id.
-     * 
-     * @return the feedbackId value.
-     */
-    @Override
-    public UUID getFeedbackId() {
-        return this.feedbackId;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -129,16 +68,14 @@ public final class PeriodFeedback extends MetricFeedback {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("feedbackType",
+            FeedbackType.PERIOD == null ? null : FeedbackType.PERIOD.toString());
         jsonWriter.writeStringField("metricId", Objects.toString(getMetricId(), null));
         jsonWriter.writeJsonField("dimensionFilter", getDimensionFilter());
         jsonWriter.writeJsonField("value", this.value);
-        jsonWriter.writeStringField("feedbackType", this.feedbackType == null ? null : this.feedbackType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -148,7 +85,8 @@ public final class PeriodFeedback extends MetricFeedback {
      * @param jsonReader The JsonReader being read.
      * @return An instance of PeriodFeedback if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the PeriodFeedback.
      */
     public static PeriodFeedback fromJson(JsonReader jsonReader) throws IOException {
@@ -158,23 +96,28 @@ public final class PeriodFeedback extends MetricFeedback {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("metricId".equals(fieldName)) {
+                if ("feedbackType".equals(fieldName)) {
+                    String feedbackType = reader.getString();
+                    if (!"Period".equals(feedbackType)) {
+                        throw new IllegalStateException(
+                            "'feedbackType' was expected to be non-null and equal to 'Period'. The found 'feedbackType' was '"
+                                + feedbackType + "'.");
+                    }
+                } else if ("metricId".equals(fieldName)) {
                     deserializedPeriodFeedback
                         .setMetricId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("dimensionFilter".equals(fieldName)) {
                     deserializedPeriodFeedback.setDimensionFilter(FeedbackDimensionFilter.fromJson(reader));
                 } else if ("feedbackId".equals(fieldName)) {
-                    deserializedPeriodFeedback.feedbackId
-                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedPeriodFeedback
+                        .setFeedbackId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
                 } else if ("createdTime".equals(fieldName)) {
-                    deserializedPeriodFeedback.createdTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedPeriodFeedback.setCreatedTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
                 } else if ("userPrincipal".equals(fieldName)) {
-                    deserializedPeriodFeedback.userPrincipal = reader.getString();
+                    deserializedPeriodFeedback.setUserPrincipal(reader.getString());
                 } else if ("value".equals(fieldName)) {
                     deserializedPeriodFeedback.value = PeriodFeedbackValue.fromJson(reader);
-                } else if ("feedbackType".equals(fieldName)) {
-                    deserializedPeriodFeedback.feedbackType = FeedbackType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

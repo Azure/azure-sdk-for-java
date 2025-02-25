@@ -34,7 +34,7 @@ public final class AnomalyDimensionList implements JsonSerializable<AnomalyDimen
     }
 
     /**
-     * Get the nextLink property: The &#064;nextLink property.
+     * Get the nextLink property: The @nextLink property.
      * 
      * @return the nextLink value.
      */
@@ -62,9 +62,6 @@ public final class AnomalyDimensionList implements JsonSerializable<AnomalyDimen
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
