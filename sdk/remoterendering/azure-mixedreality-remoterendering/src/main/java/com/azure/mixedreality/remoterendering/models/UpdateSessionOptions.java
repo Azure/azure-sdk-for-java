@@ -18,13 +18,6 @@ public final class UpdateSessionOptions {
     private Duration maxLeaseTime = Duration.ofMinutes(10);
 
     /**
-     * Creates options for updating an existing rendering session.
-     */
-    public UpdateSessionOptions() {
-
-    }
-
-    /**
      * Set the maxLeaseTime property: Update to the time the session will run after it reached the 'Ready' state.
      * It has to be bigger than the current value of maxLeaseTime.
      *
