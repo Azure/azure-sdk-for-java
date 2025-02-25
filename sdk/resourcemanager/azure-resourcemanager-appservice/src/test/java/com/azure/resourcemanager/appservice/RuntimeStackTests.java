@@ -31,27 +31,39 @@ public class RuntimeStackTests {
      * To run this test, upgrade Azure CLI to latest version by running "az upgrade", and remove "@Disabled".
      */
     @Test
-//    @Disabled
+    @Disabled
     public void listNewRuntimeStacks() throws IOException, InterruptedException {
         Set<String> latestStacks = getLatestStacks();
-        Set<String> allCurrentStacks = Arrays.stream(RuntimeStack.class.getDeclaredFields()).filter(field ->
-            field.getType() == RuntimeStack.class).map(field -> {
-            try {
-                return field.get(null).toString();
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        }).collect(Collectors.toSet());
-        Set<String> supportedStacks = RuntimeStack.getAll().stream().map(RuntimeStack::toString).collect(Collectors.toSet());
-        List<String> newStacks = latestStacks.stream().filter(stack -> !allCurrentStacks.contains(stack)).distinct().sorted().collect(Collectors.toList());
-        List<String> newDeprecated = supportedStacks.stream().filter(stack -> !latestStacks.contains(stack)).distinct().sorted().collect(Collectors.toList());
+        Set<String> allCurrentStacks = Arrays.stream(RuntimeStack.class.getDeclaredFields())
+            .filter(field -> field.getType() == RuntimeStack.class)
+            .map(field -> {
+                try {
+                    return field.get(null).toString();
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            })
+            .collect(Collectors.toSet());
+        Set<String> supportedStacks
+            = RuntimeStack.getAll().stream().map(RuntimeStack::toString).collect(Collectors.toSet());
+        List<String> newStacks = latestStacks.stream()
+            .filter(stack -> !allCurrentStacks.contains(stack))
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
+        List<String> newDeprecated = supportedStacks.stream()
+            .filter(stack -> !latestStacks.contains(stack))
+            .distinct()
+            .sorted()
+            .collect(Collectors.toList());
         System.out.println("New stacks: " + newStacks);
         System.out.println("New deprecated stacks: " + newDeprecated);
     }
 
     private Set<String> getLatestStacks() throws IOException, InterruptedException {
         String cliOutput = CliRunner.run("az webapp list-runtimes --os linux");
-        List<String> outputList = BinaryData.fromString(cliOutput.substring(cliOutput.indexOf("["))).toObject(List.class);
+        List<String> outputList
+            = BinaryData.fromString(cliOutput.substring(cliOutput.indexOf("["))).toObject(List.class);
         return outputList.stream().map(stack -> String.join(" ", stack.split(":"))).collect(Collectors.toSet());
     }
 }
