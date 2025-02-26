@@ -83,7 +83,6 @@ public class PagingOperationTests {
     }
 
     @Test
-    @Disabled("TODO: Confirm the data if using wrapper FooListResult since the deserializer fromJson expects it to be an object and not an array")
     public void testListFooListResult() {
         String uri = "https://example.com";
         String firstPageUri = uri + "/foos";
@@ -95,11 +94,14 @@ public class PagingOperationTests {
                 request.setRequestOptions(requestOptions);
                 if (firstPageUri.equals(requestUri)) {
                     return createMockResponse(request, 200, BinaryData.fromString(
-                            "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}"),
+                            "{\"items\":[{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a" +
+                                ".b\":\"c.d\"," +
+                                "\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"}}], \"nextLink\":\"" + nextLinkUri + "\"}"),
                         nextLinkUri);
                 } else if (nextLinkUri.equals(requestUri)) {
                     return createMockResponse(request, 200, BinaryData.fromString(
-                            "{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}"),
+                            "{\"items\":[{\"bar\":\"hello.world2\",\"additionalProperties\":{\"bar\":\"baz\",\"a" +
+                                ".b\":\"c.d\",\"properties.bar\":\"barbar\"}}]"),
                         null);
                 }
                 return new MockHttpResponse(request, 404);
