@@ -139,6 +139,7 @@
     <module>sdk/marketplaceordering</module>
     <module>sdk/mediaservices</module>
     <module>sdk/metricsadvisor</module>
+    <module>sdk/migration</module>
     <module>sdk/migrationdiscoverysap</module>
     <module>sdk/mixedreality</module>
     <module>sdk/mobilenetwork</module>

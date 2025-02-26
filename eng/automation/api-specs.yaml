@@ -74,6 +74,8 @@ loadtestservice:
   service: loadtesting
 machinelearningservices:
   service: machinelearning
+migrate/Microsoft.Migrate/AssessmentProjects:
+  service: migration
 monitor:
   suffix: generated
 msi:
