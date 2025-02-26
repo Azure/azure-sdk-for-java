@@ -32,7 +32,7 @@ public class AccessToken {
 
     /**
      * Creates an access token instance.
-     * Defaults to Bearer for {@code tokenType}.
+     * Defaults to {@link AccessTokenType#BEARER} for {@code tokenType}.
      *
      * @param token the token string.
      * @param expiresAt the expiration time.
@@ -43,7 +43,7 @@ public class AccessToken {
 
     /**
      * Creates an access token instance.
-     * Defaults to Bearer for {@code tokenType}.
+     * Defaults to {@link AccessTokenType#BEARER} for {@code tokenType}.
      *
      * @param token the token string.
      * @param expiresAt the expiration time.

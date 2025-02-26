@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Represents Access Token types.
+ */
 public final class AccessTokenType implements ExpandableEnum<String> {
     private static final Map<String, AccessTokenType> VALUES = new ConcurrentHashMap<>();
     private final String caseSensitive;
@@ -99,12 +102,12 @@ public final class AccessTokenType implements ExpandableEnum<String> {
     }
 
     /**
-     * {@code Accept}/{@code accept}
+     * {@code Bearer}/{@code bearer}
      */
     public static final AccessTokenType BEARER = fromString("Bearer");
 
     /**
-     * {@code Accept-Charset}/{@code accept-charset}
+     * {@code Pop}/{@code pop}
      */
     public static final AccessTokenType POP = fromString("Pop");
 }

@@ -92,7 +92,7 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      *
      * @param httpRequest The http request.
      * @param response The Http Response containing the authentication challenge header.
-     * @return A boolean indicating if containing the {@link TokenRequestContext} for re-authentication
+     * @return A boolean indicating if the request was authorized again via re-authentication
      */
     public boolean authorizeRequestOnChallenge(HttpRequest httpRequest, Response<?> response) {
         if (isCaeClaimsChallenge(response)) {

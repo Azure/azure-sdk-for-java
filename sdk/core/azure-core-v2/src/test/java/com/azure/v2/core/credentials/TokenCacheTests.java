@@ -4,7 +4,7 @@
 package com.azure.v2.core.credentials;
 
 import com.azure.v2.core.implementation.AccessTokenCache;
-import io.clientcore.core.credentials.AccessToken;
+import io.clientcore.core.credentials.oauth.AccessToken;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;

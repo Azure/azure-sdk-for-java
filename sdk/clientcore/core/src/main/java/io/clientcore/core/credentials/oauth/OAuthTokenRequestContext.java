@@ -125,6 +125,7 @@ public class OAuthTokenRequestContext {
      * @param key the key
      * @param value the value
      * @return the OAuthTokenRequestContext itself
+     * @throws IllegalArgumentException if key and/or value parameters are null.
      */
     public OAuthTokenRequestContext setParam(String key, String value) {
         if (ImplUtils.isNullOrEmpty(key)) {
