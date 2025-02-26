@@ -6,7 +6,14 @@
 
 ### Breaking Changes
 
+- `JsonReader.readUntyped()` now returns the smallest possible `Number` when parsing decimals. Previously, `double` was
+  always used. This change is to align with the behavior `JsonNumber`.
+- Support for special numeric `INF`, `-INF`, and `+INF` values have been removed to align with behaviors of `Float`
+  and `Double` in Java where only the `Infinity` variants are supported.
+
 ### Bugs Fixed
+
+- `JsonReader.readUntyped()` had incomplete support for untyped numerics where exponents were not being parsed correctly.
 
 ### Other Changes
 

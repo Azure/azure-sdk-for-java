@@ -759,11 +759,7 @@ public abstract class JsonReaderContractTests {
             Arguments.of("1E+1", 10F), Arguments.of("1e-01", 0.1F), Arguments.of("1E-01", 0.1F),
             Arguments.of("1e+01", 10F), Arguments.of("1E+01", 10F), Arguments.of("1e0", 1F), Arguments.of("1E0", 1F),
 
-            // TODO (alzimmer): Determine status of this test based on https://github.com/FasterXML/jackson-core/issues/1405
-            // Arguments.of("INF", Double.POSITIVE_INFINITY),
-
-            Arguments.of("Infinity", Double.POSITIVE_INFINITY), Arguments.of("+INF", Double.POSITIVE_INFINITY),
-            Arguments.of("+Infinity", Double.POSITIVE_INFINITY), Arguments.of("-INF", Double.NEGATIVE_INFINITY),
+            Arguments.of("Infinity", Double.POSITIVE_INFINITY), Arguments.of("+Infinity", Double.POSITIVE_INFINITY),
             Arguments.of("-Infinity", Double.NEGATIVE_INFINITY), Arguments.of("NaN", Double.NaN));
     }
 
