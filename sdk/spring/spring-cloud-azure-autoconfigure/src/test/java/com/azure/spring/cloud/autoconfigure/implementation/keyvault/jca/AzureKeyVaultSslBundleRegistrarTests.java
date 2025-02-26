@@ -75,8 +75,9 @@ class AzureKeyVaultSslBundleRegistrarTests {
         registrar.registerBundles(registry);
         then(registry).should(times(0)).registerBundle(anyString(), any());
         String allOutput = capturedOutput.getAll();
-        String log = "Skip configuring Key Vault SSL bundle 'testBundle'. At least configure the 'keyvault-ref' of the truststore; "
-            + "or configure one of 'certificate-paths.custom' and 'certificate-paths.well-known' properties of the truststore.";
+        String log = "Skip configuring Key Vault SSL bundle 'testBundle'. Consider configuring 'keyvault-ref', "
+            + "'certificate-paths.custom' or 'certificate-paths.well-known' properties of the keystore or "
+            + "truststore.";
         assertTrue(allOutput.contains(log));
     }
 
