@@ -21,8 +21,6 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
-import io.clientcore.core.utils.Context;
-
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -83,18 +81,18 @@ public interface TestInterfaceClientService {
 
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
-    Response<FooListResult> listFooListResult(@HostParam("uri") String uri, RequestOptions requestOptions, Context context);
+    Response<FooListResult> listFooListResult(@HostParam("uri") String uri, RequestOptions requestOptions);
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
     Response<FooListResult> listNextFooListResult(@PathParam(value = "nextLink", encoded = true) String nextLink,
-                                                  RequestOptions requestOptions, Context context);
+                                                  RequestOptions requestOptions);
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
-    Response<List<Foo>> listFoo(@HostParam("uri") String uri, RequestOptions requestOptions, Context context);
+    Response<List<Foo>> listFoo(@HostParam("uri") String uri, RequestOptions requestOptions);
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
     Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
-                                    RequestOptions requestOptions, Context context);
+                                    RequestOptions requestOptions);
     // HttpClientTests
     // Need to add RequestOptions to specify ResponseBodyMode, which is otherwise provided by convenience methods
     @SuppressWarnings({ "unchecked", "cast" })

@@ -18,14 +18,12 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.utils.Context;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -62,7 +60,7 @@ public class PagingOperationTests {
         TestInterfaceClientService testInterface = TestInterfaceClientService.getNewInstance(pipeline, null);
 
         // Retrieve initial response
-        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, RequestOptions.none(), Context.none());
+        Response<List<Foo>> initialResponse = testInterface.listFoo(uri, RequestOptions.none());
 
         List<Foo>   fooFirstPageResponse = initialResponse.getValue();
         assertNotNull(fooFirstPageResponse);
@@ -74,7 +72,7 @@ public class PagingOperationTests {
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
             pagingOptions -> firstPage,  // First page
             (pagingOptions, nextLink) -> {
-                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, RequestOptions.none(), Context.none());
+                Response<List<Foo>> nextResponse = testInterface.listNextFoo(nextLink, RequestOptions.none());
                 return toPagedResponse(nextResponse, nextLink);
             }
         );
@@ -112,8 +110,8 @@ public class PagingOperationTests {
 
         // Fetch the first page
         PagedIterable<Foo> pagedIterable = new PagedIterable<>(
-            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, RequestOptions.none(), Context.none()), nextLinkUri),
-            (pagingOptions, nextLink) -> toPagedResponse(testInterface.listNextFooListResult(nextLink, RequestOptions.none(), Context.none()), null)
+            pagingOptions -> toPagedResponse(testInterface.listFooListResult(uri, RequestOptions.none()), nextLinkUri),
+            (pagingOptions, nextLink) -> toPagedResponse(testInterface.listNextFooListResult(nextLink, RequestOptions.none()), null)
         );
 
         assertNotNull(pagedIterable);
