@@ -47,7 +47,7 @@ import java.util.Objects;
  * @see TokenCredential
  */
 public class TokenRequestContext {
-    private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TokenRequestContext.class);
     private final List<String> scopes;
     private String claims;
     private String tenantId;
