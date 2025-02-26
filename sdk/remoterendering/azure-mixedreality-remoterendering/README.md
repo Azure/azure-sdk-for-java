@@ -280,9 +280,10 @@ In this example, we just list the output URLs of successful conversions started 
 
 ```java readme-sample-listConversions
 for (AssetConversion conversion : client.listConversions()) {
-    if ((conversion.getStatus() == AssetConversionStatus.SUCCEEDED)
-        && (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1)))) {
-        logger.info("Output Asset URL: {}", conversion.getOutputAssetUrl());
+    if ((conversion.getStatus() == AssetConversionStatus.SUCCEEDED)) {
+        if (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1))) {
+            logger.info("Output Asset URL: {}", conversion.getOutputAssetUrl());
+        }
     }
 }
 ```
