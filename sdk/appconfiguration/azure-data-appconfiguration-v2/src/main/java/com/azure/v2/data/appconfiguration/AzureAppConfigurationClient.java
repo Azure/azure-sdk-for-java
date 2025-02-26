@@ -59,6 +59,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -106,6 +108,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -148,6 +152,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -222,6 +228,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -258,6 +266,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -312,6 +322,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -384,6 +396,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -434,6 +448,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -472,6 +488,14 @@ public final class AzureAppConfigurationClient {
      * property. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -529,6 +553,14 @@ public final class AzureAppConfigurationClient {
      * to by the specified token.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -553,6 +585,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -608,6 +642,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -678,6 +714,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -715,6 +753,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -764,6 +804,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -792,6 +834,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -843,6 +887,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -905,6 +951,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -970,6 +1018,8 @@ public final class AzureAppConfigurationClient {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1011,6 +1061,9 @@ public final class AzureAppConfigurationClient {
         }
         if (after != null) {
             requestOptions.addQueryParam("After", after);
+        }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
         }
         if (acceptDatetime != null) {
             requestOptions.setHeader(HttpHeaderName.ACCEPT_DATETIME, acceptDatetime);
@@ -1057,6 +1110,9 @@ public final class AzureAppConfigurationClient {
         }
         if (after != null) {
             requestOptions.addQueryParam("After", after);
+        }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
         }
         if (acceptDatetime != null) {
             requestOptions.setHeader(HttpHeaderName.ACCEPT_DATETIME, acceptDatetime);
@@ -1116,6 +1172,9 @@ public final class AzureAppConfigurationClient {
         }
         if (label != null) {
             requestOptions.addQueryParam("label", label);
+        }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
         }
         if (after != null) {
             requestOptions.addQueryParam("After", after);
@@ -1201,6 +1260,9 @@ public final class AzureAppConfigurationClient {
         if (label != null) {
             requestOptions.addQueryParam("label", label);
         }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
+        }
         if (after != null) {
             requestOptions.addQueryParam("After", after);
         }
@@ -1278,6 +1340,9 @@ public final class AzureAppConfigurationClient {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")));
         }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
+        }
         if (acceptDatetime != null) {
             requestOptions.setHeader(HttpHeaderName.ACCEPT_DATETIME, acceptDatetime);
         }
@@ -1328,6 +1393,9 @@ public final class AzureAppConfigurationClient {
         if (label != null) {
             requestOptions.addQueryParam("label", label);
         }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
+        }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
@@ -1375,6 +1443,9 @@ public final class AzureAppConfigurationClient {
         RequestOptions requestOptions = new RequestOptions();
         if (label != null) {
             requestOptions.addQueryParam("label", label);
+        }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
         }
         if (acceptDatetime != null) {
             requestOptions.setHeader(HttpHeaderName.ACCEPT_DATETIME, acceptDatetime);
@@ -1448,6 +1519,9 @@ public final class AzureAppConfigurationClient {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")));
         }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
+        }
         return serviceClient.getSnapshots(accept, requestOptions);
     }
 
@@ -1482,6 +1556,9 @@ public final class AzureAppConfigurationClient {
     public void checkSnapshots(String syncToken, String after) {
         // Generated convenience method for checkSnapshotsWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
+        }
         if (after != null) {
             requestOptions.addQueryParam("After", after);
         }
@@ -1528,6 +1605,9 @@ public final class AzureAppConfigurationClient {
                     .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                     .collect(Collectors.joining(",")));
         }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
+        }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
@@ -1571,6 +1651,9 @@ public final class AzureAppConfigurationClient {
     public void checkSnapshot(String name, String syncToken, String ifMatch, String ifNoneMatch) {
         // Generated convenience method for checkSnapshotWithResponse
         RequestOptions requestOptions = new RequestOptions();
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
+        }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
@@ -1619,6 +1702,9 @@ public final class AzureAppConfigurationClient {
         RequestOptions requestOptions = new RequestOptions();
         if (name != null) {
             requestOptions.addQueryParam("name", name);
+        }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
         }
         if (after != null) {
             requestOptions.addQueryParam("After", after);
@@ -1674,6 +1760,9 @@ public final class AzureAppConfigurationClient {
         if (name != null) {
             requestOptions.addQueryParam("name", name);
         }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
+        }
         if (after != null) {
             requestOptions.addQueryParam("After", after);
         }
@@ -1726,6 +1815,9 @@ public final class AzureAppConfigurationClient {
         if (label != null) {
             requestOptions.addQueryParam("label", label);
         }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
+        }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
         }
@@ -1775,6 +1867,9 @@ public final class AzureAppConfigurationClient {
         RequestOptions requestOptions = new RequestOptions();
         if (label != null) {
             requestOptions.addQueryParam("label", label);
+        }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
         }
         if (ifMatch != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
@@ -1834,6 +1929,9 @@ public final class AzureAppConfigurationClient {
         }
         if (label != null) {
             requestOptions.addQueryParam("label", label);
+        }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
         }
         if (after != null) {
             requestOptions.addQueryParam("After", after);
@@ -1903,6 +2001,9 @@ public final class AzureAppConfigurationClient {
         }
         if (label != null) {
             requestOptions.addQueryParam("label", label);
+        }
+        if (syncToken != null) {
+            requestOptions.setHeader(HttpHeaderName.fromString("Sync-Token"), syncToken);
         }
         if (after != null) {
             requestOptions.addQueryParam("After", after);

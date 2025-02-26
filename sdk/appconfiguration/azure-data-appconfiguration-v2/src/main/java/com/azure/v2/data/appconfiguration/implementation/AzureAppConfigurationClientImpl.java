@@ -104,16 +104,13 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceInterface(name = "AzureAppConfiguratio", host = "{endpoint}")
     public interface AzureAppConfigurationClientService {
-        static AzureAppConfigurationClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions) {
+        static AzureAppConfigurationClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer) {
             try {
                 Class<?> clazz = Class.forName(
                     "com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientServiceImpl");
                 return (AzureAppConfigurationClientService) clazz
-                    .getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class, String.class, String.class,
-                        String.class, RequestOptions.class)
-                    .invoke(null, pipeline, serializer, endpoint, syncToken, accept, requestOptions);
+                    .getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class)
+                    .invoke(null, pipeline, serializer);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
                 | InvocationTargetException e) {
                 throw new RuntimeException(e);
@@ -123,101 +120,145 @@ public final class AzureAppConfigurationClientImpl {
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/keys", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyListResult> getKeys(@QueryParam("api-version") String apiVersion);
+        Response<KeyListResult> getKeys(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/keys", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkKeys(@QueryParam("api-version") String apiVersion);
+        Response<Void> checkKeys(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/kv", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValueListResult> getKeyValues(@QueryParam("api-version") String apiVersion);
+        Response<KeyValueListResult> getKeyValues(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkKeyValues(@QueryParam("api-version") String apiVersion);
+        Response<Void> checkKeyValues(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> getKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+        Response<KeyValue> getKeyValue(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> putKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+        Response<KeyValue> putKeyValue(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.DELETE, path = "/kv/{key}", expectedStatusCodes = { 200, 204 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> deleteKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+        Response<KeyValue> deleteKeyValue(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+        Response<Void> checkKeyValue(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/snapshots", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<SnapshotListResult> getSnapshots(@QueryParam("api-version") String apiVersion);
+        Response<SnapshotListResult> getSnapshots(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/snapshots", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkSnapshots(@QueryParam("api-version") String apiVersion);
+        Response<Void> checkSnapshots(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Snapshot> getSnapshot(@QueryParam("api-version") String apiVersion, @PathParam("name") String name);
+        Response<Snapshot> getSnapshot(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.PATCH, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Snapshot> updateSnapshot(@QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @PathParam("name") String name,
-            @BodyParam("application/json") BinaryData entity);
+        Response<Snapshot> updateSnapshot(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") BinaryData entity, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkSnapshot(@QueryParam("api-version") String apiVersion, @PathParam("name") String name);
+        Response<Void> checkSnapshot(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/labels", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<LabelListResult> getLabels(@QueryParam("api-version") String apiVersion);
+        Response<LabelListResult> getLabels(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/labels", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkLabels(@QueryParam("api-version") String apiVersion);
+        Response<Void> checkLabels(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/locks/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> putLock(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+        Response<KeyValue> putLock(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("key") String key, @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.DELETE, path = "/locks/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> deleteLock(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+        Response<KeyValue> deleteLock(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/revisions", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValueListResult> getRevisions(@QueryParam("api-version") String apiVersion);
+        Response<KeyValueListResult> getRevisions(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/revisions", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkRevisions(@QueryParam("api-version") String apiVersion);
+        Response<Void> checkRevisions(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyListResult> getKeysNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Response<KeyListResult> getKeysNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValueListResult> getKeyValuesNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Response<KeyValueListResult> getKeyValuesNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<SnapshotListResult> getSnapshotsNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Response<SnapshotListResult> getSnapshotsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<LabelListResult> getLabelsNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Response<LabelListResult> getLabelsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValueListResult> getRevisionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Response<KeyValueListResult> getRevisionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("endpoint") String endpoint, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions);
     }
 
     /**
@@ -236,6 +277,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -262,7 +305,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of keys.
      */
     private PagedResponse<Key> getKeysSinglePage(String accept, RequestOptions requestOptions) {
-        Response<KeyListResult> res = service.getKeys(this.getServiceVersion().getVersion());
+        Response<KeyListResult> res
+            = service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -283,6 +327,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -333,6 +379,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -344,7 +392,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return the response.
      */
     public Response<Void> checkKeysWithResponse(RequestOptions requestOptions) {
-        return service.checkKeys(this.getServiceVersion().getVersion());
+        final String accept = "application/json";
+        return service.checkKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
     }
 
     /**
@@ -374,6 +423,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -416,7 +467,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-values.
      */
     private PagedResponse<KeyValue> getKeyValuesSinglePage(String accept, RequestOptions requestOptions) {
-        Response<KeyValueListResult> res = service.getKeyValues(this.getServiceVersion().getVersion());
+        Response<KeyValueListResult> res
+            = service.getKeyValues(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -448,6 +500,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -525,6 +579,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -542,7 +598,9 @@ public final class AzureAppConfigurationClientImpl {
      * @return the response.
      */
     public Response<Void> checkKeyValuesWithResponse(RequestOptions requestOptions) {
-        return service.checkKeyValues(this.getServiceVersion().getVersion());
+        final String accept = "application/json";
+        return service.checkKeyValues(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            requestOptions);
     }
 
     /**
@@ -560,6 +618,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -597,7 +657,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a single key-value.
      */
     public Response<KeyValue> getKeyValueWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.getKeyValue(this.getServiceVersion().getVersion(), key);
+        return service.getKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept,
+            requestOptions);
     }
 
     /**
@@ -613,6 +674,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -666,7 +729,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a key-value pair representing application settings.
      */
     public Response<KeyValue> putKeyValueWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.putKeyValue(this.getServiceVersion().getVersion(), key);
+        return service.putKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept,
+            requestOptions);
     }
 
     /**
@@ -682,6 +746,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -713,7 +779,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a key-value pair representing application settings.
      */
     public Response<KeyValue> deleteKeyValueWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.deleteKeyValue(this.getServiceVersion().getVersion(), key);
+        return service.deleteKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept,
+            requestOptions);
     }
 
     /**
@@ -731,6 +798,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -749,7 +818,9 @@ public final class AzureAppConfigurationClientImpl {
      * @return the response.
      */
     public Response<Void> checkKeyValueWithResponse(String key, RequestOptions requestOptions) {
-        return service.checkKeyValue(this.getServiceVersion().getVersion(), key);
+        final String accept = "application/json";
+        return service.checkKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept,
+            requestOptions);
     }
 
     /**
@@ -768,6 +839,14 @@ public final class AzureAppConfigurationClientImpl {
      * property. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -809,7 +888,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value snapshots.
      */
     private PagedResponse<Snapshot> getSnapshotsSinglePage(String accept, RequestOptions requestOptions) {
-        Response<SnapshotListResult> res = service.getSnapshots(this.getServiceVersion().getVersion());
+        Response<SnapshotListResult> res
+            = service.getSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -830,6 +910,14 @@ public final class AzureAppConfigurationClientImpl {
      * property. In the form of "," separated string.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -890,13 +978,23 @@ public final class AzureAppConfigurationClientImpl {
      * to by the specified token.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the response.
      */
     public Response<Void> checkSnapshotsWithResponse(RequestOptions requestOptions) {
-        return service.checkSnapshots(this.getServiceVersion().getVersion());
+        final String accept = "application/json";
+        return service.checkSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            requestOptions);
     }
 
     /**
@@ -913,6 +1011,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -958,7 +1058,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a single key-value snapshot.
      */
     public Response<Snapshot> getSnapshotWithResponse(String name, String accept, RequestOptions requestOptions) {
-        return service.getSnapshot(this.getServiceVersion().getVersion(), name);
+        return service.getSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
+            requestOptions);
     }
 
     /**
@@ -967,6 +1068,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -1025,7 +1128,8 @@ public final class AzureAppConfigurationClientImpl {
      */
     public Response<Snapshot> updateSnapshotWithResponse(String contentType, String name, String accept,
         BinaryData entity, RequestOptions requestOptions) {
-        return service.updateSnapshot(this.getServiceVersion().getVersion(), contentType, name, entity);
+        return service.updateSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, name,
+            accept, entity, requestOptions);
     }
 
     /**
@@ -1034,6 +1138,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -1049,7 +1155,9 @@ public final class AzureAppConfigurationClientImpl {
      * @return the response.
      */
     public Response<Void> checkSnapshotWithResponse(String name, RequestOptions requestOptions) {
-        return service.checkSnapshot(this.getServiceVersion().getVersion(), name);
+        final String accept = "application/json";
+        return service.checkSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), name, accept,
+            requestOptions);
     }
 
     /**
@@ -1070,6 +1178,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1096,7 +1206,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of labels.
      */
     private PagedResponse<Label> getLabelsSinglePage(String accept, RequestOptions requestOptions) {
-        Response<LabelListResult> res = service.getLabels(this.getServiceVersion().getVersion());
+        Response<LabelListResult> res
+            = service.getLabels(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1119,6 +1230,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1171,6 +1284,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1182,7 +1297,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return the response.
      */
     public Response<Void> checkLabelsWithResponse(RequestOptions requestOptions) {
-        return service.checkLabels(this.getServiceVersion().getVersion());
+        final String accept = "application/json";
+        return service.checkLabels(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
     }
 
     /**
@@ -1198,6 +1314,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -1232,7 +1350,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return a key-value pair representing application settings.
      */
     public Response<KeyValue> putLockWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.putLock(this.getServiceVersion().getVersion(), key);
+        return service.putLock(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept, requestOptions);
     }
 
     /**
@@ -1248,6 +1366,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>If-Match</td><td>String</td><td>No</td><td>Used to perform an operation only if the targeted resource's
      * etag matches the
      * value provided.</td></tr>
@@ -1282,7 +1402,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a key-value pair representing application settings.
      */
     public Response<KeyValue> deleteLockWithResponse(String key, String accept, RequestOptions requestOptions) {
-        return service.deleteLock(this.getServiceVersion().getVersion(), key);
+        return service.deleteLock(this.getEndpoint(), this.getServiceVersion().getVersion(), key, accept,
+            requestOptions);
     }
 
     /**
@@ -1309,6 +1430,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1345,7 +1468,8 @@ public final class AzureAppConfigurationClientImpl {
      * @return a list of key-value revisions.
      */
     private PagedResponse<KeyValue> getRevisionsSinglePage(String accept, RequestOptions requestOptions) {
-        Response<KeyValueListResult> res = service.getRevisions(this.getServiceVersion().getVersion());
+        Response<KeyValueListResult> res
+            = service.getRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(), accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1374,6 +1498,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1442,6 +1568,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1453,7 +1581,9 @@ public final class AzureAppConfigurationClientImpl {
      * @return the response.
      */
     public Response<Void> checkRevisionsWithResponse(RequestOptions requestOptions) {
-        return service.checkRevisions(this.getServiceVersion().getVersion());
+        final String accept = "application/json";
+        return service.checkRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(), accept,
+            requestOptions);
     }
 
     /**
@@ -1464,6 +1594,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1491,7 +1623,7 @@ public final class AzureAppConfigurationClientImpl {
      * @return the result of a list request.
      */
     private PagedResponse<Key> getKeysNextSinglePage(String nextLink, String accept, RequestOptions requestOptions) {
-        Response<KeyListResult> res = service.getKeysNext(nextLink);
+        Response<KeyListResult> res = service.getKeysNext(nextLink, this.getEndpoint(), accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1504,6 +1636,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1548,7 +1682,8 @@ public final class AzureAppConfigurationClientImpl {
      */
     private PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String accept,
         RequestOptions requestOptions) {
-        Response<KeyValueListResult> res = service.getKeyValuesNext(nextLink);
+        Response<KeyValueListResult> res
+            = service.getKeyValuesNext(nextLink, this.getEndpoint(), accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1557,6 +1692,14 @@ public final class AzureAppConfigurationClientImpl {
      * Gets a list of key-value snapshots.
      * 
      * Get the next page of items.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -1600,7 +1743,8 @@ public final class AzureAppConfigurationClientImpl {
      */
     private PagedResponse<Snapshot> getSnapshotsNextSinglePage(String nextLink, String accept,
         RequestOptions requestOptions) {
-        Response<SnapshotListResult> res = service.getSnapshotsNext(nextLink);
+        Response<SnapshotListResult> res
+            = service.getSnapshotsNext(nextLink, this.getEndpoint(), accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1613,6 +1757,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1641,7 +1787,7 @@ public final class AzureAppConfigurationClientImpl {
      */
     private PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String accept,
         RequestOptions requestOptions) {
-        Response<LabelListResult> res = service.getLabelsNext(nextLink);
+        Response<LabelListResult> res = service.getLabelsNext(nextLink, this.getEndpoint(), accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1654,6 +1800,8 @@ public final class AzureAppConfigurationClientImpl {
      * <table border="1">
      * <caption>Header Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Sync-Token</td><td>String</td><td>No</td><td>Used to guarantee real-time consistency between
+     * requests.</td></tr>
      * <tr><td>Accept-Datetime</td><td>String</td><td>No</td><td>Requests the server to respond with the state of the
      * resource at the specified
      * time.</td></tr>
@@ -1692,7 +1840,8 @@ public final class AzureAppConfigurationClientImpl {
      */
     private PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String accept,
         RequestOptions requestOptions) {
-        Response<KeyValueListResult> res = service.getRevisionsNext(nextLink);
+        Response<KeyValueListResult> res
+            = service.getRevisionsNext(nextLink, this.getEndpoint(), accept, requestOptions);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getBody(),
             res.getValue().getItems(), null, res.getValue().getNextLink(), null, null, null);
     }
