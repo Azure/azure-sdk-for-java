@@ -32,6 +32,7 @@ module io.clientcore.core {
     exports io.clientcore.core.implementation.http.client;
     exports io.clientcore.core.implementation.http;
     exports io.clientcore.core.serialization;
+    exports io.clientcore.core.credentials.oauth;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
 }

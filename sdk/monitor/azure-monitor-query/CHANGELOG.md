@@ -10,6 +10,19 @@
 
 ### Other Changes
 
+## 1.5.5 (2025-02-18)
+
+### Bugs Fixed
+
+- [Fixed an issue](https://github.com/Azure/azure-sdk-for-java/issues/43841) where `MetricsClient` and `MetricsAsyncClient` would return a null `resourceId` when querying resources.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.1`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.9`.
+
 
 ## 1.5.4 (2024-12-04)
 

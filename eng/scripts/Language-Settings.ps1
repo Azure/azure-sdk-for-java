@@ -6,6 +6,7 @@ $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/rel
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 $GithubUri = "https://github.com/Azure/azure-sdk-for-java"
 $PackageRepositoryUri = "https://repo1.maven.org/maven2"
+$ValidationGroupsFile = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../validation-groups.yml")
 
 . "$PSScriptRoot/docs/Docs-ToC.ps1"
 . "$PSScriptRoot/docs/Docs-Onboarding.ps1"
@@ -191,6 +192,130 @@ function Get-AllPackageInfoFromRepo([string]$serviceDirectory = $null) {
     }
   }
   return $allPackageProps
+}
+
+# Get-java-AdditionalValidationPackagesFromPackageSet is the implementation of the
+# $AdditionalValidationPackagesFromPackageSetFn which is used
+function Get-java-AdditionalValidationPackagesFromPackageSet {
+  param(
+    [Parameter(Mandatory=$true)]
+    $LocatedPackages,
+    [Parameter(Mandatory=$true)]
+    $diffObj,
+    [Parameter(Mandatory=$true)]
+    $AllPkgProps
+  )
+  $additionalValidationPackages = @()
+  $uniqueResultSet = @()
+
+  function Test-StartsWith {
+    param (
+        [string[]]$ChangedFiles,
+        [string[]]$StartsWithPrefixes
+    )
+    if ($ChangedFiles.Length -eq 0 -or $StartsWithPrefixes.Length -eq 0) {
+        return $false;
+    }
+    foreach ($startsWithPrefix in $StartsWithPrefixes) {
+        $HasMatch = $ChangedFiles | Where-Object { $_.StartsWith($startsWithPrefix) }
+        # if there's a match, return right away
+        if ($HasMatch) {
+            return $true
+        }
+    }
+    # no matches will return false
+    return $false
+}
+
+  # this section will identify the list of packages that we should treat as
+  # "directly" changed for a given service level change. While that doesn't
+  # directly change a package within the service, I do believe we should directly include all
+  # packages WITHIN that service. This is because the service level file changes are likely to
+  # have an impact on the packages within that service.
+  $changedServices = @()
+  $targetedFiles = $diffObj.ChangedFiles
+  if ($diff.DeletedFiles) {
+    if (-not $targetedFiles) {
+      $targetedFiles = @()
+    }
+    $targetedFiles += $diff.DeletedFiles
+  }
+
+  # The targetedFiles needs to filter out anything in the ExcludePaths
+  # otherwise it'll end up processing things below that it shouldn't be.
+  foreach ($excludePath in $diffObj.ExcludePaths) {
+    $targetedFiles = $targetedFiles | Where-Object { -not $_.StartsWith($excludePath) }
+  }
+
+  if ($targetedFiles) {
+    foreach($file in $targetedFiles) {
+      $pathComponents = $file -split "/"
+      # Handle changes in the root of any sdk/<ServiceDirectory>. Unfortunately, changes
+      # in the root service directory require any and all libraries in that service directory,
+      # include those in a <ServiceDirectory>/<LibraryDirectory> to get added to the changed
+      # services.
+      if ($pathComponents.Length -eq 3 -and $pathComponents[0] -eq "sdk") {
+        $changedServices += $pathComponents[1]
+      }
+
+      # For anything in the root of the sdk directory, or the repository root, just run template
+      if (($pathComponents.Length -eq 2 -and $pathComponents[0] -eq "sdk") -or
+          ($pathComponents.Length -eq 1)) {
+        $changedServices += "template"
+      }
+    }
+    # dedupe the changedServices list
+    $changedServices = $changedServices | Get-Unique
+    foreach ($changedService in $changedServices) {
+      # Because Java has libraries at the sdk/<ServiceDirectory> and sdk/<ServiceDirectory>/<Library>
+      # directories, the additional package lookup needs to for ci*.yml files where the ServiceDirectory
+      # equals the $changedService as well as ServiceDirectories that starts $changedService/, note the
+      # trailing slash is necessary. For example, if PR changes the ServiceDirectory foo and there
+      # exist ci.yml files with the service directories "foo/bar" and "foobar", we only want to match
+      # foo and foo/bar, not foobar hence the -eq $changedService and StartsWith("$changedService/")
+      $additionalPackages = $AllPkgProps | Where-Object { $_.ServiceDirectory -eq $changedService -or $_.ServiceDirectory.StartsWith("$changedService/")}
+      foreach ($pkg in $additionalPackages) {
+        if ($uniqueResultSet -notcontains $pkg -and $LocatedPackages -notcontains $pkg) {
+          # notice the lack of setting IncludedForValidation to true. This is because these "changed services"
+          # are specifically where a file within the service, but not an individual package within that service has changed.
+          # we want this package to be fully validated
+          $uniqueResultSet += $pkg
+        }
+      }
+    }
+  }
+
+  $additionalPackagesForOtherDirs = @()
+  if ($targetedFiles) {
+    $content = LoadFrom-Yaml $ValidationGroupsFile
+    $validationGroups = GetValueSafelyFrom-Yaml $content @("validationGroups")
+    foreach ($validationGroup in $validationGroups) {
+      if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $validationGroup.dirStartsWithPrefixes) {
+        $itemsToAdd = $validationGroup.additionalPackagesForValidation -join ", "
+        Write-Verbose "$($validationGroup.Name) match, adding the following packages for additional validation: $itemsToAdd"
+        $additionalPackagesForOtherDirs += $validationGroup.additionalPackagesForValidation
+      }
+    }
+  }
+
+  if ($additionalPackagesForOtherDirs) {
+    $additionalPackages = $additionalPackagesForOtherDirs | ForEach-Object { $me=$_; $AllPkgProps | Where-Object { $_.Name -eq $me } | Select-Object -First 1 }
+    $additionalValidationPackages += $additionalPackages
+  }
+
+  foreach ($pkg in $additionalValidationPackages) {
+    if ($uniqueResultSet -notcontains $pkg -and $LocatedPackages -notcontains $pkg) {
+      $pkg.IncludedForValidation = $true
+      $uniqueResultSet += $pkg
+    }
+  }
+
+  Write-Host "Returning additional packages for validation: $($uniqueResultSet.Count)"
+  foreach ($pkg in $uniqueResultSet) {
+    Write-Host "  - $($pkg.Name)"
+  }
+
+  return $uniqueResultSet
 }
 
 # Returns the maven (really sonatype) publish status of a package id and version.
@@ -565,4 +690,3 @@ function Get-java-ApiviewStatusCheckRequirement($packageInfo) {
   }
   return $false
 }
-

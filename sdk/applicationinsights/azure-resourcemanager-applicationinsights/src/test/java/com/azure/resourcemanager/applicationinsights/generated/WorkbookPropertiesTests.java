@@ -13,36 +13,36 @@ public final class WorkbookPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbookProperties model = BinaryData.fromString(
-            "{\"displayName\":\"pvuzlmv\",\"serializedData\":\"elfk\",\"version\":\"plcrpwjxeznoig\",\"timeModified\":\"2021-05-13T00:39:55Z\",\"category\":\"jwmwkpnbs\",\"tags\":[\"jjoqkagf\",\"sxtta\",\"gzxnfaazpxdtnk\",\"mkqjj\"],\"userId\":\"uenvrkp\",\"sourceId\":\"uaibrebqaaysj\",\"storageUri\":\"xqtnq\",\"description\":\"ezl\",\"revision\":\"ffiakp\"}")
+            "{\"displayName\":\"bykutw\",\"serializedData\":\"fhpagmhrskdsnf\",\"version\":\"doakgtdlmkkzevdl\",\"timeModified\":\"2021-08-26T23:11Z\",\"category\":\"pusdstt\",\"tags\":[\"gvbbejdcng\",\"qmoa\",\"ufgmjzrwrdg\"],\"userId\":\"wae\",\"sourceId\":\"uzkopbminrfd\",\"storageUri\":\"yuhhziu\",\"description\":\"fozbhdmsmlmzqhof\",\"revision\":\"maequiahxicslfa\"}")
             .toObject(WorkbookProperties.class);
-        Assertions.assertEquals("pvuzlmv", model.displayName());
-        Assertions.assertEquals("elfk", model.serializedData());
-        Assertions.assertEquals("plcrpwjxeznoig", model.version());
-        Assertions.assertEquals("jwmwkpnbs", model.category());
-        Assertions.assertEquals("jjoqkagf", model.tags().get(0));
-        Assertions.assertEquals("uaibrebqaaysj", model.sourceId());
-        Assertions.assertEquals("xqtnq", model.storageUri());
-        Assertions.assertEquals("ezl", model.description());
+        Assertions.assertEquals("bykutw", model.displayName());
+        Assertions.assertEquals("fhpagmhrskdsnf", model.serializedData());
+        Assertions.assertEquals("doakgtdlmkkzevdl", model.version());
+        Assertions.assertEquals("pusdstt", model.category());
+        Assertions.assertEquals("gvbbejdcng", model.tags().get(0));
+        Assertions.assertEquals("uzkopbminrfd", model.sourceId());
+        Assertions.assertEquals("yuhhziu", model.storageUri());
+        Assertions.assertEquals("fozbhdmsmlmzqhof", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookProperties model = new WorkbookProperties().withDisplayName("pvuzlmv")
-            .withSerializedData("elfk")
-            .withVersion("plcrpwjxeznoig")
-            .withCategory("jwmwkpnbs")
-            .withTags(Arrays.asList("jjoqkagf", "sxtta", "gzxnfaazpxdtnk", "mkqjj"))
-            .withSourceId("uaibrebqaaysj")
-            .withStorageUri("xqtnq")
-            .withDescription("ezl");
+        WorkbookProperties model = new WorkbookProperties().withDisplayName("bykutw")
+            .withSerializedData("fhpagmhrskdsnf")
+            .withVersion("doakgtdlmkkzevdl")
+            .withCategory("pusdstt")
+            .withTags(Arrays.asList("gvbbejdcng", "qmoa", "ufgmjzrwrdg"))
+            .withSourceId("uzkopbminrfd")
+            .withStorageUri("yuhhziu")
+            .withDescription("fozbhdmsmlmzqhof");
         model = BinaryData.fromObject(model).toObject(WorkbookProperties.class);
-        Assertions.assertEquals("pvuzlmv", model.displayName());
-        Assertions.assertEquals("elfk", model.serializedData());
-        Assertions.assertEquals("plcrpwjxeznoig", model.version());
-        Assertions.assertEquals("jwmwkpnbs", model.category());
-        Assertions.assertEquals("jjoqkagf", model.tags().get(0));
-        Assertions.assertEquals("uaibrebqaaysj", model.sourceId());
-        Assertions.assertEquals("xqtnq", model.storageUri());
-        Assertions.assertEquals("ezl", model.description());
+        Assertions.assertEquals("bykutw", model.displayName());
+        Assertions.assertEquals("fhpagmhrskdsnf", model.serializedData());
+        Assertions.assertEquals("doakgtdlmkkzevdl", model.version());
+        Assertions.assertEquals("pusdstt", model.category());
+        Assertions.assertEquals("gvbbejdcng", model.tags().get(0));
+        Assertions.assertEquals("uzkopbminrfd", model.sourceId());
+        Assertions.assertEquals("yuhhziu", model.storageUri());
+        Assertions.assertEquals("fozbhdmsmlmzqhof", model.description());
     }
 }

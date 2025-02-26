@@ -3,16 +3,16 @@
 
 package com.azure.v2.core.implementation;
 
-import io.clientcore.core.credentials.AccessToken;
+import io.clientcore.core.credentials.oauth.AccessToken;
 
 import java.time.OffsetDateTime;
 
 /**
- * The Access Token Cache Info.
+ * The Access Token Cache Info holds the metadata used by {@link AccessTokenCache} to proactively refresh the token.
  */
 public class AccessTokenCacheInfo {
     private final AccessToken cache;
-    private final OffsetDateTime nextTokenRefresh;
+    private final OffsetDateTime nextTokenRefreshAt;
 
     /**
      * Create an Instance of Access Token Cache Info.
@@ -22,7 +22,7 @@ public class AccessTokenCacheInfo {
      */
     public AccessTokenCacheInfo(AccessToken cache, OffsetDateTime nextTokenRefresh) {
         this.cache = cache;
-        this.nextTokenRefresh = nextTokenRefresh;
+        this.nextTokenRefreshAt = nextTokenRefresh;
     }
 
     /**
@@ -39,7 +39,7 @@ public class AccessTokenCacheInfo {
      *
      * @return the token refresh time.
      */
-    public OffsetDateTime getNextTokenRefresh() {
-        return nextTokenRefresh;
+    public OffsetDateTime getNextTokenRefreshAt() {
+        return nextTokenRefreshAt;
     }
 }
