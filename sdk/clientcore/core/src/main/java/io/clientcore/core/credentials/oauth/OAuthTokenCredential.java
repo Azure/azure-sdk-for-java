@@ -10,7 +10,7 @@ package io.clientcore.core.credentials.oauth;
  *
  * <p>
  * The {@link OAuthTokenCredential} interface, offers an API to retrieve an access token that can be used for
- * bearer token authentication. The scopes parameter specified as part of {@link OAuthTokenRequestOptions} represents
+ * bearer token authentication. The scopes parameter specified as part of {@link OAuthTokenRequestContext} represents
  * the resources or permissions required for the token.
  * </p>
  *
@@ -31,5 +31,5 @@ public interface OAuthTokenCredential {
      * @param request the details of the token request
      * @return The Access Token
      */
-    AccessToken getToken(OAuthTokenRequestOptions request);
+    AccessToken getToken(OAuthTokenRequestContext request);
 }

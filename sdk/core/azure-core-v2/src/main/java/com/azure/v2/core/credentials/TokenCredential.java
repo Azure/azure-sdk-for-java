@@ -3,7 +3,7 @@
 
 package com.azure.v2.core.credentials;
 
-import io.clientcore.core.credentials.AccessToken;
+import io.clientcore.core.credentials.oauth.AccessToken;
 
 /**
  * <p>

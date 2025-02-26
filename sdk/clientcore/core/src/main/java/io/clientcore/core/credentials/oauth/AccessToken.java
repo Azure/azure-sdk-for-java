@@ -28,7 +28,7 @@ public class AccessToken {
     private final String token;
     private final OffsetDateTime expiresAt;
     private final OffsetDateTime refreshAt;
-    private final String tokenType;
+    private final AccessTokenType tokenType;
 
     /**
      * Creates an access token instance.
@@ -38,7 +38,7 @@ public class AccessToken {
      * @param expiresAt the expiration time.
      */
     public AccessToken(String token, OffsetDateTime expiresAt) {
-        this(token, expiresAt, null, "Bearer");
+        this(token, expiresAt, null, AccessTokenType.BEARER);
     }
 
     /**
@@ -50,7 +50,7 @@ public class AccessToken {
      * @param refreshAt the next token refresh time.
      */
     public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshAt) {
-        this(token, expiresAt, refreshAt, "Bearer");
+        this(token, expiresAt, refreshAt, AccessTokenType.BEARER);
     }
 
     /**
@@ -61,7 +61,7 @@ public class AccessToken {
      * @param refreshAt the next token refresh time.
      * @param tokenType the type of token.
      */
-    public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshAt, String tokenType) {
+    public AccessToken(String token, OffsetDateTime expiresAt, OffsetDateTime refreshAt, AccessTokenType tokenType) {
         this.token = token;
         this.expiresAt = expiresAt;
         this.refreshAt = refreshAt;
@@ -106,9 +106,9 @@ public class AccessToken {
     /**
      * Gets the token type.
      *
-     * @return A string representing the token type. It can be "Bearer" or "Pop".
+     * @return The {@link AccessTokenType} representing the Token Type.
      */
-    public String getTokenType() {
+    public AccessTokenType getTokenType() {
         return tokenType;
     }
 }

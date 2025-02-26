@@ -3,8 +3,11 @@
 
 package io.clientcore.core.credentials.oauth;
 
+import io.clientcore.core.implementation.utils.ImplUtils;
+
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,18 +15,18 @@ import java.util.Objects;
 
 /**
  * <p>
- * The {@link OAuthTokenRequestOptions} is a class used to provide additional information and context when requesting an
+ * The {@link OAuthTokenRequestContext} is a class used to provide additional information and context when requesting an
  * access token from an authentication source. It allows you to customize the token request and specify additional
  * parameters, such as scopes, claims, or authentication options.
  * </p>
  *
  * <p>
- * Here's a high-level overview of how you can use the {@link OAuthTokenRequestOptions}:
+ * Here's a high-level overview of how you can use the {@link OAuthTokenRequestContext}:
  * </p>
  *
  * <ol>
- * <li>Create an instance of the {@link OAuthTokenRequestOptions} class and configure the required properties.
- * The {@link OAuthTokenRequestOptions} class allows you to specify the scopes or resources for which you want to request
+ * <li>Create an instance of the {@link OAuthTokenRequestContext} class and configure the required properties.
+ * The {@link OAuthTokenRequestContext} class allows you to specify the scopes or resources for which you want to request
  * an access token, as well as any additional properties.</li>
  *
  * <li>The authentication client or mechanism will handle the token request options and return an access token that can
@@ -32,16 +35,14 @@ import java.util.Objects;
  *
  * @see io.clientcore.core.credentials
  */
-public class OAuthTokenRequestOptions {
-    private final List<String> scopes;
-    private final Map<String, Object> params;
+public class OAuthTokenRequestContext {
+    private List<String> scopes;
+    private Map<String, Object> params;
 
     /**
      * Creates a token request instance.
      */
-    public OAuthTokenRequestOptions() {
-        this.scopes = new ArrayList<>();
-        this.params = new HashMap<>();
+    public OAuthTokenRequestContext() {
     }
 
     /**
@@ -49,18 +50,20 @@ public class OAuthTokenRequestOptions {
      * @return the scopes required for the token
      */
     public List<String> getScopes() {
+        if (ImplUtils.isNullOrEmpty(scopes)) {
+            Collections.emptyList();
+        }
         return scopes;
     }
 
     /**
      * Sets the scopes required for the token.
      * @param scopes the scopes required for the token
-     * @return the OAuthTokenRequestProperties itself
+     * @return the OAuthTokenRequestContext itself
      */
-    public OAuthTokenRequestOptions setScopes(List<String> scopes) {
+    public OAuthTokenRequestContext setScopes(List<String> scopes) {
         Objects.requireNonNull(scopes, "'scopes' cannot be null.");
-        this.scopes.clear();
-        this.scopes.addAll(scopes);
+        this.scopes = scopes;
         return this;
     }
 
@@ -68,8 +71,11 @@ public class OAuthTokenRequestOptions {
      * Adds one or more scopes to the request scopes.
      * @param scopes one or more scopes to add
      * @return the OAuthTokenRequestProperties itself
+     * @throws NullPointerException If scopes is null.
+     * @throws IllegalArgumentException if empty scopes list is provided.
+     * @throws IllegalArgumentException If empty or null scopes are provided as part of the parameters.
      */
-    public OAuthTokenRequestOptions addScopes(String... scopes) {
+    public OAuthTokenRequestContext addScopes(String... scopes) {
         Objects.requireNonNull(scopes, "'scopes' cannot be null.");
 
         if (scopes.length == 0) {
@@ -77,11 +83,14 @@ public class OAuthTokenRequestOptions {
         }
 
         for (String scope : scopes) {
-            if (scope == null) {
-                throw new IllegalArgumentException("Scopes cannot contain null values.");
+            if (ImplUtils.isNullOrEmpty(scope)) {
+                throw new IllegalArgumentException("Scopes cannot contain null or empty values.");
             }
         }
 
+        if (this.scopes == null) {
+            this.scopes = new ArrayList<>();
+        }
         this.scopes.addAll(Arrays.asList(scopes));
         return this;
     }
@@ -91,6 +100,9 @@ public class OAuthTokenRequestOptions {
      * @return the parameters required for the token
      */
     public Map<String, Object> getParams() {
+        if (ImplUtils.isNullOrEmpty(params)) {
+            Collections.emptyMap();
+        }
         return this.params;
     }
 
@@ -98,11 +110,12 @@ public class OAuthTokenRequestOptions {
      * Sets the additional parameters required for the token.
      *
      * @param params the additional parameters
-     * @return the OAuthTokenRequestProperties itself
+     * @return the OAuthTokenRequestContext itself
+     * @throws NullPointerException If params is null.
      */
-    public OAuthTokenRequestOptions setParams(Map<String, Object> params) {
-        this.params.clear();
-        params.forEach((k, v) -> this.params.put(k, v));
+    public OAuthTokenRequestContext setParams(Map<String, Object> params) {
+        Objects.requireNonNull(params, "'params' cannot be null");
+        this.params = params;
         return this;
     }
 
@@ -111,9 +124,20 @@ public class OAuthTokenRequestOptions {
      *
      * @param key the key
      * @param value the value
-     * @return the OAuthTokenRequestProperties itself
+     * @return the OAuthTokenRequestContext itself
      */
-    public OAuthTokenRequestOptions setParam(String key, String value) {
+    public OAuthTokenRequestContext setParam(String key, String value) {
+        if (ImplUtils.isNullOrEmpty(key)) {
+            throw new IllegalArgumentException("Parameter 'key' cannot be null or empty");
+        }
+
+        if (ImplUtils.isNullOrEmpty(value)) {
+            throw new IllegalArgumentException("Parameter 'value' cannot be null or empty");
+        }
+
+        if (this.params == null) {
+            this.params = new HashMap<>();
+        }
         this.params.put(key, value);
         return this;
     }

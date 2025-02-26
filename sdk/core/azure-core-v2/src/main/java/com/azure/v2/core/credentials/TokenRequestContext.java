@@ -3,6 +3,8 @@
 
 package com.azure.v2.core.credentials;
 
+import com.azure.v2.core.utils.CoreUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -88,8 +90,8 @@ public class TokenRequestContext {
         }
 
         for (String scope : scopes) {
-            if (scope == null) {
-                throw new IllegalArgumentException("Scopes cannot contain null values.");
+            if (CoreUtils.isNullOrEmpty(scope)) {
+                throw new IllegalArgumentException("Scopes cannot contain null or empty values.");
             }
         }
         this.scopes.addAll(Arrays.asList(scopes));

@@ -5,10 +5,9 @@ package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.credentials.oauth.OAuthTokenCredential;
-import io.clientcore.core.credentials.oauth.OAuthTokenRequestOptions;
+import io.clientcore.core.credentials.oauth.OAuthTokenRequestContext;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
@@ -54,7 +53,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param httpRequest The request context.
      */
     public void authorizeRequest(HttpRequest httpRequest) {
-        setAuthorizationHeaderHelper(httpRequest, new OAuthTokenRequestOptions().addScopes(scopes), false);
+        setAuthorizationHeader(httpRequest, new OAuthTokenRequestContext().addScopes(scopes));
     }
 
     /**
@@ -63,18 +62,9 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param request the HTTP request.
      * @param tokenRequestContext the token request context to be used for token acquisition.
      */
-    protected void setAuthorizationHeader(HttpRequest request, OAuthTokenRequestOptions tokenRequestContext) {
-        setAuthorizationHeaderHelper(request, tokenRequestContext, true);
-    }
-
-    private void setAuthorizationHeaderHelper(HttpRequest httpRequest, OAuthTokenRequestOptions tokenRequestContext,
-        boolean checkToForceFetchToken) {
+    protected void setAuthorizationHeader(HttpRequest request, OAuthTokenRequestContext tokenRequestContext) {
         AccessToken token = credential.getToken(tokenRequestContext);
-        setAuthorizationHeader(httpRequest.getHeaders(), token.getToken());
-    }
-
-    private static void setAuthorizationHeader(HttpHeaders headers, String token) {
-        headers.set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
+        request.getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
     }
 
     @Override
@@ -107,7 +97,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
 
     /**
      * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication challenge
-     * header is received after the initial request and returns appropriate {@link OAuthTokenRequestOptions} to be
+     * header is received after the initial request and returns appropriate {@link OAuthTokenRequestContext} to be
      * used for re-authentication.
      *
      * <p>
@@ -116,7 +106,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      *
      * @param httpRequest The http request.
      * @param response The Http Response containing the authentication challenge header.
-     * @return A boolean indicating if containing the {@link OAuthTokenRequestOptions} for re-authentication
+     * @return A boolean indicating if containing the {@link OAuthTokenRequestContext} for re-authentication
      */
     public boolean authorizeRequestOnChallenge(HttpRequest httpRequest, Response<?> response) {
         return false;
