@@ -38,7 +38,7 @@ public class APIGenerationTest {
         getUserMethodContext.setPath("/users/{userId}");
         getUserMethodContext.setExpectedStatusCodes(new int[] { 200 });
         getUserMethodContext.setMethodName("getUser");
-        getUserMethodContext.setMethodReturnType("User");
+        //getUserMethodContext.setMethodReturnType("User");
         getUserMethodContext.addSubstitution(new Substitution("String", "userId", false));
         getUserMethodContext
             .setBody(new HttpRequestContext.Body("multipart/form-data", "BinaryData", "audioTranscriptionOptions"));

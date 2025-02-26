@@ -106,9 +106,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         classBuilder = compilationUnit.addClass(serviceInterfaceImplShortName, Modifier.Keyword.PUBLIC);
 
         // Import the service interface using the fully qualified name.
-        // TODO (alzimmer): Should check if the service interface and implementation are in the same package. If so,
-        //  this import isn't needed. But this can be a final touches thing.
-        compilationUnit.addImport(templateInput.getServiceInterfaceFQN());
+        String serviceInterfacePackage = templateInput.getServiceInterfaceFQN()
+            .substring(0, templateInput.getServiceInterfaceFQN().lastIndexOf('.'));
+        if (!packageName.equals(serviceInterfacePackage)) {
+            compilationUnit.addImport(templateInput.getServiceInterfaceFQN());
+        }
 
         classBuilder.addImplementedType(serviceInterfaceShortName);
 
@@ -160,7 +162,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         //configureServiceVersionMethod(classBuilder.addMethod("getServiceVersion", Modifier.Keyword.PUBLIC),
         //    serviceVersionClassName);
 
-        getGeneratedServiceMethods(templateInput);
+        generateServiceMethods(templateInput);
         addDeserializeHelperMethod();
 
         try (Writer fileWriter = processingEnv.getFiler()
@@ -193,7 +195,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 + " throw LOGGER.logThrowableAsError(new UncheckedIOException(e));" + " }")));
     }
 
-    void getGeneratedServiceMethods(TemplateInput templateInput) {
+    void generateServiceMethods(TemplateInput templateInput) {
         for (HttpRequestContext method : templateInput.getHttpRequestContexts()) {
             if (!method.isConvenience()) {
                 configureInternalMethod(classBuilder.addMethod(method.getMethodName()), method);
@@ -255,7 +257,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 new ArrayInitializerExpr(
                     NodeList.nodeList(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
             .addMarkerAnnotation(Override.class)
-            .setType(inferTypeNameFromReturnType(method.getMethodReturnType()));
+            .setType(method.getMethodReturnType());
 
         // Add parameters
         method.getParameters().forEach(param -> publicMethod.addParameter(param.getShortTypeName(), param.getName()));
@@ -266,7 +268,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .map(HttpRequestContext.MethodParameter::getName)
             .collect(Collectors.joining(", "));
 
-        if (!isVoidReturnType(method.getMethodReturnType())) {
+        if (!method.getMethodReturnType().isVoidType()) {
             // adjust the convenience method naming to remove "Convenience" to existing method name and append Response
             String callerMethodName = method.getMethodName().replace("Convenience", "") + "Response";
             publicMethod.setBody(
@@ -281,7 +283,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method) {
-        String returnTypeName = inferTypeNameFromReturnType(method.getMethodReturnType());
         // TODO (alzimmer): For now throw @SuppressWarnings({"unchecked", "cast"}) on generated methods while we
         //  improve / fix the generated code to no longer need it.
         internalMethod.setName(method.getMethodName())
@@ -290,7 +291,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 new ArrayInitializerExpr(
                     new NodeList<>(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
             .addMarkerAnnotation(Override.class)
-            .setType(returnTypeName);
+            .setType(method.getMethodReturnType());
 
         for (HttpRequestContext.MethodParameter parameter : method.getParameters()) {
             internalMethod.addParameter(parameter.getShortTypeName(), parameter.getName());
@@ -303,7 +304,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         addHeadersToRequest(body, method);
         addRequestBody(body, method);
         addRequestOptionsToRequestIfPresent(body, method);
-        finalizeHttpRequest(body, returnTypeName, method);
+        finalizeHttpRequest(body, method.getMethodReturnType(), method);
 
         internalMethod.setBody(body);
     }
@@ -318,6 +319,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         if (hasRequestOptions) {
             ExpressionStmt statement = new ExpressionStmt(new MethodCallExpr(new NameExpr("httpRequest"),
                 "setRequestOptions", NodeList.nodeList(new NameExpr("options"))));
+
             statement.setLineComment("Set the Request Options");
             body.addStatement(statement);
         }
@@ -344,7 +346,8 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         Statement statement
             = StaticJavaParser.parseStatement("HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod."
                 + method.getHttpMethod() + ").setUri(host);");
-        statement.setLineComment("Create the HTTP request");
+
+        statement.setLineComment(" Create the HTTP request");
         body.addStatement(statement);
     }
 
@@ -388,37 +391,41 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             body.addStatement(
                 StaticJavaParser.parseStatement("httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, \"0\");"));
         }
-
-        body.getStatements().get(index).setLineComment("Set the request body");
+        body.getStatements().get(index).setLineComment(" Set the request body");
     }
 
-    private void finalizeHttpRequest(BlockStmt body, String returnTypeName, HttpRequestContext method) {
+    private void finalizeHttpRequest(BlockStmt body, com.github.javaparser.ast.type.Type returnTypeName,
+        HttpRequestContext method) {
         body.tryAddImportToParentCompilationUnit(Response.class);
 
         Statement statement = StaticJavaParser.parseStatement("Response<?> response = pipeline.send(httpRequest);");
-        if (!isVoidReturnType(returnTypeName)) {
-            if (!isPrimitiveOrWrapper(returnTypeName)
-                && returnTypeName.startsWith("io.clientcore.core.http.models.Response<")) {
-                // Extract the variable declaration
-                if (statement.isExpressionStmt()) {
-                    statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
-                        variableDeclarationExpr.getVariables().forEach(variable -> {
-                            // Parse the full response type with generics from returnTypeName
-                            ClassOrInterfaceType responseType
-                                = StaticJavaParser.parseClassOrInterfaceType(returnTypeName);
 
-                            // Set the new type for the variable
-                            variable.setType(responseType);
+        // Check if the return type is Response
+        if (returnTypeName instanceof ClassOrInterfaceType
+            && returnTypeName.asClassOrInterfaceType().getNameAsString().equals("Response")) {
 
-                            CastExpr castExpression = new CastExpr(responseType, variable.getInitializer().get());
+            // Extract the variable declaration
+            if (statement.isExpressionStmt()) {
+                statement.asExpressionStmt().getExpression().ifVariableDeclarationExpr(variableDeclarationExpr -> {
+                    variableDeclarationExpr.getVariables().forEach(variable -> {
+                        // Parse the full response type
+                        ClassOrInterfaceType responseType = returnTypeName.asClassOrInterfaceType();
+
+                        // Set the new type for the variable
+                        variable.setType(responseType);
+
+                        // Ensure the initializer is correctly casted
+                        variable.getInitializer().ifPresent(initializer -> {
+                            CastExpr castExpression = new CastExpr(responseType, initializer);
                             variable.setInitializer(castExpression);
-
                         });
                     });
-                }
+                });
+
             }
         }
-        statement.setLineComment("Send the request through the pipeline");
+
+        statement.setLineComment(" Send the request through the pipeline");
         body.addStatement(statement);
 
         if (!method.getExpectedStatusCodes().isEmpty()) {
@@ -426,32 +433,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
 
         generateResponseHandling(body, returnTypeName, method);
-    }
-
-    /**
-     * Helper method to check if a type is a primitive or its wrapper.
-     * @param typeName the return type string value
-     * @return boolean if the return type string is primitive type
-     */
-    public static boolean isPrimitiveOrWrapper(String typeName) {
-        // TODO: This helper method will be removed once the return type issue is fixed
-        return "int".equals(typeName)
-            || "java.lang.Integer".equals(typeName)
-            || "double".equals(typeName)
-            || "java.lang.Double".equals(typeName)
-            || "long".equals(typeName)
-            || "java.lang.Long".equals(typeName)
-            || "short".equals(typeName)
-            || "java.lang.Short".equals(typeName)
-            || "float".equals(typeName)
-            || "java.lang.Float".equals(typeName)
-            || "boolean".equals(typeName)
-            || "java.lang.Boolean".equals(typeName)
-            || "char".equals(typeName)
-            || "java.lang.Character".equals(typeName)
-            || "byte".equals(typeName)
-            || "java.lang.Byte".equals(typeName)
-            || typeName.endsWith("[]");  // Catch all array types
     }
 
     private void validateResponseStatus(BlockStmt body, HttpRequestContext method) {
@@ -563,42 +544,5 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             body.addStatement(StaticJavaParser
                 .parseStatement("httpRequest.setBody(BinaryData.fromObject(" + parameterName + ", serializer));"));
         }
-    }
-
-    /*
-     * Get a TypeName for a parameterized type, given the raw type and type arguments as Class objects.
-     */
-    private static String inferTypeNameFromReturnType(String typeString) {
-        if (typeString == null) {
-            return "void";
-        }
-        // Split the string into raw type and type arguments
-        int angleBracketIndex = typeString.indexOf('<');
-        if (angleBracketIndex == -1) {
-            // No type arguments
-            return typeString;
-        }
-        String rawTypeString = typeString.substring(0, angleBracketIndex);
-        String typeArgumentsString = typeString.substring(angleBracketIndex + 1, typeString.length() - 1);
-
-        return getParameterizedTypeNameFromRawArguments(rawTypeString, typeArgumentsString);
-    }
-
-    /*
-     * Get a TypeName for a parameterized type, given the raw type and type arguments as Class objects.
-     */
-    private static String getParameterizedTypeNameFromRawArguments(String rawType, String... typeArguments) {
-        StringBuilder builder = new StringBuilder(rawType).append('<');
-
-        boolean first = true;
-        for (String typeArgument : typeArguments) {
-            if (!first) {
-                builder.append(", ");
-            }
-            builder.append(typeArgument);
-        }
-        builder.append('>');
-
-        return builder.toString();
     }
 }

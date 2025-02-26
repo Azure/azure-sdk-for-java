@@ -3,6 +3,7 @@
 
 package io.clientcore.annotation.processor;
 
+import com.github.javaparser.StaticJavaParser;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.Substitution;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -210,54 +211,40 @@ public class AnnotationProcessor extends AbstractProcessor {
         TemplateInput templateInput) {
         // Get the return type from the method
         TypeMirror returnType = requestMethod.getReturnType();
+        method.setMethodReturnType(StaticJavaParser.parseType(returnType.toString()));
 
-        // If the return type is a declared type (e.g., Response<InputStream>)
+        // Handle declared types (e.g., Response<T>)
         if (returnType.getKind() == TypeKind.DECLARED) {
             DeclaredType declaredType = (DeclaredType) returnType;
             TypeElement typeElement = (TypeElement) declaredType.asElement();
-            String fullTypeName = typeElement.getQualifiedName().toString();
+            String fullTypeName = templateInput.addImport(typeElement.toString());
 
-            // Handle generic arguments for declared types
-            List<? extends TypeMirror> typeArguments = declaredType.getTypeArguments();
-            if (!typeArguments.isEmpty()) {
-                StringBuilder typeWithArguments = new StringBuilder(fullTypeName);
-                typeWithArguments.append("<");
+            if (!declaredType.getTypeArguments().isEmpty()) {
+                StringBuilder typeWithArguments = new StringBuilder(fullTypeName + "<");
 
-                for (int i = 0; i < typeArguments.size(); i++) {
-                    TypeMirror typeArgument = typeArguments.get(i);
-                    // Add the type argument to the final type string
-                    typeWithArguments.append(typeArgument.toString());
-                    if (i < typeArguments.size() - 1) {
-                        typeWithArguments.append(", ");
-                    }
+                for (TypeMirror typeArg : declaredType.getTypeArguments()) {
+                    typeWithArguments.append(templateInput.addImport(typeArg)).append(", ");
                 }
 
+                // Remove trailing comma and space
+                typeWithArguments.setLength(typeWithArguments.length() - 2);
                 typeWithArguments.append(">");
-                method.setMethodReturnType(typeWithArguments.toString());
+
+                method.setMethodReturnType(StaticJavaParser.parseType(typeWithArguments.toString())); // Convert String to Type
             } else {
-                // If no generic arguments, set the return type to the base type
-                method.setMethodReturnType(fullTypeName);
+                method.setMethodReturnType(StaticJavaParser.parseType(fullTypeName)); // Convert String to Type
             }
-        } else if (returnType.getKind() == TypeKind.ARRAY) {
+        }
+        // Handle array types
+        else if (returnType.getKind() == TypeKind.ARRAY) {
             ArrayType arrayType = (ArrayType) returnType;
             TypeMirror componentType = arrayType.getComponentType();
+            String componentTypeName = componentType.getKind().isPrimitive()
+                ? componentType.toString()
+                : templateInput.addImport(componentType);
 
-            String componentTypeName;
-            if (componentType.getKind().isPrimitive()) {
-                // Use primitive type name directly (no import needed)
-                componentTypeName = componentType.toString();
-            } else {
-                // Add import for non-primitive types
-                componentTypeName = templateInput.addImport(componentType);
-            }
-
-            method.setMethodReturnType(componentTypeName + "[]");
-        } else {
-            // For non-declared types (simple types like String, int, etc.)
-            String returnTypeShortName = templateInput.addImport(requestMethod.getReturnType());
-            method.setMethodReturnType(returnTypeShortName);
+            method.setMethodReturnType(StaticJavaParser.parseType(componentTypeName + "[]")); // Convert String to Type
         }
-
     }
 
     private static String getHost(TemplateInput templateInput, HttpRequestContext method, boolean isEncoded) {
