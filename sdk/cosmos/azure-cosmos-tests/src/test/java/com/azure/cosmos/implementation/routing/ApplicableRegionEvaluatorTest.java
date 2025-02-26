@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AvailabilityStrategyContext;
