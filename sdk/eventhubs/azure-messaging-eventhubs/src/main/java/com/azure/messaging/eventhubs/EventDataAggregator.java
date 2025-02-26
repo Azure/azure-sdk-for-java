@@ -20,7 +20,7 @@ import reactor.core.publisher.Sinks;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Supplier;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
@@ -36,7 +36,11 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
 class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
     private static final ClientLogger LOGGER = new ClientLogger(EventDataAggregator.class);
 
-    private final AtomicReference<EventDataAggregatorMain> downstreamSubscription = new AtomicReference<>();
+    private volatile EventDataAggregatorMain downstreamSubscription;
+    private static final AtomicReferenceFieldUpdater<EventDataAggregator, EventDataAggregatorMain> DOWNSTREAM_SUBSCRIPTION
+        = AtomicReferenceFieldUpdater.newUpdater(EventDataAggregator.class, EventDataAggregatorMain.class,
+            "downstreamSubscription");
+
     private final Supplier<EventDataBatch> batchSupplier;
     private final String namespace;
     private final BufferedProducerClientOptions options;
@@ -68,11 +72,20 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         final EventDataAggregatorMain subscription
             = new EventDataAggregatorMain(actual, namespace, options, batchSupplier, partitionId, LOGGER);
 
-        if (!downstreamSubscription.compareAndSet(null, subscription)) {
+        if (DOWNSTREAM_SUBSCRIPTION.compareAndSet(this, null, subscription)) {
+            source.subscribe(subscription);
+        } else {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("Cannot resubscribe to multiple upstreams."));
         }
+    }
 
-        source.subscribe(subscription);
+    int getNumberOfEvents() {
+        final EventDataAggregatorMain downstream = downstreamSubscription;
+        if (downstream == null) {
+            return 0;
+        }
+
+        return downstream.getNumberOfEventsInCurrentBatch();
     }
 
     /**
@@ -123,6 +136,21 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                         .log("Time elapsed. Attempt to publish downstream.");
                     updateOrPublishBatch(null, true);
                 });
+        }
+
+        /**
+         * The number of events in the current batch.
+         *
+         * @return Number of events in the current batch.
+         */
+        public int getNumberOfEventsInCurrentBatch() {
+            final EventDataBatch b;
+            synchronized (lock) {
+                b = currentBatch;
+            }
+
+            return b != null ? b.getCount() : 0;
+
         }
 
         /**
