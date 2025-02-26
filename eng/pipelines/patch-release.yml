@@ -68,10 +68,6 @@ extends:
       groupId: com.azure
       safeName: azureidentityextensions
       ServiceDirectory: identity/azure-identity-extensions
-    - name: azure-messaging-eventhubs-checkpointstore-blob
-      groupId: com.azure
-      safeName: azuremessagingeventhubscheckpointstoreblob
-      ServiceDirectory: eventhubs
     - name: azure-ai-metricsadvisor
       groupId: com.azure
       safeName: azureaimetricsadvisor
