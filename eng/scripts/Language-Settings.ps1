@@ -244,7 +244,7 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
   # The targetedFiles needs to filter out anything in the ExcludePaths
   # otherwise it'll end up processing things below that it shouldn't be.
   foreach ($excludePath in $diffObj.ExcludePaths) {
-    $targetedFiles = $targetedFiles | Where-Object { -not $_.StartsWith($excludePath.TrimEnd("/") + "/") }
+    $targetedFiles = $targetedFiles | Where-Object { -not $_.StartsWith($excludePath) }
   }
 
   if ($targetedFiles) {

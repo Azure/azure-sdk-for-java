@@ -10,9 +10,9 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.netapp.models.AcceptGrowCapacityPoolForShortTermCloneSplit;
 import com.azure.resourcemanager.netapp.models.AvsDataStore;
 import com.azure.resourcemanager.netapp.models.CoolAccessRetrievalPolicy;
+import com.azure.resourcemanager.netapp.models.CoolAccessTieringPolicy;
 import com.azure.resourcemanager.netapp.models.EnableSubvolumes;
 import com.azure.resourcemanager.netapp.models.EncryptionKeySource;
 import com.azure.resourcemanager.netapp.models.FileAccessLogs;
@@ -22,7 +22,6 @@ import com.azure.resourcemanager.netapp.models.SecurityStyle;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.azure.resourcemanager.netapp.models.SmbAccessBasedEnumeration;
 import com.azure.resourcemanager.netapp.models.SmbNonBrowsable;
-import com.azure.resourcemanager.netapp.models.VolumeLanguage;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesDataProtection;
 import com.azure.resourcemanager.netapp.models.VolumePropertiesExportPolicy;
 import com.azure.resourcemanager.netapp.models.VolumeStorageToNetworkProximity;
@@ -52,7 +51,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     /*
      * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. For
      * regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes, valid values are in the range
-     * 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
+     * 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values expressed in bytes as multiples
      * of 1 GiB.
      */
     private long usageThreshold;
@@ -124,8 +123,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private List<MountTargetProperties> mountTargets;
 
     /*
-     * What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection. For
-     * creating clone volume, set type to ShortTermClone
+     * What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection
      */
     private String volumeType;
 
@@ -133,13 +131,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * DataProtection type volumes include an object containing details of the replication
      */
     private VolumePropertiesDataProtection dataProtection;
-
-    /*
-     * While auto splitting the short term clone volume, if the parent pool does not have enough space to accommodate
-     * the volume after split, it will be automatically resized, which will lead to increased billing. To accept
-     * capacity pool size auto grow and create a short term clone volume, set the property as accepted.
-     */
-    private AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit;
 
     /*
      * Restoring
@@ -232,14 +223,19 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     private CoolAccessRetrievalPolicy coolAccessRetrievalPolicy;
 
     /*
+     * coolAccessTieringPolicy determines which cold data blocks are moved to cool tier. The possible values for this
+     * field are: Auto - Moves cold user data blocks in both the Snapshot copies and the active file system to the cool
+     * tier tier. This policy is the default. SnapshotOnly - Moves user data blocks of the Volume Snapshot copies that
+     * are not associated with the active file system to the cool tier.
+     */
+    private CoolAccessTieringPolicy coolAccessTieringPolicy;
+
+    /*
      * UNIX permissions for NFS volume accepted in octal 4 digit format. First digit selects the set user ID(4), set
      * group ID (2) and sticky (1) attributes. Second digit selects permission for the owner of the file: read (4),
      * write (2) and execute (1). Third selects permissions for other users in the same group. the fourth for other
      * users not in the group. 0755 - gives read/write/execute permissions to owner and read/execute to group and other
-     * users. Avoid passing null value for unixPermissions in volume update operation, As per the behavior, If Null
-     * value is passed then user-visible unixPermissions value will became null, and user will not be able to get
-     * unixPermissions value. On safer side, actual unixPermissions value on volume will remain as its last saved value
-     * only.
+     * users.
      */
     private String unixPermissions;
 
@@ -344,16 +340,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      */
     private String originatingResourceId;
 
-    /*
-     * Space shared by short term clone volume with parent volume in bytes.
-     */
-    private Long inheritedSizeInBytes;
-
-    /*
-     * Language supported for volume.
-     */
-    private VolumeLanguage language;
-
     /**
      * Creates an instance of VolumeProperties class.
      */
@@ -412,7 +398,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     /**
      * Get the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @return the usageThreshold value.
@@ -424,7 +410,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     /**
      * Set the usageThreshold property: Maximum storage quota allowed for a file system in bytes. This is a soft quota
      * used for alerting only. For regular volumes, valid values are in the range 50GiB to 100TiB. For large volumes,
-     * valid values are in the range 100TiB to 1PiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
+     * valid values are in the range 100TiB to 500TiB, and on an exceptional basis, from to 2400GiB to 2400TiB. Values
      * expressed in bytes as multiples of 1 GiB.
      * 
      * @param usageThreshold the usageThreshold value to set.
@@ -639,7 +625,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /**
      * Get the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @return the volumeType value.
      */
@@ -649,7 +635,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
 
     /**
      * Set the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @param volumeType the volumeType value to set.
      * @return the VolumeProperties object itself.
@@ -678,34 +664,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      */
     public VolumeProperties withDataProtection(VolumePropertiesDataProtection dataProtection) {
         this.dataProtection = dataProtection;
-        return this;
-    }
-
-    /**
-     * Get the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
-     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
-     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
-     * clone volume, set the property as accepted.
-     * 
-     * @return the acceptGrowCapacityPoolForShortTermCloneSplit value.
-     */
-    public AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit() {
-        return this.acceptGrowCapacityPoolForShortTermCloneSplit;
-    }
-
-    /**
-     * Set the acceptGrowCapacityPoolForShortTermCloneSplit property: While auto splitting the short term clone volume,
-     * if the parent pool does not have enough space to accommodate the volume after split, it will be automatically
-     * resized, which will lead to increased billing. To accept capacity pool size auto grow and create a short term
-     * clone volume, set the property as accepted.
-     * 
-     * @param acceptGrowCapacityPoolForShortTermCloneSplit the acceptGrowCapacityPoolForShortTermCloneSplit value to
-     * set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withAcceptGrowCapacityPoolForShortTermCloneSplit(
-        AcceptGrowCapacityPoolForShortTermCloneSplit acceptGrowCapacityPoolForShortTermCloneSplit) {
-        this.acceptGrowCapacityPoolForShortTermCloneSplit = acceptGrowCapacityPoolForShortTermCloneSplit;
         return this;
     }
 
@@ -1056,14 +1014,37 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
+     * Get the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @return the coolAccessTieringPolicy value.
+     */
+    public CoolAccessTieringPolicy coolAccessTieringPolicy() {
+        return this.coolAccessTieringPolicy;
+    }
+
+    /**
+     * Set the coolAccessTieringPolicy property: coolAccessTieringPolicy determines which cold data blocks are moved to
+     * cool tier. The possible values for this field are: Auto - Moves cold user data blocks in both the Snapshot copies
+     * and the active file system to the cool tier tier. This policy is the default. SnapshotOnly - Moves user data
+     * blocks of the Volume Snapshot copies that are not associated with the active file system to the cool tier.
+     * 
+     * @param coolAccessTieringPolicy the coolAccessTieringPolicy value to set.
+     * @return the VolumeProperties object itself.
+     */
+    public VolumeProperties withCoolAccessTieringPolicy(CoolAccessTieringPolicy coolAccessTieringPolicy) {
+        this.coolAccessTieringPolicy = coolAccessTieringPolicy;
+        return this;
+    }
+
+    /**
      * Get the unixPermissions property: UNIX permissions for NFS volume accepted in octal 4 digit format. First digit
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
-     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
-     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
-     * as its last saved value only.
+     * read/execute to group and other users.
      * 
      * @return the unixPermissions value.
      */
@@ -1076,10 +1057,7 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
      * selects the set user ID(4), set group ID (2) and sticky (1) attributes. Second digit selects permission for the
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
-     * read/execute to group and other users. Avoid passing null value for unixPermissions in volume update operation,
-     * As per the behavior, If Null value is passed then user-visible unixPermissions value will became null, and user
-     * will not be able to get unixPermissions value. On safer side, actual unixPermissions value on volume will remain
-     * as its last saved value only.
+     * read/execute to group and other users.
      * 
      * @param unixPermissions the unixPermissions value to set.
      * @return the VolumeProperties object itself.
@@ -1385,35 +1363,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Get the inheritedSizeInBytes property: Space shared by short term clone volume with parent volume in bytes.
-     * 
-     * @return the inheritedSizeInBytes value.
-     */
-    public Long inheritedSizeInBytes() {
-        return this.inheritedSizeInBytes;
-    }
-
-    /**
-     * Get the language property: Language supported for volume.
-     * 
-     * @return the language value.
-     */
-    public VolumeLanguage language() {
-        return this.language;
-    }
-
-    /**
-     * Set the language property: Language supported for volume.
-     * 
-     * @param language the language value to set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withLanguage(VolumeLanguage language) {
-        this.language = language;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1463,10 +1412,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
             this.networkFeatures == null ? null : this.networkFeatures.toString());
         jsonWriter.writeStringField("volumeType", this.volumeType);
         jsonWriter.writeJsonField("dataProtection", this.dataProtection);
-        jsonWriter.writeStringField("acceptGrowCapacityPoolForShortTermCloneSplit",
-            this.acceptGrowCapacityPoolForShortTermCloneSplit == null
-                ? null
-                : this.acceptGrowCapacityPoolForShortTermCloneSplit.toString());
         jsonWriter.writeBooleanField("isRestoring", this.isRestoring);
         jsonWriter.writeBooleanField("snapshotDirectoryVisible", this.snapshotDirectoryVisible);
         jsonWriter.writeBooleanField("kerberosEnabled", this.kerberosEnabled);
@@ -1486,6 +1431,8 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeNumberField("coolnessPeriod", this.coolnessPeriod);
         jsonWriter.writeStringField("coolAccessRetrievalPolicy",
             this.coolAccessRetrievalPolicy == null ? null : this.coolAccessRetrievalPolicy.toString());
+        jsonWriter.writeStringField("coolAccessTieringPolicy",
+            this.coolAccessTieringPolicy == null ? null : this.coolAccessTieringPolicy.toString());
         jsonWriter.writeStringField("unixPermissions", this.unixPermissions);
         jsonWriter.writeStringField("avsDataStore", this.avsDataStore == null ? null : this.avsDataStore.toString());
         jsonWriter.writeBooleanField("isDefaultQuotaEnabled", this.isDefaultQuotaEnabled);
@@ -1499,7 +1446,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
         jsonWriter.writeStringField("enableSubvolumes",
             this.enableSubvolumes == null ? null : this.enableSubvolumes.toString());
         jsonWriter.writeBooleanField("isLargeVolume", this.isLargeVolume);
-        jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -1562,9 +1508,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.volumeType = reader.getString();
                 } else if ("dataProtection".equals(fieldName)) {
                     deserializedVolumeProperties.dataProtection = VolumePropertiesDataProtection.fromJson(reader);
-                } else if ("acceptGrowCapacityPoolForShortTermCloneSplit".equals(fieldName)) {
-                    deserializedVolumeProperties.acceptGrowCapacityPoolForShortTermCloneSplit
-                        = AcceptGrowCapacityPoolForShortTermCloneSplit.fromString(reader.getString());
                 } else if ("isRestoring".equals(fieldName)) {
                     deserializedVolumeProperties.isRestoring = reader.getNullable(JsonReader::getBoolean);
                 } else if ("snapshotDirectoryVisible".equals(fieldName)) {
@@ -1600,6 +1543,9 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                 } else if ("coolAccessRetrievalPolicy".equals(fieldName)) {
                     deserializedVolumeProperties.coolAccessRetrievalPolicy
                         = CoolAccessRetrievalPolicy.fromString(reader.getString());
+                } else if ("coolAccessTieringPolicy".equals(fieldName)) {
+                    deserializedVolumeProperties.coolAccessTieringPolicy
+                        = CoolAccessTieringPolicy.fromString(reader.getString());
                 } else if ("unixPermissions".equals(fieldName)) {
                     deserializedVolumeProperties.unixPermissions = reader.getString();
                 } else if ("cloneProgress".equals(fieldName)) {
@@ -1643,10 +1589,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
                     deserializedVolumeProperties.isLargeVolume = reader.getNullable(JsonReader::getBoolean);
                 } else if ("originatingResourceId".equals(fieldName)) {
                     deserializedVolumeProperties.originatingResourceId = reader.getString();
-                } else if ("inheritedSizeInBytes".equals(fieldName)) {
-                    deserializedVolumeProperties.inheritedSizeInBytes = reader.getNullable(JsonReader::getLong);
-                } else if ("language".equals(fieldName)) {
-                    deserializedVolumeProperties.language = VolumeLanguage.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
