@@ -216,7 +216,7 @@
     <skipCompile>false</skipCompile>
     <skipTestCompile>false</skipTestCompile>
 
-    <compiler.proc>none</compiler.proc>
+<!--    <compiler.proc>none</compiler.proc>-->
 
     <!-- Set this to an empty value to enable the compiler to fail on usage of deprecated APIs. -->
     <compiler.failondeprecatedstatus>-</compiler.failondeprecatedstatus>
