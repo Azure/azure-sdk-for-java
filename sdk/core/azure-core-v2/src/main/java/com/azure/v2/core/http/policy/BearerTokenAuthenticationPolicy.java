@@ -176,7 +176,7 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param response The {@link HttpResponse} to examine.
      * @return True if the response is a CAE challenge, false otherwise.
      */
-    private static boolean isCaeClaimsChallenge(Response<?> response) {
+    static boolean isCaeClaimsChallenge(Response<?> response) {
         List<AuthenticateChallenge> authenticateChallengeList
             = AuthUtils.parseAuthenticateHeader(response.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE));
 
@@ -200,7 +200,7 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      *
      * @return the extracted value of the challenge parameter
      */
-    private static String getChallengeParameterFromResponse(Response<?> response, String challengeScheme,
+    static String getChallengeParameterFromResponse(Response<?> response, String challengeScheme,
         String parameter) {
         String challenge = response.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
         List<AuthenticateChallenge> authenticateChallengeList = AuthUtils.parseAuthenticateHeader(challenge);

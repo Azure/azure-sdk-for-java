@@ -72,13 +72,7 @@ public final class AccessTokenCache {
 
     private AccessToken retrieveToken(TokenRequestContext tokenRequestContext, boolean forceFetchToken) {
         validateTokenRequestContext(tokenRequestContext);
-
-        lock.lock();
-        try {
-            return fetchToken(tokenRequestContext, forceFetchToken);
-        } finally {
-            lock.unlock();
-        }
+        return fetchToken(tokenRequestContext, forceFetchToken);
     }
 
     private void validateTokenRequestContext(TokenRequestContext tokenRequestContext) {
@@ -99,7 +93,7 @@ public final class AccessTokenCache {
             return cachedToken;
         }
 
-        return attemptTokenRefresh(cachedToken, now);
+        return attemptTokenRefresh(cachedToken, tokenRequestContext, now);
     }
 
     private boolean determineRefreshRequirement(TokenRequestContext tokenRequestContext, boolean forceFetchToken,
@@ -120,9 +114,9 @@ public final class AccessTokenCache {
         return now.isAfter(this.cacheInfo.getNextTokenRefreshAt());
     }
 
-    private AccessToken attemptTokenRefresh(AccessToken cachedToken, OffsetDateTime now) {
+    private AccessToken attemptTokenRefresh(AccessToken cachedToken, TokenRequestContext tokenRequestContext, OffsetDateTime now) {
         try {
-            AccessToken newToken = getToken();
+            AccessToken newToken = getToken(tokenRequestContext);
             logTokenRefresh(LogLevel.VERBOSE, cachedToken, now, "Acquired a new access token.");
 
             this.cacheInfo = new AccessTokenCacheInfo(newToken, OffsetDateTime.now().plus(REFRESH_DELAY));
@@ -160,8 +154,8 @@ public final class AccessTokenCache {
                 cache.getExpiresAt(), tte.abs().getSeconds(), REFRESH_DELAY_STRING, tte.isNegative()));
     }
 
-    private AccessToken getToken() {
-        return this.tokenCredential.getToken(this.tokenRequestContext);
+    private AccessToken getToken(TokenRequestContext tokenRequestContext) {
+        return this.tokenCredential.getToken(tokenRequestContext);
     }
 
     /**

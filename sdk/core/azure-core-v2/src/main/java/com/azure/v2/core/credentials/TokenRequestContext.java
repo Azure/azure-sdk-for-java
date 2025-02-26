@@ -3,7 +3,9 @@
 
 package com.azure.v2.core.credentials;
 
+import com.azure.v2.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.v2.core.utils.CoreUtils;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,6 +47,7 @@ import java.util.Objects;
  * @see TokenCredential
  */
 public class TokenRequestContext {
+    private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
     private final List<String> scopes;
     private String claims;
     private String tenantId;
@@ -86,12 +89,12 @@ public class TokenRequestContext {
         Objects.requireNonNull(scopes, "The scopes parameter cannot be null.");
 
         if (scopes.length == 0) {
-            throw new IllegalArgumentException("At least one scope must be provided.");
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("At least one scope must be provided."));
         }
 
         for (String scope : scopes) {
             if (CoreUtils.isNullOrEmpty(scope)) {
-                throw new IllegalArgumentException("Scopes cannot contain null or empty values.");
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Scopes cannot contain null or empty values."));
             }
         }
         this.scopes.addAll(Arrays.asList(scopes));

@@ -4,6 +4,7 @@
 package io.clientcore.core.credentials.oauth;
 
 import io.clientcore.core.implementation.utils.ImplUtils;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -36,6 +37,8 @@ import java.util.Objects;
  * @see io.clientcore.core.credentials
  */
 public class OAuthTokenRequestContext {
+    private static final ClientLogger LOGGER = new ClientLogger(OAuthTokenRequestContext.class);
+
     private List<String> scopes;
     private Map<String, Object> params;
 
@@ -79,12 +82,12 @@ public class OAuthTokenRequestContext {
         Objects.requireNonNull(scopes, "'scopes' cannot be null.");
 
         if (scopes.length == 0) {
-            throw new IllegalArgumentException("At least one scope must be provided.");
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("At least one scope must be provided."));
         }
 
         for (String scope : scopes) {
             if (ImplUtils.isNullOrEmpty(scope)) {
-                throw new IllegalArgumentException("Scopes cannot contain null or empty values.");
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Scopes cannot contain null or empty values."));
             }
         }
 
@@ -129,11 +132,11 @@ public class OAuthTokenRequestContext {
      */
     public OAuthTokenRequestContext setParam(String key, String value) {
         if (ImplUtils.isNullOrEmpty(key)) {
-            throw new IllegalArgumentException("Parameter 'key' cannot be null or empty");
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Parameter 'key' cannot be null or empty"));
         }
 
         if (ImplUtils.isNullOrEmpty(value)) {
-            throw new IllegalArgumentException("Parameter 'value' cannot be null or empty");
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Parameter 'value' cannot be null or empty"));
         }
 
         if (this.params == null) {
