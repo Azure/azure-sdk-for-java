@@ -175,6 +175,18 @@ public class ApplicableRegionEvaluatorTest {
             .toArray(Object[][]::new);
     }
 
+    // the test validateApplicableRegions runs through various scenarios such as:
+    //      - what is the account type? multi-write [or] single-write? what regions does such an account have?
+    //      - what regions are excluded by the customer?
+    //      - what regions are treated as unavailable by per-partition circuit breaker (PPCB)?
+    //      - what regions have been failed over by per-partition automatic failover (PPAF)?
+    //      - has the customer configured the client with empty preferred regions?
+    //      - is the operation read or write?
+    // given a scenario, the goal is to assert against the applicable endpoints for a given operation type
+    //  & what is the first endpoint a request should go to (if there is an override through PPAF)
+    // for reads in single-write multi-region scenarios, it is also checked whether PPAF override
+    //  can be applied (exclude all regions / empty preferred regions) but only for first call,
+    //  second call onwards, request should go to account-level primary region
     @Test(groups = {"unit"}, dataProvider = "highAvailabilityConfigs")
     public void validateApplicableRegions(
         String testScenario,

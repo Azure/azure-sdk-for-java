@@ -393,7 +393,7 @@ public class LocationCache {
             isFallbackEndpointUsed = true;
         }
 
-        return ApplicableRegionsEvaluator.reevaluate(
+        return this.reevaluate(
             request,
             effectivePreferredLocations,
             new UnmodifiableList<>(applicableEndpoints),
@@ -405,6 +405,118 @@ public class LocationCache {
             endpoints,
             hubRegionalEndpoint,
             isFallbackEndpointUsed);
+    }
+
+    private UnmodifiableList<URI> reevaluate(
+        RxDocumentServiceRequest request,
+        // populated when global endpoint == default endpoint && preferred regions not populated by user
+        List<String> effectivePreferredLocations,
+        UnmodifiableList<URI> applicableLocationEndpoints,
+        UnmodifiableMap<URI, String> regionNameByEndpoint,
+        UnmodifiableMap<String, URI> endpointByRegionName,
+        // exclude regions from request options or client
+        List<String> userConfiguredExcludeRegions,
+        // exclude URIs from per-partition circuit breaker
+        List<URI> endpointsRemovedByInternalExcludeRegions,
+        // exclude regions from per-partition circuit breaker
+        List<String> internalExcludeRegions,
+        // original list of preferred endpoints (w/o exclusion)
+        List<URI> preferredEndpoints,
+        URI hubRegionalEndpoint,
+        boolean isFallbackEndpointUsed) {
+        // region set intersecting with preferred endpoints is already of size 0 or 1, return
+        if (preferredEndpoints.size() <= 1) {
+            return applicableLocationEndpoints;
+        }
+
+        if (applicableLocationEndpoints.size() >= 2) {
+            return applicableLocationEndpoints;
+        }
+
+        if (request == null || request.requestContext == null) {
+            return applicableLocationEndpoints;
+        }
+
+        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
+            = request.requestContext.getCrossRegionAvailabilityContext();
+
+        if (crossRegionAvailabilityContextForRequest == null) {
+            return applicableLocationEndpoints;
+        }
+
+        AvailabilityStrategyContext availabilityStrategyContext
+            = crossRegionAvailabilityContextForRequest.getAvailabilityStrategyContext();
+
+        if (availabilityStrategyContext != null) {
+
+            // purely a hedged request doesn't need applicable region augmentation
+            if (availabilityStrategyContext.isAvailabilityStrategyEnabled() && availabilityStrategyContext.isHedgedRequest()) {
+                return applicableLocationEndpoints;
+            }
+        }
+
+        List<URI> modifiedApplicableEndpoints = new ArrayList<>();
+        URI firstApplicableLocationEndpoint = applicableLocationEndpoints.get(0);
+
+        if (isFallbackEndpointUsed) {
+            // user wishes to exclude all regions - use partition-set level primary region [or] account-level primary region
+            // no cross region retries applicable
+            if (!userConfiguredExcludeRegions.isEmpty() && endpointsRemovedByInternalExcludeRegions.isEmpty()) {
+                crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
+                return applicableLocationEndpoints;
+            }
+
+            // this scenario is when PPCB + user-configured exclude regions has kicked in for client with no preferred regions
+            // idea is to start from partition-set level primary and go to account-level primary
+            if (effectivePreferredLocations != null && !effectivePreferredLocations.isEmpty()) {
+
+                if (crossRegionAvailabilityContextForRequest.hasPerPartitionAutomaticFailoverBeenAppliedForReads()) {
+                    crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(false);
+                    modifiedApplicableEndpoints.add(firstApplicableLocationEndpoint);
+                } else {
+                    crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
+                }
+            }
+        }
+
+        modifiedApplicableEndpoints.add(firstApplicableLocationEndpoint);
+        // todo (abhmohanty): will change when GW returns multiple endpoints per region - thin-proxy dependency
+        // todo (abhmohanty): GitHub issue - https://github.com/Azure/azure-sdk-for-java/issues/44413
+        boolean isFirstApplicableEndpointAGlobalEndpoint = !regionNameByEndpoint.containsKey(firstApplicableLocationEndpoint);
+
+        checkNotNull(hubRegionalEndpoint, "Argument 'hubRegionalEndpoint' cannot be null!");
+
+        // if fallback / first applicable endpoint is global endpoint, it maps to the hub
+        if (internalExcludeRegions != null && !internalExcludeRegions.isEmpty()) {
+            if (isFirstApplicableEndpointAGlobalEndpoint) {
+                for (String internalExcludeRegion : internalExcludeRegions) {
+
+                    Utils.ValueHolder<URI> endpoint = new Utils.ValueHolder<>(null);
+
+                    if (Utils.tryGetValue(endpointByRegionName, internalExcludeRegion, endpoint)) {
+
+                        if (!endpoint.v.equals(hubRegionalEndpoint)) {
+                            modifiedApplicableEndpoints.add(endpoint.v);
+                            break;
+                        }
+                    }
+                }
+            } else {
+                for (String internalExcludeRegion : internalExcludeRegions) {
+
+                    Utils.ValueHolder<URI> endpoint = new Utils.ValueHolder<>(null);
+
+                    if (Utils.tryGetValue(endpointByRegionName, internalExcludeRegion, endpoint)) {
+                        if (!endpoint.v.equals(firstApplicableLocationEndpoint) && !userConfiguredExcludeRegions.contains(internalExcludeRegion)) {
+                            modifiedApplicableEndpoints.add(endpoint.v);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return new UnmodifiableList<>(modifiedApplicableEndpoints);
     }
 
     private boolean isExcludeRegionsConfigured(List<String> excludedRegionsOnRequest, List<String> excludedRegionsOnClient) {
@@ -957,121 +1069,6 @@ public class LocationCache {
             this.availableReadEndpoints = other.availableReadEndpoints;
             this.availableWriteEndpoints = other.availableWriteEndpoints;
             this.hubRegionalEndpoint = other.hubRegionalEndpoint;
-        }
-    }
-
-    static class ApplicableRegionsEvaluator {
-
-        public static UnmodifiableList<URI> reevaluate(
-            RxDocumentServiceRequest request,
-            List<String> effectivePreferredLocations,
-            UnmodifiableList<URI> applicableLocationEndpoints,
-            UnmodifiableMap<URI, String> regionNameByEndpoint,
-            UnmodifiableMap<String, URI> endpointByRegionName,
-            // exclude regions from request options or client
-            List<String> userConfiguredExcludeRegions,
-            List<URI> endpointsRemovedByInternalExcludeRegions,
-            // exclude URIs from per-partition circuit breaker
-            List<String> internalExcludeRegions,
-            // exclude endpoints from per-partition circuit breaker
-            // original list of regions
-            List<URI> preferredEndpoints,
-            URI hubRegionalEndpoint,
-            boolean isFallbackEndpointUsed) {
-
-            // region set intersecting with preferred endpoints is already of size 0 or 1, return
-            if (preferredEndpoints.size() <= 1) {
-                return applicableLocationEndpoints;
-            }
-
-            if (applicableLocationEndpoints.size() >= 2) {
-                return applicableLocationEndpoints;
-            }
-
-            if (request == null || request.requestContext == null) {
-                return applicableLocationEndpoints;
-            }
-
-            CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
-                = request.requestContext.getCrossRegionAvailabilityContext();
-
-            if (crossRegionAvailabilityContextForRequest == null) {
-                return applicableLocationEndpoints;
-            }
-
-            AvailabilityStrategyContext availabilityStrategyContext
-                = crossRegionAvailabilityContextForRequest.getAvailabilityStrategyContext();
-
-            if (availabilityStrategyContext != null) {
-
-                // purely a hedged request doesn't need applicable region augmentation
-                if (availabilityStrategyContext.isAvailabilityStrategyEnabled() && availabilityStrategyContext.isHedgedRequest()) {
-                    return applicableLocationEndpoints;
-                }
-            }
-
-            List<URI> modifiedApplicableEndpoints = new ArrayList<>();
-            URI firstApplicableLocationEndpoint = applicableLocationEndpoints.get(0);
-
-            if (isFallbackEndpointUsed) {
-                // user wishes to exclude all regions - use partition-set level primary region [or] account-level primary region
-                // no cross region retries applicable
-                if (!userConfiguredExcludeRegions.isEmpty() && endpointsRemovedByInternalExcludeRegions.isEmpty()) {
-                    crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
-                    return applicableLocationEndpoints;
-                }
-
-                // this scenario is when PPCB + user-configured exclude regions has kicked in for client with no preferred regions
-                // idea is to start from partition-set level primary and go to account-level primary
-                if (effectivePreferredLocations != null && !effectivePreferredLocations.isEmpty()) {
-
-                    if (crossRegionAvailabilityContextForRequest.hasPerPartitionAutomaticFailoverBeenAppliedForReads()) {
-                        crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(false);
-                        modifiedApplicableEndpoints.add(firstApplicableLocationEndpoint);
-                    } else {
-                        crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
-                    }
-                }
-            }
-
-            modifiedApplicableEndpoints.add(firstApplicableLocationEndpoint);
-            // todo: will change when GW returns multiple endpoints per region - thin-proxy dependency
-            boolean isFirstApplicableEndpointAGlobalEndpoint = !regionNameByEndpoint.containsKey(firstApplicableLocationEndpoint);
-
-            checkNotNull(hubRegionalEndpoint, "Argument 'hubRegionalEndpoint' cannot be null!");
-
-            // if fallback / first applicable endpoint is global endpoint, it maps to the hub
-
-            if (internalExcludeRegions != null && !internalExcludeRegions.isEmpty()) {
-                if (isFirstApplicableEndpointAGlobalEndpoint) {
-                    for (String internalExcludeRegion : internalExcludeRegions) {
-
-                        Utils.ValueHolder<URI> endpoint = new Utils.ValueHolder<>(null);
-
-                        if (Utils.tryGetValue(endpointByRegionName, internalExcludeRegion, endpoint)) {
-
-                            if (!endpoint.v.equals(hubRegionalEndpoint)) {
-                                modifiedApplicableEndpoints.add(endpoint.v);
-                                break;
-                            }
-                        }
-                    }
-                } else {
-                    for (String internalExcludeRegion : internalExcludeRegions) {
-
-                        Utils.ValueHolder<URI> endpoint = new Utils.ValueHolder<>(null);
-
-                        if (Utils.tryGetValue(endpointByRegionName, internalExcludeRegion, endpoint)) {
-                            if (!endpoint.v.equals(firstApplicableLocationEndpoint) && !userConfiguredExcludeRegions.contains(internalExcludeRegion)) {
-                                modifiedApplicableEndpoints.add(endpoint.v);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return new UnmodifiableList<>(modifiedApplicableEndpoints);
         }
     }
 }
