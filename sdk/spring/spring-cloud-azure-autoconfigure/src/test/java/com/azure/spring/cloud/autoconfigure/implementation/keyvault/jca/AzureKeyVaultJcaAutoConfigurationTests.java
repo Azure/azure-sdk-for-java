@@ -11,8 +11,6 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import java.util.Map;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureKeyVaultJcaAutoConfigurationTests {
