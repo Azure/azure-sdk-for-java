@@ -7,15 +7,7 @@
       "version_override": {
         "TestVersionSupport": true,
         "VERSION_OVERRIDE_TESTS": true,
-        "TestGoals": "surefire:test",
-        // This has to be stringified json
-        "ArtifactsJson": "{
-          \"name\": \"azure-core-version-tests\",
-          \"groupId\": \"com.azure\",
-          \"safeName\": \"azurecoreversiontests\"
-        }",
-        // blank this out so we don't pick up the defaults from ci.yml
-        "AdditionalModulesJson": ""
+        "TestGoals": "surefire:test"
       }
     },
     "VersionOverride": [

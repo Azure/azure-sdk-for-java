@@ -1,0 +1,18 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger: none
+pr: none
+
+parameters:
+  # Run separate version override tests using a different artifacts list
+  MatrixConfigs:
+    - Name: version_overrides_tests
+      Path: sdk/core/azure-core-version-tests/version-overrides-matrix.json
+      Selection: all
+      GenerateVMJobs: true
+  Artifacts:
+    - name: azure-core-version-tests
+      groupId: com.azure
+      safeName: azurecoreversiontests
+      triggeringPaths:
+        - /sdk/core
