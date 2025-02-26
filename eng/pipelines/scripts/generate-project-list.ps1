@@ -49,8 +49,6 @@ if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
   } else {
     $packageInfoFiles = Get-ChildItem -Path $ENV:PACKAGEINFODIR "*.json"
   }
-  $temp = $packageInfoFiles -join ','
-  Write-Host "temp=$temp"
   foreach($packageInfoFile in $packageInfoFiles) {
     $packageInfoJson = Get-Content $packageInfoFile -Raw
     $packageInfo = ConvertFrom-Json $packageInfoJson
