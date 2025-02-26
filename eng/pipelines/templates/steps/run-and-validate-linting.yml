@@ -57,8 +57,8 @@ steps:
       displayName: 'Run Javadoc'
     inputs:
       mavenPomFile: pom.xml
-      options: '$(DefaultOptions) --no-transfer-progress ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
-      mavenOptions: '$(MemoryOptions) -e -X'
+      options: '$(DefaultOptions) --no-transfer-progress ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList) -e -X'
+      mavenOptions: '$(MemoryOptions)'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
