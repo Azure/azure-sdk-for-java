@@ -25,7 +25,7 @@ if ($env:ADDITIONALMODULESJSON -and $env:ADDITIONALMODULESJSON -notlike '*Additi
 # which means this is running as part of the pullrequest pipeline and the project list needs to
 # be figured out from the packageInfo files.
 if ($projectList.Length -eq 0 -and $ENV:PACKAGEINFODIR) {
-  $packageInfoFiles = $()
+  $packageInfoFiles = @()
   # This is the case where this is being called as part of the set of test matrix runs.
   # The ArtifactPackageNames environment variable will be set if this is being called
   # as one of the test matrix runs. In this case, the project and additional modules lists
