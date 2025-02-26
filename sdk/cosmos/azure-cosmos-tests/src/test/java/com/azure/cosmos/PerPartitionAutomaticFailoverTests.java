@@ -716,6 +716,17 @@ public class PerPartitionAutomaticFailoverTests extends TestSuiteBase {
         };
     }
 
+    // testPpafWithWriteFailoverWithEligibleErrorStatusCodes does the following:
+    // for DIRECT connection mode,
+    //  an availability failure (410, 503, 408) or write forbidden failure (403/3) is injected
+    //  for a given partitionKeyRange and region through mocking
+    //  the first operation execution for a given operation type is expected to see failures and then failover (403/3s & 503s are retried and 408s just see the operation fail)
+    //  the second operation execution should see the request go straight away to the failed over region
+    // for GATEWAY connection mode,
+    //  an availability failure (503, 408), write forbidden failure (403/3) and I/O failures are injected
+    //  for a given region through mocking
+    //  the first operation execution for a given operation type is expected to see failures and then failover (403/3s & 503s are retried and 408s just see the operation fail)
+    //  the second operation execution should see the request go straight away to the failed over region
     @Test(groups = {"multi-region"}, dataProvider = "ppafTestConfigsWithWriteOps")
     public void testPpafWithWriteFailoverWithEligibleErrorStatusCodes(
         String testType,
