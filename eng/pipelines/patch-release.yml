@@ -20,10 +20,6 @@ extends:
       groupId: com.azure
       safeName: azuresearch
       ServiceDirectory: search
-    - name: azure-data-tables
-      groupId: com.azure
-      safeName: azuredatatables
-      ServiceDirectory: tables
     - name: azure-security-confidentialledger
       groupId: com.azure
       safeName: azuresecurityconfidentialledger
@@ -44,10 +40,6 @@ extends:
       groupId: com.azure
       safeName: azuredataappconfiguration
       ServiceDirectory: appconfiguration
-    - name: azure-monitor-query
-      groupId: com.azure
-      safeName: azuremonitorquery
-      ServiceDirectory: monitor
     - name: azure-ai-translation-text
       groupId: com.azure
       safeName: azureaitranslationtext
