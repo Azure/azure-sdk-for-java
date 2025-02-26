@@ -1,6 +1,6 @@
 # Release History
 
-## 4.29.0 (2025-02-24)
+## 4.29.0 (2025-02-26)
 
 ### Features Added
 - Added `MessageId`, `MessageType`, and `Reaction` properties to the `AcsMessageReceivedEventData` event.
