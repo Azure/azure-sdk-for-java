@@ -280,8 +280,6 @@ In this example, we just list the output URLs of successful conversions started 
 
 ```java readme-sample-listConversions
 for (AssetConversion conversion : client.listConversions()) {
-    if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED) {
-    }
 }
 ```
 
