@@ -13,20 +13,20 @@ public final class ScaleProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScaleProfile model
-            = BinaryData.fromString("{\"name\":\"ydagfuaxbe\",\"capacity\":{\"min\":45811298,\"max\":427242708}}")
+            = BinaryData.fromString("{\"name\":\"qkrhahvljua\",\"capacity\":{\"min\":1935710102,\"max\":836090349}}")
                 .toObject(ScaleProfile.class);
-        Assertions.assertEquals("ydagfuaxbe", model.name());
-        Assertions.assertEquals(45811298, model.capacity().min());
-        Assertions.assertEquals(427242708, model.capacity().max());
+        Assertions.assertEquals("qkrhahvljua", model.name());
+        Assertions.assertEquals(1935710102, model.capacity().min());
+        Assertions.assertEquals(836090349, model.capacity().max());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScaleProfile model = new ScaleProfile().withName("ydagfuaxbe")
-            .withCapacity(new ScaleProfileCapacity().withMin(45811298).withMax(427242708));
+        ScaleProfile model = new ScaleProfile().withName("qkrhahvljua")
+            .withCapacity(new ScaleProfileCapacity().withMin(1935710102).withMax(836090349));
         model = BinaryData.fromObject(model).toObject(ScaleProfile.class);
-        Assertions.assertEquals("ydagfuaxbe", model.name());
-        Assertions.assertEquals(45811298, model.capacity().min());
-        Assertions.assertEquals(427242708, model.capacity().max());
+        Assertions.assertEquals("qkrhahvljua", model.name());
+        Assertions.assertEquals(1935710102, model.capacity().min());
+        Assertions.assertEquals(836090349, model.capacity().max());
     }
 }

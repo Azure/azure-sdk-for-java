@@ -6,32 +6,21 @@ package com.azure.resourcemanager.nginx.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.nginx.models.NginxConfigurationProperties;
+import com.azure.resourcemanager.nginx.models.NginxDeploymentApiKeyResponseProperties;
 import java.io.IOException;
 
 /**
- * The NginxConfiguration model.
+ * The NginxDeploymentApiKeyResponse model.
  */
 @Fluent
-public final class NginxConfigurationInner extends ProxyResource {
+public final class NginxDeploymentApiKeyResponseInner extends ProxyResource {
     /*
      * The properties property.
      */
-    private NginxConfigurationProperties properties;
-
-    /*
-     * The location property.
-     */
-    private String location;
-
-    /*
-     * Metadata pertaining to creation and last modification of the resource.
-     */
-    private SystemData systemData;
+    private NginxDeploymentApiKeyResponseProperties properties;
 
     /*
      * The type of the resource.
@@ -49,9 +38,9 @@ public final class NginxConfigurationInner extends ProxyResource {
     private String id;
 
     /**
-     * Creates an instance of NginxConfigurationInner class.
+     * Creates an instance of NginxDeploymentApiKeyResponseInner class.
      */
-    public NginxConfigurationInner() {
+    public NginxDeploymentApiKeyResponseInner() {
     }
 
     /**
@@ -59,7 +48,7 @@ public final class NginxConfigurationInner extends ProxyResource {
      * 
      * @return the properties value.
      */
-    public NginxConfigurationProperties properties() {
+    public NginxDeploymentApiKeyResponseProperties properties() {
         return this.properties;
     }
 
@@ -67,40 +56,11 @@ public final class NginxConfigurationInner extends ProxyResource {
      * Set the properties property: The properties property.
      * 
      * @param properties the properties value to set.
-     * @return the NginxConfigurationInner object itself.
+     * @return the NginxDeploymentApiKeyResponseInner object itself.
      */
-    public NginxConfigurationInner withProperties(NginxConfigurationProperties properties) {
+    public NginxDeploymentApiKeyResponseInner withProperties(NginxDeploymentApiKeyResponseProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the location property: The location property.
-     * 
-     * @return the location value.
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location property: The location property.
-     * 
-     * @param location the location value to set.
-     * @return the NginxConfigurationInner object itself.
-     */
-    public NginxConfigurationInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     * 
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
     }
 
     /**
@@ -151,44 +111,41 @@ public final class NginxConfigurationInner extends ProxyResource {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("properties", this.properties);
-        jsonWriter.writeStringField("location", this.location);
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of NginxConfigurationInner from the JsonReader.
+     * Reads an instance of NginxDeploymentApiKeyResponseInner from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of NginxConfigurationInner if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     * @return An instance of NginxDeploymentApiKeyResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the NginxConfigurationInner.
+     * @throws IOException If an error occurs while reading the NginxDeploymentApiKeyResponseInner.
      */
-    public static NginxConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+    public static NginxDeploymentApiKeyResponseInner fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            NginxConfigurationInner deserializedNginxConfigurationInner = new NginxConfigurationInner();
+            NginxDeploymentApiKeyResponseInner deserializedNginxDeploymentApiKeyResponseInner
+                = new NginxDeploymentApiKeyResponseInner();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedNginxConfigurationInner.id = reader.getString();
+                    deserializedNginxDeploymentApiKeyResponseInner.id = reader.getString();
                 } else if ("name".equals(fieldName)) {
-                    deserializedNginxConfigurationInner.name = reader.getString();
+                    deserializedNginxDeploymentApiKeyResponseInner.name = reader.getString();
                 } else if ("type".equals(fieldName)) {
-                    deserializedNginxConfigurationInner.type = reader.getString();
+                    deserializedNginxDeploymentApiKeyResponseInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
-                    deserializedNginxConfigurationInner.properties = NginxConfigurationProperties.fromJson(reader);
-                } else if ("location".equals(fieldName)) {
-                    deserializedNginxConfigurationInner.location = reader.getString();
-                } else if ("systemData".equals(fieldName)) {
-                    deserializedNginxConfigurationInner.systemData = SystemData.fromJson(reader);
+                    deserializedNginxDeploymentApiKeyResponseInner.properties
+                        = NginxDeploymentApiKeyResponseProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedNginxConfigurationInner;
+            return deserializedNginxDeploymentApiKeyResponseInner;
         });
     }
 }
