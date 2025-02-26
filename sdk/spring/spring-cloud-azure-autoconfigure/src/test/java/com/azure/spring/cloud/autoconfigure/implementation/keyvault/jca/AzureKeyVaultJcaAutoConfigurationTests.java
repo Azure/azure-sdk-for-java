@@ -5,11 +5,13 @@ package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca;
 
 import com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultJcaProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundlesProperties;
+import com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties.AzureKeyVaultSslBundleProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,13 +41,32 @@ class AzureKeyVaultJcaAutoConfigurationTests {
     void keyVaultJca() {
         this.contextRunner
             .withPropertyValues(
-                "spring.ssl.bundle.azure-keyvault.testBundle.truststore.certificate-paths.custom=classpath:keyvault/certificate-paths/custom"
+                "spring.cloud.azure.keyvault.jca.vaults.kv1.endpoint=" + String.format(ENDPOINT, "test1"),
+                "spring.cloud.azure.keyvault.jca.vaults.kv1.credential.client-id=client-id",
+                "spring.cloud.azure.keyvault.jca.vaults.kv2.endpoint=" + String.format(ENDPOINT, "test2"),
+                "spring.ssl.bundle.keyvault.testBundle1.truststore.certificate-paths.custom=classpath:keyvault/certificate-paths/custom",
+                "spring.ssl.bundle.keyvault.testBundle2.truststore.keyvault-ref=kv2",
+                "spring.ssl.bundle.keyvault.testBundle3.truststore.keyvault-ref=kv1",
+                "spring.ssl.bundle.keyvault.testBundle3.keystore.keyvault-ref=kv2"
             )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultJcaAutoConfiguration.class);
                 assertThat(context).hasSingleBean(AzureKeyVaultJcaProperties.class);
-                assertThat(context).hasSingleBean(AzureKeyVaultSslBundlesProperties.class);
-                assertThat(context).hasSingleBean(AzureKeyVaultSslBundlesRegistrar.class);
+                assertThat(context).hasSingleBean(AzureKeyVaultSslBundleProperties.class);
+                assertThat(context).hasSingleBean(AzureKeyVaultSslBundleRegistrar.class);
+
+                AzureKeyVaultJcaProperties jcaProperties = context.getBean(AzureKeyVaultJcaProperties.class);
+                assertThat(jcaProperties.getVaults()).hasSize(2);
+                assertThat(jcaProperties.getVaults().get("kv1").getEndpoint()).isEqualTo(String.format(ENDPOINT, "test1"));
+                assertThat(jcaProperties.getVaults().get("kv1").getCredential().getClientId()).isEqualTo("client-id");
+                assertThat(jcaProperties.getVaults().get("kv2").getEndpoint()).isEqualTo(String.format(ENDPOINT, "test2"));
+
+                AzureKeyVaultSslBundleProperties sslBundlesProperties = context.getBean(AzureKeyVaultSslBundleProperties.class);
+                assertThat(sslBundlesProperties.getKeyvault()).hasSize(3);
+                assertThat(sslBundlesProperties.getKeyvault().get("testBundle1").getTruststore().getCertificatePaths().getCustom()).isEqualTo("classpath:keyvault/certificate-paths/custom");
+                assertThat(sslBundlesProperties.getKeyvault().get("testBundle2").getTruststore().getKeyvaultRef()).isEqualTo("kv2");
+                assertThat(sslBundlesProperties.getKeyvault().get("testBundle3").getTruststore().getKeyvaultRef()).isEqualTo("kv1");
+                assertThat(sslBundlesProperties.getKeyvault().get("testBundle3").getKeystore().getKeyvaultRef()).isEqualTo("kv2");
             });
     }
 }

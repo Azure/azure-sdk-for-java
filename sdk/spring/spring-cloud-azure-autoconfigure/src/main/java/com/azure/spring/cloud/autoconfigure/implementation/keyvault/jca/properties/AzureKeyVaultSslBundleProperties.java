@@ -6,30 +6,121 @@ package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.propert
 import org.springframework.boot.autoconfigure.ssl.SslBundleProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Azure Key Vault SSL Bundle properties.
  *
  * @since 5.21.0
  */
-public class AzureKeyVaultSslBundleProperties extends SslBundleProperties {
+public class AzureKeyVaultSslBundleProperties {
 
-    /**
-     * Key Vault keystore properties.
-     */
-    @NestedConfigurationProperty
-    private final AzureKeyVaultSslBundleKeyStoreProperties keystore = new AzureKeyVaultSslBundleKeyStoreProperties();
+    public static final String PREFIX = "spring.ssl.bundle";
 
-    /**
-     * Key Vault truststore properties.
-     */
-    @NestedConfigurationProperty
-    private final AzureKeyVaultSslBundleKeyStoreProperties truststore = new AzureKeyVaultSslBundleKeyStoreProperties();
+    private final Map<String, KeyVaultSslBundleProperties> keyvault = new HashMap<>();
 
-    public AzureKeyVaultSslBundleKeyStoreProperties getKeystore() {
-        return keystore;
+    public Map<String, KeyVaultSslBundleProperties> getKeyvault() {
+        return keyvault;
     }
 
-    public AzureKeyVaultSslBundleKeyStoreProperties getTruststore() {
-        return truststore;
+    public static class KeyVaultSslBundleProperties extends SslBundleProperties {
+        /**
+         * Key Vault keystore properties.
+         */
+        @NestedConfigurationProperty
+        private final KeyStoreProperties keystore = new KeyStoreProperties();
+
+        /**
+         * Key Vault truststore properties.
+         */
+        @NestedConfigurationProperty
+        private final KeyStoreProperties truststore = new KeyStoreProperties();
+
+        public KeyStoreProperties getKeystore() {
+            return keystore;
+        }
+
+        public KeyStoreProperties getTruststore() {
+            return truststore;
+        }
+    }
+
+    public static class KeyStoreProperties {
+
+        /**
+         * The key of Key Vault connection.
+         */
+        private String keyvaultRef;
+        /**
+         * Whether to enable refresh certificate when get untrusted certificate.
+         */
+        private boolean refreshCertificatesWhenHaveUntrustedCertificate;
+        /**
+         * Time interval to refresh all Key Vault certificate.
+         */
+        private Duration certificatesRefreshInterval;
+
+        @NestedConfigurationProperty
+        private final CertificatePathsProperties certificatePaths = new CertificatePathsProperties();
+
+        public String getKeyvaultRef() {
+            return keyvaultRef;
+        }
+
+        public void setKeyvaultRef(String keyvaultRef) {
+            this.keyvaultRef = keyvaultRef;
+        }
+
+        public boolean isRefreshCertificatesWhenHaveUntrustedCertificate() {
+            return refreshCertificatesWhenHaveUntrustedCertificate;
+        }
+
+        public void setRefreshCertificatesWhenHaveUntrustedCertificate(boolean refreshCertificatesWhenHaveUntrustedCertificate) {
+            this.refreshCertificatesWhenHaveUntrustedCertificate = refreshCertificatesWhenHaveUntrustedCertificate;
+        }
+
+        public Duration getCertificatesRefreshInterval() {
+            return certificatesRefreshInterval;
+        }
+
+        public void setCertificatesRefreshInterval(Duration certificatesRefreshInterval) {
+            this.certificatesRefreshInterval = certificatesRefreshInterval;
+        }
+
+        public CertificatePathsProperties getCertificatePaths() {
+            return certificatePaths;
+        }
+    }
+
+    public static class CertificatePathsProperties {
+
+        /**
+         * The path to put custom certificates.
+         */
+        private String custom;
+
+        /**
+         * The path to put well-known certificates.
+         */
+        private String wellKnown;
+
+
+        public String getCustom() {
+            return custom;
+        }
+
+        public void setCustom(String custom) {
+            this.custom = custom;
+        }
+
+        public String getWellKnown() {
+            return wellKnown;
+        }
+
+        public void setWellKnown(String wellKnown) {
+            this.wellKnown = wellKnown;
+        }
     }
 }
