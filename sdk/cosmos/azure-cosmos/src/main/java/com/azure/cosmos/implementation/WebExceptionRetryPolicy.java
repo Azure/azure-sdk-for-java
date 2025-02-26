@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicy;
 import com.azure.cosmos.implementation.http.HttpTimeoutPolicyDefault;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -23,7 +24,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
     private HttpTimeoutPolicy timeoutPolicy;
     private boolean isReadRequest;
     private int retryCount = 0;
-    private URI locationEndpoint;
+    private RegionalRoutingContext regionalRoutingContext;
 
     public WebExceptionRetryPolicy() {
         durationTimer.start();
@@ -42,7 +43,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
                 .warn(
                     "WebExceptionRetryPolicy() No more retrying on endpoint {}, operationType = {}, count = {}, " +
                         "isAddressRefresh = {}",
-                    this.locationEndpoint,
+                    this.regionalRoutingContext.getGatewayRegionalEndpoint(),
                     this.request.getOperationType(),
                     this.retryCount,
                     this.request.isAddressRefresh());
@@ -63,7 +64,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
                     .debug("WebExceptionRetryPolicy() Retrying on endpoint {}, operationType = {}, resourceType = {}, count = {}, " +
                             "isAddressRefresh = {}, shouldForcedAddressRefresh = {}, " +
                             "shouldForceCollectionRoutingMapRefresh = {}",
-                        this.locationEndpoint, this.request.getOperationType(), this.request.getResourceType(), this.retryCount,
+                        this.regionalRoutingContext.getGatewayRegionalEndpoint(), this.request.getOperationType(), this.request.getResourceType(), this.retryCount,
                         this.request.isAddressRefresh(),
                         this.request.shouldForceAddressRefresh(),
                         this.request.forceCollectionRoutingMapRefresh);
@@ -77,7 +78,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
             .debug(
                 "WebExceptionRetryPolicy() No retrying on un-retryable exceptions on endpoint {}, operationType = {}, resourceType = {}, count = {}, " +
                     "isAddressRefresh = {}",
-                this.locationEndpoint,
+                this.regionalRoutingContext.getGatewayRegionalEndpoint(),
                 this.request.getOperationType(),
                 this.request.getResourceType(),
                 this.retryCount,
@@ -101,7 +102,7 @@ public class WebExceptionRetryPolicy implements IRetryPolicy {
 
         // set the initial response timeout
         this.request.setResponseTimeout(timeoutPolicy.getTimeoutAndDelaysList().get(0).getResponseTimeout());
-        this.locationEndpoint = request.requestContext.locationEndpointToRoute;
+        this.regionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
     }
 
     private boolean isOutOfRetries() {

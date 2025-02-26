@@ -6,7 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.handler.timeout.ReadTimeoutException;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -61,7 +61,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(eq(null), eq(false));
 
         URI locationEndToRoute = new URI("https://location1.documents.com");
-        LocationCache.RegionalEndpoints consolidatedLocationEndpointToRoute = new LocationCache.RegionalEndpoints(locationEndToRoute);
+        RegionalRoutingContext consolidatedLocationEndpointToRoute = new RegionalRoutingContext(locationEndToRoute);
 
         Mockito.when(endpointManager.resolveServiceEndpoint(Mockito.any())).thenReturn(consolidatedLocationEndpointToRoute);
 
@@ -95,7 +95,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(eq(null), eq(false));
 
         URI locationEndToRoute = new URI("https://location1.documents.com");
-        LocationCache.RegionalEndpoints consolidatedLocationEndpointToRoute = new LocationCache.RegionalEndpoints(locationEndToRoute);
+        RegionalRoutingContext consolidatedLocationEndpointToRoute = new RegionalRoutingContext(locationEndToRoute);
 
         Mockito.when(endpointManager.resolveServiceEndpoint(Mockito.any())).thenReturn(consolidatedLocationEndpointToRoute);
 
@@ -138,7 +138,7 @@ public class RenameCollectionAwareClientRetryPolicyTest {
         GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
         URI locationEndToRoute = new URI("https://location1.documents.com");
-        LocationCache.RegionalEndpoints consolidatedLocationEndpointToRoute = new LocationCache.RegionalEndpoints(locationEndToRoute);
+        RegionalRoutingContext consolidatedLocationEndpointToRoute = new RegionalRoutingContext(locationEndToRoute);
 
         Mockito.when(endpointManager.resolveServiceEndpoint(Mockito.any())).thenReturn(consolidatedLocationEndpointToRoute);
 

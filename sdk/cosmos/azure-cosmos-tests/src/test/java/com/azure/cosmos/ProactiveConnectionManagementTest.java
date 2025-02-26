@@ -27,9 +27,9 @@ import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.BeforeClass;
@@ -181,13 +181,13 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
 
             cosmosAsyncContainer.openConnectionsAndInitCaches(proactiveConnectionRegionCount).block();
 
-            UnmodifiableList<LocationCache.RegionalEndpoints> readEndpoints =
+            UnmodifiableList<RegionalRoutingContext> readEndpoints =
                 globalEndpointManager.getReadEndpoints();
 
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                 0,
                 Math.min(readEndpoints.size(),proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
-                .stream().map(LocationCache.RegionalEndpoints::getGatewayLocationEndpoint).collect(Collectors.toList());
+                .stream().map(RegionalRoutingContext::getGatewayRegionalEndpoint).collect(Collectors.toList());
 
             Mono<CosmosAsyncContainer> asyncContainerMono = Mono.just(cosmosAsyncContainer);
 
@@ -345,13 +345,13 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<LocationCache.RegionalEndpoints> readEndpoints = globalEndpointManager.getReadEndpoints();
+            UnmodifiableList<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
 
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                     0,
                     Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
                 .stream()
-                .map(LocationCache.RegionalEndpoints::getGatewayLocationEndpoint)
+                .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
                 .collect(Collectors.toList());
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
@@ -495,12 +495,12 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<LocationCache.RegionalEndpoints> readEndpoints = globalEndpointManager.getReadEndpoints();
+            UnmodifiableList<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                 0,
                 Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
                 .stream()
-                .map(LocationCache.RegionalEndpoints::getGatewayLocationEndpoint)
+                .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
                 .collect(Collectors.toList());;
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);
@@ -666,12 +666,12 @@ public class ProactiveConnectionManagementTest extends TestSuiteBase {
             ConcurrentHashMap<String, ?> routingMap = getRoutingMap(rxDocumentClient);
             ConcurrentHashMap<String, ?> collectionInfoByNameMap = getCollectionInfoByNameMap(rxDocumentClient);
             Set<String> endpoints = ConcurrentHashMap.newKeySet();
-            UnmodifiableList<LocationCache.RegionalEndpoints> readEndpoints = globalEndpointManager.getReadEndpoints();
+            UnmodifiableList<RegionalRoutingContext> readEndpoints = globalEndpointManager.getReadEndpoints();
             List<URI> proactiveConnectionEndpoints = readEndpoints.subList(
                     0,
                     Math.min(readEndpoints.size(), proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
                 .stream()
-                .map(LocationCache.RegionalEndpoints::getGatewayLocationEndpoint)
+                .map(RegionalRoutingContext::getGatewayRegionalEndpoint)
                 .collect(Collectors.toList());;
 
             Flux<CosmosAsyncContainer> asyncContainerFlux = Flux.fromIterable(asyncContainers);

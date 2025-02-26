@@ -56,13 +56,13 @@ import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.query.PipelinedQueryExecutionContextBase;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.spark.OperationContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.implementation.spark.OperationListener;
@@ -147,7 +147,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private final static List<String> EMPTY_REGION_LIST = Collections.emptyList();
 
-    private final static List<LocationCache.RegionalEndpoints> EMPTY_ENDPOINT_LIST = Collections.emptyList();
+    private final static List<RegionalRoutingContext> EMPTY_ENDPOINT_LIST = Collections.emptyList();
 
     private final static
     ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
@@ -6461,7 +6461,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @param operationType - the operationT
      * @return the applicable endpoints ordered by preference list if any
      */
-    private List<LocationCache.RegionalEndpoints> getApplicableEndPoints(OperationType operationType, List<String> excludedRegions) {
+    private List<RegionalRoutingContext> getApplicableEndPoints(OperationType operationType, List<String> excludedRegions) {
         if (operationType.isReadOnlyOperation()) {
             return withoutNulls(this.globalEndpointManager.getApplicableReadEndpoints(excludedRegions));
         } else if (operationType.isWriteOperation()) {
@@ -6471,7 +6471,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return EMPTY_ENDPOINT_LIST;
     }
 
-    private static List<LocationCache.RegionalEndpoints> withoutNulls(List<LocationCache.RegionalEndpoints> orderedEffectiveEndpointsList) {
+    private static List<RegionalRoutingContext> withoutNulls(List<RegionalRoutingContext> orderedEffectiveEndpointsList) {
         if (orderedEffectiveEndpointsList == null) {
             return EMPTY_ENDPOINT_LIST;
         }
@@ -6530,7 +6530,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return EMPTY_REGION_LIST;
         }
 
-        List<LocationCache.RegionalEndpoints> regionalEndpointsList = getApplicableEndPoints(operationType, excludedRegions);
+        List<RegionalRoutingContext> regionalRoutingContextList = getApplicableEndPoints(operationType, excludedRegions);
 
         HashSet<String> normalizedExcludedRegions = new HashSet<>();
         if (excludedRegions != null) {
@@ -6538,8 +6538,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         List<String> orderedRegionsForSpeculation = new ArrayList<>();
-        regionalEndpointsList.forEach(consolidatedLocationEndpoints -> {
-            String regionName = this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayLocationEndpoint(), operationType);
+        regionalRoutingContextList.forEach(consolidatedLocationEndpoints -> {
+            String regionName = this.globalEndpointManager.getRegionName(consolidatedLocationEndpoints.getGatewayRegionalEndpoint(), operationType);
             if (!normalizedExcludedRegions.contains(regionName.toLowerCase(Locale.ROOT))) {
                 orderedRegionsForSpeculation.add(regionName);
             }
@@ -6743,7 +6743,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private void handleLocationCancellationExceptionForPartitionKeyRange(RxDocumentServiceRequest failedRequest) {
 
-        LocationCache.RegionalEndpoints firstContactedLocationEndpoint = diagnosticsAccessor
+        RegionalRoutingContext firstContactedLocationEndpoint = diagnosticsAccessor
             .getFirstContactedLocationEndpoint(failedRequest.requestContext.cosmosDiagnostics);
 
         if (firstContactedLocationEndpoint != null) {

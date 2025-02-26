@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.cpu.CpuMemoryMonitor;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
-import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -164,7 +164,7 @@ public class ClientSideRequestStatistics {
             this.requestPayloadSizeInBytes = 0;
         }
 
-        LocationCache.RegionalEndpoints regionalEndpoints = null;
+        RegionalRoutingContext regionalRoutingContext = null;
         URI locationEndPoint = null;
 
         if (request.requestContext != null) {
@@ -178,8 +178,7 @@ public class ClientSideRequestStatistics {
                     request.requestContext.getEndToEndOperationLatencyPolicyConfig().toString();
             }
 
-            locationEndPoint = request.requestContext.locationEndpointToRoute;
-            regionalEndpoints = request.requestContext.regionalEndpointsToRoute;
+            regionalRoutingContext = request.requestContext.regionalRoutingContextToRoute;
 
             List<String> excludedRegions = request.requestContext.getExcludeRegions();
             if (excludedRegions != null && !excludedRegions.isEmpty()) {
@@ -193,12 +192,12 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            if (regionalEndpoints != null) {
+            if (regionalRoutingContext != null) {
                 storeResponseStatistics.regionName =
-                    globalEndpointManager.getRegionName(regionalEndpoints.getGatewayLocationEndpoint(), request.getOperationType());
+                    globalEndpointManager.getRegionName(regionalRoutingContext.getGatewayRegionalEndpoint(), request.getOperationType());
                 this.regionsContacted.add(storeResponseStatistics.regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
-                this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, regionalEndpoints));
+                this.regionsContactedWithContext.add(new RegionWithContext(storeResponseStatistics.regionName, regionalRoutingContext));
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
@@ -222,16 +221,18 @@ public class ClientSideRequestStatistics {
                 this.requestEndTimeUTC = responseTime;
             }
 
-            LocationCache.RegionalEndpoints regionalEndpoints = null;
+            RegionalRoutingContext regionalRoutingContext = null;
             URI locationEndPoint = null;
+
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
 
-                regionalEndpoints = rxDocumentServiceRequest.requestContext.regionalEndpointsToRoute;
-                locationEndPoint = rxDocumentServiceRequest.requestContext.locationEndpointToRoute;
+                regionalRoutingContext = rxDocumentServiceRequest.requestContext.regionalRoutingContextToRoute;
+                locationEndPoint = regionalRoutingContext.getGatewayRegionalEndpoint();
 
                 this.approximateInsertionCountInBloomFilter = rxDocumentServiceRequest.requestContext.getApproximateBloomFilterInsertionCount();
                 this.keywordIdentifiers = rxDocumentServiceRequest.requestContext.getKeywordIdentifiers();
             }
+
             this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
@@ -241,7 +242,7 @@ public class ClientSideRequestStatistics {
                 this.regionsContacted.add(regionName);
                 this.locationEndpointsContacted.add(locationEndPoint);
 
-                this.regionsContactedWithContext.add(new RegionWithContext(regionName, regionalEndpoints));
+                this.regionsContactedWithContext.add(new RegionWithContext(regionName, regionalRoutingContext));
             }
 
             GatewayStatistics gatewayStatistics = new GatewayStatistics();
@@ -659,7 +660,7 @@ public class ClientSideRequestStatistics {
         return this.regionsContactedWithContext.first().regionContacted;
     }
 
-    public LocationCache.RegionalEndpoints getFirstContactedLocationEndpoint() {
+    public RegionalRoutingContext getFirstContactedLocationEndpoint() {
         if (this.regionsContactedWithContext == null || this.regionsContactedWithContext.isEmpty()) {
             return null;
         }
@@ -1056,10 +1057,10 @@ public class ClientSideRequestStatistics {
     static class RegionWithContext implements Comparable<RegionWithContext> {
 
         private final String regionContacted;
-        private final LocationCache.RegionalEndpoints locationEndpointsContacted;
+        private final RegionalRoutingContext locationEndpointsContacted;
         private final long recordedTimestamp;
 
-        RegionWithContext(String regionContacted, LocationCache.RegionalEndpoints locationEndpointsContacted) {
+        RegionWithContext(String regionContacted, RegionalRoutingContext locationEndpointsContacted) {
             this.regionContacted = regionContacted;
             this.locationEndpointsContacted = locationEndpointsContacted;
             this.recordedTimestamp = System.currentTimeMillis();

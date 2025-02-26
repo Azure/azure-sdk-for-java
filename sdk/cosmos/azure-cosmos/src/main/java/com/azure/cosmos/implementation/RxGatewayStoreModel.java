@@ -12,9 +12,7 @@ import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
-import com.azure.cosmos.implementation.directconnectivity.ResourceOperation;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
-import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
@@ -318,7 +316,7 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     }
 
     public URI getRootUri(RxDocumentServiceRequest request) {
-        return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayLocationEndpoint();
+        return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
     }
 
     private URI getUri(RxDocumentServiceRequest request) throws URISyntaxException {
@@ -326,9 +324,9 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         if (rootUri == null) {
             if (request.getIsMedia()) {
                 // For media read request, always use the write endpoint.
-                rootUri = this.globalEndpointManager.getWriteEndpoints().get(0).getGatewayLocationEndpoint();
+                rootUri = this.globalEndpointManager.getWriteEndpoints().get(0).getGatewayRegionalEndpoint();
             } else {
-                rootUri = this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayLocationEndpoint();
+                rootUri = this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
             }
         }
 

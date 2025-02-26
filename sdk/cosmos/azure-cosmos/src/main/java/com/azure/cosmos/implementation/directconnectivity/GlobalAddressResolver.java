@@ -23,9 +23,9 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenCon
 import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,11 +92,11 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
         this.apiType = apiType;
 
-        for (LocationCache.RegionalEndpoints endpoint : endpointManager.getWriteEndpoints()) {
-            this.getOrAddEndpoint(endpoint.getGatewayLocationEndpoint());
+        for (RegionalRoutingContext endpoint : endpointManager.getWriteEndpoints()) {
+            this.getOrAddEndpoint(endpoint.getGatewayRegionalEndpoint());
         }
-        for (LocationCache.RegionalEndpoints endpoint : endpointManager.getReadEndpoints()) {
-            this.getOrAddEndpoint(endpoint.getGatewayLocationEndpoint());
+        for (RegionalRoutingContext endpoint : endpointManager.getReadEndpoints()) {
+            this.getOrAddEndpoint(endpoint.getGatewayRegionalEndpoint());
         }
     }
 
@@ -155,8 +155,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                                 if (proactiveContainerInitConfig.getProactiveConnectionRegionsCount() > 0) {
                                     return Flux.fromIterable(this.endpointManager.getReadEndpoints().subList(0, proactiveContainerInitConfig.getProactiveConnectionRegionsCount()))
                                         .flatMap(readEndpoint -> {
-                                            if (this.addressCacheByEndpoint.containsKey(readEndpoint.getGatewayLocationEndpoint())) {
-                                                EndpointCache endpointCache = this.addressCacheByEndpoint.get(readEndpoint.getGatewayLocationEndpoint());
+                                            if (this.addressCacheByEndpoint.containsKey(readEndpoint.getGatewayRegionalEndpoint())) {
+                                                EndpointCache endpointCache = this.addressCacheByEndpoint.get(readEndpoint.getGatewayRegionalEndpoint());
                                                 return this.resolveAddressesPerCollection(
                                                         endpointCache,
                                                         containerLinkToPkrs.left,
@@ -273,8 +273,8 @@ public class GlobalAddressResolver implements IAddressResolver {
     }
 
     private IAddressResolver getAddressResolver(RxDocumentServiceRequest rxDocumentServiceRequest) {
-        LocationCache.RegionalEndpoints endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
-        return this.getOrAddEndpoint(endpoint.getGatewayLocationEndpoint()).addressResolver;
+        RegionalRoutingContext endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
+        return this.getOrAddEndpoint(endpoint.getGatewayRegionalEndpoint()).addressResolver;
     }
 
     private EndpointCache getOrAddEndpoint(URI endpoint) {
@@ -300,15 +300,15 @@ public class GlobalAddressResolver implements IAddressResolver {
         });
 
         if (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
-            List<LocationCache.RegionalEndpoints> allConsolidatedEndpoints = new ArrayList<>(this.endpointManager.getWriteEndpoints());
+            List<RegionalRoutingContext> allConsolidatedEndpoints = new ArrayList<>(this.endpointManager.getWriteEndpoints());
             allConsolidatedEndpoints.addAll(this.endpointManager.getReadEndpoints());
             Collections.reverse(allConsolidatedEndpoints);
-            LinkedList<LocationCache.RegionalEndpoints> endpoints = new LinkedList<>(allConsolidatedEndpoints);
+            LinkedList<RegionalRoutingContext> endpoints = new LinkedList<>(allConsolidatedEndpoints);
             while (this.addressCacheByEndpoint.size() > this.maxEndpoints) {
                 if (!endpoints.isEmpty()) {
-                    LocationCache.RegionalEndpoints dequeueEndpoint = endpoints.pop();
-                    if (this.addressCacheByEndpoint.get(dequeueEndpoint.getGatewayLocationEndpoint()) != null) {
-                        this.addressCacheByEndpoint.remove(dequeueEndpoint.getGatewayLocationEndpoint());
+                    RegionalRoutingContext dequeueEndpoint = endpoints.pop();
+                    if (this.addressCacheByEndpoint.get(dequeueEndpoint.getGatewayRegionalEndpoint()) != null) {
+                        this.addressCacheByEndpoint.remove(dequeueEndpoint.getGatewayRegionalEndpoint());
                     }
                 } else {
                     break;

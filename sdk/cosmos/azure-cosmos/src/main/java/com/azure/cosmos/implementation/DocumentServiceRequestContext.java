@@ -12,10 +12,9 @@ import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 
-import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,8 +38,8 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile Integer regionIndex;
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
-    public volatile URI locationEndpointToRoute;
-    public volatile LocationCache.RegionalEndpoints regionalEndpointsToRoute;
+//    public volatile URI locationEndpointToRoute;
+    public volatile RegionalRoutingContext regionalRoutingContextToRoute;
     public volatile boolean performedBackgroundAddressRefresh;
     public volatile boolean performLocalRefreshOnGoneException;
     public volatile List<String> storeResponses;
@@ -81,19 +80,17 @@ public class DocumentServiceRequestContext implements Cloneable {
     public void routeToLocation(int locationIndex, boolean usePreferredLocations) {
         this.locationIndexToRoute = locationIndex;
         this.usePreferredLocations = usePreferredLocations;
-        this.locationEndpointToRoute = null;
-        this.regionalEndpointsToRoute = null;
+//        this.locationEndpointToRoute = null;
+        this.regionalRoutingContextToRoute = null;
     }
 
     /**
      * Sets location-based routing directive for GlobalEndpointManager to resolve
      * the request to given locationEndpoint.
      *
-     * @param locationEndpoint Location endpoint to which the request should be routed.
      */
-    public void routeToLocation(URI locationEndpoint, LocationCache.RegionalEndpoints regionalEndpointsToRoute) {
-        this.locationEndpointToRoute = locationEndpoint;
-        this.regionalEndpointsToRoute = regionalEndpointsToRoute;
+    public void routeToLocation(RegionalRoutingContext regionalRoutingContextToRoute) {
+        this.regionalRoutingContextToRoute = regionalRoutingContextToRoute;
         this.locationIndexToRoute = null;
         this.usePreferredLocations = null;
     }
@@ -103,8 +100,7 @@ public class DocumentServiceRequestContext implements Cloneable {
      */
     public void clearRouteToLocation() {
         this.locationIndexToRoute = null;
-        this.locationEndpointToRoute = null;
-        this.regionalEndpointsToRoute = null;
+        this.regionalRoutingContextToRoute = null;
         this.usePreferredLocations = null;
     }
 
@@ -145,8 +141,8 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.regionIndex = this.regionIndex;
         context.usePreferredLocations = this.usePreferredLocations;
         context.locationIndexToRoute = this.locationIndexToRoute;
-        context.locationEndpointToRoute = this.locationEndpointToRoute;
-        context.regionalEndpointsToRoute = this.regionalEndpointsToRoute;
+//        context.locationEndpointToRoute = this.locationEndpointToRoute;
+        context.regionalRoutingContextToRoute = this.regionalRoutingContextToRoute;
         context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
         context.effectivePartitionKey = this.effectivePartitionKey;
         context.performedBackgroundAddressRefresh = this.performedBackgroundAddressRefresh;
