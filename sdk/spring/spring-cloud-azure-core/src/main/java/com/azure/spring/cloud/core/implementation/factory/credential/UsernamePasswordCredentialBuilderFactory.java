@@ -11,7 +11,7 @@ import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOption
 /**
  * A credential builder factory for the {@link UsernamePasswordCredentialBuilder}.
  */
-@SuppressWarnings("deprecated")
+@SuppressWarnings("deprecation")
 public class UsernamePasswordCredentialBuilderFactory extends AzureAadCredentialBuilderFactory<UsernamePasswordCredentialBuilder> {
 
     /**
