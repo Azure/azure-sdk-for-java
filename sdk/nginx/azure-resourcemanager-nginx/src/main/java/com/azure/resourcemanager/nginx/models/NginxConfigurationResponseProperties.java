@@ -13,10 +13,11 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The NginxConfigurationProperties model.
+ * The NginxConfigurationResponseProperties model.
  */
 @Fluent
-public final class NginxConfigurationProperties implements JsonSerializable<NginxConfigurationProperties> {
+public final class NginxConfigurationResponseProperties
+    implements JsonSerializable<NginxConfigurationResponseProperties> {
     /*
      * The provisioningState property.
      */
@@ -30,7 +31,7 @@ public final class NginxConfigurationProperties implements JsonSerializable<Ngin
     /*
      * The protectedFiles property.
      */
-    private List<NginxConfigurationFile> protectedFiles;
+    private List<NginxConfigurationProtectedFileResponse> protectedFiles;
 
     /*
      * The package property.
@@ -43,9 +44,9 @@ public final class NginxConfigurationProperties implements JsonSerializable<Ngin
     private String rootFile;
 
     /**
-     * Creates an instance of NginxConfigurationProperties class.
+     * Creates an instance of NginxConfigurationResponseProperties class.
      */
-    public NginxConfigurationProperties() {
+    public NginxConfigurationResponseProperties() {
     }
 
     /**
@@ -70,9 +71,9 @@ public final class NginxConfigurationProperties implements JsonSerializable<Ngin
      * Set the files property: The files property.
      * 
      * @param files the files value to set.
-     * @return the NginxConfigurationProperties object itself.
+     * @return the NginxConfigurationResponseProperties object itself.
      */
-    public NginxConfigurationProperties withFiles(List<NginxConfigurationFile> files) {
+    public NginxConfigurationResponseProperties withFiles(List<NginxConfigurationFile> files) {
         this.files = files;
         return this;
     }
@@ -82,7 +83,7 @@ public final class NginxConfigurationProperties implements JsonSerializable<Ngin
      * 
      * @return the protectedFiles value.
      */
-    public List<NginxConfigurationFile> protectedFiles() {
+    public List<NginxConfigurationProtectedFileResponse> protectedFiles() {
         return this.protectedFiles;
     }
 
@@ -90,9 +91,10 @@ public final class NginxConfigurationProperties implements JsonSerializable<Ngin
      * Set the protectedFiles property: The protectedFiles property.
      * 
      * @param protectedFiles the protectedFiles value to set.
-     * @return the NginxConfigurationProperties object itself.
+     * @return the NginxConfigurationResponseProperties object itself.
      */
-    public NginxConfigurationProperties withProtectedFiles(List<NginxConfigurationFile> protectedFiles) {
+    public NginxConfigurationResponseProperties
+        withProtectedFiles(List<NginxConfigurationProtectedFileResponse> protectedFiles) {
         this.protectedFiles = protectedFiles;
         return this;
     }
@@ -110,9 +112,9 @@ public final class NginxConfigurationProperties implements JsonSerializable<Ngin
      * Set the packageProperty property: The package property.
      * 
      * @param packageProperty the packageProperty value to set.
-     * @return the NginxConfigurationProperties object itself.
+     * @return the NginxConfigurationResponseProperties object itself.
      */
-    public NginxConfigurationProperties withPackageProperty(NginxConfigurationPackage packageProperty) {
+    public NginxConfigurationResponseProperties withPackageProperty(NginxConfigurationPackage packageProperty) {
         this.packageProperty = packageProperty;
         return this;
     }
@@ -130,9 +132,9 @@ public final class NginxConfigurationProperties implements JsonSerializable<Ngin
      * Set the rootFile property: The rootFile property.
      * 
      * @param rootFile the rootFile value to set.
-     * @return the NginxConfigurationProperties object itself.
+     * @return the NginxConfigurationResponseProperties object itself.
      */
-    public NginxConfigurationProperties withRootFile(String rootFile) {
+    public NginxConfigurationResponseProperties withRootFile(String rootFile) {
         this.rootFile = rootFile;
         return this;
     }
@@ -169,42 +171,43 @@ public final class NginxConfigurationProperties implements JsonSerializable<Ngin
     }
 
     /**
-     * Reads an instance of NginxConfigurationProperties from the JsonReader.
+     * Reads an instance of NginxConfigurationResponseProperties from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of NginxConfigurationProperties if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the NginxConfigurationProperties.
+     * @return An instance of NginxConfigurationResponseProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NginxConfigurationResponseProperties.
      */
-    public static NginxConfigurationProperties fromJson(JsonReader jsonReader) throws IOException {
+    public static NginxConfigurationResponseProperties fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            NginxConfigurationProperties deserializedNginxConfigurationProperties = new NginxConfigurationProperties();
+            NginxConfigurationResponseProperties deserializedNginxConfigurationResponseProperties
+                = new NginxConfigurationResponseProperties();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("provisioningState".equals(fieldName)) {
-                    deserializedNginxConfigurationProperties.provisioningState
+                    deserializedNginxConfigurationResponseProperties.provisioningState
                         = ProvisioningState.fromString(reader.getString());
                 } else if ("files".equals(fieldName)) {
                     List<NginxConfigurationFile> files
                         = reader.readArray(reader1 -> NginxConfigurationFile.fromJson(reader1));
-                    deserializedNginxConfigurationProperties.files = files;
+                    deserializedNginxConfigurationResponseProperties.files = files;
                 } else if ("protectedFiles".equals(fieldName)) {
-                    List<NginxConfigurationFile> protectedFiles
-                        = reader.readArray(reader1 -> NginxConfigurationFile.fromJson(reader1));
-                    deserializedNginxConfigurationProperties.protectedFiles = protectedFiles;
+                    List<NginxConfigurationProtectedFileResponse> protectedFiles
+                        = reader.readArray(reader1 -> NginxConfigurationProtectedFileResponse.fromJson(reader1));
+                    deserializedNginxConfigurationResponseProperties.protectedFiles = protectedFiles;
                 } else if ("package".equals(fieldName)) {
-                    deserializedNginxConfigurationProperties.packageProperty
+                    deserializedNginxConfigurationResponseProperties.packageProperty
                         = NginxConfigurationPackage.fromJson(reader);
                 } else if ("rootFile".equals(fieldName)) {
-                    deserializedNginxConfigurationProperties.rootFile = reader.getString();
+                    deserializedNginxConfigurationResponseProperties.rootFile = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedNginxConfigurationProperties;
+            return deserializedNginxConfigurationResponseProperties;
         });
     }
 }

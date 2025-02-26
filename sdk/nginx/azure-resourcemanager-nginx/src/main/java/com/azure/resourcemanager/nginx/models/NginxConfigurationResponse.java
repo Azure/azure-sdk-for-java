@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationInner;
+import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationResponseInner;
 
 /**
- * An immutable client-side representation of NginxConfiguration.
+ * An immutable client-side representation of NginxConfigurationResponse.
  */
-public interface NginxConfiguration {
+public interface NginxConfigurationResponse {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
      * 
@@ -40,14 +39,7 @@ public interface NginxConfiguration {
      * 
      * @return the properties value.
      */
-    NginxConfigurationProperties properties();
-
-    /**
-     * Gets the location property: The location property.
-     * 
-     * @return the location value.
-     */
-    String location();
+    NginxConfigurationResponseProperties properties();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -57,20 +49,6 @@ public interface NginxConfiguration {
     SystemData systemData();
 
     /**
-     * Gets the region of the resource.
-     * 
-     * @return the region of the resource.
-     */
-    Region region();
-
-    /**
-     * Gets the name of the resource region.
-     * 
-     * @return the name of the resource region.
-     */
-    String regionName();
-
-    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -78,31 +56,31 @@ public interface NginxConfiguration {
     String resourceGroupName();
 
     /**
-     * Gets the inner com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationInner object.
+     * Gets the inner com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationResponseInner object.
      * 
      * @return the inner object.
      */
-    NginxConfigurationInner innerModel();
+    NginxConfigurationResponseInner innerModel();
 
     /**
-     * The entirety of the NginxConfiguration definition.
+     * The entirety of the NginxConfigurationResponse definition.
      */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /**
-     * The NginxConfiguration definition stages.
+     * The NginxConfigurationResponse definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of the NginxConfiguration definition.
+         * The first stage of the NginxConfigurationResponse definition.
          */
         interface Blank extends WithParentResource {
         }
 
         /**
-         * The stage of the NginxConfiguration definition allowing to specify parent resource.
+         * The stage of the NginxConfigurationResponse definition allowing to specify parent resource.
          */
         interface WithParentResource {
             /**
@@ -116,16 +94,16 @@ public interface NginxConfiguration {
         }
 
         /**
-         * The stage of the NginxConfiguration definition which contains all the minimum required properties for the
-         * resource to be created, but also allows for any other optional properties to be specified.
+         * The stage of the NginxConfigurationResponse definition which contains all the minimum required properties for
+         * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
              * 
              * @return the created resource.
              */
-            NginxConfiguration create();
+            NginxConfigurationResponse create();
 
             /**
              * Executes the create request.
@@ -133,32 +111,11 @@ public interface NginxConfiguration {
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
-            NginxConfiguration create(Context context);
+            NginxConfigurationResponse create(Context context);
         }
 
         /**
-         * The stage of the NginxConfiguration definition allowing to specify location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The location property.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(Region location);
-
-            /**
-             * Specifies the region for the resource.
-             * 
-             * @param location The location property.
-             * @return the next definition stage.
-             */
-            WithCreate withRegion(String location);
-        }
-
-        /**
-         * The stage of the NginxConfiguration definition allowing to specify properties.
+         * The stage of the NginxConfigurationResponse definition allowing to specify properties.
          */
         interface WithProperties {
             /**
@@ -167,19 +124,19 @@ public interface NginxConfiguration {
              * @param properties The properties property.
              * @return the next definition stage.
              */
-            WithCreate withProperties(NginxConfigurationProperties properties);
+            WithCreate withProperties(NginxConfigurationRequestProperties properties);
         }
     }
 
     /**
-     * Begins update for the NginxConfiguration resource.
+     * Begins update for the NginxConfigurationResponse resource.
      * 
      * @return the stage of resource update.
      */
-    NginxConfiguration.Update update();
+    NginxConfigurationResponse.Update update();
 
     /**
-     * The template for NginxConfiguration update.
+     * The template for NginxConfigurationResponse update.
      */
     interface Update extends UpdateStages.WithProperties {
         /**
@@ -187,7 +144,7 @@ public interface NginxConfiguration {
          * 
          * @return the updated resource.
          */
-        NginxConfiguration apply();
+        NginxConfigurationResponse apply();
 
         /**
          * Executes the update request.
@@ -195,15 +152,15 @@ public interface NginxConfiguration {
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
-        NginxConfiguration apply(Context context);
+        NginxConfigurationResponse apply(Context context);
     }
 
     /**
-     * The NginxConfiguration update stages.
+     * The NginxConfigurationResponse update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of the NginxConfiguration update allowing to specify properties.
+         * The stage of the NginxConfigurationResponse update allowing to specify properties.
          */
         interface WithProperties {
             /**
@@ -212,7 +169,7 @@ public interface NginxConfiguration {
              * @param properties The properties property.
              * @return the next definition stage.
              */
-            Update withProperties(NginxConfigurationProperties properties);
+            Update withProperties(NginxConfigurationRequestProperties properties);
         }
     }
 
@@ -221,7 +178,7 @@ public interface NginxConfiguration {
      * 
      * @return the refreshed resource.
      */
-    NginxConfiguration refresh();
+    NginxConfigurationResponse refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
@@ -229,7 +186,7 @@ public interface NginxConfiguration {
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
-    NginxConfiguration refresh(Context context);
+    NginxConfigurationResponse refresh(Context context);
 
     /**
      * Analyze an NGINX configuration without applying it to the NGINXaaS deployment.
