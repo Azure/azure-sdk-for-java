@@ -112,7 +112,7 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param request the HTTP request.
      * @param tokenRequestContext the token request context to be used for token acquisition.
      */
-    public void setAuthorizationHeader(HttpRequest request, TokenRequestContext tokenRequestContext) {
+    protected void setAuthorizationHeader(HttpRequest request, TokenRequestContext tokenRequestContext) {
         setAuthorizationHeaderHelper(request, tokenRequestContext, true);
     }
 
@@ -200,8 +200,7 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      *
      * @return the extracted value of the challenge parameter
      */
-    static String getChallengeParameterFromResponse(Response<?> response, String challengeScheme,
-        String parameter) {
+    static String getChallengeParameterFromResponse(Response<?> response, String challengeScheme, String parameter) {
         String challenge = response.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
         List<AuthenticateChallenge> authenticateChallengeList = AuthUtils.parseAuthenticateHeader(challenge);
 

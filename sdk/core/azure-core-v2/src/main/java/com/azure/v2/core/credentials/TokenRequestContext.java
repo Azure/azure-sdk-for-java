@@ -94,7 +94,8 @@ public class TokenRequestContext {
 
         for (String scope : scopes) {
             if (CoreUtils.isNullOrEmpty(scope)) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Scopes cannot contain null or empty values."));
+                throw LOGGER
+                    .logThrowableAsError(new IllegalArgumentException("Scopes cannot contain null or empty values."));
             }
         }
         this.scopes.addAll(Arrays.asList(scopes));

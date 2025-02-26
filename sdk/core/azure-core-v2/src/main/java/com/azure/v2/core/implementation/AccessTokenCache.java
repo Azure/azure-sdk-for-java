@@ -114,7 +114,8 @@ public final class AccessTokenCache {
         return now.isAfter(this.cacheInfo.getNextTokenRefreshAt());
     }
 
-    private AccessToken attemptTokenRefresh(AccessToken cachedToken, TokenRequestContext tokenRequestContext, OffsetDateTime now) {
+    private AccessToken attemptTokenRefresh(AccessToken cachedToken, TokenRequestContext tokenRequestContext,
+        OffsetDateTime now) {
         try {
             AccessToken newToken = getToken(tokenRequestContext);
             logTokenRefresh(LogLevel.VERBOSE, cachedToken, now, "Acquired a new access token.");

@@ -87,7 +87,8 @@ public class OAuthTokenRequestContext {
 
         for (String scope : scopes) {
             if (ImplUtils.isNullOrEmpty(scope)) {
-                throw LOGGER.logThrowableAsError(new IllegalArgumentException("Scopes cannot contain null or empty values."));
+                throw LOGGER
+                    .logThrowableAsError(new IllegalArgumentException("Scopes cannot contain null or empty values."));
             }
         }
 

@@ -28,8 +28,7 @@ public class BearerTokenAuthenticationPolicyTests {
 
     @ParameterizedTest
     @MethodSource("caeTestArguments")
-    public void testDefaultCae(String challenge, int expectedStatusCode, String expectedClaims,
-        String encodedClaims) {
+    public void testDefaultCae(String challenge, int expectedStatusCode, String expectedClaims, String encodedClaims) {
         AtomicReference<String> claims = new AtomicReference<>();
         AtomicInteger callCount = new AtomicInteger();
 
