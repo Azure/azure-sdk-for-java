@@ -42,25 +42,25 @@ public final class PrivateLinkResourceOperationsClientImpl implements PrivateLin
     /**
      * The service client containing this operation class.
      */
-    private final AzureMigrateAssessmentServiceImpl client;
+    private final MigrationAssessmentManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourceOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateLinkResourceOperationsClientImpl(AzureMigrateAssessmentServiceImpl client) {
+    PrivateLinkResourceOperationsClientImpl(MigrationAssessmentManagementClientImpl client) {
         this.service = RestProxy.create(PrivateLinkResourceOperationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMigrateAssessmentServicePrivateLinkResourceOperations to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for MigrationAssessmentManagementClientPrivateLinkResourceOperations to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMigrateAssessme")
+    @ServiceInterface(name = "MigrationAssessmentM")
     public interface PrivateLinkResourceOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/privateLinkResources")

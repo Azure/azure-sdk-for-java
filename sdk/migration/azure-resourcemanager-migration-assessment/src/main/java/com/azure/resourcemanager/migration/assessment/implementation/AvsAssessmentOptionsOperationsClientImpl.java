@@ -42,25 +42,25 @@ public final class AvsAssessmentOptionsOperationsClientImpl implements AvsAssess
     /**
      * The service client containing this operation class.
      */
-    private final AzureMigrateAssessmentServiceImpl client;
+    private final MigrationAssessmentManagementClientImpl client;
 
     /**
      * Initializes an instance of AvsAssessmentOptionsOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    AvsAssessmentOptionsOperationsClientImpl(AzureMigrateAssessmentServiceImpl client) {
+    AvsAssessmentOptionsOperationsClientImpl(MigrationAssessmentManagementClientImpl client) {
         this.service = RestProxy.create(AvsAssessmentOptionsOperationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMigrateAssessmentServiceAvsAssessmentOptionsOperations to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for MigrationAssessmentManagementClientAvsAssessmentOptionsOperations to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMigrateAssessme")
+    @ServiceInterface(name = "MigrationAssessmentM")
     public interface AvsAssessmentOptionsOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/avsAssessmentOptions")

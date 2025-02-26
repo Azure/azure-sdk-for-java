@@ -24,7 +24,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.migration.assessment.fluent.AzureMigrateAssessmentService;
+import com.azure.resourcemanager.migration.assessment.fluent.MigrationAssessmentManagementClient;
 import com.azure.resourcemanager.migration.assessment.implementation.AssessedMachinesOperationsImpl;
 import com.azure.resourcemanager.migration.assessment.implementation.AssessedSqlDatabaseV2OperationsImpl;
 import com.azure.resourcemanager.migration.assessment.implementation.AssessedSqlInstanceV2OperationsImpl;
@@ -37,11 +37,11 @@ import com.azure.resourcemanager.migration.assessment.implementation.Assessments
 import com.azure.resourcemanager.migration.assessment.implementation.AvsAssessedMachinesOperationsImpl;
 import com.azure.resourcemanager.migration.assessment.implementation.AvsAssessmentOptionsOperationsImpl;
 import com.azure.resourcemanager.migration.assessment.implementation.AvsAssessmentsOperationsImpl;
-import com.azure.resourcemanager.migration.assessment.implementation.AzureMigrateAssessmentServiceBuilder;
 import com.azure.resourcemanager.migration.assessment.implementation.GroupsOperationsImpl;
 import com.azure.resourcemanager.migration.assessment.implementation.HypervCollectorsOperationsImpl;
 import com.azure.resourcemanager.migration.assessment.implementation.ImportCollectorsOperationsImpl;
 import com.azure.resourcemanager.migration.assessment.implementation.MachinesOperationsImpl;
+import com.azure.resourcemanager.migration.assessment.implementation.MigrationAssessmentManagementClientBuilder;
 import com.azure.resourcemanager.migration.assessment.implementation.OperationsImpl;
 import com.azure.resourcemanager.migration.assessment.implementation.PrivateEndpointConnectionOperationsImpl;
 import com.azure.resourcemanager.migration.assessment.implementation.PrivateLinkResourceOperationsImpl;
@@ -139,12 +139,12 @@ public final class MigrationAssessmentManager {
 
     private VmwareCollectorsOperations vmwareCollectorsOperations;
 
-    private final AzureMigrateAssessmentService clientObject;
+    private final MigrationAssessmentManagementClient clientObject;
 
     private MigrationAssessmentManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new AzureMigrateAssessmentServiceBuilder().pipeline(httpPipeline)
+        this.clientObject = new MigrationAssessmentManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -676,12 +676,12 @@ public final class MigrationAssessmentManager {
     }
 
     /**
-     * Gets wrapped service client AzureMigrateAssessmentService providing direct access to the underlying
+     * Gets wrapped service client MigrationAssessmentManagementClient providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client AzureMigrateAssessmentService.
+     * @return Wrapped service client MigrationAssessmentManagementClient.
      */
-    public AzureMigrateAssessmentService serviceClient() {
+    public MigrationAssessmentManagementClient serviceClient() {
         return this.clientObject;
     }
 }

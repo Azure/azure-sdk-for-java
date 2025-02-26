@@ -50,25 +50,26 @@ public final class PrivateEndpointConnectionOperationsClientImpl implements Priv
     /**
      * The service client containing this operation class.
      */
-    private final AzureMigrateAssessmentServiceImpl client;
+    private final MigrationAssessmentManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    PrivateEndpointConnectionOperationsClientImpl(AzureMigrateAssessmentServiceImpl client) {
+    PrivateEndpointConnectionOperationsClientImpl(MigrationAssessmentManagementClientImpl client) {
         this.service = RestProxy.create(PrivateEndpointConnectionOperationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMigrateAssessmentServicePrivateEndpointConnectionOperations to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for
+     * MigrationAssessmentManagementClientPrivateEndpointConnectionOperations to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMigrateAssessme")
+    @ServiceInterface(name = "MigrationAssessmentM")
     public interface PrivateEndpointConnectionOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/privateEndpointConnections")

@@ -35,11 +35,11 @@ import com.azure.resourcemanager.migration.assessment.fluent.AssessmentsOperatio
 import com.azure.resourcemanager.migration.assessment.fluent.AvsAssessedMachinesOperationsClient;
 import com.azure.resourcemanager.migration.assessment.fluent.AvsAssessmentOptionsOperationsClient;
 import com.azure.resourcemanager.migration.assessment.fluent.AvsAssessmentsOperationsClient;
-import com.azure.resourcemanager.migration.assessment.fluent.AzureMigrateAssessmentService;
 import com.azure.resourcemanager.migration.assessment.fluent.GroupsOperationsClient;
 import com.azure.resourcemanager.migration.assessment.fluent.HypervCollectorsOperationsClient;
 import com.azure.resourcemanager.migration.assessment.fluent.ImportCollectorsOperationsClient;
 import com.azure.resourcemanager.migration.assessment.fluent.MachinesOperationsClient;
+import com.azure.resourcemanager.migration.assessment.fluent.MigrationAssessmentManagementClient;
 import com.azure.resourcemanager.migration.assessment.fluent.OperationsClient;
 import com.azure.resourcemanager.migration.assessment.fluent.PrivateEndpointConnectionOperationsClient;
 import com.azure.resourcemanager.migration.assessment.fluent.PrivateLinkResourceOperationsClient;
@@ -59,10 +59,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the AzureMigrateAssessmentServiceImpl type.
+ * Initializes a new instance of the MigrationAssessmentManagementClientImpl type.
  */
-@ServiceClient(builder = AzureMigrateAssessmentServiceBuilder.class)
-public final class AzureMigrateAssessmentServiceImpl implements AzureMigrateAssessmentService {
+@ServiceClient(builder = MigrationAssessmentManagementClientBuilder.class)
+public final class MigrationAssessmentManagementClientImpl implements MigrationAssessmentManagementClient {
     /**
      * The ID of the target subscription.
      */
@@ -498,7 +498,7 @@ public final class AzureMigrateAssessmentServiceImpl implements AzureMigrateAsse
     }
 
     /**
-     * Initializes an instance of AzureMigrateAssessmentService client.
+     * Initializes an instance of MigrationAssessmentManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -507,7 +507,7 @@ public final class AzureMigrateAssessmentServiceImpl implements AzureMigrateAsse
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    AzureMigrateAssessmentServiceImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+    MigrationAssessmentManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
         Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
@@ -668,5 +668,5 @@ public final class AzureMigrateAssessmentServiceImpl implements AzureMigrateAsse
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AzureMigrateAssessmentServiceImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MigrationAssessmentManagementClientImpl.class);
 }

@@ -52,25 +52,25 @@ public final class GroupsOperationsClientImpl implements GroupsOperationsClient 
     /**
      * The service client containing this operation class.
      */
-    private final AzureMigrateAssessmentServiceImpl client;
+    private final MigrationAssessmentManagementClientImpl client;
 
     /**
      * Initializes an instance of GroupsOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    GroupsOperationsClientImpl(AzureMigrateAssessmentServiceImpl client) {
+    GroupsOperationsClientImpl(MigrationAssessmentManagementClientImpl client) {
         this.service
             = RestProxy.create(GroupsOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMigrateAssessmentServiceGroupsOperations to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for MigrationAssessmentManagementClientGroupsOperations to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMigrateAssessme")
+    @ServiceInterface(name = "MigrationAssessmentM")
     public interface GroupsOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/groups")

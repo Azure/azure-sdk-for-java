@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the AzureMigrateAssessmentServiceImpl type.
+ * A builder for creating a new instance of the MigrationAssessmentManagementClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { AzureMigrateAssessmentServiceImpl.class })
-public final class AzureMigrateAssessmentServiceBuilder {
+@ServiceClientBuilder(serviceClients = { MigrationAssessmentManagementClientImpl.class })
+public final class MigrationAssessmentManagementClientBuilder {
     /*
      * The ID of the target subscription.
      */
@@ -28,9 +28,9 @@ public final class AzureMigrateAssessmentServiceBuilder {
      * Sets The ID of the target subscription.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the AzureMigrateAssessmentServiceBuilder.
+     * @return the MigrationAssessmentManagementClientBuilder.
      */
-    public AzureMigrateAssessmentServiceBuilder subscriptionId(String subscriptionId) {
+    public MigrationAssessmentManagementClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -44,9 +44,9 @@ public final class AzureMigrateAssessmentServiceBuilder {
      * Sets server parameter.
      * 
      * @param endpoint the endpoint value.
-     * @return the AzureMigrateAssessmentServiceBuilder.
+     * @return the MigrationAssessmentManagementClientBuilder.
      */
-    public AzureMigrateAssessmentServiceBuilder endpoint(String endpoint) {
+    public MigrationAssessmentManagementClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -60,9 +60,9 @@ public final class AzureMigrateAssessmentServiceBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the AzureMigrateAssessmentServiceBuilder.
+     * @return the MigrationAssessmentManagementClientBuilder.
      */
-    public AzureMigrateAssessmentServiceBuilder environment(AzureEnvironment environment) {
+    public MigrationAssessmentManagementClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class AzureMigrateAssessmentServiceBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the AzureMigrateAssessmentServiceBuilder.
+     * @return the MigrationAssessmentManagementClientBuilder.
      */
-    public AzureMigrateAssessmentServiceBuilder pipeline(HttpPipeline pipeline) {
+    public MigrationAssessmentManagementClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class AzureMigrateAssessmentServiceBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the AzureMigrateAssessmentServiceBuilder.
+     * @return the MigrationAssessmentManagementClientBuilder.
      */
-    public AzureMigrateAssessmentServiceBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public MigrationAssessmentManagementClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class AzureMigrateAssessmentServiceBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the AzureMigrateAssessmentServiceBuilder.
+     * @return the MigrationAssessmentManagementClientBuilder.
      */
-    public AzureMigrateAssessmentServiceBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public MigrationAssessmentManagementClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of AzureMigrateAssessmentServiceImpl with the provided parameters.
+     * Builds an instance of MigrationAssessmentManagementClientImpl with the provided parameters.
      * 
-     * @return an instance of AzureMigrateAssessmentServiceImpl.
+     * @return an instance of MigrationAssessmentManagementClientImpl.
      */
-    public AzureMigrateAssessmentServiceImpl buildClient() {
+    public MigrationAssessmentManagementClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null)
@@ -131,7 +131,7 @@ public final class AzureMigrateAssessmentServiceBuilder {
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null)
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AzureMigrateAssessmentServiceImpl client = new AzureMigrateAssessmentServiceImpl(localPipeline,
+        MigrationAssessmentManagementClientImpl client = new MigrationAssessmentManagementClientImpl(localPipeline,
             localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }

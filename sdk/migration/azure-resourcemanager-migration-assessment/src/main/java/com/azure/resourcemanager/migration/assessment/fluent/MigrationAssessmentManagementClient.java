@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for AzureMigrateAssessmentService class.
+ * The interface for MigrationAssessmentManagementClient class.
  */
-public interface AzureMigrateAssessmentService {
+public interface MigrationAssessmentManagementClient {
     /**
      * Gets The ID of the target subscription.
      * 

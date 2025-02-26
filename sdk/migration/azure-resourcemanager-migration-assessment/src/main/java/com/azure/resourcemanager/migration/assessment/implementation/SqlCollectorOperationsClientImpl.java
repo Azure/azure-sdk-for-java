@@ -50,25 +50,25 @@ public final class SqlCollectorOperationsClientImpl implements SqlCollectorOpera
     /**
      * The service client containing this operation class.
      */
-    private final AzureMigrateAssessmentServiceImpl client;
+    private final MigrationAssessmentManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlCollectorOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SqlCollectorOperationsClientImpl(AzureMigrateAssessmentServiceImpl client) {
+    SqlCollectorOperationsClientImpl(MigrationAssessmentManagementClientImpl client) {
         this.service = RestProxy.create(SqlCollectorOperationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMigrateAssessmentServiceSqlCollectorOperations to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for MigrationAssessmentManagementClientSqlCollectorOperations to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMigrateAssessme")
+    @ServiceInterface(name = "MigrationAssessmentM")
     public interface SqlCollectorOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/sqlcollectors")
