@@ -52,25 +52,25 @@ public final class SqlAssessmentV2OperationsClientImpl implements SqlAssessmentV
     /**
      * The service client containing this operation class.
      */
-    private final AzureMigrateAssessmentServiceImpl client;
+    private final MigrationAssessmentManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlAssessmentV2OperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    SqlAssessmentV2OperationsClientImpl(AzureMigrateAssessmentServiceImpl client) {
+    SqlAssessmentV2OperationsClientImpl(MigrationAssessmentManagementClientImpl client) {
         this.service = RestProxy.create(SqlAssessmentV2OperationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMigrateAssessmentServiceSqlAssessmentV2Operations to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for MigrationAssessmentManagementClientSqlAssessmentV2Operations to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMigrateAssessme")
+    @ServiceInterface(name = "MigrationAssessmentM")
     public interface SqlAssessmentV2OperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/groups/{groupName}/sqlAssessments")

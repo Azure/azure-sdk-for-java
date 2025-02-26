@@ -50,25 +50,25 @@ public final class ImportCollectorsOperationsClientImpl implements ImportCollect
     /**
      * The service client containing this operation class.
      */
-    private final AzureMigrateAssessmentServiceImpl client;
+    private final MigrationAssessmentManagementClientImpl client;
 
     /**
      * Initializes an instance of ImportCollectorsOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    ImportCollectorsOperationsClientImpl(AzureMigrateAssessmentServiceImpl client) {
+    ImportCollectorsOperationsClientImpl(MigrationAssessmentManagementClientImpl client) {
         this.service = RestProxy.create(ImportCollectorsOperationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMigrateAssessmentServiceImportCollectorsOperations to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for MigrationAssessmentManagementClientImportCollectorsOperations to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMigrateAssessme")
+    @ServiceInterface(name = "MigrationAssessmentM")
     public interface ImportCollectorsOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/importcollectors")

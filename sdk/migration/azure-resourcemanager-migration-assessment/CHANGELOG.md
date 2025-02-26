@@ -6,3 +6,4 @@
 ### Features Added
 
 - Initial release for the azure-resourcemanager-migration-assessment Java SDK.
+

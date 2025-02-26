@@ -42,25 +42,25 @@ public final class MachinesOperationsClientImpl implements MachinesOperationsCli
     /**
      * The service client containing this operation class.
      */
-    private final AzureMigrateAssessmentServiceImpl client;
+    private final MigrationAssessmentManagementClientImpl client;
 
     /**
      * Initializes an instance of MachinesOperationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    MachinesOperationsClientImpl(AzureMigrateAssessmentServiceImpl client) {
+    MachinesOperationsClientImpl(MigrationAssessmentManagementClientImpl client) {
         this.service = RestProxy.create(MachinesOperationsService.class, client.getHttpPipeline(),
             client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMigrateAssessmentServiceMachinesOperations to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for MigrationAssessmentManagementClientMachinesOperations to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMigrateAssessme")
+    @ServiceInterface(name = "MigrationAssessmentM")
     public interface MachinesOperationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/machines")
