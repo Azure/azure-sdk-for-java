@@ -15,6 +15,10 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -48,13 +52,12 @@ import reactor.test.StepVerifier;
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-import static com.azure.messaging.servicebus.TestUtils.TEST_PROXY_REQUEST_MATCHERS;
-import static com.azure.messaging.servicebus.TestUtils.TEST_PROXY_SANITIZERS;
 import static com.azure.messaging.servicebus.TestUtils.assertAuthorizationRules;
 import static com.azure.messaging.servicebus.TestUtils.getEntityName;
 import static com.azure.messaging.servicebus.TestUtils.getSessionSubscriptionBaseName;
@@ -74,6 +77,29 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
     private static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(10);
+
+    /**
+     * Sanitizer to remove header values for ServiceBusDlqSupplementaryAuthorization and
+     * ServiceBusSupplementaryAuthorization.
+     */
+    static final TestProxySanitizer AUTHORIZATION_HEADER;
+
+    static final List<TestProxySanitizer> TEST_PROXY_SANITIZERS;
+
+    static final List<TestProxyRequestMatcher> TEST_PROXY_REQUEST_MATCHERS;
+
+    static {
+        AUTHORIZATION_HEADER = new TestProxySanitizer("SupplementaryAuthorization", null,
+            "SharedAccessSignature sr=https%3A%2F%2Ffoo.servicebus.windows.net&sig=dummyValue%3D&se=1687267490&skn=dummyKey",
+            TestProxySanitizerType.HEADER);
+        TEST_PROXY_SANITIZERS = Collections.singletonList(AUTHORIZATION_HEADER);
+
+        final List<String> skippedHeaders
+            = Arrays.asList("ServiceBusDlqSupplementaryAuthorization", "ServiceBusSupplementaryAuthorization");
+        final CustomMatcher customMatcher = new CustomMatcher().setExcludedHeaders(skippedHeaders);
+
+        TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
+    }
 
     private final AtomicReference<TokenCredential> credentialCached = new AtomicReference<>();
 
