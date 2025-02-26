@@ -278,6 +278,15 @@ You can get information about your conversions using the `listConversions` metho
 This method may return conversions which have yet to start, conversions which are running and conversions which have finished.
 In this example, we just list the output URLs of successful conversions started in the last day.
 
+```java readme-sample-listConversions
+for (AssetConversion conversion : client.listConversions()) {
+    if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED) {
+        if (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1))) {
+        }
+    }
+}
+```
+
 ### Create a rendering session
 
 We assume that a RemoteRenderingClient has been constructed as described in the [Authenticate the Client](#authenticate-the-client) section.
