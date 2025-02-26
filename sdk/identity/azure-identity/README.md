@@ -346,6 +346,8 @@ Credentials can be chained together to be tried in turn until one succeeds using
 
 ### Username and password
 
+> **Warning**: Username and password authentication doesn't support multifactor authentication (MFA) and is **deprecated**. For more details, see [Planning for mandatory MFA](https://aka.ms/azsdk/identity/mfa).
+
 |Variable name|Value|
 |-|-|
 |`AZURE_CLIENT_ID`|ID of a Microsoft Entra application|
