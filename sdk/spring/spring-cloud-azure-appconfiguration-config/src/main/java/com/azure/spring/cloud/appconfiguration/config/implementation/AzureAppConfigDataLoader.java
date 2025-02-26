@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.PUSH_REFRESH;
+
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
     private StateHolder storeState = new StateHolder();
 
     private FeatureFlagClient featureFlagClient;
-    
+
     private Context requestContext;
 
     private static final Instant START_DATE = Instant.now();
@@ -58,12 +59,13 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
         storeState.setNextForcedRefresh(resource.getRefreshInterval());
 
         if (context.getBootstrapContext().isRegistered(FeatureFlagClient.class)) {
-            this.featureFlagClient = context.getBootstrapContext().get(FeatureFlagClient.class);
+            featureFlagClient = context.getBootstrapContext().get(FeatureFlagClient.class);
         } else {
-            this.featureFlagClient = new FeatureFlagClient();
+            featureFlagClient = new FeatureFlagClient();
             context.getBootstrapContext().registerIfAbsent(FeatureFlagClient.class,
-                InstanceSupplier.from(() -> this.featureFlagClient));
+                InstanceSupplier.from(() -> featureFlagClient));
         }
+        featureFlagClient.resetTelemetry();
 
         List<EnumerablePropertySource<?>> sourceList = new ArrayList<>();
 
@@ -80,8 +82,10 @@ public class AzureAppConfigDataLoader implements ConfigDataLoader<AzureAppConfig
 
             boolean pushRefresh = false;
             PushNotification notification = resource.getMonitoring().getPushNotification();
-            if ((notification.getPrimaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))
-                || (notification.getSecondaryToken() != null && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
+            if ((notification.getPrimaryToken() != null
+                && StringUtils.hasText(notification.getPrimaryToken().getName()))
+                || (notification.getSecondaryToken() != null
+                    && StringUtils.hasText(notification.getPrimaryToken().getName()))) {
                 pushRefresh = true;
             }
             requestContext = new Context("refresh", resource.isRefresh()).addData(PUSH_REFRESH,

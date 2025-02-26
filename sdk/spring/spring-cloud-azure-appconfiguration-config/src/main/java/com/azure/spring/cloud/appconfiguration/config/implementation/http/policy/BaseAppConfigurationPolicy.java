@@ -46,11 +46,12 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         Boolean watchRequests = (Boolean) context.getData("refresh").orElse(false);
         Boolean pushRefresh = (Boolean) context.getData(PUSH_REFRESH).orElse(false);
+        FeatureFlagTracing ffTracing = (FeatureFlagTracing) context.getData("FeatureFlagTracing").orElse(null);
         HttpHeaders headers = context.getHttpRequest().getHeaders();
         String sdkUserAgent = headers.get(HttpHeaderName.USER_AGENT).getValue();
         headers.set(HttpHeaderName.USER_AGENT, USER_AGENT + " " + sdkUserAgent);
         headers.set(HttpHeaderName.fromString(AppConfigurationConstants.CORRELATION_CONTEXT),
-            tracingInfo.getValue(watchRequests, pushRefresh));
+            tracingInfo.getValue(watchRequests, pushRefresh, ffTracing));
 
         return next.process();
     }

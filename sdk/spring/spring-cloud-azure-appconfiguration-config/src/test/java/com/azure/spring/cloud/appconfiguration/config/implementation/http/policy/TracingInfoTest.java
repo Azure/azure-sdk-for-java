@@ -24,41 +24,42 @@ public class TracingInfoTest {
         Configuration configuration = getConfiguration("false");
 
         TracingInfo tracingInfo = new TracingInfo(false, 0, configuration);
-        assertEquals("RequestType=Startup", tracingInfo.getValue(false, false));
-        assertEquals("RequestType=Watch", tracingInfo.getValue(true, false));
+        assertEquals("RequestType=Startup", tracingInfo.getValue(false, false, null));
+        assertEquals("RequestType=Watch", tracingInfo.getValue(true, false, null));
 
         tracingInfo = new TracingInfo(true, 0, configuration);
-        assertEquals("RequestType=Startup,UsesKeyVault", tracingInfo.getValue(false, false));
+        assertEquals("RequestType=Startup,UsesKeyVault", tracingInfo.getValue(false, false, null));
 
         tracingInfo = new TracingInfo(false, 1, configuration);
-        assertEquals("RequestType=Startup,ReplicaCount=1", tracingInfo.getValue(false, false));
+        assertEquals("RequestType=Startup,ReplicaCount=1", tracingInfo.getValue(false, false, null));
 
-        tracingInfo = new TracingInfo(false, 0, configuration);
-
-        tracingInfo.getFeatureFlagTracing().updateFeatureFilterTelemetry("Random");
-        assertEquals("RequestType=Startup,Filter=CSTM", tracingInfo.getValue(false, false));
-        
         tracingInfo = new TracingInfo(true, 0, configuration);
-        assertEquals("RequestType=Startup,UsesKeyVault,PushRefresh", tracingInfo.getValue(false, true));
-        
+
+        FeatureFlagTracing ffTracing = new FeatureFlagTracing();
+
+        ffTracing.updateFeatureFilterTelemetry("Random");
+        assertEquals("RequestType=Startup,Filter=CSTM,UsesKeyVault", tracingInfo.getValue(false, false, ffTracing));
+
+        assertEquals("RequestType=Startup,Filter=CSTM,UsesKeyVault,PushRefresh", tracingInfo.getValue(false, true, null));
+
     }
 
     @Test
     public void disableTracingTest() {
         TracingInfo tracingInfo = new TracingInfo(false, 0, getConfiguration(null));
-        assertNotEquals("", tracingInfo.getValue(false, false));
-        
+        assertNotEquals("", tracingInfo.getValue(false, false, null));
+
         tracingInfo = new TracingInfo(false, 0, getConfiguration(""));
-        assertNotEquals("", tracingInfo.getValue(false, false));
-        
+        assertNotEquals("", tracingInfo.getValue(false, false, null));
+
         tracingInfo = new TracingInfo(false, 0, getConfiguration("true"));
-        assertEquals("", tracingInfo.getValue(false, false));
-        
+        assertEquals("", tracingInfo.getValue(false, false, null));
+
         tracingInfo = new TracingInfo(false, 0, getConfiguration("false"));
-        assertNotEquals("", tracingInfo.getValue(false, false));
-        
+        assertNotEquals("", tracingInfo.getValue(false, false, null));
+
         tracingInfo = new TracingInfo(false, 0, getConfiguration("random string"));
-        assertNotEquals("", tracingInfo.getValue(false, false));
+        assertNotEquals("", tracingInfo.getValue(false, false, null));
     }
 
     private static final ConfigurationSource EMPTY_SOURCE = new ConfigurationSource() {
@@ -69,9 +70,10 @@ public class TracingInfoTest {
     };
 
     private Configuration getConfiguration(String value) {
-        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource().put(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString(), value)).build();
+        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+            .put(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString(), value)).build();
     }
-    
+
     private final class TestConfigurationSource implements ConfigurationSource {
         private final Map<String, String> testData;
 
