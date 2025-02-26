@@ -3,6 +3,7 @@
 
 package io.clientcore.core.serialization.json;
 
+import io.clientcore.core.serialization.json.implementation.JsonUtils;
 import io.clientcore.core.serialization.json.implementation.jackson.core.JsonFactory;
 import io.clientcore.core.serialization.json.implementation.jackson.core.JsonParser;
 import io.clientcore.core.serialization.json.implementation.jackson.core.io.JsonStringEncoder;
@@ -781,26 +782,7 @@ public final class JsonReader implements Closeable {
         } else if (token == JsonToken.BOOLEAN) {
             return getBoolean();
         } else if (token == JsonToken.NUMBER) {
-            String numberText = getText();
-
-            if ("INF".equals(numberText)
-                || "Infinity".equals(numberText)
-                || "-INF".equals(numberText)
-                || "-Infinity".equals(numberText)
-                || "NaN".equals(numberText)) {
-                // Return special Double values as text as not all implementations of JsonReader may be able to handle
-                // them as Doubles when parsing generically.
-                return numberText;
-            } else if (numberText.contains(".")) {
-                // Unlike integers always use Double to prevent floating point rounding issues.
-                return Double.parseDouble(numberText);
-            } else {
-                try {
-                    return Integer.parseInt(numberText);
-                } catch (NumberFormatException ex) {
-                    return Long.parseLong(numberText);
-                }
-            }
+            return JsonUtils.parseNumber(getText());
         } else if (token == JsonToken.STRING) {
             return getString();
         } else if (token == JsonToken.START_ARRAY) {

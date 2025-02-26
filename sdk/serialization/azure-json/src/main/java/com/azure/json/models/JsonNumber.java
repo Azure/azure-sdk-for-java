@@ -6,6 +6,7 @@ package com.azure.json.models;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.json.implementation.JsonUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -42,63 +43,7 @@ public final class JsonNumber extends JsonElement {
      * @throws NumberFormatException If the string is not a valid number.
      */
     JsonNumber(String value) throws IllegalArgumentException {
-        int length = value.length();
-        boolean floatingPoint = false;
-        boolean infinity = value.contains("Infinity");
-        if (infinity) {
-            // Use Double.parseDouble to handle Infinity.
-            this.value = Double.parseDouble(value);
-            return;
-        }
-
-        for (int i = 0; i < length; i++) {
-            char c = value.charAt(i);
-            if (c == '.' || c == 'e' || c == 'E') {
-                floatingPoint = true;
-                break;
-            }
-        }
-
-        this.value = floatingPoint ? handleFloatingPoint(value) : handleInteger(value);
-    }
-
-    private static Number handleFloatingPoint(String value) {
-        // Floating point parsing will return Infinity if the String value is larger than what can be contained by
-        // the numeric type. Check if the String contains the Infinity representation to know when to scale up the
-        // numeric type.
-        // Additionally, due to the handling of values that can't fit into the numeric type, the only time floating
-        // point parsing will throw is when the string value is invalid.
-        float f = Float.parseFloat(value);
-
-        // If the float wasn't infinite, return it.
-        if (!Float.isInfinite(f)) {
-            return f;
-        }
-
-        double d = Double.parseDouble(value);
-        if (!Double.isInfinite(d)) {
-            return d;
-        }
-
-        return new BigDecimal(value);
-    }
-
-    private static Number handleInteger(String value) {
-        try {
-            return Integer.parseInt(value);
-        } catch (NumberFormatException failedInteger) {
-            try {
-                return Long.parseLong(value);
-            } catch (NumberFormatException failedLong) {
-                failedLong.addSuppressed(failedInteger);
-                try {
-                    return new BigInteger(value);
-                } catch (NumberFormatException failedBigDecimal) {
-                    failedBigDecimal.addSuppressed(failedLong);
-                    throw failedBigDecimal;
-                }
-            }
-        }
+        this.value = JsonUtils.parseNumber(value);
     }
 
     /**

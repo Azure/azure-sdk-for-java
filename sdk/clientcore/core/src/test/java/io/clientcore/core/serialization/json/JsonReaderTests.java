@@ -186,7 +186,7 @@ public class JsonReaderTests {
             assertEquals("string", jsonArray[0]);
             assertNull(jsonArray[1]);
             assertEquals(10, jsonArray[2]);
-            assertEquals(10.0D, jsonArray[3]);
+            assertEquals(10.0F, jsonArray[3]);
             assertEquals(true, jsonArray[4]);
         }
     }
@@ -741,6 +741,25 @@ public class JsonReaderTests {
                 assertNotNull(outputJson);
             }
         });
+    }
+
+    @ParameterizedTest
+    @MethodSource("readUntypedExponentNumbersSupplier")
+    public void readUntypedExponentNumbers(String numberString, Number expected) throws IOException {
+        readAndValidate(numberString, JsonReader::readUntyped, actual -> assertEquals(expected, actual));
+    }
+
+    private static Stream<Arguments> readUntypedExponentNumbersSupplier() {
+        return Stream.of(Arguments.of("1e-1", 0.1F), Arguments.of("1E-1", 0.1F), Arguments.of("1e+1", 10F),
+            Arguments.of("1E+1", 10F), Arguments.of("1e-01", 0.1F), Arguments.of("1E-01", 0.1F),
+            Arguments.of("1e+01", 10F), Arguments.of("1E+01", 10F), Arguments.of("1e0", 1F), Arguments.of("1E0", 1F),
+
+            // TODO (alzimmer): Determine status of this test based on https://github.com/FasterXML/jackson-core/issues/1405
+            // Arguments.of("INF", Double.POSITIVE_INFINITY),
+
+            Arguments.of("Infinity", Double.POSITIVE_INFINITY), Arguments.of("+INF", Double.POSITIVE_INFINITY),
+            Arguments.of("+Infinity", Double.POSITIVE_INFINITY), Arguments.of("-INF", Double.NEGATIVE_INFINITY),
+            Arguments.of("-Infinity", Double.NEGATIVE_INFINITY), Arguments.of("NaN", Double.NaN));
     }
 
     private static Stream<Arguments> readMapSupplier() {

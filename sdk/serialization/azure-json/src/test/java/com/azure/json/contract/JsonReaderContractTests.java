@@ -10,6 +10,8 @@ import com.azure.json.JsonWriter;
 import com.azure.json.ReadValueCallback;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -200,7 +202,7 @@ public abstract class JsonReaderContractTests {
             assertEquals("string", jsonArray[0]);
             assertNull(jsonArray[1]);
             assertEquals(10, jsonArray[2]);
-            assertEquals(10.0D, jsonArray[3]);
+            assertEquals(10.0F, jsonArray[3]);
             assertEquals(true, jsonArray[4]);
         }
     }
@@ -364,7 +366,7 @@ public abstract class JsonReaderContractTests {
             assertEquals("string", jsonArray[0]);
             assertNull(jsonArray[1]);
             assertEquals(10, jsonArray[2]);
-            assertEquals(10.0D, jsonArray[3]);
+            assertEquals(10.0F, jsonArray[3]);
             assertEquals(true, jsonArray[4]);
             assertEquals("innerString", jsonArray[5]);
         }
@@ -411,7 +413,7 @@ public abstract class JsonReaderContractTests {
             assertEquals("string", jsonArray[0]);
             assertNull(jsonArray[1]);
             assertEquals(10, jsonArray[2]);
-            assertEquals(10.0D, jsonArray[3]);
+            assertEquals(10.0F, jsonArray[3]);
             assertEquals(true, jsonArray[4]);
             assertEquals("innerString", jsonArray[5]);
         }
@@ -445,9 +447,9 @@ public abstract class JsonReaderContractTests {
 
     private static Stream<Arguments> readUntypedSimpleSupplier() {
         return Stream.of(Arguments.of("null", 1, null), Arguments.of("true", 1, true), Arguments.of("false", 1, false),
-            Arguments.of("3.14", 1, 3.14), Arguments.of("NaN", 1, String.valueOf(Double.NaN)),
-            Arguments.of("-Infinity", 1, String.valueOf(Double.NEGATIVE_INFINITY)),
-            Arguments.of("Infinity", 1, String.valueOf(Double.POSITIVE_INFINITY)), Arguments.of("42", 1, 42),
+            Arguments.of("3.14", 1, 3.14F), Arguments.of("NaN", 1, Double.NaN),
+            Arguments.of("-Infinity", 1, Double.NEGATIVE_INFINITY),
+            Arguments.of("Infinity", 1, Double.POSITIVE_INFINITY), Arguments.of("42", 1, 42),
             Arguments.of("420000000000", 1, 420000000000L), Arguments.of("\"hello\"", 1, "hello"));
     }
 
@@ -708,7 +710,7 @@ public abstract class JsonReaderContractTests {
         ReadValueCallback<JsonReader, List<Object>> reader = read(r -> r.readArray(JsonReader::readUntyped));
         return Stream.of(Arguments.of("null", reader, null), Arguments.of("[]", reader, Collections.emptyList()),
             Arguments.of("[10]", reader, Collections.singletonList(10)),
-            Arguments.of("[true,10,10.0,\"hello\"]", reader, Arrays.asList(true, 10, 10.0D, "hello")));
+            Arguments.of("[true,10,10.0,\"hello\"]", reader, Arrays.asList(true, 10, 10.0F, "hello")));
     }
 
     @Test
@@ -738,11 +740,31 @@ public abstract class JsonReaderContractTests {
         Map<String, Object> map = new LinkedHashMap<>();
         map.put("boolean", true);
         map.put("int", 42);
-        map.put("decimal", 42.0D);
+        map.put("decimal", 42.0F);
         map.put("string", "hello");
 
         return Stream.of(Arguments.of("null", reader, null), Arguments.of("{}", reader, Collections.emptyMap()),
             Arguments.of("{\"boolean\":true,\"int\":42,\"decimal\":42.0,\"string\":\"hello\"}", reader, map));
+    }
+
+    @Execution(ExecutionMode.SAME_THREAD)
+    @ParameterizedTest
+    @MethodSource("readUntypedExponentNumbersSupplier")
+    public void readUntypedExponentNumbers(String numberString, Number expected) throws IOException {
+        readAndValidate(numberString, JsonReader::readUntyped, actual -> assertEquals(expected, actual));
+    }
+
+    private static Stream<Arguments> readUntypedExponentNumbersSupplier() {
+        return Stream.of(Arguments.of("1e-1", 0.1F), Arguments.of("1E-1", 0.1F), Arguments.of("1e+1", 10F),
+            Arguments.of("1E+1", 10F), Arguments.of("1e-01", 0.1F), Arguments.of("1E-01", 0.1F),
+            Arguments.of("1e+01", 10F), Arguments.of("1E+01", 10F), Arguments.of("1e0", 1F), Arguments.of("1E0", 1F),
+
+            // TODO (alzimmer): Determine status of this test based on https://github.com/FasterXML/jackson-core/issues/1405
+            // Arguments.of("INF", Double.POSITIVE_INFINITY),
+
+            Arguments.of("Infinity", Double.POSITIVE_INFINITY), Arguments.of("+INF", Double.POSITIVE_INFINITY),
+            Arguments.of("+Infinity", Double.POSITIVE_INFINITY), Arguments.of("-INF", Double.NEGATIVE_INFINITY),
+            Arguments.of("-Infinity", Double.NEGATIVE_INFINITY), Arguments.of("NaN", Double.NaN));
     }
 
     private static void assertJsonReaderStructInitialization(JsonReader reader, JsonToken expectedInitialToken)
