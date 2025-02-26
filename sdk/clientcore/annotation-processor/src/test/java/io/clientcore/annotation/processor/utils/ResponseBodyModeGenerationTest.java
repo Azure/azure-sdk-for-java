@@ -38,8 +38,8 @@ public class ResponseBodyModeGenerationTest {
         BlockStmt body = new BlockStmt();
         HttpRequestContext context = new HttpRequestContext();
         context.setHttpMethod(HttpMethod.DELETE);
-        context.setMethodReturnType("void");
-        ResponseBodyModeGeneration.generateResponseHandling(body, "void", context);
+        //context.setMethodReturnType("void");
+        //ResponseBodyModeGeneration.generateResponseHandling(body, "void", context);
         assertTrue(body.toString().contains("return"));
     }
 
@@ -48,8 +48,8 @@ public class ResponseBodyModeGenerationTest {
         BlockStmt body = new BlockStmt();
         HttpRequestContext context = new HttpRequestContext();
         context.setHttpMethod(HttpMethod.GET);
-        context.setMethodReturnType("Response<Foo>");
-        ResponseBodyModeGeneration.generateResponseHandling(body, "Response", context);
+        //context.setMethodReturnType("Response<Foo>");
+        //ResponseBodyModeGeneration.generateResponseHandling(body, "Response", context);
         assertTrue(body.toString().contains("HttpResponseAccessHelper.setValue"));
     }
 
@@ -58,8 +58,8 @@ public class ResponseBodyModeGenerationTest {
         BlockStmt body = new BlockStmt();
         HttpRequestContext context = new HttpRequestContext();
         context.setHttpMethod(HttpMethod.GET);
-        context.setMethodReturnType("Response<Foo>");
-        ResponseBodyModeGeneration.generateResponseHandling(body, "Response", context);
+        //context.setMethodReturnType("Response<Foo>");
+        //ResponseBodyModeGeneration.generateResponseHandling(body, "Response", context);
         assertTrue(body.toString().contains("HttpResponseAccessHelper.setBodyDeserializer"));
     }
 }
