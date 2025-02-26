@@ -279,6 +279,13 @@ This method may return conversions which have yet to start, conversions which ar
 In this example, we just list the output URLs of successful conversions started in the last day.
 
 ```java readme-sample-listConversions
+for (AssetConversion conversion : client.listConversions()) {
+    if (conversion.getStatus() == AssetConversionStatus.SUCCEEDED) {
+        if (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1))) {
+            logger.info("Output Asset URL: {}", conversion.getOutputAssetUrl());
+        }
+    }
+}
 ```
 
 ### Create a rendering session

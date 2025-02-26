@@ -58,7 +58,7 @@ steps:
     inputs:
       mavenPomFile: pom.xml
       options: '$(DefaultOptions) --no-transfer-progress ${{ parameters.AdditionalLintingOptions }} -pl $(ProjectList)'
-      mavenOptions: '$(MemoryOptions)'
+      mavenOptions: '$(MemoryOptions) -e -X'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: ${{ parameters.JavaBuildVersion }}
       jdkArchitectureOption: 'x64'
