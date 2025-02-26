@@ -3422,21 +3422,24 @@ public class ShareFileAsyncClient {
     public Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(ShareFileCreateSymbolicLinkOptions options) {
         try {
             StorageImplUtils.assertNotNull("options", options);
-            return withContext(context -> createSymbolicLinkWithResponse(options.getLinkText(), options.getMetadata(), options.getFileCreationTime(), options.getFileLastWriteTime(), options.getOwner(), options.getGroup(),
+            return withContext(context -> createSymbolicLinkWithResponse(options.getLinkText(), options.getMetadata(),
+                options.getFileCreationTime(), options.getFileLastWriteTime(), options.getOwner(), options.getGroup(),
                 options.getRequestConditions(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
-    Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(String linkText, Map<String, String> metadata, OffsetDateTime fileCreationTime, OffsetDateTime fileLastWriteTime, String owner, String group, ShareRequestConditions requestConditions, Context context) {
+    Mono<Response<ShareFileInfo>> createSymbolicLinkWithResponse(String linkText, Map<String, String> metadata,
+        OffsetDateTime fileCreationTime, OffsetDateTime fileLastWriteTime, String owner, String group,
+        ShareRequestConditions requestConditions, Context context) {
         context = context == null ? Context.NONE : context;
         requestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
         String fileCreationTimeString = FileSmbProperties.parseFileSMBDate(fileCreationTime);
         String fileLastWriteTimeString = FileSmbProperties.parseFileSMBDate(fileLastWriteTime);
         return this.azureFileStorageClient.getFiles()
-            .createSymbolicLinkWithResponseAsync(shareName, filePath, linkText, null, metadata, fileCreationTimeString, fileLastWriteTimeString, null,
-                requestConditions.getLeaseId(), owner, group, context)
+            .createSymbolicLinkWithResponseAsync(shareName, filePath, linkText, null, metadata, fileCreationTimeString,
+                fileLastWriteTimeString, null, requestConditions.getLeaseId(), owner, group, context)
             .map(ModelHelper::createSymbolicLinkResponse);
     }
 
