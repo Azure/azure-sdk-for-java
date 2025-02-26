@@ -37,7 +37,7 @@ com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-anomalydetector;3.0.0-beta.5;3.0.0-beta.6
-com.azure:azure-ai-contentsafety;1.0.8;1.0.9
+com.azure:azure-ai-contentsafety;1.0.9;1.0.10
 com.azure:azure-ai-documentintelligence;1.0.0-beta.4;1.0.0-beta.5
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-formrecognizer;4.1.12;4.2.0-beta.1
@@ -83,12 +83,12 @@ com.azure:azure-communication-sms;1.1.29;1.1.30
 com.azure:azure-compute-batch;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-containers-containerregistry;1.2.13;1.2.14
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-core;1.54.1;1.55.0-beta.1
+com.azure:azure-core;1.55.2;1.56.0-beta.1
 com.azure:azure-core-amqp;2.9.12;2.10.0-beta.1
 com.azure:azure-core-amqp-experimental;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core-experimental;1.0.0-beta.56;1.0.0-beta.57
 com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.19;1.0.0-beta.20
-com.azure:azure-core-http-netty;1.15.7;1.16.0-beta.1
+com.azure:azure-core-http-netty;1.15.10;1.16.0-beta.1
 com.azure:azure-core-http-okhttp;1.12.6;1.13.0-beta.1
 com.azure:azure-core-http-vertx;1.0.0-beta.24;1.0.0-beta.25
 com.azure:azure-core-management;1.15.6;1.16.0-beta.1
