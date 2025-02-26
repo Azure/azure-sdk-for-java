@@ -12,10 +12,6 @@ extends:
       groupId: com.azure
       safeName: azuremonitoringestion
       ServiceDirectory: monitor
-    - name: azure-identity-broker
-      groupId: com.azure
-      safeName: azureidentitybroker
-      ServiceDirectory: identity
     - name: azure-search-documents
       groupId: com.azure
       safeName: azuresearch
