@@ -197,22 +197,6 @@ public class DocumentServiceRequestContext implements Cloneable {
         this.unavailableRegionsForPartition = unavailableRegionsForPartition;
     }
 
-//    public PointOperationContextForCircuitBreaker getPointOperationContextForCircuitBreaker() {
-//        return pointOperationContextForCircuitBreaker;
-//    }
-//
-//    public void setPointOperationContext(PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker) {
-//        this.pointOperationContextForCircuitBreaker = pointOperationContextForCircuitBreaker;
-//    }
-//
-//    public FeedOperationContextForCircuitBreaker getFeedOperationContextForCircuitBreaker() {
-//        return feedOperationContextForCircuitBreaker;
-//    }
-//
-//    public void setFeedOperationContext(FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker) {
-//        this.feedOperationContextForCircuitBreaker = feedOperationContextForCircuitBreaker;
-//    }
-
     public void setCrossRegionAvailabilityContext(CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest) {
         this.crossRegionAvailabilityContextForRequest = crossRegionAvailabilityContextForRequest;
     }

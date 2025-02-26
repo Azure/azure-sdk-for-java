@@ -970,7 +970,7 @@ public class LocationCache {
             UnmodifiableMap<String, URI> endpointByRegionName,
             // exclude regions from request options or client
             List<String> userConfiguredExcludeRegions,
-            List<URI> endpointsRemovedByExcludeRegions,
+            List<URI> endpointsRemovedByInternalExcludeRegions,
             // exclude URIs from per-partition circuit breaker
             List<String> internalExcludeRegions,
             // exclude endpoints from per-partition circuit breaker
@@ -1004,28 +1004,37 @@ public class LocationCache {
 
             if (availabilityStrategyContext != null) {
 
+                // purely a hedged request doesn't need applicable region augmentation
                 if (availabilityStrategyContext.isAvailabilityStrategyEnabled() && availabilityStrategyContext.isHedgedRequest()) {
                     return applicableLocationEndpoints;
                 }
             }
 
-            if (!userConfiguredExcludeRegions.isEmpty() && isFallbackEndpointUsed && endpointsRemovedByExcludeRegions.isEmpty()) {
-                crossRegionAvailabilityContextForRequest.setShouldUsePerPartitionAutomaticFailoverOverride(true);
-                return applicableLocationEndpoints;
-            }
-
-            // if every region is excluded + preferred regions aren't set, customer would intend to fall back to hub [or] region chosen through PPAF flow
-            if (isFallbackEndpointUsed && effectivePreferredLocations != null && !effectivePreferredLocations.isEmpty()) {
-
-                // do not return from here if PPAF not configured and PPCB also involved in marking regions as unavailable
-                crossRegionAvailabilityContextForRequest.setShouldUsePerPartitionAutomaticFailoverOverride(true);
-            }
-
             List<URI> modifiedApplicableEndpoints = new ArrayList<>();
-
             URI firstApplicableLocationEndpoint = applicableLocationEndpoints.get(0);
-            modifiedApplicableEndpoints.add(firstApplicableLocationEndpoint);
 
+            if (isFallbackEndpointUsed) {
+                // user wishes to exclude all regions - use partition-set level primary region [or] account-level primary region
+                // no cross region retries applicable
+                if (!userConfiguredExcludeRegions.isEmpty() && endpointsRemovedByInternalExcludeRegions.isEmpty()) {
+                    crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
+                    return applicableLocationEndpoints;
+                }
+
+                // this scenario is when PPCB + user-configured exclude regions has kicked in for client with no preferred regions
+                // idea is to start from partition-set level primary and go to account-level primary
+                if (effectivePreferredLocations != null && !effectivePreferredLocations.isEmpty()) {
+
+                    if (crossRegionAvailabilityContextForRequest.hasPerPartitionAutomaticFailoverBeenAppliedForReads()) {
+                        crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(false);
+                        modifiedApplicableEndpoints.add(firstApplicableLocationEndpoint);
+                    } else {
+                        crossRegionAvailabilityContextForRequest.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(true);
+                    }
+                }
+            }
+
+            modifiedApplicableEndpoints.add(firstApplicableLocationEndpoint);
             // todo: will change when GW returns multiple endpoints per region - thin-proxy dependency
             boolean isFirstApplicableEndpointAGlobalEndpoint = !regionNameByEndpoint.containsKey(firstApplicableLocationEndpoint);
 

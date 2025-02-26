@@ -7,7 +7,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
-    private final AtomicBoolean shouldUsePerPartitionAutomaticFailoverOverride = new AtomicBoolean(false);
+    private final AtomicBoolean shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable = new AtomicBoolean(false);
+
+    private final AtomicBoolean hasPerPartitionAutomaticFailoverBeenAppliedForReads = new AtomicBoolean(false);
 
     private final FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
 
@@ -37,11 +39,19 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
         return this.pointOperationContextForCircuitBreaker;
     }
 
-    public boolean shouldUsePerPartitionAutomaticFailoverOverride() {
-        return shouldUsePerPartitionAutomaticFailoverOverride.get();
+    public boolean shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable() {
+        return shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable.get();
     }
 
-    public void setShouldUsePerPartitionAutomaticFailoverOverride(boolean shouldUsePerPartitionAutomaticFailoverOverride) {
-        this.shouldUsePerPartitionAutomaticFailoverOverride.set(shouldUsePerPartitionAutomaticFailoverOverride);
+    public void shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable(boolean shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable) {
+        this.shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable.set(shouldUsePerPartitionAutomaticFailoverOverrideForReadsIfApplicable);
+    }
+
+    public void setPerPartitionAutomaticFailoverAppliedStatusForReads(boolean perPartitionAutomaticFailoverAppliedStatus) {
+        this.hasPerPartitionAutomaticFailoverBeenAppliedForReads.set(perPartitionAutomaticFailoverAppliedStatus);
+    }
+
+    public boolean hasPerPartitionAutomaticFailoverBeenAppliedForReads() {
+        return this.hasPerPartitionAutomaticFailoverBeenAppliedForReads.get();
     }
 }
