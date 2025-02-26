@@ -34,7 +34,7 @@ public interface AzureAppConfigurationClientService {
             return (AzureAppConfigurationClientService) clazz
                 .getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class, String.class, String.class,
                     String.class, RequestOptions.class)
-                .invoke(null, pipeline, serializer, endpoint, syncToken, accept, requestOptions);
+                .invoke(null, pipeline, serializer, syncToken, accept, requestOptions);
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
                  | InvocationTargetException e) {
             throw new RuntimeException(e);
