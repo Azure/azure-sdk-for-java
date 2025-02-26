@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,12 +34,6 @@ public final class AutoStopCriteria implements JsonSerializable<AutoStopCriteria
      */
     @Generated
     private Double errorRate;
-
-    /*
-     * Time window during which the error percentage should be evaluated in seconds.
-     */
-    @Generated
-    private Integer errorRateTimeWindowInSeconds;
 
     /**
      * Stores updated model property, the value is property name, not serialized name.
@@ -127,31 +122,6 @@ public final class AutoStopCriteria implements JsonSerializable<AutoStopCriteria
     }
 
     /**
-     * Get the errorRateTimeWindowInSeconds property: Time window during which the error percentage should be evaluated
-     * in seconds.
-     *
-     * @return the errorRateTimeWindowInSeconds value.
-     */
-    @Generated
-    public Integer getErrorRateTimeWindowInSeconds() {
-        return this.errorRateTimeWindowInSeconds;
-    }
-
-    /**
-     * Set the errorRateTimeWindowInSeconds property: Time window during which the error percentage should be evaluated
-     * in seconds.
-     *
-     * @param errorRateTimeWindowInSeconds the errorRateTimeWindowInSeconds value to set.
-     * @return the AutoStopCriteria object itself.
-     */
-    @Generated
-    public AutoStopCriteria setErrorRateTimeWindowInSeconds(Integer errorRateTimeWindowInSeconds) {
-        this.errorRateTimeWindowInSeconds = errorRateTimeWindowInSeconds;
-        this.updatedProperties.add("errorRateTimeWindowInSeconds");
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -163,7 +133,7 @@ public final class AutoStopCriteria implements JsonSerializable<AutoStopCriteria
             jsonWriter.writeStartObject();
             jsonWriter.writeBooleanField("autoStopDisabled", this.autoStopDisabled);
             jsonWriter.writeNumberField("errorRate", this.errorRate);
-            jsonWriter.writeNumberField("errorRateTimeWindowInSeconds", this.errorRateTimeWindowInSeconds);
+            jsonWriter.writeNumberField("errorRateTimeWindowInSeconds", this.errorRateTimeWindow);
             return jsonWriter.writeEndObject();
         }
     }
@@ -185,11 +155,11 @@ public final class AutoStopCriteria implements JsonSerializable<AutoStopCriteria
                 jsonWriter.writeNumberField("errorRate", this.errorRate);
             }
         }
-        if (updatedProperties.contains("errorRateTimeWindowInSeconds")) {
-            if (this.errorRateTimeWindowInSeconds == null) {
+        if (updatedProperties.contains("errorRateTimeWindow")) {
+            if (this.errorRateTimeWindow == null) {
                 jsonWriter.writeNullField("errorRateTimeWindowInSeconds");
             } else {
-                jsonWriter.writeNumberField("errorRateTimeWindowInSeconds", this.errorRateTimeWindowInSeconds);
+                jsonWriter.writeNumberField("errorRateTimeWindowInSeconds", this.errorRateTimeWindow);
             }
         }
         return jsonWriter.writeEndObject();
@@ -215,12 +185,50 @@ public final class AutoStopCriteria implements JsonSerializable<AutoStopCriteria
                 } else if ("errorRate".equals(fieldName)) {
                     deserializedAutoStopCriteria.errorRate = reader.getNullable(JsonReader::getDouble);
                 } else if ("errorRateTimeWindowInSeconds".equals(fieldName)) {
-                    deserializedAutoStopCriteria.errorRateTimeWindowInSeconds = reader.getNullable(JsonReader::getInt);
+                    deserializedAutoStopCriteria.errorRateTimeWindow = reader.getNullable(JsonReader::getLong);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedAutoStopCriteria;
         });
+    }
+
+    /*
+     * Time window during which the error percentage should be evaluated in seconds.
+     */
+    @Generated
+    private Long errorRateTimeWindow;
+
+    /**
+     * Get the errorRateTimeWindow property: Time window during which the error percentage should be evaluated in
+     * seconds.
+     *
+     * @return the errorRateTimeWindow value.
+     */
+    @Generated
+    public Duration getErrorRateTimeWindow() {
+        if (this.errorRateTimeWindow == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.errorRateTimeWindow);
+    }
+
+    /**
+     * Set the errorRateTimeWindow property: Time window during which the error percentage should be evaluated in
+     * seconds.
+     *
+     * @param errorRateTimeWindow the errorRateTimeWindow value to set.
+     * @return the AutoStopCriteria object itself.
+     */
+    @Generated
+    public AutoStopCriteria setErrorRateTimeWindow(Duration errorRateTimeWindow) {
+        if (errorRateTimeWindow == null) {
+            this.errorRateTimeWindow = null;
+        } else {
+            this.errorRateTimeWindow = errorRateTimeWindow.getSeconds();
+        }
+        this.updatedProperties.add("errorRateTimeWindow");
+        return this;
     }
 }

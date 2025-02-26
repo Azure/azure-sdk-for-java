@@ -709,7 +709,7 @@ public final class LoadTestRunAsyncClient {
      *     autoStopCriteria (Optional): {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
-     *         errorRateTimeWindowInSeconds: Integer (Optional)
+     *         errorRateTimeWindowInSeconds: Long (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -957,7 +957,7 @@ public final class LoadTestRunAsyncClient {
      *     autoStopCriteria (Optional): {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
-     *         errorRateTimeWindowInSeconds: Integer (Optional)
+     *         errorRateTimeWindowInSeconds: Long (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {
@@ -1129,7 +1129,7 @@ public final class LoadTestRunAsyncClient {
      *     autoStopCriteria (Optional): {
      *         autoStopDisabled: Boolean (Optional)
      *         errorRate: Double (Optional)
-     *         errorRateTimeWindowInSeconds: Integer (Optional)
+     *         errorRateTimeWindowInSeconds: Long (Optional)
      *     }
      *     secrets (Optional): {
      *         String (Required): {

@@ -20,6 +20,7 @@ import com.azure.developer.loadtesting.models.Secret;
 import com.azure.developer.loadtesting.models.SecretType;
 import com.azure.developer.loadtesting.models.Test;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -53,7 +54,7 @@ public class CreateOrUpdateALoadTest {
                             .setAction(PassFailAction.CONTINUE))))
                 .setAutoStopCriteria(new AutoStopCriteria().setAutoStopDisabled(true)
                     .setErrorRate(70.0D)
-                    .setErrorRateTimeWindowInSeconds(60))
+                    .setErrorRateTimeWindow(Duration.parse("60")))
                 .setSecrets(mapOf("secret1",
                     new Secret().setValue(
                         "https://samplevault.vault.azure.net/secrets/samplesecret/f113f91fd4c44a368049849c164db827")
