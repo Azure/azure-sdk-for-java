@@ -1,10 +1,11 @@
 ## Release History
 
-### 4.67.0-beta.1 (Unreleased)
+### 4.67.0 (2025-02-20)
 
-#### Features Added
+#### Bugs Fixed
+* Block `ChangeFeedProcessor` from starting by throwing an `IllegalStateException` when the lease container contains leases with the same lease prefix but different `ChangeFeedMode` - [PR 43798](https://github.com/Azure/azure-sdk-for-java/pull/43798).
 
-#### Breaking Changes
+### 4.66.1 (2025-02-08)
 
 #### Bugs Fixed
 * Fixed an issue in change feed processor where records are skipped and excessive requests are prefetched. - See [PR 43788](https://github.com/Azure/azure-sdk-for-java/pull/43788)
@@ -13,6 +14,7 @@
 
 #### Other Changes
 * Added temporary internal-only option to enable thin client mode with system property COSMOS.THINCLIENT_ENABLED, setting the thin client endpoint with system property COSMOS.THINCLIENT_ENDPOINT, and default thin client endpoint with system property COSMOS.DEFAULT_THINCLIENT_ENDPOINT while the thin-client transport is still under development. This transport mode is not yet supported or ready to be used by external customers. Please don't use these configs in any production scenario yet. - [PR 43188](https://github.com/Azure/azure-sdk-for-java/pull/43188)
+* Added a system property `COSMOS.ITEM_SERIALIZATION_INCLUSION_MODE` (environment variable `COSMOS_ITEM_SERIALIZATION_INCLUSION_MODE`) that allows customizing (`Always`, `NonNull`, `NonEmpty`, `NonDefault`) the JSON serialization inclusion mode when serializing items/documents. - See [PR 44035](https://github.com/Azure/azure-sdk-for-java/pull/44035) and [PR 44114](https://github.com/Azure/azure-sdk-for-java/pull/44114)
 
 ### 4.66.0 (2025-01-14)
 

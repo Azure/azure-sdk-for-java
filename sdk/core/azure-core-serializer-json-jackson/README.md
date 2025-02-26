@@ -48,7 +48,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-serializer-json-jackson</artifactId>
-    <version>1.5.4</version>
+    <version>1.5.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -87,4 +87,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [java8_client_compatibility]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-serializer-json-jackson%2FREADME.png)
+

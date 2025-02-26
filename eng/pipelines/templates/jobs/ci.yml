@@ -453,6 +453,8 @@ jobs:
           - ${{ config }}
       ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
         EnablePRGeneration: true
+        # We want full matrix for indirect packages
+        PRMatrixSparseIndirect: false
         SparseCheckoutPaths:
           - '**/*.xml'
           - '**/*.md'

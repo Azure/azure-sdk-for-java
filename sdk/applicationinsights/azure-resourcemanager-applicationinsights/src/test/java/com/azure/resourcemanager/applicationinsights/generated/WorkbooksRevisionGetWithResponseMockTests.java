@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ManagedServiceIdentityType;
@@ -23,31 +23,31 @@ public final class WorkbooksRevisionGetWithResponseMockTests {
     @Test
     public void testRevisionGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"exwhcb\",\"serializedData\":\"pibkephuu\",\"version\":\"rctat\",\"timeModified\":\"2021-04-07T20:43:54Z\",\"category\":\"ntqpbr\",\"tags\":[\"rduczkgofxyfs\",\"uc\",\"crrpcjttbstvje\",\"qnrmvvfko\"],\"userId\":\"lghktuidvrm\",\"sourceId\":\"lpdwwexymzvlazi\",\"storageUri\":\"hpwvqsgnyyuu\",\"description\":\"vensrpm\",\"revision\":\"yvpkpatlbijpzgsk\"},\"identity\":{\"principalId\":\"4d373b1d-8bc8-4481-9731-e3262f33d701\",\"tenantId\":\"865f3774-a021-4c34-bd09-e2a4b4cee2f2\",\"type\":\"None\",\"userAssignedIdentities\":{\"nbnxwcdomm\":{\"principalId\":\"6ba1a65e-5077-4270-afe5-39518ec8a185\",\"clientId\":\"0d8c9701-c4b4-4b7c-8f93-c9d89a8cb783\"},\"qa\":{\"principalId\":\"0466c49f-e2a3-42e9-a76c-41df47a5c87a\",\"clientId\":\"1e162506-214b-44db-9ff0-61071cc46839\"},\"gbrt\":{\"principalId\":\"bf00012f-4500-47e8-9d85-50b69850a0fc\",\"clientId\":\"0e0b5701-76c2-4397-98e9-2aa2344ae94f\"}}},\"kind\":\"shared\",\"etag\":\"clkiexhajl\",\"location\":\"n\",\"tags\":{\"ygbpvnwswmt\":\"qfyuttd\",\"ctwwgzw\":\"k\",\"og\":\"jlmec\"},\"id\":\"gzyvnee\",\"name\":\"aifghtmoqqt\",\"type\":\"ffhzbkrkjjjavfq\"}";
+            = "{\"properties\":{\"displayName\":\"w\",\"serializedData\":\"sydsxwefohe\",\"version\":\"vopwndyqleallk\",\"timeModified\":\"2021-10-09T13:48:10Z\",\"category\":\"khlowkxxpv\",\"tags\":[\"fjmzsyzfho\",\"lhikcyychunsj\",\"pjrtws\",\"hv\"],\"userId\":\"icphvtrrmhw\",\"sourceId\":\"fdpyflubh\",\"storageUri\":\"glrocuy\",\"description\":\"whhmemhooc\",\"revision\":\"tnpqmemczjk\"},\"identity\":{\"principalId\":\"fd649e2c-ed47-4f19-ad77-bec2f4570ae7\",\"tenantId\":\"9b620f9a-3527-40b2-a7c0-c65f965d3ae2\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"lhsrrry\":{\"principalId\":\"ca812142-37d6-470f-bb15-630954b9a9c2\",\"clientId\":\"4bdc2101-776e-4e98-8177-ffc6c242dde6\"},\"lmbkzu\":{\"principalId\":\"d7a3d2c7-9951-41a6-99c6-46c01d4a8fe7\",\"clientId\":\"5f0c6387-9659-432e-bdb0-ffa816c850ea\"}}},\"kind\":\"shared\",\"etag\":\"rfih\",\"location\":\"tjewlpxuzzj\",\"tags\":{\"iwfbrkwpzdqtvhcs\":\"efqyhqotoihiqaky\",\"ietgbebjfu\":\"odaqaxsi\"},\"id\":\"bmoichd\",\"name\":\"pnfpubntnbat\",\"type\":\"viqsowsaaelcattc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Workbook response = manager.workbooks()
-            .revisionGetWithResponse("eksgbuxantuygd", "gaqi", "irpiwrqofulopmj", com.azure.core.util.Context.NONE)
+            .revisionGetWithResponse("d", "saoafcluqvox", "ycjimryvwgcwwpbm", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("n", response.location());
-        Assertions.assertEquals("qfyuttd", response.tags().get("ygbpvnwswmt"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("tjewlpxuzzj", response.location());
+        Assertions.assertEquals("efqyhqotoihiqaky", response.tags().get("iwfbrkwpzdqtvhcs"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.identity().type());
         Assertions.assertEquals(WorkbookSharedTypeKind.SHARED, response.kind());
-        Assertions.assertEquals("clkiexhajl", response.etag());
-        Assertions.assertEquals("exwhcb", response.displayName());
-        Assertions.assertEquals("pibkephuu", response.serializedData());
-        Assertions.assertEquals("rctat", response.version());
-        Assertions.assertEquals("ntqpbr", response.category());
-        Assertions.assertEquals("rduczkgofxyfs", response.tagsPropertiesTags().get(0));
-        Assertions.assertEquals("lpdwwexymzvlazi", response.sourceId());
-        Assertions.assertEquals("hpwvqsgnyyuu", response.storageUri());
-        Assertions.assertEquals("vensrpm", response.description());
+        Assertions.assertEquals("rfih", response.etag());
+        Assertions.assertEquals("w", response.displayName());
+        Assertions.assertEquals("sydsxwefohe", response.serializedData());
+        Assertions.assertEquals("vopwndyqleallk", response.version());
+        Assertions.assertEquals("khlowkxxpv", response.category());
+        Assertions.assertEquals("fjmzsyzfho", response.tagsPropertiesTags().get(0));
+        Assertions.assertEquals("fdpyflubh", response.sourceId());
+        Assertions.assertEquals("glrocuy", response.storageUri());
+        Assertions.assertEquals("whhmemhooc", response.description());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.quota.generated;
 public final class GroupQuotaLimitsListSamples {
     /*
      * x-ms-original-file:
-     * specification/quota/resource-manager/Microsoft.Quota/preview/2024-12-18-preview/examples/GroupQuotaLimits/
+     * specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/GroupQuotaLimits/
      * ListGroupQuotaLimits-Compute.json
      */
     /**

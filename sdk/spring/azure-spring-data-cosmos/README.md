@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>5.19.0</version>
+    <version>5.20.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -1167,4 +1167,4 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [spring_boot_supported_versions]: https://github.com/spring-projects/spring-boot/wiki/Supported-Versions
 [azure_cosmos_db_java_sdk_samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)
+

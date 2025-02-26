@@ -8,18 +8,11 @@ import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-public class CoreUtilsTest implements RewriteTest {
+public class CoreUtilsTest extends RecipeTestBase {
     /**
      * Test migrations from
      * com.azure.core.util.CoreUtils to com.azure.core.v2.util.CoreUtils
      */
-
-    @Override
-    public void defaults(RecipeSpec spec) {
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-                "com.azure.openrewrite.migrateToVNext");
-    }
-
     /* Tests that CoreUtil import is changed */
     @Test
     public void testConfigurationImportChanged() {

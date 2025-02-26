@@ -3,7 +3,7 @@
 
 package io.clientcore.core.models;
 
-import io.clientcore.core.implementation.util.DateTimeRfc1123;
+import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;

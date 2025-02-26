@@ -94,6 +94,7 @@
  * Tracer tracer = GlobalOpenTelemetry.getTracer&#40;&quot;sample&quot;&#41;;
  * Span span = tracer.spanBuilder&#40;&quot;my-operation&quot;&#41;
  *     .startSpan&#40;&#41;;
+ *
  * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
  *
  * &#47;&#47; Propagating context implicitly is preferred way in synchronous code.

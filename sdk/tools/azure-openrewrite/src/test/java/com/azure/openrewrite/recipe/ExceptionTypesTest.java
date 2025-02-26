@@ -8,7 +8,7 @@ import static org.openrewrite.java.Assertions.java;
 import org.openrewrite.test.RecipeSpec;
 import org.openrewrite.test.RewriteTest;
 
-public class ExceptionTypesTest implements RewriteTest {
+public class ExceptionTypesTest extends RecipeTestBase {
     /**
      * ExceptionTypesTest tests exception migrations from azure-core v1
      * to azure-core-v2 and client-core.
@@ -29,11 +29,6 @@ public class ExceptionTypesTest implements RewriteTest {
      *
      */
 
-    @Override
-    public void defaults(RecipeSpec spec) {
-        spec.recipeFromResource("/META-INF/rewrite/rewrite.yml",
-                "com.azure.openrewrite.migrateToVNext");
-    }
 
     /* Testing ChangeType recipes */
     @Test

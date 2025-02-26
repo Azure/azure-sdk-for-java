@@ -180,4 +180,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- links -->
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fserialization%2Fazure-xml%2FREADME.png)
+

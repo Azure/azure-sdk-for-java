@@ -3,7 +3,7 @@
 
 package io.clientcore.annotation.processor.models;
 
-import io.clientcore.core.http.annotation.UnexpectedResponseExceptionDetail;
+import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
@@ -155,8 +155,7 @@ public class TemplateInput {
         String shortName = null;
 
         if (type.getKind().isPrimitive()) {
-            shortName = toShortName(longName);
-            imports.put(longName, shortName);
+            return longName;
         } else if (imports.containsKey(type.toString())) {
             shortName = imports.get(longName);
         } else if (type.getKind() == TypeKind.DECLARED) {
