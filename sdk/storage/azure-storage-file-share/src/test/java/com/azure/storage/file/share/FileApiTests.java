@@ -50,6 +50,7 @@ import com.azure.storage.file.share.models.ShareFilePermission;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileRangeList;
+import com.azure.storage.file.share.models.ShareFileSymbolicLinkInfo;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
 import com.azure.storage.file.share.models.ShareFileUploadOptions;
 import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
@@ -61,6 +62,7 @@ import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 import com.azure.storage.file.share.options.ShareFileCreateHardLinkOptions;
 import com.azure.storage.file.share.options.ShareFileCreateOptions;
+import com.azure.storage.file.share.options.ShareFileCreateSymbolicLinkOptions;
 import com.azure.storage.file.share.options.ShareFileDownloadOptions;
 import com.azure.storage.file.share.options.ShareFileListRangesDiffOptions;
 import com.azure.storage.file.share.options.ShareFileRenameOptions;
@@ -3226,5 +3228,90 @@ class FileApiTests extends FileShareTestBase {
         //cleanup
         leaseClient.releaseLease();
         premiumShareClient.delete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createGetSymbolicLink() {
+        // Arrange
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+
+        ShareFileClient source = premiumShareClient.getFileClient(generatePathName());
+        source.create(1024);
+        ShareDirectoryClient directory = premiumShareClient.getRootDirectoryClient();
+        ShareFileClient symlink = directory.getFileClient(generatePathName());
+
+        Map<String, String> metadata = Collections.singletonMap("key", "value");
+        String owner = "345";
+        String group = "123";
+        OffsetDateTime fileCreatedOn = OffsetDateTime.of(2024, 10, 15, 0, 0, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime fileLastWrittenOn = OffsetDateTime.of(2025, 5, 2, 0, 0, 0, 0, ZoneOffset.UTC);
+
+        ShareFileCreateSymbolicLinkOptions options
+            = new ShareFileCreateSymbolicLinkOptions(source.getFileUrl()).setMetadata(metadata)
+                .setFileCreationTime(fileCreatedOn)
+                .setFileLastWriteTime(fileLastWrittenOn)
+                .setOwner(owner)
+                .setGroup(group);
+
+        // Act
+        Response<ShareFileInfo> response = symlink.createSymbolicLinkWithResponse(options, null, null);
+
+        // Assert
+        assertEquals(NfsFileType.SYM_LINK, response.getValue().getPosixProperties().getFileType());
+        assertEquals(owner, response.getValue().getPosixProperties().getOwner());
+        assertEquals(group, response.getValue().getPosixProperties().getGroup());
+        assertEquals(fileCreatedOn, response.getValue().getSmbProperties().getFileCreationTime());
+        assertEquals(fileLastWrittenOn, response.getValue().getSmbProperties().getFileLastWriteTime());
+
+        assertNull(response.getValue().getSmbProperties().getNtfsFileAttributes());
+        assertNull(response.getValue().getSmbProperties().getFilePermissionKey());
+
+        assertNotNull(response.getValue().getSmbProperties().getFileId());
+        assertNotNull(response.getValue().getSmbProperties().getParentId());
+
+        // Act
+        Response<ShareFileSymbolicLinkInfo> getSymLinkResponse = symlink.getSymbolicLinkWithResponse(null, null);
+
+        // Assert
+        assertNotEquals(null, getSymLinkResponse.getValue().getETag());
+        assertNotEquals(null, getSymLinkResponse.getValue().getLastModified());
+        assertEquals(source.getFileUrl(), getSymLinkResponse.getValue().getLinkText());
+    }
+
+    @Test
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    public void createGetSymbolicLinkError() {
+        // Arrange
+        ShareClient premiumShareClient = getPremiumNFSShareClient(generateShareName());
+        ShareDirectoryClient directory = premiumShareClient.getDirectoryClient(generatePathName());
+        ShareFileClient source = directory.getFileClient(generatePathName());
+        ShareFileClient symlink = directory.getFileClient(generatePathName());
+
+        ShareStorageException exception1
+            = assertThrows(ShareStorageException.class, () -> symlink.createSymbolicLink(source.getFileUrl()));
+
+        assertEquals("ParentNotFound", exception1.getErrorCode());
+
+        ShareStorageException exception2 = assertThrows(ShareStorageException.class, () -> symlink.getSymbolicLink());
+
+        assertEquals("ParentNotFound", exception2.getErrorCode());
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createGetSymbolicLinkOAuth() {
+        // Arrange
+        ShareServiceClient oauthServiceClient
+            = getOAuthPremiumServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareDirectoryClient directory = oauthServiceClient.getShareClient(shareName).getRootDirectoryClient();
+
+        ShareFileClient source = directory.getFileClient(generatePathName());
+        source.create(1024);
+        ShareFileClient symlink = directory.getFileClient(generatePathName());
+
+        // Act
+        symlink.createSymbolicLink(source.getFileUrl());
+        symlink.getSymbolicLink();
     }
 }
