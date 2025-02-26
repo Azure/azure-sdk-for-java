@@ -187,7 +187,7 @@ More examples can be found at:
 - [Event Grid samples][README-Samples]
 
 <!-- Links -->
-[EventGridPublisherClientBuilder]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherClientBuilder.html
+[EventGridPublisherClientBuilder]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherClientBuilder.html
 [EventGridPublisherClient]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherClient.html
 [EventGridPublisherAsyncClient]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridPublisherAsyncClient.html
 [EventGridEvent]: https://azuresdkdocs.z19.web.core.windows.net/java/azure-messaging-eventgrid/latest/com/azure/messaging/eventgrid/EventGridEvent.html
