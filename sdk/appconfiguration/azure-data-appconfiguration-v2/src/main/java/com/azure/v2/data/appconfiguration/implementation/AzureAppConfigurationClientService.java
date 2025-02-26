@@ -26,8 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 
 @ServiceInterface(name = "AzureAppConfiguratio", host = "{endpoint}")
 public interface AzureAppConfigurationClientService {
-    static AzureAppConfigurationClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer,
-                                                             @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
+    static AzureAppConfigurationClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer, @HeaderParam("Sync-Token") String syncToken,
                                                              @HeaderParam("Accept") String accept, RequestOptions requestOptions) {
         try {
             Class<?> clazz = Class.forName(
@@ -45,81 +44,81 @@ public interface AzureAppConfigurationClientService {
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "/keys", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<KeyListResult> getKeys(@QueryParam("api-version") String apiVersion);
+    Response<KeyListResult> getKeys(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion);
 
     @HttpRequestInformation(method = HttpMethod.HEAD, path = "/keys", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<Void> checkKeys(@QueryParam("api-version") String apiVersion);
+    Response<Void> checkKeys(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion);
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "/kv", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<KeyValueListResult> getKeyValues(@QueryParam("api-version") String apiVersion);
+    Response<KeyValueListResult> getKeyValues(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion);
 
     @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<Void> checkKeyValues(@QueryParam("api-version") String apiVersion);
+    Response<Void> checkKeyValues(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion);
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "/kv/{key}", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<KeyValue> getKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+    Response<KeyValue> getKeyValue(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("key") String key);
 
     @HttpRequestInformation(method = HttpMethod.PUT, path = "/kv/{key}", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<KeyValue> putKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+    Response<KeyValue> putKeyValue(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("key") String key);
 
     @HttpRequestInformation(method = HttpMethod.DELETE, path = "/kv/{key}", expectedStatusCodes = { 200, 204 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<KeyValue> deleteKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+    Response<KeyValue> deleteKeyValue(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("key") String key);
 
     @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv/{key}", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<Void> checkKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+    Response<Void> checkKeyValue(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("key") String key);
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "/snapshots", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<SnapshotListResult> getSnapshots(@QueryParam("api-version") String apiVersion);
+    Response<SnapshotListResult> getSnapshots(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion);
 
     @HttpRequestInformation(method = HttpMethod.HEAD, path = "/snapshots", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<Void> checkSnapshots(@QueryParam("api-version") String apiVersion);
+    Response<Void> checkSnapshots(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion);
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<Snapshot> getSnapshot(@QueryParam("api-version") String apiVersion, @PathParam("name") String name);
+    Response<Snapshot> getSnapshot(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("name") String name);
 
     @HttpRequestInformation(method = HttpMethod.PATCH, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<Snapshot> updateSnapshot(@QueryParam("api-version") String apiVersion,
+    Response<Snapshot> updateSnapshot(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
                                       @HeaderParam("Content-Type") String contentType, @PathParam("name") String name,
                                       @BodyParam("application/json") BinaryData entity);
 
     @HttpRequestInformation(method = HttpMethod.HEAD, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<Void> checkSnapshot(@QueryParam("api-version") String apiVersion, @PathParam("name") String name);
+    Response<Void> checkSnapshot(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("name") String name);
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "/labels", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<LabelListResult> getLabels(@QueryParam("api-version") String apiVersion);
+    Response<LabelListResult> getLabels(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion);
 
     @HttpRequestInformation(method = HttpMethod.HEAD, path = "/labels", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<Void> checkLabels(@QueryParam("api-version") String apiVersion);
+    Response<Void> checkLabels(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion);
 
     @HttpRequestInformation(method = HttpMethod.PUT, path = "/locks/{key}", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<KeyValue> putLock(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+    Response<KeyValue> putLock(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("key") String key);
 
     @HttpRequestInformation(method = HttpMethod.DELETE, path = "/locks/{key}", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<KeyValue> deleteLock(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
+    Response<KeyValue> deleteLock(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("key") String key);
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "/revisions", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<KeyValueListResult> getRevisions(@QueryParam("api-version") String apiVersion);
+    Response<KeyValueListResult> getRevisions(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion);
 
     @HttpRequestInformation(method = HttpMethod.HEAD, path = "/revisions", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-    Response<Void> checkRevisions(@QueryParam("api-version") String apiVersion);
+    Response<Void> checkRevisions(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion);
 
     @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
     @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)

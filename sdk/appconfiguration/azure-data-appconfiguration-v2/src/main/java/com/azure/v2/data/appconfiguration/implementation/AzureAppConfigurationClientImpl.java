@@ -48,7 +48,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
@@ -62,7 +62,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public AzureAppConfigurationServiceVersion getServiceVersion() {
@@ -76,7 +76,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
@@ -85,7 +85,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Initializes an instance of AzureAppConfigurationClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint
      * @param serviceVersion Service version.
@@ -96,128 +96,6 @@ public final class AzureAppConfigurationClientImpl {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.service = RestProxy.create(AzureAppConfigurationClientService.class, this.httpPipeline);
-    }
-
-    /**
-     * The interface defining all the services for AzureAppConfigurationClient to be used by the proxy service to
-     * perform REST calls.
-     */
-    @ServiceInterface(name = "AzureAppConfiguratio", host = "{endpoint}")
-    public interface AzureAppConfigurationClientService {
-        static AzureAppConfigurationClientService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer,
-            @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions) {
-            try {
-                Class<?> clazz = Class.forName(
-                    "com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientServiceImpl");
-                return (AzureAppConfigurationClientService) clazz
-                    .getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class, String.class, String.class,
-                        String.class, RequestOptions.class)
-                    .invoke(null, pipeline, serializer, endpoint, syncToken, accept, requestOptions);
-            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
-                | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-
-        }
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/keys", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyListResult> getKeys(@QueryParam("api-version") String apiVersion);
-
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "/keys", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkKeys(@QueryParam("api-version") String apiVersion);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/kv", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValueListResult> getKeyValues(@QueryParam("api-version") String apiVersion);
-
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkKeyValues(@QueryParam("api-version") String apiVersion);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/kv/{key}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> getKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "/kv/{key}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> putKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
-
-        @HttpRequestInformation(method = HttpMethod.DELETE, path = "/kv/{key}", expectedStatusCodes = { 200, 204 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> deleteKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
-
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv/{key}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkKeyValue(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/snapshots", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<SnapshotListResult> getSnapshots(@QueryParam("api-version") String apiVersion);
-
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "/snapshots", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkSnapshots(@QueryParam("api-version") String apiVersion);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Snapshot> getSnapshot(@QueryParam("api-version") String apiVersion, @PathParam("name") String name);
-
-        @HttpRequestInformation(method = HttpMethod.PATCH, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Snapshot> updateSnapshot(@QueryParam("api-version") String apiVersion,
-            @HeaderParam("Content-Type") String contentType, @PathParam("name") String name,
-            @BodyParam("application/json") BinaryData entity);
-
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkSnapshot(@QueryParam("api-version") String apiVersion, @PathParam("name") String name);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/labels", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<LabelListResult> getLabels(@QueryParam("api-version") String apiVersion);
-
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "/labels", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkLabels(@QueryParam("api-version") String apiVersion);
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "/locks/{key}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> putLock(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
-
-        @HttpRequestInformation(method = HttpMethod.DELETE, path = "/locks/{key}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValue> deleteLock(@QueryParam("api-version") String apiVersion, @PathParam("key") String key);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "/revisions", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValueListResult> getRevisions(@QueryParam("api-version") String apiVersion);
-
-        @HttpRequestInformation(method = HttpMethod.HEAD, path = "/revisions", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<Void> checkRevisions(@QueryParam("api-version") String apiVersion);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyListResult> getKeysNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValueListResult> getKeyValuesNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<SnapshotListResult> getSnapshotsNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<LabelListResult> getLabelsNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
-
-        @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
-        Response<KeyValueListResult> getRevisionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
     }
 
     /**
@@ -242,7 +120,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -255,7 +133,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -289,7 +167,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -302,7 +180,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -338,7 +216,7 @@ public final class AzureAppConfigurationClientImpl {
      * time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the response.
@@ -386,7 +264,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -409,7 +287,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -460,7 +338,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -483,7 +361,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -536,7 +414,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the response.
@@ -572,7 +450,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -589,7 +467,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -622,7 +500,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -639,9 +517,9 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -658,7 +536,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -690,7 +568,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -707,7 +585,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -744,7 +622,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param key The key of the key-value to retrieve.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -771,7 +649,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -804,7 +682,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -833,7 +711,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -866,7 +744,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -892,7 +770,7 @@ public final class AzureAppConfigurationClientImpl {
      * to by the specified token.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the response.
@@ -924,7 +802,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -952,7 +830,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -978,7 +856,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -986,9 +864,9 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1016,7 +894,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param contentType Content-Type header. Allowed values: "application/merge-patch+json", "application/json".
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -1044,7 +922,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param name The name of the key-value snapshot to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1078,7 +956,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1091,7 +969,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1127,7 +1005,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1140,7 +1018,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1178,7 +1056,7 @@ public final class AzureAppConfigurationClientImpl {
      * time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the response.
@@ -1209,7 +1087,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1226,7 +1104,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1259,7 +1137,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1276,7 +1154,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1317,7 +1195,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1340,7 +1218,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1382,7 +1260,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1405,7 +1283,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
@@ -1449,7 +1327,7 @@ public final class AzureAppConfigurationClientImpl {
      * time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the service returns an error.
      * @return the response.
@@ -1460,7 +1338,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of keys.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1472,7 +1350,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1485,7 +1363,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1500,7 +1378,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-values.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1518,7 +1396,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1541,7 +1419,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1557,10 +1435,10 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value snapshots.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1593,7 +1471,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1609,7 +1487,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of labels.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1621,7 +1499,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1634,7 +1512,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1650,7 +1528,7 @@ public final class AzureAppConfigurationClientImpl {
 
     /**
      * Gets a list of key-value revisions.
-     * 
+     *
      * Get the next page of items.
      * <p><strong>Header Parameters</strong></p>
      * <table border="1">
@@ -1662,7 +1540,7 @@ public final class AzureAppConfigurationClientImpl {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -1685,7 +1563,7 @@ public final class AzureAppConfigurationClientImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
