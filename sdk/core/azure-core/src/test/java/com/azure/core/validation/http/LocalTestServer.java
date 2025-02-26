@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.core.validation.http;
 
+import org.eclipse.jetty.http2.server.HTTP2ServerConnectionFactory;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Request;
@@ -32,6 +33,7 @@ public class LocalTestServer {
     private final Server server;
     private final ServerConnector httpConnector;
     private final ServerConnector httpsConnector;
+    private final ServerConnector http2Connector;
 
     /**
      * Creates a new instance of {@link LocalTestServer} that will reply to requests based on the passed
@@ -41,19 +43,7 @@ public class LocalTestServer {
      * @throws RuntimeException If the server cannot configure SSL.
      */
     public LocalTestServer(RequestHandler requestHandler) {
-        this(requestHandler, 10);
-    }
-
-    /**
-     * Creates a new instance of {@link LocalTestServer} that will reply to requests based on the passed
-     * RequestHandler.
-     *
-     * @param requestHandler The request handler that will be used to process requests.
-     * @param maxThreads The maximum number of threads that the server will use to process requests.
-     * @throws RuntimeException If the server cannot configure SSL.
-     */
-    public LocalTestServer(RequestHandler requestHandler, int maxThreads) {
-        this.server = new Server(new ExecutorThreadPool(maxThreads));
+        this.server = new Server(new ExecutorThreadPool());
 
         HttpConnectionFactory httpConnectionFactory = new HttpConnectionFactory();
         this.httpConnector = new ServerConnector(server, httpConnectionFactory);
@@ -72,14 +62,19 @@ public class LocalTestServer {
         SslConnectionFactory sslConnectionFactory
             = new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
 
-        HttpConfiguration httpConfiguration = new HttpConfiguration();
-        httpConfiguration.addCustomizer(new SecureRequestCustomizer());
+        HttpConfiguration secureConfig = new HttpConfiguration();
+        secureConfig.addCustomizer(new SecureRequestCustomizer());
 
         this.httpsConnector
-            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpConfiguration));
+            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(secureConfig));
         this.httpsConnector.setHost("localhost");
 
         server.addConnector(this.httpsConnector);
+
+        this.http2Connector = new ServerConnector(server, new HTTP2ServerConnectionFactory(secureConfig));
+        this.http2Connector.setHost("localhost");
+
+        server.addConnector(this.http2Connector);
 
         ServletContextHandler servletContextHandler = new ServletContextHandler();
         servletContextHandler.setContextPath("/");
@@ -172,6 +167,15 @@ public class LocalTestServer {
     }
 
     /**
+     * Gets the HTTP/2 port that the local server is listening on.
+     *
+     * @return The HTTP/2 port that the local server is listening on.
+     */
+    public int getHttp2Port() {
+        return http2Connector.getLocalPort();
+    }
+
+    /**
      * Gets the HTTP URI that the local server is listening on.
      *
      * @return The HTTP URI that the local server is listening on.
@@ -186,8 +190,16 @@ public class LocalTestServer {
      * @return The HTTPS URI that the local server is listening on.
      */
     public String getHttpsUri() {
-        server.getURI();
         return "https://localhost:" + getHttpsPort();
+    }
+
+    /**
+     * Gets the HTTP/2 URI that the local server is listening on.
+     *
+     * @return The HTTP/2 URI that the local server is listening on.
+     */
+    public String getHttp2Uri() {
+        return "http://localhost:" + getHttp2Port();
     }
 
     /**
