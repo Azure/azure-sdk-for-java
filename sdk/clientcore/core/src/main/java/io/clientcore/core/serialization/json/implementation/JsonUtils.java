@@ -32,26 +32,16 @@ public final class JsonUtils {
 
         // Use the length of the number and checks for special values to determine if the number is a special
         // floating point representation.
-        // The special floating point representations are: NaN, INF, +INF, -INF, Infinity, +Infinity, and -Infinity.
+        // The special floating point representations are: NaN, Infinity, +Infinity, and -Infinity.
         // These will be returned using Double.
-        if (length == 3) {
-            if ("NaN".equalsIgnoreCase(numberString)) {
-                return Double.NaN;
-            } else if ("INF".equalsIgnoreCase(numberString)) {
-                return Double.POSITIVE_INFINITY;
-            }
-        } else if (length == 4) {
-            if ("+INF".equalsIgnoreCase(numberString)) {
-                return Double.POSITIVE_INFINITY;
-            } else if ("-INF".equalsIgnoreCase(numberString)) {
-                return Double.NEGATIVE_INFINITY;
-            }
-        } else if (length == 8 && "Infinity".equalsIgnoreCase(numberString)) {
+        if (length == 3 && "NaN".equals(numberString)) {
+            return Double.NaN;
+        }else if (length == 8 && "Infinity".equals(numberString)) {
             return Double.POSITIVE_INFINITY;
         } else if (length == 9) {
-            if ("+Infinity".equalsIgnoreCase(numberString)) {
+            if ("+Infinity".equals(numberString)) {
                 return Double.POSITIVE_INFINITY;
-            } else if ("-Infinity".equalsIgnoreCase(numberString)) {
+            } else if ("-Infinity".equals(numberString)) {
                 return Double.NEGATIVE_INFINITY;
             }
         }
