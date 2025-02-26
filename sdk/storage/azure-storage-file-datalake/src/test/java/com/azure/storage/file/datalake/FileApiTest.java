@@ -54,6 +54,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
+import com.azure.storage.file.datalake.models.PathStatus;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
 import com.azure.storage.file.datalake.models.RolePermissions;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
@@ -1001,6 +1002,32 @@ public class FileApiTest extends DataLakeTestBase {
             .setIfUnmodifiedSince(unmodified);
 
         assertThrows(DataLakeStorageException.class, () -> fc.getAccessControlWithResponse(false, drc, null, null));
+    }
+
+    @Test
+    public void getStatusMin() {
+        PathStatus ps = fc.getStatus();
+
+        assertNotNull(ps.getCreationTime());
+        assertNotNull(ps.getLastModified());
+        assertNotNull(ps.getETag());
+        assertTrue(ps.getFileSize() >= 0);
+        assertEquals(LeaseStatusType.UNLOCKED, ps.getLeaseStatus());
+        assertNotNull(ps.getLeaseState());
+        assertNull(ps.getLeaseDuration()); // tested in "acquire lease"
+        assertNotNull(ps.getEncryptionContext());
+        assertFalse(ps.isServerEncrypted());
+        assertNotNull(ps.getEncryptionKeySha256());
+        assertNotNull(ps.getEncryptionScope());
+        assertNotNull(ps.getAccessControlList());
+        assertNotNull(ps.getPermissions());
+        assertNotNull(ps.getOwner());
+        assertNotNull(ps.getGroup());
+    }
+
+    @Test
+    public void getStatusWithResponse() {
+        assertEquals(200, fc.getStatusWithResponse(null, null, null).getStatusCode());
     }
 
     @Test

@@ -97,5 +97,4 @@ public final class AccessorUtility {
     public static PathItemAccessor getPathItemAccessor() {
         return pathItemAccessor;
     }
-
 }
