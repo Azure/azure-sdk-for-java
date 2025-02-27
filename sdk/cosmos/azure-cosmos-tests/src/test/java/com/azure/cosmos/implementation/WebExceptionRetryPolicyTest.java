@@ -38,7 +38,10 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
     @Test(groups = {"unit"})
     public void shouldRetryOnTimeoutForReadOperations() throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost:"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("http://localhost:"));
+
+        Mockito.doReturn(regionalRoutingContext).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
 
         RetryContext retryContext = new RetryContext();
@@ -53,6 +56,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         //Default HttpTimeout Policy
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Read, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
@@ -90,7 +94,10 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
     @Test(groups = {"unit"})
     public void shouldRetryOnTimeoutForMetaDataReadOperations() throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost:"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("http://localhost:"));
+
+        Mockito.doReturn(regionalRoutingContext).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
 
         RetryContext retryContext = new RetryContext();
@@ -105,6 +112,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         //Default HttpTimeout Policy
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Read, "/dbs/db", ResourceType.DatabaseAccount);
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
@@ -144,7 +152,10 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
     @Test(groups = {"unit"})
     public void shouldRetryOnTimeoutForQueryPlanOperations() throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost:"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("http://localhost:"));
+
+        Mockito.doReturn(regionalRoutingContext).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
 
         RetryContext retryContext = new RetryContext();
@@ -159,6 +170,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         //Default HttpTimeout Policy
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.QueryPlan, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
@@ -196,7 +208,10 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
     @Test(groups = "unit")
     public void shouldNotRetryOnTimeoutForWriteOperations() throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost:"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("http://localhost:"));
+
+        Mockito.doReturn(regionalRoutingContext).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(true));
 
 
@@ -210,6 +225,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         //Data Plane Write - Should not retry
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Create, "/dbs/db/colls/col/docs/doc", ResourceType.Document);
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
         WebExceptionRetryPolicy webExceptionRetryPolicy = new WebExceptionRetryPolicy(new RetryContext());
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
@@ -223,6 +239,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         //Metadata Write - Should not Retry
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Create, "/dbs/db", ResourceType.DatabaseAccount);
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
         webExceptionRetryPolicy = new WebExceptionRetryPolicy(new RetryContext());
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
@@ -237,7 +254,10 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
     @Test(groups = "unit", dataProvider = "operationTypeProvider")
     public void httpNetworkFailureOnAddressRefresh(OperationType operationType) throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
-        Mockito.doReturn(new RegionalRoutingContext(new URI("http://localhost:"))).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
+
+        RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("http://localhost:"));
+
+        Mockito.doReturn(regionalRoutingContext).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
         Mockito.doReturn(2).when(endpointManager).getPreferredLocationCount();
 
@@ -251,6 +271,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
             operationType, "/dbs/db/colls/col/docs/", ResourceType.Document);
         dsr.setAddressRefresh(true, false);
         dsr.requestContext = new DocumentServiceRequestContext();
+        dsr.requestContext.regionalRoutingContextToRoute = regionalRoutingContext;
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
