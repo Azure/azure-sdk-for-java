@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 /**
  * Resource usage statistics for a Task.
@@ -257,8 +258,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
         jsonWriter.writeStringField("userCPUTime", CoreUtils.durationToStringWithDays(this.userCpuTime));
         jsonWriter.writeStringField("kernelCPUTime", CoreUtils.durationToStringWithDays(this.kernelCpuTime));
         jsonWriter.writeStringField("wallClockTime", CoreUtils.durationToStringWithDays(this.wallClockTime));
-        jsonWriter.writeLongField("readIOps", this.readIOps);
-        jsonWriter.writeLongField("writeIOps", this.writeIOps);
+        jsonWriter.writeStringField("readIOps", Objects.toString(this.readIOps, null));
+        jsonWriter.writeStringField("writeIOps", Objects.toString(this.writeIOps, null));
         jsonWriter.writeDoubleField("readIOGiB", this.readIOGiB);
         jsonWriter.writeDoubleField("writeIOGiB", this.writeIOGiB);
         jsonWriter.writeStringField("waitTime", CoreUtils.durationToStringWithDays(this.waitTime));
@@ -274,8 +275,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the BatchTaskStatistics.
      */
+    @Generated
     public static BatchTaskStatistics fromJson(JsonReader jsonReader) throws IOException {
-        // TODO: Re-add @Generated tag here and re-generate SDK once the 2024-05-01 Batch Service API is released
         return jsonReader.readObject(reader -> {
             String url = null;
             OffsetDateTime startTime = null;
@@ -283,8 +284,8 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
             Duration userCpuTime = null;
             Duration kernelCpuTime = null;
             Duration wallClockTime = null;
-            long readIOps = 0L;
-            long writeIOps = 0L;
+            long readIOps = Long.parseLong("0");
+            long writeIOps = Long.parseLong("0");
             double readIOGiB = 0.0;
             double writeIOGiB = 0.0;
             Duration waitTime = null;
@@ -306,31 +307,9 @@ public final class BatchTaskStatistics implements JsonSerializable<BatchTaskStat
                 } else if ("wallClockTime".equals(fieldName)) {
                     wallClockTime = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("readIOps".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String readIOpsStr = reader.getString();
-                        try {
-                            readIOps = Long.parseLong(readIOpsStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric readIOps, but found: " + readIOpsStr, e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        readIOps = reader.getLong();
-                    } else {
-                        throw new IOException("Expected readIOps to be a number or string, but found other type");
-                    }
+                    readIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("writeIOps".equals(fieldName)) {
-                    if (reader.currentToken() == JsonToken.STRING) {
-                        String writeIOpsStr = reader.getString();
-                        try {
-                            writeIOps = Long.parseLong(writeIOpsStr);
-                        } catch (NumberFormatException e) {
-                            throw new IOException("Expected numeric writeIOps, but found: " + writeIOpsStr, e);
-                        }
-                    } else if (reader.currentToken() == JsonToken.NUMBER) {
-                        writeIOps = reader.getLong();
-                    } else {
-                        throw new IOException("Expected writeIOps to be a number or string, but found other type");
-                    }
+                    writeIOps = reader.getNullable(nonNullReader -> Long.parseLong(nonNullReader.getString()));
                 } else if ("readIOGiB".equals(fieldName)) {
                     readIOGiB = reader.getDouble();
                 } else if ("writeIOGiB".equals(fieldName)) {

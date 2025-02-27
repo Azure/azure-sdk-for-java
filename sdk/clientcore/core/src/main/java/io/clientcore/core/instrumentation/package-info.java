@@ -83,7 +83,7 @@
  * Implicit context propagation works best in synchronous code. Implicit context propagation may not work in
  * asynchronous scenarios depending on the async framework used by the application, implementation details,
  * and OpenTelemetry instrumentation's used.
- *
+ * <p>
  * When writing asynchronous code, it's recommended to use explicit context propagation.
  *
  * <p><strong>Pass context explicitly to correlate them with library telemetry in async code</strong></p>

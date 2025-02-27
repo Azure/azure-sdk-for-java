@@ -30,7 +30,7 @@ public final class AnalysisCreateConfig implements JsonSerializable<AnalysisCrea
     /*
      * The protectedFiles property.
      */
-    private List<NginxConfigurationFile> protectedFiles;
+    private List<NginxConfigurationProtectedFileRequest> protectedFiles;
 
     /*
      * The package property.
@@ -88,7 +88,7 @@ public final class AnalysisCreateConfig implements JsonSerializable<AnalysisCrea
      * 
      * @return the protectedFiles value.
      */
-    public List<NginxConfigurationFile> protectedFiles() {
+    public List<NginxConfigurationProtectedFileRequest> protectedFiles() {
         return this.protectedFiles;
     }
 
@@ -98,7 +98,7 @@ public final class AnalysisCreateConfig implements JsonSerializable<AnalysisCrea
      * @param protectedFiles the protectedFiles value to set.
      * @return the AnalysisCreateConfig object itself.
      */
-    public AnalysisCreateConfig withProtectedFiles(List<NginxConfigurationFile> protectedFiles) {
+    public AnalysisCreateConfig withProtectedFiles(List<NginxConfigurationProtectedFileRequest> protectedFiles) {
         this.protectedFiles = protectedFiles;
         return this;
     }
@@ -176,8 +176,8 @@ public final class AnalysisCreateConfig implements JsonSerializable<AnalysisCrea
                         = reader.readArray(reader1 -> NginxConfigurationFile.fromJson(reader1));
                     deserializedAnalysisCreateConfig.files = files;
                 } else if ("protectedFiles".equals(fieldName)) {
-                    List<NginxConfigurationFile> protectedFiles
-                        = reader.readArray(reader1 -> NginxConfigurationFile.fromJson(reader1));
+                    List<NginxConfigurationProtectedFileRequest> protectedFiles
+                        = reader.readArray(reader1 -> NginxConfigurationProtectedFileRequest.fromJson(reader1));
                     deserializedAnalysisCreateConfig.protectedFiles = protectedFiles;
                 } else if ("package".equals(fieldName)) {
                     deserializedAnalysisCreateConfig.packageProperty = NginxConfigurationPackage.fromJson(reader);

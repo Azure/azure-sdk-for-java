@@ -37,9 +37,19 @@ public final class NginxDeploymentUpdateProperties implements JsonSerializable<N
     private NginxDeploymentUserProfile userProfile;
 
     /*
+     * The networkProfile property.
+     */
+    private NginxNetworkProfile networkProfile;
+
+    /*
      * Autoupgrade settings of a deployment.
      */
     private AutoUpgradeProfile autoUpgradeProfile;
+
+    /*
+     * Update settings for NGINX App Protect (NAP)
+     */
+    private NginxDeploymentUpdatePropertiesNginxAppProtect nginxAppProtect;
 
     /**
      * Creates an instance of NginxDeploymentUpdateProperties class.
@@ -128,6 +138,26 @@ public final class NginxDeploymentUpdateProperties implements JsonSerializable<N
     }
 
     /**
+     * Get the networkProfile property: The networkProfile property.
+     * 
+     * @return the networkProfile value.
+     */
+    public NginxNetworkProfile networkProfile() {
+        return this.networkProfile;
+    }
+
+    /**
+     * Set the networkProfile property: The networkProfile property.
+     * 
+     * @param networkProfile the networkProfile value to set.
+     * @return the NginxDeploymentUpdateProperties object itself.
+     */
+    public NginxDeploymentUpdateProperties withNetworkProfile(NginxNetworkProfile networkProfile) {
+        this.networkProfile = networkProfile;
+        return this;
+    }
+
+    /**
      * Get the autoUpgradeProfile property: Autoupgrade settings of a deployment.
      * 
      * @return the autoUpgradeProfile value.
@@ -148,6 +178,27 @@ public final class NginxDeploymentUpdateProperties implements JsonSerializable<N
     }
 
     /**
+     * Get the nginxAppProtect property: Update settings for NGINX App Protect (NAP).
+     * 
+     * @return the nginxAppProtect value.
+     */
+    public NginxDeploymentUpdatePropertiesNginxAppProtect nginxAppProtect() {
+        return this.nginxAppProtect;
+    }
+
+    /**
+     * Set the nginxAppProtect property: Update settings for NGINX App Protect (NAP).
+     * 
+     * @param nginxAppProtect the nginxAppProtect value to set.
+     * @return the NginxDeploymentUpdateProperties object itself.
+     */
+    public NginxDeploymentUpdateProperties
+        withNginxAppProtect(NginxDeploymentUpdatePropertiesNginxAppProtect nginxAppProtect) {
+        this.nginxAppProtect = nginxAppProtect;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -162,8 +213,14 @@ public final class NginxDeploymentUpdateProperties implements JsonSerializable<N
         if (userProfile() != null) {
             userProfile().validate();
         }
+        if (networkProfile() != null) {
+            networkProfile().validate();
+        }
         if (autoUpgradeProfile() != null) {
             autoUpgradeProfile().validate();
+        }
+        if (nginxAppProtect() != null) {
+            nginxAppProtect().validate();
         }
     }
 
@@ -177,7 +234,9 @@ public final class NginxDeploymentUpdateProperties implements JsonSerializable<N
         jsonWriter.writeJsonField("logging", this.logging);
         jsonWriter.writeJsonField("scalingProperties", this.scalingProperties);
         jsonWriter.writeJsonField("userProfile", this.userProfile);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("autoUpgradeProfile", this.autoUpgradeProfile);
+        jsonWriter.writeJsonField("nginxAppProtect", this.nginxAppProtect);
         return jsonWriter.writeEndObject();
     }
 
@@ -208,9 +267,14 @@ public final class NginxDeploymentUpdateProperties implements JsonSerializable<N
                 } else if ("userProfile".equals(fieldName)) {
                     deserializedNginxDeploymentUpdateProperties.userProfile
                         = NginxDeploymentUserProfile.fromJson(reader);
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateProperties.networkProfile = NginxNetworkProfile.fromJson(reader);
                 } else if ("autoUpgradeProfile".equals(fieldName)) {
                     deserializedNginxDeploymentUpdateProperties.autoUpgradeProfile
                         = AutoUpgradeProfile.fromJson(reader);
+                } else if ("nginxAppProtect".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateProperties.nginxAppProtect
+                        = NginxDeploymentUpdatePropertiesNginxAppProtect.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

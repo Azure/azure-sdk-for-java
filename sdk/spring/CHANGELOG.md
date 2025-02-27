@@ -1,4 +1,10 @@
 # Release History
+## 5.21.0-beta.1 (Unreleased)
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Bugs Fixed
+- Custom `ObjectMapper` bean does not work for received messages. [#37796](https://github.com/Azure/azure-sdk-for-java/issues/37796).
 
 ## 5.21.0-beta.1 (Unreleased)
 
