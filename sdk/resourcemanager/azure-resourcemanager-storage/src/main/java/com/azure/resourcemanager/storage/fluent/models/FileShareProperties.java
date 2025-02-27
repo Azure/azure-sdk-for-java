@@ -6,6 +6,7 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -76,19 +77,19 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
      * Returns the next allowed provisioned storage size downgrade time for the share. This property is only for file
      * shares created under Files Provisioned v1 SSD and Files Provisioned v2 account type
      */
-    private OffsetDateTime nextAllowedQuotaDowngradeTime;
+    private DateTimeRfc1123 nextAllowedQuotaDowngradeTime;
 
     /*
      * Returns the next allowed provisioned IOPS downgrade time for the share. This property is only for file shares
      * created under Files Provisioned v2 account type.
      */
-    private OffsetDateTime nextAllowedProvisionedIopsDowngradeTime;
+    private DateTimeRfc1123 nextAllowedProvisionedIopsDowngradeTime;
 
     /*
      * Returns the next allowed provisioned bandwidth downgrade time for the share. This property is only for file
      * shares created under Files Provisioned v2 account type.
      */
-    private OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime;
+    private DateTimeRfc1123 nextAllowedProvisionedBandwidthDowngradeTime;
 
     /*
      * The authentication protocol that is used for the file share. Can only be specified when creating a share.
@@ -309,7 +310,10 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
      * @return the nextAllowedQuotaDowngradeTime value.
      */
     public OffsetDateTime nextAllowedQuotaDowngradeTime() {
-        return this.nextAllowedQuotaDowngradeTime;
+        if (this.nextAllowedQuotaDowngradeTime == null) {
+            return null;
+        }
+        return this.nextAllowedQuotaDowngradeTime.getDateTime();
     }
 
     /**
@@ -319,7 +323,10 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
      * @return the nextAllowedProvisionedIopsDowngradeTime value.
      */
     public OffsetDateTime nextAllowedProvisionedIopsDowngradeTime() {
-        return this.nextAllowedProvisionedIopsDowngradeTime;
+        if (this.nextAllowedProvisionedIopsDowngradeTime == null) {
+            return null;
+        }
+        return this.nextAllowedProvisionedIopsDowngradeTime.getDateTime();
     }
 
     /**
@@ -330,7 +337,10 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
      * @return the nextAllowedProvisionedBandwidthDowngradeTime value.
      */
     public OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime() {
-        return this.nextAllowedProvisionedBandwidthDowngradeTime;
+        if (this.nextAllowedProvisionedBandwidthDowngradeTime == null) {
+            return null;
+        }
+        return this.nextAllowedProvisionedBandwidthDowngradeTime.getDateTime();
     }
 
     /**
@@ -606,14 +616,14 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
                 } else if ("maxBurstCreditsForIops".equals(fieldName)) {
                     deserializedFileShareProperties.maxBurstCreditsForIops = reader.getNullable(JsonReader::getLong);
                 } else if ("nextAllowedQuotaDowngradeTime".equals(fieldName)) {
-                    deserializedFileShareProperties.nextAllowedQuotaDowngradeTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedFileShareProperties.nextAllowedQuotaDowngradeTime
+                        = reader.getNullable(nonNullReader -> new DateTimeRfc1123(nonNullReader.getString()));
                 } else if ("nextAllowedProvisionedIopsDowngradeTime".equals(fieldName)) {
-                    deserializedFileShareProperties.nextAllowedProvisionedIopsDowngradeTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedFileShareProperties.nextAllowedProvisionedIopsDowngradeTime
+                        = reader.getNullable(nonNullReader -> new DateTimeRfc1123(nonNullReader.getString()));
                 } else if ("nextAllowedProvisionedBandwidthDowngradeTime".equals(fieldName)) {
-                    deserializedFileShareProperties.nextAllowedProvisionedBandwidthDowngradeTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    deserializedFileShareProperties.nextAllowedProvisionedBandwidthDowngradeTime
+                        = reader.getNullable(nonNullReader -> new DateTimeRfc1123(nonNullReader.getString()));
                 } else if ("enabledProtocols".equals(fieldName)) {
                     deserializedFileShareProperties.enabledProtocols = EnabledProtocols.fromString(reader.getString());
                 } else if ("rootSquash".equals(fieldName)) {
