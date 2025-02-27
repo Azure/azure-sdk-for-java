@@ -78,10 +78,6 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
         return this.innerModel().utilizedThroughputMibps();
     }
 
-    public Float customThroughputMibps() {
-        return this.innerModel().customThroughputMibps();
-    }
-
     public QosType qosType() {
         return this.innerModel().qosType();
     }
@@ -218,16 +214,6 @@ public final class CapacityPoolImpl implements CapacityPool, CapacityPool.Defini
             return this;
         } else {
             this.updateBody.withTags(tags);
-            return this;
-        }
-    }
-
-    public CapacityPoolImpl withCustomThroughputMibps(Float customThroughputMibps) {
-        if (isInCreateMode()) {
-            this.innerModel().withCustomThroughputMibps(customThroughputMibps);
-            return this;
-        } else {
-            this.updateBody.withCustomThroughputMibps(customThroughputMibps);
             return this;
         }
     }

@@ -304,7 +304,7 @@ public final class AzureQuotaExtensionApiImpl implements AzureQuotaExtensionApi 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-12-18-preview";
+        this.apiVersion = "2025-03-01";
         this.groupQuotas = new GroupQuotasClientImpl(this);
         this.groupQuotaSubscriptions = new GroupQuotaSubscriptionsClientImpl(this);
         this.groupQuotaSubscriptionRequests = new GroupQuotaSubscriptionRequestsClientImpl(this);

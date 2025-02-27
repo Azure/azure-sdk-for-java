@@ -114,6 +114,7 @@
     <module>sdk/hybridnetwork</module>
     <module>sdk/identity</module>
     <module>sdk/imagebuilder</module>
+    <module>sdk/impactreporting</module>
     <module>sdk/informaticadatamanagement</module>
     <module>sdk/iotcentral</module>
     <module>sdk/iotfirmwaredefense</module>
@@ -138,6 +139,7 @@
     <module>sdk/marketplaceordering</module>
     <module>sdk/mediaservices</module>
     <module>sdk/metricsadvisor</module>
+    <module>sdk/migration</module>
     <module>sdk/migrationdiscoverysap</module>
     <module>sdk/mixedreality</module>
     <module>sdk/mobilenetwork</module>
