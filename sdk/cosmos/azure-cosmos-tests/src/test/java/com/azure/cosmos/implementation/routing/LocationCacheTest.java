@@ -64,8 +64,6 @@ public class LocationCacheTest {
 
     private static HashMap<String, URI> EndpointByLocation = new HashMap<>();
 
-    private final static Logger logger = LoggerFactory.getLogger(LocationCache.class);
-
     static {
         EndpointByLocation.put("location1", LocationCacheTest.Location1Endpoint);
         EndpointByLocation.put("location2", LocationCacheTest.Location2Endpoint);

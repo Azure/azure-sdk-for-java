@@ -36,6 +36,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
@@ -224,15 +225,12 @@ public class ClientSideRequestStatistics {
             }
 
             RegionalRoutingContext regionalRoutingContext = null;
-            URI locationEndPoint = null;
 
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
 
-                regionalRoutingContext = rxDocumentServiceRequest.requestContext.regionalRoutingContextToRoute;
-
-                checkNotNull(regionalRoutingContext, "Argument 'regionalRoutingContext' cannot be null!");
-
-                locationEndPoint = regionalRoutingContext.getGatewayRegionalEndpoint();
+                if (rxDocumentServiceRequest.requestContext.regionalRoutingContextToRoute != null) {
+                    regionalRoutingContext = rxDocumentServiceRequest.requestContext.regionalRoutingContextToRoute;
+                }
 
                 this.approximateInsertionCountInBloomFilter = rxDocumentServiceRequest.requestContext.getApproximateBloomFilterInsertionCount();
                 this.keywordIdentifiers = rxDocumentServiceRequest.requestContext.getKeywordIdentifiers();
@@ -240,12 +238,13 @@ public class ClientSideRequestStatistics {
 
             this.recordRetryContextEndTime();
 
-            if (locationEndPoint != null) {
+            if (regionalRoutingContext != null) {
 
-                String regionName = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType());
+                URI locationEndpoint = regionalRoutingContext.getGatewayRegionalEndpoint();
+                String regionName = globalEndpointManager.getRegionName(locationEndpoint, rxDocumentServiceRequest.getOperationType());
 
                 this.regionsContacted.add(regionName);
-                this.locationEndpointsContacted.add(locationEndPoint);
+                this.locationEndpointsContacted.add(locationEndpoint);
 
                 this.regionsContactedWithContext.add(new RegionWithContext(regionName, regionalRoutingContext));
             }

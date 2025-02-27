@@ -38,7 +38,6 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile Integer regionIndex;
     public volatile Boolean usePreferredLocations;
     public volatile Integer locationIndexToRoute;
-//    public volatile URI locationEndpointToRoute;
     public volatile RegionalRoutingContext regionalRoutingContextToRoute;
     public volatile boolean performedBackgroundAddressRefresh;
     public volatile boolean performLocalRefreshOnGoneException;
@@ -80,7 +79,6 @@ public class DocumentServiceRequestContext implements Cloneable {
     public void routeToLocation(int locationIndex, boolean usePreferredLocations) {
         this.locationIndexToRoute = locationIndex;
         this.usePreferredLocations = usePreferredLocations;
-//        this.locationEndpointToRoute = null;
         this.regionalRoutingContextToRoute = null;
     }
 
@@ -141,7 +139,6 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.regionIndex = this.regionIndex;
         context.usePreferredLocations = this.usePreferredLocations;
         context.locationIndexToRoute = this.locationIndexToRoute;
-//        context.locationEndpointToRoute = this.locationEndpointToRoute;
         context.regionalRoutingContextToRoute = this.regionalRoutingContextToRoute;
         context.performLocalRefreshOnGoneException = this.performLocalRefreshOnGoneException;
         context.effectivePartitionKey = this.effectivePartitionKey;

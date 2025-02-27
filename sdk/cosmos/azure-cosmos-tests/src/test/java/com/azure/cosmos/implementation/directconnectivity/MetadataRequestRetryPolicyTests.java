@@ -554,10 +554,13 @@ public class MetadataRequestRetryPolicyTests extends TestSuiteBase {
 
         assert request.requestContext != null;
 
+        URI locationEndpointToRoute
+            = URI.create("https://account-name-some-region.documents.azure.com:443");
+
         if (hasLocationEndpointToRoute) {
-            URI locationEndpointToRoute
-                = URI.create("https://account-name-some-region.documents.azure.com:443");
             request.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(locationEndpointToRoute);
+        } else {
+            request.setEndpointOverride(locationEndpointToRoute);
         }
 
         if (isAddressRefresh) {
