@@ -8,6 +8,7 @@ import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.google.gson.TypeAdapter;
+import com.google.gson.stream.MalformedJsonException;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -30,6 +31,7 @@ public final class GsonJsonReader extends JsonReader {
 
     private JsonToken currentToken;
     private boolean consumed = false;
+    private Object value = null;
     private boolean complete = false;
     private int objectDepth = 0;
 
@@ -133,12 +135,10 @@ public final class GsonJsonReader extends JsonReader {
             }
         }
 
-        com.google.gson.stream.JsonToken gsonToken = reader.peek();
-        if (gsonToken == com.google.gson.stream.JsonToken.END_DOCUMENT) {
+        currentToken = mapToken(reader.peek());
+        if (currentToken == JsonToken.END_DOCUMENT) {
             complete = true;
         }
-
-        currentToken = mapToken(reader.peek());
 
         // When within a type adapter context special handling needs to be performed.
         // GSON validates that the JSON sub-object stream is complete read when the value is returned from the
@@ -151,72 +151,151 @@ public final class GsonJsonReader extends JsonReader {
         }
 
         consumed = false;
+        value = null;
         return currentToken;
+    }
+
+    // Utility method that helps determine whether a special numeric is read in a generic way.
+    // The GSON JsonReader will interpret 'Infinity' and 'NaN' as an unquoted string value when lenient parsing is
+    // enabled. If 'readUntyped()' is called this will result in the wrong return value if
+    // JsonOptions.isNonNumericNumbersSupported() is true as it will see the JsonToken as a String and not a Number.
+    // To fix this, check if lenient parsing is enabled and if it is disable lenient parsing and attempt to peek. If
+    // this fails with a parsing issue about an unquoted string and that String value is one of 'Infinity', '+Infinity',
+    // '-Infinity', or 'NaN' then the value is a special numeric and should be returned as a Number.
+    @SuppressWarnings("deprecation")
+    private JsonToken tryPeek() throws IOException {
+        boolean isLenient = reader.isLenient();
+        if (!isLenient) {
+            // Lenient parsing isn't enabled, just peek.
+            return mapToken(reader.peek());
+        }
+
+        // Lenient parsing is enabled, disable it and attempt to peek.
+        reader.setLenient(false);
+        JsonToken token;
+        try {
+            // If peeking succeeds we know we didn't see a special case.
+            token = mapToken(reader.peek());
+        } catch (MalformedJsonException ignored) {
+            // If peeking fails, re-enable lenient parsing and check if the exception is due to an unquoted string.
+            reader.setLenient(true);
+            token = mapToken(reader.peek());
+            if (token == JsonToken.STRING) {
+                // If the token type is String, check if the temp is a special numeric.
+                String temp = reader.nextString();
+                consumed = true;
+
+                if ("Infinity".equals(temp) || "+Infinity".equals(temp)) {
+                    token = JsonToken.NUMBER;
+                    value = Double.POSITIVE_INFINITY;
+                } else if ("-Infinity".equals(temp)) {
+                    token = JsonToken.NUMBER;
+                    value = Double.NEGATIVE_INFINITY;
+                } else if ("NaN".equals(temp)) {
+                    token = JsonToken.NUMBER;
+                    value = Double.NaN;
+                } else {
+                    // The temp isn't a special numeric, return it as a String.
+                    value = temp;
+                }
+            }
+        }
+
+        return token;
     }
 
     @Override
     public byte[] getBinary() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (byte[]) value;
+        }
 
+        consumed = true;
         if (currentToken == JsonToken.NULL) {
             reader.nextNull();
-            return null;
+            value = null;
         } else {
-            return Base64.getDecoder().decode(reader.nextString());
+            value = Base64.getDecoder().decode(reader.nextString());
         }
+
+        return (byte[]) value;
     }
 
     @Override
     public boolean getBoolean() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (boolean) value;
+        }
 
-        return reader.nextBoolean();
+        consumed = true;
+        value = reader.nextBoolean();
+        return (boolean) value;
     }
 
     @Override
     public double getDouble() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (double) value;
+        }
 
-        return reader.nextDouble();
+        consumed = true;
+        value = reader.nextDouble();
+        return (double) value;
     }
 
     @Override
     public float getFloat() throws IOException {
-        consumed = true;
-
-        return (float) reader.nextDouble();
+        return (float) getDouble();
     }
 
     @Override
     public int getInt() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (int) value;
+        }
 
-        return reader.nextInt();
+        consumed = true;
+        value = reader.nextInt();
+        return (int) value;
     }
 
     @Override
     public long getLong() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (long) value;
+        }
 
-        return reader.nextLong();
+        consumed = true;
+        value = reader.nextLong();
+        return (long) value;
     }
 
     @Override
     public String getString() throws IOException {
-        consumed = true;
-
-        if (currentToken == JsonToken.NULL) {
-            return null;
-        } else {
-            return reader.nextString();
+        if (consumed) {
+            return (String) value;
         }
+
+        consumed = true;
+        if (currentToken == JsonToken.NULL) {
+            reader.nextNull();
+            value = null;
+        } else {
+            value = reader.nextString();
+        }
+
+        return (String) value;
     }
 
     @Override
     public String getFieldName() throws IOException {
-        consumed = true;
+        if (consumed) {
+            return (String) value;
+        }
 
-        return reader.nextName();
+        consumed = true;
+        value = reader.nextName();
+        return (String) value;
     }
 
     @Override
