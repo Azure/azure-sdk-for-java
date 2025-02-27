@@ -17,7 +17,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
   <packaging>jar</packaging>
-  <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+  <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
 
   <name>Microsoft Azure client library for Schema Registry</name>
   <description>This package contains the Microsoft Azure Schema Registry client library</description>
@@ -101,7 +101,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-http-jdk-httpclient</artifactId>
-          <version>1.0.0-beta.19</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
+          <version>1.0.2</version> <!-- {x-version-update;com.azure:azure-core-http-jdk-httpclient;dependency} -->
           <scope>test</scope>
         </dependency>
       </dependencies>
