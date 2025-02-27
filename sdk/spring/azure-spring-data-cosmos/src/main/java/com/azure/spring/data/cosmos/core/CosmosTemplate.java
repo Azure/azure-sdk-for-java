@@ -1165,7 +1165,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @Override
-    public <T> long sum(SqlQuerySpec querySpec, String containerName) {
+    public long sum(SqlQuerySpec querySpec, String containerName) {
         return this.numeric(querySpec, containerName);
     }
 

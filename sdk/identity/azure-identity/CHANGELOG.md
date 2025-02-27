@@ -1,16 +1,51 @@
 # Release History
 
-## 1.15.0-beta.1 (Unreleased)
+## 1.16.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added missing `executorService` API to `ManagedIdentityCredentialBuilder`, cleaned up comments in other types for this method.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.15.3 (2025-02-20)
+
+### Other Changes
+
+## Dependency Updates
+
+- Upgraded `azure-core` from `1.55.1` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.9` to version `1.15.10`.
+
+## 1.15.2 (2025-02-13)
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.55.0` to version `1.55.1`.
+- Upgraded `azure-core-http-netty` from `1.15.8` to version `1.15.9`.
+
+## 1.15.1 (2025-02-07)
+
+### Bugs Fixed
+
+- Fixed an issue preventing scopes with underscores from working properly. [#44040](https://github.com/Azure/azure-sdk-for-java/pull/44040)
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.0`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.8`.
+- Upgraded `msal4j` from `1.17.1` to version `1.19.0`.
+
+## 1.15.0 (2025-01-10)
+
+### Features Added
+- Added missing `executorService` API to `ManagedIdentityCredentialBuilder`, cleaned up comments in other types for this method.
+
+### Other Changes
 - `@Deprecated` methods `DefaultAzureCredential.setIntelliJKeePassDatabasePath` and `IntelliJCredentialBuilder.keePassDatabasePath`. [#42437](https://github.com/Azure/azure-sdk-for-java/pull/42437)
+- Changed Identity credentials to use `SharedExecutorService` threadpool instead of `ForkJoin`'s common pool by default. [#42468](https://github.com/Azure/azure-sdk-for-java/pull/42468)
 
 ## 1.14.2 (2024-11-15)
 

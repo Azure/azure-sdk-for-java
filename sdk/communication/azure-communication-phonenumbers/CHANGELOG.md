@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.4 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2025-02-11)
+
+### Other Changes
+
+- Release of Number Insight GA.
+- API version `2025-02-11` is the default.
 
 ## 1.1.19 (2024-12-04)
 

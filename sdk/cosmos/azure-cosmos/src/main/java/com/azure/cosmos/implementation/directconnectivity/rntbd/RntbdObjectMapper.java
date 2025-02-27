@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -69,6 +70,23 @@ public final class RntbdObjectMapper {
 
     public static String toJson(final Object value) {
         try {
+            if (value instanceof RntbdToken) {
+                RntbdToken token = (RntbdToken)value;
+                if (token.isPresent() && token.getTokenType() == RntbdTokenType.Bytes) {
+                    Object tokenValue = token.getValue();
+                    if (tokenValue instanceof ByteBuf) {
+                        ByteBuf buf = (ByteBuf) tokenValue;
+
+                        byte[] blob = new byte[buf.readableBytes()];
+                        buf.getBytes(buf.readerIndex(), blob);
+                        String base64String = Base64.getEncoder().encodeToString(blob);
+                        String json = objectWriter.writeValueAsString(value);
+                        ObjectNode parsed = (ObjectNode)objectMapper.readTree(json);
+                        parsed.put("value", base64String);
+                        return parsed.toString();
+                    }
+                }
+            }
             return objectWriter.writeValueAsString(value);
         } catch (final JsonProcessingException error) {
             logger.debug("could not convert {} value to JSON due to:", value.getClass(), error);

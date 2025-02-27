@@ -6,6 +6,7 @@ package com.azure.storage.file.share.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import java.util.Map;
@@ -23,6 +24,7 @@ public class ShareFileCreateOptions {
     private FilePermissionFormat filePermissionFormat;
     private Map<String, String> metadata;
     private ShareRequestConditions requestConditions;
+    private FilePosixProperties posixProperties;
 
     /**
      * Creates a new instance of {@link ShareFileCreateOptions}.
@@ -164,6 +166,28 @@ public class ShareFileCreateOptions {
      */
     public ShareFileCreateOptions setFilePermissionFormat(FilePermissionFormat filePermissionFormat) {
         this.filePermissionFormat = filePermissionFormat;
+        return this;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @return {@link FilePosixProperties}
+     */
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
+    }
+
+    /**
+     *  Optional properties to set on NFS files.
+     *  Note that this property is only applicable to files created in NFS shares.
+     *
+     * @param posixProperties {@link FilePosixProperties}
+     * @return The updated options.
+     */
+    public ShareFileCreateOptions setPosixProperties(FilePosixProperties posixProperties) {
+        this.posixProperties = posixProperties;
         return this;
     }
 }

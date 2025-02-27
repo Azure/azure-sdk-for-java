@@ -10,7 +10,7 @@ package com.azure.resourcemanager.applicationinsights.generated;
 public final class WorkbooksGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookGet1.
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookGet1.
      * json
      */
     /**
@@ -26,7 +26,7 @@ public final class WorkbooksGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/
      * WorkbookManagedGet.json
      */
     /**
@@ -43,7 +43,7 @@ public final class WorkbooksGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2022-04-01/examples/WorkbookGet.json
+     * specification/applicationinsights/resource-manager/Microsoft.Insights/stable/2023-06-01/examples/WorkbookGet.json
      */
     /**
      * Sample code: WorkbookGet.

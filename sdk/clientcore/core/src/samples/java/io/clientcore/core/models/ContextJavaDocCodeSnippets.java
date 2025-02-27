@@ -18,11 +18,8 @@ public class ContextJavaDocCodeSnippets {
         // Create an empty context having no data
         Context emptyContext = Context.none();
 
-        // OpenTelemetry context can be optionally passed using PARENT_TRACE_CONTEXT_KEY
-        // when OpenTelemetry context is not provided explicitly, ambient
-        // io.opentelemetry.context.Context.current() is used
-
-        // Context contextWithSpan = new Context(PARENT_TRACE_CONTEXT_KEY, openTelemetryContext);
+        // Create a context with one key value pair
+        Context contextWithOnePair = Context.of("key", "value");
         // END: io.clientcore.core.util.context#object-object
     }
 
@@ -31,17 +28,15 @@ public class ContextJavaDocCodeSnippets {
      */
     public void putToContext() {
         // BEGIN: io.clientcore.core.util.context.addData#object-object
-        // Users can pass parent trace context information and additional metadata to attach to spans created by SDKs
         // using the io.clientcore.core.util.Context object.
+
+        Context originalContext = Context.none();
+
         final String hostNameValue = "host-name-value";
         final String entityPathValue = "entity-path-value";
 
-        // TraceContext represents a tracing solution context type - io.opentelemetry.context.Context for OpenTelemetry.
-        final TraceContext parentContext = TraceContext.root();
-        Context parentSpanContext = Context.of("PARENT_TRACE_CONTEXT_KEY", parentContext);
-
         // Add a new key value pair to the existing context object.
-        Context updatedContext = parentSpanContext.put("HOST_NAME_KEY", hostNameValue)
+        Context updatedContext = originalContext.put("HOST_NAME_KEY", hostNameValue)
             .put("ENTITY_PATH_KEY", entityPathValue);
 
         // Both key values found on the same updated context object

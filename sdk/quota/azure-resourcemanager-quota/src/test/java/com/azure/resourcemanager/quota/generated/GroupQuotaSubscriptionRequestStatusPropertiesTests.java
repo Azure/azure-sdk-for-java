@@ -13,19 +13,19 @@ public final class GroupQuotaSubscriptionRequestStatusPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionRequestStatusProperties model = BinaryData.fromString(
-            "{\"subscriptionId\":\"lssai\",\"requestSubmitTime\":\"2021-09-05T10:45:28Z\",\"provisioningState\":\"Created\"}")
+            "{\"subscriptionId\":\"ahbc\",\"requestSubmitTime\":\"2021-05-25T21:39:12Z\",\"provisioningState\":\"Created\"}")
             .toObject(GroupQuotaSubscriptionRequestStatusProperties.class);
-        Assertions.assertEquals("lssai", model.subscriptionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T10:45:28Z"), model.requestSubmitTime());
+        Assertions.assertEquals("ahbc", model.subscriptionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T21:39:12Z"), model.requestSubmitTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GroupQuotaSubscriptionRequestStatusProperties model
-            = new GroupQuotaSubscriptionRequestStatusProperties().withSubscriptionId("lssai")
-                .withRequestSubmitTime(OffsetDateTime.parse("2021-09-05T10:45:28Z"));
+            = new GroupQuotaSubscriptionRequestStatusProperties().withSubscriptionId("ahbc")
+                .withRequestSubmitTime(OffsetDateTime.parse("2021-05-25T21:39:12Z"));
         model = BinaryData.fromObject(model).toObject(GroupQuotaSubscriptionRequestStatusProperties.class);
-        Assertions.assertEquals("lssai", model.subscriptionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-05T10:45:28Z"), model.requestSubmitTime());
+        Assertions.assertEquals("ahbc", model.subscriptionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T21:39:12Z"), model.requestSubmitTime());
     }
 }

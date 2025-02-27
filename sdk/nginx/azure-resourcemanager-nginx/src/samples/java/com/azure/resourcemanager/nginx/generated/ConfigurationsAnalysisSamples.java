@@ -4,19 +4,13 @@
 
 package com.azure.resourcemanager.nginx.generated;
 
-import com.azure.resourcemanager.nginx.models.AnalysisCreate;
-import com.azure.resourcemanager.nginx.models.AnalysisCreateConfig;
-import com.azure.resourcemanager.nginx.models.NginxConfigurationFile;
-import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
-import java.util.Arrays;
-
 /**
  * Samples for Configurations Analysis.
  */
 public final class ConfigurationsAnalysisSamples {
     /*
      * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Analysis.
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Configurations_Analysis.
      * json
      */
     /**
@@ -26,11 +20,6 @@ public final class ConfigurationsAnalysisSamples {
      */
     public static void configurationsAnalysis(com.azure.resourcemanager.nginx.NginxManager manager) {
         manager.configurations()
-            .analysisWithResponse("myResourceGroup", "myDeployment", "default",
-                new AnalysisCreate().withConfig(new AnalysisCreateConfig().withRootFile("/etc/nginx/nginx.conf")
-                    .withFiles(Arrays.asList(
-                        new NginxConfigurationFile().withContent("ABCDEF==").withVirtualPath("/etc/nginx/nginx.conf")))
-                    .withPackageProperty(new NginxConfigurationPackage())),
-                com.azure.core.util.Context.NONE);
+            .analysisWithResponse("myResourceGroup", "myDeployment", "default", null, com.azure.core.util.Context.NONE);
     }
 }

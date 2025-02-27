@@ -4,7 +4,7 @@
 package io.clientcore.http.okhttp3;
 
 import io.clientcore.core.http.models.ProxyOptions;
-import io.clientcore.core.util.configuration.Configuration;
+import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.api.Test;
 
 import java.net.ProxySelector;

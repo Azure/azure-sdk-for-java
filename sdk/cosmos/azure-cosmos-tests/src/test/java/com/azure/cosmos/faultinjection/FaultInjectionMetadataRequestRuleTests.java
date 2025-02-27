@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.TestItem;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
@@ -208,9 +209,9 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                     // when preferred regions is 2
                     // Due to issue https://github.com/Azure/azure-sdk-for-java/issues/35779, the request mark the region unavailable will retry
                     // in the unavailable region again, hence the addressRefresh fault injection will be happened 4 times
-                    validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 4);
+                    validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 4, false);
                 } else {
-                    validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 3);
+                    validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshConnectionDelay, 3, false);
                 }
             } catch (CosmosException e) {
                 fail("Request should be able to succeed by retrying in another region. " + e.getDiagnostics());
@@ -305,18 +306,34 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
             CosmosDiagnostics cosmosDiagnostics =
                 this.performDocumentOperation(container, operationType, createdItem);
 
-            assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
-            assertThat(
-                cosmosDiagnostics
-                    .getContactedRegionNames()
-                    .containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase())))
-                .isTrue();
 
-            assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode())
-                .isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
-            assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode())
-                .isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
-            validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshResponseDelay, 3);
+            if (isNonWriteDocumentOperation(operationType)) {
+                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(2);
+                assertThat(
+                    cosmosDiagnostics
+                        .getContactedRegionNames()
+                        .containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase(), this.readPreferredLocations.get(0).toLowerCase())))
+                    .isTrue();
+
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode())
+                    .isNotEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode())
+                    .isNotEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+            } else {
+                assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+                assertThat(
+                    cosmosDiagnostics
+                        .getContactedRegionNames()
+                        .containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase())))
+                    .isTrue();
+
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getStatusCode())
+                    .isEqualTo(HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getSubStatusCode())
+                    .isEqualTo(HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
+            }
+
+            validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshResponseDelay, 3, operationType == OperationType.Query);
         } finally {
             addressRefreshResponseDelayRule.disable();
             dataOperationGoneRule.disable();
@@ -404,17 +421,25 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
                     Arrays.asList(addressRefreshResponseDelayRule, dataOperationGoneRule))
                 .block();
 
-            // validate for request on feed range 0, it will fail
+            // validate for request on feed range 0, address refresh request failures will happen but request will succeed in second region as request is Document read
             try {
-                CosmosDiagnostics cosmosDiagnostics =
+                CosmosItemResponse<JsonNode> itemResponse =
                     container
                         .readItem(itemOnFeedRange1.getId(), new PartitionKey(itemOnFeedRange1.getId()), JsonNode.class)
-                        .block()
-                        .getDiagnostics();
+                        .block();
 
-                fail("Item on feed range 1 should have failed. " + cosmosDiagnostics);
+                assertThat(itemResponse).isNotNull();
+
+                CosmosDiagnostics cosmosDiagnostics = itemResponse.getDiagnostics();
+
+                assertThat(addressRefreshResponseDelayRule.getHitCount()).isGreaterThan(0);
+
+                assertThat(cosmosDiagnostics).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext()).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames()).isNotNull();
+                assertThat(cosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames().size()).isEqualTo(2);
             } catch (CosmosException e) {
-                // no-op
+                fail("Item on feed range 1 should have succeeded. " + e.getDiagnostics());
             }
 
             try {
@@ -497,7 +522,7 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
 
             assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
             assertThat(cosmosDiagnostics.getContactedRegionNames().containsAll(Arrays.asList(this.readPreferredLocations.get(0).toLowerCase()))).isTrue();
-            validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshTooManyRequest, 1);
+            validateFaultInjectionRuleAppliedForAddressResolution(cosmosDiagnostics, addressRefreshTooManyRequest, 1, false);
         } finally {
             addressRefreshTooManyRequestRule.disable();
             dataOperationGoneRule.disable();
@@ -719,10 +744,24 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
     private void validateFaultInjectionRuleAppliedForAddressResolution(
         CosmosDiagnostics cosmosDiagnostics,
         String ruleId,
-        int failureInjectedExpectedCount) throws JsonProcessingException {
+        int failureInjectedExpectedCount,
+        boolean isQueryOperation) throws JsonProcessingException {
 
         ObjectNode diagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
-        JsonNode addressResolutionStatistics = diagnosticsNode.get("addressResolutionStatistics");
+        JsonNode addressResolutionStatistics;
+
+        if (isQueryOperation) {
+
+            ArrayNode arrayNode = (ArrayNode) diagnosticsNode.get("clientSideRequestStatistics");
+
+            assertThat(arrayNode).isNotNull();
+            assertThat(arrayNode.get(0)).isNotNull();
+
+            addressResolutionStatistics = arrayNode.get(0).get("addressResolutionStatistics");
+        } else {
+            addressResolutionStatistics = diagnosticsNode.get("addressResolutionStatistics");
+        }
+
         Iterator<Map.Entry<String, JsonNode>> addressResolutionIterator = addressResolutionStatistics.fields();
         int failureInjectedCount = 0;
         while (addressResolutionIterator.hasNext()) {
@@ -734,6 +773,12 @@ public class FaultInjectionMetadataRequestRuleTests extends FaultInjectionTestBa
         }
 
         assertThat(failureInjectedCount).isEqualTo(failureInjectedExpectedCount);
+    }
+
+    private static boolean isNonWriteDocumentOperation(OperationType operationType) {
+        return operationType == OperationType.Read ||
+            operationType == OperationType.Query ||
+            operationType == OperationType.ReadFeed;
     }
 
     private static AccountLevelLocationContext getAccountLevelLocationContext(DatabaseAccount databaseAccount, boolean writeOnly) {

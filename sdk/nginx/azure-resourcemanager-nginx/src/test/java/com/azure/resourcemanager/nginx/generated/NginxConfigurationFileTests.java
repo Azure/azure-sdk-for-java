@@ -12,18 +12,18 @@ public final class NginxConfigurationFileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxConfigurationFile model
-            = BinaryData.fromString("{\"content\":\"fdosyg\",\"virtualPath\":\"paojakhmsbzjh\"}")
+            = BinaryData.fromString("{\"content\":\"fygxgispemvtzfk\",\"virtualPath\":\"ubljofxqe\"}")
                 .toObject(NginxConfigurationFile.class);
-        Assertions.assertEquals("fdosyg", model.content());
-        Assertions.assertEquals("paojakhmsbzjh", model.virtualPath());
+        Assertions.assertEquals("fygxgispemvtzfk", model.content());
+        Assertions.assertEquals("ubljofxqe", model.virtualPath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NginxConfigurationFile model
-            = new NginxConfigurationFile().withContent("fdosyg").withVirtualPath("paojakhmsbzjh");
+            = new NginxConfigurationFile().withContent("fygxgispemvtzfk").withVirtualPath("ubljofxqe");
         model = BinaryData.fromObject(model).toObject(NginxConfigurationFile.class);
-        Assertions.assertEquals("fdosyg", model.content());
-        Assertions.assertEquals("paojakhmsbzjh", model.virtualPath());
+        Assertions.assertEquals("fygxgispemvtzfk", model.content());
+        Assertions.assertEquals("ubljofxqe", model.virtualPath());
     }
 }

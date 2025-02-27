@@ -1,6 +1,6 @@
 # Release History
 
-## 12.26.0-beta.1 (Unreleased)
+## 12.26.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.26.0-beta.1 (2025-02-11)
+
+### Features Added
+- Added support for NFS over REST. 
+- Added support for service version 2025-05-05.
+
+### Breaking Changes
+- The following APIs no longer send the x-ms-file-permission, x-ms-file-attributes, x-ms-file-creation-time, and x-ms-file-last-write-time request headers by default. These headers have been optional in the REST API since x-ms-version 2021-06-08:
+  - ShareDirectoryClient/ShareDirectoryAsyncClient.createWithResponse()
+  - ShareDirectoryClient/ShareDirectoryAsyncClient.setPropertiesWithResponse()
+  - ShareFileClient/ShareFileAsyncClient.createWithResponse()
+  - ShareFileClient/ShareFileAsyncClient.beginCopy()
+  - ShareFileClient/ShareFileAsyncClient.setPropertiesWithResponse()
 
 ## 12.25.1 (2024-12-04)
 

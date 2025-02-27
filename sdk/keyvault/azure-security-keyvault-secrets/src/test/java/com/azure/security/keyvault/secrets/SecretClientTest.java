@@ -3,6 +3,7 @@
 
 package com.azure.security.keyvault.secrets;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
@@ -11,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.secrets.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.secrets.models.DeletedSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.SecretProperties;
@@ -93,7 +93,7 @@ public class SecretClientTest extends SecretClientTestBase {
     public void setSecretEmptyName(HttpClient httpClient, SecretServiceVersion serviceVersion) {
         createClient(httpClient, serviceVersion);
 
-        assertRestException(() -> secretClient.setSecret("", "A value"), KeyVaultErrorException.class,
+        assertRestException(() -> secretClient.setSecret("", "A value"), HttpResponseException.class,
             HttpURLConnection.HTTP_BAD_METHOD);
     }
 

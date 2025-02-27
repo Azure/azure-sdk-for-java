@@ -6,7 +6,7 @@ package com.azure.resourcemanager.samples;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.management.AzureEnvironment;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.AzureResourceManager;
@@ -74,7 +74,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         azureResourceManager = buildManager(AzureResourceManager.class,
             setReadTimeout(azureResourceManager.storageAccounts().manager().httpPipeline(), Duration.ofMinutes(10)),
             new AzureProfile(azureResourceManager.tenantId(), azureResourceManager.subscriptionId(),
-                AzureEnvironment.AZURE));
+                AzureCloud.AZURE_PUBLIC_CLOUD));
         Assertions.assertTrue(ManageFunctionAppLogs.runSample(azureResourceManager));
     }
 
@@ -87,7 +87,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         azureResourceManager = buildManager(AzureResourceManager.class,
             setReadTimeout(azureResourceManager.storageAccounts().manager().httpPipeline(), Duration.ofMinutes(10)),
             new AzureProfile(azureResourceManager.tenantId(), azureResourceManager.subscriptionId(),
-                AzureEnvironment.AZURE));
+                AzureCloud.AZURE_PUBLIC_CLOUD));
         Assertions.assertTrue(ManageWebAppLogs.runSample(azureResourceManager));
     }
 

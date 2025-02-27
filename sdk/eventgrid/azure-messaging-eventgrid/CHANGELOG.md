@@ -1,6 +1,6 @@
 # Release History
 
-## 4.28.0-beta.1 (Unreleased)
+## 4.30.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.29.0 (2025-02-26)
+
+### Features Added
+- Added `MessageId`, `MessageType`, and `Reaction` properties to the `AcsMessageReceivedEventData` event.
+- Added the `Animated` property to `AcsMessageMediaContent` event.
+
+## 4.28.0 (2025-01-21)
+
+### Features Added
+- Added `internetMessageId` property to `AcsEmailDeliveryReportReceivedEventData`.
+- Added `recipientMailServerHostName` property to `AcsEmailDeliveryReportStatusDetails`.
+- Added `segmentCount` property to `AcsSmsReceivedEventData`.
 
 ## 4.27.0 (2024-11-18)
 

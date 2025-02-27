@@ -5,11 +5,13 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
+import com.azure.cosmos.implementation.changefeed.Lease;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
+import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -27,6 +29,8 @@ class BootstrapperImpl implements Bootstrapper {
     private final PartitionSynchronizer synchronizer;
     private final LeaseStore leaseStore;
     private final LeaseStoreManager epkRangeVersionLeaseStoreManager;
+    private final LeaseStoreManager pkRangeVersionLeaseStoreManager;
+    private final ChangeFeedProcessorOptions changeFeedProcessorOptions;
     private final ChangeFeedMode changeFeedModeToStart;
     private final Duration lockTime;
     private final Duration sleepTime;
@@ -34,15 +38,31 @@ class BootstrapperImpl implements Bootstrapper {
     private volatile boolean isInitialized;
     private volatile boolean isLockAcquired;
 
-    public BootstrapperImpl(PartitionSynchronizer synchronizer, LeaseStore leaseStore, Duration lockTime, Duration sleepTime, LeaseStoreManager epkRangeVersionLeaseStoreManager, ChangeFeedMode changeFeedModeToStart) {
+    public BootstrapperImpl(
+        PartitionSynchronizer synchronizer,
+        LeaseStore leaseStore,
+        Duration lockTime,
+        Duration sleepTime,
+        LeaseStoreManager epkRangeVersionLeaseStoreManager,
+        LeaseStoreManager pkRangeVersionLeaseStoreManager,
+        ChangeFeedProcessorOptions changeFeedProcessorOptions,
+        ChangeFeedMode changeFeedModeToStart) {
+
         checkNotNull(synchronizer, "Argument 'synchronizer' can not be null");
         checkNotNull(leaseStore, "Argument 'leaseStore' can not be null");
+        checkNotNull(epkRangeVersionLeaseStoreManager, "Argument 'epkRangeVersionLeaseStoreManager' can not be null");
+        checkNotNull(pkRangeVersionLeaseStoreManager, "Argument 'pkRangeVersionLeaseStoreManager' can not be null");
+        checkNotNull(changeFeedProcessorOptions, "Argument 'changeFeedProcessorOptions' can not be null");
+        checkNotNull(changeFeedModeToStart, "Argument 'changeFeedModeToStart' can not be null");
+
         checkArgument(lockTime != null && this.isPositive(lockTime), "lockTime should be non-null and positive");
         checkArgument(sleepTime != null && this.isPositive(sleepTime), "sleepTime should be non-null and positive");
 
         this.synchronizer = synchronizer;
         this.leaseStore = leaseStore;
         this.epkRangeVersionLeaseStoreManager = epkRangeVersionLeaseStoreManager;
+        this.pkRangeVersionLeaseStoreManager = pkRangeVersionLeaseStoreManager;
+        this.changeFeedProcessorOptions = changeFeedProcessorOptions;
         this.changeFeedModeToStart = changeFeedModeToStart;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
@@ -97,11 +117,26 @@ class BootstrapperImpl implements Bootstrapper {
 
     private Mono<Void> validateLeaseCFModeInteroperabilityForEpkRangeBasedLease() {
 
-        // fetches only 1 epk-based lease for a given lease prefix
-        return this.epkRangeVersionLeaseStoreManager
-            .getTopLeases(1)
-            // pick one lease corresponding to a lease prefix (lease prefix denotes a unique feed)
-            .next()
+        // fetch pk-range based lease first (all versions and deletes is bootstrapping)
+        return this.pkRangeVersionLeaseStoreManager.getTopLeases(1).next()
+            .flatMap(lease -> {
+
+                    if (lease.getVersion() == LeaseVersion.PARTITION_KEY_BASED_LEASE) {
+
+                        String errorMessage = String.format("ChangeFeedProcessor#handleAllVersionsAndDeletes cannot be invoked when" +
+                            "ChangeFeedProcessor#handleChanges was also started for" +
+                            "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
+
+                        return Mono.error(new IllegalStateException(errorMessage));
+                    }
+
+                    return Mono.empty();
+                }
+            )
+            // if no pk-range based lease exists, try fetching epk-range based lease
+            .switchIfEmpty(this.epkRangeVersionLeaseStoreManager.getTopLeases(1).next())
+            // type is known from upstream so doing an explicit cast
+            .flatMap(epkRangeVersionLease -> Mono.just((Lease) epkRangeVersionLease))
             .flatMap(lease -> {
 
                 if (lease.getVersion() == LeaseVersion.EPK_RANGE_BASED_LEASE) {
@@ -111,7 +146,12 @@ class BootstrapperImpl implements Bootstrapper {
                             ChangeFeedState changeFeedState = ChangeFeedState.fromString(lease.getContinuationToken());
 
                             if (changeFeedState.getMode() != this.changeFeedModeToStart) {
-                                return Mono.error(new IllegalStateException("Change feed mode in the pre-existing lease is : " + changeFeedState.getMode() + " while the expected change feed mode is : " + this.changeFeedModeToStart));
+
+                                String errorMessage = String.format("ChangeFeedProcessor#handleAllVersionsAndDeletes cannot be invoked when " +
+                                    "ChangeFeedProcessor#handleLatestVersionChanges were also started for " +
+                                    "lease prefix : %s", this.changeFeedProcessorOptions.getLeasePrefix());
+
+                                return Mono.error(new IllegalStateException(errorMessage));
                             }
                         }
                     }

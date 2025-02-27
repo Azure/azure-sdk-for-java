@@ -18,13 +18,15 @@ public class GetTropicalStormForecast {
         // builder.credential(keyCredential);
 
         // Authenticates using Azure AD building a default credential
-        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        // DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET
+        // env variables
+        // DefaultAzureCredential tokenCredential = new
+        // DefaultAzureCredentialBuilder().build();
 
         WeatherClient client = new WeatherClientBuilder()
-            .credential(keyCredential)
-            .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
-            .buildClient();
+                .credential(keyCredential)
+                .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
+                .buildClient();
 
         // Get Tropical Storm Forecast -
         // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-tropical-storm-forecast
@@ -37,8 +39,8 @@ public class GetTropicalStormForecast {
         if (result.getActiveStorms().size() > 0) {
             ActiveStorm storm = result.getActiveStorms().get(0);
             TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions(storm.getYear(),
-                storm.getBasinId(), storm.getGovId())
-                .setIncludeWindowGeometry(true);
+                    storm.getBasinId(), storm.getGovernmentId())
+                    .setIncludeWindowGeometry(true);
             client.getTropicalStormForecast(forecastOptions);
         }
         // END: com.azure.maps.weather.sync.get_tropical_storm_forecast
@@ -48,13 +50,15 @@ public class GetTropicalStormForecast {
         // builder.credential(keyCredential);
 
         // Authenticates using Azure AD building a default credential
-        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
-        // DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
+        // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET
+        // env variables
+        // DefaultAzureCredential asyncClientTokenCredential = new
+        // DefaultAzureCredentialBuilder().build();
 
         WeatherAsyncClient asyncClient = new WeatherClientBuilder()
-            .credential(asyncClientKeyCredential)
-            .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
-            .buildAsyncClient();
+                .credential(asyncClientKeyCredential)
+                .weatherClientId(System.getenv("MAPS_CLIENT_ID"))
+                .buildAsyncClient();
 
         // Get Tropical Storm Forecast -
         // https://docs.microsoft.com/en-us/rest/api/maps/weather/get-tropical-storm-forecast
@@ -67,8 +71,8 @@ public class GetTropicalStormForecast {
         if (activeStormResult.getActiveStorms().size() > 0) {
             ActiveStorm storm = activeStormResult.getActiveStorms().get(0);
             TropicalStormForecastOptions forecastOptions = new TropicalStormForecastOptions(storm.getYear(),
-                storm.getBasinId(), storm.getGovId())
-                .setIncludeWindowGeometry(true);
+                    storm.getBasinId(), storm.getGovernmentId())
+                    .setIncludeWindowGeometry(true);
             asyncClient.getTropicalStormForecast(forecastOptions);
         }
         // END: com.azure.maps.weather.async.get_tropical_storm_forecast
