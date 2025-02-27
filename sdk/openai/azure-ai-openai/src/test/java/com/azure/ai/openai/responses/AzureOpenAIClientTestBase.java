@@ -2,6 +2,9 @@ package com.azure.ai.openai.responses;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
@@ -15,6 +18,8 @@ public class AzureOpenAIClientTestBase extends TestProxyTestBase {
                 .credential(new AzureKeyCredential(
                         Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY"))
                 ).serviceVersion(serviceVersion)
+                .addPolicy(new AddHeadersPolicy(new HttpHeaders()
+                        .add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")))
                 .httpClient(httpClient)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
 

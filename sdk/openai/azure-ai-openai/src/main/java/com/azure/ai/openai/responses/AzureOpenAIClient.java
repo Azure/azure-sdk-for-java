@@ -10,6 +10,7 @@ import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
 import com.azure.ai.openai.responses.models.ResponsesInputItemList;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
+import com.azure.ai.openai.responses.models.ResponsesResponseStreamEvent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -21,6 +22,10 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.IterableStream;
+import reactor.core.publisher.Flux;
+
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -347,8 +352,36 @@ public final class AzureOpenAIClient {
             .toObject(ResponsesResponse.class);
     }
 
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponsesResponse createResponse(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
+        requestBody.setStream(false);
         return createResponseWithResponse(CreateResponseRequestAccept.APPLICATION_JSON.toString(),
                 BinaryData.fromObject(requestBody), requestOptions).getValue().toObject(ResponsesResponse.class);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<ResponsesResponseStreamEvent> createResponseStreaming(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
+        requestBody.setStream(true);
+        Flux<ByteBuffer> events = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
+                BinaryData.fromObject(requestBody), requestOptions).getValue().toFluxByteBuffer();
+
+        Flux<ResponsesResponseStreamEvent> responsesEvents = events
+            .map(it -> new String(it.array()).split("data:")[1].trim())
+            .map(jsonString -> {
+                // we get incomplete JSON strings. Need to implement a helper to account for that.
+//                System.out.println("LOG:" + jsonString);
+                return BinaryData.fromString(jsonString).toObject(ResponsesResponseStreamEvent.class);
+            });
+        return new IterableStream<>(responsesEvents);
+    }
+
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public IterableStream<String> createResponseStreamingAsString(CreateResponsesRequest requestBody, RequestOptions requestOptions) {
+        requestBody.setStream(true);
+        Flux<ByteBuffer> events = createResponseWithResponse(CreateResponseRequestAccept.TEXT_EVENT_STREAM.toString(),
+                BinaryData.fromObject(requestBody), requestOptions).getValue().toFluxByteBuffer();
+
+        Flux<String> responsesEvents = events.map(ByteBuffer::array).map(String::new);
+        return new IterableStream<>(responsesEvents);
     }
 }
