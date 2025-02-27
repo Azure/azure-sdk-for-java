@@ -6,30 +6,37 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The connectivity check operation destination. */
+/**
+ * The connectivity check operation destination.
+ */
 @Fluent
-public final class ConnectivityCheckRequestDestination {
+public final class ConnectivityCheckRequestDestination
+    implements JsonSerializable<ConnectivityCheckRequestDestination> {
     /*
      * Destination address. Can either be an IP address or a FQDN.
      */
-    @JsonProperty(value = "address", required = true)
     private String address;
 
     /*
      * Destination port.
      */
-    @JsonProperty(value = "port", required = true)
     private long port;
 
-    /** Creates an instance of ConnectivityCheckRequestDestination class. */
+    /**
+     * Creates an instance of ConnectivityCheckRequestDestination class.
+     */
     public ConnectivityCheckRequestDestination() {
     }
 
     /**
      * Get the address property: Destination address. Can either be an IP address or a FQDN.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -38,7 +45,7 @@ public final class ConnectivityCheckRequestDestination {
 
     /**
      * Set the address property: Destination address. Can either be an IP address or a FQDN.
-     *
+     * 
      * @param address the address value to set.
      * @return the ConnectivityCheckRequestDestination object itself.
      */
@@ -49,7 +56,7 @@ public final class ConnectivityCheckRequestDestination {
 
     /**
      * Get the port property: Destination port.
-     *
+     * 
      * @return the port value.
      */
     public long port() {
@@ -58,7 +65,7 @@ public final class ConnectivityCheckRequestDestination {
 
     /**
      * Set the port property: Destination port.
-     *
+     * 
      * @param port the port value to set.
      * @return the ConnectivityCheckRequestDestination object itself.
      */
@@ -69,15 +76,57 @@ public final class ConnectivityCheckRequestDestination {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (address() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property address in model ConnectivityCheckRequestDestination"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property address in model ConnectivityCheckRequestDestination"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectivityCheckRequestDestination.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("address", this.address);
+        jsonWriter.writeLongField("port", this.port);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityCheckRequestDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityCheckRequestDestination if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectivityCheckRequestDestination.
+     */
+    public static ConnectivityCheckRequestDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityCheckRequestDestination deserializedConnectivityCheckRequestDestination
+                = new ConnectivityCheckRequestDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("address".equals(fieldName)) {
+                    deserializedConnectivityCheckRequestDestination.address = reader.getString();
+                } else if ("port".equals(fieldName)) {
+                    deserializedConnectivityCheckRequestDestination.port = reader.getLong();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityCheckRequestDestination;
+        });
+    }
 }

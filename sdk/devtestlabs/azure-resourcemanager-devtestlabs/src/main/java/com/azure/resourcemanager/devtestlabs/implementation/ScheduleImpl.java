@@ -170,8 +170,8 @@ public final class ScheduleImpl implements Schedule, Schedule.Definition, Schedu
     ScheduleImpl(ScheduleInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "schedules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "schedules");
     }
 
     public Schedule refresh() {

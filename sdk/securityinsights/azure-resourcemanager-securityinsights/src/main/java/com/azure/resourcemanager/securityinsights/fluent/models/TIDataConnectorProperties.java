@@ -6,11 +6,10 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
 import com.azure.resourcemanager.securityinsights.models.TIDataConnectorDataTypes;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -20,7 +19,12 @@ import java.time.format.DateTimeFormatter;
  * TI (Threat Intelligence) data connector properties.
  */
 @Fluent
-public final class TIDataConnectorProperties extends DataConnectorTenantId {
+public final class TIDataConnectorProperties implements JsonSerializable<TIDataConnectorProperties> {
+    /*
+     * The tenant id to connect to, and get the data from.
+     */
+    private String tenantId;
+
     /*
      * The lookback period for the feed to be imported.
      */
@@ -35,6 +39,26 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
      * Creates an instance of TIDataConnectorProperties class.
      */
     public TIDataConnectorProperties() {
+    }
+
+    /**
+     * Get the tenantId property: The tenant id to connect to, and get the data from.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Set the tenantId property: The tenant id to connect to, and get the data from.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the TIDataConnectorProperties object itself.
+     */
+    public TIDataConnectorProperties withTenantId(String tenantId) {
+        this.tenantId = tenantId;
+        return this;
     }
 
     /**
@@ -78,36 +102,15 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public TIDataConnectorProperties withTenantId(String tenantId) {
-        super.withTenantId(tenantId);
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    @Override
     public void validate() {
-        if (dataTypes() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property dataTypes in model TIDataConnectorProperties"));
-        } else {
+        if (dataTypes() != null) {
             dataTypes().validate();
         }
-        if (tenantId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property tenantId in model TIDataConnectorProperties"));
-        }
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(TIDataConnectorProperties.class);
 
     /**
      * {@inheritDoc}
@@ -115,12 +118,12 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("tenantId", tenantId());
-        jsonWriter.writeJsonField("dataTypes", this.dataTypes);
+        jsonWriter.writeStringField("tenantId", this.tenantId);
         jsonWriter.writeStringField("tipLookbackPeriod",
             this.tipLookbackPeriod == null
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.tipLookbackPeriod));
+        jsonWriter.writeJsonField("dataTypes", this.dataTypes);
         return jsonWriter.writeEndObject();
     }
 
@@ -130,7 +133,6 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
      * @param jsonReader The JsonReader being read.
      * @return An instance of TIDataConnectorProperties if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the TIDataConnectorProperties.
      */
     public static TIDataConnectorProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -141,12 +143,12 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
                 reader.nextToken();
 
                 if ("tenantId".equals(fieldName)) {
-                    deserializedTIDataConnectorProperties.withTenantId(reader.getString());
-                } else if ("dataTypes".equals(fieldName)) {
-                    deserializedTIDataConnectorProperties.dataTypes = TIDataConnectorDataTypes.fromJson(reader);
+                    deserializedTIDataConnectorProperties.tenantId = reader.getString();
                 } else if ("tipLookbackPeriod".equals(fieldName)) {
                     deserializedTIDataConnectorProperties.tipLookbackPeriod = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dataTypes".equals(fieldName)) {
+                    deserializedTIDataConnectorProperties.dataTypes = TIDataConnectorDataTypes.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

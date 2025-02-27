@@ -73,93 +73,196 @@ public interface ApplicationGateway
     Collection<ApplicationGatewaySslProtocol> disabledSslProtocols();
 
     /**
+     * Checks whether the application gateway has at least one internally load balanced frontend accessible within the
+     *     virtual network.
+     *
      * @return true if the application gateway has at least one internally load balanced frontend accessible within the
      *     virtual network
      */
     boolean isPrivate();
 
-    /** @return true if the application gateway has at least one Internet-facing frontend */
+    /**
+     * Checks whether the application gateway has at least one Internet-facing frontend.
+     *
+     * @return true if the application gateway has at least one Internet-facing frontend
+     */
     boolean isPublic();
 
     /**
+     * Gets the frontend IP configuration associated with a public IP address.
+     *
      * @return the frontend IP configuration associated with a public IP address, if any, that frontend listeners and
      *     request routing rules can reference implicitly
      */
     ApplicationGatewayFrontend defaultPublicFrontend();
 
     /**
+     * Gets the frontend IP configuration associated with a private IP address.
+     *
      * @return the frontend IP configuration associated with a private IP address, if any, that frontend listeners and
      *     request routing rules can reference implicitly
      */
     ApplicationGatewayFrontend defaultPrivateFrontend();
 
-    /** @return the SKU of this application gateway */
+    /**
+     * Gets the SKU of this application gateway.
+     *
+     * @return the SKU of this application gateway
+     */
     ApplicationGatewaySku sku();
 
-    /** @return number of instances */
+    /**
+     * Gets number of instances.
+     *
+     * @return number of instances
+     */
     int instanceCount();
 
-    /** @return the size of the application gateway */
+    /**
+     * Gets the size of the application gateway.
+     *
+     * @return the size of the application gateway
+     */
     ApplicationGatewaySkuName size();
 
-    /** @return the tier of the application gateway */
+    /**
+     * Gets the tier of the application gateway.
+     *
+     * @return the tier of the application gateway
+     */
     ApplicationGatewayTier tier();
 
-    /** @return the autoscaleConfiguration value. */
+    /**
+     * Gets the autoscaleConfiguration value.
+     *
+     * @return the autoscaleConfiguration value.
+     */
     ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration();
 
-    /** @return the webApplicationFirewallConfiguration value. */
+    /**
+     * Gets the webApplicationFirewallConfiguration value.
+     *
+     * @return the webApplicationFirewallConfiguration value.
+     */
     ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration();
 
-    /** @return the operational state of the application gateway */
+    /**
+     * Gets the operational state of the application gateway.
+     *
+     * @return the operational state of the application gateway
+     */
     ApplicationGatewayOperationalState operationalState();
 
-    /** @return IP configurations of this application gateway, indexed by name */
+    /**
+     * Gets IP configurations of this application gateway.
+     *
+     * @return IP configurations of this application gateway, indexed by name
+     */
     Map<String, ApplicationGatewayIpConfiguration> ipConfigurations();
 
-    /** @return backend address pools of this application gateway, indexed by name */
+    /**
+     * Gets backend address pools of this application gateway.
+     *
+     * @return backend address pools of this application gateway, indexed by name
+     */
     Map<String, ApplicationGatewayBackend> backends();
 
-    /** @return probes of this application gateway, indexed by name */
+    /**
+     * Gets probes of this application gateway.
+     *
+     * @return probes of this application gateway, indexed by name
+     */
     Map<String, ApplicationGatewayProbe> probes();
 
-    /** @return the existing IP configurations if only one exists, else null */
+    /**
+     * Gets the existing IP configurations.
+     *
+     * @return the existing IP configurations if only one exists, else null
+     */
     ApplicationGatewayIpConfiguration defaultIPConfiguration();
 
-    /** @return frontend IP configurations, indexed by name */
+    /**
+     * Gets frontend IP configurations.
+     *
+     * @return frontend IP configurations, indexed by name
+     */
     Map<String, ApplicationGatewayFrontend> frontends();
 
-    /** @return frontend IP configurations with a public IP address, indexed by name */
+    /**
+     * Gets frontend IP configurations with a public IP address.
+     *
+     * @return frontend IP configurations with a public IP address, indexed by name
+     */
     Map<String, ApplicationGatewayFrontend> publicFrontends();
 
-    /** @return frontend IP configurations with a private IP address within a subnet, indexed by name */
+    /**
+     * Gets frontend IP configurations with a private IP address within a subnet.
+     *
+     * @return frontend IP configurations with a private IP address within a subnet, indexed by name
+     */
     Map<String, ApplicationGatewayFrontend> privateFrontends();
 
-    /** @return named frontend ports of this application gateway, indexed by name */
+    /**
+     * Gets named frontend ports of this application gateway.
+     *
+     * @return named frontend ports of this application gateway, indexed by name
+     */
     Map<String, Integer> frontendPorts();
 
-    /** @return backend HTTP configurations of this application gateway, indexed by name */
+    /**
+     * Gets backend HTTP configurations of this application gateway.
+     *
+     * @return backend HTTP configurations of this application gateway, indexed by name
+     */
     Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigurations();
 
-    /** @return SSL certificates, indexed by name */
+    /**
+     * Gets SSL certificates.
+     *
+     * @return SSL certificates, indexed by name
+     */
     Map<String, ApplicationGatewaySslCertificate> sslCertificates();
 
-    /** @return frontend listeners, indexed by name */
+    /**
+     * Gets frontend listeners.
+     *
+     * @return frontend listeners, indexed by name
+     */
     Map<String, ApplicationGatewayListener> listeners();
 
-    /** @return redirect configurations, indexed by name */
+    /**
+     * Gets redirect configurations.
+     *
+     * @return redirect configurations, indexed by name
+     */
     Map<String, ApplicationGatewayRedirectConfiguration> redirectConfigurations();
 
-    /** @return URL path maps, indexed by name (case sensitive) */
+    /**
+     * Gets URL path maps.
+     *
+     * @return URL path maps, indexed by name (case sensitive)
+     */
     Map<String, ApplicationGatewayUrlPathMap> urlPathMaps();
 
-    /** @return request routing rules, indexed by name */
+    /**
+     * Gets request routing rules.
+     *
+     * @return request routing rules, indexed by name
+     */
     Map<String, ApplicationGatewayRequestRoutingRule> requestRoutingRules();
 
-    /** @return authentication certificates */
+    /**
+     * Gets authentication certificates.
+     *
+     * @return authentication certificates
+     */
     Map<String, ApplicationGatewayAuthenticationCertificate> authenticationCertificates();
 
-    /** @return whether HTTP2 enabled for the application gateway */
+    /**
+     * Checks whether HTTP2 is enabled for the application gateway.
+     *
+     * @return whether HTTP2 enabled for the application gateway
+     */
     boolean isHttp2Enabled();
 
     /**
@@ -188,7 +291,11 @@ public interface ApplicationGateway
      */
     ApplicationGatewayListener listenerByPortNumber(int portNumber);
 
-    /** @return resource id of the Web Application Firewall Policy (if any) associated with the application gateway */
+    /**
+     * Gets resource ID of the Web Application Firewall Policy (if any) associated with the application gateway.
+     *
+     * @return resource ID of the Web Application Firewall Policy (if any) associated with the application gateway
+     */
     String getWebApplicationFirewallPolicyId();
 
     /**

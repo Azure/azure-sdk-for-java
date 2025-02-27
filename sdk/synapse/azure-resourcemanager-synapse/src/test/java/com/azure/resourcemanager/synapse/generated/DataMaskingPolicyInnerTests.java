@@ -13,18 +13,18 @@ public final class DataMaskingPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataMaskingPolicyInner model = BinaryData.fromString(
-            "{\"properties\":{\"dataMaskingState\":\"Disabled\",\"exemptPrincipals\":\"oookkqfq\",\"applicationPrincipals\":\"vleo\",\"maskingLevel\":\"ml\"},\"location\":\"qtqzfavyv\",\"kind\":\"qybaryeua\",\"managedBy\":\"kq\",\"id\":\"bqgzslesjcbhern\",\"name\":\"tiewdj\",\"type\":\"vbquwr\"}")
+            "{\"properties\":{\"dataMaskingState\":\"Disabled\",\"exemptPrincipals\":\"qqnobpudcd\",\"applicationPrincipals\":\"tqwpwya\",\"maskingLevel\":\"zasqbucljgkyexao\"},\"location\":\"yaipidsda\",\"kind\":\"tx\",\"managedBy\":\"jumfqwazlnq\",\"id\":\"mcjn\",\"name\":\"zqdqxt\",\"type\":\"jw\"}")
             .toObject(DataMaskingPolicyInner.class);
         Assertions.assertEquals(DataMaskingState.DISABLED, model.dataMaskingState());
-        Assertions.assertEquals("oookkqfq", model.exemptPrincipals());
+        Assertions.assertEquals("qqnobpudcd", model.exemptPrincipals());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataMaskingPolicyInner model = new DataMaskingPolicyInner().withDataMaskingState(DataMaskingState.DISABLED)
-            .withExemptPrincipals("oookkqfq");
+            .withExemptPrincipals("qqnobpudcd");
         model = BinaryData.fromObject(model).toObject(DataMaskingPolicyInner.class);
         Assertions.assertEquals(DataMaskingState.DISABLED, model.dataMaskingState());
-        Assertions.assertEquals("oookkqfq", model.exemptPrincipals());
+        Assertions.assertEquals("qqnobpudcd", model.exemptPrincipals());
     }
 }

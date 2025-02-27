@@ -6,63 +6,44 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.kusto.KustoManager;
 import com.azure.resourcemanager.kusto.models.AzureResourceSku;
 import com.azure.resourcemanager.kusto.models.AzureScaleType;
 import com.azure.resourcemanager.kusto.models.AzureSkuName;
 import com.azure.resourcemanager.kusto.models.AzureSkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class ClustersListSkusByResourceMockTests {
     @Test
     public void testListSkusByResource() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"pvpbdbzqgqqiheds\",\"sku\":{\"name\":\"Standard_E8as_v4+1TB_PS\",\"capacity\":1770973346,\"tier\":\"Basic\"},\"capacity\":{\"scaleType\":\"manual\",\"minimum\":649222469,\"maximum\":1468707412,\"default\":1456487398}}]}";
+            = "{\"value\":[{\"resourceType\":\"qglcfhmlrqryxynq\",\"sku\":{\"name\":\"Standard_D14_v2\",\"capacity\":69570650,\"tier\":\"Standard\"},\"capacity\":{\"scaleType\":\"automatic\",\"minimum\":347579095,\"maximum\":786397425,\"default\":432652683}}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         KustoManager manager = KustoManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AzureResourceSku> response
-            = manager.clusters().listSkusByResource("zfjltfvnzcyjto", "p", com.azure.core.util.Context.NONE);
+            = manager.clusters().listSkusByResource("wgnyfusfzsvtui", "zh", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pvpbdbzqgqqiheds", response.iterator().next().resourceType());
-        Assertions.assertEquals(AzureSkuName.STANDARD_E8AS_V4_1TB_PS, response.iterator().next().sku().name());
-        Assertions.assertEquals(1770973346, response.iterator().next().sku().capacity());
-        Assertions.assertEquals(AzureSkuTier.BASIC, response.iterator().next().sku().tier());
-        Assertions.assertEquals(AzureScaleType.MANUAL, response.iterator().next().capacity().scaleType());
-        Assertions.assertEquals(649222469, response.iterator().next().capacity().minimum());
-        Assertions.assertEquals(1468707412, response.iterator().next().capacity().maximum());
-        Assertions.assertEquals(1456487398, response.iterator().next().capacity().defaultProperty());
+        Assertions.assertEquals("qglcfhmlrqryxynq", response.iterator().next().resourceType());
+        Assertions.assertEquals(AzureSkuName.STANDARD_D14_V2, response.iterator().next().sku().name());
+        Assertions.assertEquals(69570650, response.iterator().next().sku().capacity());
+        Assertions.assertEquals(AzureSkuTier.STANDARD, response.iterator().next().sku().tier());
+        Assertions.assertEquals(AzureScaleType.AUTOMATIC, response.iterator().next().capacity().scaleType());
+        Assertions.assertEquals(347579095, response.iterator().next().capacity().minimum());
+        Assertions.assertEquals(786397425, response.iterator().next().capacity().maximum());
+        Assertions.assertEquals(432652683, response.iterator().next().capacity().defaultProperty());
     }
 }

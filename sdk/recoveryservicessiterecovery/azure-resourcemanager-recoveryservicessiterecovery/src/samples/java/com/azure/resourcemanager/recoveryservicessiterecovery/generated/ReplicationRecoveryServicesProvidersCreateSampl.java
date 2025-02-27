@@ -23,7 +23,8 @@ public final class ReplicationRecoveryServicesProvidersCreateSampl {
      */
     public static void addsARecoveryServicesProvider(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationRecoveryServicesProviders().define("vmwareprovider1")
+        manager.replicationRecoveryServicesProviders()
+            .define("vmwareprovider1")
             .withExistingReplicationFabric("migrationvault", "resourcegroup1", "vmwarefabric1")
             .withProperties(new AddRecoveryServicesProviderInputProperties().withMachineName("vmwareprovider1")
                 .withAuthenticationIdentityInput(

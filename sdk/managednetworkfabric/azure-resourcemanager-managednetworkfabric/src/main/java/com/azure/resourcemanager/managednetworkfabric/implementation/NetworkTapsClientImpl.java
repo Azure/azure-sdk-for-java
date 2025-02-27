@@ -44,17 +44,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NetworkTapsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NetworkTapsClient.
+ */
 public final class NetworkTapsClientImpl implements NetworkTapsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NetworkTapsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureNetworkFabricManagementServiceApiImpl client;
 
     /**
      * Initializes an instance of NetworkTapsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NetworkTapsClientImpl(AzureNetworkFabricManagementServiceApiImpl client) {
@@ -164,9 +170,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Create Network Tap.
-     *
-     * <p>Creates a Network Tap.
-     *
+     * 
+     * Creates a Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -207,9 +213,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Create Network Tap.
-     *
-     * <p>Creates a Network Tap.
-     *
+     * 
+     * Creates a Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -250,9 +256,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Create Network Tap.
-     *
-     * <p>Creates a Network Tap.
-     *
+     * 
+     * Creates a Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -271,9 +277,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Create Network Tap.
-     *
-     * <p>Creates a Network Tap.
-     *
+     * 
+     * Creates a Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -295,9 +301,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Create Network Tap.
-     *
-     * <p>Creates a Network Tap.
-     *
+     * 
+     * Creates a Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -314,9 +320,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Create Network Tap.
-     *
-     * <p>Creates a Network Tap.
-     *
+     * 
+     * Creates a Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -334,9 +340,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Create Network Tap.
-     *
-     * <p>Creates a Network Tap.
-     *
+     * 
+     * Creates a Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -353,9 +359,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Create Network Tap.
-     *
-     * <p>Creates a Network Tap.
-     *
+     * 
+     * Creates a Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -374,9 +380,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Create Network Tap.
-     *
-     * <p>Creates a Network Tap.
-     *
+     * 
+     * Creates a Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -392,9 +398,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Create Network Tap.
-     *
-     * <p>Creates a Network Tap.
-     *
+     * 
+     * Creates a Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -412,9 +418,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Gets a Network Tap.
-     *
-     * <p>Retrieves details of this Network Tap.
-     *
+     * 
+     * Retrieves details of this Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -450,9 +456,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Gets a Network Tap.
-     *
-     * <p>Retrieves details of this Network Tap.
-     *
+     * 
+     * Retrieves details of this Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -487,9 +493,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Gets a Network Tap.
-     *
-     * <p>Retrieves details of this Network Tap.
-     *
+     * 
+     * Retrieves details of this Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -505,9 +511,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Gets a Network Tap.
-     *
-     * <p>Retrieves details of this Network Tap.
-     *
+     * 
+     * Retrieves details of this Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -524,9 +530,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Gets a Network Tap.
-     *
-     * <p>Retrieves details of this Network Tap.
-     *
+     * 
+     * Retrieves details of this Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -541,9 +547,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates the Network Taps.
-     *
-     * <p>API to update certain properties of the Network Tap resource.
-     *
+     * 
+     * API to update certain properties of the Network Tap resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Network Tap properties to update.
@@ -584,9 +590,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates the Network Taps.
-     *
-     * <p>API to update certain properties of the Network Tap resource.
-     *
+     * 
+     * API to update certain properties of the Network Tap resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Network Tap properties to update.
@@ -627,9 +633,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates the Network Taps.
-     *
-     * <p>API to update certain properties of the Network Tap resource.
-     *
+     * 
+     * API to update certain properties of the Network Tap resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Network Tap properties to update.
@@ -648,9 +654,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates the Network Taps.
-     *
-     * <p>API to update certain properties of the Network Tap resource.
-     *
+     * 
+     * API to update certain properties of the Network Tap resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Network Tap properties to update.
@@ -672,9 +678,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates the Network Taps.
-     *
-     * <p>API to update certain properties of the Network Tap resource.
-     *
+     * 
+     * API to update certain properties of the Network Tap resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Network Tap properties to update.
@@ -691,9 +697,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates the Network Taps.
-     *
-     * <p>API to update certain properties of the Network Tap resource.
-     *
+     * 
+     * API to update certain properties of the Network Tap resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Network Tap properties to update.
@@ -711,9 +717,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates the Network Taps.
-     *
-     * <p>API to update certain properties of the Network Tap resource.
-     *
+     * 
+     * API to update certain properties of the Network Tap resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Network Tap properties to update.
@@ -730,9 +736,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates the Network Taps.
-     *
-     * <p>API to update certain properties of the Network Tap resource.
-     *
+     * 
+     * API to update certain properties of the Network Tap resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Network Tap properties to update.
@@ -751,9 +757,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates the Network Taps.
-     *
-     * <p>API to update certain properties of the Network Tap resource.
-     *
+     * 
+     * API to update certain properties of the Network Tap resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Network Tap properties to update.
@@ -769,9 +775,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates the Network Taps.
-     *
-     * <p>API to update certain properties of the Network Tap resource.
-     *
+     * 
+     * API to update certain properties of the Network Tap resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Network Tap properties to update.
@@ -789,9 +795,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -825,9 +831,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -862,9 +868,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -881,9 +887,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -903,9 +909,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -920,9 +926,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -939,9 +945,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -957,9 +963,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -976,9 +982,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -992,9 +998,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Deletes a Network Tap.
-     *
-     * <p>Deletes Network Tap.
-     *
+     * 
+     * Deletes Network Tap.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -1009,9 +1015,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by resource group.
-     *
-     * <p>Displays Network Taps list by resource group GET method.
-     *
+     * 
+     * Displays Network Taps list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1043,9 +1049,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by resource group.
-     *
-     * <p>Displays Network Taps list by resource group GET method.
-     *
+     * 
+     * Displays Network Taps list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1079,9 +1085,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by resource group.
-     *
-     * <p>Displays Network Taps list by resource group GET method.
-     *
+     * 
+     * Displays Network Taps list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1096,9 +1102,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by resource group.
-     *
-     * <p>Displays Network Taps list by resource group GET method.
-     *
+     * 
+     * Displays Network Taps list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1114,9 +1120,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by resource group.
-     *
-     * <p>Displays Network Taps list by resource group GET method.
-     *
+     * 
+     * Displays Network Taps list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1130,9 +1136,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by resource group.
-     *
-     * <p>Displays Network Taps list by resource group GET method.
-     *
+     * 
+     * Displays Network Taps list by resource group GET method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1147,9 +1153,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by subscription.
-     *
-     * <p>Displays Network Taps list by subscription GET method.
-     *
+     * 
+     * Displays Network Taps list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkTaps along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1175,9 +1181,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by subscription.
-     *
-     * <p>Displays Network Taps list by subscription GET method.
-     *
+     * 
+     * Displays Network Taps list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1205,9 +1211,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by subscription.
-     *
-     * <p>Displays Network Taps list by subscription GET method.
-     *
+     * 
+     * Displays Network Taps list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkTaps as paginated response with {@link PagedFlux}.
@@ -1220,9 +1226,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by subscription.
-     *
-     * <p>Displays Network Taps list by subscription GET method.
-     *
+     * 
+     * Displays Network Taps list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1237,9 +1243,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by subscription.
-     *
-     * <p>Displays Network Taps list by subscription GET method.
-     *
+     * 
+     * Displays Network Taps list by subscription GET method.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetworkTaps as paginated response with {@link PagedIterable}.
@@ -1251,9 +1257,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * List Network Taps by subscription.
-     *
-     * <p>Displays Network Taps list by subscription GET method.
-     *
+     * 
+     * Displays Network Taps list by subscription GET method.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1267,9 +1273,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -1311,9 +1317,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -1354,9 +1360,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -1380,9 +1386,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -1408,9 +1414,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -1429,9 +1435,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -1452,9 +1458,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -1472,9 +1478,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -1493,9 +1499,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -1512,9 +1518,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Updates administrative state of Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param body Request payload.
@@ -1532,16 +1538,16 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceGroupName, String networkTapName) {
@@ -1569,17 +1575,17 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return common response for the state updates along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return common response for the state updates along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> resyncWithResponseAsync(String resourceGroupName, String networkTapName,
@@ -1607,9 +1613,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1630,9 +1636,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -1655,9 +1661,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1674,9 +1680,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -1694,9 +1700,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1713,9 +1719,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -1733,9 +1739,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1750,9 +1756,9 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Resync operation on the Network Tap.
-     *
-     * <p>Implements the operation to the underlying resources.
-     *
+     * 
+     * Implements the operation to the underlying resources.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param networkTapName Name of the Network Tap.
      * @param context The context to associate with this operation.
@@ -1769,9 +1775,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1797,9 +1802,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1825,9 +1829,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1853,9 +1856,8 @@ public final class NetworkTapsClientImpl implements NetworkTapsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

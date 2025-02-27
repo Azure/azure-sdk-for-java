@@ -126,12 +126,20 @@ public class RuntimeStack {
         this.version = version;
     }
 
-    /** @return the name of the language runtime stack */
+    /**
+     * Gets the name of the language runtime stack.
+     *
+     * @return the name of the language runtime stack
+     */
     public String stack() {
         return stack;
     }
 
-    /** @return the version of the runtime stack */
+    /**
+     * Gets the version of the runtime stack.
+     *
+     * @return the version of the runtime stack
+     */
     public String version() {
         return version;
     }

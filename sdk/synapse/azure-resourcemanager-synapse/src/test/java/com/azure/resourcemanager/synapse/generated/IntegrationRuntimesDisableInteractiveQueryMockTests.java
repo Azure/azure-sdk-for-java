@@ -28,7 +28,7 @@ public final class IntegrationRuntimesDisableInteractiveQueryMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.integrationRuntimes()
-            .disableInteractiveQuery("fjc", "lojhhyl", "devfi", com.azure.core.util.Context.NONE);
+            .disableInteractiveQuery("adppyibn", "qladywrxwhydtlu", "vadswzs", com.azure.core.util.Context.NONE);
 
     }
 }

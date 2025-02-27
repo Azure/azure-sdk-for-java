@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.25 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,38 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.2 (2025-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.1` to `1.55.2`.
+
+## 1.0.1 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.0` to `1.55.1`.
+
+## 1.0.0 (2025-02-06)
+
+Initial GA of `azure-core-http-vertx`.
+
+### Bugs Fixed
+
+- Fixed a bug where a request would fail with `IllegalStateException("Result is already complete")` when multiple
+  exceptions happened during the request. When multiple exceptions happen, the first exception is now thrown and 
+  subsequent exceptions are added to the suppressed exceptions of the first exception. ([#43402](https://github.com/Azure/azure-sdk-for-java/pull/43402))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to `1.55.0`.
 
 ## 1.0.0-beta.24 (2024-11-14)
 

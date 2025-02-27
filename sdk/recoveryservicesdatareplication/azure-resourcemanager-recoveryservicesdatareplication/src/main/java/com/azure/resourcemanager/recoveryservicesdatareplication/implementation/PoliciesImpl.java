@@ -58,26 +58,26 @@ public final class PoliciesImpl implements Policies {
 
     public PagedIterable<PolicyModel> list(String resourceGroupName, String vaultName) {
         PagedIterable<PolicyModelInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new PolicyModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyModelImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PolicyModel> list(String resourceGroupName, String vaultName, Context context) {
         PagedIterable<PolicyModelInner> inner = this.serviceClient().list(resourceGroupName, vaultName, context);
-        return Utils.mapPage(inner, inner1 -> new PolicyModelImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PolicyModelImpl(inner1, this.manager()));
     }
 
     public PolicyModel getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String policyName = Utils.getValueFromIdByName(id, "replicationPolicies");
+        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "replicationPolicies");
         if (policyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationPolicies'.", id)));
@@ -86,17 +86,17 @@ public final class PoliciesImpl implements Policies {
     }
 
     public Response<PolicyModel> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String policyName = Utils.getValueFromIdByName(id, "replicationPolicies");
+        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "replicationPolicies");
         if (policyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationPolicies'.", id)));
@@ -105,17 +105,17 @@ public final class PoliciesImpl implements Policies {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String policyName = Utils.getValueFromIdByName(id, "replicationPolicies");
+        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "replicationPolicies");
         if (policyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationPolicies'.", id)));
@@ -124,17 +124,17 @@ public final class PoliciesImpl implements Policies {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vaultName = Utils.getValueFromIdByName(id, "replicationVaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "replicationVaults");
         if (vaultName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationVaults'.", id)));
         }
-        String policyName = Utils.getValueFromIdByName(id, "replicationPolicies");
+        String policyName = ResourceManagerUtils.getValueFromIdByName(id, "replicationPolicies");
         if (policyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicationPolicies'.", id)));

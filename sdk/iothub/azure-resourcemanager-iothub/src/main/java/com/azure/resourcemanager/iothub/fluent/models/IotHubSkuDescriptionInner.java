@@ -6,38 +6,43 @@ package com.azure.resourcemanager.iothub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.iothub.models.IotHubCapacity;
 import com.azure.resourcemanager.iothub.models.IotHubSkuInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** SKU properties. */
+/**
+ * SKU properties.
+ */
 @Fluent
-public final class IotHubSkuDescriptionInner {
+public final class IotHubSkuDescriptionInner implements JsonSerializable<IotHubSkuDescriptionInner> {
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "sku", required = true)
     private IotHubSkuInfo sku;
 
     /*
      * IotHub capacity
      */
-    @JsonProperty(value = "capacity", required = true)
     private IotHubCapacity capacity;
 
-    /** Creates an instance of IotHubSkuDescriptionInner class. */
+    /**
+     * Creates an instance of IotHubSkuDescriptionInner class.
+     */
     public IotHubSkuDescriptionInner() {
     }
 
     /**
      * Get the resourceType property: The type of the resource.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -46,7 +51,7 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Get the sku property: The type of the resource.
-     *
+     * 
      * @return the sku value.
      */
     public IotHubSkuInfo sku() {
@@ -55,7 +60,7 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Set the sku property: The type of the resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the IotHubSkuDescriptionInner object itself.
      */
@@ -66,7 +71,7 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Get the capacity property: IotHub capacity.
-     *
+     * 
      * @return the capacity value.
      */
     public IotHubCapacity capacity() {
@@ -75,7 +80,7 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Set the capacity property: IotHub capacity.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the IotHubSkuDescriptionInner object itself.
      */
@@ -86,23 +91,66 @@ public final class IotHubSkuDescriptionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sku in model IotHubSkuDescriptionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model IotHubSkuDescriptionInner"));
         } else {
             sku().validate();
         }
         if (capacity() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property capacity in model IotHubSkuDescriptionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property capacity in model IotHubSkuDescriptionInner"));
         } else {
             capacity().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IotHubSkuDescriptionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotHubSkuDescriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotHubSkuDescriptionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IotHubSkuDescriptionInner.
+     */
+    public static IotHubSkuDescriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotHubSkuDescriptionInner deserializedIotHubSkuDescriptionInner = new IotHubSkuDescriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedIotHubSkuDescriptionInner.sku = IotHubSkuInfo.fromJson(reader);
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedIotHubSkuDescriptionInner.capacity = IotHubCapacity.fromJson(reader);
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedIotHubSkuDescriptionInner.resourceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotHubSkuDescriptionInner;
+        });
+    }
 }

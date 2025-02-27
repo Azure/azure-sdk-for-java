@@ -20,11 +20,6 @@ public final class AcsChatChannel extends Channel {
      */
     private String channelName = "AcsChatChannel";
 
-    /*
-     * Provisioning state of the resource
-     */
-    private String provisioningState;
-
     /**
      * Creates an instance of AcsChatChannel class.
      */
@@ -39,16 +34,6 @@ public final class AcsChatChannel extends Channel {
     @Override
     public String channelName() {
         return this.channelName;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public String provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -108,7 +93,7 @@ public final class AcsChatChannel extends Channel {
                 if ("etag".equals(fieldName)) {
                     deserializedAcsChatChannel.withEtag(reader.getString());
                 } else if ("provisioningState".equals(fieldName)) {
-                    deserializedAcsChatChannel.provisioningState = reader.getString();
+                    deserializedAcsChatChannel.withProvisioningState(reader.getString());
                 } else if ("location".equals(fieldName)) {
                     deserializedAcsChatChannel.withLocation(reader.getString());
                 } else if ("channelName".equals(fieldName)) {

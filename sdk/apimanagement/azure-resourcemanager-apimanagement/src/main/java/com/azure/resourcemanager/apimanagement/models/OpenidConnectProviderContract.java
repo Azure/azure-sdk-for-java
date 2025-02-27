@@ -8,60 +8,62 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.OpenidConnectProviderContractInner;
 
-/** An immutable client-side representation of OpenidConnectProviderContract. */
+/**
+ * An immutable client-side representation of OpenidConnectProviderContract.
+ */
 public interface OpenidConnectProviderContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the displayName property: User-friendly OpenID Connect Provider name.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the description property: User-friendly description of OpenID Connect Provider.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the metadataEndpoint property: Metadata endpoint URI.
-     *
+     * 
      * @return the metadataEndpoint value.
      */
     String metadataEndpoint();
 
     /**
      * Gets the clientId property: Client ID of developer console which is the client application.
-     *
+     * 
      * @return the clientId value.
      */
     String clientId();
 
     /**
      * Gets the clientSecret property: Client Secret of developer console which is the client application.
-     *
+     * 
      * @return the clientSecret value.
      */
     String clientSecret();
@@ -69,7 +71,7 @@ public interface OpenidConnectProviderContract {
     /**
      * Gets the useInTestConsole property: If true, the Open ID Connect provider may be used in the developer portal
      * test console. True by default if no value is provided.
-     *
+     * 
      * @return the useInTestConsole value.
      */
     Boolean useInTestConsole();
@@ -77,41 +79,49 @@ public interface OpenidConnectProviderContract {
     /**
      * Gets the useInApiDocumentation property: If true, the Open ID Connect provider will be used in the API
      * documentation in the developer portal. False by default if no value is provided.
-     *
+     * 
      * @return the useInApiDocumentation value.
      */
     Boolean useInApiDocumentation();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.OpenidConnectProviderContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     OpenidConnectProviderContractInner innerModel();
 
-    /** The entirety of the OpenidConnectProviderContract definition. */
+    /**
+     * The entirety of the OpenidConnectProviderContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The OpenidConnectProviderContract definition stages. */
+    /**
+     * The OpenidConnectProviderContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the OpenidConnectProviderContract definition. */
+        /**
+         * The first stage of the OpenidConnectProviderContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the OpenidConnectProviderContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the OpenidConnectProviderContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @return the next definition stage.
@@ -129,109 +139,125 @@ public interface OpenidConnectProviderContract {
             DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             OpenidConnectProviderContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             OpenidConnectProviderContract create(Context context);
         }
 
-        /** The stage of the OpenidConnectProviderContract definition allowing to specify displayName. */
+        /**
+         * The stage of the OpenidConnectProviderContract definition allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: User-friendly OpenID Connect Provider name..
-             *
+             * 
              * @param displayName User-friendly OpenID Connect Provider name.
              * @return the next definition stage.
              */
             WithCreate withDisplayName(String displayName);
         }
 
-        /** The stage of the OpenidConnectProviderContract definition allowing to specify description. */
+        /**
+         * The stage of the OpenidConnectProviderContract definition allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: User-friendly description of OpenID Connect Provider..
-             *
+             * 
              * @param description User-friendly description of OpenID Connect Provider.
              * @return the next definition stage.
              */
             WithCreate withDescription(String description);
         }
 
-        /** The stage of the OpenidConnectProviderContract definition allowing to specify metadataEndpoint. */
+        /**
+         * The stage of the OpenidConnectProviderContract definition allowing to specify metadataEndpoint.
+         */
         interface WithMetadataEndpoint {
             /**
              * Specifies the metadataEndpoint property: Metadata endpoint URI..
-             *
+             * 
              * @param metadataEndpoint Metadata endpoint URI.
              * @return the next definition stage.
              */
             WithCreate withMetadataEndpoint(String metadataEndpoint);
         }
 
-        /** The stage of the OpenidConnectProviderContract definition allowing to specify clientId. */
+        /**
+         * The stage of the OpenidConnectProviderContract definition allowing to specify clientId.
+         */
         interface WithClientId {
             /**
              * Specifies the clientId property: Client ID of developer console which is the client application..
-             *
+             * 
              * @param clientId Client ID of developer console which is the client application.
              * @return the next definition stage.
              */
             WithCreate withClientId(String clientId);
         }
 
-        /** The stage of the OpenidConnectProviderContract definition allowing to specify clientSecret. */
+        /**
+         * The stage of the OpenidConnectProviderContract definition allowing to specify clientSecret.
+         */
         interface WithClientSecret {
             /**
              * Specifies the clientSecret property: Client Secret of developer console which is the client application..
-             *
+             * 
              * @param clientSecret Client Secret of developer console which is the client application.
              * @return the next definition stage.
              */
             WithCreate withClientSecret(String clientSecret);
         }
 
-        /** The stage of the OpenidConnectProviderContract definition allowing to specify useInTestConsole. */
+        /**
+         * The stage of the OpenidConnectProviderContract definition allowing to specify useInTestConsole.
+         */
         interface WithUseInTestConsole {
             /**
              * Specifies the useInTestConsole property: If true, the Open ID Connect provider may be used in the
              * developer portal test console. True by default if no value is provided..
-             *
+             * 
              * @param useInTestConsole If true, the Open ID Connect provider may be used in the developer portal test
-             *     console. True by default if no value is provided.
+             * console. True by default if no value is provided.
              * @return the next definition stage.
              */
             WithCreate withUseInTestConsole(Boolean useInTestConsole);
         }
 
-        /** The stage of the OpenidConnectProviderContract definition allowing to specify useInApiDocumentation. */
+        /**
+         * The stage of the OpenidConnectProviderContract definition allowing to specify useInApiDocumentation.
+         */
         interface WithUseInApiDocumentation {
             /**
              * Specifies the useInApiDocumentation property: If true, the Open ID Connect provider will be used in the
              * API documentation in the developer portal. False by default if no value is provided..
-             *
+             * 
              * @param useInApiDocumentation If true, the Open ID Connect provider will be used in the API documentation
-             *     in the developer portal. False by default if no value is provided.
+             * in the developer portal. False by default if no value is provided.
              * @return the next definition stage.
              */
             WithCreate withUseInApiDocumentation(Boolean useInApiDocumentation);
         }
 
-        /** The stage of the OpenidConnectProviderContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the OpenidConnectProviderContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -240,122 +266,142 @@ public interface OpenidConnectProviderContract {
 
     /**
      * Begins update for the OpenidConnectProviderContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     OpenidConnectProviderContract.Update update();
 
-    /** The template for OpenidConnectProviderContract update. */
+    /**
+     * The template for OpenidConnectProviderContract update.
+     */
     interface Update extends UpdateStages.WithDisplayName, UpdateStages.WithDescription,
         UpdateStages.WithMetadataEndpoint, UpdateStages.WithClientId, UpdateStages.WithClientSecret,
         UpdateStages.WithUseInTestConsole, UpdateStages.WithUseInApiDocumentation, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         OpenidConnectProviderContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         OpenidConnectProviderContract apply(Context context);
     }
 
-    /** The OpenidConnectProviderContract update stages. */
+    /**
+     * The OpenidConnectProviderContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the OpenidConnectProviderContract update allowing to specify displayName. */
+        /**
+         * The stage of the OpenidConnectProviderContract update allowing to specify displayName.
+         */
         interface WithDisplayName {
             /**
              * Specifies the displayName property: User-friendly OpenID Connect Provider name..
-             *
+             * 
              * @param displayName User-friendly OpenID Connect Provider name.
              * @return the next definition stage.
              */
             Update withDisplayName(String displayName);
         }
 
-        /** The stage of the OpenidConnectProviderContract update allowing to specify description. */
+        /**
+         * The stage of the OpenidConnectProviderContract update allowing to specify description.
+         */
         interface WithDescription {
             /**
              * Specifies the description property: User-friendly description of OpenID Connect Provider..
-             *
+             * 
              * @param description User-friendly description of OpenID Connect Provider.
              * @return the next definition stage.
              */
             Update withDescription(String description);
         }
 
-        /** The stage of the OpenidConnectProviderContract update allowing to specify metadataEndpoint. */
+        /**
+         * The stage of the OpenidConnectProviderContract update allowing to specify metadataEndpoint.
+         */
         interface WithMetadataEndpoint {
             /**
              * Specifies the metadataEndpoint property: Metadata endpoint URI..
-             *
+             * 
              * @param metadataEndpoint Metadata endpoint URI.
              * @return the next definition stage.
              */
             Update withMetadataEndpoint(String metadataEndpoint);
         }
 
-        /** The stage of the OpenidConnectProviderContract update allowing to specify clientId. */
+        /**
+         * The stage of the OpenidConnectProviderContract update allowing to specify clientId.
+         */
         interface WithClientId {
             /**
              * Specifies the clientId property: Client ID of developer console which is the client application..
-             *
+             * 
              * @param clientId Client ID of developer console which is the client application.
              * @return the next definition stage.
              */
             Update withClientId(String clientId);
         }
 
-        /** The stage of the OpenidConnectProviderContract update allowing to specify clientSecret. */
+        /**
+         * The stage of the OpenidConnectProviderContract update allowing to specify clientSecret.
+         */
         interface WithClientSecret {
             /**
              * Specifies the clientSecret property: Client Secret of developer console which is the client application..
-             *
+             * 
              * @param clientSecret Client Secret of developer console which is the client application.
              * @return the next definition stage.
              */
             Update withClientSecret(String clientSecret);
         }
 
-        /** The stage of the OpenidConnectProviderContract update allowing to specify useInTestConsole. */
+        /**
+         * The stage of the OpenidConnectProviderContract update allowing to specify useInTestConsole.
+         */
         interface WithUseInTestConsole {
             /**
              * Specifies the useInTestConsole property: If true, the Open ID Connect provider may be used in the
              * developer portal test console. True by default if no value is provided..
-             *
+             * 
              * @param useInTestConsole If true, the Open ID Connect provider may be used in the developer portal test
-             *     console. True by default if no value is provided.
+             * console. True by default if no value is provided.
              * @return the next definition stage.
              */
             Update withUseInTestConsole(Boolean useInTestConsole);
         }
 
-        /** The stage of the OpenidConnectProviderContract update allowing to specify useInApiDocumentation. */
+        /**
+         * The stage of the OpenidConnectProviderContract update allowing to specify useInApiDocumentation.
+         */
         interface WithUseInApiDocumentation {
             /**
              * Specifies the useInApiDocumentation property: If true, the Open ID Connect provider will be used in the
              * API documentation in the developer portal. False by default if no value is provided..
-             *
+             * 
              * @param useInApiDocumentation If true, the Open ID Connect provider will be used in the API documentation
-             *     in the developer portal. False by default if no value is provided.
+             * in the developer portal. False by default if no value is provided.
              * @return the next definition stage.
              */
             Update withUseInApiDocumentation(Boolean useInApiDocumentation);
         }
 
-        /** The stage of the OpenidConnectProviderContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the OpenidConnectProviderContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -364,14 +410,14 @@ public interface OpenidConnectProviderContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     OpenidConnectProviderContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -379,7 +425,7 @@ public interface OpenidConnectProviderContract {
 
     /**
      * Gets the client secret details of the OpenID Connect Provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -390,7 +436,7 @@ public interface OpenidConnectProviderContract {
 
     /**
      * Gets the client secret details of the OpenID Connect Provider.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the client secret details of the OpenID Connect Provider.

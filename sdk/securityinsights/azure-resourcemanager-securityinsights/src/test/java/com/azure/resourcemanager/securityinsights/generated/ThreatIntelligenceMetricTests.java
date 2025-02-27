@@ -14,39 +14,39 @@ public final class ThreatIntelligenceMetricTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ThreatIntelligenceMetric model = BinaryData.fromString(
-            "{\"lastUpdatedTimeUtc\":\"nwyvq\",\"threatTypeMetrics\":[{\"metricName\":\"rlniyl\",\"metricValue\":761695034},{\"metricName\":\"wxzut\",\"metricValue\":350411524}],\"patternTypeMetrics\":[{\"metricName\":\"gh\",\"metricValue\":1164106492},{\"metricName\":\"xyjtcdxabbujf\",\"metricValue\":1642527120}],\"sourceMetrics\":[{\"metricName\":\"bklqpxz\",\"metricValue\":650123324},{\"metricName\":\"e\",\"metricValue\":1491450827},{\"metricName\":\"nlzafwxudgnh\",\"metricValue\":159144548},{\"metricName\":\"rtalvnbw\",\"metricValue\":474844714}]}")
+            "{\"lastUpdatedTimeUtc\":\"epbqpcrfkbw\",\"threatTypeMetrics\":[{\"metricName\":\"jvcdwxlpqekf\",\"metricValue\":839437170},{\"metricName\":\"tjsyin\",\"metricValue\":291919724},{\"metricName\":\"atmtdhtmdvy\",\"metricValue\":932898449},{\"metricName\":\"dgszywkbirryuzh\",\"metricValue\":524454595}],\"patternTypeMetrics\":[{\"metricName\":\"rvqqaatj\",\"metricValue\":379667314},{\"metricName\":\"goupmfiibfg\",\"metricValue\":2107533163},{\"metricName\":\"olvrw\",\"metricValue\":148831092}],\"sourceMetrics\":[{\"metricName\":\"gllqwjy\",\"metricValue\":104545862},{\"metricName\":\"yvblmhvkzu\",\"metricValue\":919724990}]}")
             .toObject(ThreatIntelligenceMetric.class);
-        Assertions.assertEquals("nwyvq", model.lastUpdatedTimeUtc());
-        Assertions.assertEquals("rlniyl", model.threatTypeMetrics().get(0).metricName());
-        Assertions.assertEquals(761695034, model.threatTypeMetrics().get(0).metricValue());
-        Assertions.assertEquals("gh", model.patternTypeMetrics().get(0).metricName());
-        Assertions.assertEquals(1164106492, model.patternTypeMetrics().get(0).metricValue());
-        Assertions.assertEquals("bklqpxz", model.sourceMetrics().get(0).metricName());
-        Assertions.assertEquals(650123324, model.sourceMetrics().get(0).metricValue());
+        Assertions.assertEquals("epbqpcrfkbw", model.lastUpdatedTimeUtc());
+        Assertions.assertEquals("jvcdwxlpqekf", model.threatTypeMetrics().get(0).metricName());
+        Assertions.assertEquals(839437170, model.threatTypeMetrics().get(0).metricValue());
+        Assertions.assertEquals("rvqqaatj", model.patternTypeMetrics().get(0).metricName());
+        Assertions.assertEquals(379667314, model.patternTypeMetrics().get(0).metricValue());
+        Assertions.assertEquals("gllqwjy", model.sourceMetrics().get(0).metricName());
+        Assertions.assertEquals(104545862, model.sourceMetrics().get(0).metricValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThreatIntelligenceMetric model
-            = new ThreatIntelligenceMetric().withLastUpdatedTimeUtc("nwyvq")
-                .withThreatTypeMetrics(Arrays.asList(
-                    new ThreatIntelligenceMetricEntity().withMetricName("rlniyl").withMetricValue(761695034),
-                    new ThreatIntelligenceMetricEntity().withMetricName("wxzut").withMetricValue(350411524)))
-                .withPatternTypeMetrics(Arrays.asList(
-                    new ThreatIntelligenceMetricEntity().withMetricName("gh").withMetricValue(1164106492),
-                    new ThreatIntelligenceMetricEntity().withMetricName("xyjtcdxabbujf").withMetricValue(1642527120)))
-                .withSourceMetrics(Arrays.asList(
-                    new ThreatIntelligenceMetricEntity().withMetricName("bklqpxz").withMetricValue(650123324),
-                    new ThreatIntelligenceMetricEntity().withMetricName("e").withMetricValue(1491450827),
-                    new ThreatIntelligenceMetricEntity().withMetricName("nlzafwxudgnh").withMetricValue(159144548),
-                    new ThreatIntelligenceMetricEntity().withMetricName("rtalvnbw").withMetricValue(474844714)));
+        ThreatIntelligenceMetric model = new ThreatIntelligenceMetric().withLastUpdatedTimeUtc("epbqpcrfkbw")
+            .withThreatTypeMetrics(Arrays.asList(
+                new ThreatIntelligenceMetricEntity().withMetricName("jvcdwxlpqekf").withMetricValue(839437170),
+                new ThreatIntelligenceMetricEntity().withMetricName("tjsyin").withMetricValue(291919724),
+                new ThreatIntelligenceMetricEntity().withMetricName("atmtdhtmdvy").withMetricValue(932898449),
+                new ThreatIntelligenceMetricEntity().withMetricName("dgszywkbirryuzh").withMetricValue(524454595)))
+            .withPatternTypeMetrics(Arrays.asList(
+                new ThreatIntelligenceMetricEntity().withMetricName("rvqqaatj").withMetricValue(379667314),
+                new ThreatIntelligenceMetricEntity().withMetricName("goupmfiibfg").withMetricValue(2107533163),
+                new ThreatIntelligenceMetricEntity().withMetricName("olvrw").withMetricValue(148831092)))
+            .withSourceMetrics(
+                Arrays.asList(new ThreatIntelligenceMetricEntity().withMetricName("gllqwjy").withMetricValue(104545862),
+                    new ThreatIntelligenceMetricEntity().withMetricName("yvblmhvkzu").withMetricValue(919724990)));
         model = BinaryData.fromObject(model).toObject(ThreatIntelligenceMetric.class);
-        Assertions.assertEquals("nwyvq", model.lastUpdatedTimeUtc());
-        Assertions.assertEquals("rlniyl", model.threatTypeMetrics().get(0).metricName());
-        Assertions.assertEquals(761695034, model.threatTypeMetrics().get(0).metricValue());
-        Assertions.assertEquals("gh", model.patternTypeMetrics().get(0).metricName());
-        Assertions.assertEquals(1164106492, model.patternTypeMetrics().get(0).metricValue());
-        Assertions.assertEquals("bklqpxz", model.sourceMetrics().get(0).metricName());
-        Assertions.assertEquals(650123324, model.sourceMetrics().get(0).metricValue());
+        Assertions.assertEquals("epbqpcrfkbw", model.lastUpdatedTimeUtc());
+        Assertions.assertEquals("jvcdwxlpqekf", model.threatTypeMetrics().get(0).metricName());
+        Assertions.assertEquals(839437170, model.threatTypeMetrics().get(0).metricValue());
+        Assertions.assertEquals("rvqqaatj", model.patternTypeMetrics().get(0).metricName());
+        Assertions.assertEquals(379667314, model.patternTypeMetrics().get(0).metricValue());
+        Assertions.assertEquals("gllqwjy", model.sourceMetrics().get(0).metricName());
+        Assertions.assertEquals(104545862, model.sourceMetrics().get(0).metricValue());
     }
 }

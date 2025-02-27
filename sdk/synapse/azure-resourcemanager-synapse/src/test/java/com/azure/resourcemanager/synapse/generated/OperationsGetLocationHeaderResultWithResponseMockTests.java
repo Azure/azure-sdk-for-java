@@ -28,7 +28,7 @@ public final class OperationsGetLocationHeaderResultWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.operations()
-            .getLocationHeaderResultWithResponse("pynwlslrcigtzjcv", "xqlaps", "ssov",
+            .getLocationHeaderResultWithResponse("opagttmvmmag", "aqylkjztji", "azjcgmxitpfin",
                 com.azure.core.util.Context.NONE);
 
     }

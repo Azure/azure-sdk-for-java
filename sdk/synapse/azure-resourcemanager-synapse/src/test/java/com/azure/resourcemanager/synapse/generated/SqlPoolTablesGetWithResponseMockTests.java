@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class SqlPoolTablesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
-        String responseStr = "{\"id\":\"exojfccy\",\"name\":\"h\",\"type\":\"rh\"}";
+        String responseStr = "{\"id\":\"vgllixdgby\",\"name\":\"gwewqkjvxprwpxso\",\"type\":\"hu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class SqlPoolTablesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SqlPoolTable response = manager.sqlPoolTables()
-            .getWithResponse("oywlunpipcwyb", "zfn", "npatpftsae", "wf", "hxorpwaltzwu",
+            .getWithResponse("vdpwwobtdphti", "sffofwanmhksca", "w", "zcgwdfriw", "ybjpozoks",
                 com.azure.core.util.Context.NONE)
             .getValue();
 

@@ -155,9 +155,11 @@ public final class WranglingDataFlow extends DataFlow {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
+        }
+        if (folder() != null) {
+            folder().validate();
         }
     }
 

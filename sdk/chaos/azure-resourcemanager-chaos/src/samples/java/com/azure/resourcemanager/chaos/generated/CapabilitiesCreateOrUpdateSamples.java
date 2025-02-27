@@ -21,8 +21,8 @@ public final class CapabilitiesCreateOrUpdateSamples {
      */
     public static void createUpdateACapabilityThatExtendsAVirtualMachineTargetResource(
         com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager.capabilities().createOrUpdateWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines",
-            "exampleVM", "Microsoft-VirtualMachine", "Shutdown-1.0", new CapabilityInner(),
-            com.azure.core.util.Context.NONE);
+        manager.capabilities()
+            .createOrUpdateWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
+                "Microsoft-VirtualMachine", "Shutdown-1.0", new CapabilityInner(), com.azure.core.util.Context.NONE);
     }
 }

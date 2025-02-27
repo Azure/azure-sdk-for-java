@@ -6,45 +6,34 @@ package com.azure.resourcemanager.storagemover.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The properties of SMB share endpoint.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "endpointType",
-    defaultImpl = SmbMountEndpointProperties.class,
-    visible = true)
-@JsonTypeName("SmbMount")
 @Fluent
 public final class SmbMountEndpointProperties extends EndpointBaseProperties {
     /*
      * The Endpoint resource type.
      */
-    @JsonTypeId
-    @JsonProperty(value = "endpointType", required = true)
     private EndpointType endpointType = EndpointType.SMB_MOUNT;
 
     /*
      * The host name or IP address of the server exporting the file system.
      */
-    @JsonProperty(value = "host", required = true)
     private String host;
 
     /*
      * The name of the SMB share being exported from the server.
      */
-    @JsonProperty(value = "shareName", required = true)
     private String shareName;
 
     /*
      * The Azure Key Vault secret URIs which store the required credentials to access the SMB share.
      */
-    @JsonProperty(value = "credentials")
     private AzureKeyVaultSmbCredentials credentials;
 
     /**
@@ -141,7 +130,6 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
      */
     @Override
     public void validate() {
-        super.validate();
         if (host() == null) {
             throw LOGGER.atError()
                 .log(
@@ -158,4 +146,56 @@ public final class SmbMountEndpointProperties extends EndpointBaseProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SmbMountEndpointProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("host", this.host);
+        jsonWriter.writeStringField("shareName", this.shareName);
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SmbMountEndpointProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SmbMountEndpointProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SmbMountEndpointProperties.
+     */
+    public static SmbMountEndpointProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SmbMountEndpointProperties deserializedSmbMountEndpointProperties = new SmbMountEndpointProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedSmbMountEndpointProperties.withDescription(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSmbMountEndpointProperties
+                        .withProvisioningState(ProvisioningState.fromString(reader.getString()));
+                } else if ("host".equals(fieldName)) {
+                    deserializedSmbMountEndpointProperties.host = reader.getString();
+                } else if ("shareName".equals(fieldName)) {
+                    deserializedSmbMountEndpointProperties.shareName = reader.getString();
+                } else if ("endpointType".equals(fieldName)) {
+                    deserializedSmbMountEndpointProperties.endpointType = EndpointType.fromString(reader.getString());
+                } else if ("credentials".equals(fieldName)) {
+                    deserializedSmbMountEndpointProperties.credentials = AzureKeyVaultSmbCredentials.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSmbMountEndpointProperties;
+        });
+    }
 }

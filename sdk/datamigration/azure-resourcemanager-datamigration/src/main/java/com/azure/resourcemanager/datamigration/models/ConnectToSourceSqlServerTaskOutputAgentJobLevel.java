@@ -53,11 +53,6 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
      */
     private MigrationEligibilityInfo migrationEligibility;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of ConnectToSourceSqlServerTaskOutputAgentJobLevel class.
      */
@@ -129,16 +124,6 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -177,7 +162,7 @@ public final class ConnectToSourceSqlServerTaskOutputAgentJobLevel extends Conne
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.id = reader.getString();
+                    deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskOutputAgentJobLevel.resultType = reader.getString();
                 } else if ("name".equals(fieldName)) {

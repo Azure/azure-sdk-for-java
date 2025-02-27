@@ -1,1 +1,1 @@
-com.azure.tools.revapi.transforms.AzureSdkTreeFilterProvider
+com.azure.tools.revapi.transforms.ClassAndPackageTreeFilterProvider

@@ -87,28 +87,30 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     public PagedIterable<ClusterPrincipalAssignment> list(String resourceGroupName, String clusterName) {
         PagedIterable<ClusterPrincipalAssignmentInner> inner
             = this.serviceClient().list(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ClusterPrincipalAssignment> list(String resourceGroupName, String clusterName,
         Context context) {
         PagedIterable<ClusterPrincipalAssignmentInner> inner
             = this.serviceClient().list(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ClusterPrincipalAssignmentImpl(inner1, this.manager()));
     }
 
     public ClusterPrincipalAssignment getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
@@ -117,17 +119,17 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     }
 
     public Response<ClusterPrincipalAssignment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
@@ -136,17 +138,17 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));
@@ -155,17 +157,17 @@ public final class ClusterPrincipalAssignmentsImpl implements ClusterPrincipalAs
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
+        String principalAssignmentName = ResourceManagerUtils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'principalAssignments'.", id)));

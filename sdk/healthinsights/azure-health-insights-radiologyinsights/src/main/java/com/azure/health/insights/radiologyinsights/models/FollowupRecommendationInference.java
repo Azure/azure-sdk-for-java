@@ -194,23 +194,6 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
         return this.recommendedProcedure;
     }
 
-    /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    private List<FhirR4Extension> extension;
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -283,7 +266,7 @@ public final class FollowupRecommendationInference extends RadiologyInsightsInfe
             FollowupRecommendationInference deserializedFollowupRecommendationInference
                 = new FollowupRecommendationInference(isConditional, isOption, isGuideline, isHedging,
                     recommendedProcedure);
-            deserializedFollowupRecommendationInference.extension = extension;
+            deserializedFollowupRecommendationInference.setExtension(extension);
             deserializedFollowupRecommendationInference.kind = kind;
             deserializedFollowupRecommendationInference.effectiveAt = effectiveAt;
             deserializedFollowupRecommendationInference.effectivePeriod = effectivePeriod;

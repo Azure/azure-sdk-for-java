@@ -13,30 +13,31 @@ public final class WorkbookPropertiesUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbookPropertiesUpdateParameters model = BinaryData.fromString(
-            "{\"displayName\":\"zkoj\",\"serializedData\":\"c\",\"category\":\"foqouicybx\",\"tags\":[\"gszufoxciqopid\"],\"description\":\"mciodhkhazxkhn\",\"revision\":\"onlwntoeg\"}")
+            "{\"displayName\":\"eyebizikayuhql\",\"serializedData\":\"bs\",\"category\":\"bqwrvtldgm\",\"tags\":[\"vm\",\"ipaslthaqfxssmwu\",\"wbdsr\",\"zpdrhneu\"],\"description\":\"wqkdwytisibi\",\"revision\":\"gpikpzimejza\"}")
             .toObject(WorkbookPropertiesUpdateParameters.class);
-        Assertions.assertEquals("zkoj", model.displayName());
-        Assertions.assertEquals("c", model.serializedData());
-        Assertions.assertEquals("foqouicybx", model.category());
-        Assertions.assertEquals("gszufoxciqopid", model.tags().get(0));
-        Assertions.assertEquals("mciodhkhazxkhn", model.description());
-        Assertions.assertEquals("onlwntoeg", model.revision());
+        Assertions.assertEquals("eyebizikayuhql", model.displayName());
+        Assertions.assertEquals("bs", model.serializedData());
+        Assertions.assertEquals("bqwrvtldgm", model.category());
+        Assertions.assertEquals("vm", model.tags().get(0));
+        Assertions.assertEquals("wqkdwytisibi", model.description());
+        Assertions.assertEquals("gpikpzimejza", model.revision());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookPropertiesUpdateParameters model = new WorkbookPropertiesUpdateParameters().withDisplayName("zkoj")
-            .withSerializedData("c")
-            .withCategory("foqouicybx")
-            .withTags(Arrays.asList("gszufoxciqopid"))
-            .withDescription("mciodhkhazxkhn")
-            .withRevision("onlwntoeg");
+        WorkbookPropertiesUpdateParameters model
+            = new WorkbookPropertiesUpdateParameters().withDisplayName("eyebizikayuhql")
+                .withSerializedData("bs")
+                .withCategory("bqwrvtldgm")
+                .withTags(Arrays.asList("vm", "ipaslthaqfxssmwu", "wbdsr", "zpdrhneu"))
+                .withDescription("wqkdwytisibi")
+                .withRevision("gpikpzimejza");
         model = BinaryData.fromObject(model).toObject(WorkbookPropertiesUpdateParameters.class);
-        Assertions.assertEquals("zkoj", model.displayName());
-        Assertions.assertEquals("c", model.serializedData());
-        Assertions.assertEquals("foqouicybx", model.category());
-        Assertions.assertEquals("gszufoxciqopid", model.tags().get(0));
-        Assertions.assertEquals("mciodhkhazxkhn", model.description());
-        Assertions.assertEquals("onlwntoeg", model.revision());
+        Assertions.assertEquals("eyebizikayuhql", model.displayName());
+        Assertions.assertEquals("bs", model.serializedData());
+        Assertions.assertEquals("bqwrvtldgm", model.category());
+        Assertions.assertEquals("vm", model.tags().get(0));
+        Assertions.assertEquals("wqkdwytisibi", model.description());
+        Assertions.assertEquals("gpikpzimejza", model.revision());
     }
 }

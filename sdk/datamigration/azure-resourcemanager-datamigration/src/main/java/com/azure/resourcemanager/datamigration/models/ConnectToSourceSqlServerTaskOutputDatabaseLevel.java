@@ -47,11 +47,6 @@ public final class ConnectToSourceSqlServerTaskOutputDatabaseLevel extends Conne
      */
     private DatabaseState databaseState;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of ConnectToSourceSqlServerTaskOutputDatabaseLevel class.
      */
@@ -114,16 +109,6 @@ public final class ConnectToSourceSqlServerTaskOutputDatabaseLevel extends Conne
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -162,7 +147,7 @@ public final class ConnectToSourceSqlServerTaskOutputDatabaseLevel extends Conne
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel.id = reader.getString();
+                    deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedConnectToSourceSqlServerTaskOutputDatabaseLevel.resultType = reader.getString();
                 } else if ("name".equals(fieldName)) {

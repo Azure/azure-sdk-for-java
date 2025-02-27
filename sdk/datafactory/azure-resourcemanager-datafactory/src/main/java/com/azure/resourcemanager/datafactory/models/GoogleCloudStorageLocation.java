@@ -117,7 +117,6 @@ public final class GoogleCloudStorageLocation extends DatasetLocation {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

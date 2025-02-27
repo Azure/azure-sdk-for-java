@@ -109,7 +109,6 @@ public final class WebSource extends CopySource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

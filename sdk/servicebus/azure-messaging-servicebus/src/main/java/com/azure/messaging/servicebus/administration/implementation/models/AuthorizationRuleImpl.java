@@ -4,8 +4,6 @@
 
 package com.azure.messaging.servicebus.administration.implementation.models;
 
-import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
@@ -352,11 +350,11 @@ public final class AuthorizationRuleImpl implements XmlSerializable<Authorizatio
                 } else if ("CreatedTime".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedAuthorizationRule.createdTime
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("ModifiedTime".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedAuthorizationRule.modifiedTime
-                        = reader.getNullableElement(dateString -> EntityHelper.parseOffsetDateTimeBest(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("KeyName".equals(elementName.getLocalPart())
                     && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
                     deserializedAuthorizationRule.keyName = reader.getStringElement();

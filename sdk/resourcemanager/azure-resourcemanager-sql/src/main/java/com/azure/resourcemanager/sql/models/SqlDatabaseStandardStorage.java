@@ -71,12 +71,20 @@ public enum SqlDatabaseStandardStorage {
         this.capacityInMB = capacityInMB;
     }
 
-    /** @return the maximum allowed storage capacity in MB for the SQL Database */
+    /**
+     * Gets the maximum allowed storage capacity in MB for the SQL Database.
+     *
+     * @return the maximum allowed storage capacity in MB for the SQL Database
+     */
     public long capacityInMB() {
         return this.capacityInMB;
     }
 
-    /** @return the maximum allowed storage capacity in bytes for the SQL Database */
+    /**
+     * Gets the maximum allowed storage capacity in bytes for the SQL Database.
+     *
+     * @return the maximum allowed storage capacity in bytes for the SQL Database
+     */
     public long capacity() {
         return this.capacityInMB * 1024 * 1024;
     }

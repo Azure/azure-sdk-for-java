@@ -29,141 +29,140 @@ public final class ScheduledAlertRuleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScheduledAlertRule model = BinaryData.fromString(
-            "{\"kind\":\"Scheduled\",\"properties\":{\"alertRuleTemplateName\":\"pvozglqjbknlzc\",\"templateVersion\":\"tzeyowmndcovd\",\"description\":\"qauxzan\",\"displayName\":\"mk\",\"enabled\":false,\"lastModifiedUtc\":\"2021-06-03T23:40:37Z\",\"suppressionDuration\":\"PT8H7M14S\",\"suppressionEnabled\":true,\"tactics\":[\"Impact\",\"Exfiltration\"],\"techniques\":[\"ftxudqy\",\"mebunaucmc\",\"rtneemmja\"],\"incidentConfiguration\":{\"createIncident\":true,\"groupingConfiguration\":{\"enabled\":true,\"reopenClosedIncident\":false,\"lookbackDuration\":\"PT67H8M24S\",\"matchingMethod\":\"AllEntities\",\"groupByEntities\":[\"DNS\",\"Account\",\"CloudApplication\"],\"groupByAlertDetails\":[\"DisplayName\",\"DisplayName\",\"Severity\",\"DisplayName\"],\"groupByCustomDetails\":[\"gudasmxubvfb\",\"gfcoc\",\"fhpri\"]}},\"query\":\"fmpztraudsvh\",\"queryFrequency\":\"PT142H44M46S\",\"queryPeriod\":\"PT34H21M24S\",\"severity\":\"High\",\"triggerOperator\":\"LessThan\",\"triggerThreshold\":1366619755,\"eventGroupingSettings\":{\"aggregationKind\":\"SingleAlert\"},\"customDetails\":{\"tnvgyshqrdgrt\":\"vr\",\"fa\":\"mewjzlpyk\"},\"entityMappings\":[{\"entityType\":\"MailCluster\",\"fieldMappings\":[{\"identifier\":\"rzrr\",\"columnName\":\"syb\"},{\"identifier\":\"polwzrghsrlei\",\"columnName\":\"fscjfn\"},{\"identifier\":\"wvuagfqwtl\",\"columnName\":\"gvmreuptrklzmi\"},{\"identifier\":\"jwolxfsvaghmpynw\",\"columnName\":\"lr\"}]},{\"entityType\":\"CloudApplication\",\"fieldMappings\":[{\"identifier\":\"cvbxqlapsnss\",\"columnName\":\"yxpavidnie\"}]},{\"entityType\":\"File\",\"fieldMappings\":[{\"identifier\":\"vyezslpux\",\"columnName\":\"bdsval\"}]}],\"alertDetailsOverride\":{\"alertDisplayNameFormat\":\"twt\",\"alertDescriptionFormat\":\"xgpazwugxyqv\",\"alertTacticsColumnName\":\"obfelhldiuhz\",\"alertSeverityColumnName\":\"qlmfaewz\"}},\"etag\":\"udjpxpqht\",\"id\":\"hnmhkrezsdsux\",\"name\":\"eqdgcruxsp\",\"type\":\"nymmqgwokmikpa\"}")
+            "{\"kind\":\"Scheduled\",\"properties\":{\"alertRuleTemplateName\":\"zgkrvqe\",\"templateVersion\":\"toepryu\",\"description\":\"wytpzdmovz\",\"displayName\":\"fvaawzqa\",\"enabled\":false,\"lastModifiedUtc\":\"2021-08-12T09:55:05Z\",\"suppressionDuration\":\"PT90H15M52S\",\"suppressionEnabled\":false,\"tactics\":[\"InitialAccess\",\"InhibitResponseFunction\"],\"techniques\":[\"cx\"],\"incidentConfiguration\":{\"createIncident\":false,\"groupingConfiguration\":{\"enabled\":false,\"reopenClosedIncident\":false,\"lookbackDuration\":\"PT157H29M48S\",\"matchingMethod\":\"AllEntities\",\"groupByEntities\":[\"URL\",\"SecurityGroup\",\"FileHash\"],\"groupByAlertDetails\":[\"DisplayName\",\"Severity\",\"Severity\"],\"groupByCustomDetails\":[\"bf\",\"rclnpkc\",\"ayzri\"]}},\"query\":\"hya\",\"queryFrequency\":\"PT53H1M13S\",\"queryPeriod\":\"PT47H45M53S\",\"severity\":\"Informational\",\"triggerOperator\":\"Equal\",\"triggerThreshold\":1339269194,\"eventGroupingSettings\":{\"aggregationKind\":\"SingleAlert\"},\"customDetails\":{\"nraauzz\":\"omdynhdwdigum\"},\"entityMappings\":[{\"entityType\":\"MailMessage\",\"fieldMappings\":[{\"identifier\":\"zhezwwvaiq\",\"columnName\":\"vv\"},{\"identifier\":\"nk\",\"columnName\":\"hqyikvy\"}]},{\"entityType\":\"RegistryKey\",\"fieldMappings\":[{\"identifier\":\"luwmncst\",\"columnName\":\"jfybvpoekrsgsgb\"},{\"identifier\":\"uzqgnjdgkynsc\",\"columnName\":\"qhzvhxnkomt\"},{\"identifier\":\"bo\",\"columnName\":\"pnvdxz\"}]},{\"entityType\":\"FileHash\",\"fieldMappings\":[{\"identifier\":\"bbc\",\"columnName\":\"qagt\"},{\"identifier\":\"dhlfkqojpykvgt\",\"columnName\":\"cnifm\"}]},{\"entityType\":\"Process\",\"fieldMappings\":[{\"identifier\":\"brn\",\"columnName\":\"u\"},{\"identifier\":\"prafwgckhoc\",\"columnName\":\"d\"},{\"identifier\":\"fwafqrouda\",\"columnName\":\"avehhrvkbunzo\"},{\"identifier\":\"dhcxgkmoy\",\"columnName\":\"dyuib\"}]}],\"alertDetailsOverride\":{\"alertDisplayNameFormat\":\"dnbzydvfvfcjn\",\"alertDescriptionFormat\":\"oisrvhmgorffu\",\"alertTacticsColumnName\":\"scvwmzhwplef\",\"alertSeverityColumnName\":\"vxilcbt\"}},\"etag\":\"hnze\",\"id\":\"xtjjfzqlqhycav\",\"name\":\"dggxdbeesmi\",\"type\":\"knlrariaawiuagy\"}")
             .toObject(ScheduledAlertRule.class);
-        Assertions.assertEquals("udjpxpqht", model.etag());
-        Assertions.assertEquals("pvozglqjbknlzc", model.alertRuleTemplateName());
-        Assertions.assertEquals("tzeyowmndcovd", model.templateVersion());
-        Assertions.assertEquals("qauxzan", model.description());
-        Assertions.assertEquals("mk", model.displayName());
+        Assertions.assertEquals("hnze", model.etag());
+        Assertions.assertEquals("zgkrvqe", model.alertRuleTemplateName());
+        Assertions.assertEquals("toepryu", model.templateVersion());
+        Assertions.assertEquals("wytpzdmovz", model.description());
+        Assertions.assertEquals("fvaawzqa", model.displayName());
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(Duration.parse("PT8H7M14S"), model.suppressionDuration());
-        Assertions.assertEquals(true, model.suppressionEnabled());
-        Assertions.assertEquals(AttackTactic.IMPACT, model.tactics().get(0));
-        Assertions.assertEquals("ftxudqy", model.techniques().get(0));
-        Assertions.assertEquals(true, model.incidentConfiguration().createIncident());
-        Assertions.assertEquals(true, model.incidentConfiguration().groupingConfiguration().enabled());
+        Assertions.assertEquals(Duration.parse("PT90H15M52S"), model.suppressionDuration());
+        Assertions.assertEquals(false, model.suppressionEnabled());
+        Assertions.assertEquals(AttackTactic.INITIAL_ACCESS, model.tactics().get(0));
+        Assertions.assertEquals("cx", model.techniques().get(0));
+        Assertions.assertEquals(false, model.incidentConfiguration().createIncident());
+        Assertions.assertEquals(false, model.incidentConfiguration().groupingConfiguration().enabled());
         Assertions.assertEquals(false, model.incidentConfiguration().groupingConfiguration().reopenClosedIncident());
-        Assertions.assertEquals(Duration.parse("PT67H8M24S"),
+        Assertions.assertEquals(Duration.parse("PT157H29M48S"),
             model.incidentConfiguration().groupingConfiguration().lookbackDuration());
         Assertions.assertEquals(MatchingMethod.ALL_ENTITIES,
             model.incidentConfiguration().groupingConfiguration().matchingMethod());
-        Assertions.assertEquals(EntityMappingType.DNS,
+        Assertions.assertEquals(EntityMappingType.URL,
             model.incidentConfiguration().groupingConfiguration().groupByEntities().get(0));
         Assertions.assertEquals(AlertDetail.DISPLAY_NAME,
             model.incidentConfiguration().groupingConfiguration().groupByAlertDetails().get(0));
-        Assertions.assertEquals("gudasmxubvfb",
+        Assertions.assertEquals("bf",
             model.incidentConfiguration().groupingConfiguration().groupByCustomDetails().get(0));
-        Assertions.assertEquals("fmpztraudsvh", model.query());
-        Assertions.assertEquals(Duration.parse("PT142H44M46S"), model.queryFrequency());
-        Assertions.assertEquals(Duration.parse("PT34H21M24S"), model.queryPeriod());
-        Assertions.assertEquals(AlertSeverity.HIGH, model.severity());
-        Assertions.assertEquals(TriggerOperator.LESS_THAN, model.triggerOperator());
-        Assertions.assertEquals(1366619755, model.triggerThreshold());
+        Assertions.assertEquals("hya", model.query());
+        Assertions.assertEquals(Duration.parse("PT53H1M13S"), model.queryFrequency());
+        Assertions.assertEquals(Duration.parse("PT47H45M53S"), model.queryPeriod());
+        Assertions.assertEquals(AlertSeverity.INFORMATIONAL, model.severity());
+        Assertions.assertEquals(TriggerOperator.EQUAL, model.triggerOperator());
+        Assertions.assertEquals(1339269194, model.triggerThreshold());
         Assertions.assertEquals(EventGroupingAggregationKind.SINGLE_ALERT,
             model.eventGroupingSettings().aggregationKind());
-        Assertions.assertEquals("vr", model.customDetails().get("tnvgyshqrdgrt"));
-        Assertions.assertEquals(EntityMappingType.MAIL_CLUSTER, model.entityMappings().get(0).entityType());
-        Assertions.assertEquals("rzrr", model.entityMappings().get(0).fieldMappings().get(0).identifier());
-        Assertions.assertEquals("syb", model.entityMappings().get(0).fieldMappings().get(0).columnName());
-        Assertions.assertEquals("twt", model.alertDetailsOverride().alertDisplayNameFormat());
-        Assertions.assertEquals("xgpazwugxyqv", model.alertDetailsOverride().alertDescriptionFormat());
-        Assertions.assertEquals("obfelhldiuhz", model.alertDetailsOverride().alertTacticsColumnName());
-        Assertions.assertEquals("qlmfaewz", model.alertDetailsOverride().alertSeverityColumnName());
+        Assertions.assertEquals("omdynhdwdigum", model.customDetails().get("nraauzz"));
+        Assertions.assertEquals(EntityMappingType.MAIL_MESSAGE, model.entityMappings().get(0).entityType());
+        Assertions.assertEquals("zhezwwvaiq", model.entityMappings().get(0).fieldMappings().get(0).identifier());
+        Assertions.assertEquals("vv", model.entityMappings().get(0).fieldMappings().get(0).columnName());
+        Assertions.assertEquals("dnbzydvfvfcjn", model.alertDetailsOverride().alertDisplayNameFormat());
+        Assertions.assertEquals("oisrvhmgorffu", model.alertDetailsOverride().alertDescriptionFormat());
+        Assertions.assertEquals("scvwmzhwplef", model.alertDetailsOverride().alertTacticsColumnName());
+        Assertions.assertEquals("vxilcbt", model.alertDetailsOverride().alertSeverityColumnName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduledAlertRule model
-            = new ScheduledAlertRule().withEtag("udjpxpqht")
-                .withAlertRuleTemplateName("pvozglqjbknlzc")
-                .withTemplateVersion("tzeyowmndcovd")
-                .withDescription("qauxzan")
-                .withDisplayName("mk")
-                .withEnabled(false)
-                .withSuppressionDuration(Duration.parse("PT8H7M14S"))
-                .withSuppressionEnabled(true)
-                .withTactics(Arrays.asList(AttackTactic.IMPACT, AttackTactic.EXFILTRATION))
-                .withTechniques(Arrays.asList("ftxudqy", "mebunaucmc", "rtneemmja"))
-                .withIncidentConfiguration(new IncidentConfiguration().withCreateIncident(true)
-                    .withGroupingConfiguration(new GroupingConfiguration().withEnabled(true)
-                        .withReopenClosedIncident(false)
-                        .withLookbackDuration(Duration.parse("PT67H8M24S"))
-                        .withMatchingMethod(MatchingMethod.ALL_ENTITIES)
-                        .withGroupByEntities(Arrays.asList(EntityMappingType.DNS, EntityMappingType.ACCOUNT,
-                            EntityMappingType.CLOUD_APPLICATION))
-                        .withGroupByAlertDetails(Arrays.asList(AlertDetail.DISPLAY_NAME, AlertDetail.DISPLAY_NAME,
-                            AlertDetail.SEVERITY, AlertDetail.DISPLAY_NAME))
-                        .withGroupByCustomDetails(Arrays.asList("gudasmxubvfb", "gfcoc", "fhpri"))))
-                .withQuery("fmpztraudsvh")
-                .withQueryFrequency(Duration.parse("PT142H44M46S"))
-                .withQueryPeriod(Duration.parse("PT34H21M24S"))
-                .withSeverity(AlertSeverity.HIGH)
-                .withTriggerOperator(TriggerOperator.LESS_THAN)
-                .withTriggerThreshold(1366619755)
-                .withEventGroupingSettings(
-                    new EventGroupingSettings().withAggregationKind(EventGroupingAggregationKind.SINGLE_ALERT))
-                .withCustomDetails(mapOf("tnvgyshqrdgrt", "vr", "fa", "mewjzlpyk"))
-                .withEntityMappings(
-                    Arrays
-                        .asList(
-                            new EntityMapping().withEntityType(EntityMappingType.MAIL_CLUSTER)
-                                .withFieldMappings(
-                                    Arrays.asList(new FieldMapping().withIdentifier("rzrr").withColumnName("syb"),
-                                        new FieldMapping().withIdentifier("polwzrghsrlei").withColumnName("fscjfn"),
-                                        new FieldMapping().withIdentifier("wvuagfqwtl")
-                                            .withColumnName("gvmreuptrklzmi"),
-                                        new FieldMapping().withIdentifier("jwolxfsvaghmpynw").withColumnName("lr"))),
-                            new EntityMapping().withEntityType(EntityMappingType.CLOUD_APPLICATION)
-                                .withFieldMappings(Arrays.asList(
-                                    new FieldMapping().withIdentifier("cvbxqlapsnss").withColumnName("yxpavidnie"))),
-                            new EntityMapping().withEntityType(EntityMappingType.FILE)
-                                .withFieldMappings(Arrays
-                                    .asList(new FieldMapping().withIdentifier("vyezslpux").withColumnName("bdsval")))))
-                .withAlertDetailsOverride(new AlertDetailsOverride().withAlertDisplayNameFormat("twt")
-                    .withAlertDescriptionFormat("xgpazwugxyqv")
-                    .withAlertTacticsColumnName("obfelhldiuhz")
-                    .withAlertSeverityColumnName("qlmfaewz"));
+        ScheduledAlertRule model = new ScheduledAlertRule().withEtag("hnze")
+            .withAlertRuleTemplateName("zgkrvqe")
+            .withTemplateVersion("toepryu")
+            .withDescription("wytpzdmovz")
+            .withDisplayName("fvaawzqa")
+            .withEnabled(false)
+            .withSuppressionDuration(Duration.parse("PT90H15M52S"))
+            .withSuppressionEnabled(false)
+            .withTactics(Arrays.asList(AttackTactic.INITIAL_ACCESS, AttackTactic.INHIBIT_RESPONSE_FUNCTION))
+            .withTechniques(Arrays.asList("cx"))
+            .withIncidentConfiguration(new IncidentConfiguration().withCreateIncident(false)
+                .withGroupingConfiguration(new GroupingConfiguration().withEnabled(false)
+                    .withReopenClosedIncident(false)
+                    .withLookbackDuration(Duration.parse("PT157H29M48S"))
+                    .withMatchingMethod(MatchingMethod.ALL_ENTITIES)
+                    .withGroupByEntities(Arrays.asList(EntityMappingType.URL, EntityMappingType.SECURITY_GROUP,
+                        EntityMappingType.FILE_HASH))
+                    .withGroupByAlertDetails(
+                        Arrays.asList(AlertDetail.DISPLAY_NAME, AlertDetail.SEVERITY, AlertDetail.SEVERITY))
+                    .withGroupByCustomDetails(Arrays.asList("bf", "rclnpkc", "ayzri"))))
+            .withQuery("hya")
+            .withQueryFrequency(Duration.parse("PT53H1M13S"))
+            .withQueryPeriod(Duration.parse("PT47H45M53S"))
+            .withSeverity(AlertSeverity.INFORMATIONAL)
+            .withTriggerOperator(TriggerOperator.EQUAL)
+            .withTriggerThreshold(1339269194)
+            .withEventGroupingSettings(
+                new EventGroupingSettings().withAggregationKind(EventGroupingAggregationKind.SINGLE_ALERT))
+            .withCustomDetails(mapOf("nraauzz", "omdynhdwdigum"))
+            .withEntityMappings(Arrays.asList(new EntityMapping().withEntityType(EntityMappingType.MAIL_MESSAGE)
+                .withFieldMappings(Arrays.asList(new FieldMapping().withIdentifier("zhezwwvaiq").withColumnName("vv"),
+                    new FieldMapping().withIdentifier("nk").withColumnName("hqyikvy"))),
+                new EntityMapping().withEntityType(EntityMappingType.REGISTRY_KEY)
+                    .withFieldMappings(
+                        Arrays.asList(new FieldMapping().withIdentifier("luwmncst").withColumnName("jfybvpoekrsgsgb"),
+                            new FieldMapping().withIdentifier("uzqgnjdgkynsc").withColumnName("qhzvhxnkomt"),
+                            new FieldMapping().withIdentifier("bo").withColumnName("pnvdxz"))),
+                new EntityMapping().withEntityType(EntityMappingType.FILE_HASH)
+                    .withFieldMappings(Arrays.asList(new FieldMapping().withIdentifier("bbc").withColumnName("qagt"),
+                        new FieldMapping().withIdentifier("dhlfkqojpykvgt").withColumnName("cnifm"))),
+                new EntityMapping().withEntityType(EntityMappingType.PROCESS)
+                    .withFieldMappings(Arrays.asList(new FieldMapping().withIdentifier("brn").withColumnName("u"),
+                        new FieldMapping().withIdentifier("prafwgckhoc").withColumnName("d"),
+                        new FieldMapping().withIdentifier("fwafqrouda").withColumnName("avehhrvkbunzo"),
+                        new FieldMapping().withIdentifier("dhcxgkmoy").withColumnName("dyuib")))))
+            .withAlertDetailsOverride(new AlertDetailsOverride().withAlertDisplayNameFormat("dnbzydvfvfcjn")
+                .withAlertDescriptionFormat("oisrvhmgorffu")
+                .withAlertTacticsColumnName("scvwmzhwplef")
+                .withAlertSeverityColumnName("vxilcbt"));
         model = BinaryData.fromObject(model).toObject(ScheduledAlertRule.class);
-        Assertions.assertEquals("udjpxpqht", model.etag());
-        Assertions.assertEquals("pvozglqjbknlzc", model.alertRuleTemplateName());
-        Assertions.assertEquals("tzeyowmndcovd", model.templateVersion());
-        Assertions.assertEquals("qauxzan", model.description());
-        Assertions.assertEquals("mk", model.displayName());
+        Assertions.assertEquals("hnze", model.etag());
+        Assertions.assertEquals("zgkrvqe", model.alertRuleTemplateName());
+        Assertions.assertEquals("toepryu", model.templateVersion());
+        Assertions.assertEquals("wytpzdmovz", model.description());
+        Assertions.assertEquals("fvaawzqa", model.displayName());
         Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals(Duration.parse("PT8H7M14S"), model.suppressionDuration());
-        Assertions.assertEquals(true, model.suppressionEnabled());
-        Assertions.assertEquals(AttackTactic.IMPACT, model.tactics().get(0));
-        Assertions.assertEquals("ftxudqy", model.techniques().get(0));
-        Assertions.assertEquals(true, model.incidentConfiguration().createIncident());
-        Assertions.assertEquals(true, model.incidentConfiguration().groupingConfiguration().enabled());
+        Assertions.assertEquals(Duration.parse("PT90H15M52S"), model.suppressionDuration());
+        Assertions.assertEquals(false, model.suppressionEnabled());
+        Assertions.assertEquals(AttackTactic.INITIAL_ACCESS, model.tactics().get(0));
+        Assertions.assertEquals("cx", model.techniques().get(0));
+        Assertions.assertEquals(false, model.incidentConfiguration().createIncident());
+        Assertions.assertEquals(false, model.incidentConfiguration().groupingConfiguration().enabled());
         Assertions.assertEquals(false, model.incidentConfiguration().groupingConfiguration().reopenClosedIncident());
-        Assertions.assertEquals(Duration.parse("PT67H8M24S"),
+        Assertions.assertEquals(Duration.parse("PT157H29M48S"),
             model.incidentConfiguration().groupingConfiguration().lookbackDuration());
         Assertions.assertEquals(MatchingMethod.ALL_ENTITIES,
             model.incidentConfiguration().groupingConfiguration().matchingMethod());
-        Assertions.assertEquals(EntityMappingType.DNS,
+        Assertions.assertEquals(EntityMappingType.URL,
             model.incidentConfiguration().groupingConfiguration().groupByEntities().get(0));
         Assertions.assertEquals(AlertDetail.DISPLAY_NAME,
             model.incidentConfiguration().groupingConfiguration().groupByAlertDetails().get(0));
-        Assertions.assertEquals("gudasmxubvfb",
+        Assertions.assertEquals("bf",
             model.incidentConfiguration().groupingConfiguration().groupByCustomDetails().get(0));
-        Assertions.assertEquals("fmpztraudsvh", model.query());
-        Assertions.assertEquals(Duration.parse("PT142H44M46S"), model.queryFrequency());
-        Assertions.assertEquals(Duration.parse("PT34H21M24S"), model.queryPeriod());
-        Assertions.assertEquals(AlertSeverity.HIGH, model.severity());
-        Assertions.assertEquals(TriggerOperator.LESS_THAN, model.triggerOperator());
-        Assertions.assertEquals(1366619755, model.triggerThreshold());
+        Assertions.assertEquals("hya", model.query());
+        Assertions.assertEquals(Duration.parse("PT53H1M13S"), model.queryFrequency());
+        Assertions.assertEquals(Duration.parse("PT47H45M53S"), model.queryPeriod());
+        Assertions.assertEquals(AlertSeverity.INFORMATIONAL, model.severity());
+        Assertions.assertEquals(TriggerOperator.EQUAL, model.triggerOperator());
+        Assertions.assertEquals(1339269194, model.triggerThreshold());
         Assertions.assertEquals(EventGroupingAggregationKind.SINGLE_ALERT,
             model.eventGroupingSettings().aggregationKind());
-        Assertions.assertEquals("vr", model.customDetails().get("tnvgyshqrdgrt"));
-        Assertions.assertEquals(EntityMappingType.MAIL_CLUSTER, model.entityMappings().get(0).entityType());
-        Assertions.assertEquals("rzrr", model.entityMappings().get(0).fieldMappings().get(0).identifier());
-        Assertions.assertEquals("syb", model.entityMappings().get(0).fieldMappings().get(0).columnName());
-        Assertions.assertEquals("twt", model.alertDetailsOverride().alertDisplayNameFormat());
-        Assertions.assertEquals("xgpazwugxyqv", model.alertDetailsOverride().alertDescriptionFormat());
-        Assertions.assertEquals("obfelhldiuhz", model.alertDetailsOverride().alertTacticsColumnName());
-        Assertions.assertEquals("qlmfaewz", model.alertDetailsOverride().alertSeverityColumnName());
+        Assertions.assertEquals("omdynhdwdigum", model.customDetails().get("nraauzz"));
+        Assertions.assertEquals(EntityMappingType.MAIL_MESSAGE, model.entityMappings().get(0).entityType());
+        Assertions.assertEquals("zhezwwvaiq", model.entityMappings().get(0).fieldMappings().get(0).identifier());
+        Assertions.assertEquals("vv", model.entityMappings().get(0).fieldMappings().get(0).columnName());
+        Assertions.assertEquals("dnbzydvfvfcjn", model.alertDetailsOverride().alertDisplayNameFormat());
+        Assertions.assertEquals("oisrvhmgorffu", model.alertDetailsOverride().alertDescriptionFormat());
+        Assertions.assertEquals("scvwmzhwplef", model.alertDetailsOverride().alertTacticsColumnName());
+        Assertions.assertEquals("vxilcbt", model.alertDetailsOverride().alertSeverityColumnName());
     }
 
     // Use "Map.of" if available

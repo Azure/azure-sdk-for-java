@@ -33,17 +33,23 @@ import com.azure.resourcemanager.apimanagement.fluent.models.GroupContractInner;
 import com.azure.resourcemanager.apimanagement.models.GroupCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProductGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProductGroupsClient.
+ */
 public final class ProductGroupsClientImpl implements ProductGroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProductGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ProductGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProductGroupsClientImpl(ApiManagementClientImpl client) {
@@ -111,21 +117,21 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Group list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Group list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GroupContractInner>> listByProductSinglePageAsync(String resourceGroupName,
@@ -160,22 +166,22 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Group list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Group list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GroupContractInner>> listByProductSinglePageAsync(String resourceGroupName,
@@ -209,14 +215,14 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,7 +240,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -256,14 +262,14 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -282,7 +288,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -302,14 +308,14 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -327,7 +333,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -370,7 +376,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -413,7 +419,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -432,7 +438,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -451,7 +457,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -467,7 +473,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Adds the association between the specified developer group with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -510,7 +516,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Adds the association between the specified developer group with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -553,7 +559,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Adds the association between the specified developer group with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -572,7 +578,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Adds the association between the specified developer group with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -591,7 +597,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Adds the association between the specified developer group with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -609,7 +615,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Deletes the association between the specified group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -652,7 +658,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Deletes the association between the specified group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -695,7 +701,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Deletes the association between the specified group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -713,7 +719,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Deletes the association between the specified group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -732,7 +738,7 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Deletes the association between the specified group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -748,14 +754,13 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Group list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Group list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GroupContractInner>> listByProductNextSinglePageAsync(String nextLink) {
@@ -776,15 +781,14 @@ public final class ProductGroupsClientImpl implements ProductGroupsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Group list representation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return paged Group list representation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GroupContractInner>> listByProductNextSinglePageAsync(String nextLink, Context context) {

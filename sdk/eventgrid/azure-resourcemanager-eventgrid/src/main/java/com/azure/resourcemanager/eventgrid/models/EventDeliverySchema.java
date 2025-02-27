@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class EventDeliverySchema extends ExpandableStringEnum<EventDeliver
      * @param name a name to look for.
      * @return the corresponding EventDeliverySchema.
      */
-    @JsonCreator
     public static EventDeliverySchema fromString(String name) {
         return fromString(name, EventDeliverySchema.class);
     }

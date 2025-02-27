@@ -17,6 +17,8 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.identity.AzureCliCredential;
+import com.azure.identity.AzureCliCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -53,9 +55,8 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     // Key: callConnectionId, Value: <Key: event Class, Value: instance of the event>
     protected ConcurrentHashMap<String, ConcurrentHashMap<Type, CallAutomationEventBase>> eventStore;
     protected List<String> eventsToPersist;
-    protected static final String SERVICEBUS_CONNECTION_STRING = Configuration.getGlobalConfiguration()
-        .get("SERVICEBUS_STRING",
-            "Endpoint=sb://REDACTED.servicebus.windows.net/;SharedAccessKeyName=REDACTED;SharedAccessKey=REDACTEDu8EtZn87JJY=");
+    protected static final String SERVICEBUS_STRING
+        = Configuration.getGlobalConfiguration().get("SERVICEBUS_STRING", "redacted.servicebus.windows.net");
     protected static final String DISPATCHER_ENDPOINT = Configuration.getGlobalConfiguration()
         .get("DISPATCHER_ENDPOINT", "https://incomingcalldispatcher.azurewebsites.net");
     protected static final String DISPATCHER_CALLBACK = DISPATCHER_ENDPOINT + "/api/servicebuscallback/events";
@@ -142,8 +143,10 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         }
     }
 
-    protected static ServiceBusClientBuilder createServiceBusClientBuilderWithConnectionString() {
-        return new ServiceBusClientBuilder().connectionString(SERVICEBUS_CONNECTION_STRING)
+    protected static ServiceBusClientBuilder createServiceBusClientBuilderWithManagedIdentity() {
+        AzureCliCredential credential = new AzureCliCredentialBuilder().build();
+        return new ServiceBusClientBuilder().fullyQualifiedNamespace(SERVICEBUS_STRING)
+            .credential(credential)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS);
     }
 
@@ -162,7 +165,7 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
 
             // create a service bus processor
             ServiceBusProcessorClient serviceBusProcessorClient
-                = createServiceBusClientBuilderWithConnectionString().processor()
+                = createServiceBusClientBuilderWithManagedIdentity().processor()
                     .queueName(uniqueId)
                     .processMessage(this::messageHandler)
                     .processError(serviceBusErrorContext -> errorHandler(serviceBusErrorContext, new CountDownLatch(1)))
@@ -280,11 +283,8 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             : removeAllNonChar(communicationIdentifierModel.getRawId());
     }
 
-    /* Change the plus + sign to it's unicode without the special characters i.e. u002B.
-     * It's required because the dispatcher app receives the incoming call context for PSTN calls
-     * with the + as unicode in it and builds the topic id with it to send the event.*/
     protected static String removeAllNonChar(String input) {
-        return input.replace("+", "u002B").replaceAll("[^a-zA-Z0-9_-]", "");
+        return input.replaceAll("[^a-zA-Z0-9_-]", "");
     }
 
     protected String waitForIncomingCallContext(String uniqueId, Duration timeOut) throws InterruptedException {

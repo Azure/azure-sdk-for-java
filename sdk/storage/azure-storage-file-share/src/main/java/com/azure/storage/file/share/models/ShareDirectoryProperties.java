@@ -5,6 +5,7 @@ package com.azure.storage.file.share.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.storage.file.share.FileSmbProperties;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareDirectoryPropertiesHelper;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -19,6 +20,7 @@ public final class ShareDirectoryProperties {
     private final OffsetDateTime lastModified;
     private final boolean isServerEncrypted;
     private final FileSmbProperties smbProperties;
+    private final FilePosixProperties posixProperties;
 
     /**
      * Creates an instance of properties information about a specific Directory.
@@ -37,6 +39,22 @@ public final class ShareDirectoryProperties {
         this.lastModified = lastModified;
         this.isServerEncrypted = isServerEncrypted;
         this.smbProperties = smbProperties;
+        this.posixProperties = null;
+    }
+
+    //Internal constructor to support FilePosixProperties class.
+    private ShareDirectoryProperties(Map<String, String> metadata, String eTag, OffsetDateTime lastModified,
+        boolean isServerEncrypted, FileSmbProperties smbProperties, FilePosixProperties posixProperties) {
+        this.metadata = metadata;
+        this.eTag = eTag;
+        this.lastModified = lastModified;
+        this.isServerEncrypted = isServerEncrypted;
+        this.smbProperties = smbProperties;
+        this.posixProperties = posixProperties;
+    }
+
+    static {
+        ShareDirectoryPropertiesHelper.setAccessor(ShareDirectoryProperties::new);
     }
 
     /**
@@ -84,5 +102,15 @@ public final class ShareDirectoryProperties {
      */
     public FileSmbProperties getSmbProperties() {
         return smbProperties;
+    }
+
+    /**
+     * Gets the directory's NFS properties.
+     * Only applicable to directories in a NFS share.
+     *
+     * @return The NFS Properties of the directory.
+     */
+    public FilePosixProperties getPosixProperties() {
+        return posixProperties;
     }
 }

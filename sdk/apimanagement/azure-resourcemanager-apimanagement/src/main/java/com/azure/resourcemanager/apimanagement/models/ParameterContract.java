@@ -6,76 +6,73 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Operation parameters details. */
+/**
+ * Operation parameters details.
+ */
 @Fluent
-public final class ParameterContract {
+public final class ParameterContract implements JsonSerializable<ParameterContract> {
     /*
      * Parameter name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Parameter description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Parameter type.
      */
-    @JsonProperty(value = "type", required = true)
     private String type;
 
     /*
      * Default parameter value.
      */
-    @JsonProperty(value = "defaultValue")
     private String defaultValue;
 
     /*
      * Specifies whether parameter is required or not.
      */
-    @JsonProperty(value = "required")
     private Boolean required;
 
     /*
      * Parameter values.
      */
-    @JsonProperty(value = "values")
     private List<String> values;
 
     /*
      * Schema identifier.
      */
-    @JsonProperty(value = "schemaId")
     private String schemaId;
 
     /*
      * Type name defined by the schema.
      */
-    @JsonProperty(value = "typeName")
     private String typeName;
 
     /*
      * Exampled defined for the parameter.
      */
-    @JsonProperty(value = "examples")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterExampleContract> examples;
 
-    /** Creates an instance of ParameterContract class. */
+    /**
+     * Creates an instance of ParameterContract class.
+     */
     public ParameterContract() {
     }
 
     /**
      * Get the name property: Parameter name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -84,7 +81,7 @@ public final class ParameterContract {
 
     /**
      * Set the name property: Parameter name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ParameterContract object itself.
      */
@@ -95,7 +92,7 @@ public final class ParameterContract {
 
     /**
      * Get the description property: Parameter description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -104,7 +101,7 @@ public final class ParameterContract {
 
     /**
      * Set the description property: Parameter description.
-     *
+     * 
      * @param description the description value to set.
      * @return the ParameterContract object itself.
      */
@@ -115,7 +112,7 @@ public final class ParameterContract {
 
     /**
      * Get the type property: Parameter type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -124,7 +121,7 @@ public final class ParameterContract {
 
     /**
      * Set the type property: Parameter type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ParameterContract object itself.
      */
@@ -135,7 +132,7 @@ public final class ParameterContract {
 
     /**
      * Get the defaultValue property: Default parameter value.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -144,7 +141,7 @@ public final class ParameterContract {
 
     /**
      * Set the defaultValue property: Default parameter value.
-     *
+     * 
      * @param defaultValue the defaultValue value to set.
      * @return the ParameterContract object itself.
      */
@@ -155,7 +152,7 @@ public final class ParameterContract {
 
     /**
      * Get the required property: Specifies whether parameter is required or not.
-     *
+     * 
      * @return the required value.
      */
     public Boolean required() {
@@ -164,7 +161,7 @@ public final class ParameterContract {
 
     /**
      * Set the required property: Specifies whether parameter is required or not.
-     *
+     * 
      * @param required the required value to set.
      * @return the ParameterContract object itself.
      */
@@ -175,7 +172,7 @@ public final class ParameterContract {
 
     /**
      * Get the values property: Parameter values.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -184,7 +181,7 @@ public final class ParameterContract {
 
     /**
      * Set the values property: Parameter values.
-     *
+     * 
      * @param values the values value to set.
      * @return the ParameterContract object itself.
      */
@@ -195,7 +192,7 @@ public final class ParameterContract {
 
     /**
      * Get the schemaId property: Schema identifier.
-     *
+     * 
      * @return the schemaId value.
      */
     public String schemaId() {
@@ -204,7 +201,7 @@ public final class ParameterContract {
 
     /**
      * Set the schemaId property: Schema identifier.
-     *
+     * 
      * @param schemaId the schemaId value to set.
      * @return the ParameterContract object itself.
      */
@@ -215,7 +212,7 @@ public final class ParameterContract {
 
     /**
      * Get the typeName property: Type name defined by the schema.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -224,7 +221,7 @@ public final class ParameterContract {
 
     /**
      * Set the typeName property: Type name defined by the schema.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the ParameterContract object itself.
      */
@@ -235,7 +232,7 @@ public final class ParameterContract {
 
     /**
      * Get the examples property: Exampled defined for the parameter.
-     *
+     * 
      * @return the examples value.
      */
     public Map<String, ParameterExampleContract> examples() {
@@ -244,7 +241,7 @@ public final class ParameterContract {
 
     /**
      * Set the examples property: Exampled defined for the parameter.
-     *
+     * 
      * @param examples the examples value to set.
      * @return the ParameterContract object itself.
      */
@@ -255,17 +252,17 @@ public final class ParameterContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property name in model ParameterContract"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ParameterContract"));
         }
         if (type() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property type in model ParameterContract"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ParameterContract"));
         }
         if (examples() != null) {
             examples().values().forEach(e -> {
@@ -277,4 +274,68 @@ public final class ParameterContract {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ParameterContract.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("defaultValue", this.defaultValue);
+        jsonWriter.writeBooleanField("required", this.required);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("schemaId", this.schemaId);
+        jsonWriter.writeStringField("typeName", this.typeName);
+        jsonWriter.writeMapField("examples", this.examples, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParameterContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParameterContract if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ParameterContract.
+     */
+    public static ParameterContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParameterContract deserializedParameterContract = new ParameterContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedParameterContract.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedParameterContract.type = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedParameterContract.description = reader.getString();
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedParameterContract.defaultValue = reader.getString();
+                } else if ("required".equals(fieldName)) {
+                    deserializedParameterContract.required = reader.getNullable(JsonReader::getBoolean);
+                } else if ("values".equals(fieldName)) {
+                    List<String> values = reader.readArray(reader1 -> reader1.getString());
+                    deserializedParameterContract.values = values;
+                } else if ("schemaId".equals(fieldName)) {
+                    deserializedParameterContract.schemaId = reader.getString();
+                } else if ("typeName".equals(fieldName)) {
+                    deserializedParameterContract.typeName = reader.getString();
+                } else if ("examples".equals(fieldName)) {
+                    Map<String, ParameterExampleContract> examples
+                        = reader.readMap(reader1 -> ParameterExampleContract.fromJson(reader1));
+                    deserializedParameterContract.examples = examples;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParameterContract;
+        });
+    }
 }

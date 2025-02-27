@@ -18,7 +18,7 @@ import java.io.IOException;
  * follows the OData error response format.).
  */
 @Fluent
-public class ErrorResponse implements JsonSerializable<ErrorResponse> {
+public final class ErrorResponse implements JsonSerializable<ErrorResponse> {
     /*
      * The error object.
      */

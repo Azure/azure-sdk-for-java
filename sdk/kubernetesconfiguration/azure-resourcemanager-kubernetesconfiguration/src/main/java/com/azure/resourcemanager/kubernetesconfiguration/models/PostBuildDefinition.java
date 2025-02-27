@@ -5,34 +5,38 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The postBuild definitions defining variable substitutions for this Kustomization after kustomize build. */
+/**
+ * The postBuild definitions defining variable substitutions for this Kustomization after kustomize build.
+ */
 @Fluent
-public final class PostBuildDefinition {
+public final class PostBuildDefinition implements JsonSerializable<PostBuildDefinition> {
     /*
      * Key/value pairs holding the variables to be substituted in this Kustomization.
      */
-    @JsonProperty(value = "substitute")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> substitute;
 
     /*
      * Array of ConfigMaps/Secrets from which the variables are substituted for this Kustomization.
      */
-    @JsonProperty(value = "substituteFrom")
     private List<SubstituteFromDefinition> substituteFrom;
 
-    /** Creates an instance of PostBuildDefinition class. */
+    /**
+     * Creates an instance of PostBuildDefinition class.
+     */
     public PostBuildDefinition() {
     }
 
     /**
      * Get the substitute property: Key/value pairs holding the variables to be substituted in this Kustomization.
-     *
+     * 
      * @return the substitute value.
      */
     public Map<String, String> substitute() {
@@ -41,7 +45,7 @@ public final class PostBuildDefinition {
 
     /**
      * Set the substitute property: Key/value pairs holding the variables to be substituted in this Kustomization.
-     *
+     * 
      * @param substitute the substitute value to set.
      * @return the PostBuildDefinition object itself.
      */
@@ -53,7 +57,7 @@ public final class PostBuildDefinition {
     /**
      * Get the substituteFrom property: Array of ConfigMaps/Secrets from which the variables are substituted for this
      * Kustomization.
-     *
+     * 
      * @return the substituteFrom value.
      */
     public List<SubstituteFromDefinition> substituteFrom() {
@@ -63,7 +67,7 @@ public final class PostBuildDefinition {
     /**
      * Set the substituteFrom property: Array of ConfigMaps/Secrets from which the variables are substituted for this
      * Kustomization.
-     *
+     * 
      * @param substituteFrom the substituteFrom value to set.
      * @return the PostBuildDefinition object itself.
      */
@@ -74,12 +78,55 @@ public final class PostBuildDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (substituteFrom() != null) {
             substituteFrom().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("substitute", this.substitute, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("substituteFrom", this.substituteFrom,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PostBuildDefinition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PostBuildDefinition if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PostBuildDefinition.
+     */
+    public static PostBuildDefinition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PostBuildDefinition deserializedPostBuildDefinition = new PostBuildDefinition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("substitute".equals(fieldName)) {
+                    Map<String, String> substitute = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPostBuildDefinition.substitute = substitute;
+                } else if ("substituteFrom".equals(fieldName)) {
+                    List<SubstituteFromDefinition> substituteFrom
+                        = reader.readArray(reader1 -> SubstituteFromDefinition.fromJson(reader1));
+                    deserializedPostBuildDefinition.substituteFrom = substituteFrom;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPostBuildDefinition;
+        });
     }
 }

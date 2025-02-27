@@ -6,96 +6,92 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Description of an additional API Management resource location. */
+/**
+ * Description of an additional API Management resource location.
+ */
 @Fluent
-public final class AdditionalLocation {
+public final class AdditionalLocation implements JsonSerializable<AdditionalLocation> {
     /*
      * The location name of the additional region among Azure Data center regions.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * SKU properties of the API Management service.
      */
-    @JsonProperty(value = "sku", required = true)
     private ApiManagementServiceSkuProperties sku;
 
     /*
      * A list of availability zones denoting where the resource needs to come from.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /*
-     * Public Static Load Balanced IP addresses of the API Management service in the additional location. Available
-     * only for Basic, Standard, Premium and Isolated SKU.
+     * Public Static Load Balanced IP addresses of the API Management service in the additional location. Available only
+     * for Basic, Standard, Premium and Isolated SKU.
      */
-    @JsonProperty(value = "publicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> publicIpAddresses;
 
     /*
      * Private Static Load Balanced IP addresses of the API Management service which is deployed in an Internal Virtual
      * Network in a particular additional location. Available only for Basic, Standard, Premium and Isolated SKU.
      */
-    @JsonProperty(value = "privateIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> privateIpAddresses;
 
     /*
      * Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the
      * location. Supported only for Premium SKU being deployed in Virtual Network.
      */
-    @JsonProperty(value = "publicIpAddressId")
     private String publicIpAddressId;
 
     /*
      * Virtual network configuration for the location.
      */
-    @JsonProperty(value = "virtualNetworkConfiguration")
     private VirtualNetworkConfiguration virtualNetworkConfiguration;
 
     /*
      * Gateway URL of the API Management service in the Region.
      */
-    @JsonProperty(value = "gatewayRegionalUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String gatewayRegionalUrl;
 
     /*
      * Property can be used to enable NAT Gateway for this API Management service.
      */
-    @JsonProperty(value = "natGatewayState")
     private NatGatewayState natGatewayState;
 
     /*
      * Outbound public IPV4 address prefixes associated with NAT Gateway deployed service. Available only for Premium
      * SKU on stv2 platform.
      */
-    @JsonProperty(value = "outboundPublicIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> outboundPublicIpAddresses;
 
     /*
-     * Property only valid for an Api Management service deployed in multiple locations. This can be used to disable
-     * the gateway in this additional location.
+     * Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the
+     * gateway in this additional location.
      */
-    @JsonProperty(value = "disableGateway")
     private Boolean disableGateway;
 
     /*
      * Compute Platform Version running the service.
      */
-    @JsonProperty(value = "platformVersion", access = JsonProperty.Access.WRITE_ONLY)
     private PlatformVersion platformVersion;
 
-    /** Creates an instance of AdditionalLocation class. */
+    /**
+     * Creates an instance of AdditionalLocation class.
+     */
     public AdditionalLocation() {
     }
 
     /**
      * Get the location property: The location name of the additional region among Azure Data center regions.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -104,7 +100,7 @@ public final class AdditionalLocation {
 
     /**
      * Set the location property: The location name of the additional region among Azure Data center regions.
-     *
+     * 
      * @param location the location value to set.
      * @return the AdditionalLocation object itself.
      */
@@ -115,7 +111,7 @@ public final class AdditionalLocation {
 
     /**
      * Get the sku property: SKU properties of the API Management service.
-     *
+     * 
      * @return the sku value.
      */
     public ApiManagementServiceSkuProperties sku() {
@@ -124,7 +120,7 @@ public final class AdditionalLocation {
 
     /**
      * Set the sku property: SKU properties of the API Management service.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AdditionalLocation object itself.
      */
@@ -135,7 +131,7 @@ public final class AdditionalLocation {
 
     /**
      * Get the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -144,7 +140,7 @@ public final class AdditionalLocation {
 
     /**
      * Set the zones property: A list of availability zones denoting where the resource needs to come from.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the AdditionalLocation object itself.
      */
@@ -156,7 +152,7 @@ public final class AdditionalLocation {
     /**
      * Get the publicIpAddresses property: Public Static Load Balanced IP addresses of the API Management service in the
      * additional location. Available only for Basic, Standard, Premium and Isolated SKU.
-     *
+     * 
      * @return the publicIpAddresses value.
      */
     public List<String> publicIpAddresses() {
@@ -167,7 +163,7 @@ public final class AdditionalLocation {
      * Get the privateIpAddresses property: Private Static Load Balanced IP addresses of the API Management service
      * which is deployed in an Internal Virtual Network in a particular additional location. Available only for Basic,
      * Standard, Premium and Isolated SKU.
-     *
+     * 
      * @return the privateIpAddresses value.
      */
     public List<String> privateIpAddresses() {
@@ -177,7 +173,7 @@ public final class AdditionalLocation {
     /**
      * Get the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
      * Network deployed service in the location. Supported only for Premium SKU being deployed in Virtual Network.
-     *
+     * 
      * @return the publicIpAddressId value.
      */
     public String publicIpAddressId() {
@@ -187,7 +183,7 @@ public final class AdditionalLocation {
     /**
      * Set the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
      * Network deployed service in the location. Supported only for Premium SKU being deployed in Virtual Network.
-     *
+     * 
      * @param publicIpAddressId the publicIpAddressId value to set.
      * @return the AdditionalLocation object itself.
      */
@@ -198,7 +194,7 @@ public final class AdditionalLocation {
 
     /**
      * Get the virtualNetworkConfiguration property: Virtual network configuration for the location.
-     *
+     * 
      * @return the virtualNetworkConfiguration value.
      */
     public VirtualNetworkConfiguration virtualNetworkConfiguration() {
@@ -207,7 +203,7 @@ public final class AdditionalLocation {
 
     /**
      * Set the virtualNetworkConfiguration property: Virtual network configuration for the location.
-     *
+     * 
      * @param virtualNetworkConfiguration the virtualNetworkConfiguration value to set.
      * @return the AdditionalLocation object itself.
      */
@@ -218,7 +214,7 @@ public final class AdditionalLocation {
 
     /**
      * Get the gatewayRegionalUrl property: Gateway URL of the API Management service in the Region.
-     *
+     * 
      * @return the gatewayRegionalUrl value.
      */
     public String gatewayRegionalUrl() {
@@ -227,7 +223,7 @@ public final class AdditionalLocation {
 
     /**
      * Get the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
-     *
+     * 
      * @return the natGatewayState value.
      */
     public NatGatewayState natGatewayState() {
@@ -236,7 +232,7 @@ public final class AdditionalLocation {
 
     /**
      * Set the natGatewayState property: Property can be used to enable NAT Gateway for this API Management service.
-     *
+     * 
      * @param natGatewayState the natGatewayState value to set.
      * @return the AdditionalLocation object itself.
      */
@@ -248,7 +244,7 @@ public final class AdditionalLocation {
     /**
      * Get the outboundPublicIpAddresses property: Outbound public IPV4 address prefixes associated with NAT Gateway
      * deployed service. Available only for Premium SKU on stv2 platform.
-     *
+     * 
      * @return the outboundPublicIpAddresses value.
      */
     public List<String> outboundPublicIpAddresses() {
@@ -258,7 +254,7 @@ public final class AdditionalLocation {
     /**
      * Get the disableGateway property: Property only valid for an Api Management service deployed in multiple
      * locations. This can be used to disable the gateway in this additional location.
-     *
+     * 
      * @return the disableGateway value.
      */
     public Boolean disableGateway() {
@@ -268,7 +264,7 @@ public final class AdditionalLocation {
     /**
      * Set the disableGateway property: Property only valid for an Api Management service deployed in multiple
      * locations. This can be used to disable the gateway in this additional location.
-     *
+     * 
      * @param disableGateway the disableGateway value to set.
      * @return the AdditionalLocation object itself.
      */
@@ -279,7 +275,7 @@ public final class AdditionalLocation {
 
     /**
      * Get the platformVersion property: Compute Platform Version running the service.
-     *
+     * 
      * @return the platformVersion value.
      */
     public PlatformVersion platformVersion() {
@@ -288,17 +284,17 @@ public final class AdditionalLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property location in model AdditionalLocation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model AdditionalLocation"));
         }
         if (sku() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property sku in model AdditionalLocation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model AdditionalLocation"));
         } else {
             sku().validate();
         }
@@ -308,4 +304,75 @@ public final class AdditionalLocation {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AdditionalLocation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("publicIpAddressId", this.publicIpAddressId);
+        jsonWriter.writeJsonField("virtualNetworkConfiguration", this.virtualNetworkConfiguration);
+        jsonWriter.writeStringField("natGatewayState",
+            this.natGatewayState == null ? null : this.natGatewayState.toString());
+        jsonWriter.writeBooleanField("disableGateway", this.disableGateway);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdditionalLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdditionalLocation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AdditionalLocation.
+     */
+    public static AdditionalLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdditionalLocation deserializedAdditionalLocation = new AdditionalLocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedAdditionalLocation.location = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAdditionalLocation.sku = ApiManagementServiceSkuProperties.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAdditionalLocation.zones = zones;
+                } else if ("publicIPAddresses".equals(fieldName)) {
+                    List<String> publicIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAdditionalLocation.publicIpAddresses = publicIpAddresses;
+                } else if ("privateIPAddresses".equals(fieldName)) {
+                    List<String> privateIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAdditionalLocation.privateIpAddresses = privateIpAddresses;
+                } else if ("publicIpAddressId".equals(fieldName)) {
+                    deserializedAdditionalLocation.publicIpAddressId = reader.getString();
+                } else if ("virtualNetworkConfiguration".equals(fieldName)) {
+                    deserializedAdditionalLocation.virtualNetworkConfiguration
+                        = VirtualNetworkConfiguration.fromJson(reader);
+                } else if ("gatewayRegionalUrl".equals(fieldName)) {
+                    deserializedAdditionalLocation.gatewayRegionalUrl = reader.getString();
+                } else if ("natGatewayState".equals(fieldName)) {
+                    deserializedAdditionalLocation.natGatewayState = NatGatewayState.fromString(reader.getString());
+                } else if ("outboundPublicIPAddresses".equals(fieldName)) {
+                    List<String> outboundPublicIpAddresses = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAdditionalLocation.outboundPublicIpAddresses = outboundPublicIpAddresses;
+                } else if ("disableGateway".equals(fieldName)) {
+                    deserializedAdditionalLocation.disableGateway = reader.getNullable(JsonReader::getBoolean);
+                } else if ("platformVersion".equals(fieldName)) {
+                    deserializedAdditionalLocation.platformVersion = PlatformVersion.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdditionalLocation;
+        });
+    }
 }

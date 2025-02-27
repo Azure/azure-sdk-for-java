@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImplBuilder;
+import com.azure.communication.callautomation.implementation.CustomBearerTokenAuthenticationPolicy;
 import com.azure.communication.callautomation.implementation.CustomHmacAuthenticationPolicy;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
@@ -43,8 +44,8 @@ import com.azure.core.util.logging.ClientLogger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -66,6 +67,7 @@ public final class CallAutomationClientBuilder
     private final ClientLogger logger = new ClientLogger(CallAutomationClientBuilder.class);
     private String connectionString;
     private String endpoint;
+    private String pmaEndpoint;
     private String hostName;
     private AzureKeyCredential azureKeyCredential;
     private TokenCredential tokenCredential;
@@ -96,6 +98,17 @@ public final class CallAutomationClientBuilder
     @Override
     public CallAutomationClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Set pma endpoint override of the service.
+     *
+     * @param pmaEndpoint url of the service.
+     * @return CallAutomationClientBuilder object.
+     */
+    public CallAutomationClientBuilder pmaEndpoint(String pmaEndpoint) {
+        this.pmaEndpoint = Objects.requireNonNull(pmaEndpoint, "'pmaEndpoint' cannot be null.");
         return this;
     }
 
@@ -306,7 +319,7 @@ public final class CallAutomationClientBuilder
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity);
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, new CallAutomationEventProcessor());
     }
 
     /**
@@ -385,7 +398,12 @@ public final class CallAutomationClientBuilder
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder
             = new AzureCommunicationCallAutomationServiceImplBuilder();
 
-        clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
+        if (pmaEndpoint != null) {
+            clientBuilder.endpoint(pmaEndpoint).pipeline(builderPipeline);
+        } else {
+            clientBuilder.endpoint(endpoint).pipeline(builderPipeline);
+        }
+
         return clientBuilder.buildClient();
     }
 
@@ -411,8 +429,13 @@ public final class CallAutomationClientBuilder
 
         List<HttpPipelinePolicy> pipelinePolicies = new ArrayList<>();
         if (tokenCredential != null) {
-            pipelinePolicies
-                .add(new BearerTokenAuthenticationPolicy(tokenCredential, "https://communication.azure.com//.default"));
+            if (pmaEndpoint != null) {
+                pipelinePolicies.add(new CustomBearerTokenAuthenticationPolicy(tokenCredential, endpoint,
+                    "https://communication.azure.com//.default"));
+            } else {
+                pipelinePolicies.add(
+                    new BearerTokenAuthenticationPolicy(tokenCredential, "https://communication.azure.com//.default"));
+            }
             Map<String, String> httpHeaders = new HashMap<>();
             httpHeaders.put("x-ms-host", hostName);
             pipelinePolicies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaders)));

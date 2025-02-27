@@ -11,7 +11,7 @@ public final class WorkloadGroupListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkloadGroupListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"minResourcePercent\":146318685,\"maxResourcePercent\":595342906,\"minResourcePercentPerRequest\":13.140682023988093,\"maxResourcePercentPerRequest\":93.55016256081733,\"importance\":\"rkjpvdwxfzwii\",\"queryExecutionTimeout\":615358685},\"id\":\"jbhyzsxjrkambtr\",\"name\":\"egv\",\"type\":\"nvuqeqvldspa\"}],\"nextLink\":\"jbkkdmflvestmjl\"}")
+            "{\"value\":[{\"properties\":{\"minResourcePercent\":1274607788,\"maxResourcePercent\":965940259,\"minResourcePercentPerRequest\":44.58868998024772,\"maxResourcePercentPerRequest\":37.32980536554752,\"importance\":\"swhvhczznvfbycj\",\"queryExecutionTimeout\":728305495},\"id\":\"wwixzvumw\",\"name\":\"xqhndvnoamlds\",\"type\":\"haohdjhhflzokxc\"},{\"properties\":{\"minResourcePercent\":94741475,\"maxResourcePercent\":256270382,\"minResourcePercentPerRequest\":55.13879535054193,\"maxResourcePercentPerRequest\":12.954779211935541,\"importance\":\"gltsxoat\",\"queryExecutionTimeout\":184618447},\"id\":\"zpnpbswv\",\"name\":\"floccsrmozih\",\"type\":\"ipgawtxx\"},{\"properties\":{\"minResourcePercent\":156137612,\"maxResourcePercent\":2137168460,\"minResourcePercentPerRequest\":47.95767631994743,\"maxResourcePercentPerRequest\":50.32173910151165,\"importance\":\"rytfmpcycil\",\"queryExecutionTimeout\":735394972},\"id\":\"aykggnoxu\",\"name\":\"t\",\"type\":\"ksxwpnd\"}],\"nextLink\":\"pfnznthjtwkj\"}")
             .toObject(WorkloadGroupListResult.class);
     }
 

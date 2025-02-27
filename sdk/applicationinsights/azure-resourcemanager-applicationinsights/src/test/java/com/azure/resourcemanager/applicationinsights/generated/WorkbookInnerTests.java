@@ -19,53 +19,53 @@ public final class WorkbookInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbookInner model = BinaryData.fromString(
-            "{\"properties\":{\"displayName\":\"wdmjsjqbjhhyx\",\"serializedData\":\"rw\",\"version\":\"co\",\"timeModified\":\"2021-02-27T00:57:42Z\",\"category\":\"p\",\"tags\":[\"gymare\",\"n\",\"jxqugjhky\",\"ubeddg\"],\"userId\":\"ofwq\",\"sourceId\":\"qal\",\"storageUri\":\"mnjijpxacqqudf\",\"description\":\"yxbaaabjyvayf\",\"revision\":\"m\"},\"identity\":{\"principalId\":\"be632264-181e-4d90-a7c6-76af9f361265\",\"tenantId\":\"51f31ba0-c910-4b3f-87b2-eb46357f0c67\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"exn\":{\"principalId\":\"06583265-61d0-4385-8f06-96bf6687cf4f\",\"clientId\":\"e1e22704-ee09-4a3b-b432-3658bf5231d5\"}}},\"kind\":\"shared\",\"etag\":\"nwnwme\",\"location\":\"zsyyceuzso\",\"tags\":{\"frxtrthzvaytdwk\":\"ud\",\"xhexiilivpdti\":\"brqubp\"},\"id\":\"r\",\"name\":\"tdqoaxoruzfgsq\",\"type\":\"yfxrx\"}")
+            "{\"properties\":{\"displayName\":\"etaebu\",\"serializedData\":\"u\",\"version\":\"movsmzlxwabmqoe\",\"timeModified\":\"2021-08-18T18:08:28Z\",\"category\":\"frvtpuqu\",\"tags\":[\"lgkfbt\",\"doaon\"],\"userId\":\"jcntuj\",\"sourceId\":\"c\",\"storageUri\":\"df\",\"description\":\"waezkojvd\",\"revision\":\"zfoqouicybxar\"},\"identity\":{\"principalId\":\"893ebfbf-d4b3-4a1e-8482-7de0e5ae3930\",\"tenantId\":\"abe292d4-0ee8-4a96-bdd1-e344cdd99ad4\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"q\":{\"principalId\":\"dc7ad656-3f61-4a5c-89db-fb0b770ff554\",\"clientId\":\"51c0109a-576a-4290-a2ee-cb31fb4f9793\"}}},\"kind\":\"shared\",\"etag\":\"oamciodh\",\"location\":\"haz\",\"tags\":{\"onlwntoeg\":\"nz\",\"mrv\":\"kdwbwhkszz\"},\"id\":\"xztvbtqgsfraoyzk\",\"name\":\"owtlmnguxawqald\",\"type\":\"yuuximerqfobwyzn\"}")
             .toObject(WorkbookInner.class);
-        Assertions.assertEquals("zsyyceuzso", model.location());
-        Assertions.assertEquals("ud", model.tags().get("frxtrthzvaytdwk"));
+        Assertions.assertEquals("haz", model.location());
+        Assertions.assertEquals("nz", model.tags().get("onlwntoeg"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals(WorkbookSharedTypeKind.SHARED, model.kind());
-        Assertions.assertEquals("nwnwme", model.etag());
-        Assertions.assertEquals("wdmjsjqbjhhyx", model.displayName());
-        Assertions.assertEquals("rw", model.serializedData());
-        Assertions.assertEquals("co", model.version());
-        Assertions.assertEquals("p", model.category());
-        Assertions.assertEquals("gymare", model.tagsPropertiesTags().get(0));
-        Assertions.assertEquals("qal", model.sourceId());
-        Assertions.assertEquals("mnjijpxacqqudf", model.storageUri());
-        Assertions.assertEquals("yxbaaabjyvayf", model.description());
+        Assertions.assertEquals("oamciodh", model.etag());
+        Assertions.assertEquals("etaebu", model.displayName());
+        Assertions.assertEquals("u", model.serializedData());
+        Assertions.assertEquals("movsmzlxwabmqoe", model.version());
+        Assertions.assertEquals("frvtpuqu", model.category());
+        Assertions.assertEquals("lgkfbt", model.tagsPropertiesTags().get(0));
+        Assertions.assertEquals("c", model.sourceId());
+        Assertions.assertEquals("df", model.storageUri());
+        Assertions.assertEquals("waezkojvd", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookInner model = new WorkbookInner().withLocation("zsyyceuzso")
-            .withTags(mapOf("frxtrthzvaytdwk", "ud", "xhexiilivpdti", "brqubp"))
+        WorkbookInner model = new WorkbookInner().withLocation("haz")
+            .withTags(mapOf("onlwntoeg", "nz", "mrv", "kdwbwhkszz"))
             .withIdentity(new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("exn", new UserAssignedIdentity())))
+                .withUserAssignedIdentities(mapOf("q", new UserAssignedIdentity())))
             .withKind(WorkbookSharedTypeKind.SHARED)
-            .withEtag("nwnwme")
-            .withDisplayName("wdmjsjqbjhhyx")
-            .withSerializedData("rw")
-            .withVersion("co")
-            .withCategory("p")
-            .withTagsPropertiesTags(Arrays.asList("gymare", "n", "jxqugjhky", "ubeddg"))
-            .withSourceId("qal")
-            .withStorageUri("mnjijpxacqqudf")
-            .withDescription("yxbaaabjyvayf");
+            .withEtag("oamciodh")
+            .withDisplayName("etaebu")
+            .withSerializedData("u")
+            .withVersion("movsmzlxwabmqoe")
+            .withCategory("frvtpuqu")
+            .withTagsPropertiesTags(Arrays.asList("lgkfbt", "doaon"))
+            .withSourceId("c")
+            .withStorageUri("df")
+            .withDescription("waezkojvd");
         model = BinaryData.fromObject(model).toObject(WorkbookInner.class);
-        Assertions.assertEquals("zsyyceuzso", model.location());
-        Assertions.assertEquals("ud", model.tags().get("frxtrthzvaytdwk"));
+        Assertions.assertEquals("haz", model.location());
+        Assertions.assertEquals("nz", model.tags().get("onlwntoeg"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals(WorkbookSharedTypeKind.SHARED, model.kind());
-        Assertions.assertEquals("nwnwme", model.etag());
-        Assertions.assertEquals("wdmjsjqbjhhyx", model.displayName());
-        Assertions.assertEquals("rw", model.serializedData());
-        Assertions.assertEquals("co", model.version());
-        Assertions.assertEquals("p", model.category());
-        Assertions.assertEquals("gymare", model.tagsPropertiesTags().get(0));
-        Assertions.assertEquals("qal", model.sourceId());
-        Assertions.assertEquals("mnjijpxacqqudf", model.storageUri());
-        Assertions.assertEquals("yxbaaabjyvayf", model.description());
+        Assertions.assertEquals("oamciodh", model.etag());
+        Assertions.assertEquals("etaebu", model.displayName());
+        Assertions.assertEquals("u", model.serializedData());
+        Assertions.assertEquals("movsmzlxwabmqoe", model.version());
+        Assertions.assertEquals("frvtpuqu", model.category());
+        Assertions.assertEquals("lgkfbt", model.tagsPropertiesTags().get(0));
+        Assertions.assertEquals("c", model.sourceId());
+        Assertions.assertEquals("df", model.storageUri());
+        Assertions.assertEquals("waezkojvd", model.description());
     }
 
     // Use "Map.of" if available

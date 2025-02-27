@@ -55,7 +55,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * region and must be in the same subscription as the Azure Batch account. If the image version is not specified in
      * the imageId, the latest version will be used. For information about the firewall settings for the Batch Compute
      * Node agent to communicate with the Batch service see
-     * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
      */
     @Generated
     private String virtualMachineImageId;
@@ -181,7 +181,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version
      * will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with
      * the Batch service see
-     * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
      *
      * @return the virtualMachineImageId value.
      */
@@ -201,7 +201,7 @@ public final class ImageReference implements JsonSerializable<ImageReference> {
      * subscription as the Azure Batch account. If the image version is not specified in the imageId, the latest version
      * will be used. For information about the firewall settings for the Batch Compute Node agent to communicate with
      * the Batch service see
-     * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     * https://learn.microsoft.com/azure/batch/nodes-and-pools#virtual-network-vnet-and-firewall-configuration.
      *
      * @param virtualMachineImageId the virtualMachineImageId value to set.
      * @return the ImageReference object itself.

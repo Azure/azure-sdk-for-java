@@ -29,10 +29,11 @@ public final class ReplicationNetworkMappingsUpdateSamples {
                 "b0cef6e9a4437b81803d0b55ada4f700ab66caae59c35d62723a1589c0cd13ac",
                 "e2267b5c-2650-49bd-ab3f-d66aae694c06", "corpe2amap", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withProperties(new UpdateNetworkMappingInputProperties()
-            .withRecoveryFabricName("Microsoft Azure")
-            .withRecoveryNetworkId(
-                "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai2")
-            .withFabricSpecificDetails(new VmmToAzureUpdateNetworkMappingInput())).apply();
+        resource.update()
+            .withProperties(new UpdateNetworkMappingInputProperties().withRecoveryFabricName("Microsoft Azure")
+                .withRecoveryNetworkId(
+                    "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/siterecoveryProd1/providers/Microsoft.Network/virtualNetworks/vnetavrai2")
+                .withFabricSpecificDetails(new VmmToAzureUpdateNetworkMappingInput()))
+            .apply();
     }
 }

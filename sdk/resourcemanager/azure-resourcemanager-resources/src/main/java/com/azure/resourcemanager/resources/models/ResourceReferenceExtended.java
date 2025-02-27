@@ -69,7 +69,6 @@ public final class ResourceReferenceExtended extends ResourceReference {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

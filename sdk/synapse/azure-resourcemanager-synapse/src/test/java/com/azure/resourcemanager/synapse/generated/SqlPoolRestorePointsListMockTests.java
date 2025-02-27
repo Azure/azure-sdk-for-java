@@ -21,7 +21,7 @@ public final class SqlPoolRestorePointsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"location\":\"pqcrzgeuqxbpiat\",\"properties\":{\"restorePointType\":\"DISCRETE\",\"earliestRestoreDate\":\"2021-05-13T02:18:51Z\",\"restorePointCreationDate\":\"2021-12-10T00:51:18Z\",\"restorePointLabel\":\"tadrakgddhj\"},\"id\":\"rukizyhgsqt\",\"name\":\"qsktxqf\",\"type\":\"jbqggweeiwdhdm\"}]}";
+            = "{\"value\":[{\"location\":\"sn\",\"properties\":{\"restorePointType\":\"DISCRETE\",\"earliestRestoreDate\":\"2021-02-10T21:22:46Z\",\"restorePointCreationDate\":\"2021-06-14T08:52:55Z\",\"restorePointLabel\":\"s\"},\"id\":\"bxbteogfgfiijry\",\"name\":\"wlefksxqceazfpxg\",\"type\":\"m\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class SqlPoolRestorePointsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<RestorePoint> response
-            = manager.sqlPoolRestorePoints().list("hl", "kxp", "jpewpyjlfx", com.azure.core.util.Context.NONE);
+            = manager.sqlPoolRestorePoints().list("qww", "wjyofgwhnkbtl", "ljssm", com.azure.core.util.Context.NONE);
 
     }
 }

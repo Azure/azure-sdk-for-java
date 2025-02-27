@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,7 +20,6 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -65,9 +65,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to KustoManager. The Azure Kusto management API provides a RESTful set of web services that interact with
- * Azure Kusto services to manage your clusters and databases. The API enables you to create, update, and delete
- * clusters and databases.
+ * Entry point to KustoManager.
+ * The Azure Kusto management API provides a RESTful set of web services that interact with Azure Kusto services to
+ * manage your clusters and databases. The API enables you to create, update, and delete clusters and databases.
  */
 public final class KustoManager {
     private Clusters clusters;
@@ -116,7 +116,7 @@ public final class KustoManager {
 
     /**
      * Creates an instance of Kusto service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Kusto service API instance.
@@ -129,7 +129,7 @@ public final class KustoManager {
 
     /**
      * Creates an instance of Kusto service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Kusto service API instance.
@@ -142,14 +142,16 @@ public final class KustoManager {
 
     /**
      * Gets a Configurable instance that can be used to create KustoManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new KustoManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -221,8 +223,8 @@ public final class KustoManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -264,7 +266,7 @@ public final class KustoManager {
                 .append("-")
                 .append("com.azure.resourcemanager.kusto")
                 .append("/")
-                .append("1.0.0");
+                .append("1.2.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -297,7 +299,7 @@ public final class KustoManager {
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .collect(Collectors.toList()));
@@ -312,7 +314,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of Clusters. It manages Cluster.
-     *
+     * 
      * @return Resource collection API of Clusters.
      */
     public Clusters clusters() {
@@ -324,7 +326,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of ClusterPrincipalAssignments. It manages ClusterPrincipalAssignment.
-     *
+     * 
      * @return Resource collection API of ClusterPrincipalAssignments.
      */
     public ClusterPrincipalAssignments clusterPrincipalAssignments() {
@@ -337,7 +339,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of Skus.
-     *
+     * 
      * @return Resource collection API of Skus.
      */
     public Skus skus() {
@@ -349,7 +351,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of Databases.
-     *
+     * 
      * @return Resource collection API of Databases.
      */
     public Databases databases() {
@@ -361,7 +363,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of AttachedDatabaseConfigurations. It manages AttachedDatabaseConfiguration.
-     *
+     * 
      * @return Resource collection API of AttachedDatabaseConfigurations.
      */
     public AttachedDatabaseConfigurations attachedDatabaseConfigurations() {
@@ -374,7 +376,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of ManagedPrivateEndpoints. It manages ManagedPrivateEndpoint.
-     *
+     * 
      * @return Resource collection API of ManagedPrivateEndpoints.
      */
     public ManagedPrivateEndpoints managedPrivateEndpoints() {
@@ -387,7 +389,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of DatabaseOperations.
-     *
+     * 
      * @return Resource collection API of DatabaseOperations.
      */
     public DatabaseOperations databaseOperations() {
@@ -399,7 +401,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of DatabasePrincipalAssignments. It manages DatabasePrincipalAssignment.
-     *
+     * 
      * @return Resource collection API of DatabasePrincipalAssignments.
      */
     public DatabasePrincipalAssignments databasePrincipalAssignments() {
@@ -412,7 +414,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of Scripts. It manages Script.
-     *
+     * 
      * @return Resource collection API of Scripts.
      */
     public Scripts scripts() {
@@ -424,7 +426,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of SandboxCustomImages. It manages SandboxCustomImage.
-     *
+     * 
      * @return Resource collection API of SandboxCustomImages.
      */
     public SandboxCustomImages sandboxCustomImages() {
@@ -436,7 +438,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
@@ -449,7 +451,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of PrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResources.
      */
     public PrivateLinkResources privateLinkResources() {
@@ -461,7 +463,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of DataConnections.
-     *
+     * 
      * @return Resource collection API of DataConnections.
      */
     public DataConnections dataConnections() {
@@ -473,7 +475,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -485,7 +487,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of OperationsResults.
-     *
+     * 
      * @return Resource collection API of OperationsResults.
      */
     public OperationsResults operationsResults() {
@@ -497,7 +499,7 @@ public final class KustoManager {
 
     /**
      * Gets the resource collection API of OperationsResultsLocations.
-     *
+     * 
      * @return Resource collection API of OperationsResultsLocations.
      */
     public OperationsResultsLocations operationsResultsLocations() {
@@ -511,7 +513,7 @@ public final class KustoManager {
     /**
      * Gets wrapped service client KustoManagementClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client KustoManagementClient.
      */
     public KustoManagementClient serviceClient() {

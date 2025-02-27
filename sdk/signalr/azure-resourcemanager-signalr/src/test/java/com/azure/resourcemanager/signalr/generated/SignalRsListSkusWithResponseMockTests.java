@@ -20,7 +20,7 @@ public final class SignalRsListSkusWithResponseMockTests {
     @Test
     public void testListSkusWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"resourceType\":\"fhxwrsne\",\"sku\":{\"name\":\"ozqvbubqmam\",\"tier\":\"Standard\",\"size\":\"xhxzgazttaboidvm\",\"family\":\"hppubowsepdfgkmt\",\"capacity\":2120323807},\"capacity\":{\"minimum\":343818307,\"maximum\":784188527,\"default\":151823445,\"allowedValues\":[812344780,1780706475,1263292916,155784561],\"scaleType\":\"None\"}},{\"resourceType\":\"kauxof\",\"sku\":{\"name\":\"fphwpnu\",\"tier\":\"Basic\",\"size\":\"wzejywhslw\",\"family\":\"jpllndnpdwrpq\",\"capacity\":822689438},\"capacity\":{\"minimum\":1169799061,\"maximum\":813335965,\"default\":1546371971,\"allowedValues\":[291808500,1701232505],\"scaleType\":\"Manual\"}},{\"resourceType\":\"pococtfjgt\",\"sku\":{\"name\":\"rjvzuyt\",\"tier\":\"Basic\",\"size\":\"muowolbauiro\",\"family\":\"ons\",\"capacity\":269423729},\"capacity\":{\"minimum\":1957887263,\"maximum\":2022776068,\"default\":1491253083,\"allowedValues\":[1937164138,1566256657,850455603,1627836178],\"scaleType\":\"Manual\"}}],\"nextLink\":\"mjfjmyccxlzhcox\"}";
+            = "{\"value\":[{\"resourceType\":\"fmpcycilrmca\",\"sku\":{\"name\":\"ggn\",\"tier\":\"Premium\",\"size\":\"t\",\"family\":\"sxwpndfcpfnznthj\",\"capacity\":417005856},\"capacity\":{\"minimum\":23086677,\"maximum\":2087882144,\"default\":1475743122,\"allowedValues\":[1851255683,1634012333,1244267052,1346105096],\"scaleType\":\"Manual\"}},{\"resourceType\":\"iosmgbzahgxqdly\",\"sku\":{\"name\":\"ltlaprltzkatbhj\",\"tier\":\"Standard\",\"size\":\"bsoqeqala\",\"family\":\"lagun\",\"capacity\":2144619087},\"capacity\":{\"minimum\":860612333,\"maximum\":33751840,\"default\":339622455,\"allowedValues\":[1797453594,506554696],\"scaleType\":\"Manual\"}}],\"nextLink\":\"dzqavbpdqmjxlyyz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class SignalRsListSkusWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SkuList response = manager.signalRs()
-            .listSkusWithResponse("hmnxhkxjqi", "wrweoo", com.azure.core.util.Context.NONE)
+            .listSkusWithResponse("loccsrmozihm", "pgawtxxpkyjcxcjx", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

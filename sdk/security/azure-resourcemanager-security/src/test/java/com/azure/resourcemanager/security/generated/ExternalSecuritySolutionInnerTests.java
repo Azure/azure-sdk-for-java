@@ -11,7 +11,7 @@ public final class ExternalSecuritySolutionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExternalSecuritySolutionInner model = BinaryData.fromString(
-            "{\"kind\":\"ExternalSecuritySolution\",\"location\":\"ygzmxieqvdsmak\",\"id\":\"ixqcahyhxalybxaw\",\"name\":\"ijpodtblxpkkwj\",\"type\":\"jodqhykincn\"}")
+            "{\"kind\":\"ExternalSecuritySolution\",\"location\":\"cizsjqlhkrribdei\",\"id\":\"qipqkghvxndz\",\"name\":\"mkrefajpjorwkq\",\"type\":\"yhgbijtjivfx\"}")
             .toObject(ExternalSecuritySolutionInner.class);
     }
 

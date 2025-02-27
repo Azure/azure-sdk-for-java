@@ -6,8 +6,11 @@ package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.fluent.models.BackendPoolProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,19 +21,16 @@ public final class BackendPool extends SubResource {
     /*
      * Properties of the Front Door Backend Pool
      */
-    @JsonProperty(value = "properties")
     private BackendPoolProperties innerProperties;
 
     /*
      * Resource name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -87,9 +87,7 @@ public final class BackendPool extends SubResource {
     }
 
     /**
-     * Get the resourceState property: Resource status of the Front Door or Front Door SubResource.
-     * 
-     * Resource status.
+     * Get the resourceState property: Resource status.
      * 
      * @return the resourceState value.
      */
@@ -175,5 +173,49 @@ public final class BackendPool extends SubResource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendPool from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendPool if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendPool.
+     */
+    public static BackendPool fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendPool deserializedBackendPool = new BackendPool();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBackendPool.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackendPool.innerProperties = BackendPoolProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackendPool.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackendPool.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendPool;
+        });
     }
 }

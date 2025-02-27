@@ -6,17 +6,13 @@ package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
-import com.azure.resourcemanager.quota.models.AdditionalAttributesPatch;
-import com.azure.resourcemanager.quota.models.EnvironmentType;
-import com.azure.resourcemanager.quota.models.GroupingId;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntity;
-import com.azure.resourcemanager.quota.models.GroupQuotasEntityBasePatch;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntityPatch;
+import com.azure.resourcemanager.quota.models.GroupQuotasEntityPatchProperties;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
@@ -27,27 +23,21 @@ public final class GroupQuotasUpdateMockTests {
     @Test
     public void testUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"displayName\":\"ycnojvknmefqsg\",\"additionalAttributes\":{\"groupId\":{\"groupingIdType\":\"BillingId\",\"value\":\"pjyzhpv\"},\"environment\":\"Production\"},\"provisioningState\":\"Succeeded\"},\"id\":\"vxdjzlmwlxkvugf\",\"name\":\"zovawjvz\",\"type\":\"nluthnnp\"}";
+            = "{\"properties\":{\"displayName\":\"krh\",\"provisioningState\":\"Succeeded\"},\"id\":\"juahaquhcdhmdual\",\"name\":\"exq\",\"type\":\"vfadmws\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         QuotaManager manager = QuotaManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupQuotasEntity response = manager.groupQuotas()
-            .update("gibtnm", "iebwwaloayqcgwrt",
-                new GroupQuotasEntityPatch().withProperties(new GroupQuotasEntityBasePatch().withDisplayName("zg")
-                    .withAdditionalAttributes(new AdditionalAttributesPatch().withGroupId(
-                        new GroupingId().withGroupingIdType(GroupingIdType.BILLING_ID).withValue("xongmtsavjcbpwxq"))
-                        .withEnvironment(EnvironmentType.PRODUCTION))),
+            .update("bkyvp", "ca",
+                new GroupQuotasEntityPatch()
+                    .withProperties(new GroupQuotasEntityPatchProperties().withDisplayName("bpzkafkuwbc")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ycnojvknmefqsg", response.properties().displayName());
-        Assertions.assertEquals(GroupingIdType.BILLING_ID,
-            response.properties().additionalAttributes().groupId().groupingIdType());
-        Assertions.assertEquals("pjyzhpv", response.properties().additionalAttributes().groupId().value());
-        Assertions.assertEquals(EnvironmentType.PRODUCTION, response.properties().additionalAttributes().environment());
+        Assertions.assertEquals("krh", response.properties().displayName());
     }
 }

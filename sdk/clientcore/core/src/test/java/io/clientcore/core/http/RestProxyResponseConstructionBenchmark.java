@@ -6,7 +6,7 @@ package io.clientcore.core.http;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.TypeUtil;
@@ -38,7 +38,8 @@ import java.util.concurrent.TimeUnit;
 public class RestProxyResponseConstructionBenchmark {
     private static final ResponseConstructorsCache CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
 
-    private static final HttpRequest REQUEST = new HttpRequest(HttpMethod.GET, "https://example.com");
+    private static final HttpRequest REQUEST
+        = new HttpRequest().setMethod(HttpMethod.GET).setUri("https://example.com");
     private static final HttpHeaders HEADERS = new HttpHeaders();
 
     private static final Class<? extends Response<?>> RESPONSE_TYPE = (Class<? extends Response<?>>) TypeUtil

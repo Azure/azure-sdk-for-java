@@ -80,8 +80,6 @@ public class AzureResourcePropertiesBase implements JsonSerializable<AzureResour
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("KeyVault".equals(discriminatorValue)) {
                     return AzureKeyVaultProperties.fromJson(readerToUse.reset());
-                } else if ("AppConfig".equals(discriminatorValue)) {
-                    return AzureAppConfigProperties.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -26,17 +26,23 @@ import com.azure.resourcemanager.resourcegraph.fluent.models.QueryResponseInner;
 import com.azure.resourcemanager.resourcegraph.models.QueryRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ResourceGraphClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(ResourceGraphClientImpl client) {
@@ -51,7 +57,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "ResourceGraphClientR")
-    private interface ResourceProvidersService {
+    public interface ResourceProvidersService {
         @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.ResourceGraph/resources")
         @ExpectedResponses({ 200 })
@@ -63,7 +69,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
+     * 
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -90,7 +96,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
+     * 
      * @param query Request specifying query and its options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,7 +122,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
+     * 
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -130,7 +136,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
+     * 
      * @param query Request specifying query and its options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +151,7 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Queries the resources managed by Azure Resource Manager for scopes specified in the request.
-     *
+     * 
      * @param query Request specifying query and its options.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

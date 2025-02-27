@@ -30,8 +30,9 @@ public final class ThreatIntelligenceIndicatorsAppendTagsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.threatIntelligenceIndicators()
-            .appendTagsWithResponse("zyojfch", "cp", "rexzoksgq", new ThreatIntelligenceAppendTags()
-                .withThreatIntelligenceTags(Arrays.asList("ojuxil", "zblkc", "fldfljwt", "b")),
+            .appendTagsWithResponse(
+                "crdcueljti", "hxmfqryarvsxzqb", "lcjkayspthzodub", new ThreatIntelligenceAppendTags()
+                    .withThreatIntelligenceTags(Arrays.asList("jtgblios", "kfmkmfdjxyxgbk", "qvjcteoe", "l")),
                 com.azure.core.util.Context.NONE);
 
     }

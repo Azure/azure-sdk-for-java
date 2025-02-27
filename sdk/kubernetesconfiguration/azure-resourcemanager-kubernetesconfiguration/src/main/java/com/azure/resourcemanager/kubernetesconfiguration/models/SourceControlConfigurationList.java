@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.SourceControlConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,26 +18,26 @@ import java.util.List;
  * and a URL link to get the next set of results.
  */
 @Immutable
-public final class SourceControlConfigurationList {
+public final class SourceControlConfigurationList implements JsonSerializable<SourceControlConfigurationList> {
     /*
      * List of Source Control Configurations within a Kubernetes cluster.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SourceControlConfigurationInner> value;
 
     /*
      * URL to get the next set of configuration objects, if any.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SourceControlConfigurationList class. */
+    /**
+     * Creates an instance of SourceControlConfigurationList class.
+     */
     public SourceControlConfigurationList() {
     }
 
     /**
      * Get the value property: List of Source Control Configurations within a Kubernetes cluster.
-     *
+     * 
      * @return the value value.
      */
     public List<SourceControlConfigurationInner> value() {
@@ -42,7 +46,7 @@ public final class SourceControlConfigurationList {
 
     /**
      * Get the nextLink property: URL to get the next set of configuration objects, if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -51,12 +55,52 @@ public final class SourceControlConfigurationList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceControlConfigurationList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceControlConfigurationList if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceControlConfigurationList.
+     */
+    public static SourceControlConfigurationList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceControlConfigurationList deserializedSourceControlConfigurationList
+                = new SourceControlConfigurationList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SourceControlConfigurationInner> value
+                        = reader.readArray(reader1 -> SourceControlConfigurationInner.fromJson(reader1));
+                    deserializedSourceControlConfigurationList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSourceControlConfigurationList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceControlConfigurationList;
+        });
     }
 }

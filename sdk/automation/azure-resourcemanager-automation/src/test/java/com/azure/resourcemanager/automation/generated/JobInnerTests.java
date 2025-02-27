@@ -19,12 +19,12 @@ public final class JobInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobInner model = BinaryData.fromString(
-            "{\"properties\":{\"runbook\":{\"name\":\"flv\"},\"startedBy\":\"gzwywak\",\"runOn\":\"hknsmjbl\",\"jobId\":\"7fae13b1-ba69-4a2a-8af5-1538cc323b32\",\"creationTime\":\"2021-11-08T00:32:21Z\",\"status\":\"Resuming\",\"statusDetails\":\"mzotqyryu\",\"startTime\":\"2021-05-02T20:27:28Z\",\"endTime\":\"2021-03-01T02:30:44Z\",\"exception\":\"vxmvw\",\"lastModifiedTime\":\"2021-07-14T04:41:04Z\",\"lastStatusModifiedTime\":\"2021-10-07T06:26:08Z\",\"parameters\":{\"ujlzqnhcvsqltn\":\"nsup\",\"xfyqonmpqoxwdo\":\"oibgsxg\",\"iiqbi\":\"dbxiqx\"},\"provisioningState\":\"Succeeded\"},\"id\":\"mwwinhehfqpofv\",\"name\":\"bcblemb\",\"type\":\"kbwvqvxkdiv\"}")
+            "{\"properties\":{\"runbook\":{\"name\":\"flv\"},\"startedBy\":\"gzwywak\",\"runOn\":\"hknsmjbl\",\"jobId\":\"419a3550-8aab-464d-bca8-1d80a689b72f\",\"creationTime\":\"2021-11-08T00:32:21Z\",\"status\":\"Resuming\",\"statusDetails\":\"mzotqyryu\",\"startTime\":\"2021-05-02T20:27:28Z\",\"endTime\":\"2021-03-01T02:30:44Z\",\"exception\":\"vxmvw\",\"lastModifiedTime\":\"2021-07-14T04:41:04Z\",\"lastStatusModifiedTime\":\"2021-10-07T06:26:08Z\",\"parameters\":{\"ujlzqnhcvsqltn\":\"nsup\",\"xfyqonmpqoxwdo\":\"oibgsxg\",\"iiqbi\":\"dbxiqx\"},\"provisioningState\":\"Succeeded\"},\"id\":\"mwwinhehfqpofv\",\"name\":\"bcblemb\",\"type\":\"kbwvqvxkdiv\"}")
             .toObject(JobInner.class);
         Assertions.assertEquals("flv", model.runbook().name());
         Assertions.assertEquals("gzwywak", model.startedBy());
         Assertions.assertEquals("hknsmjbl", model.runOn());
-        Assertions.assertEquals(UUID.fromString("7fae13b1-ba69-4a2a-8af5-1538cc323b32"), model.jobId());
+        Assertions.assertEquals(UUID.fromString("419a3550-8aab-464d-bca8-1d80a689b72f"), model.jobId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T00:32:21Z"), model.creationTime());
         Assertions.assertEquals(JobStatus.RESUMING, model.status());
         Assertions.assertEquals("mzotqyryu", model.statusDetails());
@@ -42,7 +42,7 @@ public final class JobInnerTests {
         JobInner model = new JobInner().withRunbook(new RunbookAssociationProperty().withName("flv"))
             .withStartedBy("gzwywak")
             .withRunOn("hknsmjbl")
-            .withJobId(UUID.fromString("7fae13b1-ba69-4a2a-8af5-1538cc323b32"))
+            .withJobId(UUID.fromString("419a3550-8aab-464d-bca8-1d80a689b72f"))
             .withCreationTime(OffsetDateTime.parse("2021-11-08T00:32:21Z"))
             .withStatus(JobStatus.RESUMING)
             .withStatusDetails("mzotqyryu")
@@ -57,7 +57,7 @@ public final class JobInnerTests {
         Assertions.assertEquals("flv", model.runbook().name());
         Assertions.assertEquals("gzwywak", model.startedBy());
         Assertions.assertEquals("hknsmjbl", model.runOn());
-        Assertions.assertEquals(UUID.fromString("7fae13b1-ba69-4a2a-8af5-1538cc323b32"), model.jobId());
+        Assertions.assertEquals(UUID.fromString("419a3550-8aab-464d-bca8-1d80a689b72f"), model.jobId());
         Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T00:32:21Z"), model.creationTime());
         Assertions.assertEquals(JobStatus.RESUMING, model.status());
         Assertions.assertEquals("mzotqyryu", model.statusDetails());

@@ -5,6 +5,9 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
+  - name: ExcludePaths
+    type: object
+    default: []
   - name: TestPipeline
     type: boolean
     default: false
@@ -87,7 +90,7 @@ jobs:
         # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
         # during testing if tests failed, and linting reports.
         - output: pipelineArtifact
-          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)
+          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
           targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
           displayName: 'Capture troubleshooting artifacts'
           condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
@@ -104,20 +107,12 @@ jobs:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           CheckoutRecordings: true
+          ServiceDirectory: ${{parameters.ServiceDirectory}}
+          ExcludePaths: ${{parameters.ExcludePaths}}
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
           runProxy: true
-
-      - pwsh: |
-          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
-          foreach($file in $files){
-              Write-Host "##[group]$file"
-              cat $file
-              Write-Host "##[endgroup]"
-          }
-        displayName: Dump Test-Proxy Logs
-        condition: succeededOrFailed()
 
       # If the Java test versions isn't one of the LTS versions, or in other words is the latest Java version we're
       # testing against and that isn't an LTS version at the time (ex. latest LTS is Java 17 but we're testing against
@@ -159,3 +154,23 @@ jobs:
       # Shut down proxy to prevent file locks on the log file for auto-injected credscan
       # steps on windows
       - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
+
+      - pwsh: |
+          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
+          foreach($file in $files){
+              Write-Host "##[group]$file"
+              cat $file
+              Write-Host "##[endgroup]"
+          }
+        displayName: Dump Test-Proxy Logs
+        condition: succeededOrFailed()
+
+      - pwsh: |
+          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy-error.log
+          foreach($file in $files){
+              Write-Host "##[group]$file"
+              cat $file
+              Write-Host "##[endgroup]"
+          }
+        displayName: Dump Test-Proxy Error Logs
+        condition: succeededOrFailed()

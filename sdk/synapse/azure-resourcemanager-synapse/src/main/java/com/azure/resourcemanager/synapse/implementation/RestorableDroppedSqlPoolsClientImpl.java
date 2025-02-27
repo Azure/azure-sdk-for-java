@@ -117,11 +117,11 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
             return Mono.error(
                 new IllegalArgumentException("Parameter restorableDroppedSqlPoolId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
-                resourceGroupName, workspaceName, restorableDroppedSqlPoolId, accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, restorableDroppedSqlPoolId, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -161,11 +161,10 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
             return Mono.error(
                 new IllegalArgumentException("Parameter restorableDroppedSqlPoolId is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-            workspaceName, restorableDroppedSqlPoolId, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, restorableDroppedSqlPoolId, accept, context);
     }
 
     /**
@@ -253,10 +252,9 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), apiVersion,
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(),
                 this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
             .<PagedResponse<RestorableDroppedSqlPoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
@@ -293,12 +291,11 @@ public final class RestorableDroppedSqlPoolsClientImpl implements RestorableDrop
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
-        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
-                workspaceName, accept, context)
+            .listByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), null, null));
     }

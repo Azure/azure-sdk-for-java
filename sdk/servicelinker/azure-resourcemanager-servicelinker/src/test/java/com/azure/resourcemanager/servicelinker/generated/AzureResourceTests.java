@@ -13,16 +13,16 @@ public final class AzureResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureResource model = BinaryData.fromString(
-            "{\"type\":\"AzureResource\",\"id\":\"zfbuhf\",\"resourceProperties\":{\"type\":\"AzureResourcePropertiesBase\"}}")
+            "{\"type\":\"AzureResource\",\"id\":\"lngsntnbybkzgcwr\",\"resourceProperties\":{\"type\":\"AzureResourcePropertiesBase\"}}")
             .toObject(AzureResource.class);
-        Assertions.assertEquals("zfbuhf", model.id());
+        Assertions.assertEquals("lngsntnbybkzgcwr", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureResource model
-            = new AzureResource().withId("zfbuhf").withResourceProperties(new AzureResourcePropertiesBase());
+            = new AzureResource().withId("lngsntnbybkzgcwr").withResourceProperties(new AzureResourcePropertiesBase());
         model = BinaryData.fromObject(model).toObject(AzureResource.class);
-        Assertions.assertEquals("zfbuhf", model.id());
+        Assertions.assertEquals("lngsntnbybkzgcwr", model.id());
     }
 }

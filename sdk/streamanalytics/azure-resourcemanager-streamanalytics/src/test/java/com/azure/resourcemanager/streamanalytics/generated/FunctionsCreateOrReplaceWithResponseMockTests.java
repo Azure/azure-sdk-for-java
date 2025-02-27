@@ -26,7 +26,7 @@ public final class FunctionsCreateOrReplaceWithResponseMockTests {
     @Test
     public void testCreateOrReplaceWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"uzlm\",\"properties\":{\"inputs\":[{\"dataType\":\"ktgplcr\",\"isConfigurationParameter\":true},{\"dataType\":\"eznoig\",\"isConfigurationParameter\":true},{\"dataType\":\"w\",\"isConfigurationParameter\":false},{\"dataType\":\"nbsazejjoqkag\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"taugzxnfaa\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"dtnkdmkq\",\"type\":\"lwuenvrkp\",\"id\":\"uaibrebqaaysj\"}";
+            = "{\"properties\":{\"type\":\"FunctionProperties\",\"etag\":\"exccbdreaxhcexd\",\"properties\":{\"inputs\":[{\"dataType\":\"hqk\",\"isConfigurationParameter\":false},{\"dataType\":\"wijnh\",\"isConfigurationParameter\":true},{\"dataType\":\"f\",\"isConfigurationParameter\":false},{\"dataType\":\"bfvoowvrv\",\"isConfigurationParameter\":false}],\"output\":{\"dataType\":\"ppyostronzmyhgf\"},\"binding\":{\"type\":\"FunctionBinding\"}}},\"name\":\"sxkm\",\"type\":\"a\",\"id\":\"rrjreafxtsgu\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,22 +36,23 @@ public final class FunctionsCreateOrReplaceWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Function response = manager.functions()
-            .define("hbpnaixexccbd")
-            .withExistingStreamingjob("tvgbmhrixkwmy", "jejveg")
+            .define("ywkbirryuzhlhkjo")
+            .withExistingStreamingjob("wfqatmtd", "tmdvypgikdgs")
             .withProperties(new FunctionProperties()
-                .withInputs(Arrays.asList(new FunctionInput().withDataType("wijnh").withIsConfigurationParameter(true),
-                    new FunctionInput().withDataType("f").withIsConfigurationParameter(false)))
-                .withOutput(new FunctionOutput().withDataType("fvoow"))
+                .withInputs(
+                    Arrays.asList(new FunctionInput().withDataType("bfggjioolvr").withIsConfigurationParameter(false),
+                        new FunctionInput().withDataType("tkkgllqwjy").withIsConfigurationParameter(true)))
+                .withOutput(new FunctionOutput().withDataType("vblm"))
                 .withBinding(new FunctionBinding()))
-            .withName("mtg")
-            .withIfMatch("afxtsgum")
-            .withIfNoneMatch("jglikkxwslolb")
+            .withName("zuhbxvvyhgsopb")
+            .withIfMatch("bmhrixkwmyijejv")
+            .withIfNoneMatch("grhbpn")
             .create();
 
-        Assertions.assertEquals("uaibrebqaaysj", response.id());
-        Assertions.assertEquals("ktgplcr", response.properties().inputs().get(0).dataType());
-        Assertions.assertEquals(true, response.properties().inputs().get(0).isConfigurationParameter());
-        Assertions.assertEquals("taugzxnfaa", response.properties().output().dataType());
-        Assertions.assertEquals("dtnkdmkq", response.name());
+        Assertions.assertEquals("rrjreafxtsgu", response.id());
+        Assertions.assertEquals("hqk", response.properties().inputs().get(0).dataType());
+        Assertions.assertEquals(false, response.properties().inputs().get(0).isConfigurationParameter());
+        Assertions.assertEquals("ppyostronzmyhgf", response.properties().output().dataType());
+        Assertions.assertEquals("sxkm", response.name());
     }
 }

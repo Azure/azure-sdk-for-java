@@ -20,7 +20,8 @@ public final class SenderUsernamesGetSamples {
      */
     public static void
         getSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.senderUsernames().getWithResponse("contosoResourceGroup", "contosoEmailService", "contoso.com",
-            "contosoNewsAlerts", com.azure.core.util.Context.NONE);
+        manager.senderUsernames()
+            .getWithResponse("contosoResourceGroup", "contosoEmailService", "contoso.com", "contosoNewsAlerts",
+                com.azure.core.util.Context.NONE);
     }
 }

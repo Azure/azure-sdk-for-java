@@ -30,10 +30,10 @@ autorest
 ## Configuration
 
 ```yaml
-use: '@autorest/java@4.1.22'
+use: '@autorest/java@4.1.42'
 output-folder: ../
 java: true
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/7452e1cc7db72fbc6cd9539b390d8b8e5c2a1864/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.5/keys.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8af9817c15d688c941cda106758045b5deb9a069/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.6-preview.1/keys.json
 title: KeyClient
 namespace: com.azure.security.keyvault.keys
 models-subpackage: implementation.models
@@ -41,15 +41,9 @@ custom-types-subpackage: models
 custom-types: KeyCurveName,KeyExportEncryptionAlgorithm,KeyOperation,KeyRotationPolicyAction,KeyType,ReleaseKeyResult
 customization-class: src/main/java/KeysCustomizations.java
 enable-sync-stack: true
-generate-client-interfaces: false
 generate-client-as-impl: true
-service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
 disable-client-builder: true
-add-context-parameter: true
-context-client-method-parameter: true
-generic-response-type: true
-stream-style-serialization: true
 directive:
     - rename-model:
         from: KeyReleaseResult

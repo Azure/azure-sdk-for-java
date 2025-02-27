@@ -18,7 +18,7 @@ public final class ProductsGetSamples {
      * @param manager Entry point to AzureSphereManager.
      */
     public static void productsGet(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
-        manager.products().getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1",
-            com.azure.core.util.Context.NONE);
+        manager.products()
+            .getWithResponse("MyResourceGroup1", "MyCatalog1", "MyProduct1", com.azure.core.util.Context.NONE);
     }
 }

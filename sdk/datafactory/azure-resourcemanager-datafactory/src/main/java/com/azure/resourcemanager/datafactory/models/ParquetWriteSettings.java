@@ -103,7 +103,6 @@ public final class ParquetWriteSettings extends FormatWriteSettings {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

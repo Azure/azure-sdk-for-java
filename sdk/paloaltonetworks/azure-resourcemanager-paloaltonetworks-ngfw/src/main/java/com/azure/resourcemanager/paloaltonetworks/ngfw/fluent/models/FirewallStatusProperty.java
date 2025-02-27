@@ -5,45 +5,44 @@
 package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.HealthStatus;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PanoramaStatus;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.ReadOnlyProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Firewall Status.
  */
 @Immutable
-public final class FirewallStatusProperty {
+public final class FirewallStatusProperty implements JsonSerializable<FirewallStatusProperty> {
     /*
      * Panorama Managed: Default is False. Default will be CloudSec managed
      */
-    @JsonProperty(value = "isPanoramaManaged", access = JsonProperty.Access.WRITE_ONLY)
     private BooleanEnum isPanoramaManaged;
 
     /*
      * Current status of the Firewall
      */
-    @JsonProperty(value = "healthStatus", access = JsonProperty.Access.WRITE_ONLY)
     private HealthStatus healthStatus;
 
     /*
      * Detail description of current health of the Firewall
      */
-    @JsonProperty(value = "healthReason", access = JsonProperty.Access.WRITE_ONLY)
     private String healthReason;
 
     /*
      * Panorama Status
      */
-    @JsonProperty(value = "panoramaStatus", access = JsonProperty.Access.WRITE_ONLY)
     private PanoramaStatus panoramaStatus;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ReadOnlyProvisioningState provisioningState;
 
     /**
@@ -106,5 +105,49 @@ public final class FirewallStatusProperty {
         if (panoramaStatus() != null) {
             panoramaStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallStatusProperty from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallStatusProperty if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallStatusProperty.
+     */
+    public static FirewallStatusProperty fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallStatusProperty deserializedFirewallStatusProperty = new FirewallStatusProperty();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isPanoramaManaged".equals(fieldName)) {
+                    deserializedFirewallStatusProperty.isPanoramaManaged = BooleanEnum.fromString(reader.getString());
+                } else if ("healthStatus".equals(fieldName)) {
+                    deserializedFirewallStatusProperty.healthStatus = HealthStatus.fromString(reader.getString());
+                } else if ("healthReason".equals(fieldName)) {
+                    deserializedFirewallStatusProperty.healthReason = reader.getString();
+                } else if ("panoramaStatus".equals(fieldName)) {
+                    deserializedFirewallStatusProperty.panoramaStatus = PanoramaStatus.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedFirewallStatusProperty.provisioningState
+                        = ReadOnlyProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallStatusProperty;
+        });
     }
 }

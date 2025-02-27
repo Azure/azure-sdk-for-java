@@ -24,7 +24,10 @@ public final class SapDiscoverySitesCreateSamples {
      */
     public static void createResourceForImportBasedInput(
         com.azure.resourcemanager.migrationdiscoverysap.MigrationDiscoverySapManager manager) {
-        manager.sapDiscoverySites().define("SampleSite").withRegion("eastus").withExistingResourceGroup("test-rg")
+        manager.sapDiscoverySites()
+            .define("SampleSite")
+            .withRegion("eastus")
+            .withExistingResourceGroup("test-rg")
             .withTags(mapOf("property1", "value1", "property2", "value2"))
             .withProperties(new SapDiscoverySiteProperties().withMasterSiteId("MasterSiteIdResourceId")
                 .withMigrateProjectId("MigrateProjectId"))

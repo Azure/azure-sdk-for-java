@@ -13,11 +13,10 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DataSourcesListAll {
     public static void main(String[] args) {
-        DataSourcesClient dataSourcesClient =
-                new PurviewScanningClientBuilder()
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("{Endpoint}")
-                        .buildDataSourcesClient();
+        DataSourcesClient dataSourcesClient
+            = new PurviewScanningClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("{Endpoint}")
+                .buildDataSourcesClient();
         // BEGIN:com.azure.analytics.purview.scanning.generated.datasourceslistall.datasourceslistall
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = dataSourcesClient.listAll(requestOptions);

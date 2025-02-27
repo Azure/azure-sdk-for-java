@@ -40,6 +40,7 @@ import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.RunCommandResult;
 import com.azure.resourcemanager.compute.models.SecurityTypes;
+import com.azure.resourcemanager.compute.models.StorageAccountTypes;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
@@ -85,6 +86,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -2051,6 +2053,123 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         Assertions.assertNotNull(vm.innerModel().securityProfile());
         Assertions.assertFalse(vm.isEncryptionAtHost());
+    }
+
+    @Test
+    public void canEnableWriteAccelerator() {
+        // required to be run on "Azure SDK Test Resources" subscription
+
+        // ref https://learn.microsoft.com/azure/virtual-machines/how-to-enable-write-accelerator
+        // 8 CPU likely to be the smallest VM that supports write accelerator on disks.
+        // only 1 disk is allowed to have write accelerator for M8
+        final String vmSize = "Standard_M8-2ms";
+        final int diskSize = 127;
+
+        Network network = this.networkManager.networks()
+            .define(vmName + "Network")
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .defineSubnet("default")
+            .withAddressPrefix("10.0.0.0/29")
+            .attach()
+            .create();
+
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("default")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
+            .withRootUsername("tirekicker")
+            .withSsh(sshPublicKey())
+            // data disk
+            .withNewDataDisk(diskSize, 0,
+                new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DELETE)
+                    .withStorageAccountTypes(StorageAccountTypes.PREMIUM_LRS)
+                    .withCachingTypes(CachingTypes.READ_ONLY)
+                    .withWriteAcceleratorEnabled(true))
+            // os disk
+            .withOSDiskStorageAccountType(StorageAccountTypes.PREMIUM_LRS)
+            .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .withOSDiskCaching(CachingTypes.READ_ONLY)
+            .withOSDiskWriteAcceleratorEnabled(false)
+            .withSize(vmSize)
+            .create();
+
+        Assertions.assertFalse(vm.isOsDiskWriteAcceleratorEnabled());
+        Assertions.assertTrue(vm.dataDisks().values().iterator().next().isWriteAcceleratorEnabled());
+
+        Disk dataDisk = computeManager.disks()
+            .define(vmName + "Disk1")
+            .withRegion(region)
+            .withExistingResourceGroup(rgName)
+            .withData()
+            .withSizeInGB(diskSize)
+            .withSku(DiskSkuTypes.PREMIUM_LRS)
+            .create();
+
+        vm.update().withoutDataDisk(0).apply();
+        vm.update()
+            .withDataDiskDefaultDeleteOptions(DeleteOptions.DETACH)
+            .withDataDiskDefaultCachingType(CachingTypes.NONE)
+            .withDataDiskDefaultWriteAcceleratorEnabled(true)
+            .withExistingDataDisk(dataDisk, 1, CachingTypes.NONE)
+            .apply();
+
+        Assertions.assertFalse(vm.isOsDiskWriteAcceleratorEnabled());
+        Assertions.assertTrue(vm.dataDisks().values().iterator().next().isWriteAcceleratorEnabled());
+        Assertions.assertEquals(dataDisk.id().toLowerCase(Locale.ROOT),
+            vm.dataDisks().values().iterator().next().id().toLowerCase(Locale.ROOT));
+
+        computeManager.virtualMachines().deleteById(vm.id());
+
+        vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(network)
+            .withSubnet("default")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_20_04_LTS)
+            .withRootUsername("tirekicker")
+            .withSsh(sshPublicKey())
+            // data disk
+            .withNewDataDisk(diskSize, 0, new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DELETE))
+            // os disk
+            .withOSDiskStorageAccountType(StorageAccountTypes.PREMIUM_LRS)
+            .withOSDiskDeleteOptions(DeleteOptions.DELETE)
+            .withOSDiskCaching(CachingTypes.NONE)
+            .withSize(vmSize)
+            .create();
+
+        Assertions.assertFalse(vm.isOsDiskWriteAcceleratorEnabled());
+        Assertions.assertFalse(vm.dataDisks().values().iterator().next().isWriteAcceleratorEnabled());
+
+        vm.update()
+            .withoutDataDisk(0)
+            .withExistingDataDisk(dataDisk, diskSize, 1,
+                new VirtualMachineDiskOptions().withDeleteOptions(DeleteOptions.DETACH)
+                    .withStorageAccountTypes(StorageAccountTypes.PREMIUM_LRS)
+                    .withCachingTypes(CachingTypes.NONE)
+                    .withWriteAcceleratorEnabled(true))
+            .apply();
+
+        Assertions.assertFalse(vm.isOsDiskWriteAcceleratorEnabled());
+        Assertions.assertTrue(vm.dataDisks().values().iterator().next().isWriteAcceleratorEnabled());
+
+        vm.update().withoutDataDisk(1).apply();
+        vm.update().withOSDiskWriteAcceleratorEnabled(true).apply();
+
+        Assertions.assertTrue(vm.isOsDiskWriteAcceleratorEnabled());
+
+        vm.update().withOSDiskWriteAcceleratorEnabled(false).apply();
+
+        Assertions.assertFalse(vm.isOsDiskWriteAcceleratorEnabled());
     }
 
     // *********************************** helper methods ***********************************

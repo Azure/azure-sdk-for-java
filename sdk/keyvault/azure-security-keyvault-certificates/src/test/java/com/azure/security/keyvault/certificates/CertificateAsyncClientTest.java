@@ -3,16 +3,17 @@
 
 package com.azure.security.keyvault.certificates;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.certificates.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
 import com.azure.security.keyvault.certificates.models.CertificateContentType;
 import com.azure.security.keyvault.certificates.models.CertificateIssuer;
@@ -147,7 +148,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.beginCreateCertificate("", CertificatePolicy.getDefault()))
             .verifyErrorSatisfies(
-                e -> assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                e -> assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -647,7 +648,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.createIssuer(new CertificateIssuer("", "")))
             .verifyErrorSatisfies(
-                e -> assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                e -> assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -657,7 +658,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
         StepVerifier.create(certificateAsyncClient.createIssuer(new CertificateIssuer("", null)))
             .verifyErrorSatisfies(
-                e -> assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_BAD_METHOD));
+                e -> assertResponseException(e, HttpResponseException.class, HttpURLConnection.HTTP_BAD_METHOD));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -882,9 +883,14 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
             sleepIfRunningAgainstService(30000);
 
-            StepVerifier.create(certificateAsyncClient.listDeletedCertificates()
-                .doOnNext(deletedCertificate -> certificatesToDelete.remove(deletedCertificate.getName()))
-                .last()).assertNext(ignored -> assertEquals(0, certificatesToDelete.size())).verifyComplete();
+            PagedFlux<DeletedCertificate> pagedFlux = certificateAsyncClient.listDeletedCertificates();
+
+            StepVerifier
+                .create(
+                    pagedFlux.doOnNext(deletedCertificate -> certificatesToDelete.remove(deletedCertificate.getName()))
+                        .last())
+                .assertNext(ignored -> assertEquals(0, certificatesToDelete.size()))
+                .verifyComplete();
         });
     }
 
@@ -981,7 +987,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             .create(certificateAsyncClient.mergeCertificate(new MergeCertificateOptions(
                 testResourceNamer.randomName("testCert", 20), Collections.singletonList("test".getBytes()))))
             .verifyErrorSatisfies(
-                e -> assertResponseException(e, KeyVaultErrorException.class, HttpURLConnection.HTTP_NOT_FOUND));
+                e -> assertResponseException(e, ResourceNotFoundException.class, HttpURLConnection.HTTP_NOT_FOUND));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

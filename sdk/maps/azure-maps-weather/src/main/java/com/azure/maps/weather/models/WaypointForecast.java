@@ -18,7 +18,8 @@ import java.util.List;
 public final class WaypointForecast implements JsonSerializable<WaypointForecast> {
 
     /*
-     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
+     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
     private IconCode iconCode;
 
@@ -58,7 +59,8 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
     private WeatherAlongRoutePrecipitation precipitation;
 
     /*
-     * Estimation of thunderstorm intensity on an open scale. A value of 0 means there is no thunderstorm; values of 1 and higher mean there is a thunderstorm in increasing intensity.
+     * Estimation of thunderstorm intensity on an open scale. A value of 0 means there is no thunderstorm; values of 1
+     * and higher mean there is a thunderstorm in increasing intensity.
      */
     private Integer lightningCount;
 
@@ -212,7 +214,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
+        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.getValue());
         jsonWriter.writeStringField("shortPhrase", this.shortDescription);
         jsonWriter.writeBooleanField("isDayTime", this.isDaytime);
         jsonWriter.writeNumberField("cloudCover", this.cloudCover);
@@ -242,7 +244,7 @@ public final class WaypointForecast implements JsonSerializable<WaypointForecast
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("iconCode".equals(fieldName)) {
-                    deserializedWaypointForecast.iconCode = IconCode.fromInt(reader.getInt());
+                    deserializedWaypointForecast.iconCode = IconCode.fromValue(reader.getInt());
                 } else if ("shortPhrase".equals(fieldName)) {
                     deserializedWaypointForecast.shortDescription = reader.getString();
                 } else if ("isDayTime".equals(fieldName)) {

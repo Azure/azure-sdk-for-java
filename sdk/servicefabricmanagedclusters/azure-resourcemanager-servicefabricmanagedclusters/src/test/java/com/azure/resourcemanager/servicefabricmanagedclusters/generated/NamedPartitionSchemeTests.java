@@ -13,17 +13,16 @@ public final class NamedPartitionSchemeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamedPartitionScheme model = BinaryData
-            .fromString(
-                "{\"partitionScheme\":\"Named\",\"names\":[\"gz\",\"ulucv\",\"amrsreuzv\",\"urisjnhnytxifqj\"]}")
+            .fromString("{\"partitionScheme\":\"Named\",\"names\":[\"yftumrtwna\",\"jslb\",\"wkojgcyztsfmzn\"]}")
             .toObject(NamedPartitionScheme.class);
-        Assertions.assertEquals("gz", model.names().get(0));
+        Assertions.assertEquals("yftumrtwna", model.names().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NamedPartitionScheme model
-            = new NamedPartitionScheme().withNames(Arrays.asList("gz", "ulucv", "amrsreuzv", "urisjnhnytxifqj"));
+            = new NamedPartitionScheme().withNames(Arrays.asList("yftumrtwna", "jslb", "wkojgcyztsfmzn"));
         model = BinaryData.fromObject(model).toObject(NamedPartitionScheme.class);
-        Assertions.assertEquals("gz", model.names().get(0));
+        Assertions.assertEquals("yftumrtwna", model.names().get(0));
     }
 }

@@ -10,16 +10,17 @@ import com.azure.resourcemanager.datafactory.fluent.models.GoogleBigQueryDataset
 public final class GoogleBigQueryDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GoogleBigQueryDatasetTypeProperties model
-            = BinaryData.fromString("{\"tableName\":\"datax\",\"table\":\"dataxlawmvdyqab\",\"dataset\":\"dataopx\"}")
-                .toObject(GoogleBigQueryDatasetTypeProperties.class);
+        GoogleBigQueryDatasetTypeProperties model = BinaryData
+            .fromString("{\"tableName\":\"datahxfpzc\",\"table\":\"datadq\",\"dataset\":\"datadxjvvlyibweuaugt\"}")
+            .toObject(GoogleBigQueryDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQueryDatasetTypeProperties model = new GoogleBigQueryDatasetTypeProperties().withTableName("datax")
-            .withTable("dataxlawmvdyqab")
-            .withDataset("dataopx");
+        GoogleBigQueryDatasetTypeProperties model
+            = new GoogleBigQueryDatasetTypeProperties().withTableName("datahxfpzc")
+                .withTable("datadq")
+                .withDataset("datadxjvvlyibweuaugt");
         model = BinaryData.fromObject(model).toObject(GoogleBigQueryDatasetTypeProperties.class);
     }
 }

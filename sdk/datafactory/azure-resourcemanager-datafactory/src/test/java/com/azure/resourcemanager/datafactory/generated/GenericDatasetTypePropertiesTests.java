@@ -10,13 +10,13 @@ import com.azure.resourcemanager.datafactory.fluent.models.GenericDatasetTypePro
 public final class GenericDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenericDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"datafzvlqquyhbce\"}")
+        GenericDatasetTypeProperties model = BinaryData.fromString("{\"tableName\":\"datajijzqjhljsazm\"}")
             .toObject(GenericDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenericDatasetTypeProperties model = new GenericDatasetTypeProperties().withTableName("datafzvlqquyhbce");
+        GenericDatasetTypeProperties model = new GenericDatasetTypeProperties().withTableName("datajijzqjhljsazm");
         model = BinaryData.fromObject(model).toObject(GenericDatasetTypeProperties.class);
     }
 }

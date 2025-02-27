@@ -12,11 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CertificateDescriptionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateDescriptionInner model = BinaryData
-            .fromString("{\"properties\":{\"subject\":\"yzrpzbchckqqzq\",\"expiry\":\"Wed, 10 Nov 2021 00:02:28"
-                + " GMT\",\"thumbprint\":\"ysuiizynkedya\",\"isVerified\":true,\"created\":\"Fri, 29 Oct 2021"
-                + " 12:30:56 GMT\",\"updated\":\"Fri, 21 May 2021 15:42:34"
-                + " GMT\",\"certificate\":\"bzyh\"},\"etag\":\"tsmypyynpcdp\",\"id\":\"mnzgmwznmabi\",\"name\":\"nsorgjhxbldt\",\"type\":\"wwrlkdmtncv\"}")
+        CertificateDescriptionInner model = BinaryData.fromString(
+            "{\"properties\":{\"subject\":\"yzrpzbchckqqzq\",\"expiry\":\"Wed, 10 Nov 2021 00:02:28 GMT\",\"thumbprint\":\"ysuiizynkedya\",\"isVerified\":true,\"created\":\"Fri, 29 Oct 2021 12:30:56 GMT\",\"updated\":\"Fri, 21 May 2021 15:42:34 GMT\",\"certificate\":\"bzyh\"},\"etag\":\"tsmypyynpcdp\",\"id\":\"mnzgmwznmabi\",\"name\":\"nsorgjhxbldt\",\"type\":\"wwrlkdmtncv\"}")
             .toObject(CertificateDescriptionInner.class);
         Assertions.assertEquals(true, model.properties().isVerified());
         Assertions.assertEquals("bzyh", model.properties().certificate());

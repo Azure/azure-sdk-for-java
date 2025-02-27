@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.DraModelInner;
 
-/** An instance of this class provides access to all the operations defined in DrasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DrasClient.
+ */
 public interface DrasClient {
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -35,9 +37,9 @@ public interface DrasClient {
 
     /**
      * Gets the fabric agent (Dra).
-     *
-     * <p>Gets the details of the fabric agent.
-     *
+     * 
+     * Gets the details of the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -51,9 +53,9 @@ public interface DrasClient {
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -68,9 +70,9 @@ public interface DrasClient {
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -87,9 +89,9 @@ public interface DrasClient {
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -103,9 +105,9 @@ public interface DrasClient {
 
     /**
      * Puts the fabric agent (Dra).
-     *
-     * <p>Creates the fabric agent.
-     *
+     * 
+     * Creates the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -122,9 +124,9 @@ public interface DrasClient {
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -138,9 +140,9 @@ public interface DrasClient {
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -156,9 +158,9 @@ public interface DrasClient {
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -171,9 +173,9 @@ public interface DrasClient {
 
     /**
      * Deletes the fabric agent (Dra).
-     *
-     * <p>Deletes the fabric agent.
-     *
+     * 
+     * Deletes the fabric agent.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param fabricAgentName The fabric agent (Dra) name.
@@ -187,9 +189,9 @@ public interface DrasClient {
 
     /**
      * Lists the fabric agents (Dras).
-     *
-     * <p>Gets the list of fabric agents in the given fabric.
-     *
+     * 
+     * Gets the list of fabric agents in the given fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,9 +204,9 @@ public interface DrasClient {
 
     /**
      * Lists the fabric agents (Dras).
-     *
-     * <p>Gets the list of fabric agents in the given fabric.
-     *
+     * 
+     * Gets the list of fabric agents in the given fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param context The context to associate with this operation.

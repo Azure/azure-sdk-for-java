@@ -3,10 +3,10 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.http.exception.HttpResponseException;
+import io.clientcore.core.http.exceptions.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,8 +23,9 @@ public final class ResponseExceptionConstructorCache {
      * Identifies the suitable {@link ReflectiveInvoker} to construct the given exception class.
      *
      * @param exceptionClass The exception class.
-     * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class, or null if no handle
-     * is found.
+     * @param exceptionBodyType The exception body type.
+     * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class, or null if no
+     * handle is found.
      */
     public ReflectiveInvoker get(Class<? extends HttpResponseException> exceptionClass, Class<?> exceptionBodyType) {
         return CACHE.computeIfAbsent(exceptionClass, key -> locateExceptionConstructor(key, exceptionBodyType));
@@ -35,6 +36,18 @@ public final class ResponseExceptionConstructorCache {
         return null;
     }
 
+    /**
+     * Invokes the constructor of the given exception class.
+     *
+     * @param reflectiveInvoker The {@link ReflectiveInvoker} that is capable of constructing an instance of the class.
+     * @param exceptionMessage The exception message.
+     * @param response The HTTP response.
+     * @param exceptionBody The exception body.
+     * @return The constructed exception.
+     * @param <T> The type of the exception.
+     * @throws RuntimeException If the constructor invocation fails with a runtime exception.
+     * @throws IllegalStateException If the constructor invocation fails with a checked exception.
+     */
     @SuppressWarnings("unchecked")
     public static <T extends HttpResponseException> T invoke(ReflectiveInvoker reflectiveInvoker,
         String exceptionMessage, Response<?> response, Object exceptionBody) {

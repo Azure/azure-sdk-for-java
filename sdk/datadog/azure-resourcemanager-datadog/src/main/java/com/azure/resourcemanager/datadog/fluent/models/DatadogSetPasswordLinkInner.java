@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.datadog.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The DatadogSetPasswordLink model. */
+/**
+ * The DatadogSetPasswordLink model.
+ */
 @Fluent
-public final class DatadogSetPasswordLinkInner {
+public final class DatadogSetPasswordLinkInner implements JsonSerializable<DatadogSetPasswordLinkInner> {
     /*
      * The setPasswordLink property.
      */
-    @JsonProperty(value = "setPasswordLink")
     private String setPasswordLink;
 
-    /** Creates an instance of DatadogSetPasswordLinkInner class. */
+    /**
+     * Creates an instance of DatadogSetPasswordLinkInner class.
+     */
     public DatadogSetPasswordLinkInner() {
     }
 
     /**
      * Get the setPasswordLink property: The setPasswordLink property.
-     *
+     * 
      * @return the setPasswordLink value.
      */
     public String setPasswordLink() {
@@ -31,7 +38,7 @@ public final class DatadogSetPasswordLinkInner {
 
     /**
      * Set the setPasswordLink property: The setPasswordLink property.
-     *
+     * 
      * @param setPasswordLink the setPasswordLink value to set.
      * @return the DatadogSetPasswordLinkInner object itself.
      */
@@ -42,9 +49,45 @@ public final class DatadogSetPasswordLinkInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("setPasswordLink", this.setPasswordLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatadogSetPasswordLinkInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatadogSetPasswordLinkInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatadogSetPasswordLinkInner.
+     */
+    public static DatadogSetPasswordLinkInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatadogSetPasswordLinkInner deserializedDatadogSetPasswordLinkInner = new DatadogSetPasswordLinkInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("setPasswordLink".equals(fieldName)) {
+                    deserializedDatadogSetPasswordLinkInner.setPasswordLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatadogSetPasswordLinkInner;
+        });
     }
 }

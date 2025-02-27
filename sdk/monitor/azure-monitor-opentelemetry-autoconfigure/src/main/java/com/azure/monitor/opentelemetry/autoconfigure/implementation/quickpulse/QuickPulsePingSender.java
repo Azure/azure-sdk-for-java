@@ -9,6 +9,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.NetworkFriendlyExceptions;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.OperationLogger;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.filtering.FilteringConfiguration;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.IsSubscribedHeaders;
@@ -16,9 +17,11 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 import reactor.util.annotation.Nullable;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_PING_ERROR;
@@ -35,12 +38,7 @@ class QuickPulsePingSender {
     //  operationLogger?
     private static final AtomicBoolean friendlyExceptionThrown = new AtomicBoolean();
 
-    // TODO: remove httpPipeline if not needed
-    //private final HttpPipeline httpPipeline;
     private final LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs;
-    //private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-    // private volatile QuickPulseEnvelope pingEnvelope; // cached for performance
-
     private final Supplier<URL> endpointUrl;
     private final Supplier<String> instrumentationKey;
     private final String roleName;
@@ -49,14 +47,13 @@ class QuickPulsePingSender {
     private final String quickPulseId;
     private long lastValidRequestTimeNs = System.nanoTime();
     private final String sdkVersion;
-
+    private final AtomicReference<FilteringConfiguration> configuration;
     private IsSubscribedHeaders responseHeaders;
-
     private static final HttpHeaderName QPS_STATUS_HEADER = HttpHeaderName.fromString("x-ms-qps-subscribed");
 
     QuickPulsePingSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs, Supplier<URL> endpointUrl,
         Supplier<String> instrumentationKey, String roleName, String instanceName, String machineName,
-        String quickPulseId, String sdkVersion) {
+        String quickPulseId, String sdkVersion, AtomicReference<FilteringConfiguration> configuration) {
         this.liveMetricsRestAPIsForClientSDKs = liveMetricsRestAPIsForClientSDKs;
         this.endpointUrl = endpointUrl;
         this.instrumentationKey = instrumentationKey;
@@ -66,6 +63,7 @@ class QuickPulsePingSender {
         this.quickPulseId = quickPulseId;
         this.sdkVersion = sdkVersion;
         this.responseHeaders = null;
+        this.configuration = configuration;
     }
 
     IsSubscribedHeaders ping(String redirectedEndpoint) {
@@ -80,12 +78,15 @@ class QuickPulsePingSender {
 
         Date currentDate = new Date();
         long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
+        // should not include "QuickPulseService.svc/"
         String endpointPrefix
             = Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
+        logger.verbose("About to ping quickpulse with the endpoint prefix: {}", endpointPrefix);
 
         long sendTime = System.nanoTime();
 
         try {
+            // The swagger api appends QuickPulseService.svc/ when creating the request.
             Response<CollectionConfigurationInfo> responseMono
                 = liveMetricsRestAPIsForClientSDKs
                     .isSubscribedNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey,
@@ -105,13 +106,24 @@ class QuickPulsePingSender {
                 lastValidRequestTimeNs = sendTime;
             }
 
+            CollectionConfigurationInfo body = responseMono.getValue();
+            if (body != null && !configuration.get().getETag().equals(body.getETag())) {
+                try {
+                    logger.verbose("Received a new live metrics filtering configuration from ping response: {}",
+                        body.toJsonString());
+                } catch (IOException e) {
+                    logger.verbose(e.getMessage());
+                }
+                configuration.set(new FilteringConfiguration(body));
+            }
+
             return responseHeaders;
         } catch (RuntimeException e) {
             // 404 landed here
             Throwable t = e.getCause();
-            if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(t, getQuickPulseEndpoint(),
+            if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(t, endpointPrefix,
                 friendlyExceptionThrown, logger)) {
-                operationLogger.recordFailure(t.getMessage() + " (" + endpointPrefix + ")", t, QUICK_PULSE_PING_ERROR);
+                operationLogger.recordFailure(t.getMessage(), t, QUICK_PULSE_PING_ERROR);
             }
         }
         return onPingError(sendTime);

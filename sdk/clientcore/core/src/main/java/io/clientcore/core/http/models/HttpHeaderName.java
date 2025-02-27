@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.util.ExpandableEnum;
+import io.clientcore.core.utils.ExpandableEnum;
 
 import java.util.Collection;
 import java.util.Map;
@@ -60,12 +60,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
     public static HttpHeaderName fromString(String name) {
         if (name == null) {
             return null;
-        }
-
-        HttpHeaderName httpHeaderName = VALUES.get(name);
-
-        if (httpHeaderName != null) {
-            return httpHeaderName;
         }
 
         return VALUES.computeIfAbsent(name, HttpHeaderName::new);
@@ -192,16 +186,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
     public static final HttpHeaderName CACHE_CONTROL = fromString("Cache-Control");
 
     /**
-     * {@code client-request-id}
-     */
-    public static final HttpHeaderName REQUEST_ID = fromString("Request-Id");
-
-    /**
-     * {@code client-request-id}
-     */
-    public static final HttpHeaderName CLIENT_REQUEST_ID = fromString("client-request-id");
-
-    /**
      * {@code traceparent}
      */
     public static final HttpHeaderName TRACEPARENT = HttpHeaderName.fromString("traceparent");
@@ -295,11 +279,6 @@ public final class HttpHeaderName implements ExpandableEnum<String> {
      * {@code Host}/{@code host}
      */
     public static final HttpHeaderName HOST = fromString("Host");
-
-    /**
-     * {@code HTTP2-Settings}/{@code http2-settings}
-     */
-    public static final HttpHeaderName HTTP2_SETTINGS = fromString("HTTP2-Settings");
 
     /**
      * {@code If-Match}/{@code if-match}

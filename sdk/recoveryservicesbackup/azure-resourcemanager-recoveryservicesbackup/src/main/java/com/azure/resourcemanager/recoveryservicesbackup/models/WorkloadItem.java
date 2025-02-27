@@ -5,60 +5,46 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Base class for backup item. Workload-specific backup items are derived from this class.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "workloadItemType",
-    defaultImpl = WorkloadItem.class,
-    visible = true)
-@JsonTypeName("WorkloadItem")
-@JsonSubTypes({ @JsonSubTypes.Type(name = "AzureVmWorkloadItem", value = AzureVmWorkloadItem.class) })
 @Fluent
-public class WorkloadItem {
+public class WorkloadItem implements JsonSerializable<WorkloadItem> {
     /*
      * Type of the backup item.
      */
-    @JsonTypeId
-    @JsonProperty(value = "workloadItemType", required = true)
-    private String workloadItemType;
+    private String workloadItemType = "WorkloadItem";
 
     /*
      * Type of backup management to backup an item.
      */
-    @JsonProperty(value = "backupManagementType")
     private String backupManagementType;
 
     /*
      * Type of workload for the backup management
      */
-    @JsonProperty(value = "workloadType")
     private String workloadType;
 
     /*
      * Friendly name of the backup item.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * State of the back up item.
      */
-    @JsonProperty(value = "protectionState")
     private ProtectionStatus protectionState;
 
     /**
      * Creates an instance of WorkloadItem class.
      */
     public WorkloadItem() {
-        this.workloadItemType = "WorkloadItem";
     }
 
     /**
@@ -156,5 +142,91 @@ public class WorkloadItem {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("workloadItemType", this.workloadItemType);
+        jsonWriter.writeStringField("backupManagementType", this.backupManagementType);
+        jsonWriter.writeStringField("workloadType", this.workloadType);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeStringField("protectionState",
+            this.protectionState == null ? null : this.protectionState.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WorkloadItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WorkloadItem if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WorkloadItem.
+     */
+    public static WorkloadItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("workloadItemType".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("AzureVmWorkloadItem".equals(discriminatorValue)) {
+                    return AzureVmWorkloadItem.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("SAPAseDatabase".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapAseDatabaseWorkloadItem.fromJson(readerToUse.reset());
+                } else if ("SAPAseSystem".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapAseSystemWorkloadItem.fromJson(readerToUse.reset());
+                } else if ("SAPHanaDatabase".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapHanaDatabaseWorkloadItem.fromJson(readerToUse.reset());
+                } else if ("SAPHanaSystem".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSapHanaSystemWorkloadItem.fromJson(readerToUse.reset());
+                } else if ("SQLDataBase".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSqlDatabaseWorkloadItem.fromJson(readerToUse.reset());
+                } else if ("SQLInstance".equals(discriminatorValue)) {
+                    return AzureVmWorkloadSqlInstanceWorkloadItem.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static WorkloadItem fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WorkloadItem deserializedWorkloadItem = new WorkloadItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("workloadItemType".equals(fieldName)) {
+                    deserializedWorkloadItem.workloadItemType = reader.getString();
+                } else if ("backupManagementType".equals(fieldName)) {
+                    deserializedWorkloadItem.backupManagementType = reader.getString();
+                } else if ("workloadType".equals(fieldName)) {
+                    deserializedWorkloadItem.workloadType = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedWorkloadItem.friendlyName = reader.getString();
+                } else if ("protectionState".equals(fieldName)) {
+                    deserializedWorkloadItem.protectionState = ProtectionStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWorkloadItem;
+        });
     }
 }

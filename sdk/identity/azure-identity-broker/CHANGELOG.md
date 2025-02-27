@@ -10,6 +10,35 @@
 
 ### Other Changes
 
+## 1.1.12 (2025-02-20)
+
+### Breaking Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.15.2` to `1.15.3`
+
+## 1.1.11 (2025-02-07)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-identity` from `1.15.1` to `1.15.2`
+
+## 1.1.10 (2025-02-07)
+
+### Other Changes
+- 
+- Upgraded `azure-identity` from `1.15.0` to `1.15.1`
+- Upgraded `msal4j` from `1.17.2` to `1.19.0`
+
+## 1.1.9 (2025-01-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-identity` from `1.14.2` to `1.15.0`
+
 ## 1.1.8 (2024-11-15)
 
 ### Other Changes

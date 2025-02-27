@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.AdministrativeState;
 import com.azure.resourcemanager.managednetworkfabric.models.AnnotationResource;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
 import com.azure.resourcemanager.managednetworkfabric.models.IpCommunityRule;
 import com.azure.resourcemanager.managednetworkfabric.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** IP Community Properties defines the resource properties. */
+/**
+ * IP Community Properties defines the resource properties.
+ */
 @Fluent
 public final class IpCommunityProperties extends AnnotationResource {
     /*
      * Configuration state of the resource.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Administrative state of the resource.
      */
-    @JsonProperty(value = "administrativeState", access = JsonProperty.Access.WRITE_ONLY)
     private AdministrativeState administrativeState;
 
     /*
      * List of IP Community Rules.
      */
-    @JsonProperty(value = "ipCommunityRules")
     private List<IpCommunityRule> ipCommunityRules;
 
-    /** Creates an instance of IpCommunityProperties class. */
+    /**
+     * Creates an instance of IpCommunityProperties class.
+     */
     public IpCommunityProperties() {
     }
 
     /**
      * Get the configurationState property: Configuration state of the resource.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -55,7 +58,7 @@ public final class IpCommunityProperties extends AnnotationResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -64,7 +67,7 @@ public final class IpCommunityProperties extends AnnotationResource {
 
     /**
      * Get the administrativeState property: Administrative state of the resource.
-     *
+     * 
      * @return the administrativeState value.
      */
     public AdministrativeState administrativeState() {
@@ -73,7 +76,7 @@ public final class IpCommunityProperties extends AnnotationResource {
 
     /**
      * Get the ipCommunityRules property: List of IP Community Rules.
-     *
+     * 
      * @return the ipCommunityRules value.
      */
     public List<IpCommunityRule> ipCommunityRules() {
@@ -82,7 +85,7 @@ public final class IpCommunityProperties extends AnnotationResource {
 
     /**
      * Set the ipCommunityRules property: List of IP Community Rules.
-     *
+     * 
      * @param ipCommunityRules the ipCommunityRules value to set.
      * @return the IpCommunityProperties object itself.
      */
@@ -91,7 +94,9 @@ public final class IpCommunityProperties extends AnnotationResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IpCommunityProperties withAnnotation(String annotation) {
         super.withAnnotation(annotation);
@@ -100,14 +105,64 @@ public final class IpCommunityProperties extends AnnotationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (ipCommunityRules() != null) {
             ipCommunityRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("annotation", annotation());
+        jsonWriter.writeArrayField("ipCommunityRules", this.ipCommunityRules,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpCommunityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpCommunityProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpCommunityProperties.
+     */
+    public static IpCommunityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpCommunityProperties deserializedIpCommunityProperties = new IpCommunityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("annotation".equals(fieldName)) {
+                    deserializedIpCommunityProperties.withAnnotation(reader.getString());
+                } else if ("configurationState".equals(fieldName)) {
+                    deserializedIpCommunityProperties.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedIpCommunityProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("administrativeState".equals(fieldName)) {
+                    deserializedIpCommunityProperties.administrativeState
+                        = AdministrativeState.fromString(reader.getString());
+                } else if ("ipCommunityRules".equals(fieldName)) {
+                    List<IpCommunityRule> ipCommunityRules
+                        = reader.readArray(reader1 -> IpCommunityRule.fromJson(reader1));
+                    deserializedIpCommunityProperties.ipCommunityRules = ipCommunityRules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpCommunityProperties;
+        });
     }
 }

@@ -38,14 +38,16 @@ public final class ChatCompletionsClient {
     @Generated
     private final ChatCompletionsClientImpl serviceClient;
 
+    private final ChatCompletionClientTracer tracer;
+
     /**
      * Initializes an instance of ChatCompletionsClient class.
      *
      * @param serviceClient the service client implementation.
      */
-    @Generated
-    ChatCompletionsClient(ChatCompletionsClientImpl serviceClient) {
+    ChatCompletionsClient(ChatCompletionsClientImpl serviceClient, ChatCompletionClientTracer tracer) {
         this.serviceClient = serviceClient;
+        this.tracer = tracer;
     }
 
     /**
@@ -166,7 +168,7 @@ public final class ChatCompletionsClient {
      * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
      *     model_provider_name: String (Required)
      * }
      * }
@@ -224,7 +226,9 @@ public final class ChatCompletionsClient {
         if (extraParams != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
-        return completeWithResponse(completeRequest, requestOptions).getValue().toObject(ChatCompletions.class);
+        final ChatCompletionClientTracer.SyncCompleteOperation operation
+            = (arg0, arg1) -> completeWithResponse(arg0, arg1).getValue().toObject(ChatCompletions.class);
+        return tracer.traceSyncComplete(options, operation, completeRequest, requestOptions);
     }
 
     /**
@@ -284,11 +288,20 @@ public final class ChatCompletionsClient {
         if (extraParams != null) {
             requestOptions.setHeader(HttpHeaderName.fromString("extra-parameters"), extraParams.toString());
         }
+        final ChatCompletionClientTracer.StreamingCompleteOperation operation
+            = (arg0, arg1) -> completionStreaming(arg0, arg1);
+        final Flux<StreamingChatCompletionsUpdate> events
+            = tracer.traceStreamingCompletion(options, operation, completeRequest, requestOptions);
+        return new IterableStream<>(events);
+    }
+
+    private Flux<StreamingChatCompletionsUpdate> completionStreaming(BinaryData completeRequest,
+        RequestOptions requestOptions) {
         Flux<ByteBuffer> responseStream
             = completeWithResponse(completeRequest, requestOptions).getValue().toFluxByteBuffer();
         InferenceServerSentEvents<StreamingChatCompletionsUpdate> chatCompletionsStream
             = new InferenceServerSentEvents<>(responseStream, StreamingChatCompletionsUpdate.class);
-        return new IterableStream<>(chatCompletionsStream.getEvents());
+        return chatCompletionsStream.getEvents();
     }
 
     /**

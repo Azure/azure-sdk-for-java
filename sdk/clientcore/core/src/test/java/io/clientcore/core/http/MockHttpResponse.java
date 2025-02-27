@@ -5,13 +5,13 @@ package io.clientcore.core.http;
 
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
-import io.clientcore.core.implementation.http.serializer.DefaultJsonSerializer;
-import io.clientcore.core.util.binarydata.BinaryData;
-import io.clientcore.core.util.serializer.ObjectSerializer;
+import io.clientcore.core.implementation.http.HttpResponse;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.implementation.utils.JsonSerializer;
+import io.clientcore.core.serialization.ObjectSerializer;
 
 public class MockHttpResponse extends HttpResponse<BinaryData> {
-    private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
+    private static final ObjectSerializer SERIALIZER = new JsonSerializer();
 
     /**
      * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and has an empty

@@ -71,8 +71,9 @@ public final class BinaryHardeningListByFirmwareSamples {
      */
     public static void binaryHardeningListByFirmwareMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.binaryHardenings().listByFirmware("FirmwareAnalysisRG", "default",
-            "109a9886-50bf-85a8-9d75-000000000000", com.azure.core.util.Context.NONE);
+        manager.binaryHardenings()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -86,8 +87,9 @@ public final class BinaryHardeningListByFirmwareSamples {
      */
     public static void binaryHardeningListByFirmwareMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.binaryHardenings().listByFirmware("FirmwareAnalysisRG", "default",
-            "109a9886-50bf-85a8-9d75-000000000000", com.azure.core.util.Context.NONE);
+        manager.binaryHardenings()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -110,8 +112,9 @@ public final class CryptoCertificatesListByFirmwareSamples {
      */
     public static void cryptoCertificatesListByFirmwareMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.cryptoCertificates().listByFirmware("FirmwareAnalysisRG", "default",
-            "109a9886-50bf-85a8-9d75-000000000000", com.azure.core.util.Context.NONE);
+        manager.cryptoCertificates()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -125,8 +128,9 @@ public final class CryptoCertificatesListByFirmwareSamples {
      */
     public static void cryptoCertificatesListByFirmwareMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.cryptoCertificates().listByFirmware("FirmwareAnalysisRG", "default",
-            "109a9886-50bf-85a8-9d75-000000000000", com.azure.core.util.Context.NONE);
+        manager.cryptoCertificates()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -149,8 +153,9 @@ public final class CryptoKeysListByFirmwareSamples {
      */
     public static void cryptoKeysListByFirmwareMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.cryptoKeys().listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.cryptoKeys()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -164,8 +169,9 @@ public final class CryptoKeysListByFirmwareSamples {
      */
     public static void cryptoKeysListByFirmwareMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.cryptoKeys().listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.cryptoKeys()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -188,8 +194,9 @@ public final class CvesListByFirmwareSamples {
      */
     public static void cvesListByFirmwareMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.cves().listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.cves()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -203,8 +210,9 @@ public final class CvesListByFirmwareSamples {
      */
     public static void cvesListByFirmwareMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.cves().listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.cves()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -231,10 +239,18 @@ public final class FirmwaresCreateSamples {
      */
     public static void
         firmwaresCreateMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().define("umrkdttp").withExistingWorkspace("rgworkspaces-firmwares", "A7")
-            .withFileName("wresexxulcdsdd").withVendor("vycmdhgtmepcptyoubztiuudpkcpd").withModel("f").withVersion("s")
-            .withDescription("uz").withFileSize(17L).withStatus(Status.PENDING)
-            .withStatusMessages(Arrays.asList(new StatusMessage().withMessage("ulvhmhokezathzzauiitu"))).create();
+        manager.firmwares()
+            .define("umrkdttp")
+            .withExistingWorkspace("rgworkspaces-firmwares", "A7")
+            .withFileName("wresexxulcdsdd")
+            .withVendor("vycmdhgtmepcptyoubztiuudpkcpd")
+            .withModel("f")
+            .withVersion("s")
+            .withDescription("uz")
+            .withFileSize(17L)
+            .withStatus(Status.PENDING)
+            .withStatusMessages(Arrays.asList(new StatusMessage().withMessage("ulvhmhokezathzzauiitu")))
+            .create();
     }
 
     /*
@@ -271,8 +287,8 @@ public final class FirmwaresDeleteSamples {
      */
     public static void
         firmwaresDeleteMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().deleteWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .deleteWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -286,8 +302,8 @@ public final class FirmwaresDeleteSamples {
      */
     public static void
         firmwaresDeleteMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().deleteWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .deleteWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -310,8 +326,9 @@ public final class FirmwaresGenerateDownloadUrlSamples {
      */
     public static void firmwaresGenerateDownloadUrlMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().generateDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .generateDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -325,8 +342,9 @@ public final class FirmwaresGenerateDownloadUrlSamples {
      */
     public static void firmwaresGenerateDownloadUrlMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().generateDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .generateDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -349,8 +367,9 @@ public final class FirmwaresGenerateFilesystemDownloadUrlSamples {
      */
     public static void firmwaresGenerateFilesystemDownloadUrlMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().generateFilesystemDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .generateFilesystemDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -364,8 +383,9 @@ public final class FirmwaresGenerateFilesystemDownloadUrlSamples {
      */
     public static void firmwaresGenerateFilesystemDownloadUrlMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().generateFilesystemDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .generateFilesystemDownloadUrlWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -388,8 +408,8 @@ public final class FirmwaresGetSamples {
      */
     public static void
         firmwaresGetMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -403,8 +423,8 @@ public final class FirmwaresGetSamples {
      */
     public static void
         firmwaresGetMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.firmwares().getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp",
-            com.azure.core.util.Context.NONE);
+        manager.firmwares()
+            .getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -470,10 +490,18 @@ public final class FirmwaresUpdateSamples {
     public static void
         firmwaresUpdateMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
         Firmware resource = manager.firmwares()
-            .getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withFileName("wresexxulcdsdd").withVendor("vycmdhgtmepcptyoubztiuudpkcpd").withModel("f")
-            .withVersion("s").withDescription("uz").withFileSize(17L).withStatus(Status.PENDING)
-            .withStatusMessages(Arrays.asList(new StatusMessage().withMessage("ulvhmhokezathzzauiitu"))).apply();
+            .getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withFileName("wresexxulcdsdd")
+            .withVendor("vycmdhgtmepcptyoubztiuudpkcpd")
+            .withModel("f")
+            .withVersion("s")
+            .withDescription("uz")
+            .withFileSize(17L)
+            .withStatus(Status.PENDING)
+            .withStatusMessages(Arrays.asList(new StatusMessage().withMessage("ulvhmhokezathzzauiitu")))
+            .apply();
     }
 
     /*
@@ -488,7 +516,8 @@ public final class FirmwaresUpdateSamples {
     public static void
         firmwaresUpdateMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
         Firmware resource = manager.firmwares()
-            .getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("rgworkspaces-firmwares", "A7", "umrkdttp", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }
@@ -549,8 +578,9 @@ public final class PasswordHashesListByFirmwareSamples {
      */
     public static void passwordHashesListByFirmwareMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.passwordHashes().listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.passwordHashes()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -564,8 +594,9 @@ public final class PasswordHashesListByFirmwareSamples {
      */
     public static void passwordHashesListByFirmwareMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.passwordHashes().listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.passwordHashes()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -588,8 +619,9 @@ public final class SbomComponentsListByFirmwareSamples {
      */
     public static void sbomComponentsListByFirmwareMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.sbomComponents().listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.sbomComponents()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -603,8 +635,9 @@ public final class SbomComponentsListByFirmwareSamples {
      */
     public static void sbomComponentsListByFirmwareMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.sbomComponents().listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.sbomComponents()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -629,8 +662,9 @@ public final class SummariesGetSamples {
      */
     public static void
         summariesGetMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.summaries().getWithResponse("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            SummaryName.FIRMWARE, com.azure.core.util.Context.NONE);
+        manager.summaries()
+            .getWithResponse("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                SummaryName.FIRMWARE, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -644,8 +678,9 @@ public final class SummariesGetSamples {
      */
     public static void
         summariesGetMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.summaries().getWithResponse("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            SummaryName.FIRMWARE, com.azure.core.util.Context.NONE);
+        manager.summaries()
+            .getWithResponse("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                SummaryName.FIRMWARE, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -668,8 +703,9 @@ public final class SummariesListByFirmwareSamples {
      */
     public static void summariesListByFirmwareMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.summaries().listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.summaries()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -683,8 +719,9 @@ public final class SummariesListByFirmwareSamples {
      */
     public static void summariesListByFirmwareMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.summaries().listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
-            com.azure.core.util.Context.NONE);
+        manager.summaries()
+            .listByFirmware("FirmwareAnalysisRG", "default", "109a9886-50bf-85a8-9d75-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -710,8 +747,11 @@ public final class WorkspacesCreateSamples {
      */
     public static void
         workspacesCreateMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().define("E___-3").withRegion("jjwbseilitjgdrhbvvkwviqj")
-            .withExistingResourceGroup("rgworkspaces").create();
+        manager.workspaces()
+            .define("E___-3")
+            .withRegion("jjwbseilitjgdrhbvvkwviqj")
+            .withExistingResourceGroup("rgworkspaces")
+            .create();
     }
 
     /*
@@ -725,8 +765,12 @@ public final class WorkspacesCreateSamples {
      */
     public static void
         workspacesCreateMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().define("E___-3").withRegion("jjwbseilitjgdrhbvvkwviqj")
-            .withExistingResourceGroup("rgworkspaces").withTags(mapOf("key450", "fakeTokenPlaceholder")).create();
+        manager.workspaces()
+            .define("E___-3")
+            .withRegion("jjwbseilitjgdrhbvvkwviqj")
+            .withExistingResourceGroup("rgworkspaces")
+            .withTags(mapOf("key450", "fakeTokenPlaceholder"))
+            .create();
     }
 
     // Use "Map.of" if available
@@ -761,8 +805,8 @@ public final class WorkspacesDeleteSamples {
      */
     public static void
         workspacesDeleteMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().deleteByResourceGroupWithResponse("rgworkspaces", "E___-3",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .deleteByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -776,8 +820,8 @@ public final class WorkspacesDeleteSamples {
      */
     public static void
         workspacesDeleteMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().deleteByResourceGroupWithResponse("rgworkspaces", "E___-3",
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .deleteByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -802,8 +846,9 @@ public final class WorkspacesGenerateUploadUrlSamples {
      */
     public static void workspacesGenerateUploadUrlMinimumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().generateUploadUrlWithResponse("rgworkspaces", "E___-3", new GenerateUploadUrlRequest(),
-            com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .generateUploadUrlWithResponse("rgworkspaces", "E___-3", new GenerateUploadUrlRequest(),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -817,8 +862,9 @@ public final class WorkspacesGenerateUploadUrlSamples {
      */
     public static void workspacesGenerateUploadUrlMaximumSetGen(
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
-        manager.workspaces().generateUploadUrlWithResponse("rgworkspaces", "E___-3",
-            new GenerateUploadUrlRequest().withFirmwareId("ytsfprbywi"), com.azure.core.util.Context.NONE);
+        manager.workspaces()
+            .generateUploadUrlWithResponse("rgworkspaces", "E___-3",
+                new GenerateUploadUrlRequest().withFirmwareId("ytsfprbywi"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -955,7 +1001,8 @@ public final class WorkspacesUpdateSamples {
     public static void
         workspacesUpdateMaximumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
         Workspace resource = manager.workspaces()
-            .getByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 
@@ -971,7 +1018,8 @@ public final class WorkspacesUpdateSamples {
     public static void
         workspacesUpdateMinimumSetGen(com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager manager) {
         Workspace resource = manager.workspaces()
-            .getByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("rgworkspaces", "E___-3", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

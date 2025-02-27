@@ -115,9 +115,9 @@ public final class LinkedServiceImpl implements LinkedService, LinkedService.Def
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.linkedServiceName = Utils.getValueFromIdByName(innerObject.id(), "linkedServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.linkedServiceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "linkedServices");
     }
 
     public LinkedService refresh() {

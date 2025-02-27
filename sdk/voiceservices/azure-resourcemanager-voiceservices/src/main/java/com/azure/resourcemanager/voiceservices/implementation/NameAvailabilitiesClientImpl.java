@@ -27,17 +27,23 @@ import com.azure.resourcemanager.voiceservices.fluent.models.CheckNameAvailabili
 import com.azure.resourcemanager.voiceservices.models.CheckNameAvailabilityRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NameAvailabilitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NameAvailabilitiesClient.
+ */
 public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NameAvailabilitiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftVoiceServicesImpl client;
 
     /**
      * Initializes an instance of NameAvailabilitiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NameAvailabilitiesClientImpl(MicrosoftVoiceServicesImpl client) {
@@ -66,7 +72,7 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
 
     /**
      * Check whether the resource name is available in the given region.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param body The check availability request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +108,7 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
 
     /**
      * Check whether the resource name is available in the given region.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param body The check availability request body.
      * @param context The context to associate with this operation.
@@ -138,7 +144,7 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
 
     /**
      * Check whether the resource name is available in the given region.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param body The check availability request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -154,7 +160,7 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
 
     /**
      * Check whether the resource name is available in the given region.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param body The check availability request body.
      * @param context The context to associate with this operation.
@@ -171,7 +177,7 @@ public final class NameAvailabilitiesClientImpl implements NameAvailabilitiesCli
 
     /**
      * Check whether the resource name is available in the given region.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param body The check availability request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The CMK encryption settings on the Device Update account.
  */
 @Fluent
-public final class Encryption {
+public final class Encryption implements JsonSerializable<Encryption> {
     /*
      * The URI of the key vault
      */
-    @JsonProperty(value = "keyVaultKeyUri")
     private String keyVaultKeyUri;
 
     /*
      * The full resourceId of the user assigned identity to be used for key vault access. Identity has to be also
      * assigned to the Account
      */
-    @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
     /**
@@ -52,8 +54,8 @@ public final class Encryption {
     }
 
     /**
-     * Get the userAssignedIdentity property: The full resourceId of the user assigned identity to be used for key
-     * vault access. Identity has to be also assigned to the Account.
+     * Get the userAssignedIdentity property: The full resourceId of the user assigned identity to be used for key vault
+     * access. Identity has to be also assigned to the Account.
      * 
      * @return the userAssignedIdentity value.
      */
@@ -62,8 +64,8 @@ public final class Encryption {
     }
 
     /**
-     * Set the userAssignedIdentity property: The full resourceId of the user assigned identity to be used for key
-     * vault access. Identity has to be also assigned to the Account.
+     * Set the userAssignedIdentity property: The full resourceId of the user assigned identity to be used for key vault
+     * access. Identity has to be also assigned to the Account.
      * 
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      * @return the Encryption object itself.
@@ -79,5 +81,44 @@ public final class Encryption {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVaultKeyUri", this.keyVaultKeyUri);
+        jsonWriter.writeStringField("userAssignedIdentity", this.userAssignedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Encryption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Encryption if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Encryption.
+     */
+    public static Encryption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Encryption deserializedEncryption = new Encryption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultKeyUri".equals(fieldName)) {
+                    deserializedEncryption.keyVaultKeyUri = reader.getString();
+                } else if ("userAssignedIdentity".equals(fieldName)) {
+                    deserializedEncryption.userAssignedIdentity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEncryption;
+        });
     }
 }

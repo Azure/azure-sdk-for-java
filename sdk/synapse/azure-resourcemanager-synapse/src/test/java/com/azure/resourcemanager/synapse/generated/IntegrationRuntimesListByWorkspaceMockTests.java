@@ -22,7 +22,7 @@ public final class IntegrationRuntimesListByWorkspaceMockTests {
     @Test
     public void testListByWorkspace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"wcgi\",\"\":{\"z\":\"dataimaabsqqlon\"}},\"etag\":\"wcahdkmbjsmihr\",\"id\":\"jezbfsjwfczgl\",\"name\":\"vbgukbs\",\"type\":\"bw\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"vqdbpbhfck\",\"\":{\"b\":\"datazcrcssbzhddubbnq\",\"alehpav\":\"datah\",\"gqgdminictteajoh\":\"datawugiqjti\",\"tp\":\"dataygspnbonhpczykm\"}},\"etag\":\"xqcsehch\",\"id\":\"hufmpq\",\"name\":\"mqyjgy\",\"type\":\"zulo\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,8 +32,8 @@ public final class IntegrationRuntimesListByWorkspaceMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<IntegrationRuntimeResource> response
-            = manager.integrationRuntimes().listByWorkspace("chefpgeed", "ybruhola", com.azure.core.util.Context.NONE);
+            = manager.integrationRuntimes().listByWorkspace("ltbxoeeonqlnfw", "y", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wcgi", response.iterator().next().properties().description());
+        Assertions.assertEquals("vqdbpbhfck", response.iterator().next().properties().description());
     }
 }

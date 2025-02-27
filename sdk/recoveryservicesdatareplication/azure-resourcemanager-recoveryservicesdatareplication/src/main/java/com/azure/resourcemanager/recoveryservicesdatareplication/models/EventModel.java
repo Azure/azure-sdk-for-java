@@ -6,46 +6,48 @@ package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.EventModelInner;
 
-/** An immutable client-side representation of EventModel. */
+/**
+ * An immutable client-side representation of EventModel.
+ */
 public interface EventModel {
     /**
      * Gets the properties property: Event model properties.
-     *
+     * 
      * @return the properties value.
      */
     EventModelProperties properties();
 
     /**
      * Gets the id property: Gets or sets the Id of the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Gets or sets the name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: Gets or sets the type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: The systemData property.
-     *
+     * 
      * @return the systemData value.
      */
     EventModelSystemData systemData();
 
     /**
      * Gets the inner com.azure.resourcemanager.recoveryservicesdatareplication.fluent.models.EventModelInner object.
-     *
+     * 
      * @return the inner object.
      */
     EventModelInner innerModel();

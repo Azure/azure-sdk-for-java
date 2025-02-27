@@ -126,11 +126,11 @@ public final class IssueCommentContractImpl
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.apiId = Utils.getValueFromIdByName(innerObject.id(), "apis");
-        this.issueId = Utils.getValueFromIdByName(innerObject.id(), "issues");
-        this.commentId = Utils.getValueFromIdByName(innerObject.id(), "comments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.apiId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "apis");
+        this.issueId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "issues");
+        this.commentId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "comments");
     }
 
     public IssueCommentContract refresh() {

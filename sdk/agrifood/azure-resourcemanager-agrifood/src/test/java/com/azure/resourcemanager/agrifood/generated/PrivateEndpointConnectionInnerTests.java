@@ -10,32 +10,31 @@ import com.azure.resourcemanager.agrifood.models.PrivateEndpoint;
 import com.azure.resourcemanager.agrifood.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.agrifood.models.PrivateLinkServiceConnectionState;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointConnectionInner model = BinaryData.fromString(
-            "{\"properties\":{\"privateEndpoint\":{\"id\":\"zidnsezcxtbzsgfy\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"ewmdw\",\"actionsRequired\":\"eiachboosflnr\"},\"provisioningState\":\"Creating\"},\"id\":\"pteehzzv\",\"name\":\"pyqr\",\"type\":\"mzinpvswjdk\"}")
+            "{\"properties\":{\"groupIds\":[\"likwyqkgfgib\",\"adgakeqsrxybz\",\"qedqytbciqfoufl\",\"mnkzsmod\"],\"privateEndpoint\":{\"id\":\"ougpbkwt\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"uqktap\",\"actionsRequired\":\"wgcu\"},\"provisioningState\":\"Failed\"},\"id\":\"mkdo\",\"name\":\"vqwhbmdgbbjfd\",\"type\":\"gmbmbexppbh\"}")
             .toObject(PrivateEndpointConnectionInner.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ewmdw", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("eiachboosflnr", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("uqktap", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wgcu", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointConnectionInner model
             = new PrivateEndpointConnectionInner().withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.PENDING)
-                        .withDescription("ewmdw")
-                        .withActionsRequired("eiachboosflnr"));
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
+                        .withDescription("uqktap")
+                        .withActionsRequired("wgcu"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionInner.class);
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ewmdw", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("eiachboosflnr", model.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("uqktap", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wgcu", model.privateLinkServiceConnectionState().actionsRequired());
     }
 }

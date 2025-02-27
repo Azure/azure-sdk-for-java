@@ -35,14 +35,16 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
     public PagedIterable<AuthorizationServerContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<AuthorizationServerContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new AuthorizationServerContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new AuthorizationServerContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AuthorizationServerContract> listByService(String resourceGroupName, String serviceName,
         String filter, Integer top, Integer skip, Context context) {
         PagedIterable<AuthorizationServerContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new AuthorizationServerContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new AuthorizationServerContractImpl(inner1, this.manager()));
     }
 
     public AuthorizationServersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
@@ -108,17 +110,17 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
     }
 
     public AuthorizationServerContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String authsid = Utils.getValueFromIdByName(id, "authorizationServers");
+        String authsid = ResourceManagerUtils.getValueFromIdByName(id, "authorizationServers");
         if (authsid == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'authorizationServers'.", id)));
@@ -127,17 +129,17 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
     }
 
     public Response<AuthorizationServerContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String authsid = Utils.getValueFromIdByName(id, "authorizationServers");
+        String authsid = ResourceManagerUtils.getValueFromIdByName(id, "authorizationServers");
         if (authsid == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'authorizationServers'.", id)));
@@ -146,17 +148,17 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String authsid = Utils.getValueFromIdByName(id, "authorizationServers");
+        String authsid = ResourceManagerUtils.getValueFromIdByName(id, "authorizationServers");
         if (authsid == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'authorizationServers'.", id)));
@@ -166,17 +168,17 @@ public final class AuthorizationServersImpl implements AuthorizationServers {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String authsid = Utils.getValueFromIdByName(id, "authorizationServers");
+        String authsid = ResourceManagerUtils.getValueFromIdByName(id, "authorizationServers");
         if (authsid == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'authorizationServers'.", id)));

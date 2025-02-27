@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-security-keyvault-jca</artifactId>
-  <version>2.10.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
+  <version>2.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-jca;current} -->
   <name>JCA Provider for Azure Key Vault</name>
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault</description>
 
@@ -54,7 +54,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
+      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-json;dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- SLF4j -->
@@ -94,7 +94,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.54.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.55.2</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <scope>test</scope>
     </dependency>
     <!-- JUnit -->

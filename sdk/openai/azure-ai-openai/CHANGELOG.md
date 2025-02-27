@@ -1,15 +1,72 @@
 # Release History
 
-## 1.0.0-beta.13 (Unreleased)
+## 1.0.0-beta.15 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.14 (2025-02-21)
+
+### Features Added
+
+- For `ChatCompletionOptions`:
+  - `store` (bool), which enables saving outputs for FT (distillation)
+  - `metadata` (string/string map), used with `store`
+  - `reasoning_effort` (enum string, `low`, `medium`, `high`) to configure how hard `o1` thinks
+  - `developer` message role (`system` replacement for `o1` and newer models) now available. Other than the name, it's identical
+  - `prediction` added for predicted outputs
+  - `modalities` added ("text" | "audio") for audio input support
+  - `audio` added for audio content options (voice, format, etc.)
+  - user role message content part representation for audio input added
+  - **AZURE-ONLY** User Security Context (for Defender for Cloud Integration)
+    - Azure chat request bodies now have a user_security_context property
+    - These are JSON objects that have application_name, end_user_id, end_user_tenant_id, and source_ip, all optional string properties
+
+- For `ChatCompletions`:
+  - audio output added as `ChatMessageAudioContentItem`
+  - parity usage updates:
+    - `PromptTokensDetails` gets `AudioTokens`
+    - `CompletionTokensDetails` gets `AcceptedPredictionTokens`, `RejectedPredictionTokens`, and `AudioTokens`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` to version `1.15.10`.
+
+## 1.0.0-beta.13 (2024-12-04)
+
+### Features Added
+
+- Added support for service API versions `2024-09-01-preview` and `2024-10-01-preview`.
+- Added support for `max_completion_tokens`, `stream_options`, and `parallel_tool_calls` in `ChatCompletionsOptions` class. 
+  New class `ChatCompletionStreamOptions` introduced. 
+- Added new overload streaming methods `getChatCompletionsStream` and `getCompletionsStream` that take `ChatCompletionStreamOptions streamOptions`.
+- Added support for `stream_options` in `CompletionsOptions` class.
+- Added support for `prompt_tokens_details` and `completion_tokens_details` in `CompletionsUsage` class. 
+  New classes `CompletionsUsagePromptTokensDetails` and `CompletionsUsageCompletionTokensDetails` introduced.
+- Added support for `ungrounded_material` in `ContentFilterResultsForChoice` class. 
+  New classes `ContentFilterCompletionTextSpanResult`, `ContentFilterCompletionTextSpan` introduced.
+
+### Breaking Changes
+- Removed public method `setStream` in `ChatCompletionsOptions` and `CompletionsOptions` classes.
+
+### Bugs Fixed
 - Fixed the issue to reduce the log pollution when using Server Sent Event Streaming API. ([#41164](https://github.com/Azure/azure-sdk-for-java/issues/41164))
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` to version `1.15.7`.
+
 
 ## 1.0.0-beta.12 (2024-10-22)
 

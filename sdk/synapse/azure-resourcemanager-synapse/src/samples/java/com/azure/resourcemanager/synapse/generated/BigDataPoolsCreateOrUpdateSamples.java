@@ -17,8 +17,9 @@ import java.util.Map;
  */
 public final class BigDataPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * CreateOrUpdateBigDataPool.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/CreateOrUpdateBigDataPool.
+     * json
      */
     /**
      * Sample code: Create or update a Big Data pool.
@@ -33,7 +34,6 @@ public final class BigDataPoolsCreateOrUpdateSamples {
             .withTags(mapOf("key", "fakeTokenPlaceholder"))
             .withAutoScale(new AutoScaleProperties().withMinNodeCount(3).withEnabled(true).withMaxNodeCount(50))
             .withAutoPause(new AutoPauseProperties().withDelayInMinutes(15).withEnabled(true))
-            .withIsAutotuneEnabled(false)
             .withSparkEventsFolder("/events")
             .withNodeCount(4)
             .withLibraryRequirements(new LibraryRequirements().withContent("").withFilename("requirements.txt"))

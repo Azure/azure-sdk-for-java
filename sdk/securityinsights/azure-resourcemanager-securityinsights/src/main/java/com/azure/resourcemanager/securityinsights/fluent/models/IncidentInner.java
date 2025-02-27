@@ -29,7 +29,7 @@ public final class IncidentInner extends ResourceWithEtag {
     /*
      * Incident properties
      */
-    private IncidentPropertiesInner innerProperties;
+    private IncidentProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -62,7 +62,7 @@ public final class IncidentInner extends ResourceWithEtag {
      * 
      * @return the innerProperties value.
      */
-    private IncidentPropertiesInner innerProperties() {
+    private IncidentProperties innerProperties() {
         return this.innerProperties;
     }
 
@@ -141,7 +141,7 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withClassification(IncidentClassification classification) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withClassification(classification);
         return this;
@@ -164,7 +164,7 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withClassificationComment(String classificationComment) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withClassificationComment(classificationComment);
         return this;
@@ -187,7 +187,7 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withClassificationReason(IncidentClassificationReason classificationReason) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withClassificationReason(classificationReason);
         return this;
@@ -219,7 +219,7 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withDescription(String description) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withDescription(description);
         return this;
@@ -242,7 +242,7 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withFirstActivityTimeUtc(OffsetDateTime firstActivityTimeUtc) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withFirstActivityTimeUtc(firstActivityTimeUtc);
         return this;
@@ -283,55 +283,9 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withLabels(List<IncidentLabel> labels) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withLabels(labels);
-        return this;
-    }
-
-    /**
-     * Get the providerName property: The name of the source provider that generated the incident.
-     * 
-     * @return the providerName value.
-     */
-    public String providerName() {
-        return this.innerProperties() == null ? null : this.innerProperties().providerName();
-    }
-
-    /**
-     * Set the providerName property: The name of the source provider that generated the incident.
-     * 
-     * @param providerName the providerName value to set.
-     * @return the IncidentInner object itself.
-     */
-    public IncidentInner withProviderName(String providerName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
-        }
-        this.innerProperties().withProviderName(providerName);
-        return this;
-    }
-
-    /**
-     * Get the providerIncidentId property: The incident ID assigned by the incident provider.
-     * 
-     * @return the providerIncidentId value.
-     */
-    public String providerIncidentId() {
-        return this.innerProperties() == null ? null : this.innerProperties().providerIncidentId();
-    }
-
-    /**
-     * Set the providerIncidentId property: The incident ID assigned by the incident provider.
-     * 
-     * @param providerIncidentId the providerIncidentId value to set.
-     * @return the IncidentInner object itself.
-     */
-    public IncidentInner withProviderIncidentId(String providerIncidentId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
-        }
-        this.innerProperties().withProviderIncidentId(providerIncidentId);
         return this;
     }
 
@@ -352,7 +306,7 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withLastActivityTimeUtc(OffsetDateTime lastActivityTimeUtc) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withLastActivityTimeUtc(lastActivityTimeUtc);
         return this;
@@ -384,7 +338,7 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withOwner(IncidentOwnerInfo owner) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withOwner(owner);
         return this;
@@ -416,7 +370,7 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withSeverity(IncidentSeverity severity) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withSeverity(severity);
         return this;
@@ -439,32 +393,9 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withStatus(IncidentStatus status) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withStatus(status);
-        return this;
-    }
-
-    /**
-     * Get the teamInformation property: Describes a team for the incident.
-     * 
-     * @return the teamInformation value.
-     */
-    public TeamInformationInner teamInformation() {
-        return this.innerProperties() == null ? null : this.innerProperties().teamInformation();
-    }
-
-    /**
-     * Set the teamInformation property: Describes a team for the incident.
-     * 
-     * @param teamInformation the teamInformation value to set.
-     * @return the IncidentInner object itself.
-     */
-    public IncidentInner withTeamInformation(TeamInformationInner teamInformation) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
-        }
-        this.innerProperties().withTeamInformation(teamInformation);
         return this;
     }
 
@@ -485,7 +416,7 @@ public final class IncidentInner extends ResourceWithEtag {
      */
     public IncidentInner withTitle(String title) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new IncidentPropertiesInner();
+            this.innerProperties = new IncidentProperties();
         }
         this.innerProperties().withTitle(title);
         return this;
@@ -541,7 +472,7 @@ public final class IncidentInner extends ResourceWithEtag {
                 } else if ("systemData".equals(fieldName)) {
                     deserializedIncidentInner.systemData = SystemData.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
-                    deserializedIncidentInner.innerProperties = IncidentPropertiesInner.fromJson(reader);
+                    deserializedIncidentInner.innerProperties = IncidentProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

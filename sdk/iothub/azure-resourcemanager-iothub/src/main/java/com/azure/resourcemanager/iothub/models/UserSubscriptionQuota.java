@@ -5,54 +5,56 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** User subscription quota response. */
+/**
+ * User subscription quota response.
+ */
 @Fluent
-public final class UserSubscriptionQuota {
+public final class UserSubscriptionQuota implements JsonSerializable<UserSubscriptionQuota> {
     /*
      * IotHub type id
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Response type
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * Unit of IotHub type
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * Current number of IotHub type
      */
-    @JsonProperty(value = "currentValue")
     private Integer currentValue;
 
     /*
      * Numerical limit on IotHub type
      */
-    @JsonProperty(value = "limit")
     private Integer limit;
 
     /*
      * IotHub type
      */
-    @JsonProperty(value = "name")
     private Name name;
 
-    /** Creates an instance of UserSubscriptionQuota class. */
+    /**
+     * Creates an instance of UserSubscriptionQuota class.
+     */
     public UserSubscriptionQuota() {
     }
 
     /**
      * Get the id property: IotHub type id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -61,7 +63,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the id property: IotHub type id.
-     *
+     * 
      * @param id the id value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -72,7 +74,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the type property: Response type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -81,7 +83,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the type property: Response type.
-     *
+     * 
      * @param type the type value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -92,7 +94,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the unit property: Unit of IotHub type.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -101,7 +103,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the unit property: Unit of IotHub type.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -112,7 +114,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the currentValue property: Current number of IotHub type.
-     *
+     * 
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -121,7 +123,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the currentValue property: Current number of IotHub type.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -132,7 +134,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the limit property: Numerical limit on IotHub type.
-     *
+     * 
      * @return the limit value.
      */
     public Integer limit() {
@@ -141,7 +143,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the limit property: Numerical limit on IotHub type.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -152,7 +154,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Get the name property: IotHub type.
-     *
+     * 
      * @return the name value.
      */
     public Name name() {
@@ -161,7 +163,7 @@ public final class UserSubscriptionQuota {
 
     /**
      * Set the name property: IotHub type.
-     *
+     * 
      * @param name the name value to set.
      * @return the UserSubscriptionQuota object itself.
      */
@@ -172,12 +174,63 @@ public final class UserSubscriptionQuota {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() != null) {
             name().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeNumberField("currentValue", this.currentValue);
+        jsonWriter.writeNumberField("limit", this.limit);
+        jsonWriter.writeJsonField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserSubscriptionQuota from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserSubscriptionQuota if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UserSubscriptionQuota.
+     */
+    public static UserSubscriptionQuota fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserSubscriptionQuota deserializedUserSubscriptionQuota = new UserSubscriptionQuota();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedUserSubscriptionQuota.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUserSubscriptionQuota.type = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedUserSubscriptionQuota.unit = reader.getString();
+                } else if ("currentValue".equals(fieldName)) {
+                    deserializedUserSubscriptionQuota.currentValue = reader.getNullable(JsonReader::getInt);
+                } else if ("limit".equals(fieldName)) {
+                    deserializedUserSubscriptionQuota.limit = reader.getNullable(JsonReader::getInt);
+                } else if ("name".equals(fieldName)) {
+                    deserializedUserSubscriptionQuota.name = Name.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserSubscriptionQuota;
+        });
     }
 }

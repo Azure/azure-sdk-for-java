@@ -16,12 +16,14 @@ import com.azure.resourcemanager.apimanagement.models.ConfigurationIdName;
 import com.azure.resourcemanager.apimanagement.models.DeployConfigurationParameters;
 import com.azure.resourcemanager.apimanagement.models.SaveConfigurationParameter;
 
-/** An instance of this class provides access to all the operations defined in TenantConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TenantConfigurationsClient.
+ */
 public interface TenantConfigurationsClient {
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -39,7 +41,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -58,7 +60,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -75,7 +77,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation applies changes from the specified Git branch to the configuration database. This is a long
      * running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -93,7 +95,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -111,7 +113,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -130,7 +132,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -147,7 +149,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation creates a commit with the current configuration snapshot to the specified branch in the
      * repository. This is a long running operation and could take several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -165,7 +167,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -183,7 +185,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -202,7 +204,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -219,7 +221,7 @@ public interface TenantConfigurationsClient {
     /**
      * This operation validates the changes in the specified Git branch. This is a long running operation and could take
      * several minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -236,7 +238,7 @@ public interface TenantConfigurationsClient {
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.
@@ -245,7 +247,7 @@ public interface TenantConfigurationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the most recent synchronization between the configuration database and the Git repository
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TenantConfigurationSyncStateContractInner> getSyncStateWithResponse(String resourceGroupName,
@@ -253,7 +255,7 @@ public interface TenantConfigurationsClient {
 
     /**
      * Gets the status of the most recent synchronization between the configuration database and the Git repository.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param configurationName The identifier of the Git Configuration Operation.

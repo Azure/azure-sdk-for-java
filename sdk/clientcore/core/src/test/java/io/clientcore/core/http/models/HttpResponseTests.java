@@ -3,8 +3,9 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class HttpResponseTests {
     private static final HttpRequest HTTP_REQUEST;
 
     static {
-        HTTP_REQUEST = new HttpRequest(HttpMethod.POST, "http://request.uri");
+        HTTP_REQUEST = new HttpRequest().setMethod(HttpMethod.POST).setUri("http://request.uri");
     }
 
     @Test

@@ -11,7 +11,7 @@ public final class ApplicationInsightsComponentFeatureCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInsightsComponentFeatureCapability model = BinaryData.fromString(
-            "{\"Name\":\"vkmijcmmxdcuf\",\"Description\":\"srp\",\"Value\":\"zidnsezcxtbzsgfy\",\"Unit\":\"sne\",\"MeterId\":\"dwzjeiach\",\"MeterRateFrequency\":\"osfln\"}")
+            "{\"Name\":\"jionpimexgstxgc\",\"Description\":\"dg\",\"Value\":\"ajrmvdjwzrlovmc\",\"Unit\":\"hijco\",\"MeterId\":\"ctbzaq\",\"MeterRateFrequency\":\"sycbkbfk\"}")
             .toObject(ApplicationInsightsComponentFeatureCapability.class);
     }
 

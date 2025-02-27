@@ -16,18 +16,19 @@ public final class WorkbookResourceIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbookResourceIdentity model = BinaryData.fromString(
-            "{\"principalId\":\"89c30e67-7c7e-469c-a7b2-fdc9cb1a6995\",\"tenantId\":\"a177e4fe-c5a7-4178-b308-b9ea1553ba7a\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"yfzqwhxxbu\":{\"principalId\":\"a5d54bb1-7822-4b1b-8a39-2bc9c49fc704\",\"clientId\":\"6fb2bb87-3f1a-45fd-948a-e10c5b11c475\"}}}")
+            "{\"principalId\":\"45619ec4-7293-45c1-87ff-088cb1fa4499\",\"tenantId\":\"9b125bbd-432a-428c-9b86-a11cb3ec3fb2\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"raehtwdwrft\":{\"principalId\":\"2e5ca98f-75fe-4bcc-a40b-7cf75db91542\",\"clientId\":\"6977fdcf-f34d-4aa3-a6a9-6d799d95aa1e\"},\"byrcdlbhshfwp\":{\"principalId\":\"29445cb0-9b77-4754-9bc3-d1bec0812758\",\"clientId\":\"749a11f0-74fb-4ff2-8f25-8aabda0bf062\"}}}")
             .toObject(WorkbookResourceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkbookResourceIdentity model
-            = new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("yfzqwhxxbu", new UserAssignedIdentity()));
+            = new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("raehtwdwrft", new UserAssignedIdentity(), "byrcdlbhshfwp", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(WorkbookResourceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
     // Use "Map.of" if available

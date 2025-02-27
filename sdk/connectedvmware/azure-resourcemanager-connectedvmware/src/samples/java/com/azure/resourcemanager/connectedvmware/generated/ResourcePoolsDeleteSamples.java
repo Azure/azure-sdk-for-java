@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-/** Samples for ResourcePools Delete. */
+/**
+ * Samples for ResourcePools Delete.
+ */
 public final class ResourcePoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/DeleteResourcePool.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * DeleteResourcePool.json
      */
     /**
      * Sample code: DeleteResourcePool.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void deleteResourcePool(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {

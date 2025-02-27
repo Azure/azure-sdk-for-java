@@ -205,7 +205,7 @@ public final class EmbeddingsClientBuilder implements HttpTrait<EmbeddingsClient
      * Sets auth domain scopes for client authentication.
      *
      * @param scopes domain scope to authenticate against.
-     * @return the ChatCompletionsClientBuilder.
+     * @return the EmbeddingsClientBuilder.
      */
     public EmbeddingsClientBuilder scopes(String[] scopes) {
         this.scopes = scopes;

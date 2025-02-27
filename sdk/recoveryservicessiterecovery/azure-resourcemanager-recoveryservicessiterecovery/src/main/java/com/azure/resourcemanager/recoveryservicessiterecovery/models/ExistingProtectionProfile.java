@@ -6,27 +6,40 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Existing storage account input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Existing")
 @Fluent
 public final class ExistingProtectionProfile extends ProtectionProfileCustomDetails {
     /*
+     * The class type.
+     */
+    private String resourceType = "Existing";
+
+    /*
      * The protection profile Arm Id. Throw error, if resource does not exists.
      */
-    @JsonProperty(value = "protectionProfileId", required = true)
     private String protectionProfileId;
 
     /**
      * Creates an instance of ExistingProtectionProfile class.
      */
     public ExistingProtectionProfile() {
+    }
+
+    /**
+     * Get the resourceType property: The class type.
+     * 
+     * @return the resourceType value.
+     */
+    @Override
+    public String resourceType() {
+        return this.resourceType;
     }
 
     /**
@@ -56,12 +69,52 @@ public final class ExistingProtectionProfile extends ProtectionProfileCustomDeta
      */
     @Override
     public void validate() {
-        super.validate();
         if (protectionProfileId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property protectionProfileId in model ExistingProtectionProfile"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protectionProfileId in model ExistingProtectionProfile"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExistingProtectionProfile.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protectionProfileId", this.protectionProfileId);
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExistingProtectionProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExistingProtectionProfile if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExistingProtectionProfile.
+     */
+    public static ExistingProtectionProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExistingProtectionProfile deserializedExistingProtectionProfile = new ExistingProtectionProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protectionProfileId".equals(fieldName)) {
+                    deserializedExistingProtectionProfile.protectionProfileId = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedExistingProtectionProfile.resourceType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExistingProtectionProfile;
+        });
+    }
 }
