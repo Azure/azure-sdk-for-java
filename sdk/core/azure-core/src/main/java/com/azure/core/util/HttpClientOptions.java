@@ -6,10 +6,12 @@ package com.azure.core.util;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
+import java.util.EnumSet;
 
 import static com.azure.core.implementation.util.HttpUtils.getDefaultConnectTimeout;
 import static com.azure.core.implementation.util.HttpUtils.getDefaultReadTimeout;
@@ -37,6 +39,7 @@ public final class HttpClientOptions extends ClientOptions {
     private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
     private Class<? extends HttpClientProvider> httpClientProvider;
+    private EnumSet<HttpProtocolVersion> protocolVersions;
 
     /**
      * Creates a new instance of {@link HttpClientOptions}.
@@ -403,5 +406,39 @@ public final class HttpClientOptions extends ClientOptions {
      */
     public Class<? extends HttpClientProvider> getHttpClientProvider() {
         return httpClientProvider;
+    }
+
+    /**
+     * Sets the {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_1_1} must be included in the set of versions.
+     * <p>
+     * If the value is not set, only {@link HttpProtocolVersion#HTTP_1_1} can be used.
+     *
+     * @param protocolVersions The {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * @return The updated HttpClientOptions object.
+     */
+    public HttpClientOptions setProtocolVersions(EnumSet<HttpProtocolVersion> protocolVersions) {
+        if (protocolVersions != null && !protocolVersions.contains(HttpProtocolVersion.HTTP_1_1)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("'protocolVersions' must contain HTTP_1_1 (HTTP/1.1)."));
+        }
+
+        this.protocolVersions = (protocolVersions == null) ? null : EnumSet.copyOf(protocolVersions);
+        return this;
+    }
+
+    /**
+     * Gets the {@link HttpProtocolVersion protocol versions} that the {@link HttpClient} can use.
+     * <p>
+     * {@link HttpProtocolVersion#HTTP_1_1} must be included in the set of versions.
+     * <p>
+     * If the value is not set, only {@link HttpProtocolVersion#HTTP_1_1} can be used.
+     *
+     * @return A readonly {@link EnumSet} of {@link HttpProtocolVersion protocol versions} that the {@link HttpClient}
+     * can use.
+     */
+    public EnumSet<HttpProtocolVersion> getProtocolVersions() {
+        return protocolVersions;
     }
 }

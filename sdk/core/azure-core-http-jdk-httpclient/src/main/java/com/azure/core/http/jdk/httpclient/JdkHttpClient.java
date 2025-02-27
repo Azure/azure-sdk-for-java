@@ -31,7 +31,7 @@ import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fro
 class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
 
-    private final java.net.http.HttpClient jdkHttpClient;
+    final java.net.http.HttpClient jdkHttpClient;
 
     private final Set<String> restrictedHeaders;
 
