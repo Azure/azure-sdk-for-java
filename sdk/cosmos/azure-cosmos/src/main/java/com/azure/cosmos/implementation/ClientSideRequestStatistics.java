@@ -36,6 +36,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
@@ -227,6 +229,9 @@ public class ClientSideRequestStatistics {
             if (rxDocumentServiceRequest != null && rxDocumentServiceRequest.requestContext != null) {
 
                 regionalRoutingContext = rxDocumentServiceRequest.requestContext.regionalRoutingContextToRoute;
+
+                checkNotNull(regionalRoutingContext, "Argument 'regionalRoutingContext' cannot be null!");
+
                 locationEndPoint = regionalRoutingContext.getGatewayRegionalEndpoint();
 
                 this.approximateInsertionCountInBloomFilter = rxDocumentServiceRequest.requestContext.getApproximateBloomFilterInsertionCount();
