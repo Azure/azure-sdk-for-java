@@ -120,7 +120,8 @@ public class LocationCache {
      */
     public List<URI> getAvailableReadEndpoints() {
         return this.locationInfo.availableReadEndpointsByLocation.values().stream().map(consolidatedLocationEndpoints -> {
-                // TODO: Integrate thinclient endpoints into fault injection
+                // TODO (nehrao1): Integrate thinclient endpoints into fault injection
+                // TODO (nehrao1): https://github.com/Azure/azure-sdk-for-java/issues/44429
                 return consolidatedLocationEndpoints.getGatewayRegionalEndpoint();
             }).collect(Collectors.toList());
     }
@@ -134,7 +135,8 @@ public class LocationCache {
      */
     public List<URI> getAvailableWriteEndpoints() {
         return this.locationInfo.availableWriteEndpointsByLocation.values().stream().map(consolidatedLocationEndpoints -> {
-            // TODO: Integrate thinclient endpoints into fault injection
+            // TODO(nehrao1): Integrate thinclient endpoints into fault injection
+            // TODO(nehrao1): https://github.com/Azure/azure-sdk-for-java/issues/44429
             return consolidatedLocationEndpoints.getGatewayRegionalEndpoint();
         }).collect(Collectors.toList());
     }
