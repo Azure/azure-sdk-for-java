@@ -1,6 +1,6 @@
 # Release History
 
-## 11.8.0-beta.5 (Unreleased)
+## 11.8.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -10,6 +10,30 @@
 
 ### Other Changes
 
+## 11.7.5 (2025-02-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.10`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.4` to version `1.5.7`.
+- Upgraded `azure-json` from `1.3.0` to version `1.4.0`.
+- Upgraded `azure-core` from `1.54.1` to version `1.55.2`.
+
+## 11.8.0-beta.5 (2025-02-18)
+
+### Bugs Fixed
+
+- Fixed bug that made 2024-11-01-preview service version inaccessible.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.1`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.9`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.4` to version `1.5.6`.
 
 ## 11.7.4 (2024-12-04)
 

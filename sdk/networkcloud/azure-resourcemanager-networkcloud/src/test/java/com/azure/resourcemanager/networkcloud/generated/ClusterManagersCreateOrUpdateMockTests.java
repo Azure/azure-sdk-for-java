@@ -6,8 +6,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.ClusterManager;
@@ -28,14 +28,14 @@ public final class ClusterManagersCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"e268ac60-edd9-4fab-9292-3acd76011c78\",\"tenantId\":\"1615f97b-1321-4f0a-8b71-872bbb4fede2\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"dnaienhqhskndnel\":{\"principalId\":\"005c1ee7-f0ec-4faa-96f9-0377b7224ef7\",\"clientId\":\"16f1a90c-acd1-446d-9656-a59ed1137a47\"},\"adlknwfoanni\":{\"principalId\":\"32ae87aa-3137-47d4-80f0-66fe56d4933e\",\"clientId\":\"daa7a91a-dfd1-4ea6-9c9e-dea4fe198728\"}}},\"properties\":{\"analyticsWorkspaceId\":\"petxivcnrlyxnu\",\"availabilityZones\":[\"p\",\"blkwqpatvbqs\",\"tcjb\",\"tvivuzqym\"],\"clusterVersions\":[{\"supportExpiryDate\":\"o\",\"targetClusterVersion\":\"gitsqh\"}],\"detailedStatus\":\"ProvisioningFailed\",\"detailedStatusMessage\":\"zcdba\",\"fabricControllerId\":\"fzndscxmxeatkd\",\"managedResourceGroupConfiguration\":{\"location\":\"nrd\",\"name\":\"ibqbnaomhjrm\"},\"managerExtendedLocation\":{\"name\":\"hmaxljalfi\",\"type\":\"cjmobcanc\"},\"provisioningState\":\"Succeeded\",\"vmSize\":\"qcwgaxfgvaknokz\"},\"location\":\"jzrltixldzy\",\"tags\":{\"ixymmpujivyql\":\"tpq\",\"dbpqvybefgvm\":\"juvsmbmslzoyovw\",\"lubses\":\"nokcv\",\"pirykycndzfqiv\":\"vcuartrhun\"},\"id\":\"reuykbbmnwagl\",\"name\":\"bxoeeonql\",\"type\":\"fwmyymv\"}";
+            = "{\"identity\":{\"principalId\":\"09e35414-2870-45ba-b504-39cebd50abc8\",\"tenantId\":\"87f9e9b0-57cc-48af-bc08-110bf896e455\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"dnaienhqhskndnel\":{\"principalId\":\"49c3ad80-9a83-425c-9084-68e85a2cf003\",\"clientId\":\"d664d2df-88e3-4131-bd27-31316867f43e\"},\"adlknwfoanni\":{\"principalId\":\"191cc5cf-e491-485f-8521-0b21de3131d4\",\"clientId\":\"b5a19a6c-06a0-43ae-bac5-ef749aa7597e\"}}},\"properties\":{\"analyticsWorkspaceId\":\"petxivcnrlyxnu\",\"availabilityZones\":[\"p\",\"blkwqpatvbqs\",\"tcjb\",\"tvivuzqym\"],\"clusterVersions\":[{\"supportExpiryDate\":\"o\",\"targetClusterVersion\":\"gitsqh\"}],\"detailedStatus\":\"ProvisioningFailed\",\"detailedStatusMessage\":\"zcdba\",\"fabricControllerId\":\"fzndscxmxeatkd\",\"managedResourceGroupConfiguration\":{\"location\":\"nrd\",\"name\":\"ibqbnaomhjrm\"},\"managerExtendedLocation\":{\"name\":\"hmaxljalfi\",\"type\":\"cjmobcanc\"},\"provisioningState\":\"Succeeded\",\"vmSize\":\"qcwgaxfgvaknokz\"},\"location\":\"jzrltixldzy\",\"tags\":{\"ixymmpujivyql\":\"tpq\",\"dbpqvybefgvm\":\"juvsmbmslzoyovw\",\"lubses\":\"nokcv\",\"pirykycndzfqiv\":\"vcuartrhun\"},\"id\":\"reuykbbmnwagl\",\"name\":\"bxoeeonql\",\"type\":\"fwmyymv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterManager response = manager.clusterManagers()
             .define("mcqmiciijqp")

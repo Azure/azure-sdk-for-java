@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.resourcemanager.nginx.models.NginxDeployment;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for Deployments Update.
@@ -14,7 +12,7 @@ import java.util.Map;
 public final class DeploymentsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Update.json
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Update.json
      */
     /**
      * Sample code: Deployments_Update.
@@ -25,18 +23,23 @@ public final class DeploymentsUpdateSamples {
         NginxDeployment resource = manager.deployments()
             .getByResourceGroupWithResponse("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("Environment", "Dev")).apply();
+        resource.update().apply();
     }
 
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+    /*
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_UpdateSubnet
+     * .json
+     */
+    /**
+     * Sample code: Deployments_UpdateSubnet.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void deploymentsUpdateSubnet(com.azure.resourcemanager.nginx.NginxManager manager) {
+        NginxDeployment resource = manager.deployments()
+            .getByResourceGroupWithResponse("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
     }
 }

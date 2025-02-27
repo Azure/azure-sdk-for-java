@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentFavoriteInner;
@@ -24,35 +24,35 @@ public final class FavoritesUpdateWithResponseMockTests {
     @Test
     public void testUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"Name\":\"wpwyawbz\",\"Config\":\"qbucljgkyexaoguy\",\"Version\":\"p\",\"FavoriteId\":\"sdaultxij\",\"FavoriteType\":\"shared\",\"SourceType\":\"qwazlnqnmcjngzq\",\"TimeModified\":\"xtbjwgnyfusfzsv\",\"Tags\":[\"kzhajqglcfhm\",\"rqryxynqn\",\"rd\",\"sovwxznptgoeiyb\"],\"Category\":\"bp\",\"IsGeneratedFromTemplate\":false,\"UserId\":\"slkvntjl\"}";
+            = "{\"Name\":\"ruzslzoj\",\"Config\":\"ctfnmdxotng\",\"Version\":\"gugey\",\"FavoriteId\":\"hgrky\",\"FavoriteType\":\"shared\",\"SourceType\":\"bsnmfpph\",\"TimeModified\":\"eevy\",\"Tags\":[\"sgzfczbg\"],\"Category\":\"fgbegl\",\"IsGeneratedFromTemplate\":true,\"UserId\":\"o\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationInsightsComponentFavorite response = manager.favorites()
-            .updateWithResponse("xzmqpnodawop", "hewjptmcgsbost", "eln",
-                new ApplicationInsightsComponentFavoriteInner().withName("atutmzlbiojlvfhr")
-                    .withConfig("pn")
-                    .withVersion("vcwwyyurmochppr")
+            .updateWithResponse("wijpsttexoqqpwc", "yufmhruncuwmq", "pkcdqzhlct",
+                new ApplicationInsightsComponentFavoriteInner().withName("unqndyfpchrqb")
+                    .withConfig("jrcg")
+                    .withVersion("ydcwboxjumv")
                     .withFavoriteType(FavoriteType.SHARED)
-                    .withSourceType("kpbz")
-                    .withTags(Arrays.asList("nwieholewjw", "uubw", "fqsfa"))
-                    .withCategory("qtferrqwexjkmf")
+                    .withSourceType("ubrjtl")
+                    .withTags(Arrays.asList("l", "z"))
+                    .withCategory("sccbiuimzd")
                     .withIsGeneratedFromTemplate(true),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("wpwyawbz", response.name());
-        Assertions.assertEquals("qbucljgkyexaoguy", response.config());
-        Assertions.assertEquals("p", response.version());
+        Assertions.assertEquals("ruzslzoj", response.name());
+        Assertions.assertEquals("ctfnmdxotng", response.config());
+        Assertions.assertEquals("gugey", response.version());
         Assertions.assertEquals(FavoriteType.SHARED, response.favoriteType());
-        Assertions.assertEquals("qwazlnqnmcjngzq", response.sourceType());
-        Assertions.assertEquals("kzhajqglcfhm", response.tags().get(0));
-        Assertions.assertEquals("bp", response.category());
-        Assertions.assertEquals(false, response.isGeneratedFromTemplate());
+        Assertions.assertEquals("bsnmfpph", response.sourceType());
+        Assertions.assertEquals("sgzfczbg", response.tags().get(0));
+        Assertions.assertEquals("fgbegl", response.category());
+        Assertions.assertEquals(true, response.isGeneratedFromTemplate());
     }
 }
