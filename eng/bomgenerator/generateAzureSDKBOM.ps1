@@ -36,13 +36,14 @@ function UpdateBomProjectElement($OldPomFilePath, $NewPomFilePath) {
 Write-Output "InputDir:$($InputDir)"
 Write-Output "OutputDir:$($OutputDir)"
 Write-Output "Updating version_client.txt file by looking at the packages released to maven."
+# TODO (alzimmer): Handle other group IDs for generating BOMs
 SyncVersionClientFile -GroupId "com.azure"
 Write-Output "Updated version_client.txt file."
 
 New-Item -Path $PSScriptRoot -Name "inputdir" -ItemType "directory" -Force
 New-Item -Path $PSScriptRoot -Name "outputdir" -ItemType "directory" -Force
 if (!(Test-Path -Path $DefaultVersionClientFilePath)) {
-  Copy-Item $VersionClientFilePath -Destination $InputDir 
+  Copy-Item $VersionClientFilePath -Destination $InputDir
 }
 
 if (!(Test-Path -Path $DefaultPomFilePath)) {
@@ -55,5 +56,5 @@ if (Test-Path -Path $BomPomFilePath && Test-Path -Path $NewBomFilePath) {
   Copy-Item $NewBomFilePath -Destination $BomPomFilePath -Force
   UpdateBomProjectElement -OldPomFilePath $BomPomFilePath -NewPomFilePath $NewBomFilePath
   Write-Output "Updating azure-sdk-bom file."
-  Copy-Item $NewBomFilePath -Destination $BomPomFilePath -Force 
+  Copy-Item $NewBomFilePath -Destination $BomPomFilePath -Force
 }

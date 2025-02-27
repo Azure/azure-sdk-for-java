@@ -22,10 +22,10 @@ from typing import Dict
 from pom_helper import *
 
 # azure-client-sdk-parent valid parent POMs for Track 2 libraries.
-valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure:azure-client-sdk-parent-v2', 'io.clientcore:clientcore-parent']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'io.clientcore:clientcore-parent']
 
 # List of parent POMs that should be retained as projects to create POM.
-parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-client-sdk-parent-v2', 'com.azure:azure-perf-test-parent', 'io.clientcore:clientcore-parent']
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure.v2:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'io.clientcore:clientcore-parent']
 
 include_groups = []
 
@@ -100,6 +100,7 @@ def create_aggregate_pom(project_list: str, groups: str, exclude_project_list: s
 
     if groups is None:
         include_groups.append('com.azure')
+        include_groups.append('com.azure.v2')
         include_groups.append('com.azure.spring')
         include_groups.append('com.azure.resourcemanager')
         include_groups.append('io.clientcore')

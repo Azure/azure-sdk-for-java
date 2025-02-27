@@ -8,9 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/core/ci.v2.yml
-      - sdk/core/azure-core-v2/
-      - sdk/core/azure-core-test-v2/
+      - sdk/corev2/
 
 pr:
   branches:
@@ -21,21 +19,19 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/core/ci.v2.yml
-      - sdk/core/azure-core-v2/
-      - sdk/core/azure-core-test-v2/
+      - sdk/corev2/
 
 parameters:
   - name: release_dependsonlivetests
     displayName: 'Release depends on live tests'
     type: boolean
     default: true
-  - name: release_azurecorev2
-    displayName: 'azure-core-v2'
+  - name: release_azurecore
+    displayName: 'azure-core'
     type: boolean
     default: true
-  - name: release_azurecoretestv2
-    displayName: 'azure-core-test-v2'
+  - name: release_azurecoretest
+    displayName: 'azure-core-test'
     type: boolean
     default: true
 
@@ -46,13 +42,13 @@ extends:
     TimeoutInMinutes: 90
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
-      - name: azure-core-v2
-        groupId: com.azure
-        safeName: azurecorev2
-        releaseInBatch: ${{ parameters.release_azurecorev2 }}
+      - name: azure-core
+        groupId: com.azure.v2
+        safeName: azurecore
+        releaseInBatch: ${{ parameters.release_azurecore }}
         triggeringPaths:
         - /sdk/parents/azure-client-sdk-parent-v2
-      - name: azure-core-test-v2
-        groupId: com.azure
-        safeName: azurecoretestv2
-        releaseInBatch: ${{ parameters.release_azurecoretestv2 }}
+      - name: azure-core-test
+        groupId: com.azure.v2
+        safeName: azurecoretest
+        releaseInBatch: ${{ parameters.release_azurecoretest }}
