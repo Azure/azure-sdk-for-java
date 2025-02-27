@@ -18,12 +18,14 @@ import java.util.List;
 @Fluent
 public final class GeoJsonMultiPolygon extends GeoJsonGeometry {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
     private GeoJsonObjectType type = GeoJsonObjectType.GEO_JSON_MULTI_POLYGON;
 
     /*
-     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order (longitude, latitude).
+     * Contains a list of valid `GeoJSON Polygon` objects. **Note** that coordinates in GeoJSON are in x, y order
+     * (longitude, latitude).
      */
     private List<List<List<List<Double>>>> coordinates;
 

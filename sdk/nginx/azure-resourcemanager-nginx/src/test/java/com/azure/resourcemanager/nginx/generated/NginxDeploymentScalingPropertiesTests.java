@@ -15,30 +15,30 @@ public final class NginxDeploymentScalingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxDeploymentScalingProperties model = BinaryData.fromString(
-            "{\"capacity\":1493374876,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"pngjcrcczsqpjhvm\",\"capacity\":{\"min\":747144042,\"max\":330627677}},{\"name\":\"v\",\"capacity\":{\"min\":1022740915,\"max\":1223642392}},{\"name\":\"ounqecano\",\"capacity\":{\"min\":1054713689,\"max\":996084293}},{\"name\":\"pfhyhl\",\"capacity\":{\"min\":2062075015,\"max\":1743077422}}]}}")
+            "{\"capacity\":1613065996,\"autoScaleSettings\":{\"profiles\":[{\"name\":\"oyrxvwfudwpzntxh\",\"capacity\":{\"min\":1710146471,\"max\":328563559}},{\"name\":\"lrqjbhckfr\",\"capacity\":{\"min\":1523615779,\"max\":2044526914}},{\"name\":\"xsbkyvpyca\",\"capacity\":{\"min\":427278595,\"max\":106855620}},{\"name\":\"bpzkafkuwbc\",\"capacity\":{\"min\":1514524475,\"max\":946722582}}]}}")
             .toObject(NginxDeploymentScalingProperties.class);
-        Assertions.assertEquals(1493374876, model.capacity());
-        Assertions.assertEquals("pngjcrcczsqpjhvm", model.profiles().get(0).name());
-        Assertions.assertEquals(747144042, model.profiles().get(0).capacity().min());
-        Assertions.assertEquals(330627677, model.profiles().get(0).capacity().max());
+        Assertions.assertEquals(1613065996, model.capacity());
+        Assertions.assertEquals("oyrxvwfudwpzntxh", model.profiles().get(0).name());
+        Assertions.assertEquals(1710146471, model.profiles().get(0).capacity().min());
+        Assertions.assertEquals(328563559, model.profiles().get(0).capacity().max());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NginxDeploymentScalingProperties model = new NginxDeploymentScalingProperties().withCapacity(1493374876)
+        NginxDeploymentScalingProperties model = new NginxDeploymentScalingProperties().withCapacity(1613065996)
             .withProfiles(Arrays.asList(
-                new ScaleProfile().withName("pngjcrcczsqpjhvm")
-                    .withCapacity(new ScaleProfileCapacity().withMin(747144042).withMax(330627677)),
-                new ScaleProfile().withName("v")
-                    .withCapacity(new ScaleProfileCapacity().withMin(1022740915).withMax(1223642392)),
-                new ScaleProfile().withName("ounqecano")
-                    .withCapacity(new ScaleProfileCapacity().withMin(1054713689).withMax(996084293)),
-                new ScaleProfile().withName("pfhyhl")
-                    .withCapacity(new ScaleProfileCapacity().withMin(2062075015).withMax(1743077422))));
+                new ScaleProfile().withName("oyrxvwfudwpzntxh")
+                    .withCapacity(new ScaleProfileCapacity().withMin(1710146471).withMax(328563559)),
+                new ScaleProfile().withName("lrqjbhckfr")
+                    .withCapacity(new ScaleProfileCapacity().withMin(1523615779).withMax(2044526914)),
+                new ScaleProfile().withName("xsbkyvpyca")
+                    .withCapacity(new ScaleProfileCapacity().withMin(427278595).withMax(106855620)),
+                new ScaleProfile().withName("bpzkafkuwbc")
+                    .withCapacity(new ScaleProfileCapacity().withMin(1514524475).withMax(946722582))));
         model = BinaryData.fromObject(model).toObject(NginxDeploymentScalingProperties.class);
-        Assertions.assertEquals(1493374876, model.capacity());
-        Assertions.assertEquals("pngjcrcczsqpjhvm", model.profiles().get(0).name());
-        Assertions.assertEquals(747144042, model.profiles().get(0).capacity().min());
-        Assertions.assertEquals(330627677, model.profiles().get(0).capacity().max());
+        Assertions.assertEquals(1613065996, model.capacity());
+        Assertions.assertEquals("oyrxvwfudwpzntxh", model.profiles().get(0).name());
+        Assertions.assertEquals(1710146471, model.profiles().get(0).capacity().min());
+        Assertions.assertEquals(328563559, model.profiles().get(0).capacity().max());
     }
 }

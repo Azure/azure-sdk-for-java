@@ -6,11 +6,13 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storage.models.EnabledProtocols;
+import com.azure.resourcemanager.storage.models.FileSharePropertiesFileSharePaidBursting;
 import com.azure.resourcemanager.storage.models.LeaseDuration;
 import com.azure.resourcemanager.storage.models.LeaseState;
 import com.azure.resourcemanager.storage.models.LeaseStatus;
@@ -38,10 +40,56 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
     private Map<String, String> metadata;
 
     /*
-     * The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For
-     * Large File Shares, the maximum size is 102400.
+     * The provisioned size of the share, in gibibytes. Must be greater than 0, and less than or equal to 5TB (5120).
+     * For Large File Shares, the maximum size is 102400. For file shares created under Files Provisioned v2 account
+     * type, please refer to the GetFileServiceUsage API response for the minimum and maximum allowed provisioned
+     * storage size.
      */
     private Integer shareQuota;
+
+    /*
+     * The provisioned IOPS of the share. This property is only for file shares created under Files Provisioned v2
+     * account type. Please refer to the GetFileServiceUsage API response for the minimum and maximum allowed value for
+     * provisioned IOPS.
+     */
+    private Integer provisionedIops;
+
+    /*
+     * The provisioned bandwidth of the share, in mebibytes per second. This property is only for file shares created
+     * under Files Provisioned v2 account type. Please refer to the GetFileServiceUsage API response for the minimum and
+     * maximum allowed value for provisioned bandwidth.
+     */
+    private Integer provisionedBandwidthMibps;
+
+    /*
+     * The calculated burst IOPS of the share. This property is only for file shares created under Files Provisioned v2
+     * account type.
+     */
+    private Integer includedBurstIops;
+
+    /*
+     * The calculated maximum burst credits for the share. This property is only for file shares created under Files
+     * Provisioned v2 account type.
+     */
+    private Long maxBurstCreditsForIops;
+
+    /*
+     * Returns the next allowed provisioned storage size downgrade time for the share. This property is only for file
+     * shares created under Files Provisioned v1 SSD and Files Provisioned v2 account type
+     */
+    private DateTimeRfc1123 nextAllowedQuotaDowngradeTime;
+
+    /*
+     * Returns the next allowed provisioned IOPS downgrade time for the share. This property is only for file shares
+     * created under Files Provisioned v2 account type.
+     */
+    private DateTimeRfc1123 nextAllowedProvisionedIopsDowngradeTime;
+
+    /*
+     * Returns the next allowed provisioned bandwidth downgrade time for the share. This property is only for file
+     * shares created under Files Provisioned v2 account type.
+     */
+    private DateTimeRfc1123 nextAllowedProvisionedBandwidthDowngradeTime;
 
     /*
      * The authentication protocol that is used for the file share. Can only be specified when creating a share.
@@ -120,6 +168,11 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
      */
     private OffsetDateTime snapshotTime;
 
+    /*
+     * File Share Paid Bursting properties.
+     */
+    private FileSharePropertiesFileSharePaidBursting fileSharePaidBursting;
+
     /**
      * Creates an instance of FileShareProperties class.
      */
@@ -156,8 +209,10 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
     }
 
     /**
-     * Get the shareQuota property: The maximum size of the share, in gigabytes. Must be greater than 0, and less than
-     * or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
+     * Get the shareQuota property: The provisioned size of the share, in gibibytes. Must be greater than 0, and less
+     * than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400. For file shares created under
+     * Files Provisioned v2 account type, please refer to the GetFileServiceUsage API response for the minimum and
+     * maximum allowed provisioned storage size.
      * 
      * @return the shareQuota value.
      */
@@ -166,8 +221,10 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
     }
 
     /**
-     * Set the shareQuota property: The maximum size of the share, in gigabytes. Must be greater than 0, and less than
-     * or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
+     * Set the shareQuota property: The provisioned size of the share, in gibibytes. Must be greater than 0, and less
+     * than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400. For file shares created under
+     * Files Provisioned v2 account type, please refer to the GetFileServiceUsage API response for the minimum and
+     * maximum allowed provisioned storage size.
      * 
      * @param shareQuota the shareQuota value to set.
      * @return the FileShareProperties object itself.
@@ -175,6 +232,115 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
     public FileShareProperties withShareQuota(Integer shareQuota) {
         this.shareQuota = shareQuota;
         return this;
+    }
+
+    /**
+     * Get the provisionedIops property: The provisioned IOPS of the share. This property is only for file shares
+     * created under Files Provisioned v2 account type. Please refer to the GetFileServiceUsage API response for the
+     * minimum and maximum allowed value for provisioned IOPS.
+     * 
+     * @return the provisionedIops value.
+     */
+    public Integer provisionedIops() {
+        return this.provisionedIops;
+    }
+
+    /**
+     * Set the provisionedIops property: The provisioned IOPS of the share. This property is only for file shares
+     * created under Files Provisioned v2 account type. Please refer to the GetFileServiceUsage API response for the
+     * minimum and maximum allowed value for provisioned IOPS.
+     * 
+     * @param provisionedIops the provisionedIops value to set.
+     * @return the FileShareProperties object itself.
+     */
+    public FileShareProperties withProvisionedIops(Integer provisionedIops) {
+        this.provisionedIops = provisionedIops;
+        return this;
+    }
+
+    /**
+     * Get the provisionedBandwidthMibps property: The provisioned bandwidth of the share, in mebibytes per second. This
+     * property is only for file shares created under Files Provisioned v2 account type. Please refer to the
+     * GetFileServiceUsage API response for the minimum and maximum allowed value for provisioned bandwidth.
+     * 
+     * @return the provisionedBandwidthMibps value.
+     */
+    public Integer provisionedBandwidthMibps() {
+        return this.provisionedBandwidthMibps;
+    }
+
+    /**
+     * Set the provisionedBandwidthMibps property: The provisioned bandwidth of the share, in mebibytes per second. This
+     * property is only for file shares created under Files Provisioned v2 account type. Please refer to the
+     * GetFileServiceUsage API response for the minimum and maximum allowed value for provisioned bandwidth.
+     * 
+     * @param provisionedBandwidthMibps the provisionedBandwidthMibps value to set.
+     * @return the FileShareProperties object itself.
+     */
+    public FileShareProperties withProvisionedBandwidthMibps(Integer provisionedBandwidthMibps) {
+        this.provisionedBandwidthMibps = provisionedBandwidthMibps;
+        return this;
+    }
+
+    /**
+     * Get the includedBurstIops property: The calculated burst IOPS of the share. This property is only for file shares
+     * created under Files Provisioned v2 account type.
+     * 
+     * @return the includedBurstIops value.
+     */
+    public Integer includedBurstIops() {
+        return this.includedBurstIops;
+    }
+
+    /**
+     * Get the maxBurstCreditsForIops property: The calculated maximum burst credits for the share. This property is
+     * only for file shares created under Files Provisioned v2 account type.
+     * 
+     * @return the maxBurstCreditsForIops value.
+     */
+    public Long maxBurstCreditsForIops() {
+        return this.maxBurstCreditsForIops;
+    }
+
+    /**
+     * Get the nextAllowedQuotaDowngradeTime property: Returns the next allowed provisioned storage size downgrade time
+     * for the share. This property is only for file shares created under Files Provisioned v1 SSD and Files Provisioned
+     * v2 account type.
+     * 
+     * @return the nextAllowedQuotaDowngradeTime value.
+     */
+    public OffsetDateTime nextAllowedQuotaDowngradeTime() {
+        if (this.nextAllowedQuotaDowngradeTime == null) {
+            return null;
+        }
+        return this.nextAllowedQuotaDowngradeTime.getDateTime();
+    }
+
+    /**
+     * Get the nextAllowedProvisionedIopsDowngradeTime property: Returns the next allowed provisioned IOPS downgrade
+     * time for the share. This property is only for file shares created under Files Provisioned v2 account type.
+     * 
+     * @return the nextAllowedProvisionedIopsDowngradeTime value.
+     */
+    public OffsetDateTime nextAllowedProvisionedIopsDowngradeTime() {
+        if (this.nextAllowedProvisionedIopsDowngradeTime == null) {
+            return null;
+        }
+        return this.nextAllowedProvisionedIopsDowngradeTime.getDateTime();
+    }
+
+    /**
+     * Get the nextAllowedProvisionedBandwidthDowngradeTime property: Returns the next allowed provisioned bandwidth
+     * downgrade time for the share. This property is only for file shares created under Files Provisioned v2 account
+     * type.
+     * 
+     * @return the nextAllowedProvisionedBandwidthDowngradeTime value.
+     */
+    public OffsetDateTime nextAllowedProvisionedBandwidthDowngradeTime() {
+        if (this.nextAllowedProvisionedBandwidthDowngradeTime == null) {
+            return null;
+        }
+        return this.nextAllowedProvisionedBandwidthDowngradeTime.getDateTime();
     }
 
     /**
@@ -364,6 +530,27 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
     }
 
     /**
+     * Get the fileSharePaidBursting property: File Share Paid Bursting properties.
+     * 
+     * @return the fileSharePaidBursting value.
+     */
+    public FileSharePropertiesFileSharePaidBursting fileSharePaidBursting() {
+        return this.fileSharePaidBursting;
+    }
+
+    /**
+     * Set the fileSharePaidBursting property: File Share Paid Bursting properties.
+     * 
+     * @param fileSharePaidBursting the fileSharePaidBursting value to set.
+     * @return the FileShareProperties object itself.
+     */
+    public FileShareProperties
+        withFileSharePaidBursting(FileSharePropertiesFileSharePaidBursting fileSharePaidBursting) {
+        this.fileSharePaidBursting = fileSharePaidBursting;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -371,6 +558,9 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
     public void validate() {
         if (signedIdentifiers() != null) {
             signedIdentifiers().forEach(e -> e.validate());
+        }
+        if (fileSharePaidBursting() != null) {
+            fileSharePaidBursting().validate();
         }
     }
 
@@ -382,12 +572,15 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
         jsonWriter.writeStartObject();
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         jsonWriter.writeNumberField("shareQuota", this.shareQuota);
+        jsonWriter.writeNumberField("provisionedIops", this.provisionedIops);
+        jsonWriter.writeNumberField("provisionedBandwidthMibps", this.provisionedBandwidthMibps);
         jsonWriter.writeStringField("enabledProtocols",
             this.enabledProtocols == null ? null : this.enabledProtocols.toString());
         jsonWriter.writeStringField("rootSquash", this.rootSquash == null ? null : this.rootSquash.toString());
         jsonWriter.writeStringField("accessTier", this.accessTier == null ? null : this.accessTier.toString());
         jsonWriter.writeArrayField("signedIdentifiers", this.signedIdentifiers,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("fileSharePaidBursting", this.fileSharePaidBursting);
         return jsonWriter.writeEndObject();
     }
 
@@ -414,6 +607,23 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
                     deserializedFileShareProperties.metadata = metadata;
                 } else if ("shareQuota".equals(fieldName)) {
                     deserializedFileShareProperties.shareQuota = reader.getNullable(JsonReader::getInt);
+                } else if ("provisionedIops".equals(fieldName)) {
+                    deserializedFileShareProperties.provisionedIops = reader.getNullable(JsonReader::getInt);
+                } else if ("provisionedBandwidthMibps".equals(fieldName)) {
+                    deserializedFileShareProperties.provisionedBandwidthMibps = reader.getNullable(JsonReader::getInt);
+                } else if ("includedBurstIops".equals(fieldName)) {
+                    deserializedFileShareProperties.includedBurstIops = reader.getNullable(JsonReader::getInt);
+                } else if ("maxBurstCreditsForIops".equals(fieldName)) {
+                    deserializedFileShareProperties.maxBurstCreditsForIops = reader.getNullable(JsonReader::getLong);
+                } else if ("nextAllowedQuotaDowngradeTime".equals(fieldName)) {
+                    deserializedFileShareProperties.nextAllowedQuotaDowngradeTime
+                        = reader.getNullable(nonNullReader -> new DateTimeRfc1123(nonNullReader.getString()));
+                } else if ("nextAllowedProvisionedIopsDowngradeTime".equals(fieldName)) {
+                    deserializedFileShareProperties.nextAllowedProvisionedIopsDowngradeTime
+                        = reader.getNullable(nonNullReader -> new DateTimeRfc1123(nonNullReader.getString()));
+                } else if ("nextAllowedProvisionedBandwidthDowngradeTime".equals(fieldName)) {
+                    deserializedFileShareProperties.nextAllowedProvisionedBandwidthDowngradeTime
+                        = reader.getNullable(nonNullReader -> new DateTimeRfc1123(nonNullReader.getString()));
                 } else if ("enabledProtocols".equals(fieldName)) {
                     deserializedFileShareProperties.enabledProtocols = EnabledProtocols.fromString(reader.getString());
                 } else if ("rootSquash".equals(fieldName)) {
@@ -449,6 +659,9 @@ public final class FileShareProperties implements JsonSerializable<FileShareProp
                 } else if ("snapshotTime".equals(fieldName)) {
                     deserializedFileShareProperties.snapshotTime = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fileSharePaidBursting".equals(fieldName)) {
+                    deserializedFileShareProperties.fileSharePaidBursting
+                        = FileSharePropertiesFileSharePaidBursting.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

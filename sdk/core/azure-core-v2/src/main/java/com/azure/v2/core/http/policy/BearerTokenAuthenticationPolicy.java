@@ -3,25 +3,34 @@
 
 package com.azure.v2.core.http.policy;
 
-import com.azure.v2.core.credential.AccessToken;
-import com.azure.v2.core.credential.TokenCredential;
-import com.azure.v2.core.credential.TokenRequestContext;
+import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.implementation.AccessTokenCache;
-import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
+import com.azure.v2.core.utils.CoreUtils;
+import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpCredentialPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.utils.AuthUtils;
+import io.clientcore.core.utils.AuthenticateChallenge;
+
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * <p>The {@code BearerTokenAuthenticationPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface.
- * This policy uses a {@link TokenCredential} to authenticate the request with a bearer token.</p>
+ * <p>The {@code BearerTokenAuthenticationPolicy} class is an implementation of the
+ * {@link HttpCredentialPolicy}. This policy uses a {@link TokenCredential} to authenticate the request with
+ * a bearer token.</p>
  *
  * <p>This class is useful when you need to authorize requests with a bearer token from Azure. It ensures that the
  * requests are sent over HTTPS to prevent the token from being leaked.</p>
@@ -32,8 +41,11 @@ import java.util.Objects;
  * The policy can then added to the pipeline. The request sent via the pipeline will then include the
  * Authorization header with the bearer token.</p>
  *
- * <!-- src_embed com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
- * <!-- end com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
+ * <pre>
+ * TokenCredential credential = new BasicAuthenticationCredential&#40;&quot;username&quot;, &quot;password&quot;&#41;;
+ * BearerTokenAuthenticationPolicy policy = new BearerTokenAuthenticationPolicy&#40;credential,
+ *     &quot;https:&#47;&#47;management.azure.com&#47;.default&quot;&#41;;
+ * </pre>
  *
  * @see HttpPipelinePolicy
  * @see TokenCredential
@@ -61,25 +73,36 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     }
 
     /**
-     * Synchronously executed before sending the initial request and authenticates the request.
+     * Executed before sending the initial request and authenticates the request.
      *
      * @param httpRequest The request context.
      */
-    public void authorizeRequestSync(HttpRequest httpRequest) {
-        setAuthorizationHeaderHelperSync(httpRequest, new TokenRequestContext().addScopes(scopes), false);
+    public void authorizeRequest(HttpRequest httpRequest) {
+        setAuthorizationHeaderHelper(httpRequest, new TokenRequestContext().addScopes(scopes).setCaeEnabled(true),
+            false);
     }
 
     /**
      * Handles the authentication challenge in the event a 401 response with a WWW-Authenticate authentication challenge
      * header is received after the initial request and returns appropriate {@link TokenRequestContext} to be used for
      * re-authentication.
+     * <p>
+     * The default implementation will attempt to handle Continuous Access Evaluation (CAE) challenges.
+     * </p>
      *
-     * @param httpRequest The request context.
+     * @param httpRequest The http request.
      * @param response The Http Response containing the authentication challenge header.
-     *
-     * @return A boolean indicating if containing the {@link TokenRequestContext} for re-authentication
+     * @return A boolean indicating if the request was authorized again via re-authentication
      */
-    public boolean authorizeRequestOnChallengeSync(HttpRequest httpRequest, Response<?> response) {
+    public boolean authorizeRequestOnChallenge(HttpRequest httpRequest, Response<?> response) {
+        if (isCaeClaimsChallenge(response)) {
+            TokenRequestContext tokenRequestContext = getTokenRequestContextForCaeChallenge(response);
+            if (tokenRequestContext != null) {
+                setAuthorizationHeader(httpRequest, tokenRequestContext);
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -89,18 +112,14 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
      * @param request the HTTP request.
      * @param tokenRequestContext the token request context to be used for token acquisition.
      */
-    public void setAuthorizationHeaderSync(HttpRequest request, TokenRequestContext tokenRequestContext) {
-        setAuthorizationHeaderHelperSync(request, tokenRequestContext, true);
+    protected void setAuthorizationHeader(HttpRequest request, TokenRequestContext tokenRequestContext) {
+        setAuthorizationHeaderHelper(request, tokenRequestContext, true);
     }
 
-    private void setAuthorizationHeaderHelperSync(HttpRequest httpRequest, TokenRequestContext tokenRequestContext,
+    private void setAuthorizationHeaderHelper(HttpRequest httpRequest, TokenRequestContext tokenRequestContext,
         boolean checkToForceFetchToken) {
-        AccessToken token = cache.getTokenSync(tokenRequestContext, checkToForceFetchToken);
-        setAuthorizationHeader(httpRequest.getHeaders(), token.getToken());
-    }
-
-    private static void setAuthorizationHeader(HttpHeaders headers, String token) {
-        headers.set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
+        AccessToken token = cache.getToken(tokenRequestContext, checkToForceFetchToken);
+        httpRequest.getHeaders().set(HttpHeaderName.AUTHORIZATION, BEARER + " " + token);
     }
 
     @Override
@@ -109,13 +128,14 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
             throw LOGGER.logThrowableAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
-        HttpPipelineNextPolicy nextPolicy = next.clone();
 
-        authorizeRequestSync(httpRequest);
+        HttpPipelineNextPolicy nextPolicy = next.copy();
+
+        authorizeRequest(httpRequest);
         Response<?> httpResponse = next.process();
         String authHeader = httpResponse.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-            if (authorizeRequestOnChallengeSync(httpRequest, httpResponse)) {
+            if (authorizeRequestOnChallenge(httpRequest, httpResponse)) {
                 // body needs to be closed or read to the end to release the connection
                 try {
                     httpResponse.close();
@@ -128,5 +148,67 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
             }
         }
         return httpResponse;
+    }
+
+    private TokenRequestContext getTokenRequestContextForCaeChallenge(Response<?> response) {
+        String decodedClaims = null;
+        String encodedClaims = getChallengeParameterFromResponse(response, "Bearer", "claims");
+
+        if (!CoreUtils.isNullOrEmpty(encodedClaims)) {
+            try {
+                decodedClaims = new String(Base64.getDecoder().decode(encodedClaims), StandardCharsets.UTF_8);
+            } catch (IllegalArgumentException e) {
+                // We don't want to throw here, but we want to log this for future incident investigation.
+                LOGGER.atLevel(LogLevel.WARNING)
+                    .log("Failed to decode the claims from the CAE challenge. Encoded claims: " + encodedClaims);
+            }
+        }
+
+        if (decodedClaims == null) {
+            return null;
+        }
+
+        return new TokenRequestContext().setClaims(decodedClaims).addScopes(scopes).setCaeEnabled(true);
+    }
+
+    /**
+     * Examines a {@link HttpResponse} to see if it is a CAE challenge.
+     * @param response The {@link HttpResponse} to examine.
+     * @return True if the response is a CAE challenge, false otherwise.
+     */
+    static boolean isCaeClaimsChallenge(Response<?> response) {
+        List<AuthenticateChallenge> authenticateChallengeList
+            = AuthUtils.parseAuthenticateHeader(response.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE));
+
+        for (AuthenticateChallenge authChallenge : authenticateChallengeList) {
+            if (authChallenge.getScheme().equals("Bearer")) {
+
+                String error = authChallenge.getParameters().get("error");
+                String claims = authChallenge.getParameters().get("claims");
+                return !CoreUtils.isNullOrEmpty(claims) && "insufficient_claims".equals(error);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Gets the specified challenge parameter from the challenge response.
+     *
+     * @param response the Http response with auth challenge
+     * @param challengeScheme the challenge scheme to be checked
+     * @param parameter the challenge parameter value to get
+     *
+     * @return the extracted value of the challenge parameter
+     */
+    static String getChallengeParameterFromResponse(Response<?> response, String challengeScheme, String parameter) {
+        String challenge = response.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
+        List<AuthenticateChallenge> authenticateChallengeList = AuthUtils.parseAuthenticateHeader(challenge);
+
+        for (AuthenticateChallenge authChallenge : authenticateChallengeList) {
+            if (authChallenge.getScheme().equals(challengeScheme)) {
+                return authChallenge.getParameters().get(parameter);
+            }
+        }
+        return null;
     }
 }

@@ -10,6 +10,21 @@
 
 ### Other Changes
 
+## 1.55.2 (2025-02-20)
+
+### Other Changes
+
+- Fix for the `1.55.1` release as Netty dependencies weren't updated.
+
+## 1.55.1 (2025-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Netty dependencies from `4.1.115.Final` to `4.1.118.Final` to resolve a CVE.
+- Upgraded Netty TcNative dependencies from `2.0.69.Final` to `2.0.70.Final` to resolve a CVE.
+
 ## 1.55.0 (2025-02-06)
 
 ### Features Added

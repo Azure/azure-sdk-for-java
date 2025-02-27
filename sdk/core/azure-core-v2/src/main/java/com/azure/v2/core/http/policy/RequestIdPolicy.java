@@ -3,14 +3,14 @@
 
 package com.azure.v2.core.http.policy;
 
-import com.azure.v2.core.util.CoreUtils;
+import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
-import io.clientcore.core.http.pipeline.HttpPipelineOrder;
+import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import java.util.Objects;
 
@@ -60,7 +60,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
 
     private static void setRequestIdHeader(HttpRequest request, HttpHeaderName requestIdHeaderName) {
         HttpHeaders headers = request.getHeaders();
-        String requestId = headers.getValue(requestIdHeaderName);
+        String requestId = headers.get(requestIdHeaderName).getValue();
         if (requestId == null) {
             headers.set(requestIdHeaderName, CoreUtils.randomUuid().toString());
         }
@@ -73,7 +73,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public final HttpPipelineOrder getOrder() {
-        return HttpPipelineOrder.BEFORE_REDIRECT;
+    public final HttpPipelinePosition getPipelinePosition() {
+        return HttpPipelinePosition.BEFORE_REDIRECT;
     }
 }

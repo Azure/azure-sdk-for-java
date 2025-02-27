@@ -10,6 +10,7 @@ import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.LongCounter;
 import io.clientcore.core.instrumentation.metrics.Meter;
@@ -18,7 +19,7 @@ import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
-import io.clientcore.core.util.Context;
+import io.clientcore.core.utils.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -374,7 +375,7 @@ public class FallbackInstrumentationTests {
 
     @ParameterizedTest
     @MethodSource("logLevels")
-    public void basicTracingLogsLevel(ClientLogger.LogLevel logLevel, boolean expectLogs) {
+    public void basicTracingLogsLevel(LogLevel logLevel, boolean expectLogs) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
@@ -401,7 +402,7 @@ public class FallbackInstrumentationTests {
         start.put("boolean", true);
         start.put("long", Long.MAX_VALUE);
 
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         InstrumentationAttributes startAttributes = DEFAULT_INSTRUMENTATION.createAttributes(start);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
@@ -424,15 +425,13 @@ public class FallbackInstrumentationTests {
     }
 
     public static Stream<Arguments> logLevels() {
-        return Stream.of(Arguments.of(ClientLogger.LogLevel.ERROR, false),
-            Arguments.of(ClientLogger.LogLevel.WARNING, false),
-            Arguments.of(ClientLogger.LogLevel.INFORMATIONAL, false),
-            Arguments.of(ClientLogger.LogLevel.VERBOSE, true));
+        return Stream.of(Arguments.of(LogLevel.ERROR, false), Arguments.of(LogLevel.WARNING, false),
+            Arguments.of(LogLevel.INFORMATIONAL, false), Arguments.of(LogLevel.VERBOSE, true));
     }
 
     @Test
     public void basicTracingLogsEnabled() {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS);
         Tracer tracer = instrumentation.createTracer();
@@ -460,7 +459,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void tracingWithAttributesLogsEnabled() {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer();
 
@@ -498,7 +497,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void tracingWithExceptionLogsEnabled() {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer();
 
@@ -516,7 +515,7 @@ public class FallbackInstrumentationTests {
 
     @Test
     public void tracingLogsEnabledParent() {
-        ClientLogger logger = setupLogLevelAndGetLogger(ClientLogger.LogLevel.VERBOSE, logCaptureStream);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, logCaptureStream);
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(logger);
         Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).createTracer();
 

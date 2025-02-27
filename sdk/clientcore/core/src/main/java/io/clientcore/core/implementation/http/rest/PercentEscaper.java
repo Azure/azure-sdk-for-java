@@ -7,7 +7,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Arrays;
 
-import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
+import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
 
 /**
  * An escaper that escapes URI data through percent encoding.

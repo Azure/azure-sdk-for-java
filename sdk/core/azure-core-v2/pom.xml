@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-v2</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-v2;current} -->
+  <version>2.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-v2;current} -->
 
   <name>Microsoft Azure Java Core V2 Library</name>
   <description>This package contains core types for Azure Java V2 clients.</description>
@@ -75,7 +75,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.4</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
     </dependency>
 
     <dependency>

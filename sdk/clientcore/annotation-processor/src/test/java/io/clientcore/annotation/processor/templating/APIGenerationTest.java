@@ -9,12 +9,12 @@ import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.Substitution;
 import io.clientcore.annotation.processor.models.TemplateInput;
 import io.clientcore.core.http.models.HttpMethod;
-import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
 
 /*
  * This class tests the methods generated from the provided ServiceInterface Template.
@@ -27,17 +27,11 @@ public class APIGenerationTest {
     @BeforeEach
     public void setUp() {
         processor = new JavaParserTemplateProcessor();
-        templateInput = mock(TemplateInput.class);
+        templateInput = new TemplateInput();
     }
 
     @Test
     public void testPublicAPIUserMethodGeneration() {
-        //@HttpRequestInformation(
-        //        method = HttpMethod.GET,
-        //        path = "/users/{userId}",
-        //        expectedStatusCodes = {200}
-        //    )
-        //    User getUser(@PathParam("userId") String userId);
         HttpRequestContext getUserMethodContext = new HttpRequestContext();
 
         getUserMethodContext.setHttpMethod(HttpMethod.GET);
@@ -60,6 +54,6 @@ public class APIGenerationTest {
             actual.append(statement.toString());
         }
 
-        assertEquals("return getUser();", actual.toString());
+        assertEquals("return getUserResponse().getValue();", actual.toString());
     }
 }
