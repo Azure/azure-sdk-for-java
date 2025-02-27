@@ -57,7 +57,7 @@
     <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java</artifactId>
-      <version>0.8.1</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
+      <version>0.25.0</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
     </dependency>
 
     <!-- provided scope -->
@@ -125,7 +125,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.openai:openai-java:[0.8.1]</include> <!-- {x-include-update;com.openai:openai-java;external_dependency} -->
+                <include>com.openai:openai-java:[0.25.0]</include> <!-- {x-include-update;com.openai:openai-java;external_dependency} -->
               </includes>
             </bannedDependencies>
             <requireReleaseDeps>

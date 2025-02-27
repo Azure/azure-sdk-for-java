@@ -41,8 +41,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     private OpenAIClient client;
 
-    private OpenAIOkHttpClient.Builder setAzureServiceApiVersion(
-            OpenAIOkHttpClient.Builder clientBuilder, String apiVersion) {
+    private OpenAIOkHttpClient.Builder setAzureServiceApiVersion(OpenAIOkHttpClient.Builder clientBuilder,
+        String apiVersion) {
         if (GA.equals(apiVersion)) {
             clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_GA);
         } else if (PREVIEW.equals(apiVersion)) {
@@ -89,15 +89,16 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     // Azure-Only Test
+    @Disabled("Pipeline not working with EntraID")
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureAdTokenOnly")
     public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel) {
         OpenAIOkHttpClient.Builder clientBuilder = OpenAIOkHttpClient.builder();
         if (AZURE_OPEN_AI.equals(apiType)) {
-            setAzureServiceApiVersion(clientBuilder, apiVersion)
-                .baseUrl(getEndpoint())
+            setAzureServiceApiVersion(clientBuilder, apiVersion).baseUrl(getEndpoint())
                 // This requires `azure-identity` dependency.
-                .credential(BearerTokenCredential.create(getBearerTokenCredentialProvider(new DefaultAzureCredentialBuilder().build())));
+                .credential(BearerTokenCredential
+                    .create(getBearerTokenCredentialProvider(new DefaultAzureCredentialBuilder().build())));
         } else {
             throw new IllegalArgumentException("Invalid API type");
         }
@@ -115,8 +116,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionMaxTokens(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
-        ChatCompletionCreateParams params =
-                createParamsBuilder(testModel).maxTokens(50).build();
+        ChatCompletionCreateParams params = createParamsBuilder(testModel).maxTokens(50).build();
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion, 1);
         CompletionUsage usage = chatCompletion.usage().get();
@@ -129,8 +129,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionTemperature(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
-        ChatCompletionCreateParams params =
-                createParamsBuilder(testModel).temperature(0.8).build();
+        ChatCompletionCreateParams params = createParamsBuilder(testModel).temperature(0.8).build();
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion, 1);
     }
@@ -140,8 +139,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionTopP(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
-        ChatCompletionCreateParams params =
-                createParamsBuilder(testModel).topP(0.1).build();
+        ChatCompletionCreateParams params = createParamsBuilder(testModel).topP(0.1).build();
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion, 1);
     }
@@ -161,8 +159,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionStop(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
-        ChatCompletionCreateParams params =
-                createParamsBuilder(testModel).stop(" ").build();
+        ChatCompletionCreateParams params = createParamsBuilder(testModel).stop(" ").build();
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion, 1);
     }
@@ -172,10 +169,8 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionTokenPenalty(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
-        ChatCompletionCreateParams params = createParamsBuilder(testModel)
-                .presencePenalty(2.0)
-                .frequencyPenalty(2.0)
-                .build();
+        ChatCompletionCreateParams params
+            = createParamsBuilder(testModel).presencePenalty(2.0).frequencyPenalty(2.0).build();
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion, 1);
     }
@@ -185,8 +180,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionUser(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
-        ChatCompletionCreateParams params =
-                createParamsBuilder(testModel).user("javaUser").build();
+        ChatCompletionCreateParams params = createParamsBuilder(testModel).user("javaUser").build();
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion, 1);
     }
@@ -199,12 +193,10 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         Map<String, JsonValue> logitBiasMap = new HashMap<>();
         logitBiasMap.put("17585", JsonValue.from(-100.0));
         logitBiasMap.put("14573", JsonValue.from(-100.0));
-        ChatCompletionCreateParams.LogitBias logitBias = ChatCompletionCreateParams.LogitBias.builder()
-                .putAllAdditionalProperties(logitBiasMap)
-                .build();
+        ChatCompletionCreateParams.LogitBias logitBias
+            = ChatCompletionCreateParams.LogitBias.builder().putAllAdditionalProperties(logitBiasMap).build();
 
-        ChatCompletionCreateParams params =
-                createParamsBuilder(testModel).logitBias(logitBias).build();
+        ChatCompletionCreateParams params = createParamsBuilder(testModel).logitBias(logitBias).build();
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion, 1);
     }
@@ -214,8 +206,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionLogprobs(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
-        ChatCompletionCreateParams params =
-                createParamsBuilder(testModel).logprobs(true).topLogprobs(3).build();
+        ChatCompletionCreateParams params = createParamsBuilder(testModel).logprobs(true).topLogprobs(3).build();
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion, 1);
     }
@@ -225,38 +216,30 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionSeed(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
-        ChatCompletionCreateParams params =
-                createParamsBuilder(testModel, "Why is the sky blue?").seed(42).build();
-        ChatCompletion chatCompletion = client.chat()
-                .completions()
-                .create(params); // Assuming create method is overloaded to accept messages and seed
+        ChatCompletionCreateParams params = createParamsBuilder(testModel, "Why is the sky blue?").seed(42).build();
+        ChatCompletion chatCompletion = client.chat().completions().create(params); // Assuming create method is overloaded to accept messages and seed
         assertNotNull(chatCompletion.systemFingerprint()); // Assuming getSystemFingerprint() method exists
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
     public void testChatCompletionJsonResponse(String apiType, String apiVersion, String testModel)
-            throws JsonProcessingException {
+        throws JsonProcessingException {
         client = createClient(apiType, apiVersion);
 
         ChatCompletionCreateParams params = ChatCompletionCreateParams.builder()
-                .messages(asList(
-                        createSystemMessageParam(),
-                        createUserMessageParam(
-                                "Who won the world series in 2020? Return in json with answer as the key.")))
-                .model(testModel)
-                .responseFormat(
-                        ResponseFormatJsonObject.builder().type(JsonValue.from("json_object")).build())
-                .build();
+            .messages(asList(createSystemMessageParam(),
+                createUserMessageParam("Who won the world series in 2020? Return in json with answer as the key.")))
+            .model(testModel)
+            .responseFormat(ResponseFormatJsonObject.builder().type(JsonValue.from("json_object")).build())
+            .build();
 
         ChatCompletion chatCompletion = client.chat().completions().create(params);
 
         assertChatCompletion(chatCompletion, 1);
 
         ChatCompletion.Choice choice = chatCompletion.choices().get(0);
-        assertNotNull(JsonMapper.builder()
-            .build()
-            .readValue(choice.message().content().get(), Map.class));
+        assertNotNull(JsonMapper.builder().build().readValue(choice.message().content().get(), Map.class));
     }
 
     // Azure-Only Test
@@ -283,34 +266,33 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     // Azure-Only Test
-//    @ParameterizedTest
-//    @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
-//    public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
-//        client = createClient(apiType, apiVersion);
-//        ChatCompletionCreateParams params = createParamsBuilder(testModel)
-//                .messages(asList(
-//                        createSystemMessageParam(),
-//                        createUserMessageParam("What languages have libraries you know about for Azure OpenAI?")))
-//                .additionalBodyProperties(createExtraBodyForByod())
-//                .build();
-//        ChatCompletion completion = client.chat().completions().create(params);
-//        assertChatCompletionByod(completion);
-//    }
+    //    @ParameterizedTest
+    //    @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
+    //    public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
+    //        client = createClient(apiType, apiVersion);
+    //        ChatCompletionCreateParams params = createParamsBuilder(testModel)
+    //                .messages(asList(
+    //                        createSystemMessageParam(),
+    //                        createUserMessageParam("What languages have libraries you know about for Azure OpenAI?")))
+    //                .additionalBodyProperties(createExtraBodyForByod())
+    //                .build();
+    //        ChatCompletion completion = client.chat().completions().create(params);
+    //        assertChatCompletionByod(completion);
+    //    }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
     public void testChatCompletionTools(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
-        ChatCompletionCreateParams params =
-                createChatCompletionParamsWithTool(testModel, "What's the weather like today in Seattle?");
+        ChatCompletionCreateParams params
+            = createChatCompletionParamsWithTool(testModel, "What's the weather like today in Seattle?");
         ChatCompletion chatCompletion = client.chat().completions().create(params);
 
         assertChatCompletion(chatCompletion);
 
         ChatCompletion.Choice choice = chatCompletion.choices().get(0);
-        List<ChatCompletionMessageToolCall> chatCompletionMessageToolCalls =
-                choice.message().toolCalls().get();
+        List<ChatCompletionMessageToolCall> chatCompletionMessageToolCalls = choice.message().toolCalls().get();
         ChatCompletionMessageToolCall toolCall = chatCompletionMessageToolCalls.get(0);
 
         assertToolCall(toolCall);
@@ -326,15 +308,14 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionToolsParallelFunc(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
-        ChatCompletionCreateParams params = createChatCompletionParamsWithTool(
-                testModel, "What's the weather like today in Seattle and Los Angeles?");
+        ChatCompletionCreateParams params = createChatCompletionParamsWithTool(testModel,
+            "What's the weather like today in Seattle and Los Angeles?");
         ChatCompletion chatCompletion = client.chat().completions().create(params);
 
         assertChatCompletion(chatCompletion);
 
         ChatCompletion.Choice choice = chatCompletion.choices().get(0);
-        List<ChatCompletionMessageToolCall> chatCompletionMessageToolCalls =
-                choice.message().toolCalls().get();
+        List<ChatCompletionMessageToolCall> chatCompletionMessageToolCalls = choice.message().toolCalls().get();
         assertToolCall(chatCompletionMessageToolCalls.get(0));
         assertToolCall(chatCompletionMessageToolCalls.get(1));
 
@@ -350,8 +331,8 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
 
         List<ChatCompletionMessageParam> messages = createMessages("What's the weather like today in Seattle?");
         List<ChatCompletionCreateParams.Function> functions = asList(createGetCurrentTemperatureFunction());
-        ChatCompletionCreateParams params =
-                createChatCompletionParamsWithoutFunctionCall(testModel, messages, functions);
+        ChatCompletionCreateParams params
+            = createChatCompletionParamsWithoutFunctionCall(testModel, messages, functions);
 
         ChatCompletion completion = client.chat().completions().create(params);
 
@@ -359,9 +340,9 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertFunctionCall(completion.choices().get(0).message().functionCall().get());
 
         ChatCompletion functionCompletion = client.chat()
-                .completions()
-                .create(addFunctionResponseToMessages(
-                        testModel, messages, functions, "{\"temperature\": \"22\", \"unit\": \"celsius\"}"));
+            .completions()
+            .create(addFunctionResponseToMessages(testModel, messages, functions,
+                "{\"temperature\": \"22\", \"unit\": \"celsius\"}"));
 
         assertFunctionCompletion(functionCompletion);
         assertPromptAndContentFilterResults(functionCompletion);
@@ -375,23 +356,22 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
 
         List<ChatCompletionMessageParam> messages = createMessages("What's the weather like today in Seattle?");
         List<ChatCompletionCreateParams.Function> functions = createFunctions();
-        ChatCompletionCreateParams params =
-                createChatCompletionParamsWithFunction(testModel, messages, functions, "get_current_temperature");
+        ChatCompletionCreateParams params
+            = createChatCompletionParamsWithFunction(testModel, messages, functions, "get_current_temperature");
 
         ChatCompletion completion = client.chat().completions().create(params);
 
         assertChatCompletion(completion);
 
         ChatCompletion.Choice choice = completion.choices().get(0);
-        ChatCompletionMessage.FunctionCall functionCallResponse =
-                choice.message().functionCall().get();
+        ChatCompletionMessage.FunctionCall functionCallResponse = choice.message().functionCall().get();
 
         assertFunctionCall(functionCallResponse);
 
         ChatCompletion functionCompletion = client.chat()
-                .completions()
-                .create(addFunctionResponseToMessages(
-                        testModel, messages, functions, "{\"temperature\": \"22\", \"unit\": \"celsius\"}"));
+            .completions()
+            .create(addFunctionResponseToMessages(testModel, messages, functions,
+                "{\"temperature\": \"22\", \"unit\": \"celsius\"}"));
 
         assertFunctionCompletion(functionCompletion);
     }
@@ -405,8 +385,8 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
 
         List<ChatCompletionMessageParam> messages = createMessages("how do I rob a bank with violence?");
         List<ChatCompletionCreateParams.Function> functions = createFunctions();
-        ChatCompletionCreateParams params =
-                createChatCompletionParamsWithoutFunctionCall(testModel, messages, functions);
+        ChatCompletionCreateParams params
+            = createChatCompletionParamsWithoutFunctionCall(testModel, messages, functions);
         assertThrows(BadRequestException.class, () -> client.chat().completions().create(params));
     }
 

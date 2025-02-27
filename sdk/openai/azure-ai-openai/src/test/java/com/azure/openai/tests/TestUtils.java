@@ -29,8 +29,8 @@ public class TestUtils {
 
     static boolean isAzureSearchConfigMissing() {
         return System.getenv("AZURE_SEARCH_API_KEY") == null
-                || System.getenv("AZURE_SEARCH_ENDPOINT") == null
-                || System.getenv("AZURE_OPENAI_SEARCH_INDEX") == null;
+            || System.getenv("AZURE_SEARCH_ENDPOINT") == null
+            || System.getenv("AZURE_OPENAI_SEARCH_INDEX") == null;
     }
 
     static boolean isAzureEndpointMissing() {
@@ -43,49 +43,43 @@ public class TestUtils {
 
     static Stream<String[]> allApiTypeClient() {
         return Stream.of(new String[][] {
-//            {AZURE_OPEN_AI, GA, GPT_4O},
-            {AZURE_OPEN_AI, PREVIEW, GPT_4O},
-            {OPEN_AI, V1, GPT_4O}
-        });
+            //            {AZURE_OPEN_AI, GA, GPT_4O},
+            { AZURE_OPEN_AI, PREVIEW, GPT_4O },
+            { OPEN_AI, V1, GPT_4O } });
     }
 
     static Stream<String[]> azureOnlyClient() {
         return Stream.of(new String[][] {
-//            {AZURE_OPEN_AI, GA, GPT_4O},
-            {AZURE_OPEN_AI, PREVIEW, GPT_4O}
-        });
+            //            {AZURE_OPEN_AI, GA, GPT_4O},
+            { AZURE_OPEN_AI, PREVIEW, GPT_4O } });
     }
 
     static Stream<String[]> azureByodOnlyClient() {
         return Stream.of(new String[][] {
-//            {AZURE_OPEN_AI, GA, GPT_4_0613},
-            {AZURE_OPEN_AI, PREVIEW, GPT_4_0613}
-        });
+            //            {AZURE_OPEN_AI, GA, GPT_4_0613},
+            { AZURE_OPEN_AI, PREVIEW, GPT_4_0613 } });
     }
 
     static Stream<String[]> azureBlockListTermOnlyClient() {
         return Stream.of(new String[][] {
-//            {AZURE_OPEN_AI, GA, GPT_4_1106_PREVIEW},
-            {AZURE_OPEN_AI, PREVIEW, GPT_4_1106_PREVIEW}
-        });
+            //            {AZURE_OPEN_AI, GA, GPT_4_1106_PREVIEW},
+            { AZURE_OPEN_AI, PREVIEW, GPT_4_1106_PREVIEW } });
     }
 
     static Stream<String[]> openAiOnlyClient() {
-        return Stream.of(new String[][] {{OPEN_AI, V1, GPT_3_5_TURBO}});
+        return Stream.of(new String[][] { { OPEN_AI, V1, GPT_3_5_TURBO } });
     }
 
     static Stream<String[]> visionOnlyClient() {
         return Stream.of(new String[][] {
-//            {AZURE_OPEN_AI, GA, GPT_4_VISION_PREVIEW},
-            {AZURE_OPEN_AI, PREVIEW, GPT_4_VISION_PREVIEW},
-            {OPEN_AI, V1, GPT_4O}
-        });
+            //            {AZURE_OPEN_AI, GA, GPT_4_VISION_PREVIEW},
+            { AZURE_OPEN_AI, PREVIEW, GPT_4_VISION_PREVIEW },
+            { OPEN_AI, V1, GPT_4O } });
     }
 
     static Stream<String[]> azureAdTokenOnly() {
         return Stream.of(new String[][] {
-//            {AZURE_OPEN_AI, GA, GPT_4O},
-            {AZURE_OPEN_AI, PREVIEW, GPT_4O}
-        });
+            //            {AZURE_OPEN_AI, GA, GPT_4O},
+            { AZURE_OPEN_AI, PREVIEW, GPT_4O } });
     }
 }

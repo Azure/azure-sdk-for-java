@@ -4,7 +4,7 @@ steps:
       echo "Java version above"
       # Define repository details
       $repoUrl = "https://github.com/openai/openai-java.git"
-      $branchName = "6390dfd63c978ceae2f0f8e0f5601c2ae212d2e8"
+      $branchName = "next"
 
       # Clone the repository and checkout the specified branch
       Write-Host "Cloning repository: $repoUrl"
