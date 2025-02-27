@@ -4,8 +4,8 @@
 package com.azure.identity.v2.implementation.util;
 
 import com.azure.identity.v2.CredentialUnavailableException;
+import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.utils.CoreUtils;
-import io.clientcore.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 

@@ -4,8 +4,7 @@
 package com.azure.identity.v2;
 
 
-import io.clientcore.core.credentials.AccessToken;
-import io.clientcore.core.credentials.TokenCredential;
+import com.azure.v2.core.credentials.TokenCredential;
 
 /**
  * The exception thrown when a {@link TokenCredential} did not attempt to authenticate and retrieve {@link AccessToken},

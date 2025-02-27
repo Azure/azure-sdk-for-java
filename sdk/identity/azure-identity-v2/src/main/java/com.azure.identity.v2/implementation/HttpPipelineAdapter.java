@@ -3,6 +3,7 @@
 
 package com.azure.identity.v2.implementation;
 
+import com.azure.identity.v2.implementation.models.HttpPipelineOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
 import com.azure.v2.core.utils.CoreUtils;
 import com.microsoft.aad.msal4j.IHttpClient;
@@ -39,9 +40,9 @@ class HttpPipelineAdapter implements IHttpClient {
     private static final String TENANT_ID_JSON_KEY = "tid";
     private static final String USER_PRINCIPAL_NAME_JSON_KEY = "upn";
     private final HttpPipeline httpPipeline;
-    private IdentityClientOptions identityClientOptions;
+    private HttpPipelineOptions identityClientOptions;
 
-    HttpPipelineAdapter(HttpPipeline httpPipeline, IdentityClientOptions identityClientOptions) {
+    HttpPipelineAdapter(HttpPipeline httpPipeline, HttpPipelineOptions identityClientOptions) {
         this.httpPipeline = httpPipeline;
         this.identityClientOptions = identityClientOptions;
     }

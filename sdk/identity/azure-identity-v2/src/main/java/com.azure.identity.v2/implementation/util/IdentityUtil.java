@@ -3,10 +3,9 @@
 
 package com.azure.identity.v2.implementation.util;
 
-import com.azure.identity.v2.implementation.IdentityClientOptions;
-import com.azure.v2.core.credentials.AzureTokenRequestContext;
+import com.azure.identity.v2.implementation.models.MsalConfigurationOptions;
+import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.utils.CoreUtils;
-import io.clientcore.core.credentials.TokenRequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonToken;
@@ -33,10 +32,9 @@ public final class IdentityUtil {
      * on the credential or not.
      */
     public static String resolveTenantId(String currentTenantId, TokenRequestContext requestContext,
-        IdentityClientOptions options) {
+        MsalConfigurationOptions options) {
 
-        String contextTenantId = (requestContext instanceof AzureTokenRequestContext)
-            ? ((AzureTokenRequestContext) requestContext).getTenantId() : null;
+        String contextTenantId = requestContext.getTenantId();
 
         if (contextTenantId != null && currentTenantId != null && !currentTenantId.equalsIgnoreCase(contextTenantId)) {
 

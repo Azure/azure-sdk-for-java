@@ -3,6 +3,8 @@
 
 package com.azure.identity.v2;
 
+import com.azure.identity.v2.implementation.models.ClientOptionsBase;
+import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
@@ -35,33 +37,12 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
  * {@link com.azure.identity.v2.ClientSecretCredential} .Once this credential is created, it may be passed into the
  * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.clientsecretcredential.construct -->
  * <pre>
  * TokenCredential clientSecretCredential = new ClientSecretCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientSecret&#40;clientSecret&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.clientsecretcredential.construct -->
- *
- * <p><strong>Sample: Construct a ClientSecretCredential behind a proxy</strong></p>
- *
- * <p>The following code sample demonstrates the creation of a {@link ClientSecretCredential},
- * using the {@link ClientSecretCredentialBuilder} to configure it. The {@code tenantId},
- * {@code clientId} and {@code clientSecret} parameters are required to create
- * {@link ClientSecretCredential}. The {@code proxyOptions} can be optionally configured to target
- * a proxy. Once this credential is created, it may be passed into the builder of many of the Azure SDK for Java
- * client builders as the 'credential' parameter.</p>
- *
- * <!-- src_embed com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
- * <pre>
- * TokenCredential secretCredential = new ClientSecretCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
- *     .clientId&#40;clientId&#41;
- *     .clientSecret&#40;clientSecret&#41;
- *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
- *     .build&#40;&#41;;
- * </pre>
- * <!-- end com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
  *
  * @see ClientSecretCredential
  */
@@ -69,13 +50,19 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
     private static final ClientLogger LOGGER = new ClientLogger(ClientSecretCredentialBuilder.class);
     private static final String CLASS_NAME = ClientSecretCredentialBuilder.class.getSimpleName();
 
-    private String clientSecret;
+    private ConfidentialClientOptions confidentialClientOptions;
 
     /**
      * Constructs an instance of ClientSecretCredentialBuilder.
      */
     public ClientSecretCredentialBuilder() {
         super();
+        confidentialClientOptions = new ConfidentialClientOptions();
+    }
+
+    @Override
+    ClientOptionsBase getClientOptions() {
+        return confidentialClientOptions;
     }
 
     /**
@@ -84,7 +71,7 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
      * @return An updated instance of this builder.
      */
     public ClientSecretCredentialBuilder clientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+        confidentialClientOptions.setClientSecret(clientSecret);
         return this;
     }
 
@@ -95,7 +82,7 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
      * @return An updated instance of this builder.
      */
     ClientSecretCredentialBuilder allowUnencryptedCache() {
-        this.identityClientOptions.setAllowUnencryptedCache(true);
+        this.confidentialClientOptions.getMsalConfigurationOptions().setAllowUnencryptedCache(true);
         return this;
     }
 
@@ -109,7 +96,7 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
      */
     public ClientSecretCredentialBuilder
         tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
-        this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
+        this.confidentialClientOptions.getMsalConfigurationOptions().setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
 
@@ -119,9 +106,10 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
      * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
      */
     public ClientSecretCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId, "clientSecret",
-            clientSecret);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", getClientOptions()
+                .getMsalConfigurationOptions().getClientId(), "tenantId", getClientOptions().getMsalConfigurationOptions().getTenantId(),
+            "clientSecret", confidentialClientOptions.getClientSecret());
 
-        return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
+        return new ClientSecretCredential(confidentialClientOptions);
     }
 }

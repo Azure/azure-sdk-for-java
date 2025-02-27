@@ -4,12 +4,11 @@
 package com.azure.identity.v2;
 
 import com.azure.identity.v2.implementation.ConfidentialClient;
-import com.azure.identity.v2.implementation.ConfidentialClientBuilder;
-import com.azure.identity.v2.implementation.IdentityClientOptions;
+import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
 import com.azure.identity.v2.implementation.util.LoggingUtil;
-import io.clientcore.core.credentials.AccessToken;
-import io.clientcore.core.credentials.TokenCredential;
-import io.clientcore.core.credentials.TokenRequestContext;
+import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.core.credentials.TokenRequestContext;
+import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.util.Objects;
@@ -46,33 +45,12 @@ import java.util.Objects;
  * {@link com.azure.identity.v2.ClientSecretCredential} .Once this credential is created, it may be passed into the
  * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
  *
- * <!-- src_embed com.azure.identity.credential.clientsecretcredential.construct -->
  * <pre>
  * TokenCredential clientSecretCredential = new ClientSecretCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientSecret&#40;clientSecret&#41;
  *     .build&#40;&#41;;
  * </pre>
- * <!-- end com.azure.identity.credential.clientsecretcredential.construct -->
- *
- * <p><strong>Sample: Construct a ClientSecretCredential behind a proxy</strong></p>
- *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.identity.v2.ClientSecretCredential},
- * using the {@link ClientSecretCredentialBuilder} to configure it. The {@code tenantId},
- * {@code clientId} and {@code clientSecret} parameters are required to create
- * {@link com.azure.identity.v2.ClientSecretCredential}. The {@code proxyOptions} can be optionally configured to target
- * a proxy. Once this credential is created, it may be passed into the builder of many of the Azure SDK for Java
- * client builders as the 'credential' parameter.</p>
- *
- * <!-- src_embed com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
- * <pre>
- * TokenCredential secretCredential = new ClientSecretCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
- *     .clientId&#40;clientId&#41;
- *     .clientSecret&#40;clientSecret&#41;
- *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
- *     .build&#40;&#41;;
- * </pre>
- * <!-- end com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
  *
  * @see com.azure.identity.v2
  * @see ClientSecretCredentialBuilder
@@ -85,21 +63,13 @@ public class ClientSecretCredential implements TokenCredential {
     /**
      * Creates a ClientSecretCredential with the given identity client options.
      *
-     * @param tenantId the tenant ID of the application
-     * @param clientId the client ID of the application
-     * @param clientSecret the secret value of the Microsoft Entra application.
-     * @param identityClientOptions the options for configuring the identity client
+     * @param confidentialClientOptions the options for configuring the confidential client
      */
-    ClientSecretCredential(String tenantId, String clientId, String clientSecret,
-        IdentityClientOptions identityClientOptions) {
-        Objects.requireNonNull(clientSecret, "'clientSecret' cannot be null.");
-        Objects.requireNonNull(identityClientOptions, "'identityClientOptions' cannot be null.");
-        ConfidentialClientBuilder builder = new ConfidentialClientBuilder().tenantId(tenantId)
-            .clientId(clientId)
-            .clientSecret(clientSecret)
-            .identityClientOptions(identityClientOptions);
+    ClientSecretCredential(ConfidentialClientOptions confidentialClientOptions) {
+        Objects.requireNonNull(confidentialClientOptions, "'confidentialClientOptions' cannot be null.");
+        Objects.requireNonNull(confidentialClientOptions.getClientSecret(), "'clientSecret' cannot be null.");
 
-        confidentialClient = builder.build();
+        confidentialClient = new ConfidentialClient(confidentialClientOptions);
     }
 
     @Override

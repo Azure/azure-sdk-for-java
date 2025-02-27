@@ -4,11 +4,11 @@
 package com.azure.identity.v2;
 
 import com.azure.identity.v2.implementation.ConfidentialClient;
-import com.azure.identity.v2.implementation.IdentityClientOptions;
+import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
 import com.azure.identity.v2.util.TestUtils;
+import com.azure.v2.core.credentials.TokenRequestContext;
 import com.microsoft.aad.msal4j.MsalServiceException;
-import io.clientcore.core.credential.AccessToken;
-import io.clientcore.core.credential.TokenRequestContext;
+import io.clientcore.core.credentials.oauth.AccessToken;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
@@ -136,7 +136,6 @@ public class ClientSecretCredentialTest {
                     .thenThrow(new IllegalStateException("Test"));
                 when(identitySyncClient.authenticateWithConfidentialClient(request))
                     .thenThrow(new MsalServiceException("bad secret", "BadSecret"));
-                when(identitySyncClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
             })) {
             // test
             ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(TENANT_ID)
@@ -199,58 +198,4 @@ public class ClientSecretCredentialTest {
             Assertions.assertNotNull(identityClientMock);
         }
     }
-
-//    @Test
-//    public void testInvalidAdditionalTenant() throws Exception {
-//        // setup
-//        String badSecret = "badsecret";
-//
-//        TokenRequestContext request
-//            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
-//
-//        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(TENANT_ID)
-//            .clientId(CLIENT_ID)
-//            .clientSecret(badSecret)
-//            .additionallyAllowedTenants("RANDOM")
-//            .build();
-//        StepVerifier.create(credential.getToken(request))
-//            .expectErrorMatches(e -> e instanceof ClientAuthenticationException
-//                && (e.getMessage().startsWith("The current credential is not configured to")))
-//            .verify();
-//    }
-//
-//    @Test
-//    public void testInvalidMultiTenantAuth() throws Exception {
-//        // setup
-//        String badSecret = "badsecret";
-//        TokenRequestContext request
-//            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
-//
-//        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(TENANT_ID)
-//            .clientId(CLIENT_ID)
-//            .clientSecret(badSecret)
-//            .build();
-//        StepVerifier.create(credential.getToken(request))
-//            .expectErrorMatches(e -> e instanceof ClientAuthenticationException
-//                && (e.getMessage().startsWith("The current credential is not configured to")))
-//            .verify();
-//    }
-//
-//    @Test
-//    public void testValidMultiTenantAuth() throws Exception {
-//        // setup
-//        String badSecret = "badsecret";
-//
-//        TokenRequestContext request
-//            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
-//
-//        ClientSecretCredential credential = new ClientSecretCredentialBuilder().tenantId(TENANT_ID)
-//            .clientId(CLIENT_ID)
-//            .clientSecret(badSecret)
-//            .additionallyAllowedTenants("*")
-//            .build();
-//        StepVerifier.create(credential.getToken(request))
-//            .expectErrorMatches(e -> e instanceof MsalServiceException)
-//            .verify();
-//    }
 }

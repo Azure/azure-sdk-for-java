@@ -42,7 +42,7 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
     @SuppressWarnings("unchecked")
     public T authorityHost(String authorityHost) {
         ValidationUtil.validateAuthHost(authorityHost, LOGGER);
-        this.identityClientOptions.setAuthorityHost(authorityHost);
+        getClientOptions().getMsalConfigurationOptions().setAuthorityHost(authorityHost);
         return (T) this;
     }
 
@@ -58,7 +58,7 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
      */
     @SuppressWarnings("unchecked")
     public T executorService(ExecutorService executorService) {
-        this.identityClientOptions.setExecutorService(executorService);
+        this.getClientOptions().getMsalConfigurationOptions().setExecutorService(executorService);
         return (T) this;
     }
 
@@ -75,7 +75,7 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
     @SuppressWarnings("unchecked")
 
     public T disableInstanceDiscovery() {
-        this.identityClientOptions.disableInstanceDiscovery();
+        this.getClientOptions().getMsalConfigurationOptions().disableInstanceDiscovery();
         return (T) this;
     }
 
@@ -94,37 +94,37 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
      */
     @Override
     public T httpPipeline(HttpPipeline pipeline) {
-        identityClientOptions.setHttpPipeline(pipeline);
+        getClientOptions().getHttpPipelineOptions().setHttpPipeline(pipeline);
         return (T) this;
     }
 
     @Override
     public T addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
-        this.identityClientOptions.addHttpPipelinePolicy(pipelinePolicy);
+        this.getClientOptions().getHttpPipelineOptions().addHttpPipelinePolicy(pipelinePolicy);
         return (T) this;
     }
 
     @Override
     public T httpRetryOptions(HttpRetryOptions retryOptions) {
-        this.identityClientOptions.setHttpRetryOptions(retryOptions);
+        this.getClientOptions().getHttpPipelineOptions().setHttpRetryOptions(retryOptions);
         return (T) this;
     }
 
     @Override
     public T httpInstrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
-        this.identityClientOptions.setHttpInstrumentationOptions(instrumentationOptions);
+        this.getClientOptions().getHttpPipelineOptions().setHttpInstrumentationOptions(instrumentationOptions);
         return (T) this;
     }
 
     @Override
     public T httpRedirectOptions(HttpRedirectOptions redirectOptions) {
-        this.identityClientOptions.setHttpRedirectOptions(redirectOptions);
+        this.getClientOptions().getHttpPipelineOptions().setHttpRedirectOptions(redirectOptions);
         return (T) this;
     }
 
     @Override
     public T httpClient(HttpClient client) {
-        this.identityClientOptions.setHttpClient(client);
+        this.getClientOptions().getHttpPipelineOptions().setHttpClient(client);
         return (T) this;
     }
 
@@ -137,7 +137,7 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
      */
     @SuppressWarnings("unchecked")
     public T additionallyAllowedTenants(String... additionallyAllowedTenants) {
-        identityClientOptions.setAdditionallyAllowedTenants(
+        getClientOptions().getMsalConfigurationOptions().setAdditionallyAllowedTenants(
             IdentityUtil.resolveAdditionalTenants(Arrays.asList(additionallyAllowedTenants)));
         return (T) this;
     }
@@ -151,7 +151,7 @@ public abstract class EntraIdCredentialBuilderBase<T extends EntraIdCredentialBu
      */
     @SuppressWarnings("unchecked")
     public T additionallyAllowedTenants(List<String> additionallyAllowedTenants) {
-        identityClientOptions
+        getClientOptions().getMsalConfigurationOptions()
             .setAdditionallyAllowedTenants(IdentityUtil.resolveAdditionalTenants(additionallyAllowedTenants));
         return (T) this;
     }

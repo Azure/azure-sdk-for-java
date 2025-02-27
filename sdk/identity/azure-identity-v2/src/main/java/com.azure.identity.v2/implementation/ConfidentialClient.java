@@ -5,12 +5,13 @@ package com.azure.identity.v2.implementation;
 
 import com.azure.identity.v2.CredentialAuthenticationException;
 import com.azure.identity.v2.TokenCachePersistenceOptions;
+import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
+import com.azure.identity.v2.implementation.models.HttpPipelineOptions;
+import com.azure.identity.v2.implementation.models.MsalConfigurationOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
-import com.azure.v2.core.credentials.AzureTokenRequestContext;
+import com.azure.v2.core.credentials.TokenRequestContext;
 import com.microsoft.aad.msal4j.*;
-import io.clientcore.core.credentials.AccessToken;
-import io.clientcore.core.credentials.TokenRequestContext;
-import io.clientcore.core.http.exceptions.HttpResponseException;
+import io.clientcore.core.credentials.oauth.AccessToken;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
@@ -35,14 +36,10 @@ public class ConfidentialClient {
     static final Pattern TRAILING_FORWARD_SLASHES = Pattern.compile("/+$");
     static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
 
-    private static final String AZURE_IDENTITY_PROPERTIES = "azure-identity.properties";
-
     private final Map<String, String> properties = new HashMap<>();
-
-    final IdentityClientOptions options;
+    final ConfidentialClientOptions confidentialClientOptions;
     final String tenantId;
     final String clientId;
-    final String clientSecret;
     HttpPipelineAdapter httpPipelineAdapter;
     HttpPipeline httpPipeline;
 
@@ -52,23 +49,15 @@ public class ConfidentialClient {
     /**
      * Creates an IdentityClient with the given options.
      *
-     * @param tenantId the tenant ID of the application.
-     * @param clientId the client ID of the application.
-     * @param clientSecret the client secret of the application.
      * @param options the options configuring the client.
      */
-    ConfidentialClient(String tenantId, String clientId, String clientSecret, IdentityClientOptions options) {
+    public ConfidentialClient(ConfidentialClientOptions options) {
 
-        if (tenantId == null) {
-            tenantId = IdentityUtil.DEFAULT_TENANT;
-        }
-        if (options == null) {
-            options = new IdentityClientOptions();
-        }
-        this.tenantId = tenantId;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.options = options;
+        this.confidentialClientOptions = options == null ? new ConfidentialClientOptions() : options;
+
+        this.tenantId = getMsalOptions().getTenantId() == null ? IdentityUtil.DEFAULT_TENANT
+            : getMsalOptions().getTenantId();
+        this.clientId = getMsalOptions().getClientId();
 
         this.confidentialClientApplicationAccessor = new SynchronousAccessor<>(() -> this.getConfidentialClient(false));
 
@@ -86,7 +75,7 @@ public class ConfidentialClient {
         ConfidentialClientApplication confidentialClient = getConfidentialClientInstance(request).getValue();
         ClientCredentialParameters.ClientCredentialParametersBuilder builder
             = ClientCredentialParameters.builder(new HashSet<>(request.getScopes()))
-                .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+                .tenant(IdentityUtil.resolveTenantId(tenantId, request, getMsalOptions()));
         try {
             return new MsalToken(confidentialClient.acquireToken(builder.build()).get());
         } catch (InterruptedException | ExecutionException e) {
@@ -96,13 +85,9 @@ public class ConfidentialClient {
 
     private SynchronousAccessor<ConfidentialClientApplication>
         getConfidentialClientInstance(TokenRequestContext request) {
-        if (request instanceof AzureTokenRequestContext) {
-            return ((AzureTokenRequestContext) request).isCaeEnabled()
+            return request.isCaeEnabled()
                 ? confidentialClientApplicationAccessorWithCae
                 : confidentialClientApplicationAccessor;
-        } else {
-            return confidentialClientApplicationAccessor;
-        }
     }
 
     /**
@@ -116,11 +101,9 @@ public class ConfidentialClient {
         ConfidentialClientApplication confidentialClientApplication = getConfidentialClientInstance(request).getValue();
         SilentParameters.SilentParametersBuilder parametersBuilder
             = SilentParameters.builder(new HashSet<>(request.getScopes()))
-                .tenant(IdentityUtil.resolveTenantId(tenantId, request, options));
+                .tenant(IdentityUtil.resolveTenantId(tenantId, request, getMsalOptions()));
 
-        if (request instanceof AzureTokenRequestContext
-            && ((AzureTokenRequestContext) request).isCaeEnabled()
-            && request.getClaims() != null) {
+        if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest claimsRequest = ClaimsRequest.formatAsClaimsRequest(request.getClaims());
             parametersBuilder.claims(claimsRequest);
             parametersBuilder.forceRefresh(true);
@@ -148,27 +131,17 @@ public class ConfidentialClient {
         }
     }
 
-    /**
-     * Get the configured identity client options.
-     *
-     * @return the client options.
-     */
-    public IdentityClientOptions getIdentityClientOptions() {
-        return options;
-    }
-
-
     ConfidentialClientApplication getConfidentialClient(boolean enableCae) {
         if (clientId == null) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException(
                 "A non-null value for client ID must be provided for user authentication."));
         }
         String authorityUrl
-            = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/" + tenantId;
+            = TRAILING_FORWARD_SLASHES.matcher(getMsalOptions().getAuthorityHost()).replaceAll("") + "/" + tenantId;
         IClientCredential credential;
 
-        if (clientSecret != null) {
-            credential = ClientCredentialFactory.createFromSecret(clientSecret);
+        if (confidentialClientOptions.getClientSecret() != null) {
+            credential = ClientCredentialFactory.createFromSecret(confidentialClientOptions.getClientSecret());
         } else {
             throw LOGGER.logThrowableAsError(
                 new IllegalArgumentException("Must provide client secret or client certificate path."
@@ -181,9 +154,9 @@ public class ConfidentialClient {
         try {
             applicationBuilder = applicationBuilder
                 .authority(authorityUrl)
-                .instanceDiscovery(options.isInstanceDiscoveryEnabled());
+                .instanceDiscovery(getMsalOptions().isInstanceDiscoveryEnabled());
 
-            if (!options.isInstanceDiscoveryEnabled()) {
+            if (!getMsalOptions().isInstanceDiscoveryEnabled()) {
                 LOGGER.atLevel(LogLevel.VERBOSE)
                     .log("Instance discovery and authority validation is disabled. In this"
                     + " state, the library will not fetch metadata to validate the specified authority host. As a"
@@ -205,13 +178,13 @@ public class ConfidentialClient {
             applicationBuilder.httpClient(httpPipelineAdapter);
         }
 
-        if (options.getExecutorService() != null) {
-            applicationBuilder.executorService(options.getExecutorService());
+        if (getMsalOptions().getExecutorService() != null) {
+            applicationBuilder.executorService(getMsalOptions().getExecutorService());
         } else {
             applicationBuilder.executorService(SharedExecutorService.getInstance());
         }
 
-        TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
+        TokenCachePersistenceOptions tokenCachePersistenceOptions = getMsalOptions().getTokenCacheOptions();
         PersistentTokenCacheImpl tokenCache = null;
         if (tokenCachePersistenceOptions != null) {
             try {
@@ -240,7 +213,7 @@ public class ConfidentialClient {
         }
 
         // if the user has supplied a pipeline, use it
-        HttpPipeline httpPipeline = options.getHttpPipeline();
+        HttpPipeline httpPipeline = getHttpPipelineOptions().getHttpPipeline();
         if (httpPipeline != null) {
             this.httpPipeline = httpPipeline;
             return this.httpPipeline;
@@ -254,18 +227,27 @@ public class ConfidentialClient {
 
     HttpPipeline setupPipeline() {
         Configuration buildConfiguration
-            = (options.getConfiguration() == null) ? Configuration.getGlobalConfiguration() : options.getConfiguration();
+            = (confidentialClientOptions.getConfiguration()== null) ? Configuration.getGlobalConfiguration()
+            : confidentialClientOptions.getConfiguration();
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policies.add(new HttpRetryPolicy());
         HttpPipeline httpPipeline = new HttpPipelineBuilder().addPolicy(policies.get(0))
-            .httpClient(options.getHttpClient())
+            .httpClient(getHttpPipelineOptions().getHttpClient())
             .build();
         return httpPipeline;
     }
 
     void initializeHttpPipelineAdapter() {
-        httpPipelineAdapter = new HttpPipelineAdapter(getPipeline(), options);
+        httpPipelineAdapter = new HttpPipelineAdapter(getPipeline(), getHttpPipelineOptions());
+    }
+
+    MsalConfigurationOptions getMsalOptions() {
+        return confidentialClientOptions.getMsalConfigurationOptions();
+    }
+
+    HttpPipelineOptions getHttpPipelineOptions() {
+        return confidentialClientOptions.getHttpPipelineOptions();
     }
 }

@@ -8,10 +8,10 @@ import com.microsoft.aad.msal4j.AuthenticationResultMetadata;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
 import com.microsoft.aad.msal4j.ITenantProfile;
-import io.clientcore.core.credential.AccessToken;
-import io.clientcore.core.util.configuration.Configuration;
-import io.clientcore.core.util.configuration.ConfigurationBuilder;
-import io.clientcore.core.util.configuration.ConfigurationSource;
+import io.clientcore.core.credentials.oauth.AccessToken;
+import io.clientcore.core.utils.configuration.Configuration;
+import io.clientcore.core.utils.configuration.ConfigurationBuilder;
+import io.clientcore.core.utils.configuration.ConfigurationSource;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;

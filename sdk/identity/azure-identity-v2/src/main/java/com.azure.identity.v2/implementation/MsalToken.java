@@ -5,7 +5,8 @@ package com.azure.identity.v2.implementation;
 
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;
-import io.clientcore.core.credentials.AccessToken;
+import io.clientcore.core.credentials.oauth.AccessToken;
+import io.clientcore.core.credentials.oauth.AccessTokenType;
 
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -42,7 +43,7 @@ public final class MsalToken extends AccessToken {
                     ? null
                     : OffsetDateTime.ofInstant(Instant.ofEpochSecond(msalResult.metadata().refreshOn()), ZoneOffset.UTC)
                 : null,
-            tokenType);
+            AccessTokenType.fromString(tokenType));
         authenticationResult = msalResult;
     }
 

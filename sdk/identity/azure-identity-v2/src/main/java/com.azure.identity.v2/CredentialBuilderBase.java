@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.IdentityClientOptions;
+import com.azure.identity.v2.implementation.models.ClientOptionsBase;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -16,17 +16,7 @@ import io.clientcore.core.utils.configuration.Configuration;
 public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> {
     private static final ClientLogger LOGGER = new ClientLogger(CredentialBuilderBase.class);
 
-    String clientId;
-    String tenantId;
-
-    /**
-     * The options for configuring the identity client.
-     */
-    IdentityClientOptions identityClientOptions;
-
-    CredentialBuilderBase() {
-        this.identityClientOptions = new IdentityClientOptions();
-    }
+    CredentialBuilderBase() { }
 
 
     /**
@@ -41,7 +31,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      */
     @SuppressWarnings("unchecked")
     public T configuration(Configuration configuration) {
-        identityClientOptions.setConfiguration(configuration);
+        getClientOptions().setConfigurationStore(configuration);
         return (T) this;
     }
 
@@ -53,7 +43,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      */
     @SuppressWarnings("unchecked")
     public T clientId(String clientId) {
-        this.clientId = clientId;
+        getClientOptions().getMsalConfigurationOptions().setClientId(clientId);
         return (T) this;
     }
 
@@ -66,8 +56,9 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     @SuppressWarnings("unchecked")
     public T tenantId(String tenantId) {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
-        this.tenantId = tenantId;
+        getClientOptions().getMsalConfigurationOptions().setTenantId(tenantId);
         return (T) this;
     }
 
+    abstract ClientOptionsBase getClientOptions();
 }
