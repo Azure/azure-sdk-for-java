@@ -293,7 +293,7 @@ stages:
         - job: UpdatePackageVersion
           displayName: "Update Package Version"
           condition: and(succeeded(), ne(variables['Skip.UpdatePackageVersion'], 'true'))
-          dependsOn: PublishDevFeedPackage
+          dependsOn: PublishESRPPackage
           pool:
             name: azsdk-pool-mms-win-2022-general
             image: azsdk-pool-mms-win-2022-1espt
@@ -341,7 +341,7 @@ stages:
         - job: PublishDocsMs
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          dependsOn: PublishDevFeedPackage
+          dependsOn: PublishESRPPackage
 
           pool:
             name: azsdk-pool-mms-ubuntu-2004-general
@@ -382,7 +382,7 @@ stages:
         - job: PublishDocs
           displayName: Publish Docs to GitHubIO Blob Storage
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          dependsOn: PublishDevFeedPackage
+          dependsOn: PublishESRPPackage
           pool:
             name: azsdk-pool-mms-win-2022-general
             image: azsdk-pool-mms-win-2022-1espt
