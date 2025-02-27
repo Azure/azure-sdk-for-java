@@ -64,10 +64,8 @@ When debugging and executing code locally, it's typical for a developer to use t
 
 - [Azure Toolkit for IntelliJ](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#intellij-credential)
 - [Visual Studio Code Azure Account Extension](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#visual-studio-code-credential)
-  - It's a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364) that `VisualStudioCodeCredential` doesn't work with [Azure Account extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account) versions newer than **0.9.11**. A long-term fix to this problem is in progress. In the meantime, consider authenticating via the Azure CLI (below).
+  - It's a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364) that `VisualStudioCodeCredential` doesn't work with [Azure Account extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account) versions newer than **0.9.11**. A long-term fix to this problem is in progress. In the meantime, consider authenticating via the Azure CLI.
 - [Azure CLI](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
-
-Select each item above to learn about how to configure them for Azure Identity authentication.
 
 ## Key concepts
 
@@ -75,95 +73,73 @@ Select each item above to learn about how to configure them for Azure Identity a
 
 A credential is a class that contains or can obtain the data needed for a service client to authenticate requests. Service clients across the Azure SDK accept credentials when they're constructed. The service clients use those credentials to authenticate requests to the service.
 
-The Azure Identity library focuses on OAuth authentication with Microsoft Entra ID, and it offers various credential classes capable of acquiring a Microsoft Entra token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [azure-core][azure_core_library], and any of them can be used by to construct service clients capable of authenticating with a `TokenCredential`.
+The Azure Identity library focuses on OAuth authentication with Microsoft Entra ID, and it offers various credential classes capable of acquiring a Microsoft Entra token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [azure-core][azure_core_library], and any of them can be used to construct service clients capable of authenticating with a `TokenCredential`.
 
 See [Credential classes](#credential-classes) for a complete list of available credential classes.
 
-### DefaultAzureCredential
+### ChainedTokenCredential
 
-`DefaultAzureCredential` simplifies authentication while developing apps that deploy to Azure by combining credentials used in Azure hosting environments with credentials used in local development. For more information, see [DefaultAzureCredential overview][dac_overview].
-
-#### Continuation policy
-
-As of v1.10.0, `DefaultAzureCredential` attempts to authenticate with all developer credentials until one succeeds, regardless of any errors previous developer credentials experienced. For example, a developer credential may attempt to get a token and fail, so `DefaultAzureCredential` continues to the next credential in the flow. Deployed service credentials stop the flow with a thrown exception if they're able to attempt token retrieval, but don't receive one.
-
-This allows for trying all of the developer credentials on your machine while having predictable deployed behavior.
-
-#### Note about `VisualStudioCodeCredential`
-
-Due to a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364), `VisualStudioCodeCredential` has been removed from the `DefaultAzureCredential` token chain. When the issue is resolved in a future release, this change will be reverted.
+`ChainedTokenCredential` is recommended to simplify authentication while developing apps that deploy to Azure by combining credentials used in hosting environments with credentials used in local development. Use a credential chain with the specific production and development credentials necessary for your environment and workflows. For more information, see  [credential chains](https://learn.microsoft.com/azure/developer/java/sdk/authentication/credential-chains).
 
 ## Examples
 
 You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples).
 
-### Authenticate with `DefaultAzureCredential`
+### Construct a Credential Chain
 
-This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using `DefaultAzureCredential`:
+This example demonstrates constructing a `ChainedTokenCredential` with a `ManagedIdentityCredential` (with a system-assigned managed identity) for production and `AzureCliCredential` for local development. You can use other credentials suitable for your production and development environments.
 
 ```java
-/**
- * DefaultAzureCredential first checks environment variables for configuration.
- * If environment configuration is incomplete, it tries managed identity.
- */
-public void createDefaultAzureCredential() {
-    DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-
-    // Azure SDK client builders accept the credential as a parameter
-    SecretClient client = new SecretClientBuilder()
-        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-        .credential(defaultCredential)
-        .buildClient();
-}
+    ChainedTokenCredential credential = new ChainedTokenCredentialBuilder()
+        .addLast(new ManagedIdentityCredentialBuilder().build())
+        .addLast(new AzureCliCredentialBuilder().build())
+        .build();
 ```
 
-### Authenticate a user-assigned managed identity with `DefaultAzureCredential`
+### Authenticate a user-assigned managed identity with `ManagedIdentityCredential`
 
-To authenticate using user-assigned managed identity, ensure that configuration instructions for your supported Azure resource [here](#managed-identity-support) have been successfully completed.
+To authenticate using user-assigned managed identity follow the [configuration instructions](#managed-identity-support) for your supported Azure resource.
 
-The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using `DefaultAzureCredential`, deployed to an Azure resource with a user-assigned managed identity configured.
+This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using `ManagedIdentityCredential` when deployed to an Azure resource with a user-assigned managed identity configured.
 
 See more about how to configure a user-assigned managed identity for an Azure resource in [Enable managed identity for Azure resources](https://learn.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential).
 
 ```java
 /**
- * DefaultAzureCredential uses the user-assigned managed identity with the specified client ID.
+ * ManagedIdentityCredential uses the user-assigned managed identity with the specified client ID.
  */
-public void createDefaultAzureCredentialForUserAssignedManagedIdentity() {
-    DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
-        .managedIdentityClientId("<MANAGED_IDENTITY_CLIENT_ID>")
-        .build();
 
-    // Azure SDK client builders accept the credential as a parameter
-    SecretClient client = new SecretClientBuilder()
-        .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-        .credential(defaultCredential)
-        .buildClient();
-}
+ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder()
+    .clientId("<MANAGED_IDENTITY_CLIENT_ID>")
+    .build();
+
+// Azure SDK client builders accept the credential as a parameter
+SecretClient client = new SecretClientBuilder()
+    .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
+    .credential(managedIdentityCredential)
+    .buildClient();
+
 ```
 
-In addition to configuring the `managedIdentityClientId` via code, it can also be set using the `AZURE_CLIENT_ID` environment variable. These two approaches are equivalent when using `DefaultAzureCredential`.
+### Authenticate a user in Azure Toolkit for IntelliJ with `IntelliJCredential`
 
-### Authenticate a user in Azure Toolkit for IntelliJ with `DefaultAzureCredential`
+To authenticate using IntelliJ follow these [configuration instructions](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#sign-in-azure-toolkit-for-intellij-for-intellijcredential). 
 
-To authenticate using IntelliJ, ensure that configuration instructions [here](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#sign-in-azure-toolkit-for-intellij-for-intellijcredential) have been successfully completed.
-
-The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using `DefaultAzureCredential`, on a workstation with IntelliJ IDEA installed, and the user has signed in with an Azure account to the Azure Toolkit for IntelliJ.
+The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using `IntelliJCredential` on a workstation with IntelliJ IDEA installed where the user has signed in to the Azure Toolkit for IntelliJ.
 
 See more about how to configure your IntelliJ IDEA in [Sign in Azure Toolkit for IntelliJ for IntelliJCredential](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#intellij-credential).
 
 ```java
 /**
- * DefaultAzureCredential uses the signed-in user from Azure Toolkit for Java.
+ * IntelliJCredential uses the signed-in user from Azure Toolkit for Java.
  */
-public void createDefaultAzureCredentialForIntelliJ() {
-    DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder()
-        .build();
+
+    IntelliJCredential credential = new IntelliJCredentialBuilder().build();
 
     // Azure SDK client builders accept the credential as a parameter
     SecretClient client = new SecretClientBuilder()
         .vaultUrl("https://{YOUR_VAULT_NAME}.vault.azure.net")
-        .credential(defaultCredential)
+        .credential(credential)
         .buildClient();
 }
 ```
@@ -250,10 +226,6 @@ public void createManagedIdentityCredential() {
         .buildClient();
 }
 ```
-
-### Define a custom authentication flow with `ChainedTokenCredential`
-
-While `DefaultAzureCredential` is generally the quickest way to authenticate apps for Azure, you can create a customized chain of credentials to be considered. `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. For more information, see [ChainedTokenCredential overview][ctc_overview].
 
 ## Sovereign cloud configuration
 
