@@ -84,6 +84,8 @@ public class TokenRequestContext {
      * Adds one or more scopes to the request scopes.
      * @param scopes one or more scopes to add
      * @return the TokenRequestContext itself
+     * @throws IllegalArgumentException if scopes list is empty or any of the provided is null or empty.
+     * @throws NullPointerException if scopes is null.
      */
     public TokenRequestContext addScopes(String... scopes) {
         Objects.requireNonNull(scopes, "The scopes parameter cannot be null.");
