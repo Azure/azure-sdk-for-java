@@ -50,6 +50,8 @@ extends:
         groupId: com.azure
         safeName: azurecorev2
         releaseInBatch: ${{ parameters.release_azurecorev2 }}
+        triggeringPaths:
+        - /sdk/parents/azure-client-sdk-parent-v2
       - name: azure-core-test-v2
         groupId: com.azure
         safeName: azurecoretestv2

@@ -6,22 +6,19 @@ package com.azure.v2.core.traits;
 import com.azure.v2.core.credentials.TokenCredential;
 
 /**
- * An {@link com.azure.v2.core.traits Azure SDK for Java trait} providing a consistent interface for setting
- * {@link TokenCredential}. Refer to the Azure SDK for Java
- * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
- * documentation for more details on proper usage of the {@link TokenCredential} type.
- *
+ * A {@link com.azure.v2.core.traits Core V2 Trait} providing a consistent interface for setting
+ * {@link TokenCredential}.
+
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue
  * to return the concrete type, rather than the trait type.
+ *
  * @see com.azure.v2.core.traits
  * @see TokenCredential
  */
 public interface TokenCredentialTrait<T extends TokenCredentialTrait<T>> {
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
-     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
-     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service.
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of

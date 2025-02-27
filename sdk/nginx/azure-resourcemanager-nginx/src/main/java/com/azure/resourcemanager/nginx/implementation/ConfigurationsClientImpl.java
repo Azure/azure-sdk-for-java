@@ -34,9 +34,10 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.nginx.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.nginx.fluent.models.AnalysisResultInner;
-import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationInner;
+import com.azure.resourcemanager.nginx.fluent.models.NginxConfigurationResponseInner;
 import com.azure.resourcemanager.nginx.models.AnalysisCreate;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationListResponse;
+import com.azure.resourcemanager.nginx.models.NginxConfigurationRequest;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -87,7 +88,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations/{configurationName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NginxConfigurationInner>> get(@HostParam("$host") String endpoint,
+        Mono<Response<NginxConfigurationResponseInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentName") String deploymentName,
@@ -103,7 +104,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("deploymentName") String deploymentName,
             @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") NginxConfigurationInner body, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") NginxConfigurationRequest body, @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -148,7 +149,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NginxConfigurationInner>> listSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<NginxConfigurationResponseInner>> listSinglePageAsync(String resourceGroupName,
         String deploymentName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -169,7 +170,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
                 resourceGroupName, deploymentName, this.client.getApiVersion(), accept, context))
-            .<PagedResponse<NginxConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<NginxConfigurationResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -186,7 +187,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NginxConfigurationInner>> listSinglePageAsync(String resourceGroupName,
+    private Mono<PagedResponse<NginxConfigurationResponseInner>> listSinglePageAsync(String resourceGroupName,
         String deploymentName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -223,7 +224,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NginxConfigurationInner> listAsync(String resourceGroupName, String deploymentName) {
+    private PagedFlux<NginxConfigurationResponseInner> listAsync(String resourceGroupName, String deploymentName) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, deploymentName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
@@ -240,7 +241,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NginxConfigurationInner> listAsync(String resourceGroupName, String deploymentName,
+    private PagedFlux<NginxConfigurationResponseInner> listAsync(String resourceGroupName, String deploymentName,
         Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, deploymentName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -257,7 +258,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NginxConfigurationInner> list(String resourceGroupName, String deploymentName) {
+    public PagedIterable<NginxConfigurationResponseInner> list(String resourceGroupName, String deploymentName) {
         return new PagedIterable<>(listAsync(resourceGroupName, deploymentName));
     }
 
@@ -273,7 +274,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NginxConfigurationInner> list(String resourceGroupName, String deploymentName,
+    public PagedIterable<NginxConfigurationResponseInner> list(String resourceGroupName, String deploymentName,
         Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, deploymentName, context));
     }
@@ -292,7 +293,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NginxConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+    private Mono<Response<NginxConfigurationResponseInner>> getWithResponseAsync(String resourceGroupName,
         String deploymentName, String configurationName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -335,7 +336,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NginxConfigurationInner>> getWithResponseAsync(String resourceGroupName,
+    private Mono<Response<NginxConfigurationResponseInner>> getWithResponseAsync(String resourceGroupName,
         String deploymentName, String configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -375,7 +376,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the NGINX configuration of given NGINX deployment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxConfigurationInner> getAsync(String resourceGroupName, String deploymentName,
+    private Mono<NginxConfigurationResponseInner> getAsync(String resourceGroupName, String deploymentName,
         String configurationName) {
         return getWithResponseAsync(resourceGroupName, deploymentName, configurationName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -395,7 +396,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the NGINX configuration of given NGINX deployment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NginxConfigurationInner> getWithResponse(String resourceGroupName, String deploymentName,
+    public Response<NginxConfigurationResponseInner> getWithResponse(String resourceGroupName, String deploymentName,
         String configurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, deploymentName, configurationName, context).block();
     }
@@ -413,7 +414,8 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the NGINX configuration of given NGINX deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NginxConfigurationInner get(String resourceGroupName, String deploymentName, String configurationName) {
+    public NginxConfigurationResponseInner get(String resourceGroupName, String deploymentName,
+        String configurationName) {
         return getWithResponse(resourceGroupName, deploymentName, configurationName, Context.NONE).getValue();
     }
 
@@ -432,7 +434,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String deploymentName, String configurationName, NginxConfigurationInner body) {
+        String deploymentName, String configurationName, NginxConfigurationRequest body) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -479,7 +481,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String deploymentName, String configurationName, NginxConfigurationInner body, Context context) {
+        String deploymentName, String configurationName, NginxConfigurationRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -522,12 +524,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body) {
+    private PollerFlux<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, String configurationName,
+            NginxConfigurationRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body);
-        return this.client.<NginxConfigurationInner, NginxConfigurationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), NginxConfigurationInner.class, NginxConfigurationInner.class,
+        return this.client.<NginxConfigurationResponseInner, NginxConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NginxConfigurationResponseInner.class, NginxConfigurationResponseInner.class,
             this.client.getContext());
     }
 
@@ -544,13 +547,13 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NginxConfigurationInner>, NginxConfigurationInner>
+    private PollerFlux<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner>
         beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, String configurationName) {
-        final NginxConfigurationInner body = null;
+        final NginxConfigurationRequest body = null;
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body);
-        return this.client.<NginxConfigurationInner, NginxConfigurationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), NginxConfigurationInner.class, NginxConfigurationInner.class,
+        return this.client.<NginxConfigurationResponseInner, NginxConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NginxConfigurationResponseInner.class, NginxConfigurationResponseInner.class,
             this.client.getContext());
     }
 
@@ -569,14 +572,15 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body,
-        Context context) {
+    private PollerFlux<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, String configurationName,
+            NginxConfigurationRequest body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = createOrUpdateWithResponseAsync(resourceGroupName, deploymentName, configurationName, body, context);
-        return this.client.<NginxConfigurationInner, NginxConfigurationInner>getLroResult(mono,
-            this.client.getHttpPipeline(), NginxConfigurationInner.class, NginxConfigurationInner.class, context);
+        return this.client.<NginxConfigurationResponseInner, NginxConfigurationResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NginxConfigurationResponseInner.class, NginxConfigurationResponseInner.class,
+            context);
     }
 
     /**
@@ -592,9 +596,9 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxConfigurationInner>, NginxConfigurationInner>
+    public SyncPoller<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner>
         beginCreateOrUpdate(String resourceGroupName, String deploymentName, String configurationName) {
-        final NginxConfigurationInner body = null;
+        final NginxConfigurationRequest body = null;
         return this.beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body)
             .getSyncPoller();
     }
@@ -614,8 +618,8 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NginxConfigurationInner>, NginxConfigurationInner> beginCreateOrUpdate(
-        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationInner body,
+    public SyncPoller<PollResult<NginxConfigurationResponseInner>, NginxConfigurationResponseInner> beginCreateOrUpdate(
+        String resourceGroupName, String deploymentName, String configurationName, NginxConfigurationRequest body,
         Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body, context)
             .getSyncPoller();
@@ -635,8 +639,8 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxConfigurationInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
-        String configurationName, NginxConfigurationInner body) {
+    private Mono<NginxConfigurationResponseInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
+        String configurationName, NginxConfigurationRequest body) {
         return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -654,9 +658,9 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxConfigurationInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
+    private Mono<NginxConfigurationResponseInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
         String configurationName) {
-        final NginxConfigurationInner body = null;
+        final NginxConfigurationRequest body = null;
         return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -676,8 +680,8 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NginxConfigurationInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
-        String configurationName, NginxConfigurationInner body, Context context) {
+    private Mono<NginxConfigurationResponseInner> createOrUpdateAsync(String resourceGroupName, String deploymentName,
+        String configurationName, NginxConfigurationRequest body, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -695,9 +699,9 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NginxConfigurationInner createOrUpdate(String resourceGroupName, String deploymentName,
+    public NginxConfigurationResponseInner createOrUpdate(String resourceGroupName, String deploymentName,
         String configurationName) {
-        final NginxConfigurationInner body = null;
+        final NginxConfigurationRequest body = null;
         return createOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body).block();
     }
 
@@ -716,8 +720,8 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NginxConfigurationInner createOrUpdate(String resourceGroupName, String deploymentName,
-        String configurationName, NginxConfigurationInner body, Context context) {
+    public NginxConfigurationResponseInner createOrUpdate(String resourceGroupName, String deploymentName,
+        String configurationName, NginxConfigurationRequest body, Context context) {
         return createOrUpdateAsync(resourceGroupName, deploymentName, configurationName, body, context).block();
     }
 
@@ -1117,7 +1121,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NginxConfigurationInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<NginxConfigurationResponseInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -1127,7 +1131,7 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
         }
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NginxConfigurationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+            .<PagedResponse<NginxConfigurationResponseInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1143,7 +1147,8 @@ public final class ConfigurationsClientImpl implements ConfigurationsClient {
      * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NginxConfigurationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<NginxConfigurationResponseInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
