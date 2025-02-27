@@ -6,37 +6,42 @@ package com.azure.resourcemanager.managednetworkfabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managednetworkfabric.models.ConfigurationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The response of the action validate configuration. */
+/**
+ * The response of the action validate configuration.
+ */
 @Fluent
-public final class ValidateConfigurationResponseInner {
+public final class ValidateConfigurationResponseInner implements JsonSerializable<ValidateConfigurationResponseInner> {
     /*
      * Gets the configuration state.
      */
-    @JsonProperty(value = "configurationState", access = JsonProperty.Access.WRITE_ONLY)
     private ConfigurationState configurationState;
 
     /*
      * URL for the details of the response.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The error object.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of ValidateConfigurationResponseInner class. */
+    /**
+     * Creates an instance of ValidateConfigurationResponseInner class.
+     */
     public ValidateConfigurationResponseInner() {
     }
 
     /**
      * Get the configurationState property: Gets the configuration state.
-     *
+     * 
      * @return the configurationState value.
      */
     public ConfigurationState configurationState() {
@@ -45,7 +50,7 @@ public final class ValidateConfigurationResponseInner {
 
     /**
      * Get the url property: URL for the details of the response.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -54,7 +59,7 @@ public final class ValidateConfigurationResponseInner {
 
     /**
      * Set the url property: URL for the details of the response.
-     *
+     * 
      * @param url the url value to set.
      * @return the ValidateConfigurationResponseInner object itself.
      */
@@ -65,7 +70,7 @@ public final class ValidateConfigurationResponseInner {
 
     /**
      * Get the error property: The error object.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -74,7 +79,7 @@ public final class ValidateConfigurationResponseInner {
 
     /**
      * Set the error property: The error object.
-     *
+     * 
      * @param error the error value to set.
      * @return the ValidateConfigurationResponseInner object itself.
      */
@@ -85,9 +90,52 @@ public final class ValidateConfigurationResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateConfigurationResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateConfigurationResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidateConfigurationResponseInner.
+     */
+    public static ValidateConfigurationResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateConfigurationResponseInner deserializedValidateConfigurationResponseInner
+                = new ValidateConfigurationResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("configurationState".equals(fieldName)) {
+                    deserializedValidateConfigurationResponseInner.configurationState
+                        = ConfigurationState.fromString(reader.getString());
+                } else if ("url".equals(fieldName)) {
+                    deserializedValidateConfigurationResponseInner.url = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedValidateConfigurationResponseInner.error = ManagementError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateConfigurationResponseInner;
+        });
     }
 }

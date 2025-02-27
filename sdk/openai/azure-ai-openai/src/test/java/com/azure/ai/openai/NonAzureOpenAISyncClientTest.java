@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.models.AudioResponseData;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscription;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
@@ -57,6 +58,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -102,6 +104,28 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
             assertTrue(resultCompletions.stream().toArray().length > 1);
             resultCompletions.forEach(OpenAIClientTestBase::assertCompletionsStream);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getCompletionsStreamUsageRunnerForNonAzure((deploymentId, completionsOptions) -> {
+            IterableStream<Completions> resultCompletions
+                = client.getCompletionsStream(deploymentId, completionsOptions);
+            assertCompletionStreamUsage(resultCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getCompletionsStreamTokenCutoffRunnerForNonAzure((deploymentId, completionsOptions) -> {
+            IterableStream<Completions> resultCompletions
+                = client.getCompletionsStream(deploymentId, completionsOptions);
+            assertCompletionStreamTokenCutoff(resultCompletions.stream().collect(Collectors.toList()));
         });
     }
 
@@ -169,6 +193,9 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             completionsOptions.setMaxTokens(3);
             Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
             assertCompletions(1, resultCompletions);
+            CompletionsUsage usage = resultCompletions.getUsage();
+            assertNotNull(usage);
+            assertTrue(usage.getCompletionTokens() <= 3);
         });
     }
 
@@ -185,6 +212,138 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsTextPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsWithTextPromptAudioResponse((deploymentId, options) -> {
+            ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
+            ChatChoice choice = chatCompletions.getChoices().get(0);
+            ChatResponseMessage message = choice.getMessage();
+
+            // Assert that the message has content
+            assertEquals(ChatRole.ASSISTANT, message.getRole());
+            AudioResponseData audioResponse = message.getAudio();
+            assertNotNull(audioResponse);
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getId()));
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getData()));
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getTranscript()));
+            assertNotNull(audioResponse.getExpiresAt());
+
+            // Assert finish reason
+            assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+            CompletionsUsage usage = chatCompletions.getUsage();
+
+            // assert that we only used audio tokens for the response
+            assertNotNull(usage);
+            assertNotNull(usage.getPromptTokensDetails());
+            assertNotNull(usage.getCompletionTokensDetails());
+
+            assertEquals(0, usage.getPromptTokensDetails().getAudioTokens());
+            assertTrue(usage.getCompletionTokensDetails().getAudioTokens() > 0);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsAudioPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsWithAudioPromptAudioResponse((deploymentId, options) -> {
+            ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
+            ChatChoice choice = chatCompletions.getChoices().get(0);
+            ChatResponseMessage message = choice.getMessage();
+
+            // Assert that the message has content
+            assertEquals(ChatRole.ASSISTANT, message.getRole());
+            AudioResponseData audioResponse = message.getAudio();
+            assertNotNull(audioResponse);
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getId()));
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getData()));
+            assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getTranscript()));
+            assertNotNull(audioResponse.getExpiresAt());
+
+            // Assert finish reason
+            assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+            CompletionsUsage usage = chatCompletions.getUsage();
+
+            // assert that we only used audio tokens for the response
+            assertNotNull(usage);
+            assertNotNull(usage.getPromptTokensDetails());
+            assertNotNull(usage.getCompletionTokensDetails());
+
+            assertTrue(usage.getPromptTokensDetails().getAudioTokens() > 0);
+            assertTrue(usage.getCompletionTokensDetails().getAudioTokens() > 0);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsReasoningEffortMedium(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsWithReasoningEffort((deploymentId, options) -> {
+            ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
+            ChatChoice choice = chatCompletions.getChoices().get(0);
+            ChatResponseMessage message = choice.getMessage();
+
+            // Assert that the message has content
+            assertEquals(ChatRole.ASSISTANT, message.getRole());
+            assertFalse(CoreUtils.isNullOrEmpty(message.getContent()));
+
+            // Assert finish reason
+            assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+            CompletionsUsage usage = chatCompletions.getUsage();
+
+            // assert that we only used audio tokens for the response
+            assertNotNull(usage);
+            assertNotNull(usage.getPromptTokensDetails());
+            assertNotNull(usage.getCompletionTokensDetails());
+
+            assertTrue(usage.getCompletionTokensDetails().getReasoningTokens() > 0);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsPrediction(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsWithPrediction((deploymentId, options) -> {
+            ChatCompletions chatCompletions = client.getChatCompletions(deploymentId, options);
+            ChatChoice choice = chatCompletions.getChoices().get(0);
+            ChatResponseMessage message = choice.getMessage();
+
+            // Assert that the message has content
+            assertEquals(ChatRole.ASSISTANT, message.getRole());
+            assertFalse(CoreUtils.isNullOrEmpty(message.getContent()));
+
+            // Assert finish reason
+            assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+            CompletionsUsage usage = chatCompletions.getUsage();
+
+            // assert that we only used audio tokens for the response
+            assertNotNull(usage);
+            assertNotNull(usage.getPromptTokensDetails());
+            assertNotNull(usage.getCompletionTokensDetails());
+
+            assertTrue(usage.getCompletionTokensDetails().getAcceptedPredictionTokens() > 0);
+            assertTrue(usage.getCompletionTokensDetails().getRejectedPredictionTokens() > 0);
+
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
+            ChatCompletions resultChatCompletions = client.getChatCompletions(deploymentId,
+                new ChatCompletionsOptions(chatMessages).setMaxCompletionTokens(10));
+            assertTrue(resultChatCompletions.getUsage().getCompletionTokens() <= 10);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
@@ -192,6 +351,40 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
             assertTrue(resultChatCompletions.stream().toArray().length > 1);
             resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamUsage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsUsageRunnerForNonAzure((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
+            assertChatCompletionStreamUsage(resultChatCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsStreamTokenCutoffRunnerForNonAzure((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
+            assertChatCompletionStreamTokenCutoff(resultChatCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamUsageTokenDetails(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions
+                = client.getChatCompletionsStream(deploymentId, chatCompletionsOptions);
+            assertChatCompletionStreamUsageTokenDetails(resultChatCompletions.stream().collect(Collectors.toList()));
         });
     }
 
@@ -923,7 +1116,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                         assertEquals(1, toolCalls.size());
                         ChatCompletionsFunctionToolCall toolCall = (ChatCompletionsFunctionToolCall) toolCalls.get(0);
                         FunctionCall functionCall = toolCall.getFunction();
-                        if (i == 0) {
+                        if (i == 1) {
                             content = chatChoice.getDelta().getContent();
                             functionName = functionCall.getName();
                             toolCallId = toolCall.getId();

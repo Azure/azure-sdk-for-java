@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GrantType. */
+/**
+ * Defines values for GrantType.
+ */
 public final class GrantType extends ExpandableStringEnum<GrantType> {
-    /** Static value authorizationCode for GrantType. */
+    /**
+     * Static value authorizationCode for GrantType.
+     */
     public static final GrantType AUTHORIZATION_CODE = fromString("authorizationCode");
 
-    /** Static value implicit for GrantType. */
+    /**
+     * Static value implicit for GrantType.
+     */
     public static final GrantType IMPLICIT = fromString("implicit");
 
-    /** Static value resourceOwnerPassword for GrantType. */
+    /**
+     * Static value resourceOwnerPassword for GrantType.
+     */
     public static final GrantType RESOURCE_OWNER_PASSWORD = fromString("resourceOwnerPassword");
 
-    /** Static value clientCredentials for GrantType. */
+    /**
+     * Static value clientCredentials for GrantType.
+     */
     public static final GrantType CLIENT_CREDENTIALS = fromString("clientCredentials");
 
     /**
      * Creates a new instance of GrantType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class GrantType extends ExpandableStringEnum<GrantType> {
 
     /**
      * Creates or finds a GrantType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GrantType.
      */
-    @JsonCreator
     public static GrantType fromString(String name) {
         return fromString(name, GrantType.class);
     }
 
     /**
      * Gets known GrantType values.
-     *
+     * 
      * @return known GrantType values.
      */
     public static Collection<GrantType> values() {

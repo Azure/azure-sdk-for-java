@@ -5,69 +5,71 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.azure.resourcemanager.kusto.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Operation Result Entity. */
+/**
+ * Operation Result Entity.
+ */
 @Fluent
-public final class OperationResultInner {
+public final class OperationResultInner implements JsonSerializable<OperationResultInner> {
     /*
      * ID of the resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Name of the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * status of the Operation result.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
 
     /*
      * The operation start time
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The operation end time
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Percentage completed.
      */
-    @JsonProperty(value = "percentComplete")
     private Double percentComplete;
 
     /*
      * Properties of the operation results
      */
-    @JsonProperty(value = "properties")
     private OperationResultProperties innerProperties;
 
     /*
      * Object that contains the error code and message if the operation failed.
      */
-    @JsonProperty(value = "error")
     private OperationResultErrorProperties innerError;
 
-    /** Creates an instance of OperationResultInner class. */
+    /**
+     * Creates an instance of OperationResultInner class.
+     */
     public OperationResultInner() {
     }
 
     /**
      * Get the id property: ID of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +78,7 @@ public final class OperationResultInner {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -85,7 +87,7 @@ public final class OperationResultInner {
 
     /**
      * Get the status property: status of the Operation result.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -94,7 +96,7 @@ public final class OperationResultInner {
 
     /**
      * Get the startTime property: The operation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -103,7 +105,7 @@ public final class OperationResultInner {
 
     /**
      * Set the startTime property: The operation start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the OperationResultInner object itself.
      */
@@ -114,7 +116,7 @@ public final class OperationResultInner {
 
     /**
      * Get the endTime property: The operation end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -123,7 +125,7 @@ public final class OperationResultInner {
 
     /**
      * Set the endTime property: The operation end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the OperationResultInner object itself.
      */
@@ -134,7 +136,7 @@ public final class OperationResultInner {
 
     /**
      * Get the percentComplete property: Percentage completed.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Double percentComplete() {
@@ -143,7 +145,7 @@ public final class OperationResultInner {
 
     /**
      * Set the percentComplete property: Percentage completed.
-     *
+     * 
      * @param percentComplete the percentComplete value to set.
      * @return the OperationResultInner object itself.
      */
@@ -154,7 +156,7 @@ public final class OperationResultInner {
 
     /**
      * Get the innerProperties property: Properties of the operation results.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OperationResultProperties innerProperties() {
@@ -163,7 +165,7 @@ public final class OperationResultInner {
 
     /**
      * Get the innerError property: Object that contains the error code and message if the operation failed.
-     *
+     * 
      * @return the innerError value.
      */
     private OperationResultErrorProperties innerError() {
@@ -172,7 +174,7 @@ public final class OperationResultInner {
 
     /**
      * Get the operationKind property: The kind of the operation.
-     *
+     * 
      * @return the operationKind value.
      */
     public String operationKind() {
@@ -181,7 +183,7 @@ public final class OperationResultInner {
 
     /**
      * Set the operationKind property: The kind of the operation.
-     *
+     * 
      * @param operationKind the operationKind value to set.
      * @return the OperationResultInner object itself.
      */
@@ -195,7 +197,7 @@ public final class OperationResultInner {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -204,7 +206,7 @@ public final class OperationResultInner {
 
     /**
      * Get the operationState property: The state of the operation.
-     *
+     * 
      * @return the operationState value.
      */
     public String operationState() {
@@ -213,7 +215,7 @@ public final class OperationResultInner {
 
     /**
      * Set the operationState property: The state of the operation.
-     *
+     * 
      * @param operationState the operationState value to set.
      * @return the OperationResultInner object itself.
      */
@@ -227,7 +229,7 @@ public final class OperationResultInner {
 
     /**
      * Get the code property: The code of the error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -236,7 +238,7 @@ public final class OperationResultInner {
 
     /**
      * Set the code property: The code of the error.
-     *
+     * 
      * @param code the code value to set.
      * @return the OperationResultInner object itself.
      */
@@ -250,7 +252,7 @@ public final class OperationResultInner {
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -259,7 +261,7 @@ public final class OperationResultInner {
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the OperationResultInner object itself.
      */
@@ -273,7 +275,7 @@ public final class OperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -283,5 +285,63 @@ public final class OperationResultInner {
         if (innerError() != null) {
             innerError().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeNumberField("percentComplete", this.percentComplete);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("error", this.innerError);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultInner.
+     */
+    public static OperationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultInner deserializedOperationResultInner = new OperationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationResultInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationResultInner.status = Status.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationResultInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationResultInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedOperationResultInner.percentComplete = reader.getNullable(JsonReader::getDouble);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationResultInner.innerProperties = OperationResultProperties.fromJson(reader);
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationResultInner.innerError = OperationResultErrorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultInner;
+        });
     }
 }

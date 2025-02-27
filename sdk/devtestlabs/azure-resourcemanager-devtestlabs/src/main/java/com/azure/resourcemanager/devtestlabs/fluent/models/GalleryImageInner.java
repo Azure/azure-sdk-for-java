@@ -7,41 +7,96 @@ package com.azure.resourcemanager.devtestlabs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.GalleryImageReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** A gallery image. */
+/**
+ * A gallery image.
+ */
 @Fluent
 public final class GalleryImageInner extends Resource {
     /*
      * The properties of the resource.
      */
-    @JsonProperty(value = "properties", required = true)
     private GalleryImageProperties innerProperties = new GalleryImageProperties();
 
-    /** Creates an instance of GalleryImageInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of GalleryImageInner class.
+     */
     public GalleryImageInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GalleryImageProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -50,7 +105,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Get the author property: The author of the gallery image.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -59,7 +114,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Set the author property: The author of the gallery image.
-     *
+     * 
      * @param author the author value to set.
      * @return the GalleryImageInner object itself.
      */
@@ -73,7 +128,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Get the createdDate property: The creation date of the gallery image.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -82,7 +137,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Get the description property: The description of the gallery image.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -91,7 +146,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Set the description property: The description of the gallery image.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryImageInner object itself.
      */
@@ -105,7 +160,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Get the imageReference property: The image reference of the gallery image.
-     *
+     * 
      * @return the imageReference value.
      */
     public GalleryImageReference imageReference() {
@@ -114,7 +169,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Set the imageReference property: The image reference of the gallery image.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the GalleryImageInner object itself.
      */
@@ -128,7 +183,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Get the icon property: The icon of the gallery image.
-     *
+     * 
      * @return the icon value.
      */
     public String icon() {
@@ -137,7 +192,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Set the icon property: The icon of the gallery image.
-     *
+     * 
      * @param icon the icon value to set.
      * @return the GalleryImageInner object itself.
      */
@@ -151,7 +206,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Get the enabled property: Indicates whether this gallery image is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -160,7 +215,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Set the enabled property: Indicates whether this gallery image is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the GalleryImageInner object itself.
      */
@@ -174,7 +229,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Get the planId property: The third party plan that applies to this image.
-     *
+     * 
      * @return the planId value.
      */
     public String planId() {
@@ -183,7 +238,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Set the planId property: The third party plan that applies to this image.
-     *
+     * 
      * @param planId the planId value to set.
      * @return the GalleryImageInner object itself.
      */
@@ -197,7 +252,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Get the isPlanAuthorized property: Indicates if the plan has been authorized for programmatic deployment.
-     *
+     * 
      * @return the isPlanAuthorized value.
      */
     public Boolean isPlanAuthorized() {
@@ -206,7 +261,7 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Set the isPlanAuthorized property: Indicates if the plan has been authorized for programmatic deployment.
-     *
+     * 
      * @param isPlanAuthorized the isPlanAuthorized value to set.
      * @return the GalleryImageInner object itself.
      */
@@ -220,17 +275,68 @@ public final class GalleryImageInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property innerProperties in model GalleryImageInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model GalleryImageInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GalleryImageInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryImageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryImageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryImageInner.
+     */
+    public static GalleryImageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryImageInner deserializedGalleryImageInner = new GalleryImageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGalleryImageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGalleryImageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGalleryImageInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedGalleryImageInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGalleryImageInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGalleryImageInner.innerProperties = GalleryImageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryImageInner;
+        });
+    }
 }

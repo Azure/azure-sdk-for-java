@@ -16,7 +16,9 @@ import java.util.Map;
  */
 public final class ConfigurationAssignmentsForSubscriptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/ConfigurationAssignmentsForSubscriptions_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/maintenance/resource-manager/Microsoft.Maintenance/preview/2023-10-01-preview/examples/
+     * ConfigurationAssignmentsForSubscriptions_CreateOrUpdate.json
      */
     /**
      * Sample code: ConfigurationAssignmentsForSubscriptions_CreateOrUpdate.

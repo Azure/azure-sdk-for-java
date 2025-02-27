@@ -18,29 +18,31 @@ public final class WorkbookResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbookResource model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"b7deb4ee-efa9-46c9-8c77-7a9290d6e3d7\",\"tenantId\":\"5f85f425-298e-477d-9cf5-2db2e1840718\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"k\":{\"principalId\":\"607bf139-ac9a-4744-b8bd-146929c27749\",\"clientId\":\"8700282f-6aac-4911-bd44-095729a39ac6\"}}},\"kind\":\"shared\",\"etag\":\"jervtia\",\"location\":\"xsdszuempsb\",\"tags\":{\"eyvpnqicvinvkj\":\"z\"},\"id\":\"xdxr\",\"name\":\"uukzclewyhmlw\",\"type\":\"aztz\"}")
+            "{\"identity\":{\"principalId\":\"e770d48c-db47-4403-b216-818a292b766a\",\"tenantId\":\"9b606586-35cb-44a7-86f9-43cfe3a8f023\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"alnswhccsphk\":{\"principalId\":\"ddb0172c-723a-40d7-b193-6f3bab193a1c\",\"clientId\":\"7c8aceca-509d-4ad3-9293-5dabeaeb8f0f\"},\"witqscywuggwoluh\":{\"principalId\":\"21402738-76ad-45fd-b5ca-6a0cba734760\",\"clientId\":\"f615bc15-807d-4ccb-8468-201cc3de66f3\"},\"wem\":{\"principalId\":\"2e82b5ad-16be-46b4-9aaf-7db6ab205fd8\",\"clientId\":\"429aa4d0-bc59-46e5-9fc2-2d7373308d7c\"}}},\"kind\":\"shared\",\"etag\":\"sbrgz\",\"location\":\"wmsweypqwd\",\"tags\":{\"qhuexm\":\"icccn\",\"ncsdtclusiyp\":\"ttlstvlzywemhz\",\"ygqukyhejh\":\"sfgytguslfead\"},\"id\":\"isxgfp\",\"name\":\"lolp\",\"type\":\"vk\"}")
             .toObject(WorkbookResource.class);
-        Assertions.assertEquals("xsdszuempsb", model.location());
-        Assertions.assertEquals("z", model.tags().get("eyvpnqicvinvkj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("wmsweypqwd", model.location());
+        Assertions.assertEquals("icccn", model.tags().get("qhuexm"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals(WorkbookSharedTypeKind.SHARED, model.kind());
-        Assertions.assertEquals("jervtia", model.etag());
+        Assertions.assertEquals("sbrgz", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookResource model = new WorkbookResource().withLocation("xsdszuempsb")
-            .withTags(mapOf("eyvpnqicvinvkj", "z"))
-            .withIdentity(new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("k", new UserAssignedIdentity())))
+        WorkbookResource model = new WorkbookResource().withLocation("wmsweypqwd")
+            .withTags(mapOf("qhuexm", "icccn", "ncsdtclusiyp", "ttlstvlzywemhz", "ygqukyhejh", "sfgytguslfead"))
+            .withIdentity(
+                new WorkbookResourceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("alnswhccsphk", new UserAssignedIdentity(), "witqscywuggwoluh",
+                        new UserAssignedIdentity(), "wem", new UserAssignedIdentity())))
             .withKind(WorkbookSharedTypeKind.SHARED)
-            .withEtag("jervtia");
+            .withEtag("sbrgz");
         model = BinaryData.fromObject(model).toObject(WorkbookResource.class);
-        Assertions.assertEquals("xsdszuempsb", model.location());
-        Assertions.assertEquals("z", model.tags().get("eyvpnqicvinvkj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("wmsweypqwd", model.location());
+        Assertions.assertEquals("icccn", model.tags().get("qhuexm"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals(WorkbookSharedTypeKind.SHARED, model.kind());
-        Assertions.assertEquals("jervtia", model.etag());
+        Assertions.assertEquals("sbrgz", model.etag());
     }
 
     // Use "Map.of" if available

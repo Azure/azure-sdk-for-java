@@ -1,6 +1,13 @@
 # Code snippets and samples
 
 
+## ApiKeys
+
+- [CreateOrUpdate](#apikeys_createorupdate)
+- [Delete](#apikeys_delete)
+- [Get](#apikeys_get)
+- [List](#apikeys_list)
+
 ## Certificates
 
 - [CreateOrUpdate](#certificates_createorupdate)
@@ -28,17 +35,107 @@
 ## Operations
 
 - [List](#operations_list)
+### ApiKeys_CreateOrUpdate
+
+```java
+/**
+ * Samples for ApiKeys CreateOrUpdate.
+ */
+public final class ApiKeysCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/ApiKeys_CreateOrUpdate.
+     * json
+     */
+    /**
+     * Sample code: ApiKeys_CreateOrUpdate.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void apiKeysCreateOrUpdate(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.apiKeys().define("myApiKey").withExistingNginxDeployment("myResourceGroup", "myDeployment").create();
+    }
+}
+```
+
+### ApiKeys_Delete
+
+```java
+/**
+ * Samples for ApiKeys Delete.
+ */
+public final class ApiKeysDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/ApiKeys_Delete.json
+     */
+    /**
+     * Sample code: ApiKeys_Delete.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void apiKeysDelete(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.apiKeys()
+            .deleteWithResponse("myResourceGroup", "myDeployment", "myApiKey", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ApiKeys_Get
+
+```java
+/**
+ * Samples for ApiKeys Get.
+ */
+public final class ApiKeysGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/ApiKeys_Get.json
+     */
+    /**
+     * Sample code: ApiKeys_Get.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void apiKeysGet(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.apiKeys()
+            .getWithResponse("myResourceGroup", "myDeployment", "myApiKey", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ApiKeys_List
+
+```java
+/**
+ * Samples for ApiKeys List.
+ */
+public final class ApiKeysListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/ApiKeys_List.json
+     */
+    /**
+     * Sample code: ApiKeys_List.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void apiKeysList(com.azure.resourcemanager.nginx.NginxManager manager) {
+        manager.apiKeys().list("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Certificates_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.nginx.models.NginxCertificateProperties;
-
 /**
  * Samples for Certificates CreateOrUpdate.
  */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_CreateOrUpdate.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
+     * Certificates_CreateOrUpdate.json
      */
     /**
      * Sample code: Certificates_CreateOrUpdate.
@@ -49,9 +146,6 @@ public final class CertificatesCreateOrUpdateSamples {
         manager.certificates()
             .define("default")
             .withExistingNginxDeployment("myResourceGroup", "myDeployment")
-            .withProperties(new NginxCertificateProperties().withKeyVirtualPath("fakeTokenPlaceholder")
-                .withCertificateVirtualPath("/src/cert/somePath.cert")
-                .withKeyVaultSecretId("fakeTokenPlaceholder"))
             .create();
     }
 }
@@ -65,7 +159,8 @@ public final class CertificatesCreateOrUpdateSamples {
  */
 public final class CertificatesDeleteSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_Delete.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Certificates_Delete.json
      */
     /**
      * Sample code: Certificates_Delete.
@@ -86,7 +181,8 @@ public final class CertificatesDeleteSamples {
  */
 public final class CertificatesGetSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_Get.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Certificates_Get.json
      */
     /**
      * Sample code: Certificates_Get.
@@ -108,7 +204,8 @@ public final class CertificatesGetSamples {
  */
 public final class CertificatesListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Certificates_List.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Certificates_List.json
      */
     /**
      * Sample code: Certificates_List.
@@ -124,18 +221,15 @@ public final class CertificatesListSamples {
 ### Configurations_Analysis
 
 ```java
-import com.azure.resourcemanager.nginx.models.AnalysisCreate;
-import com.azure.resourcemanager.nginx.models.AnalysisCreateConfig;
-import com.azure.resourcemanager.nginx.models.NginxConfigurationFile;
-import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
-import java.util.Arrays;
 
 /**
  * Samples for Configurations Analysis.
  */
 public final class ConfigurationsAnalysisSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Analysis.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Configurations_Analysis.
+     * json
      */
     /**
      * Sample code: Configurations_Analysis.
@@ -144,12 +238,7 @@ public final class ConfigurationsAnalysisSamples {
      */
     public static void configurationsAnalysis(com.azure.resourcemanager.nginx.NginxManager manager) {
         manager.configurations()
-            .analysisWithResponse("myResourceGroup", "myDeployment", "default",
-                new AnalysisCreate().withConfig(new AnalysisCreateConfig().withRootFile("/etc/nginx/nginx.conf")
-                    .withFiles(Arrays.asList(
-                        new NginxConfigurationFile().withContent("ABCDEF==").withVirtualPath("/etc/nginx/nginx.conf")))
-                    .withPackageProperty(new NginxConfigurationPackage())),
-                com.azure.core.util.Context.NONE);
+            .analysisWithResponse("myResourceGroup", "myDeployment", "default", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -157,17 +246,13 @@ public final class ConfigurationsAnalysisSamples {
 ### Configurations_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.nginx.models.NginxConfigurationFile;
-import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
-import com.azure.resourcemanager.nginx.models.NginxConfigurationProperties;
-import java.util.Arrays;
-
 /**
  * Samples for Configurations CreateOrUpdate.
  */
 public final class ConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_CreateOrUpdate.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
+     * Configurations_CreateOrUpdate.json
      */
     /**
      * Sample code: Configurations_CreateOrUpdate.
@@ -178,11 +263,6 @@ public final class ConfigurationsCreateOrUpdateSamples {
         manager.configurations()
             .define("default")
             .withExistingNginxDeployment("myResourceGroup", "myDeployment")
-            .withProperties(new NginxConfigurationProperties()
-                .withFiles(Arrays.asList(
-                    new NginxConfigurationFile().withContent("ABCDEF==").withVirtualPath("/etc/nginx/nginx.conf")))
-                .withPackageProperty(new NginxConfigurationPackage())
-                .withRootFile("/etc/nginx/nginx.conf"))
             .create();
     }
 }
@@ -196,7 +276,9 @@ public final class ConfigurationsCreateOrUpdateSamples {
  */
 public final class ConfigurationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Delete.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Configurations_Delete.
+     * json
      */
     /**
      * Sample code: Configurations_Delete.
@@ -217,7 +299,8 @@ public final class ConfigurationsDeleteSamples {
  */
 public final class ConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_Get.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Configurations_Get.json
      */
     /**
      * Sample code: Configurations_Get.
@@ -239,7 +322,8 @@ public final class ConfigurationsGetSamples {
  */
 public final class ConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Configurations_List.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Configurations_List.json
      */
     /**
      * Sample code: Configurations_List.
@@ -255,26 +339,13 @@ public final class ConfigurationsListSamples {
 ### Deployments_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.nginx.models.AutoUpgradeProfile;
-import com.azure.resourcemanager.nginx.models.NginxDeploymentProperties;
-import com.azure.resourcemanager.nginx.models.NginxDeploymentScalingProperties;
-import com.azure.resourcemanager.nginx.models.NginxDeploymentUserProfile;
-import com.azure.resourcemanager.nginx.models.NginxFrontendIpConfiguration;
-import com.azure.resourcemanager.nginx.models.NginxNetworkInterfaceConfiguration;
-import com.azure.resourcemanager.nginx.models.NginxNetworkProfile;
-import com.azure.resourcemanager.nginx.models.NginxPrivateIpAddress;
-import com.azure.resourcemanager.nginx.models.NginxPrivateIpAllocationMethod;
-import com.azure.resourcemanager.nginx.models.NginxPublicIpAddress;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Samples for Deployments CreateOrUpdate.
  */
 public final class DeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Create.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Create.json
      */
     /**
      * Sample code: Deployments_Create.
@@ -284,37 +355,9 @@ public final class DeploymentsCreateOrUpdateSamples {
     public static void deploymentsCreate(com.azure.resourcemanager.nginx.NginxManager manager) {
         manager.deployments()
             .define("myDeployment")
-            .withRegion("West US")
+            .withRegion((String) null)
             .withExistingResourceGroup("myResourceGroup")
-            .withTags(mapOf("Environment", "Dev"))
-            .withProperties(new NginxDeploymentProperties().withManagedResourceGroup("myManagedResourceGroup")
-                .withNetworkProfile(new NginxNetworkProfile()
-                    .withFrontEndIpConfiguration(new NginxFrontendIpConfiguration()
-                        .withPublicIpAddresses(Arrays.asList(new NginxPublicIpAddress().withId(
-                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress")))
-                        .withPrivateIpAddresses(Arrays.asList(new NginxPrivateIpAddress()
-                            .withPrivateIpAddress("1.1.1.1")
-                            .withPrivateIpAllocationMethod(NginxPrivateIpAllocationMethod.STATIC)
-                            .withSubnetId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"))))
-                    .withNetworkInterfaceConfiguration(new NginxNetworkInterfaceConfiguration().withSubnetId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet")))
-                .withScalingProperties(new NginxDeploymentScalingProperties().withCapacity(10))
-                .withAutoUpgradeProfile(new AutoUpgradeProfile().withUpgradeChannel("stable"))
-                .withUserProfile(new NginxDeploymentUserProfile().withPreferredEmail("example@example.email")))
             .create();
-    }
-
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
     }
 }
 ```
@@ -327,7 +370,8 @@ public final class DeploymentsCreateOrUpdateSamples {
  */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Delete.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Delete.json
      */
     /**
      * Sample code: Deployments_Delete.
@@ -348,7 +392,8 @@ public final class DeploymentsDeleteSamples {
  */
 public final class DeploymentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Get.json
      */
     /**
      * Sample code: Deployments_Get.
@@ -361,7 +406,8 @@ public final class DeploymentsGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Get_AutoScale.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
+     * Deployments_Get_AutoScale.json
      */
     /**
      * Sample code: Deployments_Get_AutoScale.
@@ -383,7 +429,8 @@ public final class DeploymentsGetByResourceGroupSamples {
  */
 public final class DeploymentsListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_List.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_List.json
      */
     /**
      * Sample code: Deployments_List.
@@ -404,7 +451,8 @@ public final class DeploymentsListSamples {
  */
 public final class DeploymentsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_ListByResourceGroup.json
+     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/
+     * Deployments_ListByResourceGroup.json
      */
     /**
      * Sample code: Deployments_ListByResourceGroup.
@@ -421,15 +469,14 @@ public final class DeploymentsListByResourceGroupSamples {
 
 ```java
 import com.azure.resourcemanager.nginx.models.NginxDeployment;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Samples for Deployments Update.
  */
 public final class DeploymentsUpdateSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Update.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Update.json
      */
     /**
      * Sample code: Deployments_Update.
@@ -440,19 +487,24 @@ public final class DeploymentsUpdateSamples {
         NginxDeployment resource = manager.deployments()
             .getByResourceGroupWithResponse("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("Environment", "Dev")).apply();
+        resource.update().apply();
     }
 
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+    /*
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_UpdateSubnet
+     * .json
+     */
+    /**
+     * Sample code: Deployments_UpdateSubnet.
+     * 
+     * @param manager Entry point to NginxManager.
+     */
+    public static void deploymentsUpdateSubnet(com.azure.resourcemanager.nginx.NginxManager manager) {
+        NginxDeployment resource = manager.deployments()
+            .getByResourceGroupWithResponse("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
     }
 }
 ```
@@ -465,7 +517,8 @@ public final class DeploymentsUpdateSamples {
  */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Operations_List.json
      */
     /**
      * Sample code: Operations_List.

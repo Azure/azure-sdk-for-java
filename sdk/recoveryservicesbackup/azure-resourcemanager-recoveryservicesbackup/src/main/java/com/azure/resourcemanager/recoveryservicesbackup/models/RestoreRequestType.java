@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class RestoreRequestType extends ExpandableStringEnum<RestoreReques
      * @param name a name to look for.
      * @return the corresponding RestoreRequestType.
      */
-    @JsonCreator
     public static RestoreRequestType fromString(String name) {
         return fromString(name, RestoreRequestType.class);
     }

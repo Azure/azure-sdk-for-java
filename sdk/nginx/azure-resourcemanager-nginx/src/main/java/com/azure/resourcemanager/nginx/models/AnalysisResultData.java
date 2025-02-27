@@ -5,19 +5,27 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The AnalysisResultData model.
  */
 @Fluent
-public final class AnalysisResultData {
+public final class AnalysisResultData implements JsonSerializable<AnalysisResultData> {
     /*
      * The errors property.
      */
-    @JsonProperty(value = "errors")
     private List<AnalysisDiagnostic> errors;
+
+    /*
+     * The diagnostics property.
+     */
+    private List<DiagnosticItem> diagnostics;
 
     /**
      * Creates an instance of AnalysisResultData class.
@@ -46,6 +54,26 @@ public final class AnalysisResultData {
     }
 
     /**
+     * Get the diagnostics property: The diagnostics property.
+     * 
+     * @return the diagnostics value.
+     */
+    public List<DiagnosticItem> diagnostics() {
+        return this.diagnostics;
+    }
+
+    /**
+     * Set the diagnostics property: The diagnostics property.
+     * 
+     * @param diagnostics the diagnostics value to set.
+     * @return the AnalysisResultData object itself.
+     */
+    public AnalysisResultData withDiagnostics(List<DiagnosticItem> diagnostics) {
+        this.diagnostics = diagnostics;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -54,5 +82,49 @@ public final class AnalysisResultData {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
         }
+        if (diagnostics() != null) {
+            diagnostics().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("diagnostics", this.diagnostics, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalysisResultData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalysisResultData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AnalysisResultData.
+     */
+    public static AnalysisResultData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnalysisResultData deserializedAnalysisResultData = new AnalysisResultData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("errors".equals(fieldName)) {
+                    List<AnalysisDiagnostic> errors = reader.readArray(reader1 -> AnalysisDiagnostic.fromJson(reader1));
+                    deserializedAnalysisResultData.errors = errors;
+                } else if ("diagnostics".equals(fieldName)) {
+                    List<DiagnosticItem> diagnostics = reader.readArray(reader1 -> DiagnosticItem.fromJson(reader1));
+                    deserializedAnalysisResultData.diagnostics = diagnostics;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnalysisResultData;
+        });
     }
 }

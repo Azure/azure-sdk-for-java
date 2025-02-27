@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Format of the policyContent. */
+/**
+ * Format of the policyContent.
+ */
 public final class PolicyContentFormat extends ExpandableStringEnum<PolicyContentFormat> {
-    /** Static value xml for PolicyContentFormat. */
+    /**
+     * Static value xml for PolicyContentFormat.
+     */
     public static final PolicyContentFormat XML = fromString("xml");
 
-    /** Static value xml-link for PolicyContentFormat. */
+    /**
+     * Static value xml-link for PolicyContentFormat.
+     */
     public static final PolicyContentFormat XML_LINK = fromString("xml-link");
 
-    /** Static value rawxml for PolicyContentFormat. */
+    /**
+     * Static value rawxml for PolicyContentFormat.
+     */
     public static final PolicyContentFormat RAWXML = fromString("rawxml");
 
-    /** Static value rawxml-link for PolicyContentFormat. */
+    /**
+     * Static value rawxml-link for PolicyContentFormat.
+     */
     public static final PolicyContentFormat RAWXML_LINK = fromString("rawxml-link");
 
     /**
      * Creates a new instance of PolicyContentFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class PolicyContentFormat extends ExpandableStringEnum<PolicyConten
 
     /**
      * Creates or finds a PolicyContentFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyContentFormat.
      */
-    @JsonCreator
     public static PolicyContentFormat fromString(String name) {
         return fromString(name, PolicyContentFormat.class);
     }
 
     /**
      * Gets known PolicyContentFormat values.
-     *
+     * 
      * @return known PolicyContentFormat values.
      */
     public static Collection<PolicyContentFormat> values() {

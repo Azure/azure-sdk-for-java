@@ -95,14 +95,16 @@ public final class SourceControlConfigurationsImpl implements SourceControlConfi
         String clusterResourceName, String clusterName) {
         PagedIterable<SourceControlConfigurationInner> inner
             = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new SourceControlConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SourceControlConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SourceControlConfiguration> list(String resourceGroupName, String clusterRp,
         String clusterResourceName, String clusterName, Context context) {
         PagedIterable<SourceControlConfigurationInner> inner
             = this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new SourceControlConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new SourceControlConfigurationImpl(inner1, this.manager()));
     }
 
     private SourceControlConfigurationsClient serviceClient() {

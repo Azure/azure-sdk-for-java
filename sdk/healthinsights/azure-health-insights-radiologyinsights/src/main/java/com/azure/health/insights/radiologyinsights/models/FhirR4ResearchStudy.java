@@ -426,74 +426,6 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
         return this.objective;
     }
 
-    /*
-     * Extensions that cannot be ignored
-     */
-    @Generated
-    private List<FhirR4Extension> modifierExtension;
-
-    /*
-     * Additional Content defined by implementations
-     */
-    @Generated
-    private List<FhirR4Extension> extension;
-
-    /*
-     * Contained, inline Resources
-     */
-    @Generated
-    private List<FhirR4Resource> contained;
-
-    /*
-     * Text summary of the resource, for human interpretation
-     */
-    @Generated
-    private FhirR4Narrative text;
-
-    /**
-     * Get the modifierExtension property: Extensions that cannot be ignored.
-     *
-     * @return the modifierExtension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getModifierExtension() {
-        return this.modifierExtension;
-    }
-
-    /**
-     * Get the extension property: Additional Content defined by implementations.
-     *
-     * @return the extension value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Extension> getExtension() {
-        return this.extension;
-    }
-
-    /**
-     * Get the contained property: Contained, inline Resources.
-     *
-     * @return the contained value.
-     */
-    @Generated
-    @Override
-    public List<FhirR4Resource> getContained() {
-        return this.contained;
-    }
-
-    /**
-     * Get the text property: Text summary of the resource, for human interpretation.
-     *
-     * @return the text value.
-     */
-    @Generated
-    @Override
-    public FhirR4Narrative getText() {
-        return this.text;
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -666,10 +598,10 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
             deserializedFhirR4ResearchStudy.setMeta(meta);
             deserializedFhirR4ResearchStudy.setImplicitRules(implicitRules);
             deserializedFhirR4ResearchStudy.setLanguage(language);
-            deserializedFhirR4ResearchStudy.text = text;
-            deserializedFhirR4ResearchStudy.contained = contained;
-            deserializedFhirR4ResearchStudy.extension = extension;
-            deserializedFhirR4ResearchStudy.modifierExtension = modifierExtension;
+            deserializedFhirR4ResearchStudy.setText(text);
+            deserializedFhirR4ResearchStudy.setContained(contained);
+            deserializedFhirR4ResearchStudy.setExtension(extension);
+            deserializedFhirR4ResearchStudy.setModifierExtension(modifierExtension);
             deserializedFhirR4ResearchStudy.resourceType = resourceType;
             deserializedFhirR4ResearchStudy.identifier = identifier;
             deserializedFhirR4ResearchStudy.title = title;

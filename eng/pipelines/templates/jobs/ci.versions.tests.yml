@@ -65,7 +65,7 @@ jobs:
           # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
           # during testing if tests failed, and linting reports.
           - output: pipelineArtifact
-            artifactName: 'troubleshooting-vo-${{ versionOverride }}-troubleshooting-$(System.StageName)-$(System.JobName)'
+            artifactName: 'troubleshooting-vo-${{ versionOverride }}-troubleshooting-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)'
             targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
             displayName: 'Capture troubleshooting artifacts for version override ${{ versionOverride }}'
             condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
@@ -73,7 +73,7 @@ jobs:
 
     steps:
       - pwsh: |
-          Write-Host "##vso[task.setvariable variable=AZURE_VERSION_OVERRIDE_TESTS]true"
+          Write-Host "##vso[task.setvariable variable=VERSION_OVERRIDE_TESTS]true"
           Write-Host "##vso[task.setvariable variable=TestVersionSupport]true"
         displayName: "Set version override variables"
 
@@ -85,16 +85,6 @@ jobs:
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
           runProxy: true
-
-      - pwsh: |
-          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
-          foreach($file in $files){
-              Write-Host "##[group]$file"
-              cat $file
-              Write-Host "##[endgroup]"
-          }
-        displayName: Dump Test-Proxy Logs
-        condition: succeededOrFailed()
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
         parameters:
@@ -119,5 +109,27 @@ jobs:
             git checkout -- .
             Write-Host "##vso[task.setvariable variable=FirstTestOverrideRan]true"
           displayName: "Reset version override changes"
+
+      - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
+
+      - pwsh: |
+          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy.log
+          foreach($file in $files){
+              Write-Host "##[group]$file"
+              cat $file
+              Write-Host "##[endgroup]"
+          }
+        displayName: Dump Test-Proxy Logs
+        condition: succeededOrFailed()
+
+      - pwsh: |
+          $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter test-proxy-error.log
+          foreach($file in $files){
+              Write-Host "##[group]$file"
+              cat $file
+              Write-Host "##[endgroup]"
+          }
+        displayName: Dump Test-Proxy Error Logs
+        condition: succeededOrFailed()
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml

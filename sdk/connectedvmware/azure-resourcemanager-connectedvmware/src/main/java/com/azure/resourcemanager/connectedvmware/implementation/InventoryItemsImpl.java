@@ -59,27 +59,27 @@ public final class InventoryItemsImpl implements InventoryItems {
 
     public PagedIterable<InventoryItem> listByVCenter(String resourceGroupName, String vcenterName) {
         PagedIterable<InventoryItemInner> inner = this.serviceClient().listByVCenter(resourceGroupName, vcenterName);
-        return Utils.mapPage(inner, inner1 -> new InventoryItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InventoryItemImpl(inner1, this.manager()));
     }
 
     public PagedIterable<InventoryItem> listByVCenter(String resourceGroupName, String vcenterName, Context context) {
         PagedIterable<InventoryItemInner> inner
             = this.serviceClient().listByVCenter(resourceGroupName, vcenterName, context);
-        return Utils.mapPage(inner, inner1 -> new InventoryItemImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new InventoryItemImpl(inner1, this.manager()));
     }
 
     public InventoryItem getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
-        String inventoryItemName = Utils.getValueFromIdByName(id, "inventoryItems");
+        String inventoryItemName = ResourceManagerUtils.getValueFromIdByName(id, "inventoryItems");
         if (inventoryItemName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
@@ -88,17 +88,17 @@ public final class InventoryItemsImpl implements InventoryItems {
     }
 
     public Response<InventoryItem> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
-        String inventoryItemName = Utils.getValueFromIdByName(id, "inventoryItems");
+        String inventoryItemName = ResourceManagerUtils.getValueFromIdByName(id, "inventoryItems");
         if (inventoryItemName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
@@ -107,17 +107,17 @@ public final class InventoryItemsImpl implements InventoryItems {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
-        String inventoryItemName = Utils.getValueFromIdByName(id, "inventoryItems");
+        String inventoryItemName = ResourceManagerUtils.getValueFromIdByName(id, "inventoryItems");
         if (inventoryItemName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));
@@ -126,17 +126,17 @@ public final class InventoryItemsImpl implements InventoryItems {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
-        String inventoryItemName = Utils.getValueFromIdByName(id, "inventoryItems");
+        String inventoryItemName = ResourceManagerUtils.getValueFromIdByName(id, "inventoryItems");
         if (inventoryItemName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'inventoryItems'.", id)));

@@ -22,7 +22,9 @@ public final class DomainsInitiateVerificationSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void initiateVerification(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().initiateVerification("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            new VerificationParameter().withVerificationType(VerificationType.SPF), com.azure.core.util.Context.NONE);
+        manager.domains()
+            .initiateVerification("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                new VerificationParameter().withVerificationType(VerificationType.SPF),
+                com.azure.core.util.Context.NONE);
     }
 }

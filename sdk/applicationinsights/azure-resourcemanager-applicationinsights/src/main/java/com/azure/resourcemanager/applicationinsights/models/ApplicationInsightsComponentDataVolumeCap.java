@@ -5,54 +5,57 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An Application Insights component daily data volume cap. */
+/**
+ * An Application Insights component daily data volume cap.
+ */
 @Fluent
-public final class ApplicationInsightsComponentDataVolumeCap {
+public final class ApplicationInsightsComponentDataVolumeCap
+    implements JsonSerializable<ApplicationInsightsComponentDataVolumeCap> {
     /*
      * Daily data volume cap in GB.
      */
-    @JsonProperty(value = "Cap")
     private Float cap;
 
     /*
      * Daily data volume cap UTC reset hour.
      */
-    @JsonProperty(value = "ResetTime", access = JsonProperty.Access.WRITE_ONLY)
     private Integer resetTime;
 
     /*
      * Reserved, not used for now.
      */
-    @JsonProperty(value = "WarningThreshold")
     private Integer warningThreshold;
 
     /*
      * Reserved, not used for now.
      */
-    @JsonProperty(value = "StopSendNotificationWhenHitThreshold")
     private Boolean stopSendNotificationWhenHitThreshold;
 
     /*
      * Do not send a notification email when the daily data volume cap is met.
      */
-    @JsonProperty(value = "StopSendNotificationWhenHitCap")
     private Boolean stopSendNotificationWhenHitCap;
 
     /*
      * Maximum daily data volume cap that the user can set for this component.
      */
-    @JsonProperty(value = "MaxHistoryCap", access = JsonProperty.Access.WRITE_ONLY)
     private Float maxHistoryCap;
 
-    /** Creates an instance of ApplicationInsightsComponentDataVolumeCap class. */
+    /**
+     * Creates an instance of ApplicationInsightsComponentDataVolumeCap class.
+     */
     public ApplicationInsightsComponentDataVolumeCap() {
     }
 
     /**
      * Get the cap property: Daily data volume cap in GB.
-     *
+     * 
      * @return the cap value.
      */
     public Float cap() {
@@ -61,7 +64,7 @@ public final class ApplicationInsightsComponentDataVolumeCap {
 
     /**
      * Set the cap property: Daily data volume cap in GB.
-     *
+     * 
      * @param cap the cap value to set.
      * @return the ApplicationInsightsComponentDataVolumeCap object itself.
      */
@@ -72,7 +75,7 @@ public final class ApplicationInsightsComponentDataVolumeCap {
 
     /**
      * Get the resetTime property: Daily data volume cap UTC reset hour.
-     *
+     * 
      * @return the resetTime value.
      */
     public Integer resetTime() {
@@ -81,7 +84,7 @@ public final class ApplicationInsightsComponentDataVolumeCap {
 
     /**
      * Get the warningThreshold property: Reserved, not used for now.
-     *
+     * 
      * @return the warningThreshold value.
      */
     public Integer warningThreshold() {
@@ -90,7 +93,7 @@ public final class ApplicationInsightsComponentDataVolumeCap {
 
     /**
      * Set the warningThreshold property: Reserved, not used for now.
-     *
+     * 
      * @param warningThreshold the warningThreshold value to set.
      * @return the ApplicationInsightsComponentDataVolumeCap object itself.
      */
@@ -101,7 +104,7 @@ public final class ApplicationInsightsComponentDataVolumeCap {
 
     /**
      * Get the stopSendNotificationWhenHitThreshold property: Reserved, not used for now.
-     *
+     * 
      * @return the stopSendNotificationWhenHitThreshold value.
      */
     public Boolean stopSendNotificationWhenHitThreshold() {
@@ -110,7 +113,7 @@ public final class ApplicationInsightsComponentDataVolumeCap {
 
     /**
      * Set the stopSendNotificationWhenHitThreshold property: Reserved, not used for now.
-     *
+     * 
      * @param stopSendNotificationWhenHitThreshold the stopSendNotificationWhenHitThreshold value to set.
      * @return the ApplicationInsightsComponentDataVolumeCap object itself.
      */
@@ -123,7 +126,7 @@ public final class ApplicationInsightsComponentDataVolumeCap {
     /**
      * Get the stopSendNotificationWhenHitCap property: Do not send a notification email when the daily data volume cap
      * is met.
-     *
+     * 
      * @return the stopSendNotificationWhenHitCap value.
      */
     public Boolean stopSendNotificationWhenHitCap() {
@@ -133,7 +136,7 @@ public final class ApplicationInsightsComponentDataVolumeCap {
     /**
      * Set the stopSendNotificationWhenHitCap property: Do not send a notification email when the daily data volume cap
      * is met.
-     *
+     * 
      * @param stopSendNotificationWhenHitCap the stopSendNotificationWhenHitCap value to set.
      * @return the ApplicationInsightsComponentDataVolumeCap object itself.
      */
@@ -145,7 +148,7 @@ public final class ApplicationInsightsComponentDataVolumeCap {
 
     /**
      * Get the maxHistoryCap property: Maximum daily data volume cap that the user can set for this component.
-     *
+     * 
      * @return the maxHistoryCap value.
      */
     public Float maxHistoryCap() {
@@ -154,9 +157,65 @@ public final class ApplicationInsightsComponentDataVolumeCap {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("Cap", this.cap);
+        jsonWriter.writeNumberField("WarningThreshold", this.warningThreshold);
+        jsonWriter.writeBooleanField("StopSendNotificationWhenHitThreshold", this.stopSendNotificationWhenHitThreshold);
+        jsonWriter.writeBooleanField("StopSendNotificationWhenHitCap", this.stopSendNotificationWhenHitCap);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationInsightsComponentDataVolumeCap from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationInsightsComponentDataVolumeCap if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationInsightsComponentDataVolumeCap.
+     */
+    public static ApplicationInsightsComponentDataVolumeCap fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationInsightsComponentDataVolumeCap deserializedApplicationInsightsComponentDataVolumeCap
+                = new ApplicationInsightsComponentDataVolumeCap();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("Cap".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentDataVolumeCap.cap
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("ResetTime".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentDataVolumeCap.resetTime
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("WarningThreshold".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentDataVolumeCap.warningThreshold
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("StopSendNotificationWhenHitThreshold".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentDataVolumeCap.stopSendNotificationWhenHitThreshold
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("StopSendNotificationWhenHitCap".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentDataVolumeCap.stopSendNotificationWhenHitCap
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("MaxHistoryCap".equals(fieldName)) {
+                    deserializedApplicationInsightsComponentDataVolumeCap.maxHistoryCap
+                        = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationInsightsComponentDataVolumeCap;
+        });
     }
 }

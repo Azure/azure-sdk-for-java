@@ -13,7 +13,7 @@ import java.util.UUID;
  */
 public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ExtendedSqlPoolBlobAuditingCreateMax.json
      */
     /**
@@ -41,7 +41,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ExtendedSqlPoolAzureMonitorAuditingCreateMin.json
      */
     /**
@@ -60,7 +60,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ExtendedSqlPoolBlobAuditingCreateMin.json
      */
     /**

@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.baremetalinfrastructure.implementation;
 
 import com.azure.resourcemanager.baremetalinfrastructure.fluent.models.OperationInner;
-import com.azure.resourcemanager.baremetalinfrastructure.models.ActionType;
+import com.azure.resourcemanager.baremetalinfrastructure.models.Display;
 import com.azure.resourcemanager.baremetalinfrastructure.models.Operation;
-import com.azure.resourcemanager.baremetalinfrastructure.models.OperationDisplay;
-import com.azure.resourcemanager.baremetalinfrastructure.models.Origin;
 
 public final class OperationImpl implements Operation {
     private OperationInner innerObject;
@@ -25,20 +23,12 @@ public final class OperationImpl implements Operation {
         return this.innerModel().name();
     }
 
-    public Boolean isDataAction() {
-        return this.innerModel().isDataAction();
-    }
-
-    public OperationDisplay display() {
+    public Display display() {
         return this.innerModel().display();
     }
 
-    public Origin origin() {
-        return this.innerModel().origin();
-    }
-
-    public ActionType actionType() {
-        return this.innerModel().actionType();
+    public Boolean isDataAction() {
+        return this.innerModel().isDataAction();
     }
 
     public OperationInner innerModel() {

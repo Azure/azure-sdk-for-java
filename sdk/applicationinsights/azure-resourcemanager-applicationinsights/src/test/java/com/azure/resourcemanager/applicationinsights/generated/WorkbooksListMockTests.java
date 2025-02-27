@@ -6,69 +6,50 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.CategoryType;
 import com.azure.resourcemanager.applicationinsights.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.applicationinsights.models.Workbook;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookSharedTypeKind;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkbooksListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
-            = "{\"value\":[{\"properties\":{\"displayName\":\"gt\",\"serializedData\":\"xrjvzuyturmlm\",\"version\":\"wolba\",\"timeModified\":\"2021-07-06T06:01Z\",\"category\":\"opionszon\",\"tags\":[\"gajinnixjawrtmj\",\"jmyccxlzhcoxov\",\"ekhenl\",\"sfnrdtjxt\"],\"userId\":\"dcqtjvidttge\",\"sourceId\":\"slvyjtcvuwkasi\",\"storageUri\":\"esfuught\",\"description\":\"fecjxeygtuhx\",\"revision\":\"cbuewmrswnjlxuz\"},\"identity\":{\"principalId\":\"0da13ee6-0a6e-49e4-8b45-f0bf570a7eb0\",\"tenantId\":\"74cd0370-32e4-4c71-9aa5-a1c30cddf2e9\",\"type\":\"None\",\"userAssignedIdentities\":{\"qehgpd\":{\"principalId\":\"aa6beb51-d412-42be-81df-a30cd47e9200\",\"clientId\":\"e8acf801-c37a-4048-a8e8-37ee732c95a2\"},\"jqatucoigebxn\":{\"principalId\":\"b2bf08fb-7c09-410e-a824-d4a549f238a5\",\"clientId\":\"3a52b46b-e0a8-4927-8dcd-35ae23a72aa1\"},\"fepbnwgfmxjgc\":{\"principalId\":\"ebb26de4-c6aa-477e-bf73-ae1b181b9860\",\"clientId\":\"545a5d82-25ba-43f5-a2be-3fa9e86b8436\"}}},\"kind\":\"shared\",\"etag\":\"gdlfgt\",\"location\":\"y\",\"tags\":{\"amz\":\"quflqbctq\",\"qzeqyjleziunjxdf\":\"rwd\",\"qa\":\"antkwcegyamlbns\"},\"id\":\"jjvpilguooqja\",\"name\":\"m\",\"type\":\"itgueiookjbs\"}]}";
+            = "{\"value\":[{\"properties\":{\"displayName\":\"jxtxrdc\",\"serializedData\":\"tjvidt\",\"version\":\"epu\",\"timeModified\":\"2021-12-03T10:50:59Z\",\"category\":\"yjtcvuwk\",\"tags\":[\"zies\",\"uughtuqfecjxeyg\",\"uhxu\",\"cbuewmrswnjlxuz\"],\"userId\":\"wpusxjbaqehg\",\"sourceId\":\"ohzjqatucoigeb\",\"storageUri\":\"cnwfepbnwgfmxjg\",\"description\":\"bjb\",\"revision\":\"lfgtdysnaquflqbc\"},\"identity\":{\"principalId\":\"d353c0f3-f613-4cf0-9acb-e7de16316fa9\",\"tenantId\":\"f21f4a78-a22a-4134-b0f7-ee97aaee1923\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"kqzeqyjleziunjx\":{\"principalId\":\"099c8d1a-fcc8-4386-a945-9df5bc57e423\",\"clientId\":\"44c0eda2-0352-4d6d-9b12-c670eed3d8ee\"}}},\"kind\":\"shared\",\"etag\":\"ntkwcegy\",\"location\":\"mlbnseq\",\"tags\":{\"m\":\"jvpilguooqja\",\"hrtdtpdelq\":\"itgueiookjbs\",\"vcjkgd\":\"cslmotoebnfxo\",\"vcopex\":\"razftxejwabmdujt\"},\"id\":\"m\",\"name\":\"urbuhhlkyqltq\",\"type\":\"rogtuwkf\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Workbook> response = manager.workbooks()
-            .list(CategoryType.WORKBOOK, Arrays.asList("coc"), true, com.azure.core.util.Context.NONE);
+            .list(CategoryType.PERFORMANCE, Arrays.asList("enlusfn"), true, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("y", response.iterator().next().location());
-        Assertions.assertEquals("quflqbctq", response.iterator().next().tags().get("amz"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("mlbnseq", response.iterator().next().location());
+        Assertions.assertEquals("jvpilguooqja", response.iterator().next().tags().get("m"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
         Assertions.assertEquals(WorkbookSharedTypeKind.SHARED, response.iterator().next().kind());
-        Assertions.assertEquals("gdlfgt", response.iterator().next().etag());
-        Assertions.assertEquals("gt", response.iterator().next().displayName());
-        Assertions.assertEquals("xrjvzuyturmlm", response.iterator().next().serializedData());
-        Assertions.assertEquals("wolba", response.iterator().next().version());
-        Assertions.assertEquals("opionszon", response.iterator().next().category());
-        Assertions.assertEquals("gajinnixjawrtmj", response.iterator().next().tagsPropertiesTags().get(0));
-        Assertions.assertEquals("slvyjtcvuwkasi", response.iterator().next().sourceId());
-        Assertions.assertEquals("esfuught", response.iterator().next().storageUri());
-        Assertions.assertEquals("fecjxeygtuhx", response.iterator().next().description());
+        Assertions.assertEquals("ntkwcegy", response.iterator().next().etag());
+        Assertions.assertEquals("jxtxrdc", response.iterator().next().displayName());
+        Assertions.assertEquals("tjvidt", response.iterator().next().serializedData());
+        Assertions.assertEquals("epu", response.iterator().next().version());
+        Assertions.assertEquals("yjtcvuwk", response.iterator().next().category());
+        Assertions.assertEquals("zies", response.iterator().next().tagsPropertiesTags().get(0));
+        Assertions.assertEquals("ohzjqatucoigeb", response.iterator().next().sourceId());
+        Assertions.assertEquals("cnwfepbnwgfmxjg", response.iterator().next().storageUri());
+        Assertions.assertEquals("bjb", response.iterator().next().description());
     }
 }

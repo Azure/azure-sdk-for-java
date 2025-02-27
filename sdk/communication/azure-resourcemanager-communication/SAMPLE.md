@@ -65,9 +65,9 @@ public final class CommunicationServicesCheckNameAvailabilitySamples {
      */
     public static void
         checkNameAvailabilityAvailable(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().checkNameAvailabilityWithResponse(new NameAvailabilityParameters()
-            .withName("MyCommunicationService").withType("Microsoft.Communication/CommunicationServices"),
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .checkNameAvailabilityWithResponse(new NameAvailabilityParameters().withName("MyCommunicationService")
+                .withType("Microsoft.Communication/CommunicationServices"), com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -82,9 +82,9 @@ public final class CommunicationServicesCheckNameAvailabilitySamples {
      */
     public static void
         checkNameAvailabilityUnavailable(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().checkNameAvailabilityWithResponse(new NameAvailabilityParameters()
-            .withName("MyCommunicationService").withType("Microsoft.Communication/CommunicationServices"),
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .checkNameAvailabilityWithResponse(new NameAvailabilityParameters().withName("MyCommunicationService")
+                .withType("Microsoft.Communication/CommunicationServices"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -110,8 +110,12 @@ public final class CommunicationServicesCreateOrUpdateSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void createOrUpdateResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().define("MyCommunicationResource").withRegion("Global")
-            .withExistingResourceGroup("MyResourceGroup").withDataLocation("United States").create();
+        manager.communicationServices()
+            .define("MyCommunicationResource")
+            .withRegion("Global")
+            .withExistingResourceGroup("MyResourceGroup")
+            .withDataLocation("United States")
+            .create();
     }
 
     /*
@@ -126,10 +130,13 @@ public final class CommunicationServicesCreateOrUpdateSamples {
      */
     public static void createOrUpdateResourceWithManagedIdentity(
         com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().define("MyCommunicationResource").withRegion("Global")
+        manager.communicationServices()
+            .define("MyCommunicationResource")
+            .withRegion("Global")
             .withExistingResourceGroup("MyResourceGroup")
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
-            .withDataLocation("United States").create();
+            .withDataLocation("United States")
+            .create();
     }
 }
 ```
@@ -152,8 +159,8 @@ public final class CommunicationServicesDeleteSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void deleteResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().delete("MyResourceGroup", "MyCommunicationResource",
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .delete("MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -176,8 +183,9 @@ public final class CommunicationServicesGetByResourceGroupSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void getResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -202,11 +210,12 @@ public final class CommunicationServicesLinkNotificationHubSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void linkNotificationHub(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().linkNotificationHubWithResponse("MyResourceGroup", "MyCommunicationResource",
-            new LinkNotificationHubParameters().withResourceId(
-                "/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyOtherResourceGroup/providers/Microsoft.NotificationHubs/namespaces/MyNamespace/notificationHubs/MyHub")
-                .withConnectionString("Endpoint=sb://MyNamespace.servicebus.windows.net/;SharedAccessKey=abcd1234"),
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .linkNotificationHubWithResponse("MyResourceGroup", "MyCommunicationResource",
+                new LinkNotificationHubParameters().withResourceId(
+                    "/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyOtherResourceGroup/providers/Microsoft.NotificationHubs/namespaces/MyNamespace/notificationHubs/MyHub")
+                    .withConnectionString("Endpoint=sb://MyNamespace.servicebus.windows.net/;SharedAccessKey=abcd1234"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -275,8 +284,8 @@ public final class CommunicationServicesListKeysSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void listKeys(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().listKeysWithResponse("MyResourceGroup", "MyCommunicationResource",
-            com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .listKeysWithResponse("MyResourceGroup", "MyCommunicationResource", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -302,8 +311,9 @@ public final class CommunicationServicesRegenerateKeySamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void regenerateKey(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.communicationServices().regenerateKeyWithResponse("MyResourceGroup", "MyCommunicationResource",
-            new RegenerateKeyParameters().withKeyType(KeyType.PRIMARY), com.azure.core.util.Context.NONE);
+        manager.communicationServices()
+            .regenerateKeyWithResponse("MyResourceGroup", "MyCommunicationResource",
+                new RegenerateKeyParameters().withKeyType(KeyType.PRIMARY), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -333,9 +343,10 @@ public final class CommunicationServicesUpdateSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void updateResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        CommunicationServiceResource resource
-            = manager.communicationServices().getByResourceGroupWithResponse("MyResourceGroup",
-                "MyCommunicationResource", com.azure.core.util.Context.NONE).getValue();
+        CommunicationServiceResource resource = manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("newTag", "newVal")).apply();
     }
 
@@ -351,10 +362,12 @@ public final class CommunicationServicesUpdateSamples {
      */
     public static void updateResourceToAddAUserAssignedManagedIdentity(
         com.azure.resourcemanager.communication.CommunicationManager manager) {
-        CommunicationServiceResource resource
-            = manager.communicationServices().getByResourceGroupWithResponse("MyResourceGroup",
-                "MyCommunicationResource", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("newTag", "newVal"))
+        CommunicationServiceResource resource = manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("newTag", "newVal"))
             .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf("/user/assigned/resource/id", new UserAssignedIdentity())))
             .apply();
@@ -372,11 +385,14 @@ public final class CommunicationServicesUpdateSamples {
      */
     public static void updateResourceToAddASystemAssignedManagedIdentity(
         com.azure.resourcemanager.communication.CommunicationManager manager) {
-        CommunicationServiceResource resource
-            = manager.communicationServices().getByResourceGroupWithResponse("MyResourceGroup",
-                "MyCommunicationResource", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("newTag", "newVal"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)).apply();
+        CommunicationServiceResource resource = manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("newTag", "newVal"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .apply();
     }
 
     /*
@@ -391,11 +407,14 @@ public final class CommunicationServicesUpdateSamples {
      */
     public static void
         updateResourceToRemoveIdentity(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        CommunicationServiceResource resource
-            = manager.communicationServices().getByResourceGroupWithResponse("MyResourceGroup",
-                "MyCommunicationResource", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("newTag", "newVal"))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)).apply();
+        CommunicationServiceResource resource = manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("newTag", "newVal"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE))
+            .apply();
     }
 
     /*
@@ -410,10 +429,12 @@ public final class CommunicationServicesUpdateSamples {
      */
     public static void updateResourceToAddSystemAndUserManagedIdentities(
         com.azure.resourcemanager.communication.CommunicationManager manager) {
-        CommunicationServiceResource resource
-            = manager.communicationServices().getByResourceGroupWithResponse("MyResourceGroup",
-                "MyCommunicationResource", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withTags(mapOf("newTag", "newVal"))
+        CommunicationServiceResource resource = manager.communicationServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyCommunicationResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("newTag", "newVal"))
             .withIdentity(
                 new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf("/user/assigned/resource/id", new UserAssignedIdentity())))
@@ -455,8 +476,10 @@ public final class DomainsCancelVerificationSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void cancelVerification(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().cancelVerification("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            new VerificationParameter().withVerificationType(VerificationType.SPF), com.azure.core.util.Context.NONE);
+        manager.domains()
+            .cancelVerification("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                new VerificationParameter().withVerificationType(VerificationType.SPF),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -482,9 +505,12 @@ public final class DomainsCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateDomainsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().define("mydomain.com").withRegion("Global")
+        manager.domains()
+            .define("mydomain.com")
+            .withRegion("Global")
             .withExistingEmailService("MyResourceGroup", "MyEmailServiceResource")
-            .withDomainManagement(DomainManagement.CUSTOMER_MANAGED).create();
+            .withDomainManagement(DomainManagement.CUSTOMER_MANAGED)
+            .create();
     }
 }
 ```
@@ -507,8 +533,8 @@ public final class DomainsDeleteSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void deleteDomainsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().delete("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            com.azure.core.util.Context.NONE);
+        manager.domains()
+            .delete("MyResourceGroup", "MyEmailServiceResource", "mydomain.com", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -530,8 +556,9 @@ public final class DomainsGetSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void getDomainsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().getWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            com.azure.core.util.Context.NONE);
+        manager.domains()
+            .getWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -557,8 +584,10 @@ public final class DomainsInitiateVerificationSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void initiateVerification(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().initiateVerification("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            new VerificationParameter().withVerificationType(VerificationType.SPF), com.azure.core.util.Context.NONE);
+        manager.domains()
+            .initiateVerification("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                new VerificationParameter().withVerificationType(VerificationType.SPF),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -582,8 +611,8 @@ public final class DomainsListByEmailServiceResourceSamples {
      */
     public static void
         listDomainsResourcesByEmailServiceName(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.domains().listByEmailServiceResource("MyResourceGroup", "MyEmailServiceResource",
-            com.azure.core.util.Context.NONE);
+        manager.domains()
+            .listByEmailServiceResource("MyResourceGroup", "MyEmailServiceResource", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -609,8 +638,10 @@ public final class DomainsUpdateSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void updateDomainsResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        DomainResource resource = manager.domains().getWithResponse("MyResourceGroup", "MyEmailServiceResource",
-            "mydomain.com", com.azure.core.util.Context.NONE).getValue();
+        DomainResource resource = manager.domains()
+            .getWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withUserEngagementTracking(UserEngagementTracking.ENABLED).apply();
     }
 }
@@ -635,8 +666,12 @@ public final class EmailServicesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateEmailServiceResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.emailServices().define("MyEmailServiceResource").withRegion("Global")
-            .withExistingResourceGroup("MyResourceGroup").withDataLocation("United States").create();
+        manager.emailServices()
+            .define("MyEmailServiceResource")
+            .withRegion("Global")
+            .withExistingResourceGroup("MyResourceGroup")
+            .withDataLocation("United States")
+            .create();
     }
 }
 ```
@@ -683,8 +718,9 @@ public final class EmailServicesGetByResourceGroupSamples {
      * @param manager Entry point to CommunicationManager.
      */
     public static void getEmailServiceResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.emailServices().getByResourceGroupWithResponse("MyResourceGroup", "MyEmailServiceResource",
-            com.azure.core.util.Context.NONE);
+        manager.emailServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyEmailServiceResource",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -784,8 +820,10 @@ public final class EmailServicesUpdateSamples {
      */
     public static void
         updateEmailServiceResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        EmailServiceResource resource = manager.emailServices().getByResourceGroupWithResponse("MyResourceGroup",
-            "MyEmailServiceResource", com.azure.core.util.Context.NONE).getValue();
+        EmailServiceResource resource = manager.emailServices()
+            .getByResourceGroupWithResponse("MyResourceGroup", "MyEmailServiceResource",
+                com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("newTag", "newVal")).apply();
     }
 
@@ -845,9 +883,12 @@ public final class SenderUsernamesCreateOrUpdateSamples {
      */
     public static void
         createOrUpdateSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.senderUsernames().define("contosoNewsAlerts")
+        manager.senderUsernames()
+            .define("contosoNewsAlerts")
             .withExistingDomain("contosoResourceGroup", "contosoEmailService", "contoso.com")
-            .withUsername("contosoNewsAlerts").withDisplayName("Contoso News Alerts").create();
+            .withUsername("contosoNewsAlerts")
+            .withDisplayName("Contoso News Alerts")
+            .create();
     }
 }
 ```
@@ -871,8 +912,9 @@ public final class SenderUsernamesDeleteSamples {
      */
     public static void
         deleteSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.senderUsernames().deleteWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com",
-            "contosoNewsAlerts", com.azure.core.util.Context.NONE);
+        manager.senderUsernames()
+            .deleteWithResponse("MyResourceGroup", "MyEmailServiceResource", "mydomain.com", "contosoNewsAlerts",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -896,8 +938,9 @@ public final class SenderUsernamesGetSamples {
      */
     public static void
         getSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.senderUsernames().getWithResponse("contosoResourceGroup", "contosoEmailService", "contoso.com",
-            "contosoNewsAlerts", com.azure.core.util.Context.NONE);
+        manager.senderUsernames()
+            .getWithResponse("contosoResourceGroup", "contosoEmailService", "contoso.com", "contosoNewsAlerts",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -921,8 +964,9 @@ public final class SenderUsernamesListByDomainsSamples {
      */
     public static void
         getSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.senderUsernames().listByDomains("contosoResourceGroup", "contosoEmailService", "contoso.com",
-            com.azure.core.util.Context.NONE);
+        manager.senderUsernames()
+            .listByDomains("contosoResourceGroup", "contosoEmailService", "contoso.com",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

@@ -4,19 +4,17 @@
 package io.clientcore.http.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
-import io.clientcore.core.http.client.DefaultHttpClientBuilder;
+import io.clientcore.core.http.client.JdkHttpClientBuilder;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpLogOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.HttpLoggingPolicy;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.http.jdk.httpclient.JdkHttpClientProvider;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
@@ -97,7 +95,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     private Mono<Void> runInternalAsync() {
         return Mono.usingWhen(Mono.fromCallable(() -> pipeline.send(createRequest())), response -> {
-            ((HttpResponse<?>) response).getBody().toBytes();
+            response.getBody().toBytes();
             return Mono.empty();
         }, response -> Mono.fromRunnable(() -> {
             try {
@@ -111,8 +109,7 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     // Method to run using CompletableFuture
     private CompletableFuture<Void> runAsyncWithCompletableFutureInternal() {
         return CompletableFuture.supplyAsync(() -> {
-            try {
-                Response<?> response = pipeline.send(createRequest());
+            try (Response<?> response = pipeline.send(createRequest())) {
                 response.getBody().toBytes();
             } catch (Exception e) {
                 LOGGER.logThrowableAsError(e);
@@ -123,50 +120,43 @@ public class HttpGet extends ScenarioBase<StressOptions> {
 
     // Method to run using ExecutorService
     private Runnable runAsyncWithExecutorServiceInternal() {
-        Runnable task = () -> {
-            try {
-                Response<?> response = pipeline.send(createRequest());
+        return () -> {
+            try (Response<?> response = pipeline.send(createRequest())) {
                 response.getBody().toBytes();
             } catch (Exception e) {
                 LOGGER.logThrowableAsError(e);
             }
         };
-        return task;
     }
 
     // Method to run using Virtual Threads
     private Runnable runAsyncWithVirtualThreadInternal() {
-        Runnable task = () -> {
-            try {
-                Response<?> response = pipeline.send(createRequest());
+        return () -> {
+            try (Response<?> response = pipeline.send(createRequest())) {
                 response.getBody().toBytes();
             } catch (Exception e) {
                 LOGGER.logThrowableAsError(e);
             }
         };
-        return task;
     }
 
     private HttpRequest createRequest() {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri);
-        request.getHeaders().set(HttpHeaderName.USER_AGENT, "azsdk-java-clientcore-stress");
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        request.getHeaders().set(HttpHeaderName.USER_AGENT, "clientcore-stress");
         request.getHeaders()
             .set(HttpHeaderName.fromString("x-client-id"), String.valueOf(clientRequestId.incrementAndGet()));
         return request;
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
-        HttpLogOptions logOptions = new HttpLogOptions().setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
-
-        HttpPipelineBuilder builder
-            = new HttpPipelineBuilder().policies(new HttpRetryPolicy(), new HttpLoggingPolicy(logOptions));
+        HttpPipelineBuilder builder = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy())
+            .addPolicy(new HttpInstrumentationPolicy(
+                new HttpInstrumentationOptions().setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.HEADERS)));
 
         if (options.getHttpClient() == PerfStressOptions.HttpClientType.OKHTTP) {
             builder.httpClient(new OkHttpHttpClientProvider().getSharedInstance());
-        } else if (options.getHttpClient() == PerfStressOptions.HttpClientType.JDK) {
-            builder.httpClient(new JdkHttpClientProvider().getSharedInstance());
         } else {
-            builder.httpClient(new DefaultHttpClientBuilder().build());
+            builder.httpClient(new JdkHttpClientBuilder().build());
         }
         return builder;
     }

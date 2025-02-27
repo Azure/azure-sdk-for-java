@@ -56,6 +56,10 @@ public final class RntbdRequestArgs {
         this.transportRequestId = instanceCount.incrementAndGet();
     }
 
+    public RntbdRequestArgs(final RxDocumentServiceRequest serviceRequest) {
+        this(serviceRequest, Uri.create(""));
+    }
+
     // region Accessors
 
     @JsonProperty

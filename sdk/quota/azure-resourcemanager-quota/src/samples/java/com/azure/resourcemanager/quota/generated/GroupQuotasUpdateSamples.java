@@ -4,19 +4,16 @@
 
 package com.azure.resourcemanager.quota.generated;
 
-import com.azure.resourcemanager.quota.models.AdditionalAttributesPatch;
-import com.azure.resourcemanager.quota.models.EnvironmentType;
-import com.azure.resourcemanager.quota.models.GroupingId;
-import com.azure.resourcemanager.quota.models.GroupingIdType;
-import com.azure.resourcemanager.quota.models.GroupQuotasEntityBasePatch;
 import com.azure.resourcemanager.quota.models.GroupQuotasEntityPatch;
+import com.azure.resourcemanager.quota.models.GroupQuotasEntityPatchProperties;
 
 /**
  * Samples for GroupQuotas Update.
  */
 public final class GroupQuotasUpdateSamples {
     /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2023-06-01-preview/examples/GroupQuotas/PatchGroupQuotas.json
+     * x-ms-original-file:
+     * specification/quota/resource-manager/Microsoft.Quota/stable/2025-03-01/examples/GroupQuotas/PatchGroupQuotas.json
      */
     /**
      * Sample code: GroupQuotas_Patch_Request_ForCompute.
@@ -27,12 +24,7 @@ public final class GroupQuotasUpdateSamples {
         manager.groupQuotas()
             .update("E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1",
                 new GroupQuotasEntityPatch()
-                    .withProperties(
-                        new GroupQuotasEntityBasePatch().withDisplayName("UpdatedGroupQuota1")
-                            .withAdditionalAttributes(new AdditionalAttributesPatch()
-                                .withGroupId(new GroupingId().withGroupingIdType(GroupingIdType.SERVICE_TREE_ID)
-                                    .withValue("UpdatedServiceTreeIdHere"))
-                                .withEnvironment(EnvironmentType.PRODUCTION))),
+                    .withProperties(new GroupQuotasEntityPatchProperties().withDisplayName("UpdatedGroupQuota1")),
                 com.azure.core.util.Context.NONE);
     }
 }

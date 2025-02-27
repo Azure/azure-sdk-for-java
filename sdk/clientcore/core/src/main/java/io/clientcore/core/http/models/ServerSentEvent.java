@@ -3,7 +3,7 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.implementation.util.ServerSentEventHelper;
+import io.clientcore.core.implementation.utils.ServerSentEventHelper;
 
 import java.time.Duration;
 import java.util.List;
@@ -18,6 +18,12 @@ public final class ServerSentEvent {
     private List<String> data;
     private String comment;
     private Duration retryAfter;
+
+    /**
+     * Creates a new instance of {@link ServerSentEvent}.
+     */
+    public ServerSentEvent() {
+    }
 
     /**
      * Get event identifier.

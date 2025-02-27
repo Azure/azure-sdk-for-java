@@ -9,7 +9,9 @@ package com.azure.resourcemanager.security.generated;
  */
 public final class DeviceSecurityGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/GetDeviceSecurityGroups_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2019-08-01/examples/DeviceSecurityGroups/
+     * GetDeviceSecurityGroups_example.json
      */
     /**
      * Sample code: Get a device security group for the specified IoT Hub resource.

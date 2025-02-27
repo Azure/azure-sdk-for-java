@@ -9,91 +9,75 @@ import com.azure.resourcemanager.apimanagement.models.AuthorizationProviderOAuth
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AuthorizationProvider CreateOrUpdate. */
+/**
+ * Samples for AuthorizationProvider CreateOrUpdate.
+ */
 public final class AuthorizationProviderCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationProviderOOBGoogle.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateAuthorizationProviderOOBGoogle.json
      */
     /**
      * Sample code: ApiManagementCreateAuthorizationProviderOOBGoogle.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementCreateAuthorizationProviderOOBGoogle(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .authorizationProviders()
+        manager.authorizationProviders()
             .define("google")
             .withExistingService("rg1", "apimService1")
             .withDisplayName("google")
             .withIdentityProvider("google")
-            .withOauth2(
-                new AuthorizationProviderOAuth2Settings()
-                    .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
-                    .withGrantTypes(
-                        new AuthorizationProviderOAuth2GrantTypes()
-                            .withAuthorizationCode(
-                                mapOf(
-                                    "clientId",
-                                    "508791967882-5qv6o2i99a75un7329vlegtk78kr766h.apps.googleusercontent.com",
-                                    "clientSecret",
-                                    "fakeTokenPlaceholder",
-                                    "scopes",
-                                    "openid https://www.googleapis.com/auth/userinfo.profile"
-                                        + " https://www.googleapis.com/auth/userinfo.email"))))
+            .withOauth2(new AuthorizationProviderOAuth2Settings()
+                .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
+                .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes().withAuthorizationCode(mapOf("clientId",
+                    "99999999-xxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com", "clientSecret", "fakeTokenPlaceholder",
+                    "scopes",
+                    "openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationProviderGenericOAuth2.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateAuthorizationProviderGenericOAuth2.json
      */
     /**
      * Sample code: ApiManagementCreateAuthorizationProviderGenericOAuth2.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementCreateAuthorizationProviderGenericOAuth2(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .authorizationProviders()
+        manager.authorizationProviders()
             .define("eventbrite")
             .withExistingService("rg1", "apimService1")
             .withDisplayName("eventbrite")
             .withIdentityProvider("oauth2")
-            .withOauth2(
-                new AuthorizationProviderOAuth2Settings()
-                    .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
-                    .withGrantTypes(
-                        new AuthorizationProviderOAuth2GrantTypes()
-                            .withAuthorizationCode(
-                                mapOf(
-                                    "authorizationUrl",
-                                    "fakeTokenPlaceholder",
-                                    "clientId",
-                                    "ZYIJTBTABHOUQQDLZY",
-                                    "clientSecret",
-                                    "fakeTokenPlaceholder",
-                                    "refreshUrl",
-                                    "https://www.eventbrite.com/oauth/token",
-                                    "scopes",
-                                    "",
-                                    "tokenUrl",
-                                    "fakeTokenPlaceholder"))))
+            .withOauth2(new AuthorizationProviderOAuth2Settings()
+                .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
+                .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes()
+                    .withAuthorizationCode(mapOf("authorizationUrl", "fakeTokenPlaceholder", "clientId",
+                        "genericClientId", "clientSecret", "fakeTokenPlaceholder", "refreshUrl",
+                        "https://www.eventbrite.com/oauth/token", "scopes", "", "tokenUrl", "fakeTokenPlaceholder"))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationProviderAADAuthCode.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateAuthorizationProviderAADAuthCode.json
      */
     /**
      * Sample code: ApiManagementCreateAuthorizationProviderAADAuthCode.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementCreateAuthorizationProviderAADAuthCode(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .authorizationProviders()
+        manager.authorizationProviders()
             .define("aadwithauthcode")
             .withExistingService("rg1", "apimService1")
             .withDisplayName("aadwithauthcode")
@@ -101,48 +85,33 @@ public final class AuthorizationProviderCreateOrUpdateSamples {
             .withOauth2(
                 new AuthorizationProviderOAuth2Settings()
                     .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
-                    .withGrantTypes(
-                        new AuthorizationProviderOAuth2GrantTypes()
-                            .withAuthorizationCode(
-                                mapOf(
-                                    "clientId",
-                                    "59790825-fdd3-4b10-bc7a-4c3aaf25801d",
-                                    "clientSecret",
-                                    "fakeTokenPlaceholder",
-                                    "resourceUri",
-                                    "https://graph.microsoft.com",
-                                    "scopes",
-                                    "User.Read.All Group.Read.All"))))
+                    .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes().withAuthorizationCode(mapOf("clientId",
+                        "59790825-fdd3-4b10-bc7a-4c3aaf25801d", "clientSecret", "fakeTokenPlaceholder", "resourceUri",
+                        "https://graph.microsoft.com", "scopes", "User.Read.All Group.Read.All"))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateAuthorizationProviderAADClientCred.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateAuthorizationProviderAADClientCred.json
      */
     /**
      * Sample code: ApiManagementCreateAuthorizationProviderAADClientCred.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementCreateAuthorizationProviderAADClientCred(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .authorizationProviders()
+        manager.authorizationProviders()
             .define("aadwithclientcred")
             .withExistingService("rg1", "apimService1")
             .withDisplayName("aadwithclientcred")
             .withIdentityProvider("aad")
-            .withOauth2(
-                new AuthorizationProviderOAuth2Settings()
-                    .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
-                    .withGrantTypes(
-                        new AuthorizationProviderOAuth2GrantTypes()
-                            .withAuthorizationCode(
-                                mapOf(
-                                    "resourceUri",
-                                    "https://graph.microsoft.com",
-                                    "scopes",
-                                    "User.Read.All Group.Read.All"))))
+            .withOauth2(new AuthorizationProviderOAuth2Settings()
+                .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
+                .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes().withAuthorizationCode(
+                    mapOf("resourceUri", "https://graph.microsoft.com", "scopes", "User.Read.All Group.Read.All"))))
             .create();
     }
 

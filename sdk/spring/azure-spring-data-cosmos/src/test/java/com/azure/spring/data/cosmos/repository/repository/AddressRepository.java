@@ -59,6 +59,9 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
     @Query("select DISTINCT value a.postalCode from a where a.city = @city")
     List<String> annotatedFindPostalCodeValuesByCity(@Param("city") String city);
 
+    @Query("SELECT VALUE SUM(a.longId) from a where a.city = @city")
+    Long annotatedSumLongIdValuesByCity(@Param("city") String city);
+
     @Query(value = "select * from a where a.city IN (@cities)")
     List<Address> annotatedFindByCityIn(@Param("cities") List<String> cities, Sort sort);
 

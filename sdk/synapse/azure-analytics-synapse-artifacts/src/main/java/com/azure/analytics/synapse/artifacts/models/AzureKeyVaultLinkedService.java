@@ -24,7 +24,8 @@ public class AzureKeyVaultLinkedService extends LinkedService {
     private String type = "AzureKeyVault";
 
     /*
-     * The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string (or Expression with resultType string).
+     * The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string (or Expression with
+     * resultType string).
      */
     private Object baseUrl;
 

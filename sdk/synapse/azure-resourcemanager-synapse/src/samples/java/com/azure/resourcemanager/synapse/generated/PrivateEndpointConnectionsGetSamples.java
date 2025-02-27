@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class PrivateEndpointConnectionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetPrivateEndpointConnection.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetPrivateEndpointConnection.
      * json
      */
     /**

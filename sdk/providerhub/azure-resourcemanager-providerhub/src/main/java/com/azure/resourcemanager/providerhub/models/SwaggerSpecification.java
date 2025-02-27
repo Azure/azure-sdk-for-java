@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.providerhub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SwaggerSpecification model. */
+/**
+ * The SwaggerSpecification model.
+ */
 @Fluent
-public final class SwaggerSpecification {
+public final class SwaggerSpecification implements JsonSerializable<SwaggerSpecification> {
     /*
      * The apiVersions property.
      */
-    @JsonProperty(value = "apiVersions")
     private List<String> apiVersions;
 
     /*
      * The swaggerSpecFolderUri property.
      */
-    @JsonProperty(value = "swaggerSpecFolderUri")
     private String swaggerSpecFolderUri;
 
-    /** Creates an instance of SwaggerSpecification class. */
+    /**
+     * Creates an instance of SwaggerSpecification class.
+     */
     public SwaggerSpecification() {
     }
 
     /**
      * Get the apiVersions property: The apiVersions property.
-     *
+     * 
      * @return the apiVersions value.
      */
     public List<String> apiVersions() {
@@ -38,7 +44,7 @@ public final class SwaggerSpecification {
 
     /**
      * Set the apiVersions property: The apiVersions property.
-     *
+     * 
      * @param apiVersions the apiVersions value to set.
      * @return the SwaggerSpecification object itself.
      */
@@ -49,7 +55,7 @@ public final class SwaggerSpecification {
 
     /**
      * Get the swaggerSpecFolderUri property: The swaggerSpecFolderUri property.
-     *
+     * 
      * @return the swaggerSpecFolderUri value.
      */
     public String swaggerSpecFolderUri() {
@@ -58,7 +64,7 @@ public final class SwaggerSpecification {
 
     /**
      * Set the swaggerSpecFolderUri property: The swaggerSpecFolderUri property.
-     *
+     * 
      * @param swaggerSpecFolderUri the swaggerSpecFolderUri value to set.
      * @return the SwaggerSpecification object itself.
      */
@@ -69,9 +75,49 @@ public final class SwaggerSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("apiVersions", this.apiVersions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("swaggerSpecFolderUri", this.swaggerSpecFolderUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwaggerSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwaggerSpecification if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwaggerSpecification.
+     */
+    public static SwaggerSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwaggerSpecification deserializedSwaggerSpecification = new SwaggerSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("apiVersions".equals(fieldName)) {
+                    List<String> apiVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSwaggerSpecification.apiVersions = apiVersions;
+                } else if ("swaggerSpecFolderUri".equals(fieldName)) {
+                    deserializedSwaggerSpecification.swaggerSpecFolderUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwaggerSpecification;
+        });
     }
 }

@@ -11,11 +11,13 @@ trigger:
       - sdk/eventgrid/ci.yml
       - sdk/eventgrid/azure-messaging-eventgrid/
       - sdk/eventgrid/azure-messaging-eventgrid-namespaces/
+      - sdk/eventgrid/azure-messaging-eventgrid-systemevents/
       - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/
     exclude:
       - sdk/eventgrid/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid-namespaces/pom.xml
+      - sdk/eventgrid/azure-messaging-eventgrid-systemevents/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/pom.xml
       - sdk/eventgrid/azure-resourcemanager-eventgrid/
 
@@ -31,11 +33,13 @@ pr:
       - sdk/eventgrid/ci.yml
       - sdk/eventgrid/azure-messaging-eventgrid/
       - sdk/eventgrid/azure-messaging-eventgrid-namespaces/
+      - sdk/eventgrid/azure-messaging-eventgrid-systemevents/
       - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/
     exclude:
       - sdk/eventgrid/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid-namespaces/pom.xml
+      - sdk/eventgrid/azure-messaging-eventgrid-systemevents/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/pom.xml
       - sdk/eventgrid/azure-resourcemanager-eventgrid/
 
@@ -46,6 +50,10 @@ parameters:
   default: true
 - name: release_azuremessagingeventgridnamespaces
   displayName: 'azure-messaging-eventgrid-namespaces'
+  type: boolean
+  default: true
+- name: release_azuremessagingeventgridsystemevents
+  displayName: 'azure-messaging-eventgrid-systemevents'
   type: boolean
   default: true
 - name: release_azuremessagingeventgridcloudnativecloudevents
@@ -66,6 +74,10 @@ extends:
         groupId: com.azure
         safeName: azuremessagingeventgridnamespaces
         releaseInBatch: ${{ parameters.release_azuremessagingeventgridnamespaces }}
+      - name: azure-messaging-eventgrid-systemevents
+        groupId: com.azure
+        safeName: azuremessagingeventgridsystemevents
+        releaseInBatch: ${{ parameters.release_azuremessagingeventgridsystemevents }}
       - name: azure-messaging-eventgrid-cloudnative-cloudevents
         groupId: com.azure
         safeName: azuremessagingeventgridcloudnativecloudevents

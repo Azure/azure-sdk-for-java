@@ -29,6 +29,10 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-1_2-12
 | Connector    | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
 |--------------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.37.0       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 9.\*                          |
+| 4.36.1       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 9.\*                          |
+| 4.36.0       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 8.\*, 9.\*                    |
+| 4.35.0       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 8.\*, 9.\*                    |
 | 4.34.0       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 8.\*, 9.\*                    |
 | 4.33.1       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 8.\*, 9.\*                    |
 | 4.33.0       | 3.1.1 - 3.1.2            | [8, 11]                | 2.12                     | 8.\*, 9.\*                    |
@@ -100,6 +104,10 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-2_2-12
 | Connector | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
 |-----------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.37.0    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
+| 4.36.1    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
+| 4.36.0    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
+| 4.35.0    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
 | 4.34.0    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
 | 4.33.1    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
 | 4.33.0    | 3.2.0 - 3.2.1            | [8, 11]                | 2.12                     | 10.\*                         |
@@ -156,6 +164,10 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-3_2-12
 | Connector | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
 |-----------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.37.0    | 3.3.0 - 3.3.2            | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
+| 4.36.1    | 3.3.0 - 3.3.2            | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
+| 4.36.0    | 3.3.0                    | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
+| 4.35.0    | 3.3.0                    | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
 | 4.34.0    | 3.3.0                    | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
 | 4.33.1    | 3.3.0                    | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
 | 4.33.0    | 3.3.0                    | [8, 11]                | 2.12                     | 11.\*, 12.\*                  |
@@ -194,6 +206,10 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-4_2-12
 | Connector | Supported Spark Versions | Supported JVM Versions | Supported Scala Versions | Supported Databricks Runtimes |
 |-----------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.37.0    | 3.4.0 - 3.4.1            | [8, 11]                | 2.12                     | 13.\*                         |
+| 4.36.1    | 3.4.0 - 3.4.1            | [8, 11]                | 2.12                     | 13.\*                         |
+| 4.36.0    | 3.4.0                    | [8, 11]                | 2.12                     | 13.\*                         |
+| 4.35.0    | 3.4.0                    | [8, 11]                | 2.12                     | 13.\*                         |
 | 4.34.0    | 3.4.0                    | [8, 11]                | 2.12                     | 13.\*                         |
 | 4.33.1    | 3.4.0                    | [8, 11]                | 2.12                     | 13.\*                         |
 | 4.33.0    | 3.4.0                    | [8, 11]                | 2.12                     | 13.\*                         |
@@ -224,6 +240,10 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-5_2-12
 | Connector | Supported Spark Versions | Minimum Java Version   | Supported Scala Versions | Supported Databricks Runtimes |
 |-----------|--------------------------|------------------------|--------------------------|-------------------------------|
+| 4.37.0    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
+| 4.36.1    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
+| 4.36.0    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
+| 4.35.0    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
 | 4.34.0    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
 | 4.33.1    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
 | 4.33.0    | 3.5.0                    | [8, 11]                | 2.12                     | 14.*, 15.\*                   |
@@ -239,11 +259,11 @@ to use the same version of Scala that Spark was compiled for.
 ### Download
 
 You can use the maven coordinate of the jar to auto install the Spark Connector to your Databricks Runtime 8 from Maven:
-`com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12:4.34.0`
+`com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12:4.37.0`
 
 You can also integrate against Cosmos DB Spark Connector in your SBT project:
 ```scala
-libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-1_2-12" % "4.34.0"
+libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-1_2-12" % "4.37.0"
 ```
 
 Cosmos DB Spark Connector is available on [Maven Central Repo](https://central.sonatype.com/search?namespace=com.azure.cosmos.spark).
@@ -273,9 +293,9 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 
 <!-- LINKS -->
 [source_code]: src
-[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
-[cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
+[cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
+[jdk]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
@@ -283,11 +303,11 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
 [samples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-data-cosmos/src/samples/java/com/azure/spring/data/cosmos
-[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
-[local_emulator]: https://docs.microsoft.com/azure/cosmos-db/local-emulator
-[local_emulator_export_ssl_certificates]: https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
-[azure_cosmos_db_partition]: https://docs.microsoft.com/azure/cosmos-db/partition-data
-[sql_queries_in_cosmos]: https://docs.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
-[sql_queries_getting_started]: https://docs.microsoft.com/azure/cosmos-db/sql-query-getting-started
+[sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
+[local_emulator]: https://learn.microsoft.com/azure/cosmos-db/local-emulator
+[local_emulator_export_ssl_certificates]: https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates
+[azure_cosmos_db_partition]: https://learn.microsoft.com/azure/cosmos-db/partition-data
+[sql_queries_in_cosmos]: https://learn.microsoft.com/azure/cosmos-db/tutorial-query-sql-api
+[sql_queries_getting_started]: https://learn.microsoft.com/azure/cosmos-db/sql-query-getting-started
 
 

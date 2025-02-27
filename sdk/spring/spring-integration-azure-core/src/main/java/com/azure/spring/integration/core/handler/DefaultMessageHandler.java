@@ -50,7 +50,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private final SendOperation sendOperation;
     private boolean sync = false;
 
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("removal")
     private ListenableFutureCallback<Void> sendCallback;
     private EvaluationContext evaluationContext;
     private Expression sendTimeoutExpression = new ValueExpression<>(DEFAULT_SEND_TIMEOUT);
@@ -108,6 +108,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
 
     }
 
+    @SuppressWarnings("removal")
     private <T> void handleSendResponseAsync(Mono<T> mono, Message<?> message) {
         mono.doOnError(ex -> {
             if (LOGGER.isWarnEnabled()) {
@@ -263,7 +264,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
      *
      * @param callback the call back
      */
-    @SuppressWarnings("deprecation")
+    @SuppressWarnings("removal")
     public void setSendCallback(ListenableFutureCallback<Void> callback) {
         this.sendCallback = callback;
     }

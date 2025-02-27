@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.applicationinsights.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -29,12 +30,13 @@ import com.azure.resourcemanager.applicationinsights.fluent.ApplicationInsightsM
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentAvailableFeaturesClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentCurrentBillingFeaturesClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentFeatureCapabilitiesClient;
+import com.azure.resourcemanager.applicationinsights.fluent.ComponentLinkedStorageAccountsOperationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentQuotaStatusClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentsClient;
+import com.azure.resourcemanager.applicationinsights.fluent.DeletedWorkbooksClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ExportConfigurationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.FavoritesClient;
 import com.azure.resourcemanager.applicationinsights.fluent.LiveTokensClient;
-import com.azure.resourcemanager.applicationinsights.fluent.MyWorkbooksClient;
 import com.azure.resourcemanager.applicationinsights.fluent.OperationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.ProactiveDetectionConfigurationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.WebTestLocationsClient;
@@ -51,291 +53,327 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the ApplicationInsightsManagementClientImpl type. */
+/**
+ * Initializes a new instance of the ApplicationInsightsManagementClientImpl type.
+ */
 @ServiceClient(builder = ApplicationInsightsManagementClientBuilder.class)
 public final class ApplicationInsightsManagementClientImpl implements ApplicationInsightsManagementClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The ComponentsClient object to access its operations. */
+    /**
+     * The ComponentsClient object to access its operations.
+     */
     private final ComponentsClient components;
 
     /**
      * Gets the ComponentsClient object to access its operations.
-     *
+     * 
      * @return the ComponentsClient object.
      */
     public ComponentsClient getComponents() {
         return this.components;
     }
 
-    /** The AnnotationsClient object to access its operations. */
+    /**
+     * The AnnotationsClient object to access its operations.
+     */
     private final AnnotationsClient annotations;
 
     /**
      * Gets the AnnotationsClient object to access its operations.
-     *
+     * 
      * @return the AnnotationsClient object.
      */
     public AnnotationsClient getAnnotations() {
         return this.annotations;
     }
 
-    /** The ApiKeysClient object to access its operations. */
+    /**
+     * The ApiKeysClient object to access its operations.
+     */
     private final ApiKeysClient apiKeys;
 
     /**
      * Gets the ApiKeysClient object to access its operations.
-     *
+     * 
      * @return the ApiKeysClient object.
      */
     public ApiKeysClient getApiKeys() {
         return this.apiKeys;
     }
 
-    /** The ExportConfigurationsClient object to access its operations. */
+    /**
+     * The ExportConfigurationsClient object to access its operations.
+     */
     private final ExportConfigurationsClient exportConfigurations;
 
     /**
      * Gets the ExportConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the ExportConfigurationsClient object.
      */
     public ExportConfigurationsClient getExportConfigurations() {
         return this.exportConfigurations;
     }
 
-    /** The ComponentCurrentBillingFeaturesClient object to access its operations. */
+    /**
+     * The ComponentCurrentBillingFeaturesClient object to access its operations.
+     */
     private final ComponentCurrentBillingFeaturesClient componentCurrentBillingFeatures;
 
     /**
      * Gets the ComponentCurrentBillingFeaturesClient object to access its operations.
-     *
+     * 
      * @return the ComponentCurrentBillingFeaturesClient object.
      */
     public ComponentCurrentBillingFeaturesClient getComponentCurrentBillingFeatures() {
         return this.componentCurrentBillingFeatures;
     }
 
-    /** The ComponentQuotaStatusClient object to access its operations. */
+    /**
+     * The ComponentQuotaStatusClient object to access its operations.
+     */
     private final ComponentQuotaStatusClient componentQuotaStatus;
 
     /**
      * Gets the ComponentQuotaStatusClient object to access its operations.
-     *
+     * 
      * @return the ComponentQuotaStatusClient object.
      */
     public ComponentQuotaStatusClient getComponentQuotaStatus() {
         return this.componentQuotaStatus;
     }
 
-    /** The ComponentFeatureCapabilitiesClient object to access its operations. */
+    /**
+     * The ComponentFeatureCapabilitiesClient object to access its operations.
+     */
     private final ComponentFeatureCapabilitiesClient componentFeatureCapabilities;
 
     /**
      * Gets the ComponentFeatureCapabilitiesClient object to access its operations.
-     *
+     * 
      * @return the ComponentFeatureCapabilitiesClient object.
      */
     public ComponentFeatureCapabilitiesClient getComponentFeatureCapabilities() {
         return this.componentFeatureCapabilities;
     }
 
-    /** The ComponentAvailableFeaturesClient object to access its operations. */
+    /**
+     * The ComponentAvailableFeaturesClient object to access its operations.
+     */
     private final ComponentAvailableFeaturesClient componentAvailableFeatures;
 
     /**
      * Gets the ComponentAvailableFeaturesClient object to access its operations.
-     *
+     * 
      * @return the ComponentAvailableFeaturesClient object.
      */
     public ComponentAvailableFeaturesClient getComponentAvailableFeatures() {
         return this.componentAvailableFeatures;
     }
 
-    /** The ProactiveDetectionConfigurationsClient object to access its operations. */
+    /**
+     * The ProactiveDetectionConfigurationsClient object to access its operations.
+     */
     private final ProactiveDetectionConfigurationsClient proactiveDetectionConfigurations;
 
     /**
      * Gets the ProactiveDetectionConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the ProactiveDetectionConfigurationsClient object.
      */
     public ProactiveDetectionConfigurationsClient getProactiveDetectionConfigurations() {
         return this.proactiveDetectionConfigurations;
     }
 
-    /** The WorkItemConfigurationsClient object to access its operations. */
+    /**
+     * The WorkItemConfigurationsClient object to access its operations.
+     */
     private final WorkItemConfigurationsClient workItemConfigurations;
 
     /**
      * Gets the WorkItemConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the WorkItemConfigurationsClient object.
      */
     public WorkItemConfigurationsClient getWorkItemConfigurations() {
         return this.workItemConfigurations;
     }
 
-    /** The FavoritesClient object to access its operations. */
+    /**
+     * The FavoritesClient object to access its operations.
+     */
     private final FavoritesClient favorites;
 
     /**
      * Gets the FavoritesClient object to access its operations.
-     *
+     * 
      * @return the FavoritesClient object.
      */
     public FavoritesClient getFavorites() {
         return this.favorites;
     }
 
-    /** The WebTestLocationsClient object to access its operations. */
+    /**
+     * The WebTestLocationsClient object to access its operations.
+     */
     private final WebTestLocationsClient webTestLocations;
 
     /**
      * Gets the WebTestLocationsClient object to access its operations.
-     *
+     * 
      * @return the WebTestLocationsClient object.
      */
     public WebTestLocationsClient getWebTestLocations() {
         return this.webTestLocations;
     }
 
-    /** The WebTestsClient object to access its operations. */
+    /**
+     * The WebTestsClient object to access its operations.
+     */
     private final WebTestsClient webTests;
 
     /**
      * Gets the WebTestsClient object to access its operations.
-     *
+     * 
      * @return the WebTestsClient object.
      */
     public WebTestsClient getWebTests() {
         return this.webTests;
     }
 
-    /** The AnalyticsItemsClient object to access its operations. */
+    /**
+     * The AnalyticsItemsClient object to access its operations.
+     */
     private final AnalyticsItemsClient analyticsItems;
 
     /**
      * Gets the AnalyticsItemsClient object to access its operations.
-     *
+     * 
      * @return the AnalyticsItemsClient object.
      */
     public AnalyticsItemsClient getAnalyticsItems() {
         return this.analyticsItems;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The WorkbookTemplatesClient object to access its operations. */
+    /**
+     * The WorkbookTemplatesClient object to access its operations.
+     */
     private final WorkbookTemplatesClient workbookTemplates;
 
     /**
      * Gets the WorkbookTemplatesClient object to access its operations.
-     *
+     * 
      * @return the WorkbookTemplatesClient object.
      */
     public WorkbookTemplatesClient getWorkbookTemplates() {
         return this.workbookTemplates;
     }
 
-    /** The MyWorkbooksClient object to access its operations. */
-    private final MyWorkbooksClient myWorkbooks;
-
     /**
-     * Gets the MyWorkbooksClient object to access its operations.
-     *
-     * @return the MyWorkbooksClient object.
+     * The WorkbooksClient object to access its operations.
      */
-    public MyWorkbooksClient getMyWorkbooks() {
-        return this.myWorkbooks;
-    }
-
-    /** The WorkbooksClient object to access its operations. */
     private final WorkbooksClient workbooks;
 
     /**
      * Gets the WorkbooksClient object to access its operations.
-     *
+     * 
      * @return the WorkbooksClient object.
      */
     public WorkbooksClient getWorkbooks() {
         return this.workbooks;
     }
 
-    /** The LiveTokensClient object to access its operations. */
+    /**
+     * The LiveTokensClient object to access its operations.
+     */
     private final LiveTokensClient liveTokens;
 
     /**
      * Gets the LiveTokensClient object to access its operations.
-     *
+     * 
      * @return the LiveTokensClient object.
      */
     public LiveTokensClient getLiveTokens() {
@@ -343,8 +381,36 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
     }
 
     /**
+     * The ComponentLinkedStorageAccountsOperationsClient object to access its operations.
+     */
+    private final ComponentLinkedStorageAccountsOperationsClient componentLinkedStorageAccountsOperations;
+
+    /**
+     * Gets the ComponentLinkedStorageAccountsOperationsClient object to access its operations.
+     * 
+     * @return the ComponentLinkedStorageAccountsOperationsClient object.
+     */
+    public ComponentLinkedStorageAccountsOperationsClient getComponentLinkedStorageAccountsOperations() {
+        return this.componentLinkedStorageAccountsOperations;
+    }
+
+    /**
+     * The DeletedWorkbooksClient object to access its operations.
+     */
+    private final DeletedWorkbooksClient deletedWorkbooks;
+
+    /**
+     * Gets the DeletedWorkbooksClient object to access its operations.
+     * 
+     * @return the DeletedWorkbooksClient object.
+     */
+    public DeletedWorkbooksClient getDeletedWorkbooks() {
+        return this.deletedWorkbooks;
+    }
+
+    /**
      * Initializes an instance of ApplicationInsightsManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -375,14 +441,15 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         this.analyticsItems = new AnalyticsItemsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
         this.workbookTemplates = new WorkbookTemplatesClientImpl(this);
-        this.myWorkbooks = new MyWorkbooksClientImpl(this);
         this.workbooks = new WorkbooksClientImpl(this);
         this.liveTokens = new LiveTokensClientImpl(this);
+        this.componentLinkedStorageAccountsOperations = new ComponentLinkedStorageAccountsOperationsClientImpl(this);
+        this.deletedWorkbooks = new DeletedWorkbooksClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -391,7 +458,7 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -401,7 +468,7 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -419,7 +486,7 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -482,7 +549,7 @@ public final class ApplicationInsightsManagementClientImpl implements Applicatio
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

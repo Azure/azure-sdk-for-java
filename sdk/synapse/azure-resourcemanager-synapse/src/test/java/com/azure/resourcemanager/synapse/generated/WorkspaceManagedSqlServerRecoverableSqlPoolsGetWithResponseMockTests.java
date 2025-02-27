@@ -20,7 +20,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsGetWithResponseMo
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"edition\":\"cucrcm\",\"serviceLevelObjective\":\"ixpqj\",\"elasticPoolName\":\"ifhb\",\"lastAvailableBackupDate\":\"2021-02-19T00:43:52Z\"},\"id\":\"dttohq\",\"name\":\"lna\",\"type\":\"h\"}";
+            = "{\"properties\":{\"edition\":\"xzuisamona\",\"serviceLevelObjective\":\"izexroqsqj\",\"elasticPoolName\":\"rmthsplwst\",\"lastAvailableBackupDate\":\"2020-12-20T01:40:49Z\"},\"id\":\"rgxfqpaniceo\",\"name\":\"xgzwhs\",\"type\":\"yrujm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsGetWithResponseMo
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         RecoverableSqlPool response = manager.workspaceManagedSqlServerRecoverableSqlPools()
-            .getWithResponse("osnqliwkmzojfe", "yalhtgm", "nazgbjbhrpgiq", com.azure.core.util.Context.NONE)
+            .getWithResponse("xkeedcnwmy", "xfqzkvemyzd", "czaqpqifdbmpt", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

@@ -15,21 +15,21 @@ public final class InternetGatewayRulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InternetGatewayRuleProperties model = BinaryData.fromString(
-            "{\"ruleProperties\":{\"action\":\"Allow\",\"addressList\":[\"xaonwivkcqh\",\"xhxknlc\",\"rmmkyupiju\"]},\"provisioningState\":\"Accepted\",\"internetGatewayIds\":[\"kakfqfr\"],\"annotation\":\"myildudxjasc\"}")
+            "{\"ruleProperties\":{\"action\":\"Deny\",\"addressList\":[\"vtzejetjklnti\",\"yjuzkdb\",\"zolxrzvhqjwtr\"]},\"provisioningState\":\"Deleting\",\"internetGatewayIds\":[\"zpcrrkolawj\",\"jsmwrokc\",\"xfzzzwyjafitlhgu\"],\"annotation\":\"uchlgmltx\"}")
             .toObject(InternetGatewayRuleProperties.class);
-        Assertions.assertEquals("myildudxjasc", model.annotation());
-        Assertions.assertEquals(Action.ALLOW, model.ruleProperties().action());
-        Assertions.assertEquals("xaonwivkcqh", model.ruleProperties().addressList().get(0));
+        Assertions.assertEquals("uchlgmltx", model.annotation());
+        Assertions.assertEquals(Action.DENY, model.ruleProperties().action());
+        Assertions.assertEquals("vtzejetjklnti", model.ruleProperties().addressList().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InternetGatewayRuleProperties model = new InternetGatewayRuleProperties().withAnnotation("myildudxjasc")
-            .withRuleProperties(new RuleProperties().withAction(Action.ALLOW)
-                .withAddressList(Arrays.asList("xaonwivkcqh", "xhxknlc", "rmmkyupiju")));
+        InternetGatewayRuleProperties model = new InternetGatewayRuleProperties().withAnnotation("uchlgmltx")
+            .withRuleProperties(new RuleProperties().withAction(Action.DENY)
+                .withAddressList(Arrays.asList("vtzejetjklnti", "yjuzkdb", "zolxrzvhqjwtr")));
         model = BinaryData.fromObject(model).toObject(InternetGatewayRuleProperties.class);
-        Assertions.assertEquals("myildudxjasc", model.annotation());
-        Assertions.assertEquals(Action.ALLOW, model.ruleProperties().action());
-        Assertions.assertEquals("xaonwivkcqh", model.ruleProperties().addressList().get(0));
+        Assertions.assertEquals("uchlgmltx", model.annotation());
+        Assertions.assertEquals(Action.DENY, model.ruleProperties().action());
+        Assertions.assertEquals("vtzejetjklnti", model.ruleProperties().addressList().get(0));
     }
 }

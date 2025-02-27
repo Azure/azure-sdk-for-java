@@ -5,29 +5,30 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Pre-backup validation for Azure VM Workload provider.
  */
 @Fluent
-public final class PreBackupValidation {
+public final class PreBackupValidation implements JsonSerializable<PreBackupValidation> {
     /*
      * Status of protectable item, i.e. InProgress,Succeeded,Failed
      */
-    @JsonProperty(value = "status")
     private InquiryStatus status;
 
     /*
      * Error code of protectable item
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Message corresponding to the error code for the protectable item
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
@@ -102,5 +103,47 @@ public final class PreBackupValidation {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PreBackupValidation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PreBackupValidation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PreBackupValidation.
+     */
+    public static PreBackupValidation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PreBackupValidation deserializedPreBackupValidation = new PreBackupValidation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedPreBackupValidation.status = InquiryStatus.fromString(reader.getString());
+                } else if ("code".equals(fieldName)) {
+                    deserializedPreBackupValidation.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedPreBackupValidation.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPreBackupValidation;
+        });
     }
 }

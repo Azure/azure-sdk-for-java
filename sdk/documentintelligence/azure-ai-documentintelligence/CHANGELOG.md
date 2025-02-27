@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,52 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-12-16)
+
+### Features Added
+- Added methods `getAnalyzeBatchResult`, `listAnalyzeBatchResults`, `deleteAnalyzeBatchResult`, and `deleteAnalyzeResult` to `DocumentIntelligenceClient` and `DocumentIntelligenceAsyncClient`.
+- Added class `AnalyzeBatchOperation` as output model for `getAnalyzeBatchResult` and `listAnalyzeBatchResults` methods.
+- Added constructor overloads for the `AnalyzeBatchDocumentsOptions` model that take required parameters.
+- Added constructor overloads for the `AnalyzeDocumentsOptions` model that take required parameters and BinaryData.
+- Added constructor overloads for the `ClassifyDocumentOptions` model that take required parameters and BinaryData.
+- Added property `modifiedOn` to `DocumentModelDetails` and to `DocumentClassifierDetails`.
+- Added enum value `SKIPPED` to `DocumentIntelligenceOperationStatus` (former `OperationStatus`).
+
+### Breaking Changes
+- Replaced the following `Request` classes with new corresponding `Options` classes:
+    - `AnalyzeBatchDocumentsRequest` to `AnalyzeBatchDocumentsOptions`.
+    - `AnalyzeDocumentRequest` to `AnalyzeDocumentOptions`.
+    - `AuthorizeClassifierCopyRequest` to `AuthorizeClassifierCopyOptions`.
+    - `AuthorizeCopyRequest` to `AuthorizeModelCopyOptions`.
+    - `BuildDocumentClassifierRequest` to `BuildClassifierOptions`.
+    - `BuildDocumentModelRequest` to `BuildDocumentModelOptions`.
+    - `ClassifyDocumentRequest` to `ClassifyDocumentOptions`.
+    - `ComposeDocumentModelRequest` to `ComposeModelOptions`.
+    - Parameters of the `AnalyzeBatchDocuments`, `AnalyzeDocument`, and `ClassifyDocument` methods have been moved into their corresponding `Options` class.
+- Renamed all occurrences of properties `docType` and `docTypes` to `documentType` and `documentTypes`, respectively.
+- Removed enum value `Generative` from `DocumentBuildMode`.
+- Renamed enum value `StyleFonts` to `FontStyling` in `DocumentAnalysisFeature`.
+- Renamed class `AnalyzeBatchOperationDetail` to `AnalyzeBatchResultDetails`.
+- Renamed class `AnalyzeBatchOperation` to `AnalyzeBatchOperationDetails`.
+- Renamed class `AnalyzeOperation` to `AnalyzeOperationDetails`.
+- Renamed all occurrences of property `expirationDateTime` to `expiresOn`.
+- Renamed method `getResourceInfo` to `getResourceDetails` in `DocumentIntelligenceAdministrationClient` and `DocumentIntelligenceAdministrationAsyncClient`.
+- Renamed class `ResourceDetails` to `DocumentIntelligenceResourceDetails`.
+- Renamed type `ContentFormat` to `DocumentContentFormat`.
+- Renamed class `OperationDetails` to `DocumentIntelligenceOperationDetails`.
+- Renamed class `InnerError` to `DocumentIntelligenceInnerError`.
+- Renamed class `CopyAuthorization` to `ModelCopyAuthorization`.
+- Renamed type `OperationStatus` to `DocumentIntelligenceOperationStatus`.
+- Renamed property `Innererror` to `innerError` in `DocumentIntelligenceError`.
+- Renamed property `InnerErrorObject` to `innerError` in `DocumentIntelligenceInnerError` (former class `InnerError`).
+- Removed enum value `COMPLETED` from `DocumentIntelligenceOperationStatus` (former `OperationStatus`).
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` to version`1.15.7`.
+- Upgraded `azure-core` to version `1.54.1`.
 
 ## 1.0.0-beta.4 (2024-08-14)
 
@@ -115,7 +161,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
                     null,
                     null,
                     ContentFormat.MARKDOWN,
-                    new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                    new AnalyzeDocumentRequest().setBytesSource(Files.readAllBytes(document.toPath())));
     ```
     For the complete sample, see [Sample: Markdown](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeLayoutMarkdownOutput.java).
 
@@ -133,7 +179,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
                     Arrays.asList(DocumentAnalysisFeature.QUERY_FIELDS),
                     Arrays.asList("Address", "InvoiceNumber"),
                     null,
-                    new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                    new AnalyzeDocumentRequest().setBytesSource(Files.readAllBytes(document.toPath())));
     ```
     For the complete sample, see [Sample: Query Fields](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeAddOnQueryFields.java).
 
@@ -204,7 +250,7 @@ https://azure.github.io/azure-sdk/releases/latest/java.html.
                   Arrays.asList(DocumentAnalysisFeature.FORMULAS),
                   null,
                   null,
-                  new AnalyzeDocumentRequest().setBase64Source(Files.readAllBytes(document.toPath())));
+                  new AnalyzeDocumentRequest().setBytesSource(Files.readAllBytes(document.toPath())));
     ```
   
   For the complete sample, see [Sample: KeyValuePair](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/documentintelligence/azure-ai-documentintelligence/src/samples/java/com/azure/ai/documentintelligence/AnalyzeAddOnKeyValuePair.java).

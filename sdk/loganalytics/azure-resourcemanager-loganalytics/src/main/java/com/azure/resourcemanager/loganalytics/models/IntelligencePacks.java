@@ -8,11 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Resource collection API of IntelligencePacks. */
+/**
+ * Resource collection API of IntelligencePacks.
+ */
 public interface IntelligencePacks {
     /**
      * Disables an intelligence pack for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param intelligencePackName The name of the intelligence pack to be disabled.
@@ -27,7 +29,7 @@ public interface IntelligencePacks {
 
     /**
      * Disables an intelligence pack for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param intelligencePackName The name of the intelligence pack to be disabled.
@@ -39,7 +41,7 @@ public interface IntelligencePacks {
 
     /**
      * Enables an intelligence pack for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param intelligencePackName The name of the intelligence pack to be enabled.
@@ -54,7 +56,7 @@ public interface IntelligencePacks {
 
     /**
      * Enables an intelligence pack for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param intelligencePackName The name of the intelligence pack to be enabled.
@@ -66,7 +68,7 @@ public interface IntelligencePacks {
 
     /**
      * Lists all the intelligence packs possible and whether they are enabled or disabled for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -79,7 +81,7 @@ public interface IntelligencePacks {
 
     /**
      * Lists all the intelligence packs possible and whether they are enabled or disabled for a given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

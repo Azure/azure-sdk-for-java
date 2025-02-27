@@ -5,24 +5,29 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Configuration relating to SUPI concealment.
  */
 @Fluent
-public final class PublicLandMobileNetworkHomeNetworkPublicKeys {
+public final class PublicLandMobileNetworkHomeNetworkPublicKeys
+    implements JsonSerializable<PublicLandMobileNetworkHomeNetworkPublicKeys> {
     /*
-     * This provides a mapping to identify which public key has been used for SUPI concealment using the Profile A Protection Scheme.
+     * This provides a mapping to identify which public key has been used for SUPI concealment using the Profile A
+     * Protection Scheme.
      */
-    @JsonProperty(value = "profileA")
     private List<HomeNetworkPublicKey> profileA;
 
     /*
-     * This provides a mapping to identify which public key has been used for SUPI concealment using the Profile B Protection Scheme.
+     * This provides a mapping to identify which public key has been used for SUPI concealment using the Profile B
+     * Protection Scheme.
      */
-    @JsonProperty(value = "profileB")
     private List<HomeNetworkPublicKey> profileB;
 
     /**
@@ -87,5 +92,49 @@ public final class PublicLandMobileNetworkHomeNetworkPublicKeys {
         if (profileB() != null) {
             profileB().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("profileA", this.profileA, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("profileB", this.profileB, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PublicLandMobileNetworkHomeNetworkPublicKeys from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PublicLandMobileNetworkHomeNetworkPublicKeys if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PublicLandMobileNetworkHomeNetworkPublicKeys.
+     */
+    public static PublicLandMobileNetworkHomeNetworkPublicKeys fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PublicLandMobileNetworkHomeNetworkPublicKeys deserializedPublicLandMobileNetworkHomeNetworkPublicKeys
+                = new PublicLandMobileNetworkHomeNetworkPublicKeys();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("profileA".equals(fieldName)) {
+                    List<HomeNetworkPublicKey> profileA
+                        = reader.readArray(reader1 -> HomeNetworkPublicKey.fromJson(reader1));
+                    deserializedPublicLandMobileNetworkHomeNetworkPublicKeys.profileA = profileA;
+                } else if ("profileB".equals(fieldName)) {
+                    List<HomeNetworkPublicKey> profileB
+                        = reader.readArray(reader1 -> HomeNetworkPublicKey.fromJson(reader1));
+                    deserializedPublicLandMobileNetworkHomeNetworkPublicKeys.profileB = profileB;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPublicLandMobileNetworkHomeNetworkPublicKeys;
+        });
     }
 }

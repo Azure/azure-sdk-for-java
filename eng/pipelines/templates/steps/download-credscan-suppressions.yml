@@ -8,7 +8,5 @@ steps:
       $req = Invoke-WebRequest https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/eng/CredScanSuppression.json
       $req.RawContent | Out-File eng/CredScanSuppression.json
 
-      $req2 = Invoke-WebRequest https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/eng/java.gdnbaselines
-      $req2.RawContent | Out-File eng/java.gdnbaselines
     workingDirectory: $(Build.SourcesDirectory)
     displayName: Set credscan suppression/baseline file

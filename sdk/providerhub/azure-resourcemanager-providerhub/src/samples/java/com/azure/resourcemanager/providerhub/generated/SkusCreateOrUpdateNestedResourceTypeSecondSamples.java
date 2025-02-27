@@ -10,38 +10,30 @@ import com.azure.resourcemanager.providerhub.models.SkuResourceProperties;
 import com.azure.resourcemanager.providerhub.models.SkuSetting;
 import java.util.Arrays;
 
-/** Samples for Skus CreateOrUpdateNestedResourceTypeSecond. */
+/**
+ * Samples for Skus CreateOrUpdateNestedResourceTypeSecond.
+ */
 public final class SkusCreateOrUpdateNestedResourceTypeSecondSamples {
     /*
-     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/Skus_CreateOrUpdateNestedResourceTypeSecond.json
+     * x-ms-original-file: specification/providerhub/resource-manager/Microsoft.ProviderHub/stable/2020-11-20/examples/
+     * Skus_CreateOrUpdateNestedResourceTypeSecond.json
      */
     /**
      * Sample code: Skus_CreateOrUpdateNestedResourceTypeSecond.
-     *
+     * 
      * @param manager Entry point to ProviderHubManager.
      */
-    public static void skusCreateOrUpdateNestedResourceTypeSecond(
-        com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
-        manager
-            .skus()
-            .createOrUpdateNestedResourceTypeSecondWithResponse(
-                "Microsoft.Contoso",
-                "testResourceType",
-                "nestedResourceTypeFirst",
-                "nestedResourceTypeSecond",
-                "testSku",
-                new SkuResourceInner()
-                    .withProperties(
-                        new SkuResourceProperties()
-                            .withSkuSettings(
-                                Arrays
-                                    .asList(
-                                        new SkuSetting().withName("freeSku").withTier("Tier1").withKind("Standard"),
-                                        new SkuSetting()
-                                            .withName("premiumSku")
-                                            .withTier("Tier2")
-                                            .withKind("Premium")
-                                            .withCosts(Arrays.asList(new SkuCost().withMeterId("xxx")))))),
+    public static void
+        skusCreateOrUpdateNestedResourceTypeSecond(com.azure.resourcemanager.providerhub.ProviderHubManager manager) {
+        manager.skus()
+            .createOrUpdateNestedResourceTypeSecondWithResponse("Microsoft.Contoso", "testResourceType",
+                "nestedResourceTypeFirst", "nestedResourceTypeSecond", "testSku",
+                new SkuResourceInner().withProperties(new SkuResourceProperties().withSkuSettings(
+                    Arrays.asList(new SkuSetting().withName("freeSku").withTier("Tier1").withKind("Standard"),
+                        new SkuSetting().withName("premiumSku")
+                            .withTier("Tier2")
+                            .withKind("Premium")
+                            .withCosts(Arrays.asList(new SkuCost().withMeterId("xxx")))))),
                 com.azure.core.util.Context.NONE);
     }
 }

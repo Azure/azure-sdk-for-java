@@ -33,17 +33,23 @@ import com.azure.resourcemanager.providerhub.fluent.models.NotificationRegistrat
 import com.azure.resourcemanager.providerhub.models.NotificationRegistrationArrayResponseWithContinuation;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NotificationRegistrationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NotificationRegistrationsClient.
+ */
 public final class NotificationRegistrationsClientImpl implements NotificationRegistrationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NotificationRegistrationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ProviderHubImpl client;
 
     /**
      * Initializes an instance of NotificationRegistrationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NotificationRegistrationsClientImpl(ProviderHubImpl client) {
@@ -60,8 +66,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
     @ServiceInterface(name = "ProviderHubNotificat")
     public interface NotificationRegistrationsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/notificationRegistrations/{notificationRegistrationName}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationRegistrationInner>> get(@HostParam("$host") String endpoint,
@@ -71,8 +76,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/notificationRegistrations/{notificationRegistrationName}")
+        @Put("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationRegistrationInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -84,8 +88,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/notificationRegistrations/{notificationRegistrationName}")
+        @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations/{notificationRegistrationName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -95,8 +98,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
-            + "/notificationRegistrations")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/notificationRegistrations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationRegistrationArrayResponseWithContinuation>> listByProviderRegistration(
@@ -115,14 +117,14 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification registration details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the notification registration details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NotificationRegistrationInner>> getWithResponseAsync(String providerNamespace,
@@ -152,15 +154,15 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification registration details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the notification registration details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NotificationRegistrationInner>> getWithResponseAsync(String providerNamespace,
@@ -189,7 +191,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +208,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param context The context to associate with this operation.
@@ -223,7 +225,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the notification registration details.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,15 +240,15 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Creates or updates a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param properties The required body parameters supplied to the notification registration operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification registration definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the notification registration definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NotificationRegistrationInner>> createOrUpdateWithResponseAsync(String providerNamespace,
@@ -282,7 +284,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Creates or updates a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param properties The required body parameters supplied to the notification registration operation.
@@ -290,8 +292,8 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notification registration definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the notification registration definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NotificationRegistrationInner>> createOrUpdateWithResponseAsync(String providerNamespace,
@@ -325,7 +327,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Creates or updates a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param properties The required body parameters supplied to the notification registration operation.
@@ -343,7 +345,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Creates or updates a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param properties The required body parameters supplied to the notification registration operation.
@@ -362,7 +364,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Creates or updates a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param properties The required body parameters supplied to the notification registration operation.
@@ -380,7 +382,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -416,7 +418,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param context The context to associate with this operation.
@@ -452,7 +454,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -468,7 +470,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @param context The context to associate with this operation.
@@ -485,7 +487,7 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Deletes a notification registration.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param notificationRegistrationName The notification registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -499,13 +501,13 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the list of the notification registrations for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the notification registrations for the given provider along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NotificationRegistrationInner>>
@@ -533,14 +535,14 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the list of the notification registrations for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the notification registrations for the given provider along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NotificationRegistrationInner>>
@@ -568,13 +570,13 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the list of the notification registrations for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the notification registrations for the given provider as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of the notification registrations for the given provider as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NotificationRegistrationInner> listByProviderRegistrationAsync(String providerNamespace) {
@@ -584,14 +586,14 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the list of the notification registrations for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the notification registrations for the given provider as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list of the notification registrations for the given provider as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NotificationRegistrationInner> listByProviderRegistrationAsync(String providerNamespace,
@@ -602,13 +604,13 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the list of the notification registrations for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the notification registrations for the given provider as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the notification registrations for the given provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotificationRegistrationInner> listByProviderRegistration(String providerNamespace) {
@@ -617,14 +619,14 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Gets the list of the notification registrations for the given provider.
-     *
+     * 
      * @param providerNamespace The name of the resource provider hosted within ProviderHub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the notification registrations for the given provider as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of the notification registrations for the given provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotificationRegistrationInner> listByProviderRegistration(String providerNamespace,
@@ -634,9 +636,8 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -663,9 +664,8 @@ public final class NotificationRegistrationsClientImpl implements NotificationRe
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class ServiceManagedIdentityType extends ExpandableStringEnum<Servi
      * @param name a name to look for.
      * @return the corresponding ServiceManagedIdentityType.
      */
-    @JsonCreator
     public static ServiceManagedIdentityType fromString(String name) {
         return fromString(name, ServiceManagedIdentityType.class);
     }

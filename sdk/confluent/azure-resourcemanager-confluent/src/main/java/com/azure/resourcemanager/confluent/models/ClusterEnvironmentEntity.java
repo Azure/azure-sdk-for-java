@@ -5,35 +5,35 @@
 package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The environment to which cluster belongs.
  */
 @Fluent
-public final class ClusterEnvironmentEntity {
+public final class ClusterEnvironmentEntity implements JsonSerializable<ClusterEnvironmentEntity> {
     /*
      * ID of the referred resource
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Environment of the referred resource
      */
-    @JsonProperty(value = "environment")
     private String environment;
 
     /*
      * API URL for accessing or modifying the referred object
      */
-    @JsonProperty(value = "related")
     private String related;
 
     /*
      * CRN reference to the referred resource
      */
-    @JsonProperty(value = "resource_name")
     private String resourceName;
 
     /**
@@ -128,5 +128,50 @@ public final class ClusterEnvironmentEntity {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("environment", this.environment);
+        jsonWriter.writeStringField("related", this.related);
+        jsonWriter.writeStringField("resource_name", this.resourceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterEnvironmentEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterEnvironmentEntity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterEnvironmentEntity.
+     */
+    public static ClusterEnvironmentEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterEnvironmentEntity deserializedClusterEnvironmentEntity = new ClusterEnvironmentEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterEnvironmentEntity.id = reader.getString();
+                } else if ("environment".equals(fieldName)) {
+                    deserializedClusterEnvironmentEntity.environment = reader.getString();
+                } else if ("related".equals(fieldName)) {
+                    deserializedClusterEnvironmentEntity.related = reader.getString();
+                } else if ("resource_name".equals(fieldName)) {
+                    deserializedClusterEnvironmentEntity.resourceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterEnvironmentEntity;
+        });
     }
 }

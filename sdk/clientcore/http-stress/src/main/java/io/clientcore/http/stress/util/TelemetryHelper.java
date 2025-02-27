@@ -3,8 +3,8 @@
 
 package io.clientcore.http.stress.util;
 
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import io.clientcore.core.util.ClientLogger;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.http.stress.StressOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
@@ -100,7 +100,7 @@ public class TelemetryHelper {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
         if (applicationInsightsConnectionString != null) {
-            new AzureMonitorExporterBuilder().connectionString(applicationInsightsConnectionString).install(sdkBuilder);
+            AzureMonitorAutoConfigure.customize(sdkBuilder, applicationInsightsConnectionString);
         } else {
             System.setProperty("otel.traces.exporter", "none");
             System.setProperty("otel.logs.exporter", "none");
@@ -145,7 +145,7 @@ public class TelemetryHelper {
     public void instrumentRun(Runnable oneRun) {
         long start = System.currentTimeMillis();
         Span span = tracer.spanBuilder("run").startSpan();
-        try (Scope s = span.makeCurrent()) {
+        try (Scope ignored = span.makeCurrent()) {
             oneRun.run();
             trackSuccess(start, span);
         } catch (Throwable e) {
@@ -170,7 +170,7 @@ public class TelemetryHelper {
         return Mono.defer(() -> {
             long start = System.currentTimeMillis();
             Span span = tracer.spanBuilder("runAsync").startSpan();
-            try (Scope s = span.makeCurrent()) {
+            try (Scope ignored = span.makeCurrent()) {
                 return runAsync.doOnError(e -> trackFailure(start, e, span))
                     .doOnCancel(() -> trackCancellation(start, span))
                     .doOnSuccess(v -> trackSuccess(start, span))
@@ -199,7 +199,7 @@ public class TelemetryHelper {
             Span span = startAndSpan.getValue();
 
             return runAsyncFuture.whenComplete((result, throwable) -> {
-                try (Scope s = span.makeCurrent()) {
+                try (Scope ignored = span.makeCurrent()) {
                     if (throwable != null) {
                         trackFailure(start, throwable, span);
                     } else {
@@ -223,7 +223,7 @@ public class TelemetryHelper {
         return () -> {
             long start = System.currentTimeMillis();
             Span span = tracer.spanBuilder("runAsyncRunnable").startSpan();
-            try (Scope s = span.makeCurrent()) {
+            try (Scope ignored = span.makeCurrent()) {
                 try {
                     task.run();
                     trackSuccess(start, span);

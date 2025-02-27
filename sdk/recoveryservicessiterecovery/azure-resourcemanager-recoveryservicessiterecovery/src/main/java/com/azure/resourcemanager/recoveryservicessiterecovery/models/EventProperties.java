@@ -5,79 +5,74 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The properties of a monitoring event.
  */
 @Fluent
-public final class EventProperties {
+public final class EventProperties implements JsonSerializable<EventProperties> {
     /*
      * The Id of the monitoring event.
      */
-    @JsonProperty(value = "eventCode")
     private String eventCode;
 
     /*
      * The event name.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The type of the event. for example: VM Health, Server Health, Job Failure etc.
      */
-    @JsonProperty(value = "eventType")
     private String eventType;
 
     /*
      * The friendly name of the source of the event on which it is raised (for example, VM, VMM etc).
      */
-    @JsonProperty(value = "affectedObjectFriendlyName")
     private String affectedObjectFriendlyName;
 
     /*
      * The affected object correlationId for the event.
      */
-    @JsonProperty(value = "affectedObjectCorrelationId")
     private String affectedObjectCorrelationId;
 
     /*
      * The severity of the event.
      */
-    @JsonProperty(value = "severity")
     private String severity;
 
     /*
      * The time of occurrence of the event.
      */
-    @JsonProperty(value = "timeOfOccurrence")
     private OffsetDateTime timeOfOccurrence;
 
     /*
      * The ARM ID of the fabric.
      */
-    @JsonProperty(value = "fabricId")
     private String fabricId;
 
     /*
      * The provider specific settings.
      */
-    @JsonProperty(value = "providerSpecificDetails")
     private EventProviderSpecificDetails providerSpecificDetails;
 
     /*
      * The event specific settings.
      */
-    @JsonProperty(value = "eventSpecificDetails")
     private EventSpecificDetails eventSpecificDetails;
 
     /*
      * The list of errors / warnings capturing details associated with the issue(s).
      */
-    @JsonProperty(value = "healthErrors")
     private List<HealthError> healthErrors;
 
     /**
@@ -323,5 +318,76 @@ public final class EventProperties {
         if (healthErrors() != null) {
             healthErrors().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eventCode", this.eventCode);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("eventType", this.eventType);
+        jsonWriter.writeStringField("affectedObjectFriendlyName", this.affectedObjectFriendlyName);
+        jsonWriter.writeStringField("affectedObjectCorrelationId", this.affectedObjectCorrelationId);
+        jsonWriter.writeStringField("severity", this.severity);
+        jsonWriter.writeStringField("timeOfOccurrence",
+            this.timeOfOccurrence == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timeOfOccurrence));
+        jsonWriter.writeStringField("fabricId", this.fabricId);
+        jsonWriter.writeJsonField("providerSpecificDetails", this.providerSpecificDetails);
+        jsonWriter.writeJsonField("eventSpecificDetails", this.eventSpecificDetails);
+        jsonWriter.writeArrayField("healthErrors", this.healthErrors, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventProperties.
+     */
+    public static EventProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventProperties deserializedEventProperties = new EventProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventCode".equals(fieldName)) {
+                    deserializedEventProperties.eventCode = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedEventProperties.description = reader.getString();
+                } else if ("eventType".equals(fieldName)) {
+                    deserializedEventProperties.eventType = reader.getString();
+                } else if ("affectedObjectFriendlyName".equals(fieldName)) {
+                    deserializedEventProperties.affectedObjectFriendlyName = reader.getString();
+                } else if ("affectedObjectCorrelationId".equals(fieldName)) {
+                    deserializedEventProperties.affectedObjectCorrelationId = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedEventProperties.severity = reader.getString();
+                } else if ("timeOfOccurrence".equals(fieldName)) {
+                    deserializedEventProperties.timeOfOccurrence = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("fabricId".equals(fieldName)) {
+                    deserializedEventProperties.fabricId = reader.getString();
+                } else if ("providerSpecificDetails".equals(fieldName)) {
+                    deserializedEventProperties.providerSpecificDetails = EventProviderSpecificDetails.fromJson(reader);
+                } else if ("eventSpecificDetails".equals(fieldName)) {
+                    deserializedEventProperties.eventSpecificDetails = EventSpecificDetails.fromJson(reader);
+                } else if ("healthErrors".equals(fieldName)) {
+                    List<HealthError> healthErrors = reader.readArray(reader1 -> HealthError.fromJson(reader1));
+                    deserializedEventProperties.healthErrors = healthErrors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventProperties;
+        });
     }
 }

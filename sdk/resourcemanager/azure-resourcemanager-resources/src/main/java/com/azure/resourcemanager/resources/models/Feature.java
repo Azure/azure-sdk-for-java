@@ -17,21 +17,29 @@ import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 public interface Feature extends Indexable, HasId, HasInnerModel<FeatureResultInner>, HasName {
 
     /**
+     * Gets the type of the feature.
+     *
      * @return the type of the feature
      */
     String type();
 
     /**
+     * Gets the state of the previewed feature.
+     *
      * @return the state of the previewed feature
      */
     String state();
 
     /**
+     * Gets the resource provider namespace of the feature.
+     *
      * @return the resource provider namespace of the feature
      */
     String resourceProviderName();
 
     /**
+     * Gets the name of the feature.
+     *
      * @return the name of the feature
      */
     String featureName();

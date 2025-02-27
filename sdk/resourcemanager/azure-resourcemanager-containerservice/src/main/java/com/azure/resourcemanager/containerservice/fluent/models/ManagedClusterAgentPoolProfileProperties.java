@@ -82,6 +82,13 @@ public class ManagedClusterAgentPoolProfileProperties
     private WorkloadRuntime workloadRuntime;
 
     /*
+     * A base64-encoded string which will be written to /etc/motd after decoding. This allows customization of the
+     * message of the day for Linux nodes. It must not be specified for Windows nodes. It must be a static string (i.e.,
+     * will be printed raw and not be executed as a script).
+     */
+    private String messageOfTheDay;
+
+    /*
      * If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this
      * applies to nodes and pods, otherwise it applies to just nodes. This is of the form:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{
@@ -473,6 +480,30 @@ public class ManagedClusterAgentPoolProfileProperties
      */
     public ManagedClusterAgentPoolProfileProperties withWorkloadRuntime(WorkloadRuntime workloadRuntime) {
         this.workloadRuntime = workloadRuntime;
+        return this;
+    }
+
+    /**
+     * Get the messageOfTheDay property: A base64-encoded string which will be written to /etc/motd after decoding. This
+     * allows customization of the message of the day for Linux nodes. It must not be specified for Windows nodes. It
+     * must be a static string (i.e., will be printed raw and not be executed as a script).
+     * 
+     * @return the messageOfTheDay value.
+     */
+    public String messageOfTheDay() {
+        return this.messageOfTheDay;
+    }
+
+    /**
+     * Set the messageOfTheDay property: A base64-encoded string which will be written to /etc/motd after decoding. This
+     * allows customization of the message of the day for Linux nodes. It must not be specified for Windows nodes. It
+     * must be a static string (i.e., will be printed raw and not be executed as a script).
+     * 
+     * @param messageOfTheDay the messageOfTheDay value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withMessageOfTheDay(String messageOfTheDay) {
+        this.messageOfTheDay = messageOfTheDay;
         return this;
     }
 
@@ -1387,6 +1418,7 @@ public class ManagedClusterAgentPoolProfileProperties
             this.kubeletDiskType == null ? null : this.kubeletDiskType.toString());
         jsonWriter.writeStringField("workloadRuntime",
             this.workloadRuntime == null ? null : this.workloadRuntime.toString());
+        jsonWriter.writeStringField("messageOfTheDay", this.messageOfTheDay);
         jsonWriter.writeStringField("vnetSubnetID", this.vnetSubnetId);
         jsonWriter.writeStringField("podSubnetID", this.podSubnetId);
         jsonWriter.writeNumberField("maxPods", this.maxPods);
@@ -1464,6 +1496,8 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("workloadRuntime".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.workloadRuntime
                         = WorkloadRuntime.fromString(reader.getString());
+                } else if ("messageOfTheDay".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.messageOfTheDay = reader.getString();
                 } else if ("vnetSubnetID".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.vnetSubnetId = reader.getString();
                 } else if ("podSubnetID".equals(fieldName)) {

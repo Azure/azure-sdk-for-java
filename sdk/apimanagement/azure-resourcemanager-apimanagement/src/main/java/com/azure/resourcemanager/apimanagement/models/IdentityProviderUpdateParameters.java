@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.IdentityProviderUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters supplied to update Identity Provider. */
+/**
+ * Parameters supplied to update Identity Provider.
+ */
 @Fluent
-public final class IdentityProviderUpdateParameters {
+public final class IdentityProviderUpdateParameters implements JsonSerializable<IdentityProviderUpdateParameters> {
     /*
      * Identity Provider update properties.
      */
-    @JsonProperty(value = "properties")
     private IdentityProviderUpdateProperties innerProperties;
 
-    /** Creates an instance of IdentityProviderUpdateParameters class. */
+    /**
+     * Creates an instance of IdentityProviderUpdateParameters class.
+     */
     public IdentityProviderUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Identity Provider update properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IdentityProviderUpdateProperties innerProperties() {
@@ -34,7 +41,7 @@ public final class IdentityProviderUpdateParameters {
     /**
      * Get the clientId property: Client Id of the Application in the external Identity Provider. It is App ID for
      * Facebook login, Client ID for Google login, App ID for Microsoft.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -44,7 +51,7 @@ public final class IdentityProviderUpdateParameters {
     /**
      * Set the clientId property: Client Id of the Application in the external Identity Provider. It is App ID for
      * Facebook login, Client ID for Google login, App ID for Microsoft.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -60,7 +67,7 @@ public final class IdentityProviderUpdateParameters {
      * Get the clientSecret property: Client secret of the Application in external Identity Provider, used to
      * authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public
      * Key for Microsoft.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -71,7 +78,7 @@ public final class IdentityProviderUpdateParameters {
      * Set the clientSecret property: Client secret of the Application in external Identity Provider, used to
      * authenticate login request. For example, it is App Secret for Facebook login, API Key for Google login, Public
      * Key for Microsoft.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -85,7 +92,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Get the type property: Identity Provider Type identifier.
-     *
+     * 
      * @return the type value.
      */
     public IdentityProviderType type() {
@@ -94,7 +101,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Set the type property: Identity Provider Type identifier.
-     *
+     * 
      * @param type the type value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -108,7 +115,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Get the signinTenant property: The TenantId to use instead of Common when logging into Active Directory.
-     *
+     * 
      * @return the signinTenant value.
      */
     public String signinTenant() {
@@ -117,7 +124,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Set the signinTenant property: The TenantId to use instead of Common when logging into Active Directory.
-     *
+     * 
      * @param signinTenant the signinTenant value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -131,7 +138,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Get the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
-     *
+     * 
      * @return the allowedTenants value.
      */
     public List<String> allowedTenants() {
@@ -140,7 +147,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Set the allowedTenants property: List of Allowed Tenants when configuring Azure Active Directory login.
-     *
+     * 
      * @param allowedTenants the allowedTenants value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -154,7 +161,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Get the authority property: OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-     *
+     * 
      * @return the authority value.
      */
     public String authority() {
@@ -163,7 +170,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Set the authority property: OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-     *
+     * 
      * @param authority the authority value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -177,7 +184,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Get the signupPolicyName property: Signup Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @return the signupPolicyName value.
      */
     public String signupPolicyName() {
@@ -186,7 +193,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Set the signupPolicyName property: Signup Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @param signupPolicyName the signupPolicyName value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -200,7 +207,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Get the signinPolicyName property: Signin Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @return the signinPolicyName value.
      */
     public String signinPolicyName() {
@@ -209,7 +216,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Set the signinPolicyName property: Signin Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @param signinPolicyName the signinPolicyName value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -224,7 +231,7 @@ public final class IdentityProviderUpdateParameters {
     /**
      * Get the profileEditingPolicyName property: Profile Editing Policy Name. Only applies to AAD B2C Identity
      * Provider.
-     *
+     * 
      * @return the profileEditingPolicyName value.
      */
     public String profileEditingPolicyName() {
@@ -234,7 +241,7 @@ public final class IdentityProviderUpdateParameters {
     /**
      * Set the profileEditingPolicyName property: Profile Editing Policy Name. Only applies to AAD B2C Identity
      * Provider.
-     *
+     * 
      * @param profileEditingPolicyName the profileEditingPolicyName value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -248,7 +255,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Get the passwordResetPolicyName property: Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @return the passwordResetPolicyName value.
      */
     public String passwordResetPolicyName() {
@@ -257,7 +264,7 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Set the passwordResetPolicyName property: Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-     *
+     * 
      * @param passwordResetPolicyName the passwordResetPolicyName value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -272,7 +279,7 @@ public final class IdentityProviderUpdateParameters {
     /**
      * Get the clientLibrary property: The client library to be used in the developer portal. Only applies to AAD and
      * AAD B2C Identity Provider.
-     *
+     * 
      * @return the clientLibrary value.
      */
     public String clientLibrary() {
@@ -282,7 +289,7 @@ public final class IdentityProviderUpdateParameters {
     /**
      * Set the clientLibrary property: The client library to be used in the developer portal. Only applies to AAD and
      * AAD B2C Identity Provider.
-     *
+     * 
      * @param clientLibrary the clientLibrary value to set.
      * @return the IdentityProviderUpdateParameters object itself.
      */
@@ -296,12 +303,50 @@ public final class IdentityProviderUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityProviderUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityProviderUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityProviderUpdateParameters.
+     */
+    public static IdentityProviderUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityProviderUpdateParameters deserializedIdentityProviderUpdateParameters
+                = new IdentityProviderUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedIdentityProviderUpdateParameters.innerProperties
+                        = IdentityProviderUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityProviderUpdateParameters;
+        });
     }
 }

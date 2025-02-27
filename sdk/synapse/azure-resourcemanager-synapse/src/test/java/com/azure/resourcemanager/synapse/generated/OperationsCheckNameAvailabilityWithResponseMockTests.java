@@ -22,7 +22,7 @@ public final class OperationsCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"message\":\"haitranize\",\"available\":true,\"reason\":\"dasmxu\",\"name\":\"fbngfcocef\"}";
+            = "{\"message\":\"ffatsgftipw\",\"available\":true,\"reason\":\"ubhiqdxyur\",\"name\":\"nuhzafccnuh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class OperationsCheckNameAvailabilityWithResponseMockTests {
 
         CheckNameAvailabilityResponse response = manager.operations()
             .checkNameAvailabilityWithResponse(
-                new CheckNameAvailabilityRequest().withName("xudqyemebunaucmc").withType("tneemmjauwcgxef"),
+                new CheckNameAvailabilityRequest().withName("ckbbcc").withType("zpraoxn"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("haitranize", response.message());
+        Assertions.assertEquals("ffatsgftipw", response.message());
         Assertions.assertEquals(true, response.available());
-        Assertions.assertEquals("dasmxu", response.reason());
-        Assertions.assertEquals("fbngfcocef", response.name());
+        Assertions.assertEquals("ubhiqdxyur", response.reason());
+        Assertions.assertEquals("nuhzafccnuh", response.name());
     }
 }

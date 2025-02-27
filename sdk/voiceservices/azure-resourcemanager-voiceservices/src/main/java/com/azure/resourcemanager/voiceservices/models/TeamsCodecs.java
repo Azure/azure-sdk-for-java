@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.voiceservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The voice codecs expected for communication with Teams. */
+/**
+ * The voice codecs expected for communication with Teams.
+ */
 public final class TeamsCodecs extends ExpandableStringEnum<TeamsCodecs> {
-    /** Static value PCMA for TeamsCodecs. */
+    /**
+     * Static value PCMA for TeamsCodecs.
+     */
     public static final TeamsCodecs PCMA = fromString("PCMA");
 
-    /** Static value PCMU for TeamsCodecs. */
+    /**
+     * Static value PCMU for TeamsCodecs.
+     */
     public static final TeamsCodecs PCMU = fromString("PCMU");
 
-    /** Static value G722 for TeamsCodecs. */
+    /**
+     * Static value G722 for TeamsCodecs.
+     */
     public static final TeamsCodecs G722 = fromString("G722");
 
-    /** Static value G722_2 for TeamsCodecs. */
+    /**
+     * Static value G722_2 for TeamsCodecs.
+     */
     public static final TeamsCodecs G722_2 = fromString("G722_2");
 
-    /** Static value SILK_8 for TeamsCodecs. */
+    /**
+     * Static value SILK_8 for TeamsCodecs.
+     */
     public static final TeamsCodecs SILK_8 = fromString("SILK_8");
 
-    /** Static value SILK_16 for TeamsCodecs. */
+    /**
+     * Static value SILK_16 for TeamsCodecs.
+     */
     public static final TeamsCodecs SILK_16 = fromString("SILK_16");
 
     /**
      * Creates a new instance of TeamsCodecs value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class TeamsCodecs extends ExpandableStringEnum<TeamsCodecs> {
 
     /**
      * Creates or finds a TeamsCodecs from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TeamsCodecs.
      */
-    @JsonCreator
     public static TeamsCodecs fromString(String name) {
         return fromString(name, TeamsCodecs.class);
     }
 
     /**
      * Gets known TeamsCodecs values.
-     *
+     * 
      * @return known TeamsCodecs values.
      */
     public static Collection<TeamsCodecs> values() {

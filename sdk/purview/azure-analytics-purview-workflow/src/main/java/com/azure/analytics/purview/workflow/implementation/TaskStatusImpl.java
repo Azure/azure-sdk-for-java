@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.workflow.implementation;
 
+import com.azure.analytics.purview.workflow.PurviewWorkflowServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -28,23 +29,38 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TaskStatus. */
+/**
+ * An instance of this class provides access to all the operations defined in TaskStatus.
+ */
 public final class TaskStatusImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TaskStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewWorkflowClientImpl client;
 
     /**
      * Initializes an instance of TaskStatusImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TaskStatusImpl(PurviewWorkflowClientImpl client) {
         this.service
             = RestProxy.create(TaskStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewWorkflowServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -77,16 +93,17 @@ public final class TaskStatusImpl {
 
     /**
      * Update the status of a workflow task request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     newStatus: String(NotStarted/InProgress/Completed/Canceled) (Required)
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param taskUpdateCommand Request body of updating workflow task request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -106,16 +123,17 @@ public final class TaskStatusImpl {
 
     /**
      * Update the status of a workflow task request.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
      *     newStatus: String(NotStarted/InProgress/Completed/Canceled) (Required)
      *     comment: String (Optional)
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param taskId The task id.
      * @param taskUpdateCommand Request body of updating workflow task request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.

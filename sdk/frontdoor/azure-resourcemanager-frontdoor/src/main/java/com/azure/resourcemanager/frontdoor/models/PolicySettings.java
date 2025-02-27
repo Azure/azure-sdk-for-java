@@ -5,61 +5,59 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.fluent.models.PolicySettingsLogScrubbing;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Defines top-level WebApplicationFirewallPolicy configuration settings.
  */
 @Fluent
-public final class PolicySettings {
+public final class PolicySettings implements JsonSerializable<PolicySettings> {
     /*
      * Describes if the policy is in enabled or disabled state. Defaults to Enabled if not specified.
      */
-    @JsonProperty(value = "enabledState")
     private PolicyEnabledState enabledState;
 
     /*
      * Describes if it is in detection mode or prevention mode at policy level.
      */
-    @JsonProperty(value = "mode")
     private PolicyMode mode;
 
     /*
      * If action type is redirect, this field represents redirect URL for the client.
      */
-    @JsonProperty(value = "redirectUrl")
     private String redirectUrl;
 
     /*
      * If the action type is block, customer can override the response status code.
      */
-    @JsonProperty(value = "customBlockResponseStatusCode")
     private Integer customBlockResponseStatusCode;
 
     /*
-     * If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
+     * If the action type is block, customer can override the response body. The body must be specified in base64
+     * encoding.
      */
-    @JsonProperty(value = "customBlockResponseBody")
     private String customBlockResponseBody;
 
     /*
      * Describes if policy managed rules will inspect the request body content.
      */
-    @JsonProperty(value = "requestBodyCheck")
     private PolicyRequestBodyCheck requestBodyCheck;
 
     /*
-     * Defines the JavaScript challenge cookie validity lifetime in minutes. This setting is only applicable to Premium_AzureFrontDoor. Value must be an integer between 5 and 1440 with the default value being 30.
+     * Defines the JavaScript challenge cookie validity lifetime in minutes. This setting is only applicable to
+     * Premium_AzureFrontDoor. Value must be an integer between 5 and 1440 with the default value being 30.
      */
-    @JsonProperty(value = "javascriptChallengeExpirationInMinutes")
     private Integer javascriptChallengeExpirationInMinutes;
 
     /*
      * Defines rules that scrub sensitive fields in the Web Application Firewall logs.
      */
-    @JsonProperty(value = "logScrubbing")
     private PolicySettingsLogScrubbing innerLogScrubbing;
 
     /**
@@ -283,5 +281,65 @@ public final class PolicySettings {
         if (innerLogScrubbing() != null) {
             innerLogScrubbing().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("enabledState", this.enabledState == null ? null : this.enabledState.toString());
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("redirectUrl", this.redirectUrl);
+        jsonWriter.writeNumberField("customBlockResponseStatusCode", this.customBlockResponseStatusCode);
+        jsonWriter.writeStringField("customBlockResponseBody", this.customBlockResponseBody);
+        jsonWriter.writeStringField("requestBodyCheck",
+            this.requestBodyCheck == null ? null : this.requestBodyCheck.toString());
+        jsonWriter.writeNumberField("javascriptChallengeExpirationInMinutes",
+            this.javascriptChallengeExpirationInMinutes);
+        jsonWriter.writeJsonField("logScrubbing", this.innerLogScrubbing);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicySettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicySettings.
+     */
+    public static PolicySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicySettings deserializedPolicySettings = new PolicySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabledState".equals(fieldName)) {
+                    deserializedPolicySettings.enabledState = PolicyEnabledState.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedPolicySettings.mode = PolicyMode.fromString(reader.getString());
+                } else if ("redirectUrl".equals(fieldName)) {
+                    deserializedPolicySettings.redirectUrl = reader.getString();
+                } else if ("customBlockResponseStatusCode".equals(fieldName)) {
+                    deserializedPolicySettings.customBlockResponseStatusCode = reader.getNullable(JsonReader::getInt);
+                } else if ("customBlockResponseBody".equals(fieldName)) {
+                    deserializedPolicySettings.customBlockResponseBody = reader.getString();
+                } else if ("requestBodyCheck".equals(fieldName)) {
+                    deserializedPolicySettings.requestBodyCheck = PolicyRequestBodyCheck.fromString(reader.getString());
+                } else if ("javascriptChallengeExpirationInMinutes".equals(fieldName)) {
+                    deserializedPolicySettings.javascriptChallengeExpirationInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("logScrubbing".equals(fieldName)) {
+                    deserializedPolicySettings.innerLogScrubbing = PolicySettingsLogScrubbing.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicySettings;
+        });
     }
 }

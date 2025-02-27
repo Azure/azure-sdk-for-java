@@ -22,7 +22,7 @@ public final class WorkspaceAadAdminsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"tenantId\":\"ywezy\",\"login\":\"adgaaqwvkgjpy\",\"administratorType\":\"mpvdnogeh\",\"sid\":\"fbortbnukk\"},\"id\":\"axzs\",\"name\":\"bx\",\"type\":\"yjisskobq\"}";
+            = "{\"properties\":{\"tenantId\":\"ijolbuauktwieope\",\"login\":\"lxqdwr\",\"administratorType\":\"yil\",\"sid\":\"ibkgxyxyau\"},\"id\":\"reddobmcnlt\",\"name\":\"wytkujsqy\",\"type\":\"mmoxfablqgpwbmwh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,16 +32,16 @@ public final class WorkspaceAadAdminsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkspaceAadAdminInfo response = manager.workspaceAadAdmins()
-            .createOrUpdate("youergaghp", "zxkpyehhfdyld",
-                new WorkspaceAadAdminInfoInner().withTenantId("edzfzqiyuqhtdere")
-                    .withLogin("oka")
-                    .withAdministratorType("whpjlw")
-                    .withSid("edznmxrfomckewv"),
+            .createOrUpdate("yxsbfpz", "oikvntwcz",
+                new WorkspaceAadAdminInfoInner().withTenantId("ushlcxpblalh")
+                    .withLogin("zpfkis")
+                    .withAdministratorType("idqzsaaoqdsgpto")
+                    .withSid("jq"),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ywezy", response.tenantId());
-        Assertions.assertEquals("adgaaqwvkgjpy", response.login());
-        Assertions.assertEquals("mpvdnogeh", response.administratorType());
-        Assertions.assertEquals("fbortbnukk", response.sid());
+        Assertions.assertEquals("ijolbuauktwieope", response.tenantId());
+        Assertions.assertEquals("lxqdwr", response.login());
+        Assertions.assertEquals("yil", response.administratorType());
+        Assertions.assertEquals("ibkgxyxyau", response.sid());
     }
 }

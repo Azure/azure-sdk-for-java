@@ -31,14 +31,16 @@ public final class ApiKeysImpl implements ApiKeys {
     public PagedIterable<ApplicationInsightsComponentApiKey> list(String resourceGroupName, String resourceName) {
         PagedIterable<ApplicationInsightsComponentApiKeyInner> inner
             = this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new ApplicationInsightsComponentApiKeyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApplicationInsightsComponentApiKeyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplicationInsightsComponentApiKey> list(String resourceGroupName, String resourceName,
         Context context) {
         PagedIterable<ApplicationInsightsComponentApiKeyInner> inner
             = this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationInsightsComponentApiKeyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApplicationInsightsComponentApiKeyImpl(inner1, this.manager()));
     }
 
     public Response<ApplicationInsightsComponentApiKey> createWithResponse(String resourceGroupName,

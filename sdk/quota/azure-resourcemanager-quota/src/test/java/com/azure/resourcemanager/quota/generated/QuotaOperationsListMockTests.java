@@ -7,8 +7,8 @@ package com.azure.resourcemanager.quota.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
 import com.azure.resourcemanager.quota.models.OperationResponse;
@@ -22,22 +22,22 @@ public final class QuotaOperationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"ehtwdwrft\",\"display\":{\"provider\":\"byrcdlbhshfwp\",\"resource\":\"cstwity\",\"operation\":\"evxccedcp\",\"description\":\"dyodnwzxltj\"},\"origin\":\"nhltiugcxn\"}]}";
+            = "{\"value\":[{\"name\":\"nsj\",\"display\":{\"provider\":\"tiagx\",\"resource\":\"sz\",\"operation\":\"mpsbzkfzbeyv\",\"description\":\"qi\"},\"origin\":\"invkjjxdxrbuu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         QuotaManager manager = QuotaManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OperationResponse> response = manager.quotaOperations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ehtwdwrft", response.iterator().next().name());
-        Assertions.assertEquals("byrcdlbhshfwp", response.iterator().next().display().provider());
-        Assertions.assertEquals("cstwity", response.iterator().next().display().resource());
-        Assertions.assertEquals("evxccedcp", response.iterator().next().display().operation());
-        Assertions.assertEquals("dyodnwzxltj", response.iterator().next().display().description());
-        Assertions.assertEquals("nhltiugcxn", response.iterator().next().origin());
+        Assertions.assertEquals("nsj", response.iterator().next().name());
+        Assertions.assertEquals("tiagx", response.iterator().next().display().provider());
+        Assertions.assertEquals("sz", response.iterator().next().display().resource());
+        Assertions.assertEquals("mpsbzkfzbeyv", response.iterator().next().display().operation());
+        Assertions.assertEquals("qi", response.iterator().next().display().description());
+        Assertions.assertEquals("invkjjxdxrbuu", response.iterator().next().origin());
     }
 }

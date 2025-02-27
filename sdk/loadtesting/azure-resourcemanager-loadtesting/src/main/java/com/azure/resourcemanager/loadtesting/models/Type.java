@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.loadtesting.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Managed identity type to use for accessing encryption key Url. */
+/**
+ * Managed identity type to use for accessing encryption key Url.
+ */
 public final class Type extends ExpandableStringEnum<Type> {
-    /** Static value SystemAssigned for Type. */
+    /**
+     * Static value SystemAssigned for Type.
+     */
     public static final Type SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
-    /** Static value UserAssigned for Type. */
+    /**
+     * Static value UserAssigned for Type.
+     */
     public static final Type USER_ASSIGNED = fromString("UserAssigned");
 
     /**
      * Creates a new instance of Type value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Creates or finds a Type from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Type.
      */
-    @JsonCreator
     public static Type fromString(String name) {
         return fromString(name, Type.class);
     }
 
     /**
      * Gets known Type values.
-     *
+     * 
      * @return known Type values.
      */
     public static Collection<Type> values() {

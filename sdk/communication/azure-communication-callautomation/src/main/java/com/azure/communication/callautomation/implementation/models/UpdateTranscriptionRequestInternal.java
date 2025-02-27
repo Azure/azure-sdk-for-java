@@ -17,7 +17,7 @@ import java.io.IOException;
 @Fluent
 public final class UpdateTranscriptionRequestInternal implements JsonSerializable<UpdateTranscriptionRequestInternal> {
     /*
-     * Sets new locale for transcription.
+     * Defines new locale for transcription.
      */
     private String locale;
 
@@ -31,6 +31,12 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
      */
     private String operationContext;
 
+    /*
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     */
+    private String operationCallbackUri;
+
     /**
      * Creates an instance of UpdateTranscriptionRequestInternal class.
      */
@@ -38,7 +44,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Get the locale property: Sets new locale for transcription.
+     * Get the locale property: Defines new locale for transcription.
      * 
      * @return the locale value.
      */
@@ -47,7 +53,7 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
     }
 
     /**
-     * Set the locale property: Sets new locale for transcription.
+     * Set the locale property: Defines new locale for transcription.
      * 
      * @param locale the locale value to set.
      * @return the UpdateTranscriptionRequestInternal object itself.
@@ -98,12 +104,40 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
         return this;
     }
 
+    /**
+     * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
+     * @return the operationCallbackUri value.
+     */
+    public String getOperationCallbackUri() {
+        return this.operationCallbackUri;
+    }
+
+    /**
+     * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be used.
+     * 
+     * @param operationCallbackUri the operationCallbackUri value to set.
+     * @return the UpdateTranscriptionRequestInternal object itself.
+     */
+    public UpdateTranscriptionRequestInternal setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("locale", this.locale);
         jsonWriter.writeStringField("speechRecognitionModelEndpointId", this.speechRecognitionModelEndpointId);
         jsonWriter.writeStringField("operationContext", this.operationContext);
+        jsonWriter.writeStringField("operationCallbackUri", this.operationCallbackUri);
         return jsonWriter.writeEndObject();
     }
 
@@ -131,6 +165,8 @@ public final class UpdateTranscriptionRequestInternal implements JsonSerializabl
                         = reader.getString();
                 } else if ("operationContext".equals(fieldName)) {
                     deserializedUpdateTranscriptionRequestInternal.operationContext = reader.getString();
+                } else if ("operationCallbackUri".equals(fieldName)) {
+                    deserializedUpdateTranscriptionRequestInternal.operationCallbackUri = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

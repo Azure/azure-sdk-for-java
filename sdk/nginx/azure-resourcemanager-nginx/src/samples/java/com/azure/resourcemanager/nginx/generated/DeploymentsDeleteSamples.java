@@ -9,7 +9,8 @@ package com.azure.resourcemanager.nginx.generated;
  */
 public final class DeploymentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-01-01-preview/examples/Deployments_Delete.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/preview/2024-11-01-preview/examples/Deployments_Delete.json
      */
     /**
      * Sample code: Deployments_Delete.

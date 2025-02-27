@@ -22,21 +22,25 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryClient;
+import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryManagementClient;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetEndpointProfilesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetsImpl;
-import com.azure.resourcemanager.deviceregistry.implementation.DeviceRegistryClientBuilder;
+import com.azure.resourcemanager.deviceregistry.implementation.BillingContainersImpl;
+import com.azure.resourcemanager.deviceregistry.implementation.DeviceRegistryManagementClientBuilder;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationsImpl;
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfiles;
 import com.azure.resourcemanager.deviceregistry.models.Assets;
+import com.azure.resourcemanager.deviceregistry.models.BillingContainers;
 import com.azure.resourcemanager.deviceregistry.models.OperationStatus;
 import com.azure.resourcemanager.deviceregistry.models.Operations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -53,12 +57,14 @@ public final class DeviceRegistryManager {
 
     private AssetEndpointProfiles assetEndpointProfiles;
 
-    private final DeviceRegistryClient clientObject;
+    private BillingContainers billingContainers;
+
+    private final DeviceRegistryManagementClient clientObject;
 
     private DeviceRegistryManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new DeviceRegistryClientBuilder().pipeline(httpPipeline)
+        this.clientObject = new DeviceRegistryManagementClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
             .subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval)
@@ -105,6 +111,9 @@ public final class DeviceRegistryManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-deviceregistry.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -212,12 +221,14 @@ public final class DeviceRegistryManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.deviceregistry")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -312,12 +323,24 @@ public final class DeviceRegistryManager {
     }
 
     /**
-     * Gets wrapped service client DeviceRegistryClient providing direct access to the underlying auto-generated API
-     * implementation, based on Azure REST API.
+     * Gets the resource collection API of BillingContainers.
      * 
-     * @return Wrapped service client DeviceRegistryClient.
+     * @return Resource collection API of BillingContainers.
      */
-    public DeviceRegistryClient serviceClient() {
+    public BillingContainers billingContainers() {
+        if (this.billingContainers == null) {
+            this.billingContainers = new BillingContainersImpl(clientObject.getBillingContainers(), this);
+        }
+        return billingContainers;
+    }
+
+    /**
+     * Gets wrapped service client DeviceRegistryManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client DeviceRegistryManagementClient.
+     */
+    public DeviceRegistryManagementClient serviceClient() {
         return this.clientObject;
     }
 }

@@ -9,7 +9,8 @@ package com.azure.resourcemanager.devcenter.generated;
  */
 public final class EnvironmentDefinitionsListByProjectCatalogSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/EnvironmentDefinitions_ListByProjectCatalog.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * EnvironmentDefinitions_ListByProjectCatalog.json
      */
     /**
      * Sample code: EnvironmentDefinitions_ListByProjectCatalog.

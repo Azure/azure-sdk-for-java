@@ -1,12 +1,6 @@
 # Code snippets and samples
 
 
-## AzureADOnlyAuthentications
-
-- [Create](#azureadonlyauthentications_create)
-- [Get](#azureadonlyauthentications_get)
-- [List](#azureadonlyauthentications_list)
-
 ## BigDataPools
 
 - [CreateOrUpdate](#bigdatapools_createorupdate)
@@ -31,12 +25,6 @@
 - [CreateOrUpdate](#extendedsqlpoolblobauditingpolicies_createorupdate)
 - [Get](#extendedsqlpoolblobauditingpolicies_get)
 - [ListBySqlPool](#extendedsqlpoolblobauditingpolicies_listbysqlpool)
-
-## Get
-
-- [IntegrationRuntimeEnableInteractivequery](#get_integrationruntimeenableinteractivequery)
-- [IntegrationRuntimeStart](#get_integrationruntimestart)
-- [IntegrationRuntimeStop](#get_integrationruntimestop)
 
 ## IntegrationRuntimeAuthKeysOperation
 
@@ -103,77 +91,6 @@
 - [Get](#keys_get)
 - [ListByWorkspace](#keys_listbyworkspace)
 
-## KustoOperations
-
-- [List](#kustooperations_list)
-
-## KustoPoolAttachedDatabaseConfigurations
-
-- [CreateOrUpdate](#kustopoolattacheddatabaseconfigurations_createorupdate)
-- [Delete](#kustopoolattacheddatabaseconfigurations_delete)
-- [Get](#kustopoolattacheddatabaseconfigurations_get)
-- [ListByKustoPool](#kustopoolattacheddatabaseconfigurations_listbykustopool)
-
-## KustoPoolChildResource
-
-- [CheckNameAvailability](#kustopoolchildresource_checknameavailability)
-
-## KustoPoolDataConnections
-
-- [CheckNameAvailability](#kustopooldataconnections_checknameavailability)
-- [CreateOrUpdate](#kustopooldataconnections_createorupdate)
-- [DataConnectionValidation](#kustopooldataconnections_dataconnectionvalidation)
-- [Delete](#kustopooldataconnections_delete)
-- [Get](#kustopooldataconnections_get)
-- [ListByDatabase](#kustopooldataconnections_listbydatabase)
-- [Update](#kustopooldataconnections_update)
-
-## KustoPoolDatabasePrincipalAssignments
-
-- [CheckNameAvailability](#kustopooldatabaseprincipalassignments_checknameavailability)
-- [CreateOrUpdate](#kustopooldatabaseprincipalassignments_createorupdate)
-- [Delete](#kustopooldatabaseprincipalassignments_delete)
-- [Get](#kustopooldatabaseprincipalassignments_get)
-- [List](#kustopooldatabaseprincipalassignments_list)
-
-## KustoPoolDatabases
-
-- [CreateOrUpdate](#kustopooldatabases_createorupdate)
-- [Delete](#kustopooldatabases_delete)
-- [Get](#kustopooldatabases_get)
-- [ListByKustoPool](#kustopooldatabases_listbykustopool)
-- [Update](#kustopooldatabases_update)
-
-## KustoPoolPrincipalAssignments
-
-- [CheckNameAvailability](#kustopoolprincipalassignments_checknameavailability)
-- [CreateOrUpdate](#kustopoolprincipalassignments_createorupdate)
-- [Delete](#kustopoolprincipalassignments_delete)
-- [Get](#kustopoolprincipalassignments_get)
-- [List](#kustopoolprincipalassignments_list)
-
-## KustoPoolPrivateLinkResourcesOperation
-
-- [List](#kustopoolprivatelinkresourcesoperation_list)
-
-## KustoPools
-
-- [AddLanguageExtensions](#kustopools_addlanguageextensions)
-- [CheckNameAvailability](#kustopools_checknameavailability)
-- [CreateOrUpdate](#kustopools_createorupdate)
-- [Delete](#kustopools_delete)
-- [DetachFollowerDatabases](#kustopools_detachfollowerdatabases)
-- [Get](#kustopools_get)
-- [List](#kustopools_list)
-- [ListByWorkspace](#kustopools_listbyworkspace)
-- [ListFollowerDatabases](#kustopools_listfollowerdatabases)
-- [ListLanguageExtensions](#kustopools_listlanguageextensions)
-- [ListSkusByResource](#kustopools_listskusbyresource)
-- [RemoveLanguageExtensions](#kustopools_removelanguageextensions)
-- [Start](#kustopools_start)
-- [Stop](#kustopools_stop)
-- [Update](#kustopools_update)
-
 ## LibrariesOperation
 
 - [ListByWorkspace](#librariesoperation_listbyworkspace)
@@ -198,7 +115,6 @@
 
 ## PrivateEndpointConnectionsPrivateLinkHub
 
-- [Get](#privateendpointconnectionsprivatelinkhub_get)
 - [List](#privateendpointconnectionsprivatelinkhub_list)
 
 ## PrivateLinkHubPrivateLinkResources
@@ -215,23 +131,15 @@
 - [ListByResourceGroup](#privatelinkhubs_listbyresourcegroup)
 - [Update](#privatelinkhubs_update)
 
-## PrivateLinkResourcesOperation
+## PrivateLinkResources
 
-- [Get](#privatelinkresourcesoperation_get)
-- [List](#privatelinkresourcesoperation_list)
+- [Get](#privatelinkresources_get)
+- [List](#privatelinkresources_list)
 
 ## RestorableDroppedSqlPools
 
 - [Get](#restorabledroppedsqlpools_get)
 - [ListByWorkspace](#restorabledroppedsqlpools_listbyworkspace)
-
-## SparkConfiguration
-
-- [Get](#sparkconfiguration_get)
-
-## SparkConfigurationsOperation
-
-- [ListByWorkspace](#sparkconfigurationsoperation_listbyworkspace)
 
 ## SqlPoolBlobAuditingPolicies
 
@@ -396,12 +304,6 @@
 - [Get](#workspacemanagedsqlserverblobauditingpolicies_get)
 - [ListByWorkspace](#workspacemanagedsqlserverblobauditingpolicies_listbyworkspace)
 
-## WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
-
-- [Get](#workspacemanagedsqlserverdedicatedsqlminimaltlssettings_get)
-- [List](#workspacemanagedsqlserverdedicatedsqlminimaltlssettings_list)
-- [Update](#workspacemanagedsqlserverdedicatedsqlminimaltlssettings_update)
-
 ## WorkspaceManagedSqlServerEncryptionProtector
 
 - [CreateOrUpdate](#workspacemanagedsqlserverencryptionprotector_createorupdate)
@@ -451,87 +353,6 @@
 - [List](#workspaces_list)
 - [ListByResourceGroup](#workspaces_listbyresourcegroup)
 - [Update](#workspaces_update)
-### AzureADOnlyAuthentications_Create
-
-```java
-import com.azure.resourcemanager.synapse.models.AzureADOnlyAuthenticationName;
-
-/**
- * Samples for AzureADOnlyAuthentications Create.
- */
-public final class AzureADOnlyAuthenticationsCreateSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
-     * CreateOrUpdateAzureADOnlyAuthentication.json
-     */
-    /**
-     * Sample code: Create or Update Azure Active Directory Only Authentication property.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void createOrUpdateAzureActiveDirectoryOnlyAuthenticationProperty(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.azureADOnlyAuthentications()
-            .define(AzureADOnlyAuthenticationName.DEFAULT)
-            .withExistingWorkspace("workspace-6852", "workspace-2080")
-            .withAzureADOnlyAuthentication(true)
-            .create();
-    }
-}
-```
-
-### AzureADOnlyAuthentications_Get
-
-```java
-import com.azure.resourcemanager.synapse.models.AzureADOnlyAuthenticationName;
-
-/**
- * Samples for AzureADOnlyAuthentications Get.
- */
-public final class AzureADOnlyAuthenticationsGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetAzureADOnlyAuthentication.
-     * json
-     */
-    /**
-     * Sample code: Get Azure Active Directory Only Authentication property.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        getAzureActiveDirectoryOnlyAuthenticationProperty(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.azureADOnlyAuthentications()
-            .getWithResponse("workspace-6852", "workspace-2080", AzureADOnlyAuthenticationName.DEFAULT,
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AzureADOnlyAuthentications_List
-
-```java
-/**
- * Samples for AzureADOnlyAuthentications List.
- */
-public final class AzureADOnlyAuthenticationsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListAzureADOnlyAuthentication
-     * .json
-     */
-    /**
-     * Sample code: Get a list of Azure Active Directory Only Authentication property.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void getAListOfAzureActiveDirectoryOnlyAuthenticationProperty(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.azureADOnlyAuthentications().list("workspace-6852", "workspace-2080", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### BigDataPools_CreateOrUpdate
 
 ```java
@@ -548,8 +369,9 @@ import java.util.Map;
  */
 public final class BigDataPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * CreateOrUpdateBigDataPool.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/CreateOrUpdateBigDataPool.
+     * json
      */
     /**
      * Sample code: Create or update a Big Data pool.
@@ -564,7 +386,6 @@ public final class BigDataPoolsCreateOrUpdateSamples {
             .withTags(mapOf("key", "fakeTokenPlaceholder"))
             .withAutoScale(new AutoScaleProperties().withMinNodeCount(3).withEnabled(true).withMaxNodeCount(50))
             .withAutoPause(new AutoPauseProperties().withDelayInMinutes(15).withEnabled(true))
-            .withIsAutotuneEnabled(false)
             .withSparkEventsFolder("/events")
             .withNodeCount(4)
             .withLibraryRequirements(new LibraryRequirements().withContent("").withFilename("requirements.txt"))
@@ -598,8 +419,7 @@ public final class BigDataPoolsCreateOrUpdateSamples {
 public final class BigDataPoolsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/DeleteBigDataPool.
-     * json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteBigDataPool.json
      */
     /**
      * Sample code: Delete a Big Data pool.
@@ -622,7 +442,7 @@ public final class BigDataPoolsDeleteSamples {
 public final class BigDataPoolsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/GetBigDataPool.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetBigDataPool.json
      */
     /**
      * Sample code: Get a Big Data pool.
@@ -645,8 +465,9 @@ public final class BigDataPoolsGetSamples {
  */
 public final class BigDataPoolsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * ListBigDataPoolsInWorkspace.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListBigDataPoolsInWorkspace.
+     * json
      */
     /**
      * Sample code: List Big Data pools in a workspace.
@@ -673,8 +494,7 @@ import java.util.Map;
 public final class BigDataPoolsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/UpdateBigDataPool.
-     * json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/UpdateBigDataPool.json
      */
     /**
      * Sample code: Update a Big Data pool.
@@ -713,7 +533,7 @@ import com.azure.resourcemanager.synapse.models.DataMaskingState;
  */
 public final class DataMaskingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DataMaskingPolicyCreateOrUpdateMin.json
      */
     /**
@@ -730,7 +550,7 @@ public final class DataMaskingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DataMaskingPolicyCreateOrUpdateMax.json
      */
     /**
@@ -758,7 +578,7 @@ public final class DataMaskingPoliciesCreateOrUpdateSamples {
 public final class DataMaskingPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingPolicyGet.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DataMaskingPolicyGet.json
      */
     /**
      * Sample code: Get data masking policy.
@@ -784,7 +604,7 @@ import com.azure.resourcemanager.synapse.models.DataMaskingRuleState;
  */
 public final class DataMaskingRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DataMaskingRuleCreateOrUpdateDefaultMin.json
      */
     /**
@@ -805,7 +625,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DataMaskingRuleCreateOrUpdateDefaultMax.json
      */
     /**
@@ -828,7 +648,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DataMaskingRuleCreateOrUpdateText.json
      */
     /**
@@ -851,7 +671,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DataMaskingRuleCreateOrUpdateNumber.json
      */
     /**
@@ -883,7 +703,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
 public final class DataMaskingRulesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingRuleGet.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DataMaskingRuleGet.json
      */
     /**
      * Sample code: Get data masking rule.
@@ -907,7 +727,7 @@ public final class DataMaskingRulesGetSamples {
 public final class DataMaskingRulesListBySqlPoolSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingRuleList.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DataMaskingRuleList.json
      */
     /**
      * Sample code: List data masking rules.
@@ -933,7 +753,7 @@ import java.util.UUID;
  */
 public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ExtendedSqlPoolBlobAuditingCreateMax.json
      */
     /**
@@ -961,7 +781,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ExtendedSqlPoolAzureMonitorAuditingCreateMin.json
      */
     /**
@@ -980,7 +800,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ExtendedSqlPoolBlobAuditingCreateMin.json
      */
     /**
@@ -1010,7 +830,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
  */
 public final class ExtendedSqlPoolBlobAuditingPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ExtendedSqlPoolBlobAuditingGet.json
      */
     /**
@@ -1035,7 +855,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesGetSamples {
  */
 public final class ExtendedSqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * SqlPoolExtendedAuditingSettingsList.json
      */
     /**
@@ -1052,79 +872,6 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
 }
 ```
 
-### Get_IntegrationRuntimeEnableInteractivequery
-
-```java
-/**
- * Samples for Get IntegrationRuntimeEnableInteractivequery.
- */
-public final class GetIntegrationRuntimeEnableInteractivequerySamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * EnableInteractivequery_IntegrationRuntimes.json
-     */
-    /**
-     * Sample code: Get integration runtime operation status.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void getIntegrationRuntimeOperationStatus(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.gets()
-            .integrationRuntimeEnableInteractivequeryWithResponse("drage-felles-prod-rg",
-                "felles-prod-synapse-workspace", "SSIS-intergrationRuntime-Drage", "5752dcdf918e4aecb941245ddf6ebb83",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Get_IntegrationRuntimeStart
-
-```java
-/**
- * Samples for Get IntegrationRuntimeStart.
- */
-public final class GetIntegrationRuntimeStartSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Start_OperationStatus.json
-     */
-    /**
-     * Sample code: Get integration runtime operation status.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void getIntegrationRuntimeOperationStatus(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.gets()
-            .integrationRuntimeStartWithResponse("drage-felles-prod-rg", "felles-prod-synapse-workspace",
-                "SSIS-intergrationRuntime-Drage", "5752dcdf918e4aecb941245ddf6ebb83", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### Get_IntegrationRuntimeStop
-
-```java
-/**
- * Samples for Get IntegrationRuntimeStop.
- */
-public final class GetIntegrationRuntimeStopSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Stop_OperationStatus.json
-     */
-    /**
-     * Sample code: Get integration runtime operation status.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void getIntegrationRuntimeOperationStatus(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.gets()
-            .integrationRuntimeStopWithResponse("drage-felles-prod-rg", "felles-prod-synapse-workspace",
-                "SSIS-intergrationRuntime-Drage", "5752dcdf918e4aecb941245ddf6ebb83", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### IntegrationRuntimeAuthKeysOperation_List
 
 ```java
@@ -1133,7 +880,7 @@ public final class GetIntegrationRuntimeStopSamples {
  */
 public final class IntegrationRuntimeAuthKeysOperationListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimes_ListAuthKeys.json
      */
     /**
@@ -1160,7 +907,7 @@ import com.azure.resourcemanager.synapse.models.IntegrationRuntimeRegenerateKeyP
  */
 public final class IntegrationRuntimeAuthKeysOperationRegenerateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimes_RegenerateAuthKey.json
      */
     /**
@@ -1185,7 +932,7 @@ public final class IntegrationRuntimeAuthKeysOperationRegenerateSamples {
  */
 public final class IntegrationRuntimeConnectionInfosGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimes_GetConnectionInfo.json
      */
     /**
@@ -1209,7 +956,7 @@ public final class IntegrationRuntimeConnectionInfosGetSamples {
  */
 public final class IntegrationRuntimeCredentialsSyncSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimes_SyncCredentials.json
      */
     /**
@@ -1233,7 +980,7 @@ public final class IntegrationRuntimeCredentialsSyncSamples {
  */
 public final class IntegrationRuntimeMonitoringDataListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimeMonitoringData_List.json
      */
     /**
@@ -1257,7 +1004,7 @@ public final class IntegrationRuntimeMonitoringDataListSamples {
  */
 public final class IntegrationRuntimeNodeIpAddressOperationGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimeNodes_GetIpAddress.json
      */
     /**
@@ -1281,7 +1028,7 @@ public final class IntegrationRuntimeNodeIpAddressOperationGetSamples {
  */
 public final class IntegrationRuntimeNodesDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimeNodes_Delete.json
      */
     /**
@@ -1305,8 +1052,9 @@ public final class IntegrationRuntimeNodesDeleteSamples {
  */
 public final class IntegrationRuntimeNodesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimeNodes_Get.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimeNodes_Get.
+     * json
      */
     /**
      * Sample code: Get integration runtime node.
@@ -1331,7 +1079,7 @@ import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeNodeRequ
  */
 public final class IntegrationRuntimeNodesUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimeNodes_Update.json
      */
     /**
@@ -1357,7 +1105,7 @@ import com.azure.resourcemanager.synapse.models.GetSsisObjectMetadataRequest;
  */
 public final class IntegrationRuntimeObjectMetadataListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimeObjectMetadata_List.json
      */
     /**
@@ -1381,7 +1129,7 @@ public final class IntegrationRuntimeObjectMetadataListSamples {
  */
 public final class IntegrationRuntimeObjectMetadataRefreshSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimeObjectMetadata_Refresh.json
      */
     /**
@@ -1404,8 +1152,9 @@ public final class IntegrationRuntimeObjectMetadataRefreshSamples {
  */
 public final class IntegrationRuntimeStatusOperationGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_GetStatus.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimes_GetStatus
+     * .json
      */
     /**
      * Sample code: Get status.
@@ -1430,8 +1179,9 @@ import com.azure.resourcemanager.synapse.models.SelfHostedIntegrationRuntime;
  */
 public final class IntegrationRuntimesCreateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Create.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimes_Create.
+     * json
      */
     /**
      * Sample code: Create integration runtime.
@@ -1456,8 +1206,9 @@ public final class IntegrationRuntimesCreateSamples {
  */
 public final class IntegrationRuntimesDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Delete.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimes_Delete.
+     * json
      */
     /**
      * Sample code: Delete integration runtime.
@@ -1480,7 +1231,7 @@ public final class IntegrationRuntimesDeleteSamples {
  */
 public final class IntegrationRuntimesDisableInteractiveQuerySamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimes_DisableInteractiveQuery.json
      */
     /**
@@ -1504,7 +1255,7 @@ public final class IntegrationRuntimesDisableInteractiveQuerySamples {
  */
 public final class IntegrationRuntimesEnableInteractiveQuerySamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimes_EnableInteractiveQuery.json
      */
     /**
@@ -1528,8 +1279,8 @@ public final class IntegrationRuntimesEnableInteractiveQuerySamples {
  */
 public final class IntegrationRuntimesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Get.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimes_Get.json
      */
     /**
      * Sample code: Get integration runtime.
@@ -1552,7 +1303,7 @@ public final class IntegrationRuntimesGetSamples {
  */
 public final class IntegrationRuntimesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimes_ListByWorkspace.json
      */
     /**
@@ -1575,7 +1326,7 @@ public final class IntegrationRuntimesListByWorkspaceSamples {
  */
 public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * IntegrationRuntimes_ListOutboundNetworkDependenciesEndpoints.json
      */
     /**
@@ -1599,8 +1350,9 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSa
  */
 public final class IntegrationRuntimesStartSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Start.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimes_Start.
+     * json
      */
     /**
      * Sample code: Start integration runtime.
@@ -1623,8 +1375,8 @@ public final class IntegrationRuntimesStartSamples {
  */
 public final class IntegrationRuntimesStopSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Stop.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimes_Stop.json
      */
     /**
      * Sample code: Stop integration runtime.
@@ -1650,8 +1402,9 @@ import com.azure.resourcemanager.synapse.models.IntegrationRuntimeResource;
  */
 public final class IntegrationRuntimesUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Update.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimes_Update.
+     * json
      */
     /**
      * Sample code: Update integration runtime.
@@ -1676,8 +1429,9 @@ public final class IntegrationRuntimesUpdateSamples {
  */
 public final class IntegrationRuntimesUpgradeSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * IntegrationRuntimes_Upgrade.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/IntegrationRuntimes_Upgrade.
+     * json
      */
     /**
      * Sample code: Upgrade integration runtime.
@@ -1701,7 +1455,7 @@ public final class IntegrationRuntimesUpgradeSamples {
 public final class IpFirewallRulesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateIpFirewallRule.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/CreateIpFirewallRule.json
      */
     /**
      * Sample code: Create an IP firewall rule.
@@ -1728,7 +1482,7 @@ public final class IpFirewallRulesCreateOrUpdateSamples {
 public final class IpFirewallRulesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteIpFirewallRule.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteIpFirewallRule.json
      */
     /**
      * Sample code: Delete an IP firewall rule from a workspace.
@@ -1752,14 +1506,14 @@ public final class IpFirewallRulesDeleteSamples {
 public final class IpFirewallRulesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetIpFirewallRule.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetIpFirewallRule.json
      */
     /**
-     * Sample code: Get IP firewall rule.
+     * Sample code: Create an IP firewall rule.
      * 
      * @param manager Entry point to SynapseManager.
      */
-    public static void getIPFirewallRule(com.azure.resourcemanager.synapse.SynapseManager manager) {
+    public static void createAnIPFirewallRule(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager.ipFirewallRules()
             .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExampleIpFirewallRule",
                 com.azure.core.util.Context.NONE);
@@ -1776,7 +1530,7 @@ public final class IpFirewallRulesGetSamples {
 public final class IpFirewallRulesListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListIpFirewallRules.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListIpFirewallRules.json
      */
     /**
      * Sample code: List IP firewall rules in a workspace.
@@ -1804,7 +1558,7 @@ import java.util.Map;
 public final class IpFirewallRulesReplaceAllSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ReplaceAllIpFirewallRules.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ReplaceAllIpFirewallRules.
      * json
      */
     /**
@@ -1845,7 +1599,7 @@ public final class IpFirewallRulesReplaceAllSamples {
 public final class KeysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateKey.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/CreateOrUpdateKey.json
      */
     /**
      * Sample code: Create or update a workspace key.
@@ -1872,7 +1626,7 @@ public final class KeysCreateOrUpdateSamples {
 public final class KeysDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteKey.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteKey.json
      */
     /**
      * Sample code: Delete a workspace key.
@@ -1896,7 +1650,7 @@ public final class KeysDeleteSamples {
 public final class KeysGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetKey.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetKey.json
      */
     /**
      * Sample code: Get a workspace key.
@@ -1919,7 +1673,7 @@ public final class KeysGetSamples {
 public final class KeysListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListKeysInWorkspace.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListKeysInWorkspace.json
      */
     /**
      * Sample code: List keys in workspace.
@@ -1932,1204 +1686,6 @@ public final class KeysListByWorkspaceSamples {
 }
 ```
 
-### KustoOperations_List
-
-```java
-/**
- * Samples for KustoOperations List.
- */
-public final class KustoOperationsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoOperationsList.
-     * json
-     */
-    /**
-     * Sample code: KustoOperationsList.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoOperationsList(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoOperations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolAttachedDatabaseConfigurations_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.synapse.models.DefaultPrincipalsModificationKind;
-import com.azure.resourcemanager.synapse.models.TableLevelSharingProperties;
-import java.util.Arrays;
-
-/**
- * Samples for KustoPoolAttachedDatabaseConfigurations CreateOrUpdate.
- */
-public final class KustoPoolAttachedDatabaseConfigurationsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolAttachedDatabaseConfigurationsCreateOrUpdate.json
-     */
-    /**
-     * Sample code: KustoPoolAttachedDatabaseConfigurationsCreateOrUpdate.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolAttachedDatabaseConfigurationsCreateOrUpdate(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolAttachedDatabaseConfigurations()
-            .define("attachedDatabaseConfigurations1")
-            .withExistingKustoPool("kustorptest", "kustoclusterrptest4", "kustorptest")
-            .withRegion("westus")
-            .withDatabaseName("kustodatabase")
-            .withKustoPoolResourceId(
-                "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Synapse/Workspaces/kustorptest/KustoPools/kustoclusterrptest4")
-            .withDefaultPrincipalsModificationKind(DefaultPrincipalsModificationKind.UNION)
-            .withTableLevelSharingProperties(
-                new TableLevelSharingProperties().withTablesToInclude(Arrays.asList("Table1"))
-                    .withTablesToExclude(Arrays.asList("Table2"))
-                    .withExternalTablesToInclude(Arrays.asList("ExternalTable1"))
-                    .withExternalTablesToExclude(Arrays.asList("ExternalTable2"))
-                    .withMaterializedViewsToInclude(Arrays.asList("MaterializedViewTable1"))
-                    .withMaterializedViewsToExclude(Arrays.asList("MaterializedViewTable2")))
-            .create();
-    }
-}
-```
-
-### KustoPoolAttachedDatabaseConfigurations_Delete
-
-```java
-/**
- * Samples for KustoPoolAttachedDatabaseConfigurations Delete.
- */
-public final class KustoPoolAttachedDatabaseConfigurationsDeleteSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolAttachedDatabaseConfigurationsDelete.json
-     */
-    /**
-     * Sample code: KustoPoolAttachedDatabaseConfigurationsDelete.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolAttachedDatabaseConfigurationsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolAttachedDatabaseConfigurations()
-            .delete("kustorptest", "kustoclusterrptest4", "attachedDatabaseConfigurations1", "kustorptest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolAttachedDatabaseConfigurations_Get
-
-```java
-/**
- * Samples for KustoPoolAttachedDatabaseConfigurations Get.
- */
-public final class KustoPoolAttachedDatabaseConfigurationsGetSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolAttachedDatabaseConfigurationsGet.json
-     */
-    /**
-     * Sample code: KustoPoolAttachedDatabaseConfigurationsGet.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolAttachedDatabaseConfigurationsGet(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolAttachedDatabaseConfigurations()
-            .getWithResponse("kustorptest", "kustoclusterrptest4", "attachedDatabaseConfigurations1", "kustorptest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolAttachedDatabaseConfigurations_ListByKustoPool
-
-```java
-/**
- * Samples for KustoPoolAttachedDatabaseConfigurations ListByKustoPool.
- */
-public final class KustoPoolAttachedDatabaseConfigurationsListByKustoPoolSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolAttachedDatabaseConfigurationsListByKustoPool.json
-     */
-    /**
-     * Sample code: KustoPoolAttachedDatabaseConfigurationsListByKustoPool.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolAttachedDatabaseConfigurationsListByKustoPool(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolAttachedDatabaseConfigurations()
-            .listByKustoPool("kustorptest", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolChildResource_CheckNameAvailability
-
-```java
-import com.azure.resourcemanager.synapse.models.DatabaseCheckNameRequest;
-import com.azure.resourcemanager.synapse.models.Type;
-
-/**
- * Samples for KustoPoolChildResource CheckNameAvailability.
- */
-public final class KustoPoolChildResourceCheckNameAvailabilitySamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolAttachedDatabaseConfigurationCheckNameAvailability.json
-     */
-    /**
-     * Sample code: KustoPoolAttachedDatabaseConfigurationCheckNameAvailability.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolAttachedDatabaseConfigurationCheckNameAvailability(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolChildResources()
-            .checkNameAvailabilityWithResponse("kustorptest", "kustoclusterrptest4", "kustorptest",
-                new DatabaseCheckNameRequest().withName("adc1")
-                    .withType(Type.MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_ATTACHED_DATABASE_CONFIGURATIONS),
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDatabasesCheckNameAvailability.json
-     */
-    /**
-     * Sample code: KustoPoolDatabasesCheckNameAvailability.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolDatabasesCheckNameAvailability(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolChildResources()
-            .checkNameAvailabilityWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest",
-                new DatabaseCheckNameRequest().withName("database1")
-                    .withType(Type.MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_DATABASES),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDataConnections_CheckNameAvailability
-
-```java
-import com.azure.resourcemanager.synapse.models.DataConnectionCheckNameRequest;
-
-/**
- * Samples for KustoPoolDataConnections CheckNameAvailability.
- */
-public final class KustoPoolDataConnectionsCheckNameAvailabilitySamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDataConnectionsCheckNameAvailability.json
-     */
-    /**
-     * Sample code: KustoPoolDataConnectionsCheckNameAvailability.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolDataConnectionsCheckNameAvailability(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDataConnections()
-            .checkNameAvailabilityWithResponse("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4",
-                "Kustodatabase8", new DataConnectionCheckNameRequest().withName("DataConnections8"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDataConnections_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.synapse.models.EventHubDataConnection;
-
-/**
- * Samples for KustoPoolDataConnections CreateOrUpdate.
- */
-public final class KustoPoolDataConnectionsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDataConnectionsCreateOrUpdate.json
-     */
-    /**
-     * Sample code: KustoPoolDataConnectionsCreateOrUpdate.json.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolDataConnectionsCreateOrUpdateJson(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDataConnections()
-            .createOrUpdate("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8",
-                "DataConnections8",
-                new EventHubDataConnection().withLocation("westus")
-                    .withEventHubResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
-                    .withConsumerGroup("testConsumerGroup1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDataConnections_DataConnectionValidation
-
-```java
-import com.azure.resourcemanager.synapse.fluent.models.DataConnectionValidationInner;
-import com.azure.resourcemanager.synapse.models.EventHubDataConnection;
-
-/**
- * Samples for KustoPoolDataConnections DataConnectionValidation.
- */
-public final class KustoPoolDataConnectionsDataConnectionValidationSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDataConnectionValidation.json
-     */
-    /**
-     * Sample code: KustoPoolDataConnectionValidation.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolDataConnectionValidation(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDataConnections()
-            .dataConnectionValidation("kustorptest", "kustorptest", "kustoclusterrptest4", "KustoDatabase8",
-                new DataConnectionValidationInner().withDataConnectionName("DataConnections8")
-                    .withProperties(new EventHubDataConnection()),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDataConnections_Delete
-
-```java
-/**
- * Samples for KustoPoolDataConnections Delete.
- */
-public final class KustoPoolDataConnectionsDeleteSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDataConnectionsDelete.json
-     */
-    /**
-     * Sample code: KustoPoolDataConnectionsDelete.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolDataConnectionsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDataConnections()
-            .delete("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8",
-                "kustoeventhubconnection1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDataConnections_Get
-
-```java
-/**
- * Samples for KustoPoolDataConnections Get.
- */
-public final class KustoPoolDataConnectionsGetSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDataConnectionsGet.json
-     */
-    /**
-     * Sample code: KustoPoolDataConnectionsGet.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolDataConnectionsGet(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDataConnections()
-            .getWithResponse("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8",
-                "DataConnections8", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDataConnections_ListByDatabase
-
-```java
-/**
- * Samples for KustoPoolDataConnections ListByDatabase.
- */
-public final class KustoPoolDataConnectionsListByDatabaseSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDataConnectionsListByDatabase.json
-     */
-    /**
-     * Sample code: KustoPoolDataConnectionsListByDatabase.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolDataConnectionsListByDatabase(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDataConnections()
-            .listByDatabase("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDataConnections_Update
-
-```java
-import com.azure.resourcemanager.synapse.models.EventHubDataConnection;
-
-/**
- * Samples for KustoPoolDataConnections Update.
- */
-public final class KustoPoolDataConnectionsUpdateSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDataConnectionsUpdate.json
-     */
-    /**
-     * Sample code: KustoPoolDataConnectionsUpdate.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolDataConnectionsUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDataConnections()
-            .update("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8", "DataConnections8",
-                new EventHubDataConnection().withLocation("westus")
-                    .withEventHubResourceId(
-                        "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
-                    .withConsumerGroup("testConsumerGroup1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDatabasePrincipalAssignments_CheckNameAvailability
-
-```java
-import com.azure.resourcemanager.synapse.models.DatabasePrincipalAssignmentCheckNameRequest;
-
-/**
- * Samples for KustoPoolDatabasePrincipalAssignments CheckNameAvailability.
- */
-public final class KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilitySamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDatabasePrincipalAssignmentsCheckNameAvailability.json
-     */
-    /**
-     * Sample code: KustoPoolDatabasePrincipalAssignmentsCheckNameAvailability.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolDatabasePrincipalAssignmentsCheckNameAvailability(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDatabasePrincipalAssignments()
-            .checkNameAvailabilityWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8",
-                "kustorptest", new DatabasePrincipalAssignmentCheckNameRequest().withName("kustoprincipal1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDatabasePrincipalAssignments_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.synapse.models.DatabasePrincipalRole;
-import com.azure.resourcemanager.synapse.models.PrincipalType;
-
-/**
- * Samples for KustoPoolDatabasePrincipalAssignments CreateOrUpdate.
- */
-public final class KustoPoolDatabasePrincipalAssignmentsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDatabasePrincipalAssignmentsCreateOrUpdate.json
-     */
-    /**
-     * Sample code: KustoPoolDatabasePrincipalAssignmentsCreateOrUpdate.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolDatabasePrincipalAssignmentsCreateOrUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDatabasePrincipalAssignments()
-            .define("kustoprincipal1")
-            .withExistingDatabase("synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustorptest")
-            .withPrincipalId("87654321-1234-1234-1234-123456789123")
-            .withRole(DatabasePrincipalRole.ADMIN)
-            .withTenantId("12345678-1234-1234-1234-123456789123")
-            .withPrincipalType(PrincipalType.APP)
-            .create();
-    }
-}
-```
-
-### KustoPoolDatabasePrincipalAssignments_Delete
-
-```java
-/**
- * Samples for KustoPoolDatabasePrincipalAssignments Delete.
- */
-public final class KustoPoolDatabasePrincipalAssignmentsDeleteSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDatabasePrincipalAssignmentsDelete.json
-     */
-    /**
-     * Sample code: KustoPoolDatabasePrincipalAssignmentsDelete.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolDatabasePrincipalAssignmentsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDatabasePrincipalAssignments()
-            .delete("synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustoprincipal1", "kustorptest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDatabasePrincipalAssignments_Get
-
-```java
-/**
- * Samples for KustoPoolDatabasePrincipalAssignments Get.
- */
-public final class KustoPoolDatabasePrincipalAssignmentsGetSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDatabasePrincipalAssignmentsGet.json
-     */
-    /**
-     * Sample code: KustoPoolDatabasePrincipalAssignmentsGet.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolDatabasePrincipalAssignmentsGet(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDatabasePrincipalAssignments()
-            .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustoprincipal1",
-                "kustorptest", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDatabasePrincipalAssignments_List
-
-```java
-/**
- * Samples for KustoPoolDatabasePrincipalAssignments List.
- */
-public final class KustoPoolDatabasePrincipalAssignmentsListSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDatabasePrincipalAssignmentsList.json
-     */
-    /**
-     * Sample code: KustoPoolDatabasePrincipalAssignmentsList.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolDatabasePrincipalAssignmentsList(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDatabasePrincipalAssignments()
-            .list("synapseWorkspaceName", "kustoclusterrptest4", "Kustodatabase8", "kustorptest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDatabases_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.synapse.models.ReadWriteDatabase;
-import java.time.Duration;
-
-/**
- * Samples for KustoPoolDatabases CreateOrUpdate.
- */
-public final class KustoPoolDatabasesCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDatabasesCreateOrUpdate.json
-     */
-    /**
-     * Sample code: KustoPoolDatabasesCreateOrUpdate.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolDatabasesCreateOrUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDatabases()
-            .createOrUpdate("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8",
-                new ReadWriteDatabase().withLocation("westus").withSoftDeletePeriod(Duration.parse("P1D")),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDatabases_Delete
-
-```java
-/**
- * Samples for KustoPoolDatabases Delete.
- */
-public final class KustoPoolDatabasesDeleteSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDatabasesDelete.json
-     */
-    /**
-     * Sample code: KustoPoolDatabasesDelete.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolDatabasesDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDatabases()
-            .delete("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDatabases_Get
-
-```java
-/**
- * Samples for KustoPoolDatabases Get.
- */
-public final class KustoPoolDatabasesGetSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDatabasesGet.json
-     */
-    /**
-     * Sample code: KustoPoolDatabasesGet.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolDatabasesGet(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDatabases()
-            .getWithResponse("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDatabases_ListByKustoPool
-
-```java
-/**
- * Samples for KustoPoolDatabases ListByKustoPool.
- */
-public final class KustoPoolDatabasesListByKustoPoolSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoDatabasesListByKustoPool.json
-     */
-    /**
-     * Sample code: KustoDatabasesListByKustoPool.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoDatabasesListByKustoPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDatabases()
-            .listByKustoPool("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolDatabases_Update
-
-```java
-import com.azure.resourcemanager.synapse.models.ReadWriteDatabase;
-import java.time.Duration;
-
-/**
- * Samples for KustoPoolDatabases Update.
- */
-public final class KustoPoolDatabasesUpdateSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolDatabasesUpdate.json
-     */
-    /**
-     * Sample code: KustoPoolDatabasesUpdate.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolDatabasesUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolDatabases()
-            .update("kustorptest", "synapseWorkspaceName", "kustoclusterrptest4", "KustoDatabase8",
-                new ReadWriteDatabase().withSoftDeletePeriod(Duration.parse("P1D")), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolPrincipalAssignments_CheckNameAvailability
-
-```java
-import com.azure.resourcemanager.synapse.models.ClusterPrincipalAssignmentCheckNameRequest;
-
-/**
- * Samples for KustoPoolPrincipalAssignments CheckNameAvailability.
- */
-public final class KustoPoolPrincipalAssignmentsCheckNameAvailabilitySamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolPrincipalAssignmentsCheckNameAvailability.json
-     */
-    /**
-     * Sample code: KustoPoolPrincipalAssignmentsCheckNameAvailability.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolPrincipalAssignmentsCheckNameAvailability(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolPrincipalAssignments()
-            .checkNameAvailabilityWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest",
-                new ClusterPrincipalAssignmentCheckNameRequest().withName("kustoprincipal1"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolPrincipalAssignments_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.synapse.models.ClusterPrincipalRole;
-import com.azure.resourcemanager.synapse.models.PrincipalType;
-
-/**
- * Samples for KustoPoolPrincipalAssignments CreateOrUpdate.
- */
-public final class KustoPoolPrincipalAssignmentsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolPrincipalAssignmentsCreateOrUpdate.json
-     */
-    /**
-     * Sample code: KustoPoolPrincipalAssignmentsCreateOrUpdate.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        kustoPoolPrincipalAssignmentsCreateOrUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolPrincipalAssignments()
-            .define("kustoprincipal1")
-            .withExistingKustoPool("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest")
-            .withPrincipalId("87654321-1234-1234-1234-123456789123")
-            .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
-            .withTenantId("12345678-1234-1234-1234-123456789123")
-            .withPrincipalType(PrincipalType.APP)
-            .create();
-    }
-}
-```
-
-### KustoPoolPrincipalAssignments_Delete
-
-```java
-/**
- * Samples for KustoPoolPrincipalAssignments Delete.
- */
-public final class KustoPoolPrincipalAssignmentsDeleteSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolPrincipalAssignmentsDelete.json
-     */
-    /**
-     * Sample code: KustoPoolPrincipalAssignmentsDelete.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolPrincipalAssignmentsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolPrincipalAssignments()
-            .delete("synapseWorkspaceName", "kustoclusterrptest4", "kustoprincipal1", "kustorptest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolPrincipalAssignments_Get
-
-```java
-/**
- * Samples for KustoPoolPrincipalAssignments Get.
- */
-public final class KustoPoolPrincipalAssignmentsGetSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolPrincipalAssignmentsGet.json
-     */
-    /**
-     * Sample code: KustoPoolPrincipalAssignmentsGet.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolPrincipalAssignmentsGet(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolPrincipalAssignments()
-            .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustoprincipal1", "kustorptest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolPrincipalAssignments_List
-
-```java
-/**
- * Samples for KustoPoolPrincipalAssignments List.
- */
-public final class KustoPoolPrincipalAssignmentsListSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolPrincipalAssignmentsList.json
-     */
-    /**
-     * Sample code: KustoPoolPrincipalAssignmentsList.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolPrincipalAssignmentsList(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolPrincipalAssignments()
-            .list("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPoolPrivateLinkResourcesOperation_List
-
-```java
-/**
- * Samples for KustoPoolPrivateLinkResourcesOperation List.
- */
-public final class KustoPoolPrivateLinkResourcesOperationListSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolPrivateLinkResourcesList.json
-     */
-    /**
-     * Sample code: KustoPoolPrivateLinkResourcesList.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolPrivateLinkResourcesList(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolPrivateLinkResourcesOperations()
-            .list("DP-900", "synapse-ws-ebi-data", "dataexplorerpool900", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_AddLanguageExtensions
-
-```java
-import com.azure.resourcemanager.synapse.fluent.models.LanguageExtensionInner;
-import com.azure.resourcemanager.synapse.models.LanguageExtensionName;
-import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
-import java.util.Arrays;
-
-/**
- * Samples for KustoPools AddLanguageExtensions.
- */
-public final class KustoPoolsAddLanguageExtensionsSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolLanguageExtensionsAdd.json
-     */
-    /**
-     * Sample code: KustoPoolAddLanguageExtensions.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolAddLanguageExtensions(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .addLanguageExtensions("kustorptest", "kustoclusterrptest4", "kustorptest",
-                new LanguageExtensionsList().withValue(
-                    Arrays.asList(new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
-                        new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_CheckNameAvailability
-
-```java
-import com.azure.resourcemanager.synapse.models.KustoPoolCheckNameRequest;
-
-/**
- * Samples for KustoPools CheckNameAvailability.
- */
-public final class KustoPoolsCheckNameAvailabilitySamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolsCheckNameAvailability.json
-     */
-    /**
-     * Sample code: KustoPoolsCheckNameAvailability.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolsCheckNameAvailability(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .checkNameAvailabilityWithResponse("westus",
-                new KustoPoolCheckNameRequest().withName("kustoclusterrptest4"), com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.synapse.models.AzureSku;
-import com.azure.resourcemanager.synapse.models.SkuName;
-import com.azure.resourcemanager.synapse.models.SkuSize;
-
-/**
- * Samples for KustoPools CreateOrUpdate.
- */
-public final class KustoPoolsCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolsCreateOrUpdate.json
-     */
-    /**
-     * Sample code: kustoPoolsCreateOrUpdate.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolsCreateOrUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .define("kustoclusterrptest4")
-            .withRegion("westus")
-            .withExistingWorkspace("synapseWorkspaceName", "kustorptest")
-            .withSku(new AzureSku().withName(SkuName.STORAGE_OPTIMIZED).withCapacity(2).withSize(SkuSize.MEDIUM))
-            .withEnableStreamingIngest(true)
-            .withEnablePurge(true)
-            .withWorkspaceUid("11111111-2222-3333-444444444444")
-            .create();
-    }
-}
-```
-
-### KustoPools_Delete
-
-```java
-/**
- * Samples for KustoPools Delete.
- */
-public final class KustoPoolsDeleteSamples {
-    /*
-     * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsDelete.
-     * json
-     */
-    /**
-     * Sample code: kustoPoolsDelete.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolsDelete(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .delete("kustorptest", "kustorptest", "kustoclusterrptest4", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_DetachFollowerDatabases
-
-```java
-import com.azure.resourcemanager.synapse.fluent.models.FollowerDatabaseDefinitionInner;
-
-/**
- * Samples for KustoPools DetachFollowerDatabases.
- */
-public final class KustoPoolsDetachFollowerDatabasesSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolFollowerDatabasesDetach.json
-     */
-    /**
-     * Sample code: KustoPoolDetachFollowerDatabases.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolDetachFollowerDatabases(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .detachFollowerDatabases("kustorptest", "kustoclusterrptest4", "kustorptest",
-                new FollowerDatabaseDefinitionInner().withKustoPoolResourceId(
-                    "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Synapse/workspaces/kustorptest/kustoPools/leader4")
-                    .withAttachedDatabaseConfigurationName("myAttachedDatabaseConfiguration"),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_Get
-
-```java
-/**
- * Samples for KustoPools Get.
- */
-public final class KustoPoolsGetSamples {
-    /*
-     * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsGet.json
-     */
-    /**
-     * Sample code: kustoPoolsGet.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolsGet(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_List
-
-```java
-/**
- * Samples for KustoPools List.
- */
-public final class KustoPoolsListSamples {
-    /*
-     * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListSkus.
-     * json
-     */
-    /**
-     * Sample code: KustoPoolsListSkus.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolsListSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_ListByWorkspace
-
-```java
-/**
- * Samples for KustoPools ListByWorkspace.
- */
-public final class KustoPoolsListByWorkspaceSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolsListByWorkspace.json
-     */
-    /**
-     * Sample code: List Kusto pools in a workspace.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void listKustoPoolsInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .listByWorkspaceWithResponse("kustorptest", "kustorptest", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_ListFollowerDatabases
-
-```java
-/**
- * Samples for KustoPools ListFollowerDatabases.
- */
-public final class KustoPoolsListFollowerDatabasesSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolFollowerDatabasesList.json
-     */
-    /**
-     * Sample code: KustoPoolListFollowerDatabases.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolListFollowerDatabases(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .listFollowerDatabases("kustorptest", "kustoclusterrptest4", "kustorptest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_ListLanguageExtensions
-
-```java
-/**
- * Samples for KustoPools ListLanguageExtensions.
- */
-public final class KustoPoolsListLanguageExtensionsSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolLanguageExtensionsList.json
-     */
-    /**
-     * Sample code: KustoPoolListLanguageExtensions.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolListLanguageExtensions(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .listLanguageExtensions("kustorptest", "kustoclusterrptest4", "kustorptest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_ListSkusByResource
-
-```java
-/**
- * Samples for KustoPools ListSkusByResource.
- */
-public final class KustoPoolsListSkusByResourceSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolsListResourceSkus.json
-     */
-    /**
-     * Sample code: KustoPoolsListResourceSkus.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolsListResourceSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .listSkusByResource("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_RemoveLanguageExtensions
-
-```java
-import com.azure.resourcemanager.synapse.fluent.models.LanguageExtensionInner;
-import com.azure.resourcemanager.synapse.models.LanguageExtensionName;
-import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
-import java.util.Arrays;
-
-/**
- * Samples for KustoPools RemoveLanguageExtensions.
- */
-public final class KustoPoolsRemoveLanguageExtensionsSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * KustoPoolLanguageExtensionsRemove.json
-     */
-    /**
-     * Sample code: KustoPoolRemoveLanguageExtensions.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolRemoveLanguageExtensions(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .removeLanguageExtensions("kustorptest", "kustoclusterrptest4", "kustorptest",
-                new LanguageExtensionsList().withValue(
-                    Arrays.asList(new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON),
-                        new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R))),
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_Start
-
-```java
-/**
- * Samples for KustoPools Start.
- */
-public final class KustoPoolsStartSamples {
-    /*
-     * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsStart.json
-     */
-    /**
-     * Sample code: kustoPoolsStop.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolsStop(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .start("kustorptest", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_Stop
-
-```java
-/**
- * Samples for KustoPools Stop.
- */
-public final class KustoPoolsStopSamples {
-    /*
-     * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsStop.json
-     */
-    /**
-     * Sample code: kustoPoolsStop.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolsStop(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools()
-            .stop("kustorptest", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### KustoPools_Update
-
-```java
-import com.azure.resourcemanager.synapse.models.AzureSku;
-import com.azure.resourcemanager.synapse.models.KustoPool;
-import com.azure.resourcemanager.synapse.models.SkuName;
-import com.azure.resourcemanager.synapse.models.SkuSize;
-
-/**
- * Samples for KustoPools Update.
- */
-public final class KustoPoolsUpdateSamples {
-    /*
-     * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsUpdate.
-     * json
-     */
-    /**
-     * Sample code: kustoPoolsUpdate.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void kustoPoolsUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        KustoPool resource = manager.kustoPools()
-            .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest",
-                com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withSku(new AzureSku().withName(SkuName.STORAGE_OPTIMIZED).withCapacity(2).withSize(SkuSize.MEDIUM))
-            .withEnableStreamingIngest(true)
-            .withEnablePurge(true)
-            .apply();
-    }
-}
-```
-
 ### LibrariesOperation_ListByWorkspace
 
 ```java
@@ -3138,8 +1694,9 @@ public final class KustoPoolsUpdateSamples {
  */
 public final class LibrariesOperationListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * Libraries_ListByWorkspace.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/Libraries_ListByWorkspace.
+     * json
      */
     /**
      * Sample code: List libraries in a workspace.
@@ -3162,7 +1719,7 @@ public final class LibrariesOperationListByWorkspaceSamples {
 public final class LibraryGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/Library_Get.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/Library_Get.json
      */
     /**
      * Sample code: Get Library by name.
@@ -3187,7 +1744,7 @@ import com.azure.resourcemanager.synapse.models.CheckNameAvailabilityRequest;
  */
 public final class OperationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CheckNameAvailabilityWorkspaceAlreadyExists.json
      */
     /**
@@ -3204,7 +1761,7 @@ public final class OperationsCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CheckNameAvailabilityWorkspaceAvailable.json
      */
     /**
@@ -3229,7 +1786,7 @@ public final class OperationsCheckNameAvailabilitySamples {
 public final class OperationsGetAzureAsyncHeaderResultSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetAzureAsyncOperationHeader.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetAzureAsyncOperationHeader.
      * json
      */
     /**
@@ -3254,7 +1811,7 @@ public final class OperationsGetAzureAsyncHeaderResultSamples {
 public final class OperationsGetLocationHeaderResultSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetLocationHeader.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetLocationHeader.json
      */
     /**
      * Sample code: Get location header result.
@@ -3278,7 +1835,7 @@ public final class OperationsGetLocationHeaderResultSamples {
 public final class OperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetAvailableOperations.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetAvailableOperations.json
      */
     /**
      * Sample code: Get available operations.
@@ -3301,7 +1858,7 @@ import com.azure.resourcemanager.synapse.models.PrivateLinkServiceConnectionStat
  */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ApprovePrivateEndpointConnection.json
      */
     /**
@@ -3328,7 +1885,7 @@ public final class PrivateEndpointConnectionsCreateSamples {
  */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DeletePrivateEndpointConnection.json
      */
     /**
@@ -3353,7 +1910,7 @@ public final class PrivateEndpointConnectionsDeleteSamples {
 public final class PrivateEndpointConnectionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetPrivateEndpointConnection.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetPrivateEndpointConnection.
      * json
      */
     /**
@@ -3377,7 +1934,7 @@ public final class PrivateEndpointConnectionsGetSamples {
  */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListPrivateEndpointConnections.json
      */
     /**
@@ -3393,30 +1950,6 @@ public final class PrivateEndpointConnectionsListSamples {
 }
 ```
 
-### PrivateEndpointConnectionsPrivateLinkHub_Get
-
-```java
-/**
- * Samples for PrivateEndpointConnectionsPrivateLinkHub Get.
- */
-public final class PrivateEndpointConnectionsPrivateLinkHubGetSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
-     * PrivateEndpointConnectionsPrivateLinkHub_Get.json
-     */
-    /**
-     * Sample code: Get a privateLinkHub.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void getAPrivateLinkHub(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateEndpointConnectionsPrivateLinkHubs()
-            .getWithResponse("gh-res-grp", "pe0", "pe0-f3ed30f5-338c-4855-a542-24a403694ad2",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
 ### PrivateEndpointConnectionsPrivateLinkHub_List
 
 ```java
@@ -3425,7 +1958,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubGetSamples {
  */
 public final class PrivateEndpointConnectionsPrivateLinkHubListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * PrivateEndpointConnectionsPrivateLinkHub_List.json
      */
     /**
@@ -3447,7 +1980,7 @@ public final class PrivateEndpointConnectionsPrivateLinkHubListSamples {
  */
 public final class PrivateLinkHubPrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetPrivateLinkHubPrivateLinkResource.json
      */
     /**
@@ -3471,7 +2004,7 @@ public final class PrivateLinkHubPrivateLinkResourcesGetSamples {
  */
 public final class PrivateLinkHubPrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListPrivateLinkHubPrivateLinkResources.json
      */
     /**
@@ -3499,7 +2032,7 @@ import java.util.Map;
 public final class PrivateLinkHubsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdatePrivateLinkHub.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/CreateOrUpdatePrivateLinkHub.
      * json
      */
     /**
@@ -3539,7 +2072,7 @@ public final class PrivateLinkHubsCreateOrUpdateSamples {
 public final class PrivateLinkHubsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeletePrivateLinkHub.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeletePrivateLinkHub.json
      */
     /**
      * Sample code: Delete a privateLinkHub.
@@ -3561,7 +2094,7 @@ public final class PrivateLinkHubsDeleteSamples {
 public final class PrivateLinkHubsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetPrivateLinkHub.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetPrivateLinkHub.json
      */
     /**
      * Sample code: Get a privateLinkHub.
@@ -3583,7 +2116,7 @@ public final class PrivateLinkHubsGetByResourceGroupSamples {
  */
 public final class PrivateLinkHubsListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListPrivateLinkHubsInSubscription.json
      */
     /**
@@ -3605,7 +2138,7 @@ public final class PrivateLinkHubsListSamples {
  */
 public final class PrivateLinkHubsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListPrivateLinkHubsInResourceGroup.json
      */
     /**
@@ -3632,7 +2165,7 @@ import java.util.Map;
 public final class PrivateLinkHubsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdatePrivateLinkHub.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/UpdatePrivateLinkHub.json
      */
     /**
      * Sample code: Update a privateLinkHub.
@@ -3660,16 +2193,16 @@ public final class PrivateLinkHubsUpdateSamples {
 }
 ```
 
-### PrivateLinkResourcesOperation_Get
+### PrivateLinkResources_Get
 
 ```java
 /**
- * Samples for PrivateLinkResourcesOperation Get.
+ * Samples for PrivateLinkResources Get.
  */
-public final class PrivateLinkResourcesOperationGetSamples {
+public final class PrivateLinkResourcesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetPrivateLinkResource.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetPrivateLinkResource.json
      */
     /**
      * Sample code: Get private link resources for workspace.
@@ -3677,22 +2210,22 @@ public final class PrivateLinkResourcesOperationGetSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getPrivateLinkResourcesForWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateLinkResourcesOperations()
+        manager.privateLinkResources()
             .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "sql", com.azure.core.util.Context.NONE);
     }
 }
 ```
 
-### PrivateLinkResourcesOperation_List
+### PrivateLinkResources_List
 
 ```java
 /**
- * Samples for PrivateLinkResourcesOperation List.
+ * Samples for PrivateLinkResources List.
  */
-public final class PrivateLinkResourcesOperationListSamples {
+public final class PrivateLinkResourcesListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListPrivateLinkResources.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListPrivateLinkResources.json
      */
     /**
      * Sample code: Get private link resources for workspace.
@@ -3700,7 +2233,7 @@ public final class PrivateLinkResourcesOperationListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void getPrivateLinkResourcesForWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.privateLinkResourcesOperations()
+        manager.privateLinkResources()
             .list("ExampleResourceGroup", "ExampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
@@ -3715,7 +2248,7 @@ public final class PrivateLinkResourcesOperationListSamples {
 public final class RestorableDroppedSqlPoolsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RestorableDroppedSqlPoolGet.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/RestorableDroppedSqlPoolGet.
      * json
      */
     /**
@@ -3740,7 +2273,7 @@ public final class RestorableDroppedSqlPoolsGetSamples {
 public final class RestorableDroppedSqlPoolsListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RestorableDroppedSqlpoolList.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/RestorableDroppedSqlpoolList.
      * json
      */
     /**
@@ -3752,53 +2285,6 @@ public final class RestorableDroppedSqlPoolsListByWorkspaceSamples {
         manager.restorableDroppedSqlPools()
             .listByWorkspace("restorabledroppeddatabasetest-1349", "restorabledroppeddatabasetest-1840",
                 com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SparkConfiguration_Get
-
-```java
-/**
- * Samples for SparkConfiguration Get.
- */
-public final class SparkConfigurationGetSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * SparkConfiguration_Get.json
-     */
-    /**
-     * Sample code: Get SparkConfiguration by name.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void getSparkConfigurationByName(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sparkConfigurations()
-            .getWithResponse("exampleResourceGroup", "exampleSparkConfigurationName", "exampleWorkspace",
-                com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SparkConfigurationsOperation_ListByWorkspace
-
-```java
-/**
- * Samples for SparkConfigurationsOperation ListByWorkspace.
- */
-public final class SparkConfigurationsOperationListByWorkspaceSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/
-     * SparkConfigurations_ListByWorkspace.json
-     */
-    /**
-     * Sample code: List sparkConfigurations in a workspace.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void listSparkConfigurationsInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sparkConfigurationsOperations()
-            .listByWorkspace("exampleResourceGroup", "exampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3815,7 +2301,7 @@ import java.util.UUID;
  */
 public final class SqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolBlobAuditingWithAllParameters.json
      */
     /**
@@ -3842,7 +2328,7 @@ public final class SqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolBlobAuditingWithMinParameters.json
      */
     /**
@@ -3873,7 +2359,7 @@ public final class SqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
 public final class SqlPoolBlobAuditingPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolBlobAuditing.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPoolBlobAuditing.json
      */
     /**
      * Sample code: Get blob auditing policy of a SQL Analytics pool.
@@ -3898,7 +2384,7 @@ public final class SqlPoolBlobAuditingPoliciesGetSamples {
 public final class SqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolAuditingSettingsList.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/SqlPoolAuditingSettingsList.
      * json
      */
     /**
@@ -3923,7 +2409,7 @@ public final class SqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
 public final class SqlPoolColumnsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolColumnGet.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/SqlPoolColumnGet.json
      */
     /**
      * Sample code: Get database column.
@@ -3949,7 +2435,7 @@ import com.azure.resourcemanager.synapse.models.ConnectionPolicyName;
 public final class SqlPoolConnectionPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolConnectionPolicy.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPoolConnectionPolicy.
      * json
      */
     /**
@@ -3977,7 +2463,7 @@ import com.azure.resourcemanager.synapse.models.DataWarehouseUserActivityName;
 public final class SqlPoolDataWarehouseUserActivitiesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolUserActivity.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPoolUserActivity.json
      */
     /**
      * Sample code: Get a SQL Analytics pool user activity.
@@ -4003,7 +2489,7 @@ import com.azure.resourcemanager.synapse.models.GeoBackupPolicyState;
  */
 public final class SqlPoolGeoBackupPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateGeoBackupPolicies.json
      */
     /**
@@ -4032,7 +2518,7 @@ import com.azure.resourcemanager.synapse.models.GeoBackupPolicyName;
 public final class SqlPoolGeoBackupPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolGeoBackupPolicy.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPoolGeoBackupPolicy.
      * json
      */
     /**
@@ -4057,7 +2543,7 @@ public final class SqlPoolGeoBackupPoliciesGetSamples {
 public final class SqlPoolGeoBackupPoliciesListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolGeoBackupPolicies_List
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/SqlPoolGeoBackupPolicies_List
      * .json
      */
     /**
@@ -4081,7 +2567,7 @@ public final class SqlPoolGeoBackupPoliciesListSamples {
 public final class SqlPoolMaintenanceWindowOptionsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetMaintenanceWindowOptions.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetMaintenanceWindowOptions.
      * json
      */
     /**
@@ -4110,7 +2596,7 @@ import java.util.Arrays;
  */
 public final class SqlPoolMaintenanceWindowsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateMaintenanceWindows.json
      */
     /**
@@ -4140,7 +2626,7 @@ public final class SqlPoolMaintenanceWindowsCreateOrUpdateSamples {
 public final class SqlPoolMaintenanceWindowsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetMaintenanceWindows.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetMaintenanceWindows.json
      */
     /**
      * Sample code: Gets maintenance window settings for a selected SQL Analytics pool.
@@ -4165,7 +2651,7 @@ import com.azure.resourcemanager.synapse.fluent.models.MetadataSyncConfigInner;
  */
 public final class SqlPoolMetadataSyncConfigsCreateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateSqlPoolMetadataSyncConfig.json
      */
     /**
@@ -4191,7 +2677,7 @@ public final class SqlPoolMetadataSyncConfigsCreateSamples {
 public final class SqlPoolMetadataSyncConfigsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolMetadataSyncConfig.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPoolMetadataSyncConfig.
      * json
      */
     /**
@@ -4216,7 +2702,7 @@ public final class SqlPoolMetadataSyncConfigsGetSamples {
  */
 public final class SqlPoolOperationResultsGetLocationHeaderResultSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetLocationHeaderResultWithSqlPool.json
      */
     /**
@@ -4227,7 +2713,7 @@ public final class SqlPoolOperationResultsGetLocationHeaderResultSamples {
     public static void
         getTheResultOfAnOperationOnASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager.sqlPoolOperationResults()
-            .getLocationHeaderResult("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool",
+            .getLocationHeaderResultWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool",
                 "fedcba98-7654-4210-fedc-ba9876543210", com.azure.core.util.Context.NONE);
     }
 }
@@ -4242,7 +2728,7 @@ public final class SqlPoolOperationResultsGetLocationHeaderResultSamples {
 public final class SqlPoolOperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolOperations.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListSqlPoolOperations.json
      */
     /**
      * Sample code: List the Sql Analytics pool management operations.
@@ -4270,7 +2756,7 @@ import java.util.Arrays;
  */
 public final class SqlPoolRecommendedSensitivityLabelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * SensitivityLabelsRecommendedUpdate.json
      */
     /**
@@ -4308,7 +2794,7 @@ public final class SqlPoolRecommendedSensitivityLabelsUpdateSamples {
  */
 public final class SqlPoolReplicationLinksGetByNameSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * SqlPoolReplicationLinks_GetByName.json
      */
     /**
@@ -4334,7 +2820,7 @@ public final class SqlPoolReplicationLinksGetByNameSamples {
 public final class SqlPoolReplicationLinksListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolReplicationLinks.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListSqlPoolReplicationLinks.
      * json
      */
     /**
@@ -4361,7 +2847,7 @@ import com.azure.resourcemanager.synapse.models.CreateSqlPoolRestorePointDefinit
 public final class SqlPoolRestorePointsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateSqlPoolRestorePoints.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/CreateSqlPoolRestorePoints.
      * json
      */
     /**
@@ -4387,7 +2873,7 @@ public final class SqlPoolRestorePointsCreateSamples {
 public final class SqlPoolRestorePointsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolRestorePointsDelete.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/SqlPoolRestorePointsDelete.
      * json
      */
     /**
@@ -4412,7 +2898,7 @@ public final class SqlPoolRestorePointsDeleteSamples {
 public final class SqlPoolRestorePointsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolRestorePointsGet.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/SqlPoolRestorePointsGet.json
      */
     /**
      * Sample code: Gets a Sql pool restore point.
@@ -4436,7 +2922,7 @@ public final class SqlPoolRestorePointsGetSamples {
 public final class SqlPoolRestorePointsListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolRestorePoints.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListSqlPoolRestorePoints.json
      */
     /**
      * Sample code: Get a list of restore points of a SQL Analytics pool.
@@ -4460,7 +2946,7 @@ public final class SqlPoolRestorePointsListSamples {
 public final class SqlPoolSchemasGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolSchemaGet.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/SqlPoolSchemaGet.json
      */
     /**
      * Sample code: Get database schema.
@@ -4483,7 +2969,7 @@ public final class SqlPoolSchemasGetSamples {
 public final class SqlPoolSchemasListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolSchema.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListSqlPoolSchema.json
      */
     /**
      * Sample code: List the schema in a SQL Analytics pool.
@@ -4502,13 +2988,14 @@ public final class SqlPoolSchemasListSamples {
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.synapse.models.SqlPoolSecurityAlertPolicy;
+import java.util.Arrays;
 
 /**
  * Samples for SqlPoolSecurityAlertPolicies CreateOrUpdate.
  */
 public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolSecurityAlertWithAllParameters.json
      */
     /**
@@ -4524,6 +3011,8 @@ public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
             .getValue();
         resource.update()
             .withState(SecurityAlertPolicyState.ENABLED)
+            .withDisabledAlerts(Arrays.asList("Sql_Injection", "Usage_Anomaly"))
+            .withEmailAddresses(Arrays.asList("test@microsoft.com", "user@microsoft.com"))
             .withEmailAccountAdmins(true)
             .withStorageEndpoint("https://mystorage.blob.core.windows.net")
             .withStorageAccountAccessKey(
@@ -4533,7 +3022,7 @@ public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolSecurityAlertWithMinParameters.json
      */
     /**
@@ -4563,7 +3052,7 @@ import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyName;
 public final class SqlPoolSecurityAlertPoliciesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolSecurityAlert.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPoolSecurityAlert.json
      */
     /**
      * Sample code: Get a security alert of a SQL Analytics pool.
@@ -4586,7 +3075,7 @@ public final class SqlPoolSecurityAlertPoliciesGetSamples {
  */
 public final class SqlPoolSecurityAlertPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * SqlPoolSecurityAlertPolicies_List.json
      */
     /**
@@ -4609,7 +3098,7 @@ public final class SqlPoolSecurityAlertPoliciesListSamples {
  */
 public final class SqlPoolSensitivityLabelsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DeleteSqlPoolColumnSensitivityLabel.json
      */
     /**
@@ -4634,7 +3123,7 @@ public final class SqlPoolSensitivityLabelsDeleteSamples {
  */
 public final class SqlPoolSensitivityLabelsDisableRecommendationSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * RecommendedColumnSensitivityLabelDisable.json
      */
     /**
@@ -4659,7 +3148,7 @@ public final class SqlPoolSensitivityLabelsDisableRecommendationSamples {
  */
 public final class SqlPoolSensitivityLabelsEnableRecommendationSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * RecommendedColumnSensitivityLabelEnable.json
      */
     /**
@@ -4686,7 +3175,7 @@ import com.azure.resourcemanager.synapse.models.SensitivityLabelSource;
  */
 public final class SqlPoolSensitivityLabelsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetSqlPoolColumnSensitivityLabelGet.json
      */
     /**
@@ -4710,7 +3199,7 @@ public final class SqlPoolSensitivityLabelsGetSamples {
  */
 public final class SqlPoolSensitivityLabelsListCurrentSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListSqlPoolsSensitivityLabelsWithSourceCurrent.json
      */
     /**
@@ -4734,7 +3223,7 @@ public final class SqlPoolSensitivityLabelsListCurrentSamples {
  */
 public final class SqlPoolSensitivityLabelsListRecommendedSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListSqlPoolSensitivityLabelsWithSourceRecommended.json
      */
     /**
@@ -4765,7 +3254,7 @@ import java.util.Arrays;
  */
 public final class SqlPoolSensitivityLabelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * SensitivityLabelsCurrentUpdate.json
      */
     /**
@@ -4814,7 +3303,7 @@ public final class SqlPoolSensitivityLabelsUpdateSamples {
 public final class SqlPoolTableColumnsListByTableNameSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolColumns.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListSqlPoolColumns.json
      */
     /**
      * Sample code: List the columns in a table of a given schema in a SQL Analytics pool.
@@ -4839,7 +3328,7 @@ public final class SqlPoolTableColumnsListByTableNameSamples {
 public final class SqlPoolTablesGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolTableGet.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/SqlPoolTableGet.json
      */
     /**
      * Sample code: Get database table.
@@ -4862,7 +3351,7 @@ public final class SqlPoolTablesGetSamples {
 public final class SqlPoolTablesListBySchemaSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolTables.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListSqlPoolTables.json
      */
     /**
      * Sample code: List the tables of a given schema in a SQL Analytics pool.
@@ -4888,7 +3377,7 @@ import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionStatus;
  */
 public final class SqlPoolTransparentDataEncryptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolTransparentDataEncryption.json
      */
     /**
@@ -4917,7 +3406,7 @@ import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionName;
  */
 public final class SqlPoolTransparentDataEncryptionsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetSqlPoolTransparentDataEncryption.json
      */
     /**
@@ -4942,7 +3431,7 @@ public final class SqlPoolTransparentDataEncryptionsGetSamples {
  */
 public final class SqlPoolTransparentDataEncryptionsListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetSqlPoolTransparentDataEncryptionList.json
      */
     /**
@@ -4967,7 +3456,7 @@ public final class SqlPoolTransparentDataEncryptionsListSamples {
 public final class SqlPoolUsagesListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolUsageMetricsList.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/SqlPoolUsageMetricsList.json
      */
     /**
      * Sample code: List the usages of a SQL Analytics pool.
@@ -4993,7 +3482,7 @@ import java.util.Arrays;
  */
 public final class SqlPoolVulnerabilityAssessmentRuleBaselinesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolVulnerabilityAssessmentRuleBaseline.json
      */
     /**
@@ -5028,7 +3517,7 @@ import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentPolicyBas
  */
 public final class SqlPoolVulnerabilityAssessmentRuleBaselinesDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DeleteSqlPoolVulnerabilityAssessmentRuleBaseline.json
      */
     /**
@@ -5057,7 +3546,7 @@ import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentPolicyBas
  */
 public final class SqlPoolVulnerabilityAssessmentRuleBaselinesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * SqlPoolVulnerabilityAssessmentRuleBaselineGet.json
      */
     /**
@@ -5085,7 +3574,7 @@ import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
  */
 public final class SqlPoolVulnerabilityAssessmentScansExportSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ExportSqlPoolVulnerabilityAssessmentScan.json
      */
     /**
@@ -5112,7 +3601,7 @@ import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
  */
 public final class SqlPoolVulnerabilityAssessmentScansGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * SqlPoolVulnerabilityAssessmentScanRecordsGet.json
      */
     /**
@@ -5139,7 +3628,7 @@ import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
  */
 public final class SqlPoolVulnerabilityAssessmentScansInitiateScanSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ExecuteSqlPoolVulnerabilityAssessmentScans.json
      */
     /**
@@ -5166,7 +3655,7 @@ import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
  */
 public final class SqlPoolVulnerabilityAssessmentScansListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListSqlPoolVulnerabilityAssessmentScanRecords.json
      */
     /**
@@ -5195,7 +3684,7 @@ import java.util.Arrays;
  */
 public final class SqlPoolVulnerabilityAssessmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolVulnerabilityAssessmentWithContainerSasKeyAndMinParameters.json
      */
     /**
@@ -5216,7 +3705,7 @@ public final class SqlPoolVulnerabilityAssessmentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolVulnerabilityAssessmentWithAllParameters.json
      */
     /**
@@ -5239,7 +3728,7 @@ public final class SqlPoolVulnerabilityAssessmentsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateVulnerabilityAssessmentWithStorageAccessKeyAndMinParameters.json
      */
     /**
@@ -5271,7 +3760,7 @@ import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
  */
 public final class SqlPoolVulnerabilityAssessmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DeleteSqlPoolVulnerabilityAssessment.json
      */
     /**
@@ -5298,7 +3787,7 @@ import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
  */
 public final class SqlPoolVulnerabilityAssessmentsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetSqlPoolVulnerabilityAssessment.json
      */
     /**
@@ -5322,7 +3811,7 @@ public final class SqlPoolVulnerabilityAssessmentsGetSamples {
  */
 public final class SqlPoolVulnerabilityAssessmentsListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListSqlPoolVulnerabilityAssessments.json
      */
     /**
@@ -5347,7 +3836,7 @@ public final class SqlPoolVulnerabilityAssessmentsListSamples {
  */
 public final class SqlPoolWorkloadClassifierCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolWorkloadClassifierMin.json
      */
     /**
@@ -5365,7 +3854,7 @@ public final class SqlPoolWorkloadClassifierCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolWorkloadClassifierMax.json
      */
     /**
@@ -5397,7 +3886,7 @@ public final class SqlPoolWorkloadClassifierCreateOrUpdateSamples {
  */
 public final class SqlPoolWorkloadClassifierDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DeleteSqlPoolWorkloadGroupWorkloadClassifer.json
      */
     /**
@@ -5422,7 +3911,7 @@ public final class SqlPoolWorkloadClassifierDeleteSamples {
  */
 public final class SqlPoolWorkloadClassifierGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetSqlPoolWorkloadGroupWorkloadClassifier.json
      */
     /**
@@ -5447,7 +3936,7 @@ public final class SqlPoolWorkloadClassifierGetSamples {
  */
 public final class SqlPoolWorkloadClassifierListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetSqlPoolWorkloadGroupWorkloadClassifierList.json
      */
     /**
@@ -5472,7 +3961,7 @@ public final class SqlPoolWorkloadClassifierListSamples {
  */
 public final class SqlPoolWorkloadGroupCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolWorkloadGroupMin.json
      */
     /**
@@ -5492,7 +3981,7 @@ public final class SqlPoolWorkloadGroupCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateSqlPoolWorkloadGroupMax.json
      */
     /**
@@ -5525,7 +4014,7 @@ public final class SqlPoolWorkloadGroupCreateOrUpdateSamples {
 public final class SqlPoolWorkloadGroupDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteSqlPoolWorkloadGroup.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteSqlPoolWorkloadGroup.
      * json
      */
     /**
@@ -5551,7 +4040,7 @@ public final class SqlPoolWorkloadGroupDeleteSamples {
 public final class SqlPoolWorkloadGroupGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolWorkloadGroup.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPoolWorkloadGroup.json
      */
     /**
      * Sample code: Get a a workload group of a SQL Analytics pool.
@@ -5575,7 +4064,7 @@ public final class SqlPoolWorkloadGroupGetSamples {
 public final class SqlPoolWorkloadGroupListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolWorkloadGroupList.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPoolWorkloadGroupList.
      * json
      */
     /**
@@ -5606,7 +4095,7 @@ import java.util.Map;
 public final class SqlPoolsCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateSqlPool.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/CreateSqlPool.json
      */
     /**
      * Sample code: Create a SQL Analytics pool.
@@ -5652,7 +4141,7 @@ public final class SqlPoolsCreateSamples {
 public final class SqlPoolsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteSqlPool.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteSqlPool.json
      */
     /**
      * Sample code: Delete a SQL Analytics pool.
@@ -5675,7 +4164,7 @@ public final class SqlPoolsDeleteSamples {
 public final class SqlPoolsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPool.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetSqlPool.json
      */
     /**
      * Sample code: Get a SQL Analytics pool.
@@ -5698,7 +4187,7 @@ public final class SqlPoolsGetSamples {
  */
 public final class SqlPoolsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListSqlPoolsInWorkspaceWithFilter.json
      */
     /**
@@ -5713,7 +4202,7 @@ public final class SqlPoolsListByWorkspaceSamples {
 
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolsInWorkspace.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListSqlPoolsInWorkspace.json
      */
     /**
      * Sample code: List SQL Analytics pools in a workspace.
@@ -5735,7 +4224,7 @@ public final class SqlPoolsListByWorkspaceSamples {
 public final class SqlPoolsPauseSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/PauseSqlPool.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/PauseSqlPool.json
      */
     /**
      * Sample code: Pause a SQL Analytics pool.
@@ -5757,7 +4246,7 @@ public final class SqlPoolsPauseSamples {
 public final class SqlPoolsResumeSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ResumeSqlPool.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ResumeSqlPool.json
      */
     /**
      * Sample code: Resume a SQL Analytics pool.
@@ -5774,8 +4263,10 @@ public final class SqlPoolsResumeSamples {
 ### SqlPools_Update
 
 ```java
+import com.azure.resourcemanager.synapse.models.CreateMode;
 import com.azure.resourcemanager.synapse.models.Sku;
 import com.azure.resourcemanager.synapse.models.SqlPool;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -5785,7 +4276,7 @@ import java.util.Map;
 public final class SqlPoolsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateSqlPool.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/UpdateSqlPool.json
      */
     /**
      * Sample code: Update a SQL Analytics pool.
@@ -5797,7 +4288,17 @@ public final class SqlPoolsUpdateSamples {
             .getWithResponse("ExampleResourceGroup", "ExampleWorkspace", "ExampleSqlPool",
                 com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf()).withSku(new Sku().withTier("").withName("")).withMaxSizeBytes(0L).apply();
+        resource.update()
+            .withTags(mapOf())
+            .withSku(new Sku().withTier("").withName(""))
+            .withMaxSizeBytes(0L)
+            .withCollation("")
+            .withSourceDatabaseId("")
+            .withRecoverableDatabaseId("")
+            .withRestorePointInTime(OffsetDateTime.parse("1970-01-01T00:00:00.000Z"))
+            .withCreateMode(CreateMode.fromString(""))
+            .withCreationDate(OffsetDateTime.parse("1970-01-01T00:00:00.000Z"))
+            .apply();
     }
 
     // Use "Map.of" if available
@@ -5824,7 +4325,7 @@ import com.azure.resourcemanager.synapse.fluent.models.WorkspaceAadAdminInfoInne
  */
 public final class WorkspaceAadAdminsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateWorkspaceAadAdmin.json
      */
     /**
@@ -5854,7 +4355,7 @@ public final class WorkspaceAadAdminsCreateOrUpdateSamples {
 public final class WorkspaceAadAdminsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteWorkspaceAadAdmin.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteWorkspaceAadAdmin.json
      */
     /**
      * Sample code: Delete workspace active directory admin.
@@ -5876,7 +4377,7 @@ public final class WorkspaceAadAdminsDeleteSamples {
 public final class WorkspaceAadAdminsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspaceAadAdmin.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetWorkspaceAadAdmin.json
      */
     /**
      * Sample code: Get workspace active directory admin.
@@ -5893,15 +4394,15 @@ public final class WorkspaceAadAdminsGetSamples {
 
 ```java
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIdentitySqlControlSettingsModelInner;
-import com.azure.resourcemanager.synapse.models.DesiredState;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
+import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState;
 
 /**
  * Samples for WorkspaceManagedIdentitySqlControlSettings CreateOrUpdate.
  */
 public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateManagedIdentitySqlControlSettings.json
      */
     /**
@@ -5915,7 +4416,8 @@ public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateSampl
             .createOrUpdate("resourceGroup1", "workspace1",
                 new ManagedIdentitySqlControlSettingsModelInner().withGrantSqlControlToManagedIdentity(
                     new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity()
-                        .withDesiredState(DesiredState.ENABLED)),
+                        .withDesiredState(
+                            ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState.ENABLED)),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -5929,7 +4431,7 @@ public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateSampl
  */
 public final class WorkspaceManagedIdentitySqlControlSettingsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetManagedIdentitySqlControlSettings.json
      */
     /**
@@ -5957,7 +4459,7 @@ import java.util.UUID;
  */
 public final class WorkspaceManagedSqlServerBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateWorkspaceManagedSqlServerBlobAuditingSettingsWithAllParameters.json
      */
     /**
@@ -5985,7 +4487,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesCreateOrUpdateSa
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateWorkspaceManagedSqlServerBlobAuditingSettingsWithMinParameters.json
      */
     /**
@@ -6017,7 +4519,7 @@ import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyName;
  */
 public final class WorkspaceManagedSqlServerBlobAuditingPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetWorkspaceManagedSqlServerBlobAuditingSettings.json
      */
     /**
@@ -6042,7 +4544,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesGetSamples {
  */
 public final class WorkspaceManagedSqlServerBlobAuditingPoliciesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListWorkspaceManagedSqlServerBlobAuditingSettings.json
      */
     /**
@@ -6054,83 +4556,6 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesListByWorkspaceS
         getBlobAuditingPolicyOfWorkspaceMangedSqlServer(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager.workspaceManagedSqlServerBlobAuditingPolicies()
             .listByWorkspace("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings_Get
-
-```java
-/**
- * Samples for WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings Get.
- */
-public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsGetSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
-     * GetWorkspaceManagedSqlServerDedicatedSQLminimalTlsSettings.json
-     */
-    /**
-     * Sample code: Get workspace managed sql server dedicated sql minimal tls settings.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void getWorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings()
-            .getWithResponse("workspace-6852", "workspace-2080", "default", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings_List
-
-```java
-/**
- * Samples for WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings List.
- */
-public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsListSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
-     * ListWorkspaceManagedSqlServerDedicatedSQLminimalTlsSettings.json
-     */
-    /**
-     * Sample code: List dedicated sql minimal tls settings of the workspace managed sql server.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void listDedicatedSqlMinimalTlsSettingsOfTheWorkspaceManagedSqlServer(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings()
-            .list("workspace-6852", "workspace-2080", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings_Update
-
-```java
-import com.azure.resourcemanager.synapse.fluent.models.DedicatedSQLminimalTlsSettingsInner;
-import com.azure.resourcemanager.synapse.models.DedicatedSqlMinimalTlsSettingsName;
-
-/**
- * Samples for WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings Update.
- */
-public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsUpdateSamples {
-    /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
-     * UpdateWorkspaceManagedSqlServerDedicatedSQLminimalTlsSettings.json
-     */
-    /**
-     * Sample code: Update tls version of the workspace managed sql server.
-     * 
-     * @param manager Entry point to SynapseManager.
-     */
-    public static void
-        updateTlsVersionOfTheWorkspaceManagedSqlServer(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings()
-            .update("workspace-6852", "workspace-2080", DedicatedSqlMinimalTlsSettingsName.DEFAULT,
-                new DedicatedSQLminimalTlsSettingsInner().withMinimalTlsVersion("1.1"),
-                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6147,7 +4572,7 @@ import com.azure.resourcemanager.synapse.models.ServerKeyType;
  */
 public final class WorkspaceManagedSqlServerEncryptionProtectorCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * WorkspaceManagedSqlServerEncryptionProtectorCreateOrUpdateKeyVault.json
      */
     /**
@@ -6168,7 +4593,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorCreateOrUpdateSam
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * WorkspaceManagedSqlServerEncryptionProtectorCreateOrUpdateServiceManaged.json
      */
     /**
@@ -6197,7 +4622,7 @@ import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
  */
 public final class WorkspaceManagedSqlServerEncryptionProtectorGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetWorkspaceManagedSqlServerEncryptionProtector.json
      */
     /**
@@ -6222,7 +4647,7 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorGetSamples {
  */
 public final class WorkspaceManagedSqlServerEncryptionProtectorListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetWorkspaceManagedSqlServerEncryptionProtectorList.json
      */
     /**
@@ -6248,7 +4673,7 @@ import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
  */
 public final class WorkspaceManagedSqlServerEncryptionProtectorRevalidateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * WorkspaceManagedSqlServerEncryptionProtectorRevalidate.json
      */
     /**
@@ -6276,7 +4701,7 @@ import java.util.UUID;
  */
 public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateWorkspaceManagedSqlServerExtendedBlobAuditingSettingsWithAllParameters.json
      */
     /**
@@ -6305,7 +4730,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesCreateOr
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateWorkspaceManagedSqlServerExetendedBlobAuditingSettingsWithMinParameters.json
      */
     /**
@@ -6338,7 +4763,7 @@ import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyName;
  */
 public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetWorkspaceManagedSqlExtendedServerBlobAuditingSettings.json
      */
     /**
@@ -6363,7 +4788,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesGetSampl
  */
 public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListWorkspaceManagedSqlServerExtendedBlobAuditingSettings.json
      */
     /**
@@ -6387,7 +4812,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesListByWo
  */
 public final class WorkspaceManagedSqlServerRecoverableSqlPoolsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetWorkspaceManagedSqlServerRecoverableSqlPool.json
      */
     /**
@@ -6410,7 +4835,7 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsGetSamples {
  */
 public final class WorkspaceManagedSqlServerRecoverableSqlPoolsListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListWorkspaceManagedSqlServerRecoverableSqlPool.json
      */
     /**
@@ -6431,13 +4856,14 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsListSamples {
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyNameAutoGenerated;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.synapse.models.ServerSecurityAlertPolicy;
+import java.util.Arrays;
 
 /**
  * Samples for WorkspaceManagedSqlServerSecurityAlertPolicy CreateOrUpdate.
  */
 public final class WorkspaceManagedSqlServerSecurityAlertPolicyCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * WorkspaceManagedSqlServerSecurityAlertWithAllParameters.json
      */
     /**
@@ -6453,13 +4879,18 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyCreateOrUpdateSam
             .getValue();
         resource.update()
             .withState(SecurityAlertPolicyState.ENABLED)
+            .withDisabledAlerts(Arrays.asList("Access_Anomaly", "Usage_Anomaly"))
+            .withEmailAddresses(Arrays.asList("testSecurityAlert@microsoft.com"))
+            .withEmailAccountAdmins(true)
+            .withStorageEndpoint("https://mystorage.blob.core.windows.net")
             .withStorageAccountAccessKey(
                 "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
+            .withRetentionDays(5)
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * WorkspaceManagedSqlServerSecurityAlertCreateWithMinParameters.json
      */
     /**
@@ -6475,6 +4906,8 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyCreateOrUpdateSam
             .getValue();
         resource.update()
             .withState(SecurityAlertPolicyState.DISABLED)
+            .withEmailAccountAdmins(true)
+            .withStorageEndpoint("https://mystorage.blob.core.windows.net")
             .withStorageAccountAccessKey(
                 "sdlfkjabc+sdlfkjsdlkfsjdfLDKFTERLKFDFKLjsdfksjdflsdkfD2342309432849328476458/3RSD==")
             .apply();
@@ -6492,7 +4925,7 @@ import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyNameAutoGener
  */
 public final class WorkspaceManagedSqlServerSecurityAlertPolicyGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetWorkspaceManagedSqlServerSecurityAlertPolicy.json
      */
     /**
@@ -6517,7 +4950,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyGetSamples {
  */
 public final class WorkspaceManagedSqlServerSecurityAlertPolicyListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListWorkspaceManagedSqlServerSecurityAlertPolicies.json
      */
     /**
@@ -6541,7 +4974,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyListSamples {
  */
 public final class WorkspaceManagedSqlServerUsagesListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListWorkspaceManagedSqlServerUsages.json
      */
     /**
@@ -6568,7 +5001,7 @@ import java.util.Arrays;
  */
 public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * PutWorkspaceMangedSqlServerVulnerabilityAssessmentCreateContainerSasKeyMin.json
      */
     /**
@@ -6589,7 +5022,7 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsCreateOrUpda
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * PutWorkspaceMangedSqlServerVulnerabilityAssessmentCreateStorageAccessKeyMin.json
      */
     /**
@@ -6610,7 +5043,7 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsCreateOrUpda
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * PutWorkspaceManagedSqlServerVulnerabilityAssessmentWithAllParameters.json
      */
     /**
@@ -6644,7 +5077,7 @@ import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
  */
 public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * DeleteWorkspaceManagedSqlServerVulnerabilityAssessment.json
      */
     /**
@@ -6671,7 +5104,7 @@ import com.azure.resourcemanager.synapse.models.VulnerabilityAssessmentName;
  */
 public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * GetWorkspaceManagedSqlServerVulnerabilityAssessment.json
      */
     /**
@@ -6696,7 +5129,7 @@ public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsGetSamples {
  */
 public final class WorkspaceManagedSqlServerVulnerabilityAssessmentsListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * ListWorkspaceManagedSqlServerVulnerabilityAssessmentPolicies.json
      */
     /**
@@ -6722,7 +5155,7 @@ import com.azure.resourcemanager.synapse.fluent.models.WorkspaceAadAdminInfoInne
  */
 public final class WorkspaceSqlAadAdminsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/
      * CreateOrUpdateWorkspaceAadAdmin.json
      */
     /**
@@ -6752,7 +5185,7 @@ public final class WorkspaceSqlAadAdminsCreateOrUpdateSamples {
 public final class WorkspaceSqlAadAdminsDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteWorkspaceAadAdmin.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteWorkspaceAadAdmin.json
      */
     /**
      * Sample code: Delete workspace active directory admin.
@@ -6774,7 +5207,7 @@ public final class WorkspaceSqlAadAdminsDeleteSamples {
 public final class WorkspaceSqlAadAdminsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspaceAadAdmin.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetWorkspaceAadAdmin.json
      */
     /**
      * Sample code: Get workspace active directory admin.
@@ -6791,16 +5224,13 @@ public final class WorkspaceSqlAadAdminsGetSamples {
 ### Workspaces_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.synapse.models.CspWorkspaceAdminProperties;
 import com.azure.resourcemanager.synapse.models.CustomerManagedKeyDetails;
 import com.azure.resourcemanager.synapse.models.DataLakeStorageAccountDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
-import com.azure.resourcemanager.synapse.models.KekIdentityProperties;
 import com.azure.resourcemanager.synapse.models.ManagedIdentity;
 import com.azure.resourcemanager.synapse.models.ManagedVirtualNetworkSettings;
 import com.azure.resourcemanager.synapse.models.PurviewConfiguration;
 import com.azure.resourcemanager.synapse.models.ResourceIdentityType;
-import com.azure.resourcemanager.synapse.models.UserAssignedManagedIdentity;
 import com.azure.resourcemanager.synapse.models.WorkspaceKeyDetails;
 import com.azure.resourcemanager.synapse.models.WorkspacePublicNetworkAccess;
 import com.azure.resourcemanager.synapse.models.WorkspaceRepositoryConfiguration;
@@ -6814,7 +5244,7 @@ import java.util.Map;
 public final class WorkspacesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateWorkspace.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/CreateOrUpdateWorkspace.json
      */
     /**
      * Sample code: Create or update a workspace.
@@ -6827,10 +5257,7 @@ public final class WorkspacesCreateOrUpdateSamples {
             .withRegion("East US")
             .withExistingResourceGroup("resourceGroup1")
             .withTags(mapOf("key", "fakeTokenPlaceholder"))
-            .withIdentity(new ManagedIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/00000000-1111-2222-3333-444444444444/resourcegroups/resourceGroup1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1",
-                    new UserAssignedManagedIdentity())))
+            .withIdentity(new ManagedIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED))
             .withDefaultDataLakeStorage(
                 new DataLakeStorageAccountDetails().withAccountUrl("https://accountname.dfs.core.windows.net")
                     .withFilesystem("default"))
@@ -6839,10 +5266,7 @@ public final class WorkspacesCreateOrUpdateSamples {
             .withSqlAdministratorLogin("login")
             .withManagedVirtualNetwork("default")
             .withEncryption(new EncryptionDetails().withCmk(new CustomerManagedKeyDetails()
-                .withKey(new WorkspaceKeyDetails().withName("default").withKeyVaultUrl("fakeTokenPlaceholder"))
-                .withKekIdentity(new KekIdentityProperties().withUserAssignedIdentity(
-                    "/subscriptions/b64d7b94-73e7-4d36-94b2-7764ea3fd74a/resourcegroups/SynapseCI/providers/Microsoft.ManagedIdentity/userAssignedIdentities/uami1")
-                    .withUseSystemAssignedIdentity(false))))
+                .withKey(new WorkspaceKeyDetails().withName("default").withKeyVaultUrl("fakeTokenPlaceholder"))))
             .withManagedVirtualNetworkSettings(new ManagedVirtualNetworkSettings().withPreventDataExfiltration(false)
                 .withLinkedAccessCheckOnTargetResource(false)
                 .withAllowedAadTenantIdsForLinking(Arrays.asList("740239CE-A25B-485B-86A0-262F29F6EBDB")))
@@ -6857,8 +5281,6 @@ public final class WorkspacesCreateOrUpdateSamples {
             .withPurviewConfiguration(new PurviewConfiguration().withPurviewResourceId(
                 "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroup1/providers/Microsoft.ProjectPurview/accounts/accountname1"))
             .withPublicNetworkAccess(WorkspacePublicNetworkAccess.ENABLED)
-            .withCspWorkspaceAdminProperties(new CspWorkspaceAdminProperties()
-                .withInitialWorkspaceAdminObjectId("6c20646f-8050-49ec-b3b1-80a0e58e454d"))
             .create();
     }
 
@@ -6885,7 +5307,7 @@ public final class WorkspacesCreateOrUpdateSamples {
 public final class WorkspacesDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteWorkspace.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/DeleteWorkspace.json
      */
     /**
      * Sample code: Delete a workspace.
@@ -6907,7 +5329,7 @@ public final class WorkspacesDeleteSamples {
 public final class WorkspacesGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspace.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/GetWorkspace.json
      */
     /**
      * Sample code: Get a workspace.
@@ -6930,7 +5352,7 @@ public final class WorkspacesGetByResourceGroupSamples {
 public final class WorkspacesListSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspacesInSubscription.
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListWorkspacesInSubscription.
      * json
      */
     /**
@@ -6953,7 +5375,7 @@ public final class WorkspacesListSamples {
 public final class WorkspacesListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspacesInResourceGroup
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListWorkspacesInResourceGroup
      * .json
      */
     /**
@@ -6990,7 +5412,7 @@ import java.util.Map;
 public final class WorkspacesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateWorkspace.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/UpdateWorkspace.json
      */
     /**
      * Sample code: Update a workspace.

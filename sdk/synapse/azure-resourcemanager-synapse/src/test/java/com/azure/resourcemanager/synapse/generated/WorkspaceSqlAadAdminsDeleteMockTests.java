@@ -27,7 +27,7 @@ public final class WorkspaceSqlAadAdminsDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.workspaceSqlAadAdmins().delete("idpmton", "hgnhtmeplhbpjba", com.azure.core.util.Context.NONE);
+        manager.workspaceSqlAadAdmins().delete("bhlenntrvrkpsab", "u", com.azure.core.util.Context.NONE);
 
     }
 }

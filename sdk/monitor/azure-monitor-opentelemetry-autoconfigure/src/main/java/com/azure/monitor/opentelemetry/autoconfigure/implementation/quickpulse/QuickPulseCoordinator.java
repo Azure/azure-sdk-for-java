@@ -9,6 +9,8 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.String
 import org.slf4j.MDC;
 import reactor.util.annotation.Nullable;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_PING_ERROR;
@@ -70,7 +72,6 @@ final class QuickPulseCoordinator implements Runnable {
 
     @SuppressWarnings("try")
     private long sendData() {
-        dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
         dataFetcher.prepareQuickPulseDataForSend();
 
         QuickPulseStatus qpStatus = dataSender.getQuickPulseStatus();
@@ -85,6 +86,7 @@ final class QuickPulseCoordinator implements Runnable {
                 // in an error state (ping once a minute) if the first ping after the failing post also fails.
                 long errorDelayInNs = TimeUnit.SECONDS.toNanos(40);
                 pingSender.resetLastValidRequestTimeNs(dataSender.getLastValidPostRequestTimeNs() - errorDelayInNs);
+                logger.verbose("Switching to fallback mode.");
                 return waitOnErrorInMillis;
 
             case QP_IS_OFF:
@@ -95,6 +97,7 @@ final class QuickPulseCoordinator implements Runnable {
                 // sender to go into backoff state immediately instead of waiting 60s to go into backoff state like
                 // the spec describes. See: https://github.com/aep-health-and-standards/Telemetry-Collection-Spec/blob/main/ApplicationInsights/livemetrics.md#timings
                 pingSender.resetLastValidRequestTimeNs(dataSender.getLastValidPostRequestTimeNs());
+                logger.verbose("Switching to ping mode.");
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis
                     : waitBetweenPingsInMillis;
@@ -118,10 +121,12 @@ final class QuickPulseCoordinator implements Runnable {
         collector.setQuickPulseStatus(qpStatus);
         switch (qpStatus) {
             case ERROR:
+                logger.verbose("In fallback mode");
                 return waitOnErrorInMillis;
 
             case QP_IS_ON:
                 pingMode = false;
+                logger.verbose("Switching to post mode");
                 // Below two lines are necessary because there are cases where the last valid request is a ping
                 // before a failing post. This can happen in cases where authentication fails - pings would return
                 // http 200 but posts http 401.
@@ -148,7 +153,16 @@ final class QuickPulseCoordinator implements Runnable {
     private QuickPulseStatus handleReceivedPingHeaders(IsSubscribedHeaders pingHeaders) {
         String redirectLink = pingHeaders.getXMsQpsServiceEndpointRedirectV2();
         if (!Strings.isNullOrEmpty(redirectLink)) {
-            qpsServiceRedirectedEndpoint = redirectLink;
+            try {
+                URL redirectUrl = new URL(redirectLink);
+                // Taking the QuickPulseService.svc part out if present because the swagger will add that on.
+                qpsServiceRedirectedEndpoint = redirectUrl.getProtocol() + "://" + redirectUrl.getHost() + "/";
+                logger.verbose("Handling ping header to redirect to {}", qpsServiceRedirectedEndpoint);
+                dataSender.setRedirectEndpointPrefix(qpsServiceRedirectedEndpoint);
+            } catch (MalformedURLException e) {
+                logger.error("The service returned a malformed URL in the redirect header: {}. Exception message: {}",
+                    redirectLink, e.getMessage());
+            }
         }
 
         String pollingIntervalHeader = pingHeaders.getXMsQpsServicePollingIntervalHint();

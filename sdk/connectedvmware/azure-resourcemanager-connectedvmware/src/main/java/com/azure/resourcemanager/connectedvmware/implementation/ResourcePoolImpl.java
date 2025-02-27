@@ -230,8 +230,8 @@ public final class ResourcePoolImpl implements ResourcePool, ResourcePool.Defini
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourcePoolName = Utils.getValueFromIdByName(innerObject.id(), "resourcePools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourcePoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcePools");
     }
 
     public ResourcePool refresh() {

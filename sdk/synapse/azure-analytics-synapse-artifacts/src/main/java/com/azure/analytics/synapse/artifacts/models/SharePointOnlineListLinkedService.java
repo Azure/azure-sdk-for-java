@@ -24,27 +24,32 @@ public class SharePointOnlineListLinkedService extends LinkedService {
     private String type = "SharePointOnlineList";
 
     /*
-     * The URL of the SharePoint Online site. For example, https://contoso.sharepoint.com/sites/siteName. Type: string (or Expression with resultType string).
+     * The URL of the SharePoint Online site. For example, https://contoso.sharepoint.com/sites/siteName. Type: string
+     * (or Expression with resultType string).
      */
     private Object siteUrl;
 
     /*
-     * The tenant ID under which your application resides. You can find it from Azure portal Active Directory overview page. Type: string (or Expression with resultType string).
+     * The tenant ID under which your application resides. You can find it from Azure portal Active Directory overview
+     * page. Type: string (or Expression with resultType string).
      */
     private Object tenantId;
 
     /*
-     * The application (client) ID of your application registered in Azure Active Directory. Make sure to grant SharePoint site permission to this application. Type: string (or Expression with resultType string).
+     * The application (client) ID of your application registered in Azure Active Directory. Make sure to grant
+     * SharePoint site permission to this application. Type: string (or Expression with resultType string).
      */
     private Object servicePrincipalId;
 
     /*
-     * The client secret of your application registered in Azure Active Directory. Type: string (or Expression with resultType string).
+     * The client secret of your application registered in Azure Active Directory. Type: string (or Expression with
+     * resultType string).
      */
     private SecretBase servicePrincipalKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     private Object encryptedCredential;
 

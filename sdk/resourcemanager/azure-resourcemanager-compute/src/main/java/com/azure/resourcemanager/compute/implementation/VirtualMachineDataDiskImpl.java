@@ -64,6 +64,11 @@ class VirtualMachineDataDiskImpl extends WrapperImpl<DataDisk> implements Virtua
     }
 
     @Override
+    public boolean isWriteAcceleratorEnabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().writeAcceleratorEnabled());
+    }
+
+    @Override
     public String id() {
         if (this.innerModel().managedDisk() == null) {
             return null;

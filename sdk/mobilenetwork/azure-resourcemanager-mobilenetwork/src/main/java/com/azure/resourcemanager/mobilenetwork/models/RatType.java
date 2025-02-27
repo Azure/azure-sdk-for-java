@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mobilenetwork.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class RatType extends ExpandableStringEnum<RatType> {
      * @param name a name to look for.
      * @return the corresponding RatType.
      */
-    @JsonCreator
     public static RatType fromString(String name) {
         return fromString(name, RatType.class);
     }

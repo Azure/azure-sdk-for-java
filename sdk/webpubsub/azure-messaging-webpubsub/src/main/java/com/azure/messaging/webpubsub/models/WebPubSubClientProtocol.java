@@ -16,6 +16,9 @@ public final class WebPubSubClientProtocol extends ExpandableStringEnum<WebPubSu
     /** Static value MQTT for WebPubSubClientProtocol. */
     public static final WebPubSubClientProtocol MQTT = fromString("mqtt");
 
+    /** Static value SOCKET_IO for WebPubSubClientProtocol. */
+    public static final WebPubSubClientProtocol SOCKET_IO = fromString("socketio");
+
     /**
      * Creates an instance of {@link WebPubSubClientProtocol} with no string value.
      *

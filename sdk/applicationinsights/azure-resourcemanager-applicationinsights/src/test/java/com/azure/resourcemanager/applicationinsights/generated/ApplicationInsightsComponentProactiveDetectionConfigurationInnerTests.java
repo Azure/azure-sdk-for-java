@@ -14,54 +14,54 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationIn
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApplicationInsightsComponentProactiveDetectionConfigurationInner model = BinaryData.fromString(
-            "{\"Name\":\"sfqpteehz\",\"Enabled\":true,\"SendEmailsToSubscriptionOwners\":false,\"CustomEmails\":[\"i\"],\"LastUpdatedTime\":\"inpvswjdkirsoodq\",\"RuleDefinitions\":{\"Name\":\"rmnohj\",\"DisplayName\":\"kwh\",\"Description\":\"oifiyipjxsqwpgr\",\"HelpUrl\":\"znorcj\",\"IsHidden\":false,\"IsEnabledByDefault\":false,\"IsInPreview\":true,\"SupportsEmailNotifications\":true}}")
+            "{\"name\":\"kdkexxp\",\"enabled\":false,\"sendEmailsToSubscriptionOwners\":true,\"customEmails\":[\"c\"],\"lastUpdatedTime\":\"pg\",\"ruleDefinitions\":{\"Name\":\"ocjjxhvpmouexh\",\"DisplayName\":\"xibqeojnx\",\"Description\":\"zvddntwndeicbtwn\",\"HelpUrl\":\"aoqvuh\",\"IsHidden\":true,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":true}}")
             .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationInner.class);
-        Assertions.assertEquals("sfqpteehz", model.name());
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals(false, model.sendEmailsToSubscriptionOwners());
-        Assertions.assertEquals("i", model.customEmails().get(0));
-        Assertions.assertEquals("inpvswjdkirsoodq", model.lastUpdatedTime());
-        Assertions.assertEquals("rmnohj", model.ruleDefinitions().name());
-        Assertions.assertEquals("kwh", model.ruleDefinitions().displayName());
-        Assertions.assertEquals("oifiyipjxsqwpgr", model.ruleDefinitions().description());
-        Assertions.assertEquals("znorcj", model.ruleDefinitions().helpUrl());
-        Assertions.assertEquals(false, model.ruleDefinitions().isHidden());
+        Assertions.assertEquals("kdkexxp", model.name());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.sendEmailsToSubscriptionOwners());
+        Assertions.assertEquals("c", model.customEmails().get(0));
+        Assertions.assertEquals("pg", model.lastUpdatedTime());
+        Assertions.assertEquals("ocjjxhvpmouexh", model.ruleDefinitions().name());
+        Assertions.assertEquals("xibqeojnx", model.ruleDefinitions().displayName());
+        Assertions.assertEquals("zvddntwndeicbtwn", model.ruleDefinitions().description());
+        Assertions.assertEquals("aoqvuh", model.ruleDefinitions().helpUrl());
+        Assertions.assertEquals(true, model.ruleDefinitions().isHidden());
         Assertions.assertEquals(false, model.ruleDefinitions().isEnabledByDefault());
-        Assertions.assertEquals(true, model.ruleDefinitions().isInPreview());
+        Assertions.assertEquals(false, model.ruleDefinitions().isInPreview());
         Assertions.assertEquals(true, model.ruleDefinitions().supportsEmailNotifications());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApplicationInsightsComponentProactiveDetectionConfigurationInner model
-            = new ApplicationInsightsComponentProactiveDetectionConfigurationInner().withName("sfqpteehz")
-                .withEnabled(true)
-                .withSendEmailsToSubscriptionOwners(false)
-                .withCustomEmails(Arrays.asList("i"))
-                .withLastUpdatedTime("inpvswjdkirsoodq")
-                .withRuleDefinitions(
-                    new ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions().withName("rmnohj")
-                        .withDisplayName("kwh")
-                        .withDescription("oifiyipjxsqwpgr")
-                        .withHelpUrl("znorcj")
-                        .withIsHidden(false)
-                        .withIsEnabledByDefault(false)
-                        .withIsInPreview(true)
-                        .withSupportsEmailNotifications(true));
+            = new ApplicationInsightsComponentProactiveDetectionConfigurationInner().withName("kdkexxp")
+                .withEnabled(false)
+                .withSendEmailsToSubscriptionOwners(true)
+                .withCustomEmails(Arrays.asList("c"))
+                .withLastUpdatedTime("pg")
+                .withRuleDefinitions(new ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions()
+                    .withName("ocjjxhvpmouexh")
+                    .withDisplayName("xibqeojnx")
+                    .withDescription("zvddntwndeicbtwn")
+                    .withHelpUrl("aoqvuh")
+                    .withIsHidden(true)
+                    .withIsEnabledByDefault(false)
+                    .withIsInPreview(false)
+                    .withSupportsEmailNotifications(true));
         model = BinaryData.fromObject(model)
             .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationInner.class);
-        Assertions.assertEquals("sfqpteehz", model.name());
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals(false, model.sendEmailsToSubscriptionOwners());
-        Assertions.assertEquals("i", model.customEmails().get(0));
-        Assertions.assertEquals("inpvswjdkirsoodq", model.lastUpdatedTime());
-        Assertions.assertEquals("rmnohj", model.ruleDefinitions().name());
-        Assertions.assertEquals("kwh", model.ruleDefinitions().displayName());
-        Assertions.assertEquals("oifiyipjxsqwpgr", model.ruleDefinitions().description());
-        Assertions.assertEquals("znorcj", model.ruleDefinitions().helpUrl());
-        Assertions.assertEquals(false, model.ruleDefinitions().isHidden());
+        Assertions.assertEquals("kdkexxp", model.name());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals(true, model.sendEmailsToSubscriptionOwners());
+        Assertions.assertEquals("c", model.customEmails().get(0));
+        Assertions.assertEquals("pg", model.lastUpdatedTime());
+        Assertions.assertEquals("ocjjxhvpmouexh", model.ruleDefinitions().name());
+        Assertions.assertEquals("xibqeojnx", model.ruleDefinitions().displayName());
+        Assertions.assertEquals("zvddntwndeicbtwn", model.ruleDefinitions().description());
+        Assertions.assertEquals("aoqvuh", model.ruleDefinitions().helpUrl());
+        Assertions.assertEquals(true, model.ruleDefinitions().isHidden());
         Assertions.assertEquals(false, model.ruleDefinitions().isEnabledByDefault());
-        Assertions.assertEquals(true, model.ruleDefinitions().isInPreview());
+        Assertions.assertEquals(false, model.ruleDefinitions().isInPreview());
         Assertions.assertEquals(true, model.ruleDefinitions().supportsEmailNotifications());
     }
 }

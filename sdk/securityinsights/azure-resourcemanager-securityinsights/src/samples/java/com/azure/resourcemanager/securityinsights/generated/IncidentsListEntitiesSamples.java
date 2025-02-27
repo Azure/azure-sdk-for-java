@@ -10,8 +10,8 @@ package com.azure.resourcemanager.securityinsights.generated;
 public final class IncidentsListEntitiesSamples {
     /*
      * x-ms-original-file:
-     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/
-     * incidents/entities/GetAllIncidentEntities.json
+     * specification/securityinsights/resource-manager/Microsoft.SecurityInsights/stable/2022-11-01/examples/incidents/
+     * GetAllIncidentEntities.json
      */
     /**
      * Sample code: Gets all incident related entities.

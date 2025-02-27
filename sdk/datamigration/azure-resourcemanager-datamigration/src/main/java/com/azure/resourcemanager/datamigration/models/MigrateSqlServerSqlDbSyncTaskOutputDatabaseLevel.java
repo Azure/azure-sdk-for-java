@@ -97,11 +97,6 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel extends Migr
      */
     private Long latency;
 
-    /*
-     * Result identifier
-     */
-    private String id;
-
     /**
      * Creates an instance of MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel class.
      */
@@ -254,16 +249,6 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel extends Migr
     }
 
     /**
-     * Get the id property: Result identifier.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -299,7 +284,7 @@ public final class MigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel extends Migr
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedMigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel.id = reader.getString();
+                    deserializedMigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel.withId(reader.getString());
                 } else if ("resultType".equals(fieldName)) {
                     deserializedMigrateSqlServerSqlDbSyncTaskOutputDatabaseLevel.resultType = reader.getString();
                 } else if ("databaseName".equals(fieldName)) {

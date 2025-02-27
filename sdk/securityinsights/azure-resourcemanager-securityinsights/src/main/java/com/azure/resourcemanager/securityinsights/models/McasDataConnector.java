@@ -123,29 +123,6 @@ public final class McasDataConnector extends DataConnectorInner {
     }
 
     /**
-     * Get the dataTypes property: The available data types for the connector.
-     * 
-     * @return the dataTypes value.
-     */
-    public McasDataConnectorDataTypes dataTypes() {
-        return this.innerProperties() == null ? null : this.innerProperties().dataTypes();
-    }
-
-    /**
-     * Set the dataTypes property: The available data types for the connector.
-     * 
-     * @param dataTypes the dataTypes value to set.
-     * @return the McasDataConnector object itself.
-     */
-    public McasDataConnector withDataTypes(McasDataConnectorDataTypes dataTypes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new McasDataConnectorProperties();
-        }
-        this.innerProperties().withDataTypes(dataTypes);
-        return this;
-    }
-
-    /**
      * Get the tenantId property: The tenant id to connect to, and get the data from.
      * 
      * @return the tenantId value.
@@ -165,6 +142,29 @@ public final class McasDataConnector extends DataConnectorInner {
             this.innerProperties = new McasDataConnectorProperties();
         }
         this.innerProperties().withTenantId(tenantId);
+        return this;
+    }
+
+    /**
+     * Get the dataTypes property: The available data types for the connector.
+     * 
+     * @return the dataTypes value.
+     */
+    public McasDataConnectorDataTypes dataTypes() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataTypes();
+    }
+
+    /**
+     * Set the dataTypes property: The available data types for the connector.
+     * 
+     * @param dataTypes the dataTypes value to set.
+     * @return the McasDataConnector object itself.
+     */
+    public McasDataConnector withDataTypes(McasDataConnectorDataTypes dataTypes) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new McasDataConnectorProperties();
+        }
+        this.innerProperties().withDataTypes(dataTypes);
         return this;
     }
 

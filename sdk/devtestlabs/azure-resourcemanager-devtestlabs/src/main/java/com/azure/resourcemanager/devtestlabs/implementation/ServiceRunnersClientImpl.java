@@ -28,17 +28,23 @@ import com.azure.resourcemanager.devtestlabs.fluent.ServiceRunnersClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ServiceRunnerInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServiceRunnersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceRunnersClient.
+ */
 public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServiceRunnersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevTestLabsClientImpl client;
 
     /**
      * Initializes an instance of ServiceRunnersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServiceRunnersClientImpl(DevTestLabsClientImpl client) {
@@ -88,7 +94,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Get service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -127,7 +133,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Get service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -166,7 +172,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Get service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -182,7 +188,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Get service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -200,7 +206,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Get service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -216,7 +222,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Create or replace an existing service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -225,7 +231,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container for a managed identity to execute DevTest lab services along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceRunnerInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
@@ -262,7 +268,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Create or replace an existing service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -272,7 +278,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a container for a managed identity to execute DevTest lab services along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceRunnerInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String labName,
@@ -308,7 +314,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Create or replace an existing service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -316,8 +322,8 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a container for a managed identity to execute DevTest lab services on successful completion of {@link
-     *     Mono}.
+     * @return a container for a managed identity to execute DevTest lab services on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ServiceRunnerInner> createOrUpdateAsync(String resourceGroupName, String labName, String name,
@@ -328,7 +334,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Create or replace an existing service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -347,7 +353,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Create or replace an existing service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -365,7 +371,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Delete service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -403,7 +409,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Delete service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -442,7 +448,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Delete service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -458,7 +464,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Delete service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.
@@ -475,7 +481,7 @@ public final class ServiceRunnersClientImpl implements ServiceRunnersClient {
 
     /**
      * Delete service runner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the service runner.

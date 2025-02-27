@@ -16,70 +16,63 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Backend CreateOrUpdate. */
+/**
+ * Samples for Backend CreateOrUpdate.
+ */
 public final class BackendCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateBackendServiceFabric.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateBackendServiceFabric.json
      */
     /**
      * Sample code: ApiManagementCreateBackendServiceFabric.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementCreateBackendServiceFabric(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .backends()
+    public static void
+        apiManagementCreateBackendServiceFabric(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.backends()
             .define("sfbackend")
             .withExistingService("rg1", "apimService1")
             .withUrl("fabric:/mytestapp/mytestservice")
             .withProtocol(BackendProtocol.HTTP)
             .withDescription("Service Fabric Test App 1")
-            .withProperties(
-                new BackendProperties()
-                    .withServiceFabricCluster(
-                        new BackendServiceFabricClusterProperties()
-                            .withClientCertificateId(
-                                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1")
-                            .withMaxPartitionResolutionRetries(5)
-                            .withManagementEndpoints(Arrays.asList("https://somecluster.com"))
-                            .withServerX509Names(
-                                Arrays
-                                    .asList(
-                                        new X509CertificateName()
-                                            .withName("ServerCommonName1")
-                                            .withIssuerCertificateThumbprint("IssuerCertificateThumbprint1")))))
+            .withProperties(new BackendProperties().withServiceFabricCluster(new BackendServiceFabricClusterProperties()
+                .withClientCertificateId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1")
+                .withMaxPartitionResolutionRetries(5)
+                .withManagementEndpoints(Arrays.asList("https://somecluster.com"))
+                .withServerX509Names(Arrays.asList(new X509CertificateName().withName("ServerCommonName1")
+                    .withIssuerCertificateThumbprint("IssuerCertificateThumbprint1")))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateBackendProxyBackend.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateBackendProxyBackend.json
      */
     /**
      * Sample code: ApiManagementCreateBackendProxyBackend.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementCreateBackendProxyBackend(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .backends()
+    public static void
+        apiManagementCreateBackendProxyBackend(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.backends()
             .define("proxybackend")
             .withExistingService("rg1", "apimService1")
             .withUrl("https://backendname2644/")
             .withProtocol(BackendProtocol.HTTP)
             .withDescription("description5308")
-            .withCredentials(
-                new BackendCredentialsContract()
-                    .withQuery(mapOf("sv", Arrays.asList("xx", "bb", "cc")))
-                    .withHeaderProperty(mapOf("x-my-1", Arrays.asList("val1", "val2")))
-                    .withAuthorization(
-                        new BackendAuthorizationHeaderCredentials().withScheme("Basic").withParameter("opensesma")))
-            .withProxy(
-                new BackendProxyContract()
-                    .withUrl("http://192.168.1.1:8080")
-                    .withUsername("Contoso\\admin")
-                    .withPassword("fakeTokenPlaceholder"))
+            .withCredentials(new BackendCredentialsContract().withQuery(mapOf("sv", Arrays.asList("xx", "bb", "cc")))
+                .withHeaderProperty(mapOf("x-my-1", Arrays.asList("val1", "val2")))
+                .withAuthorization(
+                    new BackendAuthorizationHeaderCredentials().withScheme("Basic").withParameter("opensesma")))
+            .withProxy(new BackendProxyContract().withUrl("http://192.168.1.1:8080")
+                .withUsername("Contoso\\admin")
+                .withPassword("fakeTokenPlaceholder"))
             .withTls(new BackendTlsProperties().withValidateCertificateChain(true).withValidateCertificateName(true))
             .create();
     }

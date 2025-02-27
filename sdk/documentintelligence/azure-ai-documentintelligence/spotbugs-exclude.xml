@@ -7,13 +7,7 @@
     <Or>
       <Class name="com.azure.ai.documentintelligence.models.AnalyzeBatchResult" />
       <Class name="com.azure.ai.documentintelligence.models.AnalyzeResult" />
-      <Class name="com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyRequest" />
-      <Class name="com.azure.ai.documentintelligence.models.AuthorizeCopyRequest" />
       <Class name="com.azure.ai.documentintelligence.models.BoundingRegion" />
-      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest" />
-      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentModelRequest" />
-      <Class name="com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest" />
-      <Class name="com.azure.ai.documentintelligence.models.Document" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentBarcode" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentCaption" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentClassifierBuildOperationDetails" />
@@ -42,8 +36,13 @@
       <Class name="com.azure.ai.documentintelligence.models.DocumentTableCell" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentTypeDetails" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentWord" />
-      <Class name="com.azure.ai.documentintelligence.models.Error" />
-      <Class name="com.azure.ai.documentintelligence.models.OperationDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.AnalyzedDocument" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentModelOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceError" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceOperationDetails" />
     </Or>
   </Match>
   <Match>
@@ -51,13 +50,19 @@
     <Or>
       <Class name="com.azure.ai.documentintelligence.DocumentIntelligenceAdministrationClientBuilder" />
       <Class name="com.azure.ai.documentintelligence.DocumentIntelligenceClientBuilder" />
-      <Class name="com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyRequest" />
-      <Class name="com.azure.ai.documentintelligence.models.AuthorizeCopyRequest" />
-      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentClassifierRequest" />
-      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentModelRequest" />
-      <Class name="com.azure.ai.documentintelligence.models.ComposeDocumentModelRequest" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentFieldSchema" />
       <Class name="com.azure.ai.documentintelligence.models.DocumentTypeDetails" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeClassifierCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.AuthorizeModelCopyOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentClassifierOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.BuildDocumentModelOptions" />
+      <Class name="com.azure.ai.documentintelligence.models.DocumentIntelligenceError" />
+    </Or>
+  </Match>
+  <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Or>
+      <Class name="com.azure.ai.documentintelligence.implementation.AnalyzeOperationDetailsHelper" />
     </Or>
   </Match>
 </FindBugsFilter>

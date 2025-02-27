@@ -11,7 +11,7 @@ public final class RestorableDroppedSqlPoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestorableDroppedSqlPoolInner model = BinaryData.fromString(
-            "{\"location\":\"bxyijddtvq\",\"properties\":{\"databaseName\":\"adijaeukmrsie\",\"edition\":\"pndzaapmudqmeq\",\"maxSizeBytes\":\"gp\",\"serviceLevelObjective\":\"udqwyxebeybpmzz\",\"elasticPoolName\":\"tffyaqit\",\"creationDate\":\"2021-10-04T17:07:23Z\",\"deletionDate\":\"2021-08-09T17:56:40Z\",\"earliestRestoreDate\":\"2021-10-11T05:31:16Z\"},\"id\":\"aqh\",\"name\":\"seufuqy\",\"type\":\"xpdlcgqlsis\"}")
+            "{\"location\":\"jhbzxliohrdddtf\",\"properties\":{\"databaseName\":\"ba\",\"edition\":\"cbb\",\"maxSizeBytes\":\"qcy\",\"serviceLevelObjective\":\"apqofyuicdhz\",\"elasticPoolName\":\"ybww\",\"creationDate\":\"2021-11-26T17:52:15Z\",\"deletionDate\":\"2021-10-10T21:16:01Z\",\"earliestRestoreDate\":\"2021-03-28T14:58:27Z\"},\"id\":\"dmhm\",\"name\":\"ffplfmuvapckcc\",\"type\":\"rv\"}")
             .toObject(RestorableDroppedSqlPoolInner.class);
     }
 

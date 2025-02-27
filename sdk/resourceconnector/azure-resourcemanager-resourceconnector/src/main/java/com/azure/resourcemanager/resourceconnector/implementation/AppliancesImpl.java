@@ -39,22 +39,22 @@ public final class AppliancesImpl implements Appliances {
 
     public PagedIterable<ApplianceOperation> listOperations() {
         PagedIterable<ApplianceOperationInner> inner = this.serviceClient().listOperations();
-        return Utils.mapPage(inner, inner1 -> new ApplianceOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplianceOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplianceOperation> listOperations(Context context) {
         PagedIterable<ApplianceOperationInner> inner = this.serviceClient().listOperations(context);
-        return Utils.mapPage(inner, inner1 -> new ApplianceOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplianceOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Appliance> list() {
         PagedIterable<ApplianceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Appliance> list(Context context) {
         PagedIterable<ApplianceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
     }
 
     public Response<ApplianceGetTelemetryConfigResult> getTelemetryConfigWithResponse(Context context) {
@@ -79,12 +79,12 @@ public final class AppliancesImpl implements Appliances {
 
     public PagedIterable<Appliance> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ApplianceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Appliance> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ApplianceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplianceImpl(inner1, this.manager()));
     }
 
     public Response<Appliance> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
@@ -181,12 +181,12 @@ public final class AppliancesImpl implements Appliances {
     }
 
     public Appliance getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "appliances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "appliances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
@@ -195,12 +195,12 @@ public final class AppliancesImpl implements Appliances {
     }
 
     public Response<Appliance> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "appliances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "appliances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
@@ -209,12 +209,12 @@ public final class AppliancesImpl implements Appliances {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "appliances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "appliances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));
@@ -223,12 +223,12 @@ public final class AppliancesImpl implements Appliances {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "appliances");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "appliances");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'appliances'.", id)));

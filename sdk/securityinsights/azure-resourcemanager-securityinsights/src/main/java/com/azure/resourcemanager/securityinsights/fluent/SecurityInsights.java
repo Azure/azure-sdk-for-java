@@ -75,13 +75,6 @@ public interface SecurityInsights {
     AutomationRulesClient getAutomationRules();
 
     /**
-     * Gets the IncidentsClient object to access its operations.
-     * 
-     * @return the IncidentsClient object.
-     */
-    IncidentsClient getIncidents();
-
-    /**
      * Gets the BookmarksClient object to access its operations.
      * 
      * @return the BookmarksClient object.
@@ -89,81 +82,18 @@ public interface SecurityInsights {
     BookmarksClient getBookmarks();
 
     /**
-     * Gets the BookmarkRelationsClient object to access its operations.
+     * Gets the DataConnectorsClient object to access its operations.
      * 
-     * @return the BookmarkRelationsClient object.
+     * @return the DataConnectorsClient object.
      */
-    BookmarkRelationsClient getBookmarkRelations();
+    DataConnectorsClient getDataConnectors();
 
     /**
-     * Gets the BookmarkOperationsClient object to access its operations.
+     * Gets the IncidentsClient object to access its operations.
      * 
-     * @return the BookmarkOperationsClient object.
+     * @return the IncidentsClient object.
      */
-    BookmarkOperationsClient getBookmarkOperations();
-
-    /**
-     * Gets the IpGeodatasClient object to access its operations.
-     * 
-     * @return the IpGeodatasClient object.
-     */
-    IpGeodatasClient getIpGeodatas();
-
-    /**
-     * Gets the DomainWhoisClient object to access its operations.
-     * 
-     * @return the DomainWhoisClient object.
-     */
-    DomainWhoisClient getDomainWhois();
-
-    /**
-     * Gets the EntitiesClient object to access its operations.
-     * 
-     * @return the EntitiesClient object.
-     */
-    EntitiesClient getEntities();
-
-    /**
-     * Gets the EntitiesGetTimelinesClient object to access its operations.
-     * 
-     * @return the EntitiesGetTimelinesClient object.
-     */
-    EntitiesGetTimelinesClient getEntitiesGetTimelines();
-
-    /**
-     * Gets the EntitiesRelationsClient object to access its operations.
-     * 
-     * @return the EntitiesRelationsClient object.
-     */
-    EntitiesRelationsClient getEntitiesRelations();
-
-    /**
-     * Gets the EntityRelationsClient object to access its operations.
-     * 
-     * @return the EntityRelationsClient object.
-     */
-    EntityRelationsClient getEntityRelations();
-
-    /**
-     * Gets the EntityQueriesClient object to access its operations.
-     * 
-     * @return the EntityQueriesClient object.
-     */
-    EntityQueriesClient getEntityQueries();
-
-    /**
-     * Gets the EntityQueryTemplatesClient object to access its operations.
-     * 
-     * @return the EntityQueryTemplatesClient object.
-     */
-    EntityQueryTemplatesClient getEntityQueryTemplates();
-
-    /**
-     * Gets the FileImportsClient object to access its operations.
-     * 
-     * @return the FileImportsClient object.
-     */
-    FileImportsClient getFileImports();
+    IncidentsClient getIncidents();
 
     /**
      * Gets the IncidentCommentsClient object to access its operations.
@@ -180,20 +110,6 @@ public interface SecurityInsights {
     IncidentRelationsClient getIncidentRelations();
 
     /**
-     * Gets the MetadatasClient object to access its operations.
-     * 
-     * @return the MetadatasClient object.
-     */
-    MetadatasClient getMetadatas();
-
-    /**
-     * Gets the OfficeConsentsClient object to access its operations.
-     * 
-     * @return the OfficeConsentsClient object.
-     */
-    OfficeConsentsClient getOfficeConsents();
-
-    /**
      * Gets the SentinelOnboardingStatesClient object to access its operations.
      * 
      * @return the SentinelOnboardingStatesClient object.
@@ -206,27 +122,6 @@ public interface SecurityInsights {
      * @return the SecurityMLAnalyticsSettingsClient object.
      */
     SecurityMLAnalyticsSettingsClient getSecurityMLAnalyticsSettings();
-
-    /**
-     * Gets the ProductSettingsClient object to access its operations.
-     * 
-     * @return the ProductSettingsClient object.
-     */
-    ProductSettingsClient getProductSettings();
-
-    /**
-     * Gets the SourceControlsClient object to access its operations.
-     * 
-     * @return the SourceControlsClient object.
-     */
-    SourceControlsClient getSourceControls();
-
-    /**
-     * Gets the SourceControlsOperationsClient object to access its operations.
-     * 
-     * @return the SourceControlsOperationsClient object.
-     */
-    SourceControlsOperationsClient getSourceControlsOperations();
 
     /**
      * Gets the ThreatIntelligenceIndicatorsClient object to access its operations.
@@ -262,20 +157,6 @@ public interface SecurityInsights {
      * @return the WatchlistItemsClient object.
      */
     WatchlistItemsClient getWatchlistItems();
-
-    /**
-     * Gets the DataConnectorsClient object to access its operations.
-     * 
-     * @return the DataConnectorsClient object.
-     */
-    DataConnectorsClient getDataConnectors();
-
-    /**
-     * Gets the DataConnectorsCheckRequirementsOperationsClient object to access its operations.
-     * 
-     * @return the DataConnectorsCheckRequirementsOperationsClient object.
-     */
-    DataConnectorsCheckRequirementsOperationsClient getDataConnectorsCheckRequirementsOperations();
 
     /**
      * Gets the OperationsClient object to access its operations.

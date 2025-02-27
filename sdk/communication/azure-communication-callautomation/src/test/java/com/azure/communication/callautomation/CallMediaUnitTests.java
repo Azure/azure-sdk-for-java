@@ -217,4 +217,67 @@ public class CallMediaUnitTests {
             Context.NONE);
         assertEquals(response.getStatusCode(), 200);
     }
+
+    @Test
+    public void startTranscriptionWithResponseTest() {
+        StartTranscriptionOptions options = new StartTranscriptionOptions();
+        options.setOperationContext("operationContext");
+        options.setLocale("en-US");
+        Response<Void> response = callMedia.startTranscriptionWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void stopTranscriptionWithResponseTest() {
+        StopTranscriptionOptions options = new StopTranscriptionOptions();
+        options.setOperationContext("operationContext");
+        Response<Void> response = callMedia.stopTranscriptionWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void updateTranscriptionSpeechModelWithResponseTest() {
+        Response<Void> response
+            = callMedia.updateTranscriptionWithResponse("en-US", "customEndpoint", null, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void updateTranscriptionOperationContextWithResponseTest() {
+        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", "customEndpoint",
+            "unittestoperationcontext", Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void updateTranscriptionWithResponse() {
+        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", null, null, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void startMediaStremaingWithResponse() {
+        StartMediaStreamingOptions options = new StartMediaStreamingOptions();
+        options.setOperationCallbackUrl("https://localhost");
+        options.setOperationContext("operationContext");
+        Response<Void> response = callMedia.startMediaStreamingWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void stopMediaStremaingWithResponse() {
+        StopMediaStreamingOptions options = new StopMediaStreamingOptions();
+        options.setOperationCallbackUrl("https://localhost");
+        Response<Void> response = callMedia.stopMediaStreamingWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void interruptAudioAndAnnounceWithResponseTest() {
+        InterruptAudioAndAnnounceOptions options
+            = new InterruptAudioAndAnnounceOptions(playTextSource, new CommunicationUserIdentifier("id"));
+        options.setOperationContext("operationContext");
+        Response<Void> response = callMedia.interruptAudioAndAnnounceWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
 }

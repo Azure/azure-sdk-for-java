@@ -16,7 +16,19 @@ import com.azure.communication.callautomation.implementation.models.AddParticipa
 import com.azure.communication.callautomation.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callautomation.implementation.models.CallConnectionStateModelInternal;
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
+import com.azure.communication.callautomation.implementation.models.CommunicationCloudEnvironmentModel;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModelKind;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
+import com.azure.communication.callautomation.implementation.models.MicrosoftTeamsAppIdentifierModel;
+import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
+import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
+import com.azure.communication.callautomation.models.MediaStreamingOptions;
+import com.azure.communication.callautomation.models.MediaStreamingContent;
+import com.azure.communication.callautomation.models.MediaStreamingTransport;
+import com.azure.communication.callautomation.models.TranscriptionOptions;
+import com.azure.communication.callautomation.models.TranscriptionTransport;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -35,7 +47,8 @@ public class CallAutomationUnitTestBase {
     static final String CALL_CONNECTION_ID = "callConnectionId";
     static final String CALL_SERVER_CALL_ID = "serverCallId";
     static final String ROOM_ID = "roomId";
-    static final String CALL_CALLER_ID = "callerId";
+    static final String CALL_CALLER_ID = "acs_callerId";
+    static final String TEAMS_APP_CALL_CALLER_ID = "teams_app_callerId";
     static final CommunicationUserIdentifier USER_1 = new CommunicationUserIdentifier("userId1");
     static final String CALL_CALLER_DISPLAY_NAME = "callerDisplayName";
     static final String CALL_TARGET_ID = "targetId";
@@ -47,6 +60,13 @@ public class CallAutomationUnitTestBase {
     static final String CALL_OPERATION_CONTEXT = "operationContext";
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
+
+    static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION
+        = new MediaStreamingOptions("https://websocket.url.com", MediaStreamingTransport.WEBSOCKET,
+            MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED, true);
+
+    static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION
+        = new TranscriptionOptions("https://websocket.url.com", TranscriptionTransport.WEBSOCKET, "en-US", true);
 
     public static String generateDownloadResult(String content) {
         return content;
@@ -60,9 +80,30 @@ public class CallAutomationUnitTestBase {
                 .setServerCallId(serverCallId)
                 .setCallbackUri(callbackUri)
                 .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
+                .setMediaSubscriptionId(mediaSubscriptionId)
+                .setDataSubscriptionId(dataSubscriptionId)
                 .setSourceDisplayName(callerDisplayName)
                 .setTargets(
                     new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId))));
+
+        return serializeObject(result);
+    }
+
+    public static String generateTeamsAppCallProperties(String callConnectionId, String serverCallId, String targetId,
+        String connectionState, String callbackUri, String teamsAppSourceId) {
+        CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
+            .setCallConnectionId(callConnectionId)
+            .setServerCallId(serverCallId)
+            .setCallbackUri(callbackUri)
+            .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
+            .setSource(new CommunicationIdentifierModel().setRawId("28:orgid:" + teamsAppSourceId)
+                .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP)
+                .setMicrosoftTeamsApp(new MicrosoftTeamsAppIdentifierModel().setAppId(teamsAppSourceId)
+                    .setCloud(CommunicationCloudEnvironmentModel.PUBLIC)))
+            .setTargets(
+                new ArrayList<>(Collections.singletonList(new CommunicationIdentifierModel().setRawId("+4:" + targetId)
+                    .setKind(CommunicationIdentifierModelKind.PHONE_NUMBER)
+                    .setPhoneNumber(new PhoneNumberIdentifierModel().setValue(targetId)))));
 
         return serializeObject(result);
     }
@@ -90,6 +131,12 @@ public class CallAutomationUnitTestBase {
                 .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false));
 
         return serializeObject(addParticipantsResponseInternal);
+    }
+
+    public static String generateDialogStateResponse() {
+        DialogStateResponse dialogStateResponse = new DialogStateResponse().setDialogId(DIALOG_ID);
+
+        return serializeObject(dialogStateResponse);
     }
 
     public static CallAutomationAsyncClient

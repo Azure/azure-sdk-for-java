@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.storagemover.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagemover.models.CopyMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Job definition properties.
  */
 @Fluent
-public final class JobDefinitionUpdateProperties {
+public final class JobDefinitionUpdateProperties implements JsonSerializable<JobDefinitionUpdateProperties> {
     /*
      * A description for the Job Definition.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Strategy to use for copy.
      */
-    @JsonProperty(value = "copyMode")
     private CopyMode copyMode;
 
     /*
      * Name of the Agent to assign for new Job Runs of this Job Definition.
      */
-    @JsonProperty(value = "agentName")
     private String agentName;
 
     /**
@@ -103,5 +104,48 @@ public final class JobDefinitionUpdateProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("copyMode", this.copyMode == null ? null : this.copyMode.toString());
+        jsonWriter.writeStringField("agentName", this.agentName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobDefinitionUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobDefinitionUpdateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobDefinitionUpdateProperties.
+     */
+    public static JobDefinitionUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobDefinitionUpdateProperties deserializedJobDefinitionUpdateProperties
+                = new JobDefinitionUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedJobDefinitionUpdateProperties.description = reader.getString();
+                } else if ("copyMode".equals(fieldName)) {
+                    deserializedJobDefinitionUpdateProperties.copyMode = CopyMode.fromString(reader.getString());
+                } else if ("agentName".equals(fieldName)) {
+                    deserializedJobDefinitionUpdateProperties.agentName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobDefinitionUpdateProperties;
+        });
     }
 }

@@ -5,6 +5,7 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -262,14 +263,14 @@ public final class PipelineRun implements JsonSerializable<PipelineRun> {
                 } else if ("invokedBy".equals(fieldName)) {
                     deserializedPipelineRun.invokedBy = PipelineRunInvokedBy.fromJson(reader);
                 } else if ("lastUpdated".equals(fieldName)) {
-                    deserializedPipelineRun.lastUpdated
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPipelineRun.lastUpdated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("runStart".equals(fieldName)) {
-                    deserializedPipelineRun.runStart
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPipelineRun.runStart = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("runEnd".equals(fieldName)) {
-                    deserializedPipelineRun.runEnd
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPipelineRun.runEnd = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("durationInMs".equals(fieldName)) {
                     deserializedPipelineRun.durationInMs = reader.getNullable(JsonReader::getInt);
                 } else if ("status".equals(fieldName)) {

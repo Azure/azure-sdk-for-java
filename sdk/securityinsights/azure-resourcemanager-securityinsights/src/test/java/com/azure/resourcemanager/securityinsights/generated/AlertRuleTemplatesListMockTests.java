@@ -21,7 +21,7 @@ public final class AlertRuleTemplatesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"kind\":\"AlertRuleTemplate\",\"id\":\"mxexatmdmn\",\"name\":\"senxoirxyd\",\"type\":\"miploisj\"}]}";
+            = "{\"value\":[{\"kind\":\"AlertRuleTemplate\",\"id\":\"hhulrtywikdm\",\"name\":\"lakuflgbhgauacd\",\"type\":\"xmxufrsryjqgdk\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class AlertRuleTemplatesListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AlertRuleTemplate> response
-            = manager.alertRuleTemplates().list("dosmbn", "kqlgxzduv", com.azure.core.util.Context.NONE);
+            = manager.alertRuleTemplates().list("jduyyespydjfb", "c", com.azure.core.util.Context.NONE);
 
     }
 }

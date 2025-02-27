@@ -15,10 +15,13 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
 - For Spark 3.1:
   - [Azure Databricks Runtime 9.1 LTS with Spark 3.1.2](https://docs.microsoft.com/azure/databricks/release-notes/runtime/9.1)
 - For Spark 3.2:
-  - [Azure Databricks Runtime 10.2 with Spark 3.2.0](https://docs.microsoft.com/azure/databricks/release-notes/runtime/10.2)
+  - [Azure Databricks Runtime 10.2 with Spark 3.2.1](https://docs.microsoft.com/azure/databricks/release-notes/runtime/10.4)
 - For Spark 3.3
-  - [Azure Databricks Runtime 11.3 LTS with Spark 3.3.0](https://learn.microsoft.com/azure/databricks/release-notes/runtime/11.3)
-
+  - [Azure Databricks Runtime 11.3 LTS with Spark 3.3.2](https://learn.microsoft.com/azure/databricks/release-notes/runtime/12.2)
+- For Spark 3.4
+  - [Azure Databricks Runtime 13.3 LTS with Spark 3.4.1](https://learn.microsoft.com/azure/databricks/release-notes/runtime/13.3lts)
+- For Spark 3.5
+  - [Azure Databricks Runtime 15.4 LTS with Spark 3.5.0](https://learn.microsoft.com/azure/databricks/release-notes/runtime/15.4lts)
 
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a
   specific logging framework with SLF4J.
@@ -26,19 +29,19 @@ You can use any other Spark 3.1.1 spark offering as well, also you should be abl
 SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](https://www.slf4j.org/manual.html) for more information.
 
 For Spark 3.1:
-- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12:4.34.0](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-1_2-12/4.34.0/jar)
+- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-1_2-12:4.36.1](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-1_2-12/4.36.1jar)
 
 For Spark 3.2:
-- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12:4.34.0](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-2_2-12/4.34.0/jar)
+- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-2_2-12:4.36.1](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-2_2-12/4.36.1/jar)
 
 For Spark 3.3:
-- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12:4.34.0](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-3_2-12/4.34.0/jar)
+- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-3_2-12:4.36.1](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-3_2-12/4.36.1/jar)
   
 For Spark 3.4:
-- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12:4.34.0](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-4_2-12/4.34.0/jar)
+- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-4_2-12:4.36.1](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-4_2-12/4.36.1/jar)
 
 For Spark 3.5:
-- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:4.34.0](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-5_2-12/4.34.0/jar)
+- Install Cosmos DB Spark Connector, in your spark Cluster [com.azure.cosmos.spark:azure-cosmos-spark_3-5_2-12:4.36.1](https://search.maven.org/artifact/com.azure.cosmos.spark/azure-cosmos-spark_3-5_2-12/4.36.1/jar)
 
 
 The getting started guide is based on PySpark however you can use the equivalent scala version as well, and you can run the following code snippet in an Azure Databricks PySpark notebook.

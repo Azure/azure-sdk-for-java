@@ -33,7 +33,7 @@ public interface AlertRuleTemplate {
     String type();
 
     /**
-     * Gets the kind property: The kind of the alert rule.
+     * Gets the kind property: The alert rule kind.
      * 
      * @return the kind value.
      */

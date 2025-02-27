@@ -13,36 +13,36 @@ public final class WorkbookPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WorkbookProperties model = BinaryData.fromString(
-            "{\"displayName\":\"l\",\"serializedData\":\"ptramxj\",\"version\":\"wlwnwxuqlcv\",\"timeModified\":\"2021-06-21T00:43:05Z\",\"category\":\"patdooaojkniodko\",\"tags\":[\"wnujhemmsbvdk\"],\"userId\":\"odtji\",\"sourceId\":\"wj\",\"storageUri\":\"lt\",\"description\":\"cjvefkdlfo\",\"revision\":\"ggkfpagaowpul\"}")
+            "{\"displayName\":\"bykutw\",\"serializedData\":\"fhpagmhrskdsnf\",\"version\":\"doakgtdlmkkzevdl\",\"timeModified\":\"2021-08-26T23:11Z\",\"category\":\"pusdstt\",\"tags\":[\"gvbbejdcng\",\"qmoa\",\"ufgmjzrwrdg\"],\"userId\":\"wae\",\"sourceId\":\"uzkopbminrfd\",\"storageUri\":\"yuhhziu\",\"description\":\"fozbhdmsmlmzqhof\",\"revision\":\"maequiahxicslfa\"}")
             .toObject(WorkbookProperties.class);
-        Assertions.assertEquals("l", model.displayName());
-        Assertions.assertEquals("ptramxj", model.serializedData());
-        Assertions.assertEquals("wlwnwxuqlcv", model.version());
-        Assertions.assertEquals("patdooaojkniodko", model.category());
-        Assertions.assertEquals("wnujhemmsbvdk", model.tags().get(0));
-        Assertions.assertEquals("wj", model.sourceId());
-        Assertions.assertEquals("lt", model.storageUri());
-        Assertions.assertEquals("cjvefkdlfo", model.description());
+        Assertions.assertEquals("bykutw", model.displayName());
+        Assertions.assertEquals("fhpagmhrskdsnf", model.serializedData());
+        Assertions.assertEquals("doakgtdlmkkzevdl", model.version());
+        Assertions.assertEquals("pusdstt", model.category());
+        Assertions.assertEquals("gvbbejdcng", model.tags().get(0));
+        Assertions.assertEquals("uzkopbminrfd", model.sourceId());
+        Assertions.assertEquals("yuhhziu", model.storageUri());
+        Assertions.assertEquals("fozbhdmsmlmzqhof", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkbookProperties model = new WorkbookProperties().withDisplayName("l")
-            .withSerializedData("ptramxj")
-            .withVersion("wlwnwxuqlcv")
-            .withCategory("patdooaojkniodko")
-            .withTags(Arrays.asList("wnujhemmsbvdk"))
-            .withSourceId("wj")
-            .withStorageUri("lt")
-            .withDescription("cjvefkdlfo");
+        WorkbookProperties model = new WorkbookProperties().withDisplayName("bykutw")
+            .withSerializedData("fhpagmhrskdsnf")
+            .withVersion("doakgtdlmkkzevdl")
+            .withCategory("pusdstt")
+            .withTags(Arrays.asList("gvbbejdcng", "qmoa", "ufgmjzrwrdg"))
+            .withSourceId("uzkopbminrfd")
+            .withStorageUri("yuhhziu")
+            .withDescription("fozbhdmsmlmzqhof");
         model = BinaryData.fromObject(model).toObject(WorkbookProperties.class);
-        Assertions.assertEquals("l", model.displayName());
-        Assertions.assertEquals("ptramxj", model.serializedData());
-        Assertions.assertEquals("wlwnwxuqlcv", model.version());
-        Assertions.assertEquals("patdooaojkniodko", model.category());
-        Assertions.assertEquals("wnujhemmsbvdk", model.tags().get(0));
-        Assertions.assertEquals("wj", model.sourceId());
-        Assertions.assertEquals("lt", model.storageUri());
-        Assertions.assertEquals("cjvefkdlfo", model.description());
+        Assertions.assertEquals("bykutw", model.displayName());
+        Assertions.assertEquals("fhpagmhrskdsnf", model.serializedData());
+        Assertions.assertEquals("doakgtdlmkkzevdl", model.version());
+        Assertions.assertEquals("pusdstt", model.category());
+        Assertions.assertEquals("gvbbejdcng", model.tags().get(0));
+        Assertions.assertEquals("uzkopbminrfd", model.sourceId());
+        Assertions.assertEquals("yuhhziu", model.storageUri());
+        Assertions.assertEquals("fozbhdmsmlmzqhof", model.description());
     }
 }

@@ -5,85 +5,83 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** VMwareToAzStackHCI protected disk properties. */
+/**
+ * VMwareToAzStackHCI protected disk properties.
+ */
 @Immutable
-public final class VMwareToAzStackHciProtectedDiskProperties {
+public final class VMwareToAzStackHciProtectedDiskProperties
+    implements JsonSerializable<VMwareToAzStackHciProtectedDiskProperties> {
     /*
      * Gets or sets the ARM Id of the storage container.
      */
-    @JsonProperty(value = "storageContainerId", access = JsonProperty.Access.WRITE_ONLY)
     private String storageContainerId;
 
     /*
      * Gets or sets the local path of the storage container.
      */
-    @JsonProperty(value = "storageContainerLocalPath", access = JsonProperty.Access.WRITE_ONLY)
     private String storageContainerLocalPath;
 
     /*
      * Gets or sets the source disk Id.
      */
-    @JsonProperty(value = "sourceDiskId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceDiskId;
 
     /*
      * Gets or sets the source disk Name.
      */
-    @JsonProperty(value = "sourceDiskName", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceDiskName;
 
     /*
      * Gets or sets the seed disk name.
      */
-    @JsonProperty(value = "seedDiskName", access = JsonProperty.Access.WRITE_ONLY)
     private String seedDiskName;
 
     /*
      * Gets or sets the test failover clone disk.
      */
-    @JsonProperty(value = "testMigrateDiskName", access = JsonProperty.Access.WRITE_ONLY)
     private String testMigrateDiskName;
 
     /*
      * Gets or sets the failover clone disk.
      */
-    @JsonProperty(value = "migrateDiskName", access = JsonProperty.Access.WRITE_ONLY)
     private String migrateDiskName;
 
     /*
      * Gets or sets a value indicating whether the disk is the OS disk.
      */
-    @JsonProperty(value = "isOsDisk", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isOsDisk;
 
     /*
      * Gets or sets the disk capacity in bytes.
      */
-    @JsonProperty(value = "capacityInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long capacityInBytes;
 
     /*
      * Gets or sets a value indicating whether dynamic sizing is enabled on the virtual hard
      * disk.
      */
-    @JsonProperty(value = "isDynamic", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDynamic;
 
     /*
      * Gets or sets the disk type.
      */
-    @JsonProperty(value = "diskType", access = JsonProperty.Access.WRITE_ONLY)
     private String diskType;
 
-    /** Creates an instance of VMwareToAzStackHciProtectedDiskProperties class. */
+    /**
+     * Creates an instance of VMwareToAzStackHciProtectedDiskProperties class.
+     */
     public VMwareToAzStackHciProtectedDiskProperties() {
     }
 
     /**
      * Get the storageContainerId property: Gets or sets the ARM Id of the storage container.
-     *
+     * 
      * @return the storageContainerId value.
      */
     public String storageContainerId() {
@@ -92,7 +90,7 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
 
     /**
      * Get the storageContainerLocalPath property: Gets or sets the local path of the storage container.
-     *
+     * 
      * @return the storageContainerLocalPath value.
      */
     public String storageContainerLocalPath() {
@@ -101,7 +99,7 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
 
     /**
      * Get the sourceDiskId property: Gets or sets the source disk Id.
-     *
+     * 
      * @return the sourceDiskId value.
      */
     public String sourceDiskId() {
@@ -110,7 +108,7 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
 
     /**
      * Get the sourceDiskName property: Gets or sets the source disk Name.
-     *
+     * 
      * @return the sourceDiskName value.
      */
     public String sourceDiskName() {
@@ -119,7 +117,7 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
 
     /**
      * Get the seedDiskName property: Gets or sets the seed disk name.
-     *
+     * 
      * @return the seedDiskName value.
      */
     public String seedDiskName() {
@@ -128,7 +126,7 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
 
     /**
      * Get the testMigrateDiskName property: Gets or sets the test failover clone disk.
-     *
+     * 
      * @return the testMigrateDiskName value.
      */
     public String testMigrateDiskName() {
@@ -137,7 +135,7 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
 
     /**
      * Get the migrateDiskName property: Gets or sets the failover clone disk.
-     *
+     * 
      * @return the migrateDiskName value.
      */
     public String migrateDiskName() {
@@ -146,7 +144,7 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
 
     /**
      * Get the isOsDisk property: Gets or sets a value indicating whether the disk is the OS disk.
-     *
+     * 
      * @return the isOsDisk value.
      */
     public Boolean isOsDisk() {
@@ -155,7 +153,7 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
 
     /**
      * Get the capacityInBytes property: Gets or sets the disk capacity in bytes.
-     *
+     * 
      * @return the capacityInBytes value.
      */
     public Long capacityInBytes() {
@@ -165,7 +163,7 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
     /**
      * Get the isDynamic property: Gets or sets a value indicating whether dynamic sizing is enabled on the virtual hard
      * disk.
-     *
+     * 
      * @return the isDynamic value.
      */
     public Boolean isDynamic() {
@@ -174,7 +172,7 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
 
     /**
      * Get the diskType property: Gets or sets the disk type.
-     *
+     * 
      * @return the diskType value.
      */
     public String diskType() {
@@ -183,9 +181,69 @@ public final class VMwareToAzStackHciProtectedDiskProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMwareToAzStackHciProtectedDiskProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMwareToAzStackHciProtectedDiskProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMwareToAzStackHciProtectedDiskProperties.
+     */
+    public static VMwareToAzStackHciProtectedDiskProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMwareToAzStackHciProtectedDiskProperties deserializedVMwareToAzStackHciProtectedDiskProperties
+                = new VMwareToAzStackHciProtectedDiskProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageContainerId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.storageContainerId = reader.getString();
+                } else if ("storageContainerLocalPath".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.storageContainerLocalPath
+                        = reader.getString();
+                } else if ("sourceDiskId".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.sourceDiskId = reader.getString();
+                } else if ("sourceDiskName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.sourceDiskName = reader.getString();
+                } else if ("seedDiskName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.seedDiskName = reader.getString();
+                } else if ("testMigrateDiskName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.testMigrateDiskName = reader.getString();
+                } else if ("migrateDiskName".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.migrateDiskName = reader.getString();
+                } else if ("isOsDisk".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.isOsDisk
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("capacityInBytes".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.capacityInBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("isDynamic".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.isDynamic
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("diskType".equals(fieldName)) {
+                    deserializedVMwareToAzStackHciProtectedDiskProperties.diskType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMwareToAzStackHciProtectedDiskProperties;
+        });
     }
 }

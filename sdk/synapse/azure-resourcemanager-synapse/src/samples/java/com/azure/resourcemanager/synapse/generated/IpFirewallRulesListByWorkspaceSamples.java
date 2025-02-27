@@ -10,7 +10,7 @@ package com.azure.resourcemanager.synapse.generated;
 public final class IpFirewallRulesListByWorkspaceSamples {
     /*
      * x-ms-original-file:
-     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListIpFirewallRules.json
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListIpFirewallRules.json
      */
     /**
      * Sample code: List IP firewall rules in a workspace.

@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public final class TriggersUnsubscribeFromEventsMockTests {
     @Test
     public void testUnsubscribeFromEvents() throws Exception {
-        String responseStr = "{\"triggerName\":\"wetfmp\",\"status\":\"Unknown\"}";
+        String responseStr = "{\"triggerName\":\"lyvzsk\",\"status\":\"Provisioning\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -29,7 +29,7 @@ public final class TriggersUnsubscribeFromEventsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TriggerSubscriptionOperationStatus response = manager.triggers()
-            .unsubscribeFromEvents("cepxay", "wvpavutis", "wyclehagb", com.azure.core.util.Context.NONE);
+            .unsubscribeFromEvents("pzshgsidkz", "parpsrjsghuokjwv", "acwdukhzu", com.azure.core.util.Context.NONE);
 
     }
 }

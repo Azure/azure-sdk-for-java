@@ -12,15 +12,15 @@ public final class NetworkInterfacePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkInterfaceProperties model = BinaryData.fromString(
-            "{\"physicalIdentifier\":\"rwtx\",\"connectedTo\":\"isamonatniz\",\"interfaceType\":\"Management\",\"ipv4Address\":\"qsqjghrmthsplwst\",\"ipv6Address\":\"srgxfq\",\"provisioningState\":\"Updating\",\"administrativeState\":\"Enabled\",\"annotation\":\"ovxgzwhsxyrujmti\"}")
+            "{\"physicalIdentifier\":\"goljtzxnmxs\",\"connectedTo\":\"bygoo\",\"interfaceType\":\"Management\",\"ipv4Address\":\"pjxvazyjf\",\"ipv6Address\":\"saodj\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Disabled\",\"annotation\":\"ibfasgmatr\"}")
             .toObject(NetworkInterfaceProperties.class);
-        Assertions.assertEquals("ovxgzwhsxyrujmti", model.annotation());
+        Assertions.assertEquals("ibfasgmatr", model.annotation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkInterfaceProperties model = new NetworkInterfaceProperties().withAnnotation("ovxgzwhsxyrujmti");
+        NetworkInterfaceProperties model = new NetworkInterfaceProperties().withAnnotation("ibfasgmatr");
         model = BinaryData.fromObject(model).toObject(NetworkInterfaceProperties.class);
-        Assertions.assertEquals("ovxgzwhsxyrujmti", model.annotation());
+        Assertions.assertEquals("ibfasgmatr", model.annotation());
     }
 }

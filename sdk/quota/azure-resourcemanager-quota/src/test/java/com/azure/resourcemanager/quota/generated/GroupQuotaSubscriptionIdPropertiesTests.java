@@ -6,18 +6,22 @@ package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionIdProperties;
+import org.junit.jupiter.api.Assertions;
 
 public final class GroupQuotaSubscriptionIdPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionIdProperties model
-            = BinaryData.fromString("{\"subscriptionId\":\"yoqpsoaccta\",\"provisioningState\":\"Accepted\"}")
+            = BinaryData.fromString("{\"subscriptionId\":\"gaudcc\",\"provisioningState\":\"Accepted\"}")
                 .toObject(GroupQuotaSubscriptionIdProperties.class);
+        Assertions.assertEquals("gaudcc", model.subscriptionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotaSubscriptionIdProperties model = new GroupQuotaSubscriptionIdProperties();
+        GroupQuotaSubscriptionIdProperties model
+            = new GroupQuotaSubscriptionIdProperties().withSubscriptionId("gaudcc");
         model = BinaryData.fromObject(model).toObject(GroupQuotaSubscriptionIdProperties.class);
+        Assertions.assertEquals("gaudcc", model.subscriptionId());
     }
 }

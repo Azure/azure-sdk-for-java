@@ -20,6 +20,13 @@ public final class RecognizeFailed extends CallAutomationEventBaseWithReasonCode
     private Integer failedPlaySourceIndex;
 
     /**
+     * Creates an instance of {@link RecognizeFailed}.
+     */
+    public RecognizeFailed() {
+        this.failedPlaySourceIndex = null;
+    }
+
+    /**
      * Get the failedPlaySourceIndex property: Contains the index of the failed play source.
      * 
      * @return the failedPlaySourceIndex value.

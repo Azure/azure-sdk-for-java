@@ -10,7 +10,7 @@ package com.azure.resourcemanager.botservice.generated;
 public final class BotsGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/botservice/resource-manager/Microsoft.BotService/preview/2021-05-01-preview/examples/GetBot.json
+     * specification/botservice/resource-manager/Microsoft.BotService/stable/2021-03-01/examples/GetBot.json
      */
     /**
      * Sample code: Get Bot.

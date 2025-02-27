@@ -126,7 +126,6 @@ public final class GoogleBigQueryV2Source extends TabularSource {
      */
     @Override
     public void validate() {
-        super.validate();
     }
 
     /**

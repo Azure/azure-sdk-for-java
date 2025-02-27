@@ -34,7 +34,7 @@ public final class SourceControlSyncJobsCreateWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SourceControlSyncJob response = manager.sourceControlSyncJobs()
-            .define(UUID.fromString("f05448c6-cc85-4c2c-a0f0-1fbedf640f86"))
+            .define(UUID.fromString("03376ced-2230-4666-847f-aae598952907"))
             .withExistingSourceControl("ghsrleinkfscjfn", "jwvuag", "qwtltngvmreupt")
             .withCommitId("klzmijajw")
             .create();
