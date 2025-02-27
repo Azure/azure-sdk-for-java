@@ -3,7 +3,6 @@
 
 package com.azure.v2.core.credentials;
 
-import com.azure.v2.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
