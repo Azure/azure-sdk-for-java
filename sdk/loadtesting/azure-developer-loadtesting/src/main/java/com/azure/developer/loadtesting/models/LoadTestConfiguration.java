@@ -35,18 +35,6 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
     @Generated
     private Boolean quickStartTest;
 
-    /*
-     * Configuration for quick load test
-     */
-    @Generated
-    private OptionalLoadTestConfiguration optionalLoadTestConfig;
-
-    /*
-     * Region distribution configuration for the load test.
-     */
-    @Generated
-    private List<RegionalConfiguration> regionalLoadTestConfig;
-
     /**
      * Stores updated model property, the value is property name, not serialized name.
      */
@@ -136,39 +124,6 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
     }
 
     /**
-     * Get the optionalLoadTestConfig property: Configuration for quick load test.
-     *
-     * @return the optionalLoadTestConfig value.
-     */
-    @Generated
-    public OptionalLoadTestConfiguration getOptionalLoadTestConfig() {
-        return this.optionalLoadTestConfig;
-    }
-
-    /**
-     * Get the regionalLoadTestConfig property: Region distribution configuration for the load test.
-     *
-     * @return the regionalLoadTestConfig value.
-     */
-    @Generated
-    public List<RegionalConfiguration> getRegionalLoadTestConfig() {
-        return this.regionalLoadTestConfig;
-    }
-
-    /**
-     * Set the regionalLoadTestConfig property: Region distribution configuration for the load test.
-     *
-     * @param regionalLoadTestConfig the regionalLoadTestConfig value to set.
-     * @return the LoadTestConfiguration object itself.
-     */
-    @Generated
-    public LoadTestConfiguration setRegionalLoadTestConfig(List<RegionalConfiguration> regionalLoadTestConfig) {
-        this.regionalLoadTestConfig = regionalLoadTestConfig;
-        this.updatedProperties.add("regionalLoadTestConfig");
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -181,8 +136,8 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
             jsonWriter.writeNumberField("engineInstances", this.engineInstances);
             jsonWriter.writeBooleanField("splitAllCSVs", this.splitAllCsvs);
             jsonWriter.writeBooleanField("quickStartTest", this.quickStartTest);
-            jsonWriter.writeJsonField("optionalLoadTestConfig", this.optionalLoadTestConfig);
-            jsonWriter.writeArrayField("regionalLoadTestConfig", this.regionalLoadTestConfig,
+            jsonWriter.writeJsonField("optionalLoadTestConfig", this.optionalLoadTestConfiguration);
+            jsonWriter.writeArrayField("regionalLoadTestConfig", this.regionalLoadTestConfiguration,
                 (writer, element) -> writer.writeJson(element));
             return jsonWriter.writeEndObject();
         }
@@ -212,22 +167,22 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
                 jsonWriter.writeBooleanField("quickStartTest", this.quickStartTest);
             }
         }
-        if (updatedProperties.contains("optionalLoadTestConfig")) {
-            if (this.optionalLoadTestConfig == null) {
+        if (updatedProperties.contains("optionalLoadTestConfiguration")) {
+            if (this.optionalLoadTestConfiguration == null) {
                 jsonWriter.writeNullField("optionalLoadTestConfig");
             } else {
                 JsonMergePatchHelper.getOptionalLoadTestConfigurationAccessor()
-                    .prepareModelForJsonMergePatch(this.optionalLoadTestConfig, true);
-                jsonWriter.writeJsonField("optionalLoadTestConfig", this.optionalLoadTestConfig);
+                    .prepareModelForJsonMergePatch(this.optionalLoadTestConfiguration, true);
+                jsonWriter.writeJsonField("optionalLoadTestConfig", this.optionalLoadTestConfiguration);
                 JsonMergePatchHelper.getOptionalLoadTestConfigurationAccessor()
-                    .prepareModelForJsonMergePatch(this.optionalLoadTestConfig, false);
+                    .prepareModelForJsonMergePatch(this.optionalLoadTestConfiguration, false);
             }
         }
-        if (updatedProperties.contains("regionalLoadTestConfig")) {
-            if (this.regionalLoadTestConfig == null) {
+        if (updatedProperties.contains("regionalLoadTestConfiguration")) {
+            if (this.regionalLoadTestConfiguration == null) {
                 jsonWriter.writeNullField("regionalLoadTestConfig");
             } else {
-                jsonWriter.writeArrayField("regionalLoadTestConfig", this.regionalLoadTestConfig,
+                jsonWriter.writeArrayField("regionalLoadTestConfig", this.regionalLoadTestConfiguration,
                     (writer, element) -> writer.writeJson(element));
             }
         }
@@ -256,12 +211,12 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
                 } else if ("quickStartTest".equals(fieldName)) {
                     deserializedLoadTestConfiguration.quickStartTest = reader.getNullable(JsonReader::getBoolean);
                 } else if ("optionalLoadTestConfig".equals(fieldName)) {
-                    deserializedLoadTestConfiguration.optionalLoadTestConfig
+                    deserializedLoadTestConfiguration.optionalLoadTestConfiguration
                         = OptionalLoadTestConfiguration.fromJson(reader);
                 } else if ("regionalLoadTestConfig".equals(fieldName)) {
-                    List<RegionalConfiguration> regionalLoadTestConfig
+                    List<RegionalConfiguration> regionalLoadTestConfiguration
                         = reader.readArray(reader1 -> RegionalConfiguration.fromJson(reader1));
-                    deserializedLoadTestConfiguration.regionalLoadTestConfig = regionalLoadTestConfig;
+                    deserializedLoadTestConfiguration.regionalLoadTestConfiguration = regionalLoadTestConfiguration;
                 } else {
                     reader.skipChildren();
                 }
@@ -308,16 +263,63 @@ public final class LoadTestConfiguration implements JsonSerializable<LoadTestCon
         return this;
     }
 
+    /*
+     * Configuration for quick load test
+     */
+    @Generated
+    private OptionalLoadTestConfiguration optionalLoadTestConfiguration;
+
+    /*
+     * Region distribution configuration for the load test.
+     */
+    @Generated
+    private List<RegionalConfiguration> regionalLoadTestConfiguration;
+
     /**
-     * Set the optionalLoadTestConfig property: Configuration for quick load test.
+     * Get the optionalLoadTestConfiguration property: Configuration for quick load test.
      *
-     * @param optionalLoadTestConfig the optionalLoadTestConfig value to set.
+     * @return the optionalLoadTestConfiguration value.
+     */
+    @Generated
+    public OptionalLoadTestConfiguration getOptionalLoadTestConfiguration() {
+        return this.optionalLoadTestConfiguration;
+    }
+
+    /**
+     * Set the optionalLoadTestConfiguration property: Configuration for quick load test.
+     *
+     * @param optionalLoadTestConfiguration the optionalLoadTestConfiguration value to set.
      * @return the LoadTestConfiguration object itself.
      */
     @Generated
-    public LoadTestConfiguration setOptionalLoadTestConfig(OptionalLoadTestConfiguration optionalLoadTestConfig) {
-        this.optionalLoadTestConfig = optionalLoadTestConfig;
-        this.updatedProperties.add("optionalLoadTestConfig");
+    public LoadTestConfiguration
+        setOptionalLoadTestConfiguration(OptionalLoadTestConfiguration optionalLoadTestConfiguration) {
+        this.optionalLoadTestConfiguration = optionalLoadTestConfiguration;
+        this.updatedProperties.add("optionalLoadTestConfiguration");
+        return this;
+    }
+
+    /**
+     * Get the regionalLoadTestConfiguration property: Region distribution configuration for the load test.
+     *
+     * @return the regionalLoadTestConfiguration value.
+     */
+    @Generated
+    public List<RegionalConfiguration> getRegionalLoadTestConfiguration() {
+        return this.regionalLoadTestConfiguration;
+    }
+
+    /**
+     * Set the regionalLoadTestConfiguration property: Region distribution configuration for the load test.
+     *
+     * @param regionalLoadTestConfiguration the regionalLoadTestConfiguration value to set.
+     * @return the LoadTestConfiguration object itself.
+     */
+    @Generated
+    public LoadTestConfiguration
+        setRegionalLoadTestConfiguration(List<RegionalConfiguration> regionalLoadTestConfiguration) {
+        this.regionalLoadTestConfiguration = regionalLoadTestConfiguration;
+        this.updatedProperties.add("regionalLoadTestConfiguration");
         return this;
     }
 }
