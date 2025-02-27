@@ -4,6 +4,7 @@ trigger: none
 pr: none
 
 parameters:
+  ServiceDirectory: sdk/core/azure-core-version-tests
   # Run separate version override tests using a different artifacts list
   MatrixConfigs:
     - Name: version_overrides_tests
