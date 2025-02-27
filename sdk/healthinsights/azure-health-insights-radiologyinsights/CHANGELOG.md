@@ -1,8 +1,12 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 2.0.0 (Unreleased)
 
 ### Features Added
+
+- Class `QualityMeasureInference` added
+- Class `GuidanceInference` added
+- Class `ScoringAndAssessmentInference` added
 
 ### Breaking Changes
 
