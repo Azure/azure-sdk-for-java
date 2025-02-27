@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2.util;
 
-import com.azure.identity.v2.implementation.MsalToken;
+import com.azure.identity.v2.implementation.models.MsalToken;
 import com.microsoft.aad.msal4j.AuthenticationResultMetadata;
 import com.microsoft.aad.msal4j.IAccount;
 import com.microsoft.aad.msal4j.IAuthenticationResult;

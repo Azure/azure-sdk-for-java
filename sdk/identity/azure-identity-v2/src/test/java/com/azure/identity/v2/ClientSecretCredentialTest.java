@@ -3,8 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.ConfidentialClient;
-import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
+import com.azure.identity.v2.implementation.client.ConfidentialClient;
 import com.azure.identity.v2.util.TestUtils;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.microsoft.aad.msal4j.MsalServiceException;
@@ -43,11 +42,11 @@ public class ClientSecretCredentialTest {
         // mock
         try (MockedConstruction<ConfidentialClient> identityClientMock
             = mockConstruction(ConfidentialClient.class, (identitySyncClient, context) -> {
-                when(identitySyncClient.authenticateWithConfidentialClientCache(any()))
+                when(identitySyncClient.authenticateWithCache(any()))
                     .thenThrow(new IllegalStateException("Test"));
-                when(identitySyncClient.authenticateWithConfidentialClient(request1))
+                when(identitySyncClient.authenticate(request1))
                     .thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
-                when(identitySyncClient.authenticateWithConfidentialClient(request2))
+                when(identitySyncClient.authenticate(request2))
                     .thenReturn(TestUtils.getMockAccessTokenSync(token2, expiresAt));
             })) {
             // test
@@ -83,9 +82,9 @@ public class ClientSecretCredentialTest {
         // mock
         try (MockedConstruction<ConfidentialClient> identityClientMock
             = mockConstruction(ConfidentialClient.class, (identitySyncClient, context) -> {
-                when(identitySyncClient.authenticateWithConfidentialClientCache(any()))
+                when(identitySyncClient.authenticateWithCache(any()))
                     .thenThrow(new IllegalStateException("Test"));
-                when(identitySyncClient.authenticateWithConfidentialClient(request1)).thenAnswer(invocation -> {
+                when(identitySyncClient.authenticate(request1)).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                     if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
                         return TestUtils.getMockMsalTokenSync(token1, expiresAt);
@@ -94,7 +93,7 @@ public class ClientSecretCredentialTest {
                             String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-                when(identitySyncClient.authenticateWithConfidentialClient(request2)).thenAnswer(invocation -> {
+                when(identitySyncClient.authenticate(request2)).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                     if (argument.getScopes().size() == 1 && argument.isCaeEnabled()) {
                         return TestUtils.getMockMsalTokenSync(token2, expiresAt);
@@ -132,9 +131,9 @@ public class ClientSecretCredentialTest {
 
         try (MockedConstruction<ConfidentialClient> identityClientMock
             = mockConstruction(ConfidentialClient.class, (identitySyncClient, context) -> {
-                when(identitySyncClient.authenticateWithConfidentialClientCache(any()))
+                when(identitySyncClient.authenticateWithCache(any()))
                     .thenThrow(new IllegalStateException("Test"));
-                when(identitySyncClient.authenticateWithConfidentialClient(request))
+                when(identitySyncClient.authenticate(request))
                     .thenThrow(new MsalServiceException("bad secret", "BadSecret"));
             })) {
             // test
@@ -163,8 +162,8 @@ public class ClientSecretCredentialTest {
         // mock
         try (MockedConstruction<ConfidentialClient> identityClientMock
             = mockConstruction(ConfidentialClient.class, (identityClient, context) -> {
-                when(identityClient.authenticateWithConfidentialClientCache(any())).thenReturn(null);
-                when(identityClient.authenticateWithConfidentialClient(request))
+                when(identityClient.authenticateWithCache(any())).thenReturn(null);
+                when(identityClient.authenticate(request))
                     .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
             })) {
             // test

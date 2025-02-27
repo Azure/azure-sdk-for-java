@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2;
 
-import com.azure.identity.v2.implementation.ConfidentialClient;
+import com.azure.identity.v2.implementation.client.ConfidentialClient;
 import com.azure.identity.v2.implementation.models.ConfidentialClientOptions;
 import com.azure.identity.v2.implementation.util.LoggingUtil;
 import com.azure.v2.core.credentials.TokenCredential;
@@ -75,7 +75,7 @@ public class ClientSecretCredential implements TokenCredential {
     @Override
     public AccessToken getToken(TokenRequestContext request) {
         try {
-            AccessToken token = confidentialClient.authenticateWithConfidentialClientCache(request);
+            AccessToken token = confidentialClient.authenticateWithCache(request);
             if (token != null) {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
@@ -84,7 +84,7 @@ public class ClientSecretCredential implements TokenCredential {
         }
 
         try {
-            AccessToken token = confidentialClient.authenticateWithConfidentialClient(request);
+            AccessToken token = confidentialClient.authenticate(request);
             LoggingUtil.logTokenSuccess(LOGGER, request);
             return token;
         } catch (Exception e) {

@@ -12,6 +12,7 @@ package com.azure.identity.v2;
  *
  * @see EntraIdCredentialBuilderBase
  */
+//TODO: @g2vinay, Move to Azure-Core-V2.
 public final class AzureAuthorityHosts {
 
     private AzureAuthorityHosts() {

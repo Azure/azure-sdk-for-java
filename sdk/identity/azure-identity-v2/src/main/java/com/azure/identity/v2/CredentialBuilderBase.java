@@ -4,6 +4,8 @@
 package com.azure.identity.v2;
 
 import com.azure.identity.v2.implementation.models.ClientOptionsBase;
+import com.azure.identity.v2.implementation.models.HttpPipelineOptions;
+import com.azure.identity.v2.implementation.models.MsalCommonOptions;
 import com.azure.identity.v2.implementation.util.ValidationUtil;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.configuration.Configuration;
@@ -43,7 +45,7 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
      */
     @SuppressWarnings("unchecked")
     public T clientId(String clientId) {
-        getClientOptions().getMsalConfigurationOptions().setClientId(clientId);
+        getMsalCommonOptions().setClientId(clientId);
         return (T) this;
     }
 
@@ -56,9 +58,17 @@ public abstract class CredentialBuilderBase<T extends CredentialBuilderBase<T>> 
     @SuppressWarnings("unchecked")
     public T tenantId(String tenantId) {
         ValidationUtil.validateTenantIdCharacterRange(tenantId, LOGGER);
-        getClientOptions().getMsalConfigurationOptions().setTenantId(tenantId);
+        getMsalCommonOptions().setTenantId(tenantId);
         return (T) this;
     }
 
     abstract ClientOptionsBase getClientOptions();
+
+    MsalCommonOptions getMsalCommonOptions() {
+        return getClientOptions().getMsalCommonOptions();
+    }
+
+    HttpPipelineOptions getHttpPipelineOptions() {
+        return getClientOptions().getHttpPipelineOptions();
+    }
 }

@@ -12,7 +12,7 @@ import com.azure.v2.core.credentials.TokenCredential;
  *
  * @see com.azure.identity.v2
  */
-public class CredentialUnavailableException extends Exception {
+public class CredentialUnavailableException extends RuntimeException {
 
     /**
      * Initializes a new instance of the {@link CredentialUnavailableException} class.

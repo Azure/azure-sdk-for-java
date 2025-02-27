@@ -4,6 +4,7 @@
 package com.azure.identity.v2.implementation.util;
 
 
+import com.azure.identity.v2.implementation.models.ManagedIdentityClientOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.net.URI;
@@ -108,8 +109,13 @@ public final class ValidationUtil {
     }
 
 
-    public static void validateManagedIdentityIdParams(String clientId, String resourceId, String objectId,
+    public static void validateManagedIdentityIdParams(ManagedIdentityClientOptions miClientOptions,
         ClientLogger logger) {
+
+        String clientId = miClientOptions.getMsalCommonOptions().getClientId();
+        String objectId = miClientOptions.getObjectId();
+        String resourceId = miClientOptions.getResourceId();
+
         int nonNullIdCount = 0;
 
         if (clientId != null) {

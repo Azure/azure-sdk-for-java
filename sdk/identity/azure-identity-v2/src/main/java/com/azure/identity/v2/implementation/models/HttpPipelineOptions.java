@@ -4,12 +4,16 @@
 package com.azure.identity.v2.implementation.models;
 
 import io.clientcore.core.http.client.HttpClient;
-import io.clientcore.core.http.pipeline.*;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.pipeline.HttpRetryOptions;
+import io.clientcore.core.http.pipeline.HttpRedirectOptions;
 
 import java.util.List;
 
 /**
- * Options to configure the IdentityClient.
+ * Represents Http Pipeline Options used when constructing the Http Pipeline.
  */
 public class HttpPipelineOptions implements Cloneable {
 

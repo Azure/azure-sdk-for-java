@@ -3,7 +3,7 @@
 
 package com.azure.identity.v2.implementation.util;
 
-import com.azure.identity.v2.implementation.models.MsalConfigurationOptions;
+import com.azure.identity.v2.implementation.models.MsalCommonOptions;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.utils.CoreUtils;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -32,7 +32,7 @@ public final class IdentityUtil {
      * on the credential or not.
      */
     public static String resolveTenantId(String currentTenantId, TokenRequestContext requestContext,
-        MsalConfigurationOptions options) {
+        MsalCommonOptions options) {
 
         String contextTenantId = requestContext.getTenantId();
 

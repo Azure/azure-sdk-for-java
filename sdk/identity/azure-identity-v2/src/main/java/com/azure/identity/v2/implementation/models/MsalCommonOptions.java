@@ -16,11 +16,10 @@ import java.util.TreeSet;
 import java.util.concurrent.ExecutorService;
 
 /**
- * Options to configure the IdentityClient.
+ * Represents Msal Options common across Confidential, Public and Managed Identity OAuth Flows .
  */
-public class MsalConfigurationOptions implements Cloneable {
-    private static final ClientLogger LOGGER = new ClientLogger(MsalConfigurationOptions.class);
-
+public class MsalCommonOptions implements Cloneable {
+    private static final ClientLogger LOGGER = new ClientLogger(MsalCommonOptions.class);
     private String authorityHost;
     private ExecutorService executorService;
     private boolean allowUnencryptedCache;
@@ -35,7 +34,7 @@ public class MsalConfigurationOptions implements Cloneable {
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
-    public MsalConfigurationOptions(Configuration configuration) {
+    public MsalCommonOptions(Configuration configuration) {
         loadFromConfiguration(configuration);
         instanceDiscovery = true;
         additionallyAllowedTenants = new HashSet<>();
@@ -53,7 +52,7 @@ public class MsalConfigurationOptions implements Cloneable {
      * @param authorityHost the Microsoft Entra endpoint
      * @return IdentityClientOptions
      */
-    public MsalConfigurationOptions setAuthorityHost(String authorityHost) {
+    public MsalCommonOptions setAuthorityHost(String authorityHost) {
         this.authorityHost = authorityHost;
         return this;
     }
@@ -68,7 +67,7 @@ public class MsalConfigurationOptions implements Cloneable {
      * @param executorService the executor service to use for executing authentication requests.
      * @return IdentityClientOptions
      */
-    public MsalConfigurationOptions setExecutorService(ExecutorService executorService) {
+    public MsalCommonOptions setExecutorService(ExecutorService executorService) {
         this.executorService = executorService;
         return this;
     }
@@ -87,7 +86,7 @@ public class MsalConfigurationOptions implements Cloneable {
      * @param allowUnencryptedCache the flag to indicate if unencrypted persistent cache is allowed for use or not.
      * @return The updated identity client options.
      */
-    public MsalConfigurationOptions setAllowUnencryptedCache(boolean allowUnencryptedCache) {
+    public MsalCommonOptions setAllowUnencryptedCache(boolean allowUnencryptedCache) {
         this.allowUnencryptedCache = allowUnencryptedCache;
         return this;
     }
@@ -103,7 +102,7 @@ public class MsalConfigurationOptions implements Cloneable {
      * @param tokenCachePersistenceOptions the options configuration
      * @return the updated identity client options
      */
-    public MsalConfigurationOptions setTokenCacheOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
+    public MsalCommonOptions setTokenCacheOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.tokenCachePersistenceOptions = tokenCachePersistenceOptions;
         return this;
     }
@@ -124,7 +123,7 @@ public class MsalConfigurationOptions implements Cloneable {
      *
      * @return the updated client options
      */
-    public MsalConfigurationOptions disableInstanceDiscovery() {
+    public MsalCommonOptions disableInstanceDiscovery() {
         this.instanceDiscovery = false;
         return this;
     }
@@ -154,7 +153,7 @@ public class MsalConfigurationOptions implements Cloneable {
      * @return An updated instance of this builder with the tenant id set as specified.
      */
     @SuppressWarnings("unchecked")
-    public MsalConfigurationOptions setAdditionallyAllowedTenants(List<String> additionallyAllowedTenants) {
+    public MsalCommonOptions setAdditionallyAllowedTenants(List<String> additionallyAllowedTenants) {
         this.additionallyAllowedTenants = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         this.additionallyAllowedTenants.addAll(additionallyAllowedTenants);
         return this;
@@ -181,7 +180,7 @@ public class MsalConfigurationOptions implements Cloneable {
      * @param clientId The client ID.
      * @return the MsalConfigurationOptions itself.
      */
-    public MsalConfigurationOptions setClientId(String clientId) {
+    public MsalCommonOptions setClientId(String clientId) {
         this.clientId = clientId;
         return this;
     }
@@ -199,13 +198,13 @@ public class MsalConfigurationOptions implements Cloneable {
      * @param tenantId The tenant ID.
      * @return the MsalConfigurationOptions itself.
      */
-    public MsalConfigurationOptions setTenantId(String tenantId) {
+    public MsalCommonOptions setTenantId(String tenantId) {
         this.tenantId = tenantId;
         return this;
     }
 
-    public MsalConfigurationOptions clone() {
-        MsalConfigurationOptions clone = new MsalConfigurationOptions(this.configuration)
+    public MsalCommonOptions clone() {
+        MsalCommonOptions clone = new MsalCommonOptions(this.configuration)
             .setAllowUnencryptedCache(this.allowUnencryptedCache)
             .setExecutorService(this.executorService)
             .setAuthorityHost(this.authorityHost)

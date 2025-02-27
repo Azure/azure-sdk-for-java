@@ -6,13 +6,13 @@ package com.azure.identity.v2.implementation.models;
 /**
  * Options to configure the IdentityClient.
  */
-public class ConfidentialClientOptions extends ClientOptionsBase {
+public class PublicClientOptions extends ClientOptionsBase {
     private String clientSecret;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
-    public ConfidentialClientOptions() { super(); }
+    public PublicClientOptions() { super(); }
 
     /**
      * Gets the configured client secret.
@@ -27,18 +27,18 @@ public class ConfidentialClientOptions extends ClientOptionsBase {
      * @param clientSecret The client secret
      * @return the ConfidentialClientOptions itself.
      */
-    public ConfidentialClientOptions setClientSecret(String clientSecret) {
+    public PublicClientOptions setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
         return this;
     }
 
 
-    public ConfidentialClientOptions clone() {
-        ConfidentialClientOptions clone
-            = (ConfidentialClientOptions) new ConfidentialClientOptions()
+    public PublicClientOptions clone() {
+        PublicClientOptions clone
+            = (PublicClientOptions) new PublicClientOptions()
             .setClientSecret(clientSecret)
             .setHttpPipelineOptions(this.getHttpPipelineOptions().clone())
-            .setMsalConfigurationOptions(this.getMsalConfigurationOptions().clone());
+            .setMsalCommonOptions(this.getMsalCommonOptions().clone());
         return clone;
     }
 }

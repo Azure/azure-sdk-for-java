@@ -7,12 +7,12 @@ import io.clientcore.core.utils.configuration.Configuration;
 
 
 /**
- * Options to configure the IdentityClient.
+ * Represents abstract base for Client Options used in Managed Identity OAuth Flow .
  */
 public abstract class ClientOptionsBase implements Cloneable {
 
     private HttpPipelineOptions httpPipelineOptions;
-    private MsalConfigurationOptions msalConfigurationOptions;
+    private MsalCommonOptions msalCommonOptions;
     private Configuration configuration;
 
     /**
@@ -48,11 +48,11 @@ public abstract class ClientOptionsBase implements Cloneable {
      * Gets the Msal configuration options.
      * @return the msal config options.
      */
-    public MsalConfigurationOptions getMsalConfigurationOptions() {
-        if (this.msalConfigurationOptions == null) {
-            this.msalConfigurationOptions = new MsalConfigurationOptions(configuration);
+    public MsalCommonOptions getMsalCommonOptions() {
+        if (this.msalCommonOptions == null) {
+            this.msalCommonOptions = new MsalCommonOptions(configuration);
         }
-        return this.msalConfigurationOptions;
+        return this.msalCommonOptions;
     }
 
     /**
@@ -80,11 +80,11 @@ public abstract class ClientOptionsBase implements Cloneable {
     /**
      * Sets the Msal configuration options.
      *
-     * @param msalConfigurationOptions the msal configuration options.
+     * @param msalCommonOptions the msal configuration options.
      * @return the ClientOptionsBase itself.
      */
-    ClientOptionsBase setMsalConfigurationOptions(MsalConfigurationOptions msalConfigurationOptions) {
-        this.msalConfigurationOptions = msalConfigurationOptions;
+    ClientOptionsBase setMsalCommonOptions(MsalCommonOptions msalCommonOptions) {
+        this.msalCommonOptions = msalCommonOptions;
         return this;
     }
 

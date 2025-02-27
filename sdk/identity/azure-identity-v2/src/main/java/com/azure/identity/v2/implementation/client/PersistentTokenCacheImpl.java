@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.v2.implementation;
+package com.azure.identity.v2.implementation.client;
 
 import com.azure.identity.v2.CredentialAuthenticationException;
 import com.azure.identity.v2.implementation.util.IdentityUtil;

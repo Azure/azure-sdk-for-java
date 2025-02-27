@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.identity.v2.implementation;
+package com.azure.identity.v2.implementation.client;
 
 import com.azure.identity.v2.implementation.models.HttpPipelineOptions;
 import com.azure.identity.v2.implementation.util.IdentityUtil;
@@ -9,7 +9,11 @@ import com.azure.v2.core.utils.CoreUtils;
 import com.microsoft.aad.msal4j.IHttpClient;
 import com.microsoft.aad.msal4j.IHttpResponse;
 import com.microsoft.aad.msal4j.HttpRequest;
-import io.clientcore.core.http.models.*;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;

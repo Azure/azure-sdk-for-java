@@ -82,7 +82,7 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
      * @return An updated instance of this builder.
      */
     ClientSecretCredentialBuilder allowUnencryptedCache() {
-        this.confidentialClientOptions.getMsalConfigurationOptions().setAllowUnencryptedCache(true);
+        getMsalCommonOptions().setAllowUnencryptedCache(true);
         return this;
     }
 
@@ -96,7 +96,7 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
      */
     public ClientSecretCredentialBuilder
         tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
-        this.confidentialClientOptions.getMsalConfigurationOptions().setTokenCacheOptions(tokenCachePersistenceOptions);
+        getMsalCommonOptions().setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
 
@@ -107,7 +107,7 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
      */
     public ClientSecretCredential build() {
         ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", getClientOptions()
-                .getMsalConfigurationOptions().getClientId(), "tenantId", getClientOptions().getMsalConfigurationOptions().getTenantId(),
+                .getMsalCommonOptions().getClientId(), "tenantId", getClientOptions().getMsalCommonOptions().getTenantId(),
             "clientSecret", confidentialClientOptions.getClientSecret());
 
         return new ClientSecretCredential(confidentialClientOptions);
