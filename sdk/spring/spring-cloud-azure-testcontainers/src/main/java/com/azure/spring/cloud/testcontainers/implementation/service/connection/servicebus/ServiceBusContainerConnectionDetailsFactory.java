@@ -6,36 +6,29 @@ package com.azure.spring.cloud.testcontainers.implementation.service.connection.
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusConnectionDetails;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionDetailsFactory;
 import org.springframework.boot.testcontainers.service.connection.ContainerConnectionSource;
-import org.testcontainers.containers.Container;
+import org.testcontainers.azure.ServiceBusEmulatorContainer;
 
 class ServiceBusContainerConnectionDetailsFactory
-    extends ContainerConnectionDetailsFactory<Container<?>, AzureServiceBusConnectionDetails> {
-
-    private static final int SERVICE_BUS_PORT = 5672;
-
-    ServiceBusContainerConnectionDetailsFactory() {
-        super("azure-messaging/servicebus-emulator");
-    }
+    extends ContainerConnectionDetailsFactory<ServiceBusEmulatorContainer, AzureServiceBusConnectionDetails> {
 
     @Override
-    protected AzureServiceBusConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<Container<?>> source) {
+    protected AzureServiceBusConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<ServiceBusEmulatorContainer> source) {
         return new ServiceBusContainerConnectionDetails(source);
     }
 
     /**
      * {@link AzureServiceBusConnectionDetails} backed by a {@link ContainerConnectionSource}.
      */
-    private static class ServiceBusContainerConnectionDetails extends ContainerConnectionDetails<Container<?>>
+    private static class ServiceBusContainerConnectionDetails extends ContainerConnectionDetails<ServiceBusEmulatorContainer>
         implements AzureServiceBusConnectionDetails {
 
-        ServiceBusContainerConnectionDetails(ContainerConnectionSource<Container<?>> source) {
+        ServiceBusContainerConnectionDetails(ContainerConnectionSource<ServiceBusEmulatorContainer> source) {
             super(source);
         }
 
         @Override
         public String getConnectionString() {
-            return "Endpoint=sb://%s:%d;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY_VALUE;UseDevelopmentEmulator=true;"
-                .formatted(getContainer().getHost(), getContainer().getMappedPort(SERVICE_BUS_PORT));
+            return getContainer().getConnectionString();
         }
     }
 }

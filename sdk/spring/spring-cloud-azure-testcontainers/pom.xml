@@ -99,13 +99,13 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>azure</artifactId>
-      <version>1.20.4</version> <!-- {x-version-update;springboot3_org.testcontainers:azure;external_dependency} -->
+      <version>1.20.5</version> <!-- {x-version-update;springboot3_org.testcontainers:azure;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.testcontainers</groupId>
-      <artifactId>mssqlserver</artifactId>
-      <version>1.20.4</version> <!-- {x-version-update;springboot3_org.testcontainers:mssqlserver;external_dependency} -->
+      <groupId>com.microsoft.sqlserver</groupId>
+      <artifactId>mssql-jdbc</artifactId>
+      <version>10.2.3.jre8</version> <!-- {x-version-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -139,7 +139,7 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>1.20.4</version> <!-- {x-version-update;springboot3_org.testcontainers:junit-jupiter;external_dependency} -->
+      <version>1.20.5</version> <!-- {x-version-update;springboot3_org.testcontainers:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -192,7 +192,8 @@
             <bannedDependencies>
               <includes>
                 <include>org.springframework.boot:spring-boot-testcontainers:[3.4.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
-                <include>org.testcontainers:azure:[1.20.4]</include> <!-- {x-include-update;springboot3_org.testcontainers:azure;external_dependency} -->
+                <include>org.testcontainers:azure:[1.20.5]</include> <!-- {x-include-update;springboot3_org.testcontainers:azure;external_dependency} -->
+                <include>com.microsoft.sqlserver:mssql-jdbc:[10.2.3.jre8]</include> <!-- {x-include-update;com.microsoft.sqlserver:mssql-jdbc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>

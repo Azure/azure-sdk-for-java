@@ -18,11 +18,11 @@ import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.azure.ServiceBusEmulatorContainer;
 import org.testcontainers.containers.MSSQLServerContainer;
 import org.testcontainers.containers.Network;
-import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.MountableFile;
@@ -35,13 +35,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.waitAtMost;
 
 @SpringJUnitConfig
+@TestPropertySource(properties = { "spring.cloud.azure.servicebus.entity-name=queue.1",
+    "spring.cloud.azure.servicebus.entity-type=queue" })
 @Testcontainers
 //@EnabledOnOs(OS.LINUX)
 class ServiceBusContainerConnectionDetailsFactoryTests {
 
     private static final Network network = Network.newNetwork();
-
-    private static final int AZURE_SERVICEBUS_PORT = 5672;
 
     private static MSSQLServerContainer<?> sqlserver = new MSSQLServerContainer<>(
         "mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04")
@@ -51,17 +51,13 @@ class ServiceBusContainerConnectionDetailsFactoryTests {
 
     @Container
     @ServiceConnection
-    private static final GenericContainer<?> serviceBus = new GenericContainer<>(
+    private static final ServiceBusEmulatorContainer serviceBus = new ServiceBusEmulatorContainer(
         "mcr.microsoft.com/azure-messaging/servicebus-emulator:latest")
+        .acceptLicense()
         .withCopyFileToContainer(MountableFile.forClasspathResource("servicebus/Config.json"),
             "/ServiceBus_Emulator/ConfigFiles/Config.json")
-        .withExposedPorts(AZURE_SERVICEBUS_PORT)
-        .waitingFor(Wait.forLogMessage(".*Emulator Service is Successfully Up!.*", 1))
         .withNetwork(network)
-        .withEnv("SQL_SERVER", "sqlserver")
-        .withEnv("MSSQL_SA_PASSWORD", sqlserver.getPassword())
-        .withEnv("ACCEPT_EULA", "Y")
-        .dependsOn(sqlserver);
+        .withMsSqlServerContainer(sqlserver);
 
     @Autowired
     private ServiceBusSenderClient senderClient;
