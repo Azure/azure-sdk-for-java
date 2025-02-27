@@ -13,6 +13,8 @@
   ],
   "ignorePaths": [
     "eng/**",
+    "**/checkstyle-suppressions.xml",
+    "**/spotbugs-exclude.xml",
     "**/sdk/**/target/**",
     "**/session-records/**",
     "**/sdk/**/**/assets.json",
@@ -1341,7 +1343,19 @@
         "tmpdir",
         "aarch",
         "CNCF"
-        ]
+      ]
+    },
+    {
+      "filename": "sdk/corev2/**",
+      "words": [
+        "aarch",
+        "junitextensions",
+        "tmpdir",
+        "urllistofbytes",
+        "urllistoflistofbytes",
+        "urlmapofbytes",
+        "xffffffffffff"
+      ]
     },
     {
       "filename": "sdk/translation/azure-ai-translation-document/**",
