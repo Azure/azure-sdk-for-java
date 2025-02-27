@@ -49,7 +49,7 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
 
         try {
-            String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}", context);
+            PathBuilder.buildPath("https://{endpoint}/keys/{path1}", context);
         } catch (MissingSubstitutionException e) {
             assertEquals("Could not find substitution for 'path1' in method 'null'", e.getMessage());
         }
@@ -58,7 +58,7 @@ public class PathBuilderTest {
     @Test
     public void buildsPathWithNullSubstitutions() {
         try {
-            String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}", null);
+            PathBuilder.buildPath("https://{endpoint}/keys/{path1}", null);
         } catch (NullPointerException e) {
             assertEquals("method cannot be null", e.getMessage());
         }

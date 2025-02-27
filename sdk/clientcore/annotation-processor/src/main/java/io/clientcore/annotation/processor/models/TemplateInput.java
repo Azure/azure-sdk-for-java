@@ -160,7 +160,8 @@ public class TemplateInput {
             shortName = imports.get(longName);
         } else if (type.getKind() == TypeKind.DECLARED) {
             // Check if this type is a generic type, and if it is, recursively check the type arguments
-            TypeElement typeElement = (TypeElement) ((DeclaredType) type).asElement();
+            DeclaredType declaredType = (DeclaredType) type;
+            TypeElement typeElement = (TypeElement) declaredType.asElement();
             List<? extends TypeMirror> typeArguments = ((DeclaredType) type).getTypeArguments();
             if (typeArguments != null && !typeArguments.isEmpty()) {
                 longName = typeElement.getQualifiedName().toString();
