@@ -71,39 +71,32 @@ public final class AccessTokenCache {
     }
 
     private AccessToken retrieveToken(TokenRequestContext tokenRequestContext, boolean forceFetchToken) {
-        validateTokenRequestContext(tokenRequestContext);
-        return fetchToken(tokenRequestContext, forceFetchToken);
-    }
-
-    private void validateTokenRequestContext(TokenRequestContext tokenRequestContext) {
         if (tokenRequestContext == null) {
             throw LOGGER
                 .logThrowableAsError(new IllegalArgumentException("The token request context input cannot be null."));
         }
-    }
 
-    private AccessToken fetchToken(TokenRequestContext tokenRequestContext, boolean forceFetchToken) {
-        OffsetDateTime now = OffsetDateTime.now();
         AccessTokenCacheInfo cache = this.cacheInfo;
         AccessToken cachedToken = cache.getCachedAccessToken();
 
-        boolean needsRefresh = determineRefreshRequirement(tokenRequestContext, forceFetchToken, cachedToken, now);
+        boolean needsRefresh = determineRefreshRequirement(tokenRequestContext, forceFetchToken, cachedToken);
 
-        if (!needsRefresh && cachedToken != null) {
+        if (!needsRefresh) {
             return cachedToken;
         }
 
-        return attemptTokenRefresh(cachedToken, tokenRequestContext, now);
+        return attemptTokenRefresh(cachedToken, tokenRequestContext);
     }
 
     private boolean determineRefreshRequirement(TokenRequestContext tokenRequestContext, boolean forceFetchToken,
-        AccessToken cachedToken, OffsetDateTime now) {
-        if (forceFetchToken && checkIfForceRefreshRequired(tokenRequestContext)) {
-            this.tokenRequestContext = tokenRequestContext;
+        AccessToken cachedToken) {
+
+        if (cachedToken == null || cachedToken.isExpired()) {
             return true;
         }
 
-        if (cachedToken == null || cachedToken.isExpired()) {
+        if (forceFetchToken && checkIfTokenRequestsAreDifferent(tokenRequestContext)) {
+            this.tokenRequestContext = tokenRequestContext;
             return true;
         }
 
@@ -111,20 +104,19 @@ public final class AccessTokenCache {
             return false;
         }
 
-        return now.isAfter(this.cacheInfo.getNextTokenRefreshAt());
+        return OffsetDateTime.now().isAfter(this.cacheInfo.getNextTokenRefreshAt());
     }
 
-    private AccessToken attemptTokenRefresh(AccessToken cachedToken, TokenRequestContext tokenRequestContext,
-        OffsetDateTime now) {
+    private AccessToken attemptTokenRefresh(AccessToken cachedToken, TokenRequestContext tokenRequestContext) {
         try {
             AccessToken newToken = getToken(tokenRequestContext);
-            logTokenRefresh(LogLevel.VERBOSE, cachedToken, now, "Acquired a new access token.");
+            logTokenRefresh(LogLevel.VERBOSE, cachedToken, "Acquired a new access token.");
 
             this.cacheInfo = new AccessTokenCacheInfo(newToken, OffsetDateTime.now().plus(REFRESH_DELAY));
             return newToken;
 
         } catch (Throwable error) {
-            logTokenRefresh(LogLevel.ERROR, cachedToken, now, "Failed to acquire a new access token.");
+            logTokenRefresh(LogLevel.ERROR, cachedToken, "Failed to acquire a new access token.");
             this.cacheInfo = new AccessTokenCacheInfo(cachedToken, OffsetDateTime.now());
 
             if (cachedToken != null) {
@@ -134,7 +126,7 @@ public final class AccessTokenCache {
         }
     }
 
-    private boolean checkIfForceRefreshRequired(TokenRequestContext tokenRequestContext) {
+    private boolean checkIfTokenRequestsAreDifferent(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
             && (this.tokenRequestContext.getClaims() == null
                 ? tokenRequestContext.getClaims() == null
@@ -143,7 +135,7 @@ public final class AccessTokenCache {
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
-    private static void logTokenRefresh(LogLevel level, AccessToken cache, OffsetDateTime now, String prefix) {
+    private static void logTokenRefresh(LogLevel level, AccessToken cache, String prefix) {
         if (cache == null || !LOGGER.canLogAtLevel(level)) {
             return;
         }

@@ -105,12 +105,12 @@ public final class AccessTokenType implements ExpandableEnum<String> {
     }
 
     /**
-     * {@code Bearer}/{@code bearer}
+     * The Bearer token type.
      */
     public static final AccessTokenType BEARER = fromString("Bearer");
 
     /**
-     * {@code Pop}/{@code pop}
+     * The Pop token type.
      */
     public static final AccessTokenType POP = fromString("Pop");
 }

@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  *
  * <p>
  * Access Tokens are obtained through the authentication process, where the user or application presents valid
- * credentials (such as a client ID, client secret, username/password, or certificate) to the authentication source.
+ * credentials (either a secret or a managed identity) to the authentication source.
  * The authentication source then verifies the credentials and issues an Access Token, which is a time-limited token
  * that grants access to the requested resource.
  * </p>

@@ -6,7 +6,6 @@ $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/rel
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 $GithubUri = "https://github.com/Azure/azure-sdk-for-java"
 $PackageRepositoryUri = "https://repo1.maven.org/maven2"
-$ValidationGroupsFile = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../validation-groups.yml")
 
 . "$PSScriptRoot/docs/Docs-ToC.ps1"
 . "$PSScriptRoot/docs/Docs-Onboarding.ps1"
@@ -205,27 +204,7 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
     [Parameter(Mandatory=$true)]
     $AllPkgProps
   )
-  $additionalValidationPackages = @()
   $uniqueResultSet = @()
-
-  function Test-StartsWith {
-    param (
-        [string[]]$ChangedFiles,
-        [string[]]$StartsWithPrefixes
-    )
-    if ($ChangedFiles.Length -eq 0 -or $StartsWithPrefixes.Length -eq 0) {
-        return $false;
-    }
-    foreach ($startsWithPrefix in $StartsWithPrefixes) {
-        $HasMatch = $ChangedFiles | Where-Object { $_.StartsWith($startsWithPrefix) }
-        # if there's a match, return right away
-        if ($HasMatch) {
-            return $true
-        }
-    }
-    # no matches will return false
-    return $false
-}
 
   # this section will identify the list of packages that we should treat as
   # "directly" changed for a given service level change. While that doesn't
@@ -276,37 +255,13 @@ function Get-java-AdditionalValidationPackagesFromPackageSet {
       $additionalPackages = $AllPkgProps | Where-Object { $_.ServiceDirectory -eq $changedService -or $_.ServiceDirectory.StartsWith("$changedService/")}
       foreach ($pkg in $additionalPackages) {
         if ($uniqueResultSet -notcontains $pkg -and $LocatedPackages -notcontains $pkg) {
-          # notice the lack of setting IncludedForValidation to true. This is because these "changed services"
-          # are specifically where a file within the service, but not an individual package within that service has changed.
-          # we want this package to be fully validated
+          # IncludedForValidation means that it's package that was indirectly included because it
+          # wasn't directly changed. For example, if someone changes a file in the root of sdk/core
+          # we add all of the core libraries that do not have direct changes as indirect packages.
+          $pkg.IncludedForValidation = $true
           $uniqueResultSet += $pkg
         }
       }
-    }
-  }
-
-  $additionalPackagesForOtherDirs = @()
-  if ($targetedFiles) {
-    $content = LoadFrom-Yaml $ValidationGroupsFile
-    $validationGroups = GetValueSafelyFrom-Yaml $content @("validationGroups")
-    foreach ($validationGroup in $validationGroups) {
-      if (Test-StartsWith -ChangedFiles $targetedFiles -StartsWithPrefixes $validationGroup.dirStartsWithPrefixes) {
-        $itemsToAdd = $validationGroup.additionalPackagesForValidation -join ", "
-        Write-Verbose "$($validationGroup.Name) match, adding the following packages for additional validation: $itemsToAdd"
-        $additionalPackagesForOtherDirs += $validationGroup.additionalPackagesForValidation
-      }
-    }
-  }
-
-  if ($additionalPackagesForOtherDirs) {
-    $additionalPackages = $additionalPackagesForOtherDirs | ForEach-Object { $me=$_; $AllPkgProps | Where-Object { $_.Name -eq $me } | Select-Object -First 1 }
-    $additionalValidationPackages += $additionalPackages
-  }
-
-  foreach ($pkg in $additionalValidationPackages) {
-    if ($uniqueResultSet -notcontains $pkg -and $LocatedPackages -notcontains $pkg) {
-      $pkg.IncludedForValidation = $true
-      $uniqueResultSet += $pkg
     }
   }
 
