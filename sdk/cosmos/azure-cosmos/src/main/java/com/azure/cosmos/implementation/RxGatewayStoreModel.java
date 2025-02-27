@@ -315,10 +315,6 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
         return httpHeaders;
     }
 
-    public URI getRootUri(RxDocumentServiceRequest request) {
-        return this.globalEndpointManager.resolveServiceEndpoint(request).getGatewayRegionalEndpoint();
-    }
-
     private URI getUri(RxDocumentServiceRequest request) throws URISyntaxException {
         URI rootUri = request.getEndpointOverride();
         if (rootUri == null) {

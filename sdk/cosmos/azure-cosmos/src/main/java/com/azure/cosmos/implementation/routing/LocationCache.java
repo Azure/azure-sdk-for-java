@@ -42,7 +42,7 @@ public class LocationCache {
     private final static Logger logger = LoggerFactory.getLogger(LocationCache.class);
 
     private final boolean enableEndpointDiscovery;
-    private final URI defaultEndpoint;
+    private final RegionalRoutingContext defaultRegionalRoutingContext;
     private final boolean useMultipleWriteLocations;
     private final Object lockObject;
     private final Duration unavailableLocationsExpirationTime;
@@ -65,7 +65,7 @@ public class LocationCache {
         );
 
         this.locationInfo = new DatabaseAccountLocationsInfo(preferredLocations, defaultEndpoint);
-        this.defaultEndpoint = defaultEndpoint;
+        this.defaultRegionalRoutingContext = new RegionalRoutingContext(defaultEndpoint);
         this.enableEndpointDiscovery = connectionPolicy.isEndpointDiscoveryEnabled();
         this.useMultipleWriteLocations = connectionPolicy.isMultipleWriteRegionsEnabled();
 
@@ -216,7 +216,7 @@ public class LocationCache {
                 String writeLocation = currentLocationInfo.availableWriteLocations.get(locationIndex);
                 return currentLocationInfo.availableWriteEndpointsByLocation.get(writeLocation);
             } else {
-                return new RegionalRoutingContext(this.defaultEndpoint);
+                return this.defaultRegionalRoutingContext;
             }
         } else {
             UnmodifiableList<RegionalRoutingContext> endpoints =
@@ -255,7 +255,7 @@ public class LocationCache {
         return this.getApplicableEndpoints(
             writeEndpoints,
             this.locationInfo.regionNameByWriteEndpoint,
-            this.defaultEndpoint,
+            this.defaultRegionalRoutingContext,
             effectiveExcludedRegionsWithPartitionUnavailableRegions);
     }
 
@@ -288,14 +288,14 @@ public class LocationCache {
         return this.getApplicableEndpoints(
             readEndpoints,
             this.locationInfo.regionNameByReadEndpoint,
-            this.locationInfo.writeEndpoints.get(0).getGatewayRegionalEndpoint(), // match the fallback region used in getPreferredAvailableEndpoints
+            this.locationInfo.writeEndpoints.get(0), // match the fallback region used in getPreferredAvailableEndpoints
             effectiveExcludedRegionsWithPartitionUnavailableRegions);
     }
 
     private UnmodifiableList<RegionalRoutingContext> getApplicableEndpoints(
         UnmodifiableList<RegionalRoutingContext> endpoints,
         UnmodifiableMap<RegionalRoutingContext, String> regionNameByEndpoint,
-        URI fallbackEndpoint,
+        RegionalRoutingContext fallbackRegionalRoutingContext,
         List<String> excludeRegionList) {
 
         List<RegionalRoutingContext> applicableEndpoints = new ArrayList<>();
@@ -309,7 +309,7 @@ public class LocationCache {
         }
 
         if (applicableEndpoints.isEmpty()) {
-            applicableEndpoints.add(new RegionalRoutingContext(fallbackEndpoint));
+            applicableEndpoints.add(fallbackRegionalRoutingContext);
         }
 
         return new UnmodifiableList<>(applicableEndpoints);
@@ -339,7 +339,7 @@ public class LocationCache {
     }
 
     public URI getDefaultEndpoint() {
-        return this.defaultEndpoint;
+        return this.defaultRegionalRoutingContext.getGatewayRegionalEndpoint();
     }
 
     public boolean shouldRefreshEndpoints(Utils.ValueHolder<Boolean> canRefreshInBackground) {
@@ -586,15 +586,15 @@ public class LocationCache {
                 nextLocationInfo.regionNameByWriteEndpoint = outWriteRegionMap.v;
             }
 
-            nextLocationInfo.writeEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableWriteEndpointsByLocation, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultEndpoint);
-            nextLocationInfo.readEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableReadEndpointsByLocation, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeEndpoints.get(0).getGatewayRegionalEndpoint());
+            nextLocationInfo.writeEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableWriteEndpointsByLocation, nextLocationInfo.availableWriteLocations, OperationType.Write, this.defaultRegionalRoutingContext);
+            nextLocationInfo.readEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableReadEndpointsByLocation, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeEndpoints.get(0));
 
             if (nextLocationInfo.preferredLocations == null || nextLocationInfo.preferredLocations.isEmpty()) {
 
                 Utils.ValueHolder<String> regionForDefaultEndpoint = new Utils.ValueHolder<>();
 
                 // only set effective preferred locations when default endpoint doesn't map to a regional endpoint
-                if (!Utils.tryGetValue(nextLocationInfo.regionNameByReadEndpoint, new RegionalRoutingContext(this.defaultEndpoint), regionForDefaultEndpoint)) {
+                if (!Utils.tryGetValue(nextLocationInfo.regionNameByReadEndpoint, this.defaultRegionalRoutingContext, regionForDefaultEndpoint)) {
                     nextLocationInfo.effectivePreferredLocations = nextLocationInfo.availableReadLocations;
                 }
             }
@@ -610,7 +610,7 @@ public class LocationCache {
     private UnmodifiableList<RegionalRoutingContext> getPreferredAvailableEndpoints(UnmodifiableMap<String, RegionalRoutingContext> endpointsByLocation,
                                                                                     UnmodifiableList<String> orderedLocations,
                                                                                     OperationType expectedAvailableOperation,
-                                                                                    URI fallbackEndpoint) {
+                                                                                    RegionalRoutingContext fallbackRegionalRoutingContext) {
         List<RegionalRoutingContext> endpoints = new ArrayList<>();
         DatabaseAccountLocationsInfo currentLocationInfo = this.locationInfo;
         // if enableEndpointDiscovery is false, we always use the defaultEndpoint that user passed in during documentClient init
@@ -641,7 +641,7 @@ public class LocationCache {
 
                             // if defaultEndpoint equals a regional endpoint then use
                             // whatever the fallback endpoint is
-                            if (this.defaultEndpoint.equals(endpoint.v.getGatewayRegionalEndpoint())) {
+                            if (this.defaultRegionalRoutingContext.getGatewayRegionalEndpoint().equals(endpoint.v.getGatewayRegionalEndpoint())) {
                                 endpoints = new ArrayList<>();
                                 break;
                             }
@@ -656,7 +656,7 @@ public class LocationCache {
                 }
 
                 if (endpoints.isEmpty()) {
-                    endpoints.add(new RegionalRoutingContext(fallbackEndpoint));
+                    endpoints.add(fallbackRegionalRoutingContext);
                 }
 
                 endpoints.addAll(unavailableEndpoints);
@@ -672,7 +672,7 @@ public class LocationCache {
         }
 
         if (endpoints.isEmpty()) {
-            endpoints.add(new RegionalRoutingContext(fallbackEndpoint));
+            endpoints.add(fallbackRegionalRoutingContext);
         }
         return new UnmodifiableList<>(endpoints);
     }
