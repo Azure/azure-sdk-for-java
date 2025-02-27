@@ -3,7 +3,9 @@
 
 package io.clientcore.annotation.processor.utils;
 
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
 import org.junit.jupiter.api.Test;
@@ -21,7 +23,7 @@ public class ResponseBodyModeGenerationTest {
         ResponseBodyModeGeneration.generateResponseBodyMode(body);
         assertTrue(body.toString()
             .contains(
-                "ResponseBodyMode responseBodyMode = CodegenUtil.getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
+                "ResponseBodyMode responseBodyMode = getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
     }
 
     @Test
@@ -30,7 +32,7 @@ public class ResponseBodyModeGenerationTest {
         ResponseBodyModeGeneration.generateResponseBodyMode(body);
         assertTrue(body.toString()
             .contains(
-                "ResponseBodyMode responseBodyMode = CodegenUtil.getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
+                "ResponseBodyMode responseBodyMode = getOrDefaultResponseBodyMode(httpRequest.getRequestOptions());"));
     }
 
     @Test
@@ -38,8 +40,9 @@ public class ResponseBodyModeGenerationTest {
         BlockStmt body = new BlockStmt();
         HttpRequestContext context = new HttpRequestContext();
         context.setHttpMethod(HttpMethod.DELETE);
-        //context.setMethodReturnType("void");
-        //ResponseBodyModeGeneration.generateResponseHandling(body, "void", context);
+        ClassOrInterfaceType returnType = StaticJavaParser.parseClassOrInterfaceType("Void");
+        context.setMethodReturnType(returnType);
+        ResponseBodyModeGeneration.generateResponseHandling(body, returnType, context);
         assertTrue(body.toString().contains("return"));
     }
 
@@ -48,8 +51,10 @@ public class ResponseBodyModeGenerationTest {
         BlockStmt body = new BlockStmt();
         HttpRequestContext context = new HttpRequestContext();
         context.setHttpMethod(HttpMethod.GET);
-        //context.setMethodReturnType("Response<Foo>");
-        //ResponseBodyModeGeneration.generateResponseHandling(body, "Response", context);
+        ClassOrInterfaceType returnType = StaticJavaParser.parseClassOrInterfaceType("Response<Foo>");
+        context.setMethodReturnType(returnType);
+        ResponseBodyModeGeneration.generateResponseHandling(body, returnType, context);
+
         assertTrue(body.toString().contains("HttpResponseAccessHelper.setValue"));
     }
 
@@ -58,8 +63,9 @@ public class ResponseBodyModeGenerationTest {
         BlockStmt body = new BlockStmt();
         HttpRequestContext context = new HttpRequestContext();
         context.setHttpMethod(HttpMethod.GET);
-        //context.setMethodReturnType("Response<Foo>");
-        //ResponseBodyModeGeneration.generateResponseHandling(body, "Response", context);
+        ClassOrInterfaceType returnType = StaticJavaParser.parseClassOrInterfaceType("Response<Foo>");
+        context.setMethodReturnType(returnType);
+        ResponseBodyModeGeneration.generateResponseHandling(body, returnType, context);
         assertTrue(body.toString().contains("HttpResponseAccessHelper.setBodyDeserializer"));
     }
 }

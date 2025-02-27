@@ -4,15 +4,18 @@
 package io.clientcore.annotation.processor.utils;
 
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.expr.CastExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.ResponseBodyMode;
+import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.HttpResponse;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -32,9 +35,8 @@ public final class ResponseBodyModeGeneration {
     public static void generateResponseBodyMode(BlockStmt body) {
         body.tryAddImportToParentCompilationUnit(ResponseBodyMode.class);
         body.tryAddImportToParentCompilationUnit(RequestOptions.class);
-        body.addStatement(StaticJavaParser
-            .parseStatement("ResponseBodyMode responseBodyMode = CodegenUtil.getOrDefaultResponseBodyMode"
-                + "(httpRequest.getRequestOptions());"));
+        body.addStatement(StaticJavaParser.parseStatement(
+            "ResponseBodyMode responseBodyMode = getOrDefaultResponseBodyMode" + "(httpRequest.getRequestOptions());"));
     }
 
     /**
@@ -73,11 +75,29 @@ public final class ResponseBodyModeGeneration {
             // fully copied into memory resulting in lesser overall memory usage.
             body.addStatement("Object result = response.getBody();");
         } else {
-            body.addStatement(StaticJavaParser.parseStatement("String returnTypeName = \"" + returnTypeName + "\";"));
-            body.addStatement(
-                "Object result = decodeByteArray(response.getBody().toBytes(), serializer, returnTypeName);");
-        }
+            if (returnTypeName instanceof ClassOrInterfaceType) {
+                ClassOrInterfaceType classType = (ClassOrInterfaceType) returnTypeName;
+                body.tryAddImportToParentCompilationUnit(TypeUtil.class);
 
+                // Ensure type arguments exist before accessing them
+                if (classType.getTypeArguments().isPresent()) {
+                    NodeList<Type> typeArguments = classType.getTypeArguments().get();
+
+                    if (!typeArguments.isEmpty()) {
+                        // First generic type (e.g., Void or Foo<String>)
+
+                        if (classType.getTypeArguments().isPresent() && !classType.getTypeArguments().get().isEmpty()) {
+                            String genericType = classType.getTypeArguments().get().get(0).toString(); // Extracts Foo
+                            body.addStatement("ParameterizedType returnType = " + "TypeUtil.createParameterizedType("
+                                + classType.getNameAsString() + ".class, " + genericType + ".class);");
+                        }
+                    }
+                }
+
+                body.addStatement(
+                    "Object result = decodeByteArray(response.getBody().toBytes(), serializer, returnType);");
+            }
+        }
         body.addStatement(StaticJavaParser.parseStatement("if (responseBodyMode == ResponseBodyMode.DESERIALIZE)"
             + "{ HttpResponseAccessHelper.setValue((HttpResponse<?>) response, result); } else {"
             + "HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response, (body) -> result); }"));
@@ -153,7 +173,7 @@ public final class ResponseBodyModeGeneration {
             body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = response.getBody();"));
             body.addStatement(StaticJavaParser
                 .parseStatement("byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;"));
-            closeResponse(body);
+            //closeResponse(body);
             body.addStatement(StaticJavaParser.parseStatement(
                 "return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;"));
         } else if (returnTypeName.toString().contains("InputStream")) {

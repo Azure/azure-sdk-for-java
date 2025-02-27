@@ -164,7 +164,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
 
         // Add return type as an import
-        setReturnTypeFormMethod(method, requestMethod, templateInput);
+        setReturnTypeForMethod(method, requestMethod, templateInput);
         boolean isEncoded = false;
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
@@ -207,44 +207,73 @@ public class AnnotationProcessor extends AbstractProcessor {
         return method;
     }
 
-    private void setReturnTypeFormMethod(HttpRequestContext method, ExecutableElement requestMethod,
+    private void setReturnTypeForMethod(HttpRequestContext method, ExecutableElement requestMethod,
         TemplateInput templateInput) {
-        // Get the return type from the method
         TypeMirror returnType = requestMethod.getReturnType();
-        method.setMethodReturnType(StaticJavaParser.parseType(returnType.toString()));
+        String returnTypeString = returnType.toString();
+
+        // Handle primitive and boxed types explicitly
+        if (returnType.getKind().isPrimitive() || "void".equals(returnTypeString)) {
+            method.setMethodReturnType(StaticJavaParser.parseType(returnTypeString));
+            return;
+        }
+        if ("java.lang.Void".equals(returnTypeString)) {
+            method.setMethodReturnType(StaticJavaParser.parseType("Void"));
+            return;
+        }
 
         // Handle declared types (e.g., Response<T>)
         if (returnType.getKind() == TypeKind.DECLARED) {
             DeclaredType declaredType = (DeclaredType) returnType;
             TypeElement typeElement = (TypeElement) declaredType.asElement();
-            String fullTypeName = templateInput.addImport(typeElement.toString());
+            String fullTypeName = templateInput.addImport(typeElement.getQualifiedName().toString());
 
             if (!declaredType.getTypeArguments().isEmpty()) {
                 StringBuilder typeWithArguments = new StringBuilder(fullTypeName + "<");
-
                 for (TypeMirror typeArg : declaredType.getTypeArguments()) {
-                    typeWithArguments.append(templateInput.addImport(typeArg)).append(", ");
+                    String typeArgName = resolveTypeArgument(typeArg, templateInput);
+                    typeWithArguments.append(typeArgName).append(", ");
                 }
-
-                // Remove trailing comma and space
-                typeWithArguments.setLength(typeWithArguments.length() - 2);
+                typeWithArguments.setLength(typeWithArguments.length() - 2); // Remove last comma
                 typeWithArguments.append(">");
-
-                method.setMethodReturnType(StaticJavaParser.parseType(typeWithArguments.toString())); // Convert String to Type
+                method.setMethodReturnType(StaticJavaParser.parseType(typeWithArguments.toString()));
             } else {
-                method.setMethodReturnType(StaticJavaParser.parseType(fullTypeName)); // Convert String to Type
+                method.setMethodReturnType(StaticJavaParser.parseType(fullTypeName));
             }
+            return;
         }
+
         // Handle array types
-        else if (returnType.getKind() == TypeKind.ARRAY) {
+        if (returnType.getKind() == TypeKind.ARRAY) {
             ArrayType arrayType = (ArrayType) returnType;
             TypeMirror componentType = arrayType.getComponentType();
-            String componentTypeName = componentType.getKind().isPrimitive()
-                ? componentType.toString()
-                : templateInput.addImport(componentType);
-
-            method.setMethodReturnType(StaticJavaParser.parseType(componentTypeName + "[]")); // Convert String to Type
+            String componentTypeName = resolveTypeArgument(componentType, templateInput);
+            method.setMethodReturnType(StaticJavaParser.parseType(componentTypeName + "[]"));
+            return;
         }
+
+        // Fallback to default parsing
+        method.setMethodReturnType(StaticJavaParser.parseType(returnTypeString));
+    }
+
+    private String resolveTypeArgument(TypeMirror typeArg, TemplateInput templateInput) {
+        if (typeArg.getKind() == TypeKind.DECLARED) {
+            DeclaredType declaredTypeArg = (DeclaredType) typeArg;
+            TypeElement typeElementArg = (TypeElement) declaredTypeArg.asElement();
+            String genericType = templateInput.addImport(typeElementArg.getQualifiedName().toString());
+
+            if (!declaredTypeArg.getTypeArguments().isEmpty()) {
+                StringBuilder nestedGeneric = new StringBuilder(genericType + "<");
+                for (TypeMirror nestedTypeArg : declaredTypeArg.getTypeArguments()) {
+                    nestedGeneric.append(resolveTypeArgument(nestedTypeArg, templateInput)).append(", ");
+                }
+                nestedGeneric.setLength(nestedGeneric.length() - 2);
+                nestedGeneric.append(">");
+                return nestedGeneric.toString();
+            }
+            return genericType;
+        }
+        return typeArg.toString();
     }
 
     private static String getHost(TemplateInput templateInput, HttpRequestContext method, boolean isEncoded) {
