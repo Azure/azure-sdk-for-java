@@ -5,7 +5,7 @@
 #### Features Added
 * Improved the Exception Handling of 'azure-spring-data-cosmos' to throw more detailed exceptions and not always the same exception - See [PR 42902](https://github.com/Azure/azure-sdk-for-java/pull/42902).
 * Implemented sum() support for annotated queries - See [PR 43239](https://github.com/Azure/azure-sdk-for-java/pull/43239).
-* Added readMany() support to findAlById() - See [PR 43759](https://github.com/Azure/azure-sdk-for-java/pull/43759).
+* Added `readMany()` API support to `findAllByIds()` - See [PR 43759](https://github.com/Azure/azure-sdk-for-java/pull/43759).
 
 #### Breaking Changes
 
