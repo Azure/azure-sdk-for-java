@@ -3,17 +3,19 @@
 trigger: none
 pr: none
 
-parameters:
-  ServiceDirectory: sdk/core/azure-core-version-tests
-  # Run separate version override tests using a different artifacts list
-  MatrixConfigs:
-    - Name: version_overrides_tests
-      Path: sdk/core/azure-core-version-tests/version-overrides-matrix.json
-      Selection: all
-      GenerateVMJobs: true
-  Artifacts:
-    - name: azure-core-version-tests
-      groupId: com.azure
-      safeName: azurecoreversiontests
-      triggeringPaths:
-        - /sdk/core
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: sdk/core/azure-core-version-tests
+    # Run separate version override tests using a different artifacts list
+    MatrixConfigs:
+      - Name: version_overrides_tests
+        Path: sdk/core/azure-core-version-tests/version-overrides-matrix.json
+        Selection: all
+        GenerateVMJobs: true
+    Artifacts:
+      - name: azure-core-version-tests
+        groupId: com.azure
+        safeName: azurecoreversiontests
+        triggeringPaths:
+          - /sdk/core
