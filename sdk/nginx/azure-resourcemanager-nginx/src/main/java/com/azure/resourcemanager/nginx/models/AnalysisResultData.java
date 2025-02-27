@@ -22,6 +22,11 @@ public final class AnalysisResultData implements JsonSerializable<AnalysisResult
      */
     private List<AnalysisDiagnostic> errors;
 
+    /*
+     * The diagnostics property.
+     */
+    private List<DiagnosticItem> diagnostics;
+
     /**
      * Creates an instance of AnalysisResultData class.
      */
@@ -49,6 +54,26 @@ public final class AnalysisResultData implements JsonSerializable<AnalysisResult
     }
 
     /**
+     * Get the diagnostics property: The diagnostics property.
+     * 
+     * @return the diagnostics value.
+     */
+    public List<DiagnosticItem> diagnostics() {
+        return this.diagnostics;
+    }
+
+    /**
+     * Set the diagnostics property: The diagnostics property.
+     * 
+     * @param diagnostics the diagnostics value to set.
+     * @return the AnalysisResultData object itself.
+     */
+    public AnalysisResultData withDiagnostics(List<DiagnosticItem> diagnostics) {
+        this.diagnostics = diagnostics;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -56,6 +81,9 @@ public final class AnalysisResultData implements JsonSerializable<AnalysisResult
     public void validate() {
         if (errors() != null) {
             errors().forEach(e -> e.validate());
+        }
+        if (diagnostics() != null) {
+            diagnostics().forEach(e -> e.validate());
         }
     }
 
@@ -66,6 +94,7 @@ public final class AnalysisResultData implements JsonSerializable<AnalysisResult
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("diagnostics", this.diagnostics, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -87,6 +116,9 @@ public final class AnalysisResultData implements JsonSerializable<AnalysisResult
                 if ("errors".equals(fieldName)) {
                     List<AnalysisDiagnostic> errors = reader.readArray(reader1 -> AnalysisDiagnostic.fromJson(reader1));
                     deserializedAnalysisResultData.errors = errors;
+                } else if ("diagnostics".equals(fieldName)) {
+                    List<DiagnosticItem> diagnostics = reader.readArray(reader1 -> DiagnosticItem.fromJson(reader1));
+                    deserializedAnalysisResultData.diagnostics = diagnostics;
                 } else {
                     reader.skipChildren();
                 }
