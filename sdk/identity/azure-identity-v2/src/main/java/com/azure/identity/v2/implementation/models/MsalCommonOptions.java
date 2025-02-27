@@ -79,22 +79,6 @@ public class MsalCommonOptions implements Cloneable {
         return executorService;
     }
 
-    /**
-     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is restricted by default.
-     *
-     * @param allowUnencryptedCache the flag to indicate if unencrypted persistent cache is allowed for use or not.
-     * @return The updated identity client options.
-     */
-    public MsalCommonOptions setAllowUnencryptedCache(boolean allowUnencryptedCache) {
-        this.allowUnencryptedCache = allowUnencryptedCache;
-        return this;
-    }
-
-    public boolean getAllowUnencryptedCache() {
-        return this.allowUnencryptedCache;
-    }
-
 
     /**
      * Specifies the {@link TokenCachePersistenceOptions} to be used for token cache persistence.
@@ -205,7 +189,6 @@ public class MsalCommonOptions implements Cloneable {
 
     public MsalCommonOptions clone() {
         MsalCommonOptions clone = new MsalCommonOptions(this.configuration)
-            .setAllowUnencryptedCache(this.allowUnencryptedCache)
             .setExecutorService(this.executorService)
             .setAuthorityHost(this.authorityHost)
             .setAdditionallyAllowedTenants(this.additionallyAllowedTenants.stream().toList())

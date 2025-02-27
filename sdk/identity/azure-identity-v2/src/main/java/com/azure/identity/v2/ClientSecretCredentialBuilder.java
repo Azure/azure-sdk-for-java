@@ -76,17 +76,6 @@ public class ClientSecretCredentialBuilder extends EntraIdCredentialBuilderBase<
     }
 
     /**
-     * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
-     * Gnome keyring on Linux. This is restricted by default.
-     *
-     * @return An updated instance of this builder.
-     */
-    ClientSecretCredentialBuilder allowUnencryptedCache() {
-        getMsalCommonOptions().setAllowUnencryptedCache(true);
-        return this;
-    }
-
-    /**
      * Configures the persistent shared token cache options and enables the persistent token cache which is disabled
      * by default. If configured, the credential will store tokens in a cache persisted to the machine, protected to
      * the current user, which can be shared by other credentials and processes.
