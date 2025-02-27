@@ -306,11 +306,23 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             parts.forEach(part -> {
                 if (!part.isEmpty()) {
                     Field f = null;
-                    try {
-                        f = currentObject[0].getClass().getDeclaredField(part);
-                    } catch (NoSuchFieldException e) {
-                        throw new RuntimeException(e);
+                    NoSuchFieldException noSuchFieldException = null;
+                    Class<?> currentClass = currentObject[0].getClass();
+                    while (currentClass != null) {
+                        try {
+                            f = currentClass.getDeclaredField(part);
+                        } catch (NoSuchFieldException e) {
+                            currentClass = currentClass.getSuperclass();
+                            noSuchFieldException = e;
+                        }
+                        if (f != null) {
+                            break;
+                        }
                     }
+                    if (f == null && noSuchFieldException != null) {
+                        throw new RuntimeException(noSuchFieldException);
+                    }
+
                     ReflectionUtils.makeAccessible(f);
                     currentObject[0] = ReflectionUtils.getField(f, currentObject[0]);
                 }
