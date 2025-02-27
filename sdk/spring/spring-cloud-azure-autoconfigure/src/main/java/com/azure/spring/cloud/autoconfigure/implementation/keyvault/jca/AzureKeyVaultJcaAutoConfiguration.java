@@ -26,8 +26,8 @@ public class AzureKeyVaultJcaAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    AzureKeyVaultSslBundleRegistrar azureKeyVaultCertificateSslBundlesRegistrar(AzureKeyVaultJcaProperties jcaProperties,
-                                                                                AzureKeyVaultSslBundleProperties sslBundlesProperties) {
+    AzureKeyVaultSslBundleRegistrar azureKeyVaultSslBundleRegistrar(AzureKeyVaultJcaProperties jcaProperties,
+                                                                    AzureKeyVaultSslBundleProperties sslBundlesProperties) {
         return new AzureKeyVaultSslBundleRegistrar(jcaProperties, sslBundlesProperties);
     }
 }

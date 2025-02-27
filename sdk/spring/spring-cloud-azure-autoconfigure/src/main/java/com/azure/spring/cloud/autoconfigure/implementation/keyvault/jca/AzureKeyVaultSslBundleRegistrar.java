@@ -35,7 +35,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Azure Key Vault SslBundleRegistrar that registers SSL bundles based Key Vault JCA and Key Vault SSL bundles properties.
+ * Azure Key Vault SslBundleRegistrar that registers SSL bundles based Key Vault JCA properties and Key Vault SSL bundle properties.
  *
  * @since 5.21.0
  */
