@@ -247,7 +247,6 @@ stages:
           # This timeout shouldn't be necessary once we're able to parallelize better. Right now,
           # this is here to ensure larger areas (30+) libraries don't time out.
           timeoutInMinutes: 120
-          environment: ${{ parameters.Environment }}
           dependsOn: PublishESRPPackage
           pool:
             name: azsdk-pool-mms-win-2022-general
