@@ -18,9 +18,9 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
-import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.azure.AzuriteContainer;
+import org.testcontainers.azure.EventHubsEmulatorContainer;
 import org.testcontainers.containers.Network;
-import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.awaitility.Awaitility;
@@ -37,35 +37,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Testcontainers
 class EventHubsContainerConnectionDetailsFactoryTest {
 
-    private static final int AZURE_STORAGE_BLOB_PORT = 10000;
-
-    private static final int AZURE_STORAGE_QUEUE_PORT = 10001;
-
-    private static final int AZURE_STORAGE_TABLE_PORT = 10002;
-
-    private static final int AZURE_EVENTHUBS_PORT = 5672;
-
     private static final Network network = Network.newNetwork();
 
     @Container
-    private static final GenericContainer<?> azurite = new GenericContainer<>(
+    private static final AzuriteContainer azurite = new AzuriteContainer(
             "mcr.microsoft.com/azure-storage/azurite:latest")
-            .withExposedPorts(AZURE_STORAGE_BLOB_PORT, AZURE_STORAGE_QUEUE_PORT, AZURE_STORAGE_TABLE_PORT)
-            .withNetwork(network)
-            .withNetworkAliases("azurite");
+            .withNetwork(network);
 
     @Container
     @ServiceConnection
-    private static final GenericContainer<?> eventHubs = new GenericContainer<>(
+    private static final EventHubsEmulatorContainer eventHubs = new EventHubsEmulatorContainer(
             "mcr.microsoft.com/azure-messaging/eventhubs-emulator:latest")
-            .withExposedPorts(AZURE_EVENTHUBS_PORT)
+            .acceptLicense()
             .withCopyFileToContainer(MountableFile.forClasspathResource("Config.json"),
                     "/Eventhubs_Emulator/ConfigFiles/Config.json")
-            .waitingFor(Wait.forLogMessage(".*Emulator Service is Successfully Up!.*", 1))
             .withNetwork(network)
-            .withEnv("BLOB_SERVER", "azurite")
-            .withEnv("METADATA_SERVER", "azurite")
-            .withEnv("ACCEPT_EULA", "Y");
+            .withAzuriteContainer(azurite);
 
     @Autowired
     private EventHubProducerClient producerClient;

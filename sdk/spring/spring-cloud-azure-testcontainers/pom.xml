@@ -94,7 +94,7 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>azure</artifactId>
-      <version>1.20.4</version> <!-- {x-version-update;springboot3_org.testcontainers:azure;external_dependency} -->
+      <version>1.20.5</version> <!-- {x-version-update;springboot3_org.testcontainers:azure;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -128,7 +128,7 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>1.20.4</version> <!-- {x-version-update;springboot3_org.testcontainers:junit-jupiter;external_dependency} -->
+      <version>1.20.5</version> <!-- {x-version-update;springboot3_org.testcontainers:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -187,7 +187,7 @@
             <bannedDependencies>
               <includes>
                 <include>org.springframework.boot:spring-boot-testcontainers:[3.4.1]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-testcontainers;external_dependency} -->
-                <include>org.testcontainers:azure:[1.20.4]</include> <!-- {x-include-update;springboot3_org.testcontainers:azure;external_dependency} -->
+                <include>org.testcontainers:azure:[1.20.5]</include> <!-- {x-include-update;springboot3_org.testcontainers:azure;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
