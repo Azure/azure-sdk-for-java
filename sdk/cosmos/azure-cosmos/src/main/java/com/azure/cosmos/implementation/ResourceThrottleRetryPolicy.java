@@ -74,7 +74,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
                 "Operation will NOT be retried - not a throttled request. Current attempt {}",
                 this.currentAttemptCount,
                 exception);
-            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException(exception));
+            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException(/*exception*/));
         }
 
         if (!retryOnClientSideThrottledBatchRequests &&

@@ -7,6 +7,10 @@ import java.net.URI;
 import java.util.Objects;
 
 public class RegionalRoutingContext {
+
+    // IMPORTANT:
+    // Please reevaluate overridden equals() implementation when adding additional properties
+    // to this class
     private final URI gatewayRegionalEndpoint;
 
     public RegionalRoutingContext(URI gatewayRegionalEndpoint) {
