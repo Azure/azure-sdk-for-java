@@ -33,14 +33,14 @@ public final class JsonNumber extends JsonElement {
      * ({@code .}) or an exponent ({@code e} or {@code E}), the string will be parsed as a floating point number,
      * otherwise it will be parsed as an integer.
      * <p>
-     * Parsing attempts to use the smallest container that can represent the number. For floating points it'll attempt
-     * to use {@link Float#parseFloat(String)}, if that fails it'll use {@link Double#parseDouble(String)}, and finally
-     * if that fails it'll use {@link BigDecimal#BigDecimal(String)}. For integers it'll attempt to use
-     * {@link Integer#parseInt(String)}, if that fails it'll use {@link Long#parseLong(String)}, and finally if that
-     * fails it'll use {@link BigInteger#BigInteger(String)}.
+     * For integer numbers, this method will return the smallest number type that can represent the number. Where
+     * {@link Integer} is preferred over {@link Long} and {@link Long} is preferred over {@link BigInteger}.
+     * <p>
+     * For floating point numbers, {@link Double} will be preferred but {@link BigDecimal} will be used if the number
+     * is too large to fit in a {@link Double}.
      * <p>
      * If the string is one of the special floating point representations ({@code NaN}, {@code Infinity}, etc), then
-     * the value will be represented using {@link Float}.
+     * the value will be represented using {@link Double}.
      *
      * @param value The string-based numeric value the JsonNumber will represent.
      * @throws NumberFormatException If the string is not a valid number.
@@ -95,9 +95,14 @@ public final class JsonNumber extends JsonElement {
      * {@link IllegalStateException} will be thrown. Otherwise, a JSON number representing the numeric value will be
      * created and returned.
      * <p>
-     * The {@link JsonNumber} returned will have a {@link JsonNumber#getValue()} that is the smallest type that can
-     * represent the numeric value. Numeric types used are {@link Integer}, {@link Long}, {@link BigInteger},
-     * {@link Float}, {@link Double}, and {@link BigDecimal}.
+     * For integer numbers, this method will return the smallest number type that can represent the number. Where
+     * {@link Integer} is preferred over {@link Long} and {@link Long} is preferred over {@link BigInteger}.
+     * <p>
+     * For floating point numbers, {@link Double} will be preferred but {@link BigDecimal} will be used if the number
+     * is too large to fit in a {@link Double}.
+     * <p>
+     * If the string is one of the special floating point representations ({@code NaN}, {@code Infinity}, etc), then
+     * the value will be represented using {@link Double}.
      *
      * @param jsonReader The JsonReader to deserialize from.
      * @return The deserialized JSON number.

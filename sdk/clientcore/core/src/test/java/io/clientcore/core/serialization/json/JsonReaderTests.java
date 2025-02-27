@@ -186,7 +186,7 @@ public class JsonReaderTests {
             assertEquals("string", jsonArray[0]);
             assertNull(jsonArray[1]);
             assertEquals(10, jsonArray[2]);
-            assertEquals(10.0F, jsonArray[3]);
+            assertEquals(10.0D, jsonArray[3]);
             assertEquals(true, jsonArray[4]);
         }
     }
@@ -431,9 +431,9 @@ public class JsonReaderTests {
 
     private static Stream<Arguments> readUntypedSimpleSupplier() {
         return Stream.of(Arguments.of("null", 1, null), Arguments.of("true", 1, true), Arguments.of("false", 1, false),
-            Arguments.of("3.14", 1, 3.14), Arguments.of("NaN", 1, String.valueOf(Double.NaN)),
-            Arguments.of("-Infinity", 1, String.valueOf(Double.NEGATIVE_INFINITY)),
-            Arguments.of("Infinity", 1, String.valueOf(Double.POSITIVE_INFINITY)), Arguments.of("42", 1, 42),
+            Arguments.of("3.14", 1, 3.14), Arguments.of("NaN", 1, Double.NaN),
+            Arguments.of("-Infinity", 1, Double.NEGATIVE_INFINITY),
+            Arguments.of("Infinity", 1, Double.POSITIVE_INFINITY), Arguments.of("42", 1, 42),
             Arguments.of("420000000000", 1, 420000000000L), Arguments.of("\"hello\"", 1, "hello"));
     }
 
@@ -750,9 +750,9 @@ public class JsonReaderTests {
     }
 
     private static Stream<Arguments> readUntypedExponentNumbersSupplier() {
-        return Stream.of(Arguments.of("1e-1", 0.1F), Arguments.of("1E-1", 0.1F), Arguments.of("1e+1", 10F),
-            Arguments.of("1E+1", 10F), Arguments.of("1e-01", 0.1F), Arguments.of("1E-01", 0.1F),
-            Arguments.of("1e+01", 10F), Arguments.of("1E+01", 10F), Arguments.of("1e0", 1F), Arguments.of("1E0", 1F),
+        return Stream.of(Arguments.of("1e-1", 0.1D), Arguments.of("1E-1", 0.1D), Arguments.of("1e+1", 10D),
+            Arguments.of("1E+1", 10D), Arguments.of("1e-01", 0.1D), Arguments.of("1E-01", 0.1D),
+            Arguments.of("1e+01", 10D), Arguments.of("1E+01", 10D), Arguments.of("1e0", 1D), Arguments.of("1E0", 1D),
 
             Arguments.of("Infinity", Double.POSITIVE_INFINITY), Arguments.of("+Infinity", Double.POSITIVE_INFINITY),
             Arguments.of("-Infinity", Double.NEGATIVE_INFINITY), Arguments.of("NaN", Double.NaN));

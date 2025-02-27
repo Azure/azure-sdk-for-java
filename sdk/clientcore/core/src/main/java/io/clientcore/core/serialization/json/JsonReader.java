@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -745,8 +747,8 @@ public final class JsonReader implements Closeable {
      * <ul>
      *     <li>null if the starting token is null or {@link JsonToken#NULL}</li>
      *     <li>true or false if the starting token is {@link JsonToken#BOOLEAN}</li>
-     *     <li>One of int, long, float, or double is the starting token is {@link JsonToken#NUMBER}, the smallest
-     *     containing value will be used if the number is an integer</li>
+     *     <li>One of int, long, {@link BigInteger}, double, or {@link BigDecimal} if the starting token is
+     *     {@link JsonToken#NUMBER}, the smallest containing value will be used</li>
      *     <li>An array of untyped elements if the starting point is {@link JsonToken#START_ARRAY}</li>
      *     <li>A map of String-untyped value if the starting point is {@link JsonToken#START_OBJECT}</li>
      * </ul>

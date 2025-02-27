@@ -14,11 +14,11 @@ public final class JsonUtils {
      * <p>
      * Callers to this method should ensure that the number string isn't null or empty before calling this method.
      * <p>
-     * This method will return the smallest number type that can represent the number. For floating point numbers,
-     * it'll attempt to use {@link Float#parseFloat(String)}, if that fails it'll use
-     * {@link Double#parseDouble(String)}, and finally if that fails it'll use {@link BigDecimal#BigDecimal(String)}.
-     * For integers, it'll attempt to use {@link Integer#parseInt(String)}, if that fails it'll use
-     * {@link Long#parseLong(String)}, and finally if that fails it'll use {@link BigInteger#BigInteger(String)}.
+     * For integer numbers, this method will return the smallest number type that can represent the number. Where
+     * {@link Integer} is preferred over {@link Long} and {@link Long} is preferred over {@link BigInteger}.
+     * <p>
+     * For floating point numbers, {@link Double} will be preferred but {@link BigDecimal} will be used if the number
+     * is too large to fit in a {@link Double}.
      * <p>
      * Unlike the JSON specification, this method will handle the special floating point representations
      * ({@code NaN}, {@code Infinity}, etc) and will return a {@link Double} for those values.
@@ -64,13 +64,6 @@ public final class JsonUtils {
         // numeric type.
         // Additionally, due to the handling of values that can't fit into the numeric type, the only time floating
         // point parsing will throw is when the string value is invalid.
-        float f = Float.parseFloat(value);
-
-        // If the float wasn't infinite, return it.
-        if (!Float.isInfinite(f)) {
-            return f;
-        }
-
         double d = Double.parseDouble(value);
         if (!Double.isInfinite(d)) {
             return d;
