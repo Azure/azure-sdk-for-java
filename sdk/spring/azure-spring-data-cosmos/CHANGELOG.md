@@ -3,6 +3,7 @@
 ### 5.21.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added `readMany()` API support to `findAllByIds()` - See [PR 43759](https://github.com/Azure/azure-sdk-for-java/pull/43759).
 
 #### Breaking Changes
 
