@@ -30,3 +30,4 @@ extends:
       - JavaTestVersion=^(?!1.8).*
       - TestFromSource=^$|false
       - AZURE_TEST_HTTP_CLIENTS=netty
+      - pool=^(?!.*(win)).*
