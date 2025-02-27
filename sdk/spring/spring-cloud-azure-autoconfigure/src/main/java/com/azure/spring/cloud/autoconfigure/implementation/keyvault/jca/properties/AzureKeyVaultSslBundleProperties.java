@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties;
 
 import org.springframework.boot.autoconfigure.ssl.SslBundleProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
@@ -15,6 +16,7 @@ import java.util.Map;
  *
  * @since 5.21.0
  */
+@ConfigurationProperties(AzureKeyVaultSslBundleProperties.PREFIX)
 public class AzureKeyVaultSslBundleProperties {
 
     public static final String PREFIX = "spring.ssl.bundle";

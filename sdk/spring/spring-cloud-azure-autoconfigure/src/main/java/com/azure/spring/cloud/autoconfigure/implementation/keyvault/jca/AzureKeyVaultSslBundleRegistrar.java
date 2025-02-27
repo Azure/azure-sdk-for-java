@@ -30,6 +30,7 @@ import java.security.Security;
 import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -206,7 +207,7 @@ public class AzureKeyVaultSslBundleRegistrar implements SslBundleRegistrar, Reso
         }
 
         pm.from(keyStoreProperties.getCertificatesRefreshInterval())
-            .when(v -> v != null)
+            .when(Objects::nonNull)
             .to(v -> System.setProperty("azure.keyvault.jca.certificates-refresh-interval", String.valueOf(v.toMillis())));
         pm.from(keyStoreProperties.isRefreshCertificatesWhenHaveUntrustedCertificate())
             .to(v -> System.setProperty("azure.keyvault.jca.refresh-certificates-when-have-un-trust-certificate", Boolean.toString(v)));

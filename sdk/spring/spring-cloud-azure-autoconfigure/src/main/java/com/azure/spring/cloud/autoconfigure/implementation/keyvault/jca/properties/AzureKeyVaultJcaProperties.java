@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.jca.properties;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.Map;
  *
  * @since 5.21.0
  */
+@ConfigurationProperties(AzureKeyVaultJcaProperties.PREFIX)
 public class AzureKeyVaultJcaProperties {
 
     public static final String PREFIX = "spring.cloud.azure.keyvault.jca";
